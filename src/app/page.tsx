@@ -1,10 +1,9 @@
-import Image from "next/image";
-import { Header } from "./_components/header";
+import { SP500Graph } from "./_components/SP500Graph";
 
 export default function Home() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-between">
-      Hi this is main
+      <SP500Graph />
     </main>
   );
 }
