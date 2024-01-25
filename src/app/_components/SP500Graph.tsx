@@ -1,8 +1,10 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Papa from "papaparse";
+import { useDimensions } from "../hooks/useDimensions";
+import { SP500Chart } from "./Charts/SP500Chart";
 
-type SPIndex = {
+export type ISPIndex = {
   Date: Date;
   Earnings: string;
   Dividend: string;
@@ -15,7 +17,7 @@ type SPIndex = {
 };
 
 export const SP500Graph = () => {
-  const [data, setData] = useState<SPIndex[]>([]);
+  const [data, setData] = useState<ISPIndex[]>([]);
 
   useEffect(() => {
     async function fetchData() {
@@ -29,8 +31,12 @@ export const SP500Graph = () => {
         const csv = decoder.decode(result.value);
         Papa.parse(csv, {
           complete: (result) => {
-            console.log("Parsed:", result.data);
-            setData(result.data as any);
+            const resData = result.data;
+            const slicedData = resData.slice(
+              resData.length - 11,
+              resData.length - 1
+            );
+            setData(slicedData as ISPIndex[]);
           },
           header: true,
         });
@@ -41,7 +47,7 @@ export const SP500Graph = () => {
     fetchData();
   }, []);
 
-  console.log(data);
+  // console.log("data", data);
 
-  return <div>Hi</div>;
+  return <SP500Chart height={500} width={500} rawData={data} />;
 };
