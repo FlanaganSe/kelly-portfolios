@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
 import Papa from "papaparse";
-import { useDimensions } from "../hooks/useDimensions";
 import { SP500Chart } from "./Charts/SP500Chart";
 
 export type ISPIndex = {

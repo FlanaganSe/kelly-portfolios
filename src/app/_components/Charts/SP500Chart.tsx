@@ -19,7 +19,7 @@ export const SP500Chart = ({ height, width, rawData }: SP500ChartProps) => {
   });
 
   let dimensions = {
-    width: Math.min(window.innerWidth * 0.9, width),
+    width: Math.min(global.window ? window.innerWidth * 0.9 : 200, width),
     height: height,
     margins: {
       top: 15,
@@ -33,8 +33,6 @@ export const SP500Chart = ({ height, width, rawData }: SP500ChartProps) => {
   dimensions.boundedWidth = dimensions.width - dimensions.margins.left;
   dimensions.boundedHeight =
     dimensions.height - dimensions.margins.top - dimensions.margins.bottom;
-
-  const MARGIN = { top: 30, right: 30, bottom: 50, left: 50 };
 
   const axesRef = useRef(null);
 
