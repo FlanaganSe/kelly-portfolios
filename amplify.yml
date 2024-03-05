@@ -1,0 +1,17 @@
+version: 1
+frontend:
+  phases:
+    preBuild:
+      commands:
+        - cd client
+        - npm i
+    build:
+      commands:
+        - npm run build # Build the project
+  artifacts:
+    baseDirectory: client/build # Specify the build output directory
+    files:
+      - "**/*" # Include all files in the build directory
+  cache:
+    paths:
+      - client/node_modules/**/* # Cache the node_modules directory
