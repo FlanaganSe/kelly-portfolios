@@ -1,5 +1,4 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
-import React from "react";
 import ReactDOM from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import "./styles.css";
@@ -19,9 +18,9 @@ declare module "@tanstack/react-router" {
   }
 }
 
-const rootElement = document.getElementById("app")!;
+const rootElement = document.getElementById("app");
 
-if (!rootElement.innerHTML) {
+if (rootElement && !rootElement.innerHTML) {
   const root = ReactDOM.createRoot(rootElement);
   root.render(<RouterProvider router={router} />);
 }

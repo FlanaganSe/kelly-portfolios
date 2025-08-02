@@ -187,8 +187,10 @@ function AnchorComponent() {
             </>
           ) : null}
           <div>
-            {/** biome-ignore lint/a11y/useButtonType: <explanation> */}
-            <button className="bg-blue-500 rounded p-2 uppercase text-white font-black disabled:opacity-50">
+            <button
+              type="button"
+              className="bg-blue-500 rounded p-2 uppercase text-white font-black disabled:opacity-50"
+            >
               Navigate
             </button>
           </div>

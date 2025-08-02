@@ -1,5 +1,3 @@
-import { notFound } from "@tanstack/react-router";
-
 export type PostType = {
   id: string;
   title: string;
@@ -9,17 +7,10 @@ export type PostType = {
 export const fetchPost = async (postId: string) => {
   console.info(`Fetching post with id ${postId}...`);
   await new Promise((r) => setTimeout(r, 500));
-  const post = await axios
-    .get<PostType>(`https://jsonplaceholder.typicode.com/posts/${postId}`)
-    .then((r) => r.data)
-    .catch((err) => {
-      if (err.status === 404) {
-        throw notFound();
-      }
-      throw err;
-    });
 
-  return post;
+  return fetch(`https://jsonplaceholder.typicode.com/posts/${postId}`)
+    .then((res) => res.json() as Promise<PostType>)
+    .then((data) => data);
 };
 
 export const fetchPosts = async () => {
