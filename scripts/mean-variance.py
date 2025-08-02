@@ -1,18 +1,23 @@
-import gspread
 import scipy.optimize
 import numpy as np
 from datetime import datetime
 
-gc = gspread.service_account(filename='credentials.json')
-sh = gc.open_by_key('1OFch9v5y5V0tsnxxLJnaUbYExBMfYhcEjfhM4DDBdzg')
-worksheet = sh.worksheet("pythondata")
+# Hardcoded values replacing worksheet data
+cashInfo = ['Cash', '', '0.5%', '0%']
+spyInfo = ['SPY', '', '10%', '16%']
+tltInfo = ['TLT', '', '4%', '12%']
+gldInfo = ['GLD', '', '6%', '18%']
+gbtcInfo = ['GBTC', '', '15%', '65%']
 
-cashInfo = worksheet.row_values(2)
-spyInfo = worksheet.row_values(3)
-tltInfo = worksheet.row_values(4)
-gldInfo = worksheet.row_values(5)
-gbtcInfo = worksheet.row_values(6)
-corrInfo = worksheet.get('B8:B13')
+# Correlation values
+corrInfo = [
+    ['-0.3'],   # spy_tlt
+    ['0.4'],    # spy_gld
+    ['0.6'],    # spy_gbtc
+    ['-0.1'],   # tlt_gld
+    ['-0.2'],   # tlt_gbtc
+    ['0.3'],    # gld_gbtc
+]
 
 # RETURNS
 asset_returns = np.array([
@@ -54,7 +59,6 @@ asset_correlations = np.array([
 # 5.0+ = Highly risk averse. Maximizes returns at very low risk level
 gamma = 3.0
 
-
 # Cash / asset upper and lower bounds
 cash_bounds = (-1, 1)
 spy_bounds = (0.001, np.inf)
@@ -86,14 +90,9 @@ solution = scipy.optimize.minimize(
     tol=1e-20
 )
 
-
 print(solution.message)
 print("asset weights: ", solution.x)
 print("return: {:6.2%}, std: {:6.2%}".format(*mean_and_std(solution.x)))
 
-y = []
-for x in solution.x:
-    y.append([x])
-
-worksheet.update('B2:B6', y)
-worksheet.update('B15', datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+# Print current timestamp instead of updating worksheet
+print("Calculation completed at:", datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
