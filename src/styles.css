@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@tailwind utilities;
+
+html {
+  color-scheme: light dark;
+}
+* {
+  @apply border-gray-300 dark:border-gray-800;
+}
+body {
+  @apply bg-gray-50 text-gray-950 dark:bg-gray-900 dark:text-gray-200;
+}
