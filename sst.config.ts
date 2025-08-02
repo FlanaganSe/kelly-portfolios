@@ -10,6 +10,11 @@ export default $config({
     };
   },
   async run() {
-    new sst.aws.React("PortfolioOptimizer");
+    new sst.aws.StaticSite("PortfolioOptimizer", {
+      build: {
+        command: "npm run build",
+        output: "dist",
+      },
+    });
   },
 });
