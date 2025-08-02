@@ -1,1 +1,0 @@
-import{j as s,O as t}from"./index-BGCDSKCZ.js";const n=function(){return s.jsxs("div",{className:"p-2",children:[s.jsx("div",{className:"border-b",children:"I'm a pathless layout"}),s.jsx("div",{children:s.jsx(t,{})})]})};export{n as component};

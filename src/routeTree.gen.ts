@@ -8,65 +8,67 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { Route as _pathlessLayoutRouteImport } from "./routes/__pathlessLayout";
-import { Route as rootRouteImport } from "./routes/__root";
-import { Route as AnchorRouteImport } from "./routes/anchor";
+import { Route as rootRouteImport } from './routes/__root'
+import { Route as AnchorRouteImport } from './routes/anchor'
+import { Route as _pathlessLayoutRouteImport } from './routes/__pathlessLayout'
 
 const AnchorRoute = AnchorRouteImport.update({
-  id: "/anchor",
-  path: "/anchor",
+  id: '/anchor',
+  path: '/anchor',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 const _pathlessLayoutRoute = _pathlessLayoutRouteImport.update({
-  id: "/__pathlessLayout",
+  id: '/__pathlessLayout',
   getParentRoute: () => rootRouteImport,
-} as any);
+} as any)
 
 export interface FileRoutesByFullPath {
-  "/anchor": typeof AnchorRoute;
+  '/anchor': typeof AnchorRoute
 }
 export interface FileRoutesByTo {
-  "/anchor": typeof AnchorRoute;
+  '/anchor': typeof AnchorRoute
 }
 export interface FileRoutesById {
-  __root__: typeof rootRouteImport;
-  "/__pathlessLayout": typeof _pathlessLayoutRoute;
-  "/anchor": typeof AnchorRoute;
+  __root__: typeof rootRouteImport
+  '/__pathlessLayout': typeof _pathlessLayoutRoute
+  '/anchor': typeof AnchorRoute
 }
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "/anchor";
-  fileRoutesByTo: FileRoutesByTo;
-  to: "/anchor";
-  id: "__root__" | "/__pathlessLayout" | "/anchor";
-  fileRoutesById: FileRoutesById;
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/anchor'
+  fileRoutesByTo: FileRoutesByTo
+  to: '/anchor'
+  id: '__root__' | '/__pathlessLayout' | '/anchor'
+  fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  _pathlessLayoutRoute: typeof _pathlessLayoutRoute;
-  AnchorRoute: typeof AnchorRoute;
+  _pathlessLayoutRoute: typeof _pathlessLayoutRoute
+  AnchorRoute: typeof AnchorRoute
 }
 
-declare module "@tanstack/react-router" {
+declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    "/anchor": {
-      id: "/anchor";
-      path: "/anchor";
-      fullPath: "/anchor";
-      preLoaderRoute: typeof AnchorRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
-    "/__pathlessLayout": {
-      id: "/__pathlessLayout";
-      path: "";
-      fullPath: "";
-      preLoaderRoute: typeof _pathlessLayoutRouteImport;
-      parentRoute: typeof rootRouteImport;
-    };
+    '/anchor': {
+      id: '/anchor'
+      path: '/anchor'
+      fullPath: '/anchor'
+      preLoaderRoute: typeof AnchorRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/__pathlessLayout': {
+      id: '/__pathlessLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof _pathlessLayoutRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   _pathlessLayoutRoute: _pathlessLayoutRoute,
   AnchorRoute: AnchorRoute,
-};
-export const routeTree = rootRouteImport._addFileChildren(rootRouteChildren)._addFileTypes<FileRouteTypes>();
+}
+export const routeTree = rootRouteImport
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
