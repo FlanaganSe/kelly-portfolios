@@ -2,20 +2,18 @@ import { Link } from "wouter";
 
 export default function Home() {
   return (
-    <div className="container mx-auto px-6 py-12">
-      <div className="text-center mb-16">
-        <h1 className="text-5xl md:text-7xl font-bold bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent mb-6">
-          Portfolio Optimizer
-        </h1>
-        <p className="text-xl md:text-2xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+    <div className="container mx-auto px-6 py-16">
+      <div className="text-center mb-20">
+        <h1 className="text-5xl md:text-7xl font-bold gradient-text mb-6 leading-tight">Portfolio Optimizer</h1>
+        <p className="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
           Harness the power of the Kelly Criterion to optimize your investment portfolio with mathematical precision
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 gap-12 mb-16">
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:bg-slate-800/60 transition-all duration-300">
+      <div className="grid md:grid-cols-2 gap-8 mb-16">
+        <div className="card card-hover rounded-2xl p-8">
           <div className="flex items-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center mr-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-xl flex items-center justify-center mr-4 shadow-md">
               <svg
                 className="w-6 h-6 text-white"
                 fill="none"
@@ -32,21 +30,23 @@ export default function Home() {
                 />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-white">Kelly Criterion</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Kelly Criterion</h2>
           </div>
-          <p className="text-slate-300 leading-relaxed mb-4">
+          <p className="text-gray-600 leading-relaxed mb-4">
             The Kelly Criterion is a mathematical formula that determines the optimal allocation of capital to maximize
             long-term growth while minimizing risk of ruin.
           </p>
-          <div className="bg-slate-900/50 rounded-lg p-4 font-mono text-sm text-cyan-300">f* = (bp - q) / b</div>
-          <p className="text-slate-400 text-sm mt-2">
+          <div className="bg-gray-50 border border-gray-200 rounded-lg p-4 font-mono text-sm text-blue-700">
+            f* = (bp - q) / b
+          </div>
+          <p className="text-gray-500 text-sm mt-2">
             Where f* is the fraction to bet, b is odds, p is probability of win, q is probability of loss
           </p>
         </div>
 
-        <div className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:bg-slate-800/60 transition-all duration-300">
+        <div className="card card-hover rounded-2xl p-8">
           <div className="flex items-center mb-6">
-            <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center mr-4">
+            <div className="w-12 h-12 bg-gradient-to-r from-emerald-500 to-green-500 rounded-xl flex items-center justify-center mr-4 shadow-md">
               <svg
                 className="w-6 h-6 text-white"
                 fill="none"
@@ -58,13 +58,13 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
               </svg>
             </div>
-            <h2 className="text-2xl font-bold text-white">Optimal Growth</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Optimal Growth</h2>
           </div>
-          <p className="text-slate-300 leading-relaxed">
+          <p className="text-gray-600 leading-relaxed">
             By applying Kelly sizing to your portfolio, you can achieve maximum geometric growth while maintaining
             prudent risk management. This approach balances aggressive growth with capital preservation.
           </p>
-          <ul className="mt-4 space-y-2 text-slate-300">
+          <ul className="mt-4 space-y-2 text-gray-600">
             <li className="flex items-center">
               <div className="w-2 h-2 bg-emerald-400 rounded-full mr-3"></div>
               Maximizes long-term wealth
@@ -83,10 +83,7 @@ export default function Home() {
 
       <div className="text-center">
         <Link href="/calculator">
-          <button
-            type="button"
-            className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all duration-300 transform hover:scale-105 hover:shadow-xl hover:shadow-blue-500/25"
-          >
+          <button type="button" className="btn-primary py-4 px-8 text-lg hover:shadow-blue-500/25">
             Start Optimizing Your Portfolio
             <svg
               className="w-5 h-5 ml-2 inline"
@@ -102,9 +99,9 @@ export default function Home() {
         </Link>
       </div>
 
-      <div className="mt-20 grid md:grid-cols-3 gap-8">
+      <div className="mt-24 grid md:grid-cols-3 gap-8">
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-r from-purple-500 to-pink-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -121,14 +118,14 @@ export default function Home() {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">Mathematical Precision</h3>
-          <p className="text-slate-400">
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Mathematical Precision</h3>
+          <p className="text-gray-600">
             Data-driven approach to portfolio allocation based on proven mathematical principles
           </p>
         </div>
 
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-r from-amber-500 to-orange-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -145,12 +142,12 @@ export default function Home() {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">Risk Management</h3>
-          <p className="text-slate-400">Intelligent position sizing that protects capital while maximizing returns</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Risk Management</h3>
+          <p className="text-gray-600">Intelligent position sizing that protects capital while maximizing returns</p>
         </div>
 
         <div className="text-center">
-          <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4">
+          <div className="w-16 h-16 bg-gradient-to-r from-cyan-500 to-blue-500 rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
             <svg
               className="w-8 h-8 text-white"
               fill="none"
@@ -167,8 +164,8 @@ export default function Home() {
               />
             </svg>
           </div>
-          <h3 className="text-xl font-semibold text-white mb-2">Long-term Growth</h3>
-          <p className="text-slate-400">Optimized for sustained wealth building over extended time horizons</p>
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">Long-term Growth</h3>
+          <p className="text-gray-600">Optimized for sustained wealth building over extended time horizons</p>
         </div>
       </div>
     </div>

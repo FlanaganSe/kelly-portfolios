@@ -48,25 +48,17 @@ export default function Articles() {
   ];
 
   return (
-    <div className="container mx-auto px-6 py-12">
+    <div className="container mx-auto px-6 py-16">
       <div className="text-center mb-16">
-        <h1 className="text-4xl md:text-6xl font-bold bg-gradient-to-r from-blue-400 via-cyan-300 to-emerald-400 bg-clip-text text-transparent mb-6">
-          Investment Articles
-        </h1>
-        <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
+        <h1 className="text-4xl md:text-6xl font-bold gradient-text mb-6">Investment Articles</h1>
+        <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed font-light">
           In-depth analysis and practical guides for evidence-based portfolio optimization and quantitative investing
-        </p>
-        <p className="text-xl text-slate-300 max-w-3xl mx-auto leading-relaxed">
-          Sean: This is just mush written by AI.
         </p>
       </div>
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
+      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
         {articles.map((article) => (
-          <article
-            key={article.title}
-            className="bg-slate-800/50 backdrop-blur-sm border border-slate-700 rounded-2xl p-8 hover:bg-slate-800/60 transition-all duration-300 group cursor-pointer"
-          >
+          <article key={article.title} className="card card-hover rounded-2xl p-6 group cursor-pointer">
             <div className="flex items-center mb-4">
               <div
                 className={`w-12 h-12 bg-gradient-to-r ${article.gradient} rounded-xl flex items-center justify-center mr-4`}
@@ -88,15 +80,15 @@ export default function Articles() {
                 </svg>
               </div>
               <div>
-                <div className="text-sm text-slate-400">{article.category}</div>
-                <div className="text-sm text-slate-500">{article.readTime}</div>
+                <div className="text-sm text-gray-500">{article.category}</div>
+                <div className="text-sm text-gray-400">{article.readTime}</div>
               </div>
             </div>
-            <h2 className="text-xl font-bold text-white mb-3 group-hover:text-cyan-300 transition-colors">
+            <h2 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
               {article.title}
             </h2>
-            <p className="text-slate-300 leading-relaxed mb-4">{article.excerpt}</p>
-            <div className="flex items-center text-cyan-400 group-hover:text-cyan-300 transition-colors">
+            <p className="text-gray-600 leading-relaxed mb-4">{article.excerpt}</p>
+            <div className="flex items-center text-blue-600 group-hover:text-blue-700 transition-colors">
               <span className="text-sm font-medium">Read Article</span>
               <svg
                 className="w-4 h-4 ml-2 transform group-hover:translate-x-1 transition-transform"
@@ -113,9 +105,9 @@ export default function Articles() {
         ))}
       </div>
 
-      <div className="bg-slate-800/30 backdrop-blur-sm border border-slate-700 rounded-2xl p-12 text-center">
-        <h2 className="text-3xl font-bold text-white mb-4">Want to contribute?</h2>
-        <p className="text-slate-300 mb-8 max-w-2xl mx-auto">
+      <div className="card rounded-2xl p-12 text-center">
+        <h2 className="text-3xl font-bold text-gray-900 mb-4">Want to contribute?</h2>
+        <p className="text-gray-600 mb-8 max-w-2xl mx-auto">
           Have insights on portfolio optimization, quantitative finance, or risk management? We'd love to feature your
           expertise in our growing library of educational content.
         </p>
@@ -124,7 +116,7 @@ export default function Articles() {
             href="https://github.com/FlanaganSe/investing-portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
+            className="inline-flex items-center gap-2 btn-primary"
           >
             <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" role="img" aria-label="GitHub">
               <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
@@ -133,7 +125,7 @@ export default function Articles() {
           </a>
           <button
             type="button"
-            className="inline-flex items-center gap-2 bg-slate-700 hover:bg-slate-600 text-white font-semibold py-3 px-6 rounded-lg transition-all duration-300"
+            className="inline-flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-3 px-6 rounded-lg transition-all duration-200"
           >
             <svg
               className="w-5 h-5"
