@@ -11,19 +11,19 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="theme-color" content="#1f2937" />
     <meta http-equiv="X-Content-Type-Options" content="nosniff" />
-    <meta http-equiv="X-Frame-Options" content="DENY" />
+    <!-- <meta http-equiv="X-Frame-Options" content="DENY" /> -->
     <meta http-equiv="X-XSS-Protection" content="1; mode=block" />
     <meta
       http-equiv="Referrer-Policy"
       content="strict-origin-when-cross-origin"
     />
-    <meta
+    <!-- <meta
       http-equiv="Content-Security-Policy"
       content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline';"
-    />
+    /> -->
   </head>
   <body>
     <div id="app"></div>
-    <script type="module" src="/main.tsx"></script>
+    <script prerender type="module" src="/src/main.tsx"></script>
   </body>
 </html>

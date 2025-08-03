@@ -7,10 +7,12 @@
     "dev": "vite",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "biome:fix": "biome check --write . && biome format --write ."
+    "biome:fix": "biome check --write . && biome format --write .",
+    "setup": "git config core.hooksPath .githooks && chmod +x .githooks/*"
   },
   "dependencies": {
     "preact": "^10.27.0",
+    "preact-iso": "^2.9.2",
     "sst": "3.17.10",
     "wouter": "^3.3.5"
   },
