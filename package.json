@@ -7,7 +7,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "biome:fix": "biome check --write . && biome format --write ."
+    "biome:fix": "biome check --write . && biome format --write .",
+    "setup": "git config core.hooksPath .githooks && chmod +x .githooks/*"
   },
   "dependencies": {
     "preact": "^10.27.0",
