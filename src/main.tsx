@@ -17,5 +17,7 @@ if (typeof window !== "undefined") {
 }
 
 export async function prerender(_data?: unknown) {
-  return await ssr(<AppWithRouter />);
+  const { html, ...rest } = await ssr(<AppWithRouter />);
+
+  return { html: `<div id="app">${html}</div>`, ...rest };
 }
