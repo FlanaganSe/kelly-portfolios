@@ -11,7 +11,7 @@ export default $config({
   },
   async run() {
     new sst.aws.StaticSite("PortfolioOptimizer", {
-      build: { command: "npm run build", output: "dist" },
+      build: { command: "pnpm run build", output: "dist" },
     });
   },
 });
