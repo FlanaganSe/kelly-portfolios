@@ -1,5 +1,6 @@
-name: Deploy
+name: Deploy Development
 on:
+  pull_request:
   push:
     branches: [main]
 
@@ -9,15 +10,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: pnpm/action-setup@v3
-        with:
-          version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'pnpm'
       - run: pnpm install --frozen-lockfile
-      - run: pnpm biome check --write
-      - run: pnpm sst deploy --stage production
-        env:
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      - run: pnpm biome check
+      - run: pnpm tsc --noEmit
+      - run: pnpm build
