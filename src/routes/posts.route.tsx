@@ -1,13 +1,21 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
-import { fetchPosts } from "../posts";
+import { useEffect, useState } from "preact/hooks";
+import { Link } from "wouter";
+import { fetchPosts, type PostType } from "../posts";
 
-export const Route = createFileRoute("/posts")({
-  loader: fetchPosts,
-  component: PostsLayoutComponent,
-});
+export default function PostsComponent() {
+  const [posts, setPosts] = useState<PostType[]>([]);
+  const [loading, setLoading] = useState(true);
 
-function PostsLayoutComponent() {
-  const posts = Route.useLoaderData();
+  useEffect(() => {
+    fetchPosts().then((data) => {
+      setPosts(data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) {
+    return <div className="p-2">Loading posts...</div>;
+  }
 
   return (
     <div className="p-2 flex gap-2">
@@ -15,14 +23,7 @@ function PostsLayoutComponent() {
         {[...posts, { id: "i-do-not-exist", title: "Non-existent Post" }].map((post) => {
           return (
             <li key={post.id} className="whitespace-nowrap">
-              <Link
-                to="/posts/$postId"
-                params={{
-                  postId: post.id,
-                }}
-                className="block py-1 text-blue-600 hover:opacity-75"
-                activeProps={{ className: "font-bold underline" }}
-              >
+              <Link href={`/posts/${post.id}`} className="block py-1 text-blue-600 hover:opacity-75">
                 <div>{post.title.substring(0, 20)}</div>
               </Link>
             </li>
@@ -30,7 +31,7 @@ function PostsLayoutComponent() {
         })}
       </ul>
       <hr />
-      <Outlet />
+      <div>Select a post.</div>
     </div>
   );
 }

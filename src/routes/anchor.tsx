@@ -1,9 +1,4 @@
-import { createFileRoute, Link, useLocation, useNavigate } from "@tanstack/react-router";
-import { useLayoutEffect, useRef, useState } from "react";
-
-export const Route = createFileRoute("/anchor")({
-  component: AnchorComponent,
-});
+import { useLayoutEffect, useRef, useState } from "preact/hooks";
 
 const anchors: Array<{
   id: string;
@@ -62,10 +57,15 @@ function AnchorSection({ id, title }: { id: string; title: string }) {
   );
 }
 
-function AnchorComponent() {
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function AnchorComponent() {
   const [withScroll, setWithScroll] = useState(true);
+
+  const scrollToAnchor = (anchorId: string, options?: ScrollIntoViewOptions) => {
+    const element = document.getElementById(anchorId);
+    if (element) {
+      element.scrollIntoView(options);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full">
@@ -73,17 +73,18 @@ function AnchorComponent() {
         <ul className="inline-flex gap-2">
           {anchors.map((anchor) => (
             <li key={anchor.id}>
-              <Link
-                from={Route.fullPath}
-                hash={anchor.id}
-                activeOptions={{ includeHash: true }}
-                activeProps={{
-                  className: "font-bold active",
-                }}
-                hashScrollIntoView={anchor.hashScrollIntoView}
+              <button
+                type="button"
+                onClick={() =>
+                  scrollToAnchor(
+                    anchor.id,
+                    anchor.hashScrollIntoView === true ? {} : anchor.hashScrollIntoView || undefined
+                  )
+                }
+                className="text-blue-600 hover:opacity-75"
               >
                 {anchor.title}
-              </Link>
+              </button>
             </li>
           ))}
         </ul>
@@ -110,18 +111,14 @@ function AnchorComponent() {
                 } satisfies ScrollIntoViewOptions)
               : false;
 
-            navigate({ hash: toHash, hashScrollIntoView });
+            scrollToAnchor(toHash, hashScrollIntoView || undefined);
           }}
         >
           <h1 className="font-bold text-xl">Scroll with navigate</h1>
           <div className="space-y-2">
             <label>
               <span>Target Anchor</span>
-              <select
-                className="border border-opacity-50 rounded p-2 w-full"
-                defaultValue={location.hash || anchors[0].id}
-                name="hash"
-              >
+              <select className="border border-opacity-50 rounded p-2 w-full" defaultValue={anchors[0].id} name="hash">
                 {anchors.map((anchor) => (
                   <option key={anchor.id} value={anchor.id}>
                     {anchor.title}
@@ -131,8 +128,12 @@ function AnchorComponent() {
             </label>
             <div>
               <label>
-                <input checked={withScroll} onChange={(e) => setWithScroll(e.target.checked)} type="checkbox" /> Scroll
-                Into View
+                <input
+                  checked={withScroll}
+                  onChange={(e) => setWithScroll((e.target as HTMLInputElement).checked)}
+                  type="checkbox"
+                />{" "}
+                Scroll Into View
               </label>
             </div>
           </div>
@@ -188,7 +189,7 @@ function AnchorComponent() {
           ) : null}
           <div>
             <button
-              type="button"
+              type="submit"
               className="bg-blue-500 rounded p-2 uppercase text-white font-black disabled:opacity-50"
             >
               Navigate
