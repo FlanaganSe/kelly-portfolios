@@ -4,6 +4,13 @@
     "includes": ["**/*.{js,jsx,ts,tsx}", "!**/dist/**", "!**/node_modules/**", "!**/.sst/**", "!**/coverage/**"],
     "ignoreUnknown": true
   },
+  "assist": {
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
+  },
   "formatter": {
     "enabled": true,
     "indentStyle": "space",
