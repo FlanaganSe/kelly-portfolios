@@ -10,6 +10,7 @@ dist
 
 # sst
 .sst
+sst-env.d.ts
 
 # AI
 CLAUDE.md
