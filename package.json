@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "preact": "^10.27.0",
+    "preact-iso": "^2.9.2",
     "sst": "3.17.10",
     "wouter": "^3.3.5"
   },

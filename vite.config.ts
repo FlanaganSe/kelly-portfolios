@@ -9,5 +9,5 @@ export default defineConfig({
     outDir: "../dist",
     emptyOutDir: true,
   },
-  plugins: [preact(), tailwindcss()],
+  plugins: [preact({ prerender: { enabled: true } }), tailwindcss()],
 });

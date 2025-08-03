@@ -1,15 +1,21 @@
-import { render } from "preact";
+import { hydrate, prerender as ssr } from "preact-iso";
 import { Router } from "wouter";
 import App from "./App";
 import "./styles.css";
 
-const rootElement = document.getElementById("app");
+const AppWithRouter = () => (
+  <Router>
+    <App />
+  </Router>
+);
 
-if (rootElement && !rootElement.innerHTML) {
-  render(
-    <Router>
-      <App />
-    </Router>,
-    rootElement
-  );
+if (typeof window !== "undefined") {
+  const rootElement = document.getElementById("app");
+  if (rootElement) {
+    hydrate(<AppWithRouter />, rootElement);
+  }
+}
+
+export async function prerender(_data?: unknown) {
+  return await ssr(<AppWithRouter />);
 }
