@@ -18,21 +18,6 @@ export interface Portfolio {
   kellyFraction?: number;
 }
 
-export interface KellyCalculation {
-  optimalFraction: number;
-  expectedGrowthRate: number;
-  riskOfRuin: number;
-  maxDrawdown: number;
-}
-
-export interface PortfolioMetrics {
-  expectedReturn: number;
-  volatility: number;
-  sharpeRatio: number;
-  kellyFraction: number;
-  diversificationRatio: number;
-}
-
 export interface AssetFormData {
   symbol: string;
   name: string;

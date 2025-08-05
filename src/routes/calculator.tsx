@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
-import type { Asset, AssetFormData } from "../types/portfolio";
-import { optimizePortfolio } from "../utils/calculateOptimizedPortfolio";
+import type { Asset, AssetFormData } from "~/types/portfolio";
+import { optimizePortfolio } from "~/utils/calculateOptimizedPortfolio";
 
 interface OptimizationSettings {
   riskFreeRate: number;
@@ -22,34 +22,90 @@ export default function Calculator() {
     volatility: "",
     allocation: "",
   });
+  const [formErrors, setFormErrors] = useState<Partial<AssetFormData>>({});
   const [isOptimizing, setIsOptimizing] = useState(false);
+  const [isAddingAsset, setIsAddingAsset] = useState(false);
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+
+  const validateForm = (): boolean => {
+    const errors: Partial<AssetFormData> = {};
+
+    if (!formData.symbol.trim()) {
+      errors.symbol = "Symbol is required";
+    } else if (formData.symbol.length > 10) {
+      errors.symbol = "Symbol must be 10 characters or less";
+    } else if (assets.some((asset) => asset.symbol.toUpperCase() === formData.symbol.toUpperCase())) {
+      errors.symbol = "Asset already exists in portfolio";
+    }
+
+    if (!formData.name.trim()) {
+      errors.name = "Name is required";
+    } else if (formData.name.length > 100) {
+      errors.name = "Name must be 100 characters or less";
+    }
+
+    const expectedReturn = parseFloat(formData.expectedReturn);
+    if (!formData.expectedReturn.trim() || Number.isNaN(expectedReturn)) {
+      errors.expectedReturn = "Expected return is required and must be a number";
+    } else if (expectedReturn < -100 || expectedReturn > 1000) {
+      errors.expectedReturn = "Expected return must be between -100% and 1000%";
+    }
+
+    const volatility = parseFloat(formData.volatility);
+    if (!formData.volatility.trim() || Number.isNaN(volatility)) {
+      errors.volatility = "Volatility is required and must be a number";
+    } else if (volatility < 0 || volatility > 1000) {
+      errors.volatility = "Volatility must be between 0% and 1000%";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleInputChange = (field: keyof AssetFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    // Clear error for this field when user starts typing
+    if (formErrors[field]) {
+      setFormErrors((prev) => ({ ...prev, [field]: undefined }));
+    }
   };
 
-  const handleAddAsset = () => {
-    if (!formData.symbol || !formData.name || !formData.expectedReturn || !formData.volatility) {
+  const handleAddAsset = async () => {
+    if (!validateForm()) {
       return;
     }
 
-    const newAsset: Asset = {
-      id: crypto.randomUUID(),
-      symbol: formData.symbol.toUpperCase(),
-      name: formData.name,
-      expectedReturn: parseFloat(formData.expectedReturn) / 100,
-      volatility: parseFloat(formData.volatility) / 100,
-      allocation: 0, // Will be optimized
-    };
+    setIsAddingAsset(true);
 
-    setAssets((prev) => [...prev, newAsset]);
-    setFormData({
-      symbol: "",
-      name: "",
-      expectedReturn: "",
-      volatility: "",
-      allocation: "",
-    });
+    try {
+      // Simulate brief processing time for better UX
+      await new Promise((resolve) => setTimeout(resolve, 300));
+
+      const newAsset: Asset = {
+        id: crypto.randomUUID(),
+        symbol: formData.symbol.toUpperCase().trim(),
+        name: formData.name.trim(),
+        expectedReturn: parseFloat(formData.expectedReturn) / 100,
+        volatility: parseFloat(formData.volatility) / 100,
+        allocation: 0, // Will be optimized
+      };
+
+      setAssets((prev) => [...prev, newAsset]);
+      setFormData({
+        symbol: "",
+        name: "",
+        expectedReturn: "",
+        volatility: "",
+        allocation: "",
+      });
+      setFormErrors({});
+
+      // Show success message
+      setShowSuccessMessage(true);
+      setTimeout(() => setShowSuccessMessage(false), 3000);
+    } finally {
+      setIsAddingAsset(false);
+    }
   };
 
   const handleRemoveAsset = (id: string) => {
@@ -62,23 +118,8 @@ export default function Calculator() {
     setIsOptimizing(true);
 
     try {
-      // Create correlation matrix (identity for now, can be enhanced later)
-      const n = assets.length;
-      const correlations = Array(n)
-        .fill(null)
-        .map(() => Array(n).fill(0));
-      for (let i = 0; i < n; i++) {
-        correlations[i][i] = 1;
-      }
-
-      const portfolioData = {
-        returns: assets.map((asset) => asset.expectedReturn),
-        volatility: assets.map((asset) => asset.volatility),
-        correlations,
-        gamma: settings.riskAversion,
-      };
-
-      const result = optimizePortfolio(portfolioData);
+      const result = getOptimizationResult();
+      if (!result) return null;
 
       // Update assets with optimized allocations
       const optimizedAssets = assets.map((asset, index) => ({
@@ -96,29 +137,49 @@ export default function Calculator() {
     }
   };
 
-  const optimizationResult =
-    assets.length > 0
-      ? (() => {
-          const n = assets.length;
-          const correlations = Array(n)
-            .fill(null)
-            .map(() => Array(n).fill(0));
-          for (let i = 0; i < n; i++) {
-            correlations[i][i] = 1;
-          }
+  const optimizationResult = assets.length > 0 ? getOptimizationResult() : null;
 
-          try {
-            return optimizePortfolio({
-              returns: assets.map((asset) => asset.expectedReturn),
-              volatility: assets.map((asset) => asset.volatility),
-              correlations,
-              gamma: settings.riskAversion,
-            });
-          } catch {
-            return null;
-          }
-        })()
-      : null;
+  function getOptimizationResult() {
+    if (assets.length === 0) return null;
+    if (assets.length === 1) {
+      // Special case for single asset
+      const asset = assets[0];
+      return {
+        weights: [1.0],
+        expectedReturn: asset.expectedReturn,
+        risk: asset.volatility,
+        utility: asset.expectedReturn - 0.5 * settings.riskAversion * asset.volatility * asset.volatility,
+      };
+    }
+
+    try {
+      const n = assets.length;
+      const correlations = Array(n)
+        .fill(null)
+        .map(() => Array(n).fill(0));
+      for (let i = 0; i < n; i++) {
+        correlations[i][i] = 1;
+      }
+
+      const result = optimizePortfolio({
+        returns: assets.map((asset) => asset.expectedReturn),
+        volatility: assets.map((asset) => asset.volatility),
+        correlations,
+        gamma: settings.riskAversion,
+      });
+
+      // Validate result
+      if (!result || !result.weights || result.weights.some((w) => Number.isNaN(w) || w < 0)) {
+        console.warn("Optimization returned invalid result");
+        return null;
+      }
+
+      return result;
+    } catch (error) {
+      console.error("Portfolio optimization failed:", error);
+      return null;
+    }
+  }
 
   return (
     <div className="hero-gradient min-h-screen">
@@ -130,6 +191,34 @@ export default function Calculator() {
             Kelly Criterion
           </p>
         </div>
+
+        {showSuccessMessage && (
+          <div className="max-w-md mx-auto mb-8">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center animate-fade-up">
+              <div className="flex-shrink-0">
+                <svg
+                  className="w-6 h-6 text-emerald-600"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                  role="img"
+                  aria-label="Success"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <div className="ml-3">
+                <p className="text-sm font-medium text-emerald-800">Asset added successfully!</p>
+                <p className="text-sm text-emerald-600">Your portfolio has been updated.</p>
+              </div>
+            </div>
+          </div>
+        )}
 
         <div className="grid lg:grid-cols-2 gap-8">
           <div className="card p-10">
@@ -162,7 +251,9 @@ export default function Calculator() {
                       value={formData.symbol}
                       onChange={(e) => handleInputChange("symbol", e.currentTarget.value)}
                       placeholder="AAPL, MSFT, GOOGL..."
-                      className="input-field text-lg pr-12"
+                      className={`input-field text-lg pr-12 ${
+                        formErrors.symbol ? "border-red-300 focus:border-red-500 focus:ring-red-500/20" : ""
+                      }`}
                     />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
                       <svg
@@ -182,7 +273,11 @@ export default function Calculator() {
                       </svg>
                     </div>
                   </div>
-                  <p className="text-xs text-slate-500 mt-1">Future: Search and select from database</p>
+                  {formErrors.symbol ? (
+                    <p className="text-sm text-red-600 mt-1">{formErrors.symbol}</p>
+                  ) : (
+                    <p className="text-xs text-slate-500 mt-1">Future: Search and select from database</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="name" className="block text-sm font-semibold text-slate-700 mb-3">
@@ -194,8 +289,11 @@ export default function Calculator() {
                     value={formData.name}
                     onChange={(e) => handleInputChange("name", e.currentTarget.value)}
                     placeholder="Apple Inc."
-                    className="input-field text-lg"
+                    className={`input-field text-lg ${
+                      formErrors.name ? "border-red-300 focus:border-red-500 focus:ring-red-500/20" : ""
+                    }`}
                   />
+                  {formErrors.name && <p className="text-sm text-red-600 mt-1">{formErrors.name}</p>}
                 </div>
               </div>
 
@@ -211,8 +309,13 @@ export default function Calculator() {
                     onChange={(e) => handleInputChange("expectedReturn", e.currentTarget.value)}
                     placeholder="12.5"
                     step="0.1"
-                    className="input-field text-lg"
+                    className={`input-field text-lg ${
+                      formErrors.expectedReturn ? "border-red-300 focus:border-red-500 focus:ring-red-500/20" : ""
+                    }`}
                   />
+                  {formErrors.expectedReturn && (
+                    <p className="text-sm text-red-600 mt-1">{formErrors.expectedReturn}</p>
+                  )}
                 </div>
                 <div>
                   <label htmlFor="volatility" className="block text-sm font-semibold text-slate-700 mb-3">
@@ -225,13 +328,58 @@ export default function Calculator() {
                     onChange={(e) => handleInputChange("volatility", e.currentTarget.value)}
                     placeholder="20.0"
                     step="0.1"
-                    className="input-field text-lg"
+                    className={`input-field text-lg ${
+                      formErrors.volatility ? "border-red-300 focus:border-red-500 focus:ring-red-500/20" : ""
+                    }`}
                   />
+                  {formErrors.volatility && <p className="text-sm text-red-600 mt-1">{formErrors.volatility}</p>}
                 </div>
               </div>
 
-              <button type="button" onClick={handleAddAsset} className="w-full btn-primary text-lg">
-                Add Asset to Portfolio
+              <button
+                type="button"
+                onClick={handleAddAsset}
+                disabled={isAddingAsset}
+                className="w-full btn-primary text-lg flex items-center justify-center space-x-2"
+              >
+                {isAddingAsset ? (
+                  <>
+                    <svg
+                      className="w-5 h-5 animate-spin"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      aria-label="Loading"
+                    >
+                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      />
+                    </svg>
+                    <span>Adding Asset...</span>
+                  </>
+                ) : (
+                  <>
+                    <svg
+                      className="w-5 h-5"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      aria-label="Add"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+                      />
+                    </svg>
+                    <span>Add Asset to Portfolio</span>
+                  </>
+                )}
               </button>
             </div>
           </div>
@@ -347,13 +495,18 @@ export default function Calculator() {
                         id="riskFreeRate"
                         type="number"
                         value={settings.riskFreeRate * 100}
-                        onChange={(e) =>
-                          setSettings((prev) => ({
-                            ...prev,
-                            riskFreeRate: parseFloat(e.currentTarget.value) / 100,
-                          }))
-                        }
+                        onChange={(e) => {
+                          const value = parseFloat(e.currentTarget.value);
+                          if (!Number.isNaN(value) && value >= -10 && value <= 20) {
+                            setSettings((prev) => ({
+                              ...prev,
+                              riskFreeRate: value / 100,
+                            }));
+                          }
+                        }}
                         step="0.1"
+                        min="-10"
+                        max="20"
                         className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                       />
                     </div>
@@ -365,14 +518,52 @@ export default function Calculator() {
                         id="riskAversion"
                         type="number"
                         value={settings.riskAversion}
-                        onChange={(e) =>
-                          setSettings((prev) => ({ ...prev, riskAversion: parseFloat(e.currentTarget.value) }))
-                        }
+                        onChange={(e) => {
+                          const value = parseFloat(e.currentTarget.value);
+                          if (!Number.isNaN(value) && value >= 0.1 && value <= 100) {
+                            setSettings((prev) => ({ ...prev, riskAversion: value }));
+                          }
+                        }}
                         step="0.5"
                         min="0.1"
+                        max="100"
                         className="w-full px-3 py-2 border border-slate-300 rounded-md text-sm"
                       />
                     </div>
+                  </div>
+                </div>
+              </div>
+            ) : assets.length > 0 ? (
+              <div className="text-center py-12">
+                <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-4">
+                  <div className="flex items-center justify-center mb-4">
+                    <svg
+                      className="w-8 h-8 text-red-600"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      role="img"
+                      aria-label="Error"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                  </div>
+                  <h3 className="text-lg font-semibold text-red-800 mb-2">Optimization Failed</h3>
+                  <p className="text-red-700 mb-4">
+                    Unable to optimize portfolio. Please check your asset parameters and try again.
+                  </p>
+                  <div className="text-sm text-red-600">
+                    <p>Possible issues:</p>
+                    <ul className="list-disc list-inside mt-2 space-y-1">
+                      <li>Invalid expected return or volatility values</li>
+                      <li>Extreme risk parameters</li>
+                      <li>Mathematical convergence issues</li>
+                    </ul>
                   </div>
                 </div>
               </div>
