@@ -1,6 +1,6 @@
 import { useState } from "preact/hooks";
-import type { Asset, AssetFormData } from "../types/portfolio";
-import { optimizePortfolio } from "../utils/calculateOptimizedPortfolio";
+import type { Asset, AssetFormData } from "~/types/portfolio";
+import { optimizePortfolio } from "~/utils/calculateOptimizedPortfolio";
 
 interface OptimizationSettings {
   riskFreeRate: number;
