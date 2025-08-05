@@ -8,13 +8,61 @@ interface OptimizationSettings {
   correlationMatrix: "identity" | "estimated";
 }
 
-export default function Calculator() {
+interface OptimizationResult {
+  weights: number[];
+  expectedReturn: number;
+  risk: number;
+  utility: number;
+}
+
+const validateSymbol = (symbol: string, assets: Asset[]): string | undefined => {
+  if (!symbol.trim()) return "Symbol is required";
+  if (symbol.length > 10) return "Symbol must be 10 characters or less";
+  if (assets.some((asset) => asset.symbol.toUpperCase() === symbol.toUpperCase())) {
+    return "Asset already exists in portfolio";
+  }
+  return undefined;
+};
+
+const validateName = (name: string): string | undefined => {
+  if (!name.trim()) return "Name is required";
+  if (name.length > 100) return "Name must be 100 characters or less";
+  return undefined;
+};
+
+const validateExpectedReturn = (value: string): string | undefined => {
+  const expectedReturn = parseFloat(value);
+  if (!value.trim() || Number.isNaN(expectedReturn)) {
+    return "Expected return is required and must be a number";
+  }
+  if (expectedReturn < -100 || expectedReturn > 1000) {
+    return "Expected return must be between -100% and 1000%";
+  }
+  return undefined;
+};
+
+const validateVolatility = (value: string): string | undefined => {
+  const volatility = parseFloat(value);
+  if (!value.trim() || Number.isNaN(volatility)) {
+    return "Volatility is required and must be a number";
+  }
+  if (volatility < 0 || volatility > 1000) {
+    return "Volatility must be between 0% and 1000%";
+  }
+  return undefined;
+};
+
+const usePortfolioState = () => {
   const [assets, setAssets] = useState<Asset[]>([]);
   const [settings, setSettings] = useState<OptimizationSettings>({
     riskFreeRate: 0.03,
     riskAversion: 5,
     correlationMatrix: "identity",
   });
+  return { assets, setAssets, settings, setSettings };
+};
+
+const useFormState = () => {
   const [formData, setFormData] = useState<AssetFormData>({
     symbol: "",
     name: "",
@@ -23,86 +71,102 @@ export default function Calculator() {
     allocation: "",
   });
   const [formErrors, setFormErrors] = useState<Partial<AssetFormData>>({});
+  return { formData, setFormData, formErrors, setFormErrors };
+};
+
+const useUIState = () => {
   const [isOptimizing, setIsOptimizing] = useState(false);
   const [isAddingAsset, setIsAddingAsset] = useState(false);
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
+  return { isOptimizing, setIsOptimizing, isAddingAsset, setIsAddingAsset, showSuccessMessage, setShowSuccessMessage };
+};
 
+const useFormValidation = (
+  formData: AssetFormData,
+  assets: Asset[],
+  setFormErrors: (errors: Partial<AssetFormData>) => void
+) => {
   const validateForm = (): boolean => {
-    const errors: Partial<AssetFormData> = {};
+    const errors: Partial<AssetFormData> = {
+      symbol: validateSymbol(formData.symbol, assets),
+      name: validateName(formData.name),
+      expectedReturn: validateExpectedReturn(formData.expectedReturn),
+      volatility: validateVolatility(formData.volatility),
+    };
 
-    if (!formData.symbol.trim()) {
-      errors.symbol = "Symbol is required";
-    } else if (formData.symbol.length > 10) {
-      errors.symbol = "Symbol must be 10 characters or less";
-    } else if (assets.some((asset) => asset.symbol.toUpperCase() === formData.symbol.toUpperCase())) {
-      errors.symbol = "Asset already exists in portfolio";
-    }
+    const filteredErrors = Object.fromEntries(
+      Object.entries(errors).filter(([, value]) => value !== undefined)
+    ) as Partial<AssetFormData>;
 
-    if (!formData.name.trim()) {
-      errors.name = "Name is required";
-    } else if (formData.name.length > 100) {
-      errors.name = "Name must be 100 characters or less";
-    }
-
-    const expectedReturn = parseFloat(formData.expectedReturn);
-    if (!formData.expectedReturn.trim() || Number.isNaN(expectedReturn)) {
-      errors.expectedReturn = "Expected return is required and must be a number";
-    } else if (expectedReturn < -100 || expectedReturn > 1000) {
-      errors.expectedReturn = "Expected return must be between -100% and 1000%";
-    }
-
-    const volatility = parseFloat(formData.volatility);
-    if (!formData.volatility.trim() || Number.isNaN(volatility)) {
-      errors.volatility = "Volatility is required and must be a number";
-    } else if (volatility < 0 || volatility > 1000) {
-      errors.volatility = "Volatility must be between 0% and 1000%";
-    }
-
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+    setFormErrors(filteredErrors);
+    return Object.keys(filteredErrors).length === 0;
   };
 
+  return { validateForm };
+};
+
+const useFormHandlers = (
+  setFormData: (data: AssetFormData | ((prev: AssetFormData) => AssetFormData)) => void,
+  formErrors: Partial<AssetFormData>,
+  setFormErrors: (errors: Partial<AssetFormData> | ((prev: Partial<AssetFormData>) => Partial<AssetFormData>)) => void
+) => {
   const handleInputChange = (field: keyof AssetFormData, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error for this field when user starts typing
     if (formErrors[field]) {
       setFormErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
+  return { handleInputChange };
+};
+
+function Calculator() {
+  return <CalculatorContent />;
+}
+
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Main calculator component with necessary logic
+function CalculatorContent() {
+  const { assets, setAssets, settings, setSettings } = usePortfolioState();
+  const { formData, setFormData, formErrors, setFormErrors } = useFormState();
+  const { isOptimizing, setIsOptimizing, isAddingAsset, setIsAddingAsset, showSuccessMessage, setShowSuccessMessage } =
+    useUIState();
+
+  const { validateForm } = useFormValidation(formData, assets, setFormErrors);
+  const { handleInputChange } = useFormHandlers(setFormData, formErrors, setFormErrors);
+
+  const createNewAsset = (): Asset => ({
+    id: crypto.randomUUID(),
+    symbol: formData.symbol.toUpperCase().trim(),
+    name: formData.name.trim(),
+    expectedReturn: parseFloat(formData.expectedReturn) / 100,
+    volatility: parseFloat(formData.volatility) / 100,
+    allocation: 0,
+  });
+
+  const resetForm = () => {
+    setFormData({
+      symbol: "",
+      name: "",
+      expectedReturn: "",
+      volatility: "",
+      allocation: "",
+    });
+    setFormErrors({});
+  };
+
+  const showSuccessAndHide = () => {
+    setShowSuccessMessage(true);
+    setTimeout(() => setShowSuccessMessage(false), 3000);
+  };
+
   const handleAddAsset = async () => {
-    if (!validateForm()) {
-      return;
-    }
-
+    if (!validateForm()) return;
     setIsAddingAsset(true);
-
     try {
-      // Simulate brief processing time for better UX
       await new Promise((resolve) => setTimeout(resolve, 300));
-
-      const newAsset: Asset = {
-        id: crypto.randomUUID(),
-        symbol: formData.symbol.toUpperCase().trim(),
-        name: formData.name.trim(),
-        expectedReturn: parseFloat(formData.expectedReturn) / 100,
-        volatility: parseFloat(formData.volatility) / 100,
-        allocation: 0, // Will be optimized
-      };
-
-      setAssets((prev) => [...prev, newAsset]);
-      setFormData({
-        symbol: "",
-        name: "",
-        expectedReturn: "",
-        volatility: "",
-        allocation: "",
-      });
-      setFormErrors({});
-
-      // Show success message
-      setShowSuccessMessage(true);
-      setTimeout(() => setShowSuccessMessage(false), 3000);
+      setAssets((prev) => [...prev, createNewAsset()]);
+      resetForm();
+      showSuccessAndHide();
     } finally {
       setIsAddingAsset(false);
     }
@@ -112,22 +176,20 @@ export default function Calculator() {
     setAssets((prev) => prev.filter((asset) => asset.id !== id));
   };
 
+  const optimizationResult = assets.length > 0 ? getOptimizationResult() : null;
   const optimizePortfolioAllocation = () => {
-    if (assets.length === 0) return null;
-
+    if (!assets.length) return null;
     setIsOptimizing(true);
-
     try {
       const result = getOptimizationResult();
-      if (!result) return null;
-
-      // Update assets with optimized allocations
-      const optimizedAssets = assets.map((asset, index) => ({
-        ...asset,
-        allocation: result.weights[index],
-      }));
-
-      setAssets(optimizedAssets);
+      if (result) {
+        setAssets((prev) =>
+          prev.map((asset, index) => ({
+            ...asset,
+            allocation: result.weights?.[index] ?? 0,
+          }))
+        );
+      }
       return result;
     } catch (error) {
       console.error("Optimization failed:", error);
@@ -137,48 +199,57 @@ export default function Calculator() {
     }
   };
 
-  const optimizationResult = assets.length > 0 ? getOptimizationResult() : null;
-
   function getOptimizationResult() {
     if (assets.length === 0) return null;
-    if (assets.length === 1) {
-      // Special case for single asset
-      const asset = assets[0];
-      return {
-        weights: [1.0],
-        expectedReturn: asset.expectedReturn,
-        risk: asset.volatility,
-        utility: asset.expectedReturn - 0.5 * settings.riskAversion * asset.volatility * asset.volatility,
-      };
-    }
+    if (assets.length === 1) return getSingleAssetResult();
+    return getMultiAssetResult();
+  }
 
+  function getSingleAssetResult() {
+    const asset = assets[0];
+    if (!asset) return null;
+    return {
+      weights: [1.0],
+      expectedReturn: asset.expectedReturn,
+      risk: asset.volatility,
+      utility: asset.expectedReturn - 0.5 * settings.riskAversion * asset.volatility * asset.volatility,
+    };
+  }
+
+  function getMultiAssetResult() {
     try {
       const n = assets.length;
-      const correlations = Array(n)
-        .fill(null)
-        .map(() => Array(n).fill(0));
-      for (let i = 0; i < n; i++) {
-        correlations[i][i] = 1;
-      }
-
+      const correlations = createIdentityMatrix(n);
       const result = optimizePortfolio({
         returns: assets.map((asset) => asset.expectedReturn),
         volatility: assets.map((asset) => asset.volatility),
         correlations,
         gamma: settings.riskAversion,
       });
-
-      // Validate result
-      if (!result || !result.weights || result.weights.some((w) => Number.isNaN(w) || w < 0)) {
-        console.warn("Optimization returned invalid result");
-        return null;
-      }
-
-      return result;
+      return validateOptimizationResult(result);
     } catch (error) {
       console.error("Portfolio optimization failed:", error);
       return null;
     }
+  }
+
+  function createIdentityMatrix(n: number) {
+    const correlations = Array(n)
+      .fill(null)
+      .map(() => Array(n).fill(0));
+    for (let i = 0; i < n; i++) {
+      const row = correlations[i];
+      if (row) row[i] = 1;
+    }
+    return correlations;
+  }
+
+  function validateOptimizationResult(result: OptimizationResult | null): OptimizationResult | null {
+    if (!result || !result.weights || result.weights.some((w: number) => Number.isNaN(w) || w < 0)) {
+      console.warn("Optimization returned invalid result");
+      return null;
+    }
+    return result;
   }
 
   return (
@@ -582,7 +653,7 @@ export default function Calculator() {
             <h2 className="text-3xl font-bold text-slate-900 mb-8">Portfolio Assets</h2>
             <div className="space-y-4">
               {assets.map((asset, index) => {
-                const optimizedWeight = optimizationResult?.weights[index] || 0;
+                const optimizedWeight = optimizationResult?.weights?.[index] || 0;
                 return (
                   <div key={asset.id} className="bg-slate-50 rounded-xl p-6 hover:bg-slate-100 transition-colors">
                     <div className="flex items-center justify-between">
@@ -653,3 +724,5 @@ export default function Calculator() {
     </div>
   );
 }
+
+export default Calculator;

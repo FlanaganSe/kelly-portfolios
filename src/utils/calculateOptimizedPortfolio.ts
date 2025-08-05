@@ -17,7 +17,7 @@ type Result = {
   utility: number;
 };
 
-const dot = (a: number[], b: number[]) => a.reduce((sum, x, i) => sum + x * b[i], 0);
+const dot = (a: number[], b: number[]) => a.reduce((sum, x, i) => sum + x * (b[i] ?? 0), 0);
 
 const sum = (arr: number[]) => arr.reduce((a, b) => a + b, 0);
 
@@ -28,7 +28,8 @@ const stats = (w: number[], p: Portfolio): [number, number] => {
   let variance = 0;
   for (let i = 0; i < w.length; i++)
     for (let j = 0; j < w.length; j++)
-      variance += w[i] * w[j] * p.volatility[i] * p.volatility[j] * p.correlations[i][j];
+      variance +=
+        (w[i] ?? 0) * (w[j] ?? 0) * (p.volatility[i] ?? 0) * (p.volatility[j] ?? 0) * (p.correlations[i]?.[j] ?? 0);
 
   return [mean, Math.sqrt(variance)];
 };
@@ -41,7 +42,7 @@ const project = (w: number[], bounds: [number, number][]): number[] => {
   // Alternating projection: sum constraint + box constraints
   for (let i = 0; i < 50; i++) {
     x = x.map((v) => v + (1 - sum(x)) / n);
-    x = x.map((v, i) => Math.max(bounds[i][0], Math.min(bounds[i][1], v)));
+    x = x.map((v, i) => Math.max(bounds[i]?.[0] ?? 0, Math.min(bounds[i]?.[1] ?? 1, v)));
     if (Math.abs(sum(x) - 1) < 1e-10) break;
   }
 
@@ -68,8 +69,8 @@ export const optimizePortfolio = (portfolio: Portfolio): Result => {
     return w.map((_, i) => {
       const wPlus = [...w],
         wMinus = [...w];
-      wPlus[i] += h;
-      wMinus[i] -= h;
+      if (wPlus[i] !== undefined) wPlus[i] += h;
+      if (wMinus[i] !== undefined) wMinus[i] -= h;
       return (objective(normalize(wPlus)) - objective(normalize(wMinus))) / (2 * h);
     });
   };
@@ -87,7 +88,7 @@ export const optimizePortfolio = (portfolio: Portfolio): Result => {
     let improved = false;
     for (const scale of [1, 0.5, 0.1, 0.01]) {
       const newWeights = project(
-        weights.map((w, i) => w - stepSize * scale * grad[i]),
+        weights.map((w, i) => w - stepSize * scale * (grad[i] ?? 0)),
         bounds
       );
 
