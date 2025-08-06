@@ -11,11 +11,10 @@ const navItems = [
   { href: "/about", label: "About" },
   { href: "/calculator", label: "Calculator" },
   { href: "/articles", label: "Articles" },
-];
+] as const;
 
 export default function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
   return (
@@ -90,7 +89,7 @@ export default function App() {
           <>
             <button
               type="button"
-              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden cursor-default"
+              className="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
               onClick={closeMobileMenu}
               onKeyDown={(e) => e.key === "Escape" && closeMobileMenu()}
               aria-label="Close mobile menu"

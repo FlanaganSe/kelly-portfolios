@@ -23,8 +23,7 @@ export default function Home() {
             Portfolio Optimizer
           </h1>
           <p className="text-xl md:text-2xl text-slate-600 max-w-4xl mx-auto leading-relaxed font-light text-balance">
-            Transform your investment strategy with the Kelly Criterion and modern portfolio theory. Achieve optimal
-            risk-adjusted returns through mathematical precision.
+            Mathematical portfolio optimization using the Kelly Criterion for optimal risk-adjusted returns.
           </p>
         </div>
 
@@ -176,10 +175,9 @@ export default function Home() {
         </div>
 
         <div className="mt-24 card p-12 text-center">
-          <h2 className="text-4xl font-bold text-slate-900 mb-6 text-balance">Ready to Transform Your Portfolio?</h2>
+          <h2 className="text-4xl font-bold text-slate-900 mb-6 text-balance">Ready to Optimize Your Portfolio?</h2>
           <p className="text-xl text-slate-600 mb-8 max-w-3xl mx-auto text-balance">
-            Join thousands of investors using mathematical optimization to achieve superior risk-adjusted returns. Start
-            building your optimized portfolio in minutes.
+            Start building your mathematically optimized portfolio in minutes.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
             <Link href="/calculator">
