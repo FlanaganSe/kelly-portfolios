@@ -1,4 +1,5 @@
 import { useState } from "preact/hooks";
+import { Icon } from "~/components/Icon";
 import type { Asset, AssetFormData } from "~/types/portfolio";
 import { optimizePortfolio } from "~/utils/calculateOptimizedPortfolio";
 
@@ -214,21 +215,7 @@ export default function Calculator() {
           <div className="max-w-md mx-auto mb-8">
             <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center animate-fade-up">
               <div className="flex-shrink-0">
-                <svg
-                  className="w-6 h-6 text-emerald-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  role="img"
-                  aria-label="Success"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
+                <Icon name="check" size={6} className="text-emerald-600" aria-label="Success" />
               </div>
               <div className="ml-3">
                 <p className="text-sm font-medium text-emerald-800">Asset added successfully!</p>
@@ -242,16 +229,7 @@ export default function Calculator() {
           <div className="card p-10">
             <h2 className="text-3xl font-bold text-slate-900 mb-8 flex items-center">
               <div className="icon-gradient w-12 h-12 mr-4">
-                <svg
-                  className="w-6 h-6 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  role="img"
-                  aria-label="Add asset"
-                >
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                </svg>
+                <Icon name="add" size={6} className="text-white" aria-label="Add asset" />
               </div>
               Add Asset
             </h2>
@@ -274,21 +252,7 @@ export default function Calculator() {
                       }`}
                     />
                     <div className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400">
-                      <svg
-                        className="w-5 h-5"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        role="img"
-                        aria-label="Search icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-                        />
-                      </svg>
+                      <Icon name="search" size={5} aria-label="Search icon" />
                     </div>
                   </div>
                   {formErrors.symbol && <p className="text-sm text-red-600 mt-1">{formErrors.symbol}</p>}
@@ -358,39 +322,12 @@ export default function Calculator() {
               >
                 {isAddingAsset ? (
                   <>
-                    <svg
-                      className="w-5 h-5 animate-spin"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      aria-label="Loading"
-                    >
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                      <path
-                        className="opacity-75"
-                        fill="currentColor"
-                        d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                      />
-                    </svg>
+                    <Icon name="spinner" size={5} className="animate-spin" aria-label="Loading" />
                     <span>Adding Asset...</span>
                   </>
                 ) : (
                   <>
-                    <svg
-                      className="w-5 h-5"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      aria-label="Add"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                      />
-                    </svg>
+                    <Icon name="add" size={5} aria-label="Add" />
                     <span>Add Asset to Portfolio</span>
                   </>
                 )}
@@ -402,21 +339,7 @@ export default function Calculator() {
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-slate-900 flex items-center">
                 <div className="bg-gradient-to-br from-emerald-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/25 w-12 h-12 mr-4">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    role="img"
-                    aria-label="Portfolio chart"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                    />
-                  </svg>
+                  <Icon name="chart" size={6} className="text-white" aria-label="Portfolio chart" />
                 </div>
                 Optimized Portfolio
               </h2>
@@ -429,39 +352,12 @@ export default function Calculator() {
                 >
                   {isOptimizing ? (
                     <>
-                      <svg
-                        className="w-4 h-4 animate-spin"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        role="img"
-                        aria-label="Loading spinner"
-                      >
-                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                        <path
-                          className="opacity-75"
-                          fill="currentColor"
-                          d="m4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                        />
-                      </svg>
+                      <Icon name="spinner" size={4} className="animate-spin" aria-label="Loading spinner" />
                       <span>Optimizing...</span>
                     </>
                   ) : (
                     <>
-                      <svg
-                        className="w-4 h-4"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                        role="img"
-                        aria-label="Optimize icon"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M13 10V3L4 14h7v7l9-11h-7z"
-                        />
-                      </svg>
+                      <Icon name="optimize" size={4} aria-label="Optimize icon" />
                       <span>Optimize</span>
                     </>
                   )}
@@ -551,21 +447,7 @@ export default function Calculator() {
               <div className="text-center py-12">
                 <div className="bg-red-50 border border-red-200 rounded-xl p-6 mb-4">
                   <div className="flex items-center justify-center mb-4">
-                    <svg
-                      className="w-8 h-8 text-red-600"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      aria-label="Error"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <Icon name="error" size={8} className="text-red-600" aria-label="Error" />
                   </div>
                   <h3 className="text-lg font-semibold text-red-800 mb-2">Optimization Failed</h3>
                   <p className="text-red-700 mb-4">
@@ -631,21 +513,7 @@ export default function Calculator() {
                           className="text-red-500 hover:text-red-700 transition-all transform hover:scale-110 p-2"
                           aria-label={`Remove ${asset.symbol}`}
                         >
-                          <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            role="img"
-                            aria-label="Delete"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                            />
-                          </svg>
+                          <Icon name="delete" size={5} aria-label="Delete" />
                         </button>
                       </div>
                     </div>

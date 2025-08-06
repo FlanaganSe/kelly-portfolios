@@ -1,4 +1,5 @@
 import { Link } from "wouter";
+import { Icon } from "~/components/Icon";
 
 export default function Home() {
   return (
@@ -7,15 +8,7 @@ export default function Home() {
         <div className="text-center mb-24 animate-fade-up">
           <div className="mb-8">
             <span className="inline-flex items-center px-4 py-2 bg-blue-50 text-blue-700 text-sm font-medium rounded-full border border-blue-200">
-              <svg className="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <title>Checkmark icon</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
+              <Icon name="check" size={4} className="mr-2" aria-label="Checkmark icon" />
               Mathematical Portfolio Optimization
             </span>
           </div>
@@ -31,15 +24,7 @@ export default function Home() {
           <div className="card card-hover p-10">
             <div className="flex items-start mb-8 gap-6">
               <div className="icon-gradient min-w-12 h-12">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <title>Bar chart icon</title>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-                  />
-                </svg>
+                <Icon name="chart" size={8} className="text-white" aria-label="Bar chart icon" />
               </div>
               <div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">Kelly Criterion</h2>
@@ -60,15 +45,7 @@ export default function Home() {
           <div className="card card-hover p-10">
             <div className="flex items-start mb-8 gap-6">
               <div className="bg-gradient-to-br from-emerald-600 to-cyan-600 rounded-xl flex items-center justify-center shadow-lg shadow-emerald-900/25 min-w-12 h-12">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <title>Line chart icon</title>
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                  />
-                </svg>
+                <Icon name="portfolio" size={8} className="text-white" aria-label="Line chart icon" />
               </div>
               <div>
                 <h2 className="text-3xl font-bold text-slate-900 mb-4">Optimal Growth</h2>
@@ -99,15 +76,12 @@ export default function Home() {
             <Link href="/calculator">
               <button type="button" className="btn-primary text-lg group">
                 Start Optimizing Your Portfolio
-                <svg
-                  className="w-5 h-5 ml-3 inline group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <title>Arrow icon</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                <Icon
+                  name="arrow"
+                  size={5}
+                  className="ml-3 inline group-hover:translate-x-1 transition-transform"
+                  aria-label="Arrow icon"
+                />
               </button>
             </Link>
             <Link href="/about">
@@ -121,15 +95,7 @@ export default function Home() {
         <div className="grid md:grid-cols-3 gap-8">
           <div className="text-center group">
             <div className="w-20 h-20 bg-gradient-to-br from-purple-600 to-pink-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-purple-900/25 group-hover:scale-105 transition-transform duration-300">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <title>Calendar icon</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
-                />
-              </svg>
+              <Icon name="calendar" size={10} className="text-white" aria-label="Calendar icon" />
             </div>
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Mathematical Precision</h3>
             <p className="text-lg text-slate-600 leading-relaxed">
@@ -139,15 +105,7 @@ export default function Home() {
 
           <div className="text-center group">
             <div className="w-20 h-20 bg-gradient-to-br from-amber-600 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-amber-900/25 group-hover:scale-105 transition-transform duration-300">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <title>Lock icon</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                />
-              </svg>
+              <Icon name="lock" size={10} className="text-white" aria-label="Lock icon" />
             </div>
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Risk Management</h3>
             <p className="text-lg text-slate-600 leading-relaxed">
@@ -157,15 +115,7 @@ export default function Home() {
 
           <div className="text-center group">
             <div className="w-20 h-20 bg-gradient-to-br from-cyan-600 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-xl shadow-cyan-900/25 group-hover:scale-105 transition-transform duration-300">
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <title>Chart with arrow icon</title>
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M7 12l3-3 3 3 4-4M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
-                />
-              </svg>
+              <Icon name="trend" size={10} className="text-white" aria-label="Chart with arrow icon" />
             </div>
             <h3 className="text-2xl font-bold text-slate-900 mb-4">Long-term Growth</h3>
             <p className="text-lg text-slate-600 leading-relaxed">
@@ -183,15 +133,12 @@ export default function Home() {
             <Link href="/calculator">
               <button type="button" className="btn-primary text-lg group">
                 Get Started Free
-                <svg
-                  className="w-5 h-5 ml-3 inline group-hover:translate-x-1 transition-transform"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <title>Arrow icon</title>
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7l5 5m0 0l-5 5m5-5H6" />
-                </svg>
+                <Icon
+                  name="arrow"
+                  size={5}
+                  className="ml-3 inline group-hover:translate-x-1 transition-transform"
+                  aria-label="Arrow icon"
+                />
               </button>
             </Link>
             <Link href="/articles">

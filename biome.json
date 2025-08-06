@@ -38,7 +38,12 @@
         "noExplicitAny": "warn"
       },
       "complexity": {
-        "noExcessiveCognitiveComplexity": "warn"
+        "noExcessiveCognitiveComplexity": {
+          "level": "warn",
+          "options": {
+            "maxAllowedComplexity": 22
+          }
+        }
       },
       "performance": {
         "noAccumulatingSpread": "error"

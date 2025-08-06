@@ -1,4 +1,5 @@
 import { Component, type ComponentChildren } from "preact";
+import { Icon } from "~/components/Icon";
 
 interface Props {
   children: ComponentChildren;
@@ -33,21 +34,7 @@ export class ErrorBoundary extends Component<Props, State> {
               <div className="bg-white border border-red-200 rounded-2xl p-8 shadow-lg">
                 <div className="flex items-center justify-center mb-6">
                   <div className="w-16 h-16 bg-gradient-to-br from-red-500 to-red-600 rounded-xl flex items-center justify-center shadow-lg">
-                    <svg
-                      className="w-8 h-8 text-white"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                      role="img"
-                      aria-label="Error"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                      />
-                    </svg>
+                    <Icon name="error" size={8} className="text-white" aria-label="Error" />
                   </div>
                 </div>
                 <h2 className="text-2xl font-bold text-slate-900 text-center mb-4">Something went wrong</h2>

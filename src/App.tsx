@@ -1,5 +1,6 @@
 import { useState } from "preact/hooks";
 import { Link, Route, Switch } from "wouter";
+import { Icon } from "~/components/Icon";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import AboutComponent from "./routes/about";
 import ArticlesComponent from "./routes/articles";
@@ -25,21 +26,7 @@ export default function App() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div className="icon-gradient w-12 h-12">
-                  <svg
-                    className="w-7 h-7 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    role="img"
-                    aria-label="Portfolio logo"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                    />
-                  </svg>
+                  <Icon name="portfolio" size={8} className="text-white" aria-label="Portfolio logo" />
                 </div>
                 <Link href="/" className="text-2xl font-bold gradient-text hover:scale-105 transition-transform">
                   Portfolio Optimizer
@@ -64,20 +51,7 @@ export default function App() {
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   aria-label="Toggle mobile menu"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    role="img"
-                    aria-label="Menu"
-                  >
-                    {isMobileMenuOpen ? (
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    ) : (
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                    )}
-                  </svg>
+                  <Icon name={isMobileMenuOpen ? "close" : "menu"} size={6} aria-label="Menu" />
                 </button>
               </div>
             </div>
