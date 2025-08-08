@@ -2,6 +2,7 @@ import { useState } from "preact/hooks";
 import { Icon } from "~/components/Icon";
 import type { Asset, AssetFormData } from "~/types/portfolio";
 import { optimizePortfolio } from "~/utils/calculateOptimizedPortfolio";
+import { validateExpectedReturn, validateName, validateSymbol, validateVolatility } from "~/utils/validation";
 
 interface OptimizationSettings {
   riskFreeRate: number;
@@ -14,43 +15,6 @@ interface OptimizationResult {
   risk: number;
   utility: number;
 }
-
-const validateSymbol = (value: string, assets: Asset[]): string | undefined => {
-  if (!value.trim()) return "Symbol is required";
-  if (value.length > 10) return "Symbol must be 10 characters or less";
-  if (assets.some((asset) => asset.symbol.toUpperCase() === value.toUpperCase())) {
-    return "Asset already exists in portfolio";
-  }
-  return undefined;
-};
-
-const validateName = (value: string): string | undefined => {
-  if (!value.trim()) return "Name is required";
-  if (value.length > 100) return "Name must be 100 characters or less";
-  return undefined;
-};
-
-const validateExpectedReturn = (value: string): string | undefined => {
-  const expectedReturn = parseFloat(value);
-  if (!value.trim() || Number.isNaN(expectedReturn)) {
-    return "Expected return is required and must be a number";
-  }
-  if (expectedReturn < -100 || expectedReturn > 1000) {
-    return "Expected return must be between -100% and 1000%";
-  }
-  return undefined;
-};
-
-const validateVolatility = (value: string): string | undefined => {
-  const volatility = parseFloat(value);
-  if (!value.trim() || Number.isNaN(volatility)) {
-    return "Volatility is required and must be a number";
-  }
-  if (volatility < 0 || volatility > 1000) {
-    return "Volatility must be between 0% and 1000%";
-  }
-  return undefined;
-};
 
 const validateField = (field: keyof AssetFormData, value: string, assets: Asset[]): string | undefined => {
   switch (field) {
@@ -212,8 +176,8 @@ export default function Calculator() {
         </div>
 
         {showSuccessMessage && (
-          <div className="max-w-md mx-auto mb-8">
-            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center animate-fade-up">
+          <div className="fixed top-4 right-4 z-50 max-w-sm animate-fade-up">
+            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 flex items-center shadow-lg">
               <div className="flex-shrink-0">
                 <Icon name="check" size={6} className="text-emerald-600" aria-label="Success" />
               </div>

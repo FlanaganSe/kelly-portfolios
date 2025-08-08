@@ -101,21 +101,7 @@ export default function App() {
             <div className="flex flex-col md:flex-row items-center justify-between gap-8">
               <div className="flex items-center gap-4">
                 <div className="icon-gradient w-10 h-10">
-                  <svg
-                    className="w-6 h-6 text-white"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                    role="img"
-                    aria-label="Portfolio logo"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-                    />
-                  </svg>
+                  <Icon name="portfolio" size={6} className="text-white" aria-label="Portfolio logo" />
                 </div>
                 <div>
                   <div className="text-slate-900 font-bold text-lg">Portfolio Optimizer</div>
