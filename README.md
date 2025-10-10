@@ -10,10 +10,10 @@ Calculate optimal position sizing using the Kelly criterion to maximize long-ter
 
 ## Tech Stack
 
-- **Preact** - Lightweight React alternative
-- **Wouter** - Lightweight Router
+- **SolidJS** - Fine-grained reactive UI framework
+- **@solidjs/router** - Official SolidJS routing library
 - **TailwindCSS** - Styling
-- **Vite** - Build tool
+- **Vite** - Build tool with vite-plugin-solid
 - **SST v3** - AWS deployment built on pulumi
 
 ## Development

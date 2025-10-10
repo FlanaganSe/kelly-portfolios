@@ -1,6 +1,6 @@
 {
   "name": "portfolio-optimizer",
-  "version": "0.0.11",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "build": "vite build",
@@ -11,18 +11,18 @@
     "setup": "git config core.hooksPath .githooks && chmod +x .githooks/*"
   },
   "dependencies": {
-    "preact": "^10.27.2",
-    "preact-iso": "^2.11.0",
-    "wouter": "^3.7.1"
+    "solid-js": "^1.9.3",
+    "@solidjs/router": "^0.15.2",
+    "@solidjs/meta": "^0.29.4"
   },
   "devDependencies": {
-    "sst": "3.17.10",
     "@biomejs/biome": "2.2.4",
-    "@preact/preset-vite": "~2.10.2",
     "@tailwindcss/vite": "~4.1.14",
     "@types/node": "^22",
+    "sst": "3.17.10",
     "tailwindcss": "^4.1.14",
     "typescript": "^5.9.3",
-    "vite": "^7.1.9"
+    "vite": "^7.1.9",
+    "vite-plugin-solid": "^2.11.9"
   }
 }

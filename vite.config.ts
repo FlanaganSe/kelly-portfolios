@@ -1,16 +1,10 @@
 import path from "node:path";
-import preact from "@preact/preset-vite";
 import tailwindcss from "@tailwindcss/vite";
 import { defineConfig } from "vite";
+import solid from "vite-plugin-solid";
 
 export default defineConfig({
-  plugins: [
-    preact({
-      prerender: { enabled: true },
-      devtoolsInProd: false,
-    }),
-    tailwindcss(),
-  ],
+  plugins: [solid({ ssr: true }), tailwindcss()],
   resolve: {
     alias: {
       "~": path.resolve(import.meta.dirname, "./src"),
@@ -23,7 +17,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ["preact", "preact/hooks", "wouter"],
+          vendor: ["solid-js", "@solidjs/router", "@solidjs/meta"],
         },
       },
     },

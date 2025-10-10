@@ -1,6 +1,8 @@
+import type { Component } from "solid-js";
+
 interface IconProps {
   name: string;
-  className?: string;
+  class?: string;
   size?: 3 | 4 | 5 | 6 | 8 | 10 | 12;
   "aria-label"?: string;
 }
@@ -44,24 +46,32 @@ const sizeClasses = {
   12: "w-12 h-12",
 } as const;
 
-export const Icon = ({ name, className = "", size = 6, "aria-label": ariaLabel }: IconProps) => (
-  <svg
-    className={`${sizeClasses[size as keyof typeof sizeClasses] || sizeClasses[6]} ${className}`}
-    fill={["github", "spinner"].includes(name) ? "currentColor" : "none"}
-    stroke={["github", "spinner"].includes(name) ? "none" : "currentColor"}
-    viewBox="0 0 24 24"
-    aria-label={ariaLabel || name}
-    role="img"
-  >
-    {name === "spinner" && (
-      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-    )}
-    <path
-      className={name === "spinner" ? "opacity-75" : ""}
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      strokeWidth={["github", "spinner"].includes(name) ? 0 : 2}
-      d={icons[name as keyof typeof icons] || ""}
-    />
-  </svg>
-);
+export const Icon: Component<IconProps> = (props) => {
+  const sizeClass = () => sizeClasses[props.size || 6];
+  const fillMode = () => (["github", "spinner"].includes(props.name) ? "currentColor" : "none");
+  const strokeMode = () => (["github", "spinner"].includes(props.name) ? "none" : "currentColor");
+  const strokeWidth = () => (["github", "spinner"].includes(props.name) ? 0 : 2);
+  const pathClass = () => (props.name === "spinner" ? "opacity-75" : "");
+
+  return (
+    <svg
+      class={`${sizeClass()} ${props.class || ""}`}
+      fill={fillMode()}
+      stroke={strokeMode()}
+      viewBox="0 0 24 24"
+      aria-label={props["aria-label"] || props.name}
+      role="img"
+    >
+      {props.name === "spinner" && (
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" />
+      )}
+      <path
+        class={pathClass()}
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width={strokeWidth()}
+        d={icons[props.name as keyof typeof icons] || ""}
+      />
+    </svg>
+  );
+};
