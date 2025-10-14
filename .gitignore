@@ -19,3 +19,6 @@ CLAUDE.md
 .env
 .env.local
 .env.*.local
+
+functions/
+infra/
