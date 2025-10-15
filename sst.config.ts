@@ -14,6 +14,8 @@ export default $config({
     await import("./infra/storage");
     await import("./infra/database");
     const { api } = await import("./infra/api");
+    // await import("./infra/ingestion");
+    // await import("./infra/monitoring");
 
     // Create static site with API URL environment variable
     const site = new sst.aws.StaticSite("PortfolioOptimizer", {

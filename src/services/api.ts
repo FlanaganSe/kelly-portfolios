@@ -206,7 +206,10 @@ export class PortfolioAPI {
     const normalizedQuery = query.toUpperCase().trim();
 
     return response.assets
-      .filter((asset) => asset.symbol.toUpperCase().startsWith(normalizedQuery) || asset.name.toUpperCase().includes(normalizedQuery))
+      .filter(
+        (asset) =>
+          asset.symbol.toUpperCase().startsWith(normalizedQuery) || asset.name.toUpperCase().includes(normalizedQuery)
+      )
       .slice(0, limit);
   }
 }

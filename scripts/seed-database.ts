@@ -227,7 +227,7 @@ async function seedAsset(etf: typeof etfs[0]) {
   // Seed asset metadata
   await dynamodb.send(
     new PutCommand({
-      TableName: "portfolio-optimizer-dev-AssetsTableTable-xrrdrhuv",
+      TableName: "portfolio-optimizer-dev-AssetsTableTable-baznawsn",
       Item: {
         PK: `ASSET#${etf.symbol}`,
         SK: "METADATA",
@@ -287,7 +287,7 @@ async function seedHistoricalPrices(etf: typeof etfs[0]) {
     await dynamodb.send(
       new BatchWriteCommand({
         RequestItems: {
-          "portfolio-optimizer-dev-HistoricalPricesTableTable-zkswfboe": putRequests,
+          "portfolio-optimizer-dev-HistoricalPricesTableTable-mbrxhuee": putRequests,
         },
       })
     );

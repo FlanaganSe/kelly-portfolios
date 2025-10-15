@@ -1,6 +1,6 @@
-import { createSignal, createEffect, For, Show, onCleanup } from "solid-js";
+import { createEffect, createSignal, For, onCleanup, Show } from "solid-js";
 import { Icon } from "~/components/Icon";
-import { api, type Asset } from "~/services/api";
+import { type Asset, api } from "~/services/api";
 
 interface AssetSearchProps {
   onSelect: (asset: Asset) => void;
@@ -69,12 +69,7 @@ export function AssetSearch(props: AssetSearchProps) {
 
   // Close dropdown when clicking outside
   const handleClickOutside = (e: MouseEvent) => {
-    if (
-      inputRef &&
-      dropdownRef &&
-      !inputRef.contains(e.target as Node) &&
-      !dropdownRef.contains(e.target as Node)
-    ) {
+    if (inputRef && dropdownRef && !inputRef.contains(e.target as Node) && !dropdownRef.contains(e.target as Node)) {
       setShowDropdown(false);
     }
   };
@@ -106,7 +101,7 @@ export function AssetSearch(props: AssetSearchProps) {
         e.preventDefault();
         setSelectedIndex((prev) => Math.max(prev - 1, -1));
         break;
-      case "Enter":
+      case "Enter": {
         e.preventDefault();
         const idx = selectedIndex();
         if (idx >= 0 && idx < currentResults.length) {
@@ -114,6 +109,7 @@ export function AssetSearch(props: AssetSearchProps) {
           if (selected) handleSelect(selected);
         }
         break;
+      }
       case "Escape":
         setShowDropdown(false);
         setSelectedIndex(-1);
@@ -185,9 +181,7 @@ export function AssetSearch(props: AssetSearchProps) {
                     </div>
                   </div>
                   <div class="text-right">
-                    <div class="text-sm font-semibold text-emerald-600">
-                      {(asset.expectedReturn * 100).toFixed(1)}%
-                    </div>
+                    <div class="text-sm font-semibold text-emerald-600">{(asset.expectedReturn * 100).toFixed(1)}%</div>
                     <div class="text-xs text-slate-500">Expected Return</div>
                   </div>
                 </div>
