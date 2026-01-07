@@ -25,4 +25,3 @@ CLAUDE.md
 # Keep .env.example in version control
 infra/
 functions/
-*.md
