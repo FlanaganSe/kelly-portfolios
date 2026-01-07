@@ -4,10 +4,19 @@ import { defineConfig } from "vite";
 import solid from "vite-plugin-solid";
 
 export default defineConfig({
-  plugins: [solid({ ssr: true }), tailwindcss()],
+  plugins: [solid({ ssr: false }), tailwindcss()],
   resolve: {
     alias: {
       "~": path.resolve(import.meta.dirname, "./src"),
+    },
+  },
+  worker: {
+    format: "es",
+    plugins: () => [solid({ ssr: false })],
+    rollupOptions: {
+      output: {
+        entryFileNames: "[name].js",
+      },
     },
   },
   build: {
@@ -18,6 +27,7 @@ export default defineConfig({
       output: {
         manualChunks: {
           vendor: ["solid-js", "@solidjs/router", "@solidjs/meta"],
+          charts: ["chart.js"],
         },
       },
     },
