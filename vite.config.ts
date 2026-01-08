@@ -26,7 +26,7 @@ export default defineConfig({
     rollupOptions: {
       output: {
         manualChunks: {
-          vendor: ["solid-js", "@solidjs/router", "@solidjs/meta"],
+          vendor: ["solid-js"],
           charts: ["chart.js"],
         },
       },

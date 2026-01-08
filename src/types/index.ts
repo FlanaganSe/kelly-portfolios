@@ -20,6 +20,7 @@ export interface PortfolioConfig {
   assets: string[]; // List of ticker symbols
   riskFreeRate: number; // e.g., 0.045 (4.5%)
   borrowRate: number; // e.g., 0.065 (6.5%)
+  marketReturn: number; // Expected market return (default ~10%)
   riskAversion: number; // 1.0 (Aggressive) to 10.0 (Conservative)
   maxLeverage: number; // 1.0 to 3.0
   userReturnOverrides: Record<string, number>; // Manual overrides e.g., { "BTC": 0.15 }

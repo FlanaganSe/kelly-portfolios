@@ -11,7 +11,6 @@
   },
   "dependencies": {
     "chart.js": "^4.5.1",
-    "simple-statistics": "^7.8.8",
     "solid-js": "^1.9.3"
   },
   "devDependencies": {

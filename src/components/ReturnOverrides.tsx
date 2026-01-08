@@ -27,7 +27,8 @@ export function ReturnOverrides(props: ReturnOverridesProps): JSX.Element {
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"
-          aria-label={isExpanded() ? "Collapse" : "Expand"}
+          role="img"
+          aria-hidden="true"
         >
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
@@ -133,7 +134,7 @@ function ReturnOverrideRow(props: ReturnOverrideRowProps): JSX.Element {
             class="p-1 rounded hover:bg-white/10 text-slate-400 hover:text-red-400"
             title="Clear override"
           >
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-label="Clear override">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" role="img" aria-hidden="true">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
             </svg>
           </button>

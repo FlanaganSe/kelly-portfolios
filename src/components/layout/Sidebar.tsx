@@ -1,5 +1,5 @@
 import type { JSX } from "solid-js";
-import { For, Show } from "solid-js";
+import { createSignal, For, Show } from "solid-js";
 import { AssetSearch } from "~/components/controls/AssetSearch";
 import { LeverageInput } from "~/components/controls/LeverageInput";
 import { RateInput } from "~/components/controls/RateInput";
@@ -11,18 +11,45 @@ import {
   canOptimize,
   portfolioState,
   removeAsset,
+  resetPortfolio,
   setBorrowRate,
+  setMarketReturn,
   setMaxLeverage,
   setRiskAversion,
   setRiskFreeRate,
 } from "~/store/portfolioStore";
 import type { Asset } from "~/types";
 
+type PresetType = "balanced" | "aggressive" | "conservative" | null;
+
 interface SidebarProps {
   onOptimize: () => void;
 }
 
 export function Sidebar(props: SidebarProps): JSX.Element {
+  const [activePreset, setActivePreset] = createSignal<PresetType>(null);
+
+  function handlePresetClick(preset: "balanced" | "aggressive" | "conservative"): void {
+    addPresetPortfolio(preset);
+    setActivePreset(preset);
+  }
+
+  function handleClearAll(): void {
+    resetPortfolio();
+    setActivePreset(null);
+  }
+
+  // Clear active preset when assets are manually modified
+  function handleRemoveAsset(ticker: string): void {
+    removeAsset(ticker);
+    setActivePreset(null);
+  }
+
+  function handleAddAsset(asset: Asset): void {
+    addAsset(asset);
+    setActivePreset(null);
+  }
+
   return (
     <div class="space-y-6">
       {/* Header */}
@@ -35,13 +62,25 @@ export function Sidebar(props: SidebarProps): JSX.Element {
       <div class="glass-panel p-4">
         <h2 class="text-sm font-semibold text-slate-300 mb-3">Quick Presets</h2>
         <div class="flex gap-2 flex-wrap">
-          <button type="button" onClick={() => addPresetPortfolio("balanced")} class="preset-btn">
+          <button
+            type="button"
+            onClick={() => handlePresetClick("balanced")}
+            class={`preset-btn ${activePreset() === "balanced" ? "!bg-blue-600 !text-white !border-blue-500" : ""}`}
+          >
             Balanced
           </button>
-          <button type="button" onClick={() => addPresetPortfolio("aggressive")} class="preset-btn">
+          <button
+            type="button"
+            onClick={() => handlePresetClick("aggressive")}
+            class={`preset-btn ${activePreset() === "aggressive" ? "!bg-red-600 !text-white !border-red-500" : ""}`}
+          >
             Aggressive
           </button>
-          <button type="button" onClick={() => addPresetPortfolio("conservative")} class="preset-btn">
+          <button
+            type="button"
+            onClick={() => handlePresetClick("conservative")}
+            class={`preset-btn ${activePreset() === "conservative" ? "!bg-emerald-600 !text-white !border-emerald-500" : ""}`}
+          >
             Conservative
           </button>
         </div>
@@ -49,19 +88,40 @@ export function Sidebar(props: SidebarProps): JSX.Element {
 
       {/* Asset Selection */}
       <div class="glass-panel p-4">
-        <h2 class="text-sm font-semibold text-slate-300 mb-3">
-          Select Assets ({portfolioState.selectedAssets.length}/10)
-        </h2>
-        <AssetSearch
-          assets={portfolioState.availableAssets}
-          selectedIds={portfolioState.selectedAssets.map((a) => a.id)}
-          onSelect={addAsset}
-        />
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-sm font-semibold text-slate-300">
+            Select Assets ({portfolioState.selectedAssets.length}/10)
+          </h2>
+          <Show when={portfolioState.selectedAssets.length > 0}>
+            <button
+              type="button"
+              onClick={handleClearAll}
+              class="text-xs text-slate-400 hover:text-red-400 transition-colors"
+            >
+              Clear All
+            </button>
+          </Show>
+        </div>
+        <Show
+          when={!portfolioState.isLoading}
+          fallback={
+            <div class="animate-pulse space-y-2">
+              <div class="h-10 bg-white/5 rounded-lg" />
+              <div class="h-8 bg-white/5 rounded-lg w-3/4" />
+            </div>
+          }
+        >
+          <AssetSearch
+            assets={portfolioState.availableAssets}
+            selectedIds={portfolioState.selectedAssets.map((a) => a.id)}
+            onSelect={handleAddAsset}
+          />
+        </Show>
 
         {/* Selected Assets List */}
         <div class="mt-4 space-y-2">
           <For each={portfolioState.selectedAssets}>
-            {(asset) => <SelectedAssetChip asset={asset} onRemove={removeAsset} />}
+            {(asset) => <SelectedAssetChip asset={asset} onRemove={handleRemoveAsset} />}
           </For>
         </div>
 
@@ -83,11 +143,17 @@ export function Sidebar(props: SidebarProps): JSX.Element {
 
       {/* Rate Inputs */}
       <div class="glass-panel p-4">
-        <h2 class="text-sm font-semibold text-slate-300 mb-3">Market Rates</h2>
+        <h2 class="text-sm font-semibold text-slate-300 mb-3">Market Assumptions</h2>
 
         <div class="space-y-3">
+          <RateInput
+            label="Expected Market Return"
+            value={portfolioState.config.marketReturn}
+            onChange={setMarketReturn}
+            max={0.3}
+          />
           <RateInput label="Risk-Free Rate" value={portfolioState.config.riskFreeRate} onChange={setRiskFreeRate} />
-          <RateInput label="Borrow Rate" value={portfolioState.config.borrowRate} onChange={setBorrowRate} />
+          <RateInput label="Margin Borrow Rate" value={portfolioState.config.borrowRate} onChange={setBorrowRate} />
         </div>
       </div>
 

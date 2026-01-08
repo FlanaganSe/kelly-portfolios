@@ -11,10 +11,11 @@ export interface DataService {
   searchAssets(query: string): Promise<Asset[]>;
 }
 
-// Simulate network delay for realistic UX
-const MOCK_DELAY_MS = 300;
+// Simulate network delay for realistic UX (only in development)
+const MOCK_DELAY_MS = import.meta.env.DEV ? 200 : 0;
 
 function delay(ms: number): Promise<void> {
+  if (ms === 0) return Promise.resolve();
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 

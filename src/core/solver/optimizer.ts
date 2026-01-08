@@ -219,7 +219,7 @@ export function runOptimization(priceHistory: PriceHistory[], config: PortfolioC
   const betas = calculateBetas(returnsData);
 
   // Step 4: Calculate expected returns using CAPM
-  const expectedReturns = calculateCAPMReturns(betas, config.riskFreeRate);
+  const expectedReturns = calculateCAPMReturns(betas, config.riskFreeRate, config.marketReturn);
 
   // Step 5: Apply user overrides
   for (const [ticker, override] of Object.entries(config.userReturnOverrides)) {

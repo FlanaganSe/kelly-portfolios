@@ -85,29 +85,6 @@ export function calculateCovarianceMatrix(returnsData: ReturnsData[]): Covarianc
   return { tickers, matrix };
 }
 
-// Calculate correlation matrix
-export function calculateCorrelationMatrix(covMatrix: CovarianceMatrix): CovarianceMatrix {
-  const n = covMatrix.matrix.length;
-  const corrMatrix: number[][] = Array.from({ length: n }, () => Array(n).fill(0));
-
-  // Extract standard deviations from diagonal
-  const stdDevs = covMatrix.matrix.map((row, i) => Math.sqrt(row[i] ?? 0));
-
-  for (let i = 0; i < n; i++) {
-    for (let j = 0; j < n; j++) {
-      const stdI = stdDevs[i] ?? 1;
-      const stdJ = stdDevs[j] ?? 1;
-      if (stdI > 0 && stdJ > 0) {
-        corrMatrix[i]![j] = (covMatrix.matrix[i]?.[j] ?? 0) / (stdI * stdJ);
-      } else {
-        corrMatrix[i]![j] = i === j ? 1 : 0;
-      }
-    }
-  }
-
-  return { tickers: covMatrix.tickers, matrix: corrMatrix };
-}
-
 // Calculate beta of an asset vs a benchmark
 export function calculateBeta(assetReturns: number[], benchmarkReturns: number[]): number {
   const cov = covariance(assetReturns, benchmarkReturns);

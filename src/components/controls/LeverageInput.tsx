@@ -19,7 +19,7 @@ export function LeverageInput(props: LeverageInputProps): JSX.Element {
   return (
     <div class="space-y-2">
       <div class="flex justify-between items-center">
-        <label class="text-xs text-slate-400">Maximum Leverage</label>
+        <span class="text-xs text-slate-400">Maximum Leverage</span>
         <span class="text-sm font-semibold text-white">{props.value.toFixed(2)}x</span>
       </div>
 
@@ -49,7 +49,8 @@ export function LeverageInput(props: LeverageInputProps): JSX.Element {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            aria-label="Warning"
+            role="img"
+            aria-hidden="true"
           >
             <path
               stroke-linecap="round"

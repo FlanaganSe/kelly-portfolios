@@ -97,7 +97,8 @@ export default function App(): JSX.Element {
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
-                      aria-label="Pie chart icon"
+                      role="img"
+                      aria-hidden="true"
                     >
                       <path
                         stroke-linecap="round"
@@ -135,7 +136,8 @@ export default function App(): JSX.Element {
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
-                      aria-label="Chart icon"
+                      role="img"
+                      aria-hidden="true"
                     >
                       <path
                         stroke-linecap="round"

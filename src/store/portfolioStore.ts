@@ -4,15 +4,48 @@ import { fetchAssets, fetchPriceHistory } from "~/data/api";
 import { calculateScenarioImpact, STRESS_SCENARIOS } from "~/data/mock/scenarios";
 import type { Asset, OptimizationResult, PortfolioConfig, PriceHistory, StressScenario } from "~/types";
 
+// localStorage key
+const STORAGE_KEY = "portfolio-optimizer-state";
+
 // Default configuration
 const DEFAULT_CONFIG: PortfolioConfig = {
   assets: [],
   riskFreeRate: 0.045, // 4.5%
   borrowRate: 0.065, // 6.5%
+  marketReturn: 0.1, // 10% historical average
   riskAversion: 3.0, // Moderate
   maxLeverage: 1.0, // No leverage by default
   userReturnOverrides: {},
 };
+
+// Persisted state shape
+interface PersistedState {
+  selectedAssetIds: string[];
+  config: PortfolioConfig;
+}
+
+// Load persisted state from localStorage
+function loadPersistedState(): Partial<PersistedState> {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) {
+      return JSON.parse(stored) as Partial<PersistedState>;
+    }
+  } catch {
+    // Ignore localStorage errors
+  }
+  return {};
+}
+
+// Save state to localStorage
+function persistState(selectedAssetIds: string[], config: PortfolioConfig): void {
+  try {
+    const state: PersistedState = { selectedAssetIds, config };
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+  } catch {
+    // Ignore localStorage errors
+  }
+}
 
 // Store state interface
 interface PortfolioState {
@@ -27,9 +60,13 @@ interface PortfolioState {
   optimizationProgress: number;
 }
 
+// Load persisted config
+const persisted = loadPersistedState();
+const initialConfig = persisted.config ? { ...DEFAULT_CONFIG, ...persisted.config } : { ...DEFAULT_CONFIG };
+
 // Create the store
 const [state, setState] = createStore<PortfolioState>({
-  config: { ...DEFAULT_CONFIG },
+  config: initialConfig,
   availableAssets: [],
   selectedAssets: [],
   priceHistory: [],
@@ -59,7 +96,7 @@ export const efficientFrontier = createMemo(() => state.optimizationResult?.effi
 
 // Actions
 
-// Initialize available assets
+// Initialize available assets and restore persisted selection
 export async function initializeAssets(): Promise<void> {
   setState("isLoading", true);
   setState("error", null);
@@ -67,6 +104,18 @@ export async function initializeAssets(): Promise<void> {
   try {
     const assets = await fetchAssets();
     setState("availableAssets", assets);
+
+    // Restore persisted selection
+    const persistedIds = persisted.selectedAssetIds ?? [];
+    if (persistedIds.length > 0) {
+      const selectedAssets = assets.filter((a) => persistedIds.includes(a.id));
+      setState("selectedAssets", selectedAssets);
+      setState(
+        "config",
+        "assets",
+        persistedIds.filter((id) => assets.some((a) => a.id === id))
+      );
+    }
   } catch (e) {
     setState("error", e instanceof Error ? e.message : "Failed to load assets");
   } finally {
@@ -92,6 +141,12 @@ export function addAsset(asset: Asset): void {
       s.error = null;
     })
   );
+
+  // Persist
+  persistState(
+    state.selectedAssets.map((a) => a.id),
+    state.config
+  );
 }
 
 // Remove asset from selection
@@ -106,26 +161,50 @@ export function removeAsset(ticker: string): void {
       s.optimizationResult = null;
     })
   );
+
+  // Persist
+  persistState(
+    state.selectedAssets.map((a) => a.id),
+    state.config
+  );
+}
+
+// Helper to persist current state
+function saveState(): void {
+  persistState(
+    state.selectedAssets.map((a) => a.id),
+    state.config
+  );
 }
 
 // Update risk aversion
 export function setRiskAversion(value: number): void {
   setState("config", "riskAversion", Math.max(0.5, Math.min(15, value)));
+  saveState();
 }
 
 // Update max leverage
 export function setMaxLeverage(value: number): void {
   setState("config", "maxLeverage", Math.max(1, Math.min(3, value)));
+  saveState();
 }
 
 // Update risk-free rate
 export function setRiskFreeRate(value: number): void {
   setState("config", "riskFreeRate", Math.max(0, Math.min(0.2, value)));
+  saveState();
 }
 
 // Update borrow rate
 export function setBorrowRate(value: number): void {
   setState("config", "borrowRate", Math.max(0, Math.min(0.3, value)));
+  saveState();
+}
+
+// Update expected market return
+export function setMarketReturn(value: number): void {
+  setState("config", "marketReturn", Math.max(0, Math.min(0.3, value)));
+  saveState();
 }
 
 // Set user return override for an asset
@@ -139,6 +218,7 @@ export function setReturnOverride(ticker: string, value: number | null): void {
       }
     })
   );
+  saveState();
 }
 
 // Fetch price history for selected assets
@@ -189,6 +269,7 @@ export function resetPortfolio(): void {
     error: null,
     optimizationProgress: 0,
   });
+  saveState();
 }
 
 // Calculate stress test impact
@@ -223,7 +304,7 @@ export function addPresetPortfolio(preset: "balanced" | "aggressive" | "conserva
     })
   );
 
-  // Set risk aversion based on preset
+  // Set risk aversion based on preset (these already call saveState)
   if (preset === "aggressive") setRiskAversion(1.5);
   else if (preset === "conservative") setRiskAversion(8);
   else setRiskAversion(3);
