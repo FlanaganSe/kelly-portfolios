@@ -2,6 +2,8 @@
 
 A web app for calculating Kelly criterion for investment portfolios. Still a work in progress!
 
+Edit: work in progress sometime.. I've said that for 6 years now. Someday this will be picked up again though.....
+
 Site: https://kellyportfolios.com/
 
 ## What it does (eventually)
