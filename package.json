@@ -7,8 +7,8 @@
     "dev": "vite",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
-    "biome:fix": "biome check --write . && biome format --write .",
-    "setup": "git config core.hooksPath .githooks && chmod +x .githooks/*"
+    "biome:fix": "biome check --write .",
+    "prepare": "git config core.hooksPath scripts/githooks && chmod +x scripts/githooks/*"
   },
   "dependencies": {
     "@aws-lambda-powertools/logger": "^2.30.2",

@@ -1,44 +1,49 @@
-# Portfolio Optimizer
+# Kelly Portfolios
 
-A web app for calculating Kelly criterion for investment portfolios. Still a work in progress!
+An early-stage portfolio research application for exploring position sizing and
+asset allocation with the Kelly criterion and mean-variance optimization.
 
-Edit: work in progress sometime.. I've said that for 6 years now. Someday this will be picked up again though.....
+The SolidJS client can assemble an ETF portfolio and call an intended AWS API for
+asset search, volatility, correlation, and allocation results. The repository is
+not production-ready: the client is present, but the infrastructure and Lambda
+modules referenced by `sst.config.ts` are not currently in version control. Seed
+data is simulated, and the financial methodology still needs validation before
+results should inform real decisions.
 
-Site: https://kellyportfolios.com/
+## Start locally
 
-## What it does (eventually)
+Requirements: Node.js 22 and pnpm 10.
 
-Calculate optimal position sizing using the Kelly criterion to maximize long-term growth while managing risk across different investments.
-
-## Tech Stack
-
-- **SolidJS** - Fine-grained reactive UI framework
-- **@solidjs/router** - Official SolidJS routing library
-- **TailwindCSS** - Styling
-- **Vite** - Build tool with vite-plugin-solid
-- **SST v3** - AWS deployment built on pulumi
-
-## Development
-
-```bash
-# Requirements
-brew install pnpm
-brew install awscli
-
-# Set up pre-push hook 
-pnpm setup
-
-# Install dependencies
-pnpm install
-
-# Start dev server
+```sh
+pnpm install --frozen-lockfile
 pnpm dev
-
-# Deploy to AWS
-pnpm sst deploy --stage <stage>
 ```
 
-## Misc
+The calculator's data-backed features require `VITE_API_URL`; copy `.env.example`
+to `.env.local` and supply a working API URL. Without one, the informational pages
+still run, but asset search and server-side optimization do not.
 
-- Under construction... Obviously. 
-- Significant claude code usage. This is largely just a for-fun project. 
+## Checks
+
+```sh
+pnpm biome check
+pnpm typecheck
+pnpm build
+```
+
+`pnpm install` also installs the pre-push hook, which runs the first two checks.
+
+## Repository map
+
+- `src/routes/` contains the SolidJS pages.
+- `src/components/` contains reusable UI and chart components.
+- `src/services/api.ts` defines the intended backend contract.
+- `src/utils/` contains client-side validation and an experimental optimizer that
+  no route currently imports.
+- `scripts/seed-database.ts` creates synthetic ETF metadata and price histories.
+- `sst.config.ts` describes the intended SST/AWS entry point.
+- [`docs/README.md`](docs/README.md) indexes durable project knowledge.
+- [`AGENTS.md`](AGENTS.md) is the canonical working agreement for coding agents,
+  extended by [`docs/AGENTS.md`](docs/AGENTS.md) for documentation and research.
+
+The deployed site is <https://kellyportfolios.com/>.
