@@ -23,13 +23,9 @@ import { type EvidenceStatus, statusMeta } from "~/content/types";
  * where it landed in the closed status vocabulary — filterable by that status.
  */
 
-/**
- * A wide table scrolls inside its own container, but the screen-reader-only text
- * the chips carry is absolutely positioned and would otherwise push the page
- * itself sideways. Clipping the wrapper keeps it in, with enough margin left for
- * the scroll region's focus ring.
- */
-const TABLE = "relative overflow-x-clip [overflow-clip-margin:6px]";
+// Shared spacing for the tables on this page. The chip-overflow workaround that used to
+// live here is gone; StatusChip fixes it at source now.
+const TABLE = "mt-8";
 
 const H2 = "font-sans text-xl font-semibold tracking-[-0.015em] text-ink";
 
