@@ -28,11 +28,21 @@ or an implementation supports it.
 - Shipped UI copy claims real-time data, optimality, and professional validation
   that nothing here supports. Do not extend those claims. Correcting them is a
   product decision: raise it rather than rewriting copy unasked.
+- `research/` is a separate Python workspace with its own toolchain and its own
+  `README.md`. It is not deployed and the client does not import it. No result it
+  has produced yet supports a shipped claim: every candidate return source tested
+  so far is `unresolved` or `rejected`.
+- Free price sources are not research-grade and the code raises rather than warns
+  when a confirmatory experiment reaches for one. See
+  `docs/decisions/0002-no-research-grade-free-price-source.md` before "fixing" it.
 
 ## Commands
 
-Node 22 and pnpm 10. `pnpm install` installs the pre-push hook through `prepare`;
-`pnpm setup` is a built-in pnpm command and will not run repository scripts.
+Two independent toolchains. Run the checks for the half you touched.
+
+**Client.** Node 22 and pnpm 10. `pnpm install` installs the pre-push hook through
+`prepare`; `pnpm setup` is a built-in pnpm command and will not run repository
+scripts.
 
 ```sh
 pnpm dev            # Vite dev server
@@ -41,12 +51,24 @@ pnpm typecheck      # tsc --noEmit
 pnpm build          # production bundle
 ```
 
-Run the narrowest relevant check while iterating and all three before handoff. CI
-runs the same three on Node 22. If a check cannot run, or a failure predates your
+**Research workspace.** `uv`, with Python 3.12 pinned in `research/.python-version`.
+
+```sh
+cd research
+uv sync --extra dev
+uv run pytest       # offline by default
+uv run pytest -m network   # hits a primary data source
+uv run mypy         # strict
+uv run ruff check
+```
+
+Run the narrowest relevant check while iterating and all of the relevant half's
+checks before handoff. CI runs the client's three on Node 22 and does not yet run
+the research workspace at all. If a check cannot run, or a failure predates your
 change, say so precisely instead of reporting a clean run.
 
-There is no test runner. Installing one is the first step of any change to
-optimization math, not an optional extra.
+Optimization math belongs in `research/`, which has a test runner, closed-form
+fixtures, and an experiment ledger. Do not add financial math to the client.
 
 ## Boundaries
 
