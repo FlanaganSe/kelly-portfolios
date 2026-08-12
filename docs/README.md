@@ -15,5 +15,8 @@ setup and current status.
   project is, what exists, and the gaps between its claims and its code.
 - [Agent configuration](research/2026-08-11-agent-configuration.md) — the evidence
   behind the instruction files, permissions, hook, and skills in this repository.
+- [Portfolio edge research framework](research/portfolio-edge-research-framework.md)
+  — evidence, falsifiable hypotheses, numerical fixtures, and the validation
+  protocol for leverage, rebalancing, crisis protection, factors, and manager alpha.
 
 `docs/decisions/` does not exist yet. Create it with the first real decision record.
