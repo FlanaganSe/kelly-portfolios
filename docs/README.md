@@ -19,6 +19,10 @@ setup and current status.
   — evidence, falsifiable hypotheses, numerical fixtures, and the validation
   protocol for leverage, rebalancing, crisis protection, factors, and manager alpha.
   Answers whether a return source is real.
+- [Fama-French factor reproduction](research/fama-french-reproduction.md) — the
+  Phase 1 ingestion gate: which published table was reproduced from which data
+  vintage, the two cells that do not reproduce, and what a downstream experiment
+  may and may not assume about the data path as a result.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers

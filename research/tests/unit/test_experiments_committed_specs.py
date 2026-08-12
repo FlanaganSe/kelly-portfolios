@@ -1,4 +1,4 @@
-"""The four committed specifications must load, hash, and mean what they say."""
+"""The committed specifications must load, hash, and mean what they say."""
 
 from __future__ import annotations
 
@@ -32,6 +32,7 @@ SPEC_NAMES = (
     "exp_002_fund_exposure",
     "exp_003_rebalancing",
     "exp_004_trend_marginal_value",
+    "phase1_ff_reproduction",
 )
 
 
@@ -150,6 +151,50 @@ def test_exp_004_declares_itself_a_vendor_series_evaluation() -> None:
         "attribute returns",
     ):
         assert required in hostile
+
+
+def test_phase1_targets_table_4_and_pins_its_vintage() -> None:
+    spec = load("phase1_ff_reproduction")
+    assert spec.run_kind is RunKind.CONFIRMATORY
+    assert spec.evidence_class is EvidenceClass.SOURCE_REPRODUCTION
+    parameters = as_mapping(spec.parameters)
+
+    targets = as_sequence(parameters["published_targets"])
+    gating = [t for t in (as_mapping(item) for item in targets) if t["gating"] is True]
+    assert len(gating) == 1, "exactly one printed table decides this gate"
+    primary = gating[0]
+    # Table 1 of Fama and French (2015) is the 25 test portfolios. The factor
+    # summary statistics are Table 4. Freezing the wrong number would target the
+    # wrong numbers.
+    assert primary["table"] == "Table 4"
+    assert primary["observations"] == 606
+    assert set(as_mapping(primary["factors"])) == {"Mkt-RF", "SMB", "HML", "RMW", "CMA"}
+
+    pin = as_mapping(parameters["source_pin"])
+    assert pin["expected_sha256_raw"] == (
+        "cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b"
+    )
+    assert [era.name for era in spec.sample_policy.eras] == [
+        "ff2015_jfe_published",
+        "ff2013_working_paper",
+    ]
+
+
+def test_phase1_gate_tolerance_is_the_one_that_was_predeclared() -> None:
+    """A widened tolerance is the failure mode this gate exists to prevent.
+
+    Pinning the numbers here means loosening them cannot be a quiet edit: it
+    breaks a test and changes the specification hash at the same time.
+    """
+    parameters = as_mapping(load("phase1_ff_reproduction").parameters)
+    tolerances = as_mapping(parameters["tolerances"])
+    gate = as_mapping(tolerances["gate"])
+    assert gate["mean_percent_per_month"] == 0.02
+    assert gate["std_dev_percent_per_month"] == 0.05
+    assert gate["t_statistic"] == 0.30
+    exact = as_mapping(tolerances["print_exact_diagnostic"])
+    assert exact["mean_percent_per_month"] == 0.005
+    assert as_mapping(tolerances["implementation_error"])["mean_percent_per_month"] == 0.10
 
 
 def test_committed_specifications_do_not_spend_the_final_holdout() -> None:

@@ -1,0 +1,516 @@
+# Frozen before any result is examined. Editing any field changes the
+# specification hash and therefore creates a new hypothesis in the ledger.
+#
+# TABLE NUMBER, CORRECTED. This gate was commissioned against "Fama and French
+# (2015) Table 1". Table 1 of that paper is "Average monthly percent excess
+# returns for portfolios formed on Size and B/M, Size and OP, Size and Inv" --
+# the 25 test portfolios, not the factors. The table that actually holds the
+# mean, standard deviation and t-statistic of the five monthly factor returns
+# over July 1963 - December 2013 is TABLE 4, Panel A, first block ("2 x 3
+# Factors"). The commissioned description matches Table 4 exactly; only the
+# number was wrong. Table 4 is what is frozen here.
+experiment_family: phase1_ff_reproduction
+title: Phase 1 published-result reproduction gate, Fama-French (2015) Table 4 Panel A
+entry_point: phase1_ff_reproduction
+run_kind: confirmatory
+evidence_class: source-reproduction
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  The ingestion and statistics path in this repository -- download, raw-byte
+  cache, zip extraction, multi-table parsing, percent-to-decimal conversion,
+  sample-boundary selection, and monthly summary statistics -- reproduces the
+  published summary statistics of the five Fama-French factors, as printed in
+  Fama and French (2015) Table 4 Panel A, "2 x 3 Factors" block, over July 1963
+  to December 2013, to within the tolerance declared below. This is a hypothesis
+  about THIS REPOSITORY'S PLUMBING. It is not a hypothesis about any factor, any
+  premium, or any portfolio, and no result from this experiment supports one.
+
+mechanism: >
+  The published table was computed by the authors from a CRSP vintage available
+  in 2013-2014. The file this repository holds was rebuilt from the 202606 CRSP
+  database, roughly twelve years of retroactive restatement later. CRSP restates
+  delistings, share counts, prices and returns retroactively, and Ken French
+  recomputes the entire factor history from the current vintage on every rebuild
+  and publishes no vintage archive. Two mechanisms can therefore produce a
+  difference and this experiment can only partly separate them. (1) Our pipeline
+  is wrong -- a units error, an off-by-one sample boundary, a sentinel treated as
+  data, the wrong column, or the wrong table out of the two in the file. (2) The
+  distributed data have genuinely changed since the paper was printed. A
+  secondary, non-gating reproduction of the same statistics from an earlier
+  printed vintage of the same table (the November 2013 working-paper draft, July
+  1963 - December 2012, 594 months) is run alongside precisely so that mechanism
+  (2) leaves a signature: a pipeline error would be expected to hit both windows
+  in the same direction and by a similar amount, while a vintage effect need not.
+
+falsifier: >
+  The reproduction is REJECTED -- meaning this repository's ingestion and
+  statistics path is treated as broken -- if ANY of the following holds.
+  (a) The sha256 of the downloaded bytes is not the pinned
+  cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b, so the
+  vintage under test is not the vintage this specification was written against.
+  (b) Any sample-boundary check fails: the frozen window does not contain exactly
+  606 monthly observations, or the period labels are not strictly increasing, or
+  a month is duplicated, or a month is missing from the window, or a declared
+  missing-data sentinel survived parsing into the data, or any of the five factor
+  columns holds a missing value inside the window.
+  (c) Any factor's monthly mean differs from the printed value by more than 0.10
+  percentage points per month, or differs in sign. That is five times the gate
+  tolerance and is far larger than any plausible CRSP restatement of a 606-month
+  average; a difference that size is an implementation error, not a revision.
+  The reproduction is UNRESOLVED if no clause above fires but some cell lies
+  outside the gate tolerance. It PASSES only if every gating cell lies inside it.
+  Failing to match is a finding to be reported, never a reason to widen the
+  tolerance. The tolerance below may not be edited to make this run pass; editing
+  it produces a different specification hash and a visibly different hypothesis.
+
+universe:
+  description: >
+    Five published monthly factor return series and the one-month Treasury bill
+    rate, as distributed in a single zip by the Ken French Data Library at the
+    vintage pinned below. No individual securities, no funds, no portfolios.
+  factors: [Mkt-RF, SMB, HML, RMW, CMA]
+  cash_rate_column_present_but_unused: RF
+  region: US
+  sorts: 2x3
+  frequency: monthly
+  units_in_source: percent
+  excluded:
+    - The annual table in the same file. The file holds two tables; only the
+      monthly one is read, and it is selected by table id, never by position.
+    - The RF column. It is a cash rate, not a factor, and it is not subtracted
+      from anything in this experiment. See parameters.risk_free_treatment.
+    - Every observation after 2013-12. The frozen window is the published one.
+
+sample_policy:
+  start: "1963-07"
+  end: "2013-12"
+  held_out: >
+    Observations after 2013-12 are not read by this experiment under any
+    circumstance, even though the file carries data through 2026-06. This
+    experiment does not consume the final holdout; it does not look at the
+    post-publication period at all, because the only question it asks is whether
+    a printed table can be reproduced over the window that table covers.
+  embargo: >
+    None required. No forecast is made, nothing is fitted, and no observation is
+    used to predict another.
+  eras:
+    - name: ff2015_jfe_published
+      start: "1963-07"
+      end: "2013-12"
+      rationale: >
+        The sample of the gating target: Fama and French (2015), Journal of
+        Financial Economics 116(1), 1-22, Table 4, stated in its own caption as
+        "July 1963-December 2013, 606 months". This is the only gating era.
+    - name: ff2013_working_paper
+      start: "1963-07"
+      end: "2012-12"
+      rationale: >
+        The sample of the same authors' November 2013 working-paper draft of the
+        same table, stated in its own caption as "July 1963 to December 2012, 594
+        months". Non-gating. It is included because two printed vintages of the
+        same statistics give a second, independent read on how far the currently
+        distributed data have moved, which one printed vintage cannot.
+
+benchmark:
+  kind: published table, not a portfolio
+  description: >
+    The benchmark is the printed table itself. There is no investable benchmark
+    here and no return is being compared to another return; the comparison is
+    between a number this repository computes and a number a journal printed.
+  null_hypothesis: >
+    Every computed cell equals its printed counterpart to within the gate
+    tolerance, i.e. the currently distributed file and this repository's
+    arithmetic together reproduce the published vintage.
+
+primary_metric:
+  name: absolute difference from the printed cell, per factor per statistic
+  definition: >
+    computed_value_percent_per_month - published_value_percent_per_month, for
+    each of the five factors and each of the three printed statistics (mean,
+    standard deviation, t-statistic), giving 15 gating cells.
+  units: percentage points per month for mean and standard deviation; ratio for the t-statistic
+  uncertainty: >
+    None is attached to the difference. The printed value is a constant, not an
+    estimate with a resamplable distribution, and a bootstrap interval around our
+    own estimate would not tell us whether we reproduced theirs. The relevant
+    uncertainty is the printing precision, which is +/-0.005 in the printed unit
+    and is carried explicitly in the tolerance below.
+
+secondary_metrics:
+  - name: annualised arithmetic premium
+    definition: 12 * monthly arithmetic mean
+    units: percentage points per year
+    note: >
+      Not printed in the target table. Reported because the plan requires it and
+      because the annualisation convention has to be stated somewhere it can be
+      checked. Simple scaling of an arithmetic mean; it is not a compound growth
+      rate and must not be read as one.
+  - name: annualised volatility
+    definition: sqrt(12) * monthly sample standard deviation
+    units: percentage points per year
+    note: >
+      sqrt(12) assumes serially independent monthly returns. Monthly factor
+      returns are not serially independent, which is exactly why the HAC standard
+      error below is reported next to the conventional one.
+  - name: conventional standard error of the mean
+    definition: monthly sample standard deviation (ddof=1) / sqrt(T)
+    units: percentage points per month
+  - name: HAC (Newey-West) standard error of the mean
+    definition: >
+      sqrt(S / T) with S the Bartlett-kernel long-run variance of the demeaned
+      series, bandwidth from the Newey-West (1994) rule
+      L = floor(4 * (T / 100) ** (2/9)), which is L = 5 at T = 606 and L = 5 at
+      T = 594. The bandwidth is a deterministic function of sample size alone and
+      is not tuned on the series being tested.
+    units: percentage points per month
+  - name: conventional t-statistic
+    definition: monthly mean / conventional standard error
+    units: ratio
+    note: This is the statistic the target table prints.
+  - name: HAC t-statistic
+    definition: monthly mean / HAC standard error
+    units: ratio
+    note: >
+      Not printed in the target table and NOT a gating cell. It is reported
+      because the published t-statistic assumes i.i.d. observations and the
+      difference between the two is the size of that assumption.
+  - name: Sharpe ratio, monthly and annualised
+    definition: monthly mean / monthly standard deviation, annualised by sqrt(12)
+    units: ratio
+  - name: standard error of the Sharpe ratio
+    definition: sqrt((1 + SR**2 / 2) / T) on the monthly Sharpe and monthly T
+    units: ratio
+
+cost_model:
+  applied: false
+  reason: >
+    Nothing is traded, held or rebalanced in this experiment, so there is no
+    position for a cost to apply to. A cost model here would be decoration.
+  consequence: >
+    Every number produced is gross of transaction costs, shorting costs, fees and
+    taxes, because the source series are. That is a property of the Ken French
+    research series, not a modelling choice made here, and it is one of the
+    several reasons passing this gate says nothing about investability.
+
+rebalance_rule:
+  applied: false
+  source: as embedded in the Ken French construction, not chosen here
+  note: >
+    HML, RMW and CMA are rebalanced annually at the end of June on prior
+    fiscal-year accounting data; SMB is the average of the three 2x3 SMBs. This
+    experiment does not rebalance anything and does not reconstruct any
+    portfolio. It reads the authors' own published factor returns. That is
+    precisely why this gate cannot verify portfolio accounting: the accounting
+    already happened, upstream, in somebody else's code.
+
+inference:
+  bootstrap: none
+  block_length_policy: >
+    Not applicable. Nothing is resampled. The quantity under test is a difference
+    from a printed constant, and resampling our own sample would describe our own
+    sampling variability, not the distance to their number.
+  multiple_testing_correction: >
+    None applied, and none is appropriate. The 15 gating cells are not 15
+    independent hypothesis tests searching for a discovery; they are 15
+    coordinates of one predeclared equality check against a fixed printed table,
+    every one of which must hold. Requiring all of them makes the check STRICTER
+    as cells are added, which is the opposite of the multiple-comparisons
+    problem, so a correction would only loosen a gate that exists to be strict.
+    This run must still be counted in the ledger's distinct-specification count.
+  confidence_level: 0.95
+  resamples: 1
+  notes: >
+    resamples is set to 1 because the schema requires a positive integer and
+    nothing is resampled. The 95% confidence level is used only for the normal
+    interval attached to each reported mean, built from the HAC standard error;
+    it plays no part in the gate.
+
+rejection_rule: >
+  Evaluate the 15 gating cells (5 factors x {mean, standard deviation,
+  t-statistic}) for the era ff2015_jfe_published only. Result status is
+  `source-reproduced` when every gating cell lies within the gate tolerance in
+  parameters.tolerances.gate. Result status is `rejected` when any clause of the
+  falsifier fires. Result status is `unresolved` otherwise, i.e. when the
+  boundary and integrity checks all pass and no difference is large enough to
+  indicate an implementation error, but at least one cell lies outside the gate
+  tolerance -- because the 2013-2014 CRSP vintage the authors used cannot be
+  obtained, and so "our pipeline is subtly wrong" cannot be fully separated from
+  "the data were restated". `unresolved` does NOT open the downstream gate: the
+  plan's Phase 1 gate opens only on `source-reproduced`, or on a written
+  determination that exact reproduction is impossible with the measured
+  differences and a diagnosis recorded. Under no circumstance is a widened
+  tolerance a route to `source-reproduced`.
+
+parameters:
+  source_pin:
+    dataset_id: french_us_ff5
+    table_id: monthly
+    manifest_dataset_id: french_us_ff5_monthly
+    source_url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+    expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+    expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+    expected_source_last_modified: "Mon, 03 Aug 2026 19:17:07 GMT"
+    expected_crsp_vintage_in_preamble: "202606"
+    committed_manifest: data-manifests/french_us_ff5_monthly.json
+    vintage_caveat: >
+      The sha256 pins WHICH FILE was used. It does not and cannot establish that
+      the file represents what was publicly available in 2014. Ken French
+      publishes no vintage archive, so the 2013-2014 CRSP vintage the paper used
+      is not obtainable and an exactly like-for-like reproduction is not
+      available to this repository at any tolerance.
+
+  units:
+    source_file: percent per month
+    parsed_table: decimal per month
+    parsed_table_transform: value / 100, applied by the French parser
+    comparison_basis: percent per month
+    comparison_transform: parsed decimal value * 100
+    note: >
+      The percent-to-decimal-to-percent round trip is deliberate and is the point
+      of running the comparison through the real parser rather than reading the
+      CSV again. A factor of 100 in either direction is the single most likely
+      silent error in this path and it is the one the printed table catches.
+
+  risk_free_treatment: >
+    RF IS NOT SUBTRACTED FROM ANYTHING. All five series are already excess or
+    long-short returns by construction: Mkt-RF is the value-weight market return
+    minus the one-month Treasury bill rate, and SMB, HML, RMW and CMA are
+    zero-net-investment long-short spreads whose financing is already netted
+    inside the spread. Subtracting RF from a long-short spread is the classic
+    error in this exercise and it is invisible in the output, because the result
+    is still a plausible-looking small monthly number. The Sharpe ratios below
+    are therefore mean / standard deviation of the series as distributed, with a
+    risk-free rate of exactly zero, and the code asserts that zero rather than
+    defaulting to it. Within the frozen window the RF column is in any case the
+    Ibbotson Associates series, the same source the authors used; the file's own
+    preamble records that RF switches to ICE BofA only from 202406, which is
+    outside this window and therefore cannot affect this reproduction.
+
+  annualisation:
+    mean: multiply the monthly arithmetic mean by 12
+    volatility: multiply the monthly sample standard deviation by sqrt(12)
+    sharpe: multiply the monthly Sharpe ratio by sqrt(12)
+    note: >
+      All three are simple scalings that assume serial independence. They are
+      reported because the plan requires them; the target table prints none of
+      them and none of them is a gating cell.
+
+  estimator_conventions:
+    standard_deviation_ddof: 1
+    t_statistic: mean / (standard_deviation / sqrt(T))
+    t_reference_distribution: >
+      Normal, two-sided. At T = 606 the difference from Student-t is in the
+      fourth decimal place and the printed table reports two.
+    hac_bandwidth_rule: floor(4 * (T / 100) ** (2/9)), Newey-West (1994)
+    hac_kernel: Bartlett, w_j = 1 - j / (L + 1)
+
+  tolerances:
+    gate:
+      mean_percent_per_month: 0.02
+      std_dev_percent_per_month: 0.05
+      t_statistic: 0.30
+      justification: >
+        Declared before any number was computed. The mean tolerance of 0.02
+        percentage points per month is 0.24 percentage points per year, which is
+        about 4% of the printed market premium and about 6% of the printed HML
+        premium; a restatement larger than that would materially move any
+        downstream premium estimate, which is where a gate protecting downstream
+        work belongs. The standard-deviation tolerance of 0.05 percentage points
+        per month is roughly 1% relative on the market factor and 2.5% on CMA.
+        The t-statistic tolerance is DERIVED, not independent: with T = 606,
+        t = mean * sqrt(606) / sd, so a 0.02 move in the mean of the
+        smallest-standard-deviation factor (CMA, printed 2.01) moves t by
+        0.02 * 24.62 / 2.01 = 0.245. Rounding it up to 0.30 keeps the t tolerance
+        implied by the mean and standard-deviation tolerances rather than binding
+        ahead of them, so the gate is decided by the two primitive statistics.
+    print_exact_diagnostic:
+      mean_percent_per_month: 0.005
+      std_dev_percent_per_month: 0.005
+      t_statistic: 0.005
+      purpose: >
+        Diagnostic only; never gating. A cell inside this band rounds to the
+        printed value, so the currently distributed data are numerically
+        indistinguishable from the published vintage at printing precision for
+        that cell. A cell outside it but inside the gate is evidence of a real
+        but immaterial revision. Separating these two is the whole reason the
+        difference is measured rather than merely tested.
+    implementation_error:
+      mean_percent_per_month: 0.10
+      sign_must_match: true
+      purpose: >
+        Five times the gate. A difference this large in a 606-month average, or a
+        sign flip, is not a data revision; it is a bug. It fires the falsifier
+        rather than producing `unresolved`.
+
+  published_targets:
+    - era: ff2015_jfe_published
+      gating: true
+      citation: >
+        Eugene F. Fama and Kenneth R. French, "A five-factor asset pricing
+        model", Journal of Financial Economics 116(1), 2015, pages 1-22.
+      table: Table 4
+      table_caption: >
+        Summary statistics for monthly factor percent returns; July
+        1963-December 2013, 606 months.
+      panel: Panel A, Averages, standard deviations, and t-statistics for monthly returns
+      block: 2 x 3 Factors (the first of three blocks in the panel)
+      rows_used: [Mean, "Std dev.", t-Statistic]
+      units: percent per month
+      observations: 606
+      retrieved_from: https://tevgeniou.github.io/EquityRiskFactors/bibliography/FiveFactor.pdf
+      retrieved_sha256: 5712e97e9d458b808b8a6ab2387a10327bdc0c6b516aaf33e5ac57baf042f779
+      retrieved_utc: "2026-08-12"
+      retrieval_note: >
+        The publisher's own page (ScienceDirect) and SSRN both answered HTTP 403
+        to a scripted client. The copy used is the typeset Elsevier PDF, carrying
+        the running head "E.F. Fama, K.R. French / Journal of Financial Economics
+        116 (2015) 1-22", the receipt dates, and the Elsevier copyright line, so
+        it is the published version rather than a preprint. Its Table 4 values
+        are cross-checked against the paper's own prose in Section 4, which
+        independently states the HML 2x3 mean (0.37), the 2x2 HML mean (0.28),
+        the 2x2x2x2 and 2x2 RMW means and t-statistics (0.25, t = 4.09 and 0.17,
+        t = 2.79), the CMA standard deviations and means (1.48 to 1.29, 0.22 with
+        t = 3.72 to 0.14 with t = 2.71), HMLS and HMLB (0.53 with t = 4.05 versus
+        0.21 with t = 1.69) and the SMB range (0.29% to 0.30%). Every one of
+        those agrees with the extracted table.
+      column_name_mapping:
+        RM-RF: Mkt-RF
+      factors:
+        Mkt-RF:
+          mean: 0.50
+          std_dev: 4.49
+          t_statistic: 2.74
+        SMB:
+          mean: 0.29
+          std_dev: 3.07
+          t_statistic: 2.31
+        HML:
+          mean: 0.37
+          std_dev: 2.88
+          t_statistic: 3.20
+        RMW:
+          mean: 0.25
+          std_dev: 2.14
+          t_statistic: 2.92
+        CMA:
+          mean: 0.33
+          std_dev: 2.01
+          t_statistic: 4.07
+
+    - era: ff2013_working_paper
+      gating: false
+      citation: >
+        Eugene F. Fama and Kenneth R. French, "A Five-Factor Asset Pricing
+        Model", working-paper draft, first draft June 2013, this draft November
+        2013. Superseded by the 2015 journal article above.
+      table: Table 4
+      table_caption: >
+        Summary statistics for monthly factor returns; July 1963 to December
+        2012, 594 months.
+      panel: Panel A, Averages, standard deviations, and t-statistics for monthly returns
+      block: 2x3 factors (the first of three blocks in the panel)
+      rows_used: [Mean, Std Dev, t-statistic]
+      units: percent per month
+      observations: 594
+      retrieved_from: >
+        https://web.archive.org/web/2019/http://faculty.chicagobooth.edu/john.cochrane/teaching/35150_advanced_investments/FF_Five_Factor.pdf
+      retrieved_sha256: 24c2f8f345b37aa6de4883b8ea890893b8788e18c985128489685bcf0d5c4550
+      retrieved_utc: "2026-08-12"
+      retrieval_note: >
+        A Wayback Machine snapshot of the copy John Cochrane hosted for his
+        Advanced Investments course, identified as the open-access PDF for this
+        DOI by the Semantic Scholar API. It is a DIFFERENT VINTAGE OF THE SAME
+        TABLE, not an independent copy of the published one, and it is used only
+        as a second, non-gating reference point on how much the numbers move
+        between vintages of the same data.
+      column_name_mapping:
+        RM-RF: Mkt-RF
+      factors:
+        Mkt-RF:
+          mean: 0.46
+          std_dev: 4.51
+          t_statistic: 2.47
+        SMB:
+          mean: 0.29
+          std_dev: 3.10
+          t_statistic: 2.24
+        HML:
+          mean: 0.38
+          std_dev: 2.90
+          t_statistic: 3.22
+        RMW:
+          mean: 0.26
+          std_dev: 2.15
+          t_statistic: 2.93
+        CMA:
+          mean: 0.33
+          std_dev: 2.02
+          t_statistic: 4.03
+
+  boundary_checks:
+    expected_observations_by_era:
+      ff2015_jfe_published: 606
+      ff2013_working_paper: 594
+    strictly_increasing_periods: true
+    no_duplicate_periods: true
+    no_month_gaps: true
+    no_missing_values_in_factor_columns: true
+    no_sentinel_leakage: true
+    sentinels: [-99.99, -999.0]
+    note: >
+      Run through portfolio_edge.data.validation.validate_table on the whole
+      parsed table, then repeated on the windowed series, because a table that
+      validates over 756 rows can still be wrong over the 606 that are used.
+
+data_sources:
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+    manifest: data-manifests/french_us_ff5_monthly.json
+
+hostile_tests:
+  - Assert the pinned sha256 of the raw bytes before parsing, and fail the run
+    rather than reporting a number computed from a different file.
+  - Assert the freshly derived table's canonical hash equals the one in the
+    committed manifest, which catches a parser change that leaves the raw bytes
+    identical.
+  - Recompute every statistic on the deliberately wrong risk-free treatment,
+    Mkt-RF minus RF and each long-short factor minus RF, and report how far that
+    error moves each cell, so the size of the classic mistake is measured rather
+    than asserted to be absent.
+  - Recompute on the annual table from the same file and confirm it does not
+    match the monthly target, so that selecting the wrong one of the two tables
+    in the file cannot pass silently.
+  - Shift the sample window by plus and minus one month and report the resulting
+    differences, so that an off-by-one boundary is visibly excluded rather than
+    assumed.
+  - Report the same statistics on the full 756-month file so that the effect of
+    the window itself is visible.
+
+reporting_requirements:
+  - Exact source vintage, URL, sha256 of raw bytes, HTTP Last-Modified, and the
+    CRSP vintage quoted from the file's own preamble.
+  - Paper, table, panel, block, column and row targeted, with the URL and sha256
+    of the PDF the published values were read from.
+  - Sample dates and the realised observation count.
+  - Monthly arithmetic mean, annualised arithmetic premium, monthly and
+    annualised volatility, Sharpe ratio, conventional and HAC standard errors,
+    and both t-statistics, per factor.
+  - The difference from the published value for every gating cell, with the
+    verdict against both the gate and the print-exact diagnostic band.
+  - An explicit statement of which series are already excess returns and that RF
+    was not subtracted.
+  - An explicit statement of what passing does NOT establish.
+
+notes: >
+  This gate is an integration test of one data path and of arithmetic. It cannot
+  verify portfolio accounting, rebalancing, transaction costs, tax lots,
+  corporate actions, insolvency behaviour, missing-data handling, look-ahead
+  protection, or optimisation constraints, because it exercises none of them.
+  The published factor file already contains the authors' own calculated returns,
+  so matching it verifies that we read and summarised their numbers correctly and
+  nothing more. It can also match despite compensating errors. It is a necessary
+  condition for trusting the ingestion path and nowhere near a sufficient one.
