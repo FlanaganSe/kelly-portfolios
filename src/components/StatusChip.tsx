@@ -42,8 +42,14 @@ interface ChipProps {
 
 const Chip: Component<ChipProps> = (props) => (
   <span class={`inline-flex flex-wrap items-baseline gap-x-2 gap-y-1 ${props.class ?? ""}`}>
+    {/*
+      `relative` is load-bearing. The `sr-only` span inside is absolutely positioned, and
+      with no positioned ancestor it resolves against the initial containing block —
+      inside a wide table that pushed the whole page sideways, 603px of scroll width at a
+      360px viewport. Do not drop it.
+    */}
     <span
-      class="inline-flex items-center gap-1.5 border border-rule-strong rounded-[3px] px-1.5 py-0.5 font-sans text-2xs font-semibold uppercase tracking-[0.07em] whitespace-nowrap"
+      class="relative inline-flex items-center gap-1.5 border border-rule-strong rounded-[3px] px-1.5 py-0.5 font-sans text-2xs font-semibold uppercase tracking-[0.07em] whitespace-nowrap"
       style={{ color: toneColor[props.tone] }}
       title={props.gloss}
     >

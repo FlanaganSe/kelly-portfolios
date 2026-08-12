@@ -70,6 +70,8 @@ const momentumCost = requireKeyNumber("exp-006-regional-momentum", "Assumed cost
 const capture = requireKeyNumber("exp-007-longonly-capture", "Size-neutral value capture");
 const captureSpread = requireKeyNumber("exp-007-longonly-capture", "Spread across five defensible benchmarks");
 const taxDrag = requireKeyNumber("exp-008-managed-futures-products", "Distribution tax drag");
+const smallValue = requireById(sleeves, "vbr-small-value");
+const trend = requireById(sleeves, "dbmf-managed-futures");
 const exploratoryProducts = sleeves.filter((sleeve) => sleeve.status === "exploratory").length;
 
 /** The module that refuses the sum, not a page describing it. */
@@ -98,7 +100,7 @@ export default function StartHere() {
 
       <PageHeader
         title="You probably can’t beat the index. You can almost certainly beat yourself."
-        standfirst="Nine experiments, a specification frozen before each one ran, and a ledger that records the failures too. This is what came out, including the parts that argue against the interesting answer."
+        standfirst="Nine experiment families with a synthesis behind them, two more run and not yet written up, a specification frozen before each one of them ran, and a ledger that records the failures too. This is what came out, including the parts that argue against the interesting answer."
         lastChecked={CORPUS_AS_OF}
       />
 
@@ -158,7 +160,8 @@ export default function StartHere() {
           rows={decidingComparison}
           footnote={
             <>
-              {upperBoundWarning} The first row’s probability is ~1.00 rather than exactly 1.{" "}
+              The tilt is {smallValue.ticker} and the trend sleeve is {trend.ticker}. {upperBoundWarning} The first
+              row’s probability is ~1.00 rather than exactly 1.{" "}
               <SourceLink citation={smallValueReading.source} prefix />
             </>
           }

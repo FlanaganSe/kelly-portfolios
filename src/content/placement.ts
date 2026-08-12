@@ -1,4 +1,5 @@
 import { type AsOf, asOf, type Citation } from "~/content/types";
+import type { ForeignSleeve, ShelterCandidate, TaxRegime } from "~/lib/placement";
 
 /**
  * Asset location, as data for a calculator rather than as a maxim.
@@ -372,3 +373,153 @@ export const omissionsNote =
 
 export const placementSource = { structural, recommendation } as const;
 export const placementAsOf = asOf("2026-08-12");
+
+// ---------------------------------------------------------------------------
+// The same inputs, in the shape the arithmetic consumes
+// ---------------------------------------------------------------------------
+
+/**
+ * `placementInputs`, `priorityTable` and `fillOrders` above are the display twins of
+ * what follows: one dated row per figure, in percent, already ranked, for a reader who
+ * only wants to look. These are the machine-readable versions of the same figures —
+ * decimals, grouped the way `~/lib/placement` takes them — so a page can run the
+ * ranking at the reader's own bracket instead of printing three columns of it.
+ *
+ * The split is deliberate. `~/lib/placement` carries no data at all, because a tax rate
+ * "must be a dated jurisdiction-specific input, never a hardcoded financial truth", and
+ * a number written into a route or a component is a defect under decision 0007. This is
+ * the one place the two meet.
+ *
+ * They have to agree with the research workspace rather than merely with each other:
+ * `src/state/investorPolicy.test.ts` feeds these constants through `shelterPriorityBp`
+ * and checks the ranking against the `shelterPriority` fixture, regime by regime.
+ */
+
+/** The regime ids the investor-policy store persists. Renaming one is a storage change. */
+export type TaxRegimeId = "us-top" | "us-upper-middle" | "us-zero-ltcg";
+
+export interface NamedTaxRegime extends TaxRegime {
+  readonly id: TaxRegimeId;
+  readonly source: Citation;
+}
+
+/** 37% ordinary, 20% long-term, plus the §1411 surtax. The reference investor's bracket. */
+const usTopBracket: NamedTaxRegime = {
+  id: "us-top",
+  label: "US top marginal bracket",
+  asOf: asOf("2026-08-12"),
+  ordinaryIncome: 0.37,
+  longTermCapitalGain: 0.2,
+  netInvestmentIncome: 0.038,
+  source: structural,
+};
+
+/** 24% ordinary, 15% long-term, below the §1411 threshold. */
+const usUpperMiddleBracket: NamedTaxRegime = {
+  id: "us-upper-middle",
+  label: "US upper-middle bracket",
+  asOf: asOf("2026-08-12"),
+  ordinaryIncome: 0.24,
+  longTermCapitalGain: 0.15,
+  netInvestmentIncome: 0,
+  source: structural,
+};
+
+/** 12% ordinary and a 0% long-term rate, where the foreign credit is worth nothing. */
+const usZeroLongTermBracket: NamedTaxRegime = {
+  id: "us-zero-ltcg",
+  label: "US zero long-term-rate bracket",
+  asOf: asOf("2026-08-12"),
+  ordinaryIncome: 0.12,
+  longTermCapitalGain: 0,
+  netInvestmentIncome: 0,
+  source: structural,
+};
+
+export const taxRegimes: readonly NamedTaxRegime[] = [usTopBracket, usUpperMiddleBracket, usZeroLongTermBracket];
+
+/** The bracket every figure assumes until a reader says otherwise. */
+export const defaultTaxRegime: NamedTaxRegime = usTopBracket;
+
+export interface NamedShelterCandidate extends ShelterCandidate {
+  readonly id: string;
+  readonly asOf: AsOf;
+  readonly source: Citation;
+}
+
+/** BND's SEC 30-day yield, taxed as ordinary income in full. */
+export const bondCandidate: NamedShelterCandidate = {
+  id: "bonds",
+  label: "Taxable investment-grade bonds",
+  dividendYield: 0.0465,
+  qualifiedFraction: 0,
+  foreignWithholdingRate: 0,
+  asOf: asOf("2026-08-10"),
+  source: structural,
+};
+
+/** MSCI EAFE's yield, withheld at the grossed-up §853 rate. */
+export const developedCandidate: NamedShelterCandidate = {
+  id: "developed",
+  label: "Developed ex-US equity",
+  dividendYield: 0.026,
+  qualifiedFraction: 1,
+  foreignWithholdingRate: 0.06068,
+  asOf: asOf("2026-07-31"),
+  source: structural,
+};
+
+/** Yields less than developed and forfeits more, because its withholding rate is 62% higher. */
+export const emergingCandidate: NamedShelterCandidate = {
+  id: "emerging",
+  label: "Emerging-market equity",
+  dividendYield: 0.0203,
+  qualifiedFraction: 1,
+  foreignWithholdingRate: 0.09853,
+  asOf: asOf("2026-07-31"),
+  source: structural,
+};
+
+/** A stated input rather than a retrieved measurement, and the yield every break-even is stated against. */
+export const usEquityCandidate: NamedShelterCandidate = {
+  id: "us-equity",
+  label: "US equity",
+  dividendYield: 0.011,
+  qualifiedFraction: 1,
+  foreignWithholdingRate: 0,
+  asOf: asOf("2026-08-12"),
+  source: structural,
+};
+
+export const shelterCandidates: readonly NamedShelterCandidate[] = [
+  bondCandidate,
+  developedCandidate,
+  emergingCandidate,
+  usEquityCandidate,
+];
+
+export interface NamedForeignSleeve extends ForeignSleeve {
+  readonly id: string;
+  readonly asOf: AsOf;
+  readonly source: Citation;
+}
+
+export const developedSleeve: NamedForeignSleeve = {
+  id: "developed",
+  label: "Developed ex-US equity",
+  dividendYield: 0.026,
+  withholdingRate: 0.06068,
+  asOf: asOf("2026-08-12"),
+  source: structural,
+};
+
+export const emergingSleeve: NamedForeignSleeve = {
+  id: "emerging",
+  label: "Emerging-market equity",
+  dividendYield: 0.0203,
+  withholdingRate: 0.09853,
+  asOf: asOf("2026-08-12"),
+  source: structural,
+};
+
+export const foreignSleeves: readonly NamedForeignSleeve[] = [developedSleeve, emergingSleeve];

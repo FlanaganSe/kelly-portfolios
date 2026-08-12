@@ -1,5 +1,5 @@
 import { Title } from "@solidjs/meta";
-import { For } from "solid-js";
+import { type Component, For } from "solid-js";
 import { Callout } from "~/components/Callout";
 import { DataTable } from "~/components/DataTable";
 import { Figure } from "~/components/Figure";
@@ -44,6 +44,14 @@ function requireLimit(claim: string): string {
   }
   return found.detail;
 }
+
+/**
+ * Content strings mark a status token with backticks, the way the research pages do.
+ * This renders those as real code spans rather than printing the backticks.
+ */
+const Ticked: Component<{ readonly text: string }> = (props) => (
+  <For each={props.text.split("`")}>{(part, index) => (index() % 2 === 1 ? <code>{part}</code> : part)}</For>
+);
 
 const statusLadder = Object.keys(statusMeta) as readonly EvidenceStatus[];
 
@@ -125,7 +133,7 @@ export default function Method() {
           footnote={
             <>
               “Reached here” is counted across the experiments, sleeves and factor premia this site renders, not
-              asserted. {requireLimit("Not a promotion")}
+              asserted. <Ticked text={requireLimit("Not a promotion")} />
             </>
           }
         />
@@ -303,10 +311,6 @@ export default function Method() {
             exactly that amount, and the sign of a small alpha can flip on it.
           </p>
         </Prose>
-
-        <Callout variant="caveat" label="And the control itself">
-          <p>{control.caveat}</p>
-        </Callout>
       </section>
 
       <section aria-labelledby="broken">
@@ -322,7 +326,7 @@ export default function Method() {
 
         <div class="mt-8 grid max-w-measure gap-8 border-y border-rule py-6 sm:grid-cols-2">
           <Figure {...gatingCells} source={phaseOne.source} />
-          <Figure {...systematicBand} source={phaseOne.source} tone="caution" />
+          <Figure {...systematicBand} source={phaseOne.source} />
           <Figure {...hmlDeviation} source={phaseOne.source} />
           <Figure {...rmwDeviation} source={phaseOne.source} />
         </div>
@@ -333,10 +337,14 @@ export default function Method() {
             volatility-scaled sleeve, a risk-parity weight, a covariance matrix, a Kelly fraction. It is systematic, not
             sampling error, and more data will not shrink it.
           </p>
-          <p>{requireLimit("Not vintage-stable")}</p>
           <p>
-            A series with no measured band is worse off than one whose band is zero, because nobody has checked. All
-            three momentum files are in that group, and momentum carries the largest gross premium in the repository.
+            <Ticked text={requireLimit("Not vintage-stable")} />
+          </p>
+          <p>
+            A series with no measured band is not a series with a small one. It is a series nobody has checked, which is
+            the weaker position of the two. All three momentum files sit in that group, and momentum carries the largest
+            gross premium anywhere in this repository — so the least-verified series sits underneath the most attractive
+            number.
           </p>
         </Prose>
 

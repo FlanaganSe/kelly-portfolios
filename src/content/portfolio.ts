@@ -21,17 +21,24 @@ const decomposition: Citation = {
   label: "Where outperformance can come from",
   docPath: "docs/research/expected-edge-decomposition.md",
 };
+const equityShare: Citation = {
+  label: "Setting the equity share",
+  docPath: "docs/research/setting-the-equity-share.md",
+};
 
 // ---------------------------------------------------------------------------
 // The one parameter the evidence cannot set
 // ---------------------------------------------------------------------------
 
 export interface RiskVariant {
-  readonly id: "A" | "B" | "C";
+  readonly id: "A" | "B" | "C" | "D";
   readonly label: string;
   readonly appliesWhen: string;
-  readonly equityPercent: readonly [number, number];
-  readonly bondPercent: readonly [number, number];
+  /** `null` where the range is set by something other than the horizon. */
+  readonly equityPercent: readonly [number, number] | null;
+  readonly bondPercent: readonly [number, number] | null;
+  /** Why the range is what it is, where that is not obvious from the row. */
+  readonly note?: string;
 }
 
 export const riskVariants: readonly RiskVariant[] = [
@@ -52,12 +59,79 @@ export const riskVariants: readonly RiskVariant[] = [
   },
   {
     id: "C",
-    label: "Short or drawing",
-    appliesWhen: "Under 10 years, or withdrawals have begun",
+    label: "Short horizon",
+    appliesWhen: "Under 10 years, whatever the cash flows",
     equityPercent: [40, 60],
     bondPercent: [40, 60],
   },
+  {
+    id: "D",
+    label: "Drawing down",
+    appliesWhen: "Withdrawals have begun over a long remaining horizon",
+    equityPercent: null,
+    bondPercent: null,
+    note: "Set by the withdrawal rate, not by the horizon. C and D were one row until they were measured, and they point opposite ways.",
+  },
 ];
+
+/**
+ * Failure probability over a 30-year real drawdown, by equity share and withdrawal rate.
+ *
+ * The drawdown ladder is monotone. This one is not, and that is the finding: the minimum
+ * walks right as the withdrawal rate rises. Above about a 4% real draw, holding too few
+ * equities is the larger risk.
+ */
+export const withdrawalFailureLadder = {
+  equityShares: [20, 30, 40, 50, 60, 70, 80, 90, 100],
+  rows: [
+    {
+      realWithdrawalPercent: 3,
+      failurePercent: [0.07, 0.03, 0.03, 0.04, 0.07, 0.15, 0.27, 0.41, 0.64],
+      safestIndex: 2,
+    },
+    { realWithdrawalPercent: 4, failurePercent: [6.82, 3.78, 2.88, 2.5, 2.43, 2.71, 3.17, 3.6, 4.24], safestIndex: 4 },
+    {
+      realWithdrawalPercent: 5,
+      failurePercent: [47.34, 32.41, 22.74, 17.51, 14.87, 13.56, 13.06, 12.86, 13.16],
+      safestIndex: 7,
+    },
+    {
+      realWithdrawalPercent: 6,
+      failurePercent: [86.77, 74.97, 60.77, 49.05, 40.96, 35.16, 31.31, 28.74, 27.27],
+      safestIndex: 8,
+    },
+  ],
+  basis:
+    "CPI-deflated, level real withdrawal, 30-year horizon, 20,000 reorderings of 748 months of data. Real equity 6.66%/yr, real bond 1.98%/yr.",
+  finding:
+    "At 3% real the safest portfolio is genuinely the safe one. At 4% the minimum sits at 60% equity and a 20%-equity portfolio is nearly three times as likely to fail. At 5% and 6% failure falls almost all the way to 100% equity, because the withdrawal outruns the return and no ordering of a 1.98%/yr real bond supports a 5% real draw for thirty years.",
+  caveat:
+    "One country, one modelled bond, an iid permutation null, and a real bond return of 1.98%/yr that no reader should assume forward. It is enough to show that a single short-or-drawing row conflates two opposite cases, and not enough to set anyone's equity share.",
+  status: "exploratory",
+  source: equityShare,
+  asOf: asOf("2026-08-12"),
+} as const;
+
+/**
+ * The parameter-free half of the split decision: growth retained is `1 − (1 − f/f*)²`.
+ *
+ * The reason this is worth showing rather than an optimiser: the optimum itself is not
+ * estimable. The standard error on the estimated growth-optimal fraction is about 2.05
+ * at ten years of data at 15.4% volatility, and still 0.65 at a hundred years.
+ */
+export const growthPenalty = {
+  headline:
+    "Undershooting the growth-optimal equity share by half costs a quarter of the peak excess growth. Overshooting by double costs all of it.",
+  detail:
+    "So the cost of being wrong is not symmetric in the direction that matters, and erring low is cheap. Which is fortunate, because the growth-optimal share cannot be estimated from any sample a human has: the standard error on it is about 2.05 at ten years of data, and still 0.65 at a hundred.",
+  retainedAtHalf: 0.75,
+  retainedAtDouble: 0.0,
+  standardErrorTenYears: 2.05,
+  standardErrorHundredYears: 0.65,
+  consequence:
+    "That is why this page ends on a drawdown you would have to sit through rather than on a number an optimiser produced.",
+  source: equityShare,
+} as const;
 
 export const equityBondSplit = {
   headline: "The equity/bond split is the investor's to set and nothing here can set it.",

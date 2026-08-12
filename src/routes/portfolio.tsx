@@ -28,6 +28,14 @@ import { type Sleeve, sleeves } from "~/content/sleeves";
  * at length, because it is the most useful part — what is deliberately absent.
  */
 
+/**
+ * A wide table scrolls inside its own container, but the screen-reader-only text
+ * the chips carry is absolutely positioned and would otherwise push the page
+ * itself sideways. Clipping the wrapper keeps it in, with enough margin left for
+ * the scroll region's focus ring.
+ */
+const TABLE = "relative overflow-x-clip [overflow-clip-margin:6px]";
+
 const H2 = "font-sans text-xl font-semibold tracking-[-0.015em] text-ink";
 const H3 = "font-sans text-base font-semibold text-ink";
 
@@ -45,7 +53,16 @@ const shareOfEquity = (sleeveName: string): string => {
 
 const feeCell = (bp: number | null): string => (bp === null ? "Not read here" : `${bp} bp`);
 
-const range = (bounds: readonly [number, number]): string => `${bounds[0]}–${bounds[1]}%`;
+/**
+ * A few figures are held as numbers rather than as the string their page printed.
+ * Print them with the typographic minus the rest of the site uses. Nothing is
+ * rounded and no precision is dropped.
+ */
+const num = (value: number): string => String(value).replace("-", "−");
+
+/** `null` means the row's share is set by something other than the horizon; variant D. */
+const range = (bounds: readonly [number, number] | null): string =>
+  bounds === null ? "set by the withdrawal rate" : `${bounds[0]}–${bounds[1]}%`;
 
 function FundNotes(props: { readonly fund: Fund }) {
   return (
@@ -113,7 +130,7 @@ function ExcludedSleeve(props: { readonly sleeve: Sleeve }) {
             class="mt-4"
             size="sm"
             label={`${loading().factor} loading`}
-            value={String(loading().value)}
+            value={num(loading().value)}
             interval={loading().interval}
             note={loading().note}
           />
@@ -164,7 +181,7 @@ export default function Portfolio() {
         <div class="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           <Figure
             label="Maximum drawdown"
-            value={String(drawdownAnchor.maxDrawdownPercent)}
+            value={num(drawdownAnchor.maxDrawdownPercent)}
             unit="%"
             size="lg"
             tone="negative"
@@ -172,21 +189,20 @@ export default function Portfolio() {
           />
           <Figure
             label="Months under water"
-            value={String(drawdownAnchor.monthsUnderWater)}
+            value={num(drawdownAnchor.monthsUnderWater)}
             size="lg"
-            tone="negative"
             note="Below the previous peak, before it was made back."
           />
           <Figure
             label="Geometric return"
-            value={String(drawdownAnchor.geometricReturnPercent)}
+            value={num(drawdownAnchor.geometricReturnPercent)}
             unit="%/yr"
             size="lg"
             note="What the same asset compounded over the same window."
           />
           <Figure
             label="Volatility"
-            value={String(drawdownAnchor.volatilityPercent)}
+            value={num(drawdownAnchor.volatilityPercent)}
             unit="%/yr"
             size="lg"
             note="Annualised."
@@ -202,7 +218,7 @@ export default function Portfolio() {
         </Callout>
 
         <DataTable
-          class="mt-8"
+          class={`mt-8 ${TABLE}`}
           caption="Three risk variants. Only the equity share differs; the equity composition is identical in all three."
           columns={[
             {
@@ -213,7 +229,18 @@ export default function Portfolio() {
             },
             { key: "equity", header: "Equity", numeric: true, cell: (row) => range(row.equityPercent) },
             { key: "bonds", header: "Bonds", numeric: true, cell: (row) => range(row.bondPercent) },
-            { key: "when", header: "Applies when", cell: (row) => row.appliesWhen },
+            {
+              key: "when",
+              header: "Applies when",
+              cell: (row) => (
+                <>
+                  {row.appliesWhen}
+                  <Show when={row.note}>
+                    {(note) => <span class="mt-1 block text-ink-muted text-sm">{note()}</span>}
+                  </Show>
+                </>
+              ),
+            },
           ]}
           rows={riskVariants}
           footnote={<SourceLink citation={equityBondSplit.source} prefix />}
@@ -233,7 +260,7 @@ export default function Portfolio() {
         </p>
 
         <DataTable
-          class="mt-6"
+          class={`mt-6 ${TABLE}`}
           caption="Equity sleeve weights, as a share of the equity portion"
           columns={[
             { key: "sleeve", header: "Sleeve", rowHeader: true, cell: (row) => row.sleeve },
@@ -264,7 +291,7 @@ export default function Portfolio() {
         </p>
 
         <DataTable
-          class="mt-6"
+          class={`mt-6 ${TABLE}`}
           caption="Core holdings, their alternates, cost and share of equity"
           columns={[
             { key: "sleeve", header: "Sleeve", rowHeader: true, cell: (row) => row.sleeve },
@@ -362,7 +389,7 @@ export default function Portfolio() {
         </p>
 
         <DataTable
-          class="mt-6"
+          class={`mt-6 ${TABLE}`}
           caption="The two optional sleeves, their size, the account they need and their status"
           columns={[
             {
@@ -414,7 +441,7 @@ export default function Portfolio() {
                 <p class="mt-2 text-ink">{sleeve.verdict}</p>
                 <p class="mt-3 text-ink-muted">{sleeve.sizingNote}</p>
                 <p class="mt-3 text-ink-muted">
-                  Held in: {sleeve.requiredAccount.toLowerCase()}. Size: {sleeve.size}.
+                  Account: {sleeve.requiredAccount}. Size: {sleeve.size}.
                 </p>
                 <div class="mt-3">
                   <StatusChip status={sleeve.productStatus} showGloss />
@@ -440,7 +467,7 @@ export default function Portfolio() {
         </p>
 
         <DataTable
-          class="mt-8"
+          class={`mt-8 ${TABLE}`}
           caption="Candidates that were tested and are not held"
           columns={[
             { key: "label", header: "Candidate", rowHeader: true, cell: (row) => row.label },

@@ -23,6 +23,14 @@ import { type EvidenceStatus, statusMeta } from "~/content/types";
  * where it landed in the closed status vocabulary — filterable by that status.
  */
 
+/**
+ * A wide table scrolls inside its own container, but the screen-reader-only text
+ * the chips carry is absolutely positioned and would otherwise push the page
+ * itself sideways. Clipping the wrapper keeps it in, with enough margin left for
+ * the scroll region's focus ring.
+ */
+const TABLE = "relative overflow-x-clip [overflow-clip-margin:6px]";
+
 const H2 = "font-sans text-xl font-semibold tracking-[-0.015em] text-ink";
 
 const RUN_STATE_LABEL: Readonly<Record<RunState, string>> = {
@@ -95,7 +103,7 @@ function ExperimentEntry(props: { readonly entry: Experiment }) {
         </Show>
 
         <DataTable
-          class="my-6"
+          class={`my-6 ${TABLE}`}
           caption={`Key numbers, ${props.entry.title}`}
           columns={[
             { key: "label", header: "Figure", rowHeader: true, cell: (row) => row.label },
@@ -159,10 +167,11 @@ export default function Evidence() {
 
       <Prose as="section">
         <p>
-          {ledgerSummary.experimentFamilies} experiment families, {ledgerSummary.distinctSpecifications} distinct frozen
-          specifications, {ledgerSummary.runs} runs and {ledgerSummary.entries} ledger entries. No sleeve was promoted.
-          The highest rung anything here reached is <em>{statusMeta[highestStatusReached].label.toLowerCase()}</em>,
-          which permits a product to stand in for a real one in a later experiment and permits nothing else.
+          The record holds {ledgerSummary.experimentFamilies} experiment families,{" "}
+          {ledgerSummary.distinctSpecifications} distinct frozen specifications, {ledgerSummary.runs} runs and{" "}
+          {ledgerSummary.entries} ledger entries. No sleeve was promoted. The highest rung anything here reached is{" "}
+          <em>{statusMeta[highestStatusReached].label.toLowerCase()}</em>, which permits a product to stand in for a
+          real one in a later experiment and permits nothing else.
         </p>
         <p>
           The specification count is the one that matters for a search-adjusted result: repeated executions of the same
@@ -184,13 +193,18 @@ export default function Evidence() {
           note="The 2026-01-onward window is unread in every file."
         />
         <Figure
-          label="Sleeves promoted"
-          value="0"
-          note="Nothing reached walk-forward tested, or independently reproduced."
+          label="Ledger entries"
+          value={String(ledgerSummary.entries)}
+          note="Append-only, and it records the failures too."
           source={ledgerSummary.source}
           asOf={ledgerSummary.asOf}
         />
       </div>
+
+      <p class="mt-6 flex max-w-measure flex-wrap items-baseline gap-x-3 gap-y-2 text-ink-muted">
+        <span class="eyebrow">Highest status reached</span>
+        <StatusChip status={highestStatusReached} showGloss />
+      </p>
 
       <section aria-labelledby="ledger" class="mt-14">
         <h2 id="ledger" class={H2}>
@@ -202,7 +216,7 @@ export default function Evidence() {
         </p>
 
         <DataTable
-          class="mt-6"
+          class={`mt-6 ${TABLE}`}
           caption="Terminal outcomes across the committed ledger"
           columns={[
             {
@@ -356,7 +370,7 @@ export default function Evidence() {
         </p>
 
         <DataTable
-          class="mt-6"
+          class={`mt-6 ${TABLE}`}
           caption="Factor premia, pooled across the US, developed ex-US and emerging markets, over the frozen post-publication era"
           columns={[
             { key: "factor", header: "Factor", rowHeader: true, cell: (row) => row.label },
