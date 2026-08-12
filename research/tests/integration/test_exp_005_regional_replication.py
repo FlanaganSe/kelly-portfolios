@@ -386,18 +386,26 @@ def test_both_multiple_testing_families_are_reported_corrected_and_uncorrected(
             )
 
 
-def test_umd_is_recorded_as_not_covered_with_its_reason(
+def test_umd_is_recorded_as_not_covered_and_points_at_the_experiment_that_covers_it(
     tmp_path: Path, sources: dict[str, Any]
 ) -> None:
+    """UMD is outside this frozen universe; the reason once given for that was false.
+
+    The specification recorded that no regional momentum file existed. That was
+    true of this repository and false of the data, and Experiment 006 corrected
+    it by acquiring the three files. This experiment must say so rather than
+    repeat the original claim.
+    """
     result = run(synthetic_specification(sources["pins"]), _context(tmp_path))
     entry = diagnostics(result)["umd_not_covered"]
     assert entry["covered"] is False
-    assert "US only" in str(entry["reason"])
+    assert entry["superseded_by"] == "exp_006_regional_momentum"
+    assert "NOT about the data" in str(entry["reason"])
     assert "french_us_momentum" in entry["registered_french_datasets"]
-    assert not any(
-        "momentum" in name and name != "french_us_momentum"
-        for name in entry["registered_french_datasets"]
-    )
+    assert {
+        "french_developed_ex_us_momentum",
+        "french_emerging_momentum",
+    } <= set(entry["registered_french_datasets"])
 
 
 def test_every_factor_receives_a_closed_status_and_a_named_branch(

@@ -13,4 +13,8 @@ randomness the generator seed is an explicit argument with a committed default.
   whether expected log wealth is "an arbitrary nonlinear transformation of wealth".
 * :mod:`outperformance_horizon` — how long an edge of a given size takes to become
   statistically visible against a given tracking error, and the edge budget itself.
+* :mod:`tax_structure` — the contractual, tax-code half of that budget: foreign tax
+  credit forfeiture, fund-structure capital gains, §1256, the value of deferral, the
+  decay of loss harvesting, and the arithmetic of capital efficiency. Rates are a dated,
+  jurisdiction-stamped argument rather than a constant.
 """

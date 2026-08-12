@@ -2153,14 +2153,17 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
         "umd_not_covered": {
             "covered": False,
             "reason": (
-                "This repository's Ken French dataset registry holds exactly one "
-                "momentum file, F-F_Momentum_Factor_CSV.zip, which is US only, and "
-                "no committed manifest exists for any regional momentum file. A "
-                "regional momentum test therefore requires acquiring and pinning a "
-                "file this repository does not have, which is outside the frozen "
-                "specification. UMD's Experiment 001 status of `unresolved` is "
-                "untouched by this experiment."
+                "UMD is outside this experiment's frozen universe, which names HML, "
+                "RMW and CMA. When this specification was frozen, the reason given was "
+                "that the Ken French dataset registry here held exactly one momentum "
+                "file, F-F_Momentum_Factor_CSV.zip, which is US only. That was a fact "
+                "about this repository and NOT about the data: Ken French publishes "
+                "Developed, Developed ex-US and Emerging momentum files, all monthly, "
+                "and they had simply never been downloaded. Experiment 006 registers, "
+                "pins and manifests them and decides UMD's status there. Nothing in "
+                "this experiment's HML, RMW or CMA results depends on it."
             ),
+            "superseded_by": "exp_006_regional_momentum",
             "registered_french_datasets": sorted(french.DATASETS),
         },
         "regional_cells": [
@@ -2264,9 +2267,11 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
         "table. Their second moments are UNMEASURED, which is a weaker statement than "
         "a band of zero and must not be read as agreement. The Phase 1 band on US HML "
         "and US RMW is carried separately and is in no bootstrap interval.",
-        "UMD is NOT covered. This repository manifests only a US momentum file, so a "
-        "regional momentum test needs data it does not have. UMD's Experiment 001 "
-        "status of `unresolved` is untouched.",
+        "UMD is NOT covered here: it is outside this experiment's frozen universe. The "
+        "reason recorded when this specification was frozen - that no regional momentum "
+        "file existed - was true of this repository and false of the data. Experiment "
+        "006 acquired, pinned and manifested the three regional momentum files and "
+        "decides UMD's status.",
         "The three regions are the same construction on the same accounting variables "
         "in globally correlated universes. They are NOT three independent samples, and "
         "the effective sample size reported here is the measurement of exactly how far "

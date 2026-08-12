@@ -104,6 +104,14 @@ _REVISION_POLICY_INTERNATIONAL: Final = (
     "for the first years of the emerging-markets sample."
 )
 
+_REVISION_POLICY_INTERNATIONAL_MOMENTUM: Final = (
+    _REVISION_POLICY
+    + " The international files are built from a Bloomberg vintage rather than "
+    "CRSP. A momentum factor needs twelve months of prior returns before it can "
+    "be formed, so each regional momentum file begins later than the "
+    "five-factor file for the same region."
+)
+
 
 class FrenchParseError(ValueError):
     """Raised when a French artifact does not have the expected shape at all."""
@@ -194,6 +202,42 @@ DATASETS: Final[dict[str, FrenchDataset]] = {
             default_source_units="percent",
         ),
         FrenchDataset(
+            dataset_id="french_developed_momentum",
+            filename="Developed_Mom_Factor_CSV.zip",
+            description=(
+                "Momentum factor (WML) from six value-weight portfolios on size "
+                "and prior 2-12 return, developed markets INCLUDING the United "
+                "States. Registered as the momentum counterpart of "
+                "french_developed_ff5 and excluded from any pool that also holds "
+                "the US file, for the same reason: it is not an ex-US series. "
+                "The column is called WML here and Mom in the US file; both are "
+                "the same 30/70 prior-return spread."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_INTERNATIONAL_MOMENTUM,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_developed_ex_us_momentum",
+            filename="Developed_ex_US_Mom_Factor_CSV.zip",
+            description=(
+                "Momentum factor (WML), developed markets excluding the United "
+                "States. The non-overlapping complement of french_us_momentum "
+                "and the series a two-region momentum comparison needs."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_INTERNATIONAL_MOMENTUM,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_emerging_momentum",
+            filename="Emerging_MOM_Factor_CSV.zip",
+            description="Momentum factor (WML), emerging markets.",
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_INTERNATIONAL_MOMENTUM,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
             dataset_id="french_us_25_portfolios_5x5",
             filename="25_Portfolios_5x5_CSV.zip",
             description=(
@@ -203,6 +247,89 @@ DATASETS: Final[dict[str, FrenchDataset]] = {
             ),
             availability_policy=_AVAILABILITY_MONTHLY,
             revision_policy=_REVISION_POLICY,
+        ),
+        FrenchDataset(
+            dataset_id="french_us_ff3",
+            filename="F-F_Research_Data_Factors_CSV.zip",
+            description=(
+                "Fama-French three factors (Mkt-RF, SMB, HML) and the one-month "
+                "Treasury bill rate, US, from 1926-07. The three-factor file is "
+                "NOT a prefix of the five-factor one: its SMB is built from the "
+                "six size x book-to-market portfolios alone, whereas the "
+                "five-factor file's SMB averages the size legs of the "
+                "book-to-market, profitability and investment sorts. Use this "
+                "file, and not french_us_ff5, whenever an SMB is to be "
+                "reconciled against 6_Portfolios_2x3, and whenever a market "
+                "return is needed before 1963-07."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_us_6_portfolios_2x3",
+            filename="6_Portfolios_2x3_CSV.zip",
+            description=(
+                "Six portfolios formed on size and book-to-market, US, 2x3 sorts: "
+                "SMALL LoBM, ME1 BM2, SMALL HiBM, BIG LoBM, ME2 BM2, BIG HiBM. "
+                "These are the LONG-ONLY building blocks HML is assembled from, "
+                "which is what makes them the only public series that can price a "
+                "long-only tilt against the long-short factor built out of it."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+        ),
+        FrenchDataset(
+            dataset_id="french_us_6_portfolios_me_prior_12_2",
+            filename="6_Portfolios_ME_Prior_12_2_CSV.zip",
+            description=(
+                "Six portfolios formed on size and prior 2-12 month return, US, "
+                "2x3 sorts. The long-only building blocks of the momentum factor. "
+                "Constructed MONTHLY, unlike the annually rebalanced "
+                "book-to-market sorts, so the two are not comparable on turnover."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+        ),
+        FrenchDataset(
+            dataset_id="french_us_portfolios_formed_on_me",
+            filename="Portfolios_Formed_on_ME_CSV.zip",
+            description=(
+                "Portfolios formed on market equity alone, US: a negative-ME "
+                "bucket that the file itself marks 'not used', 30/40/30 splits, "
+                "quintiles and deciles, value- and equal-weighted, with firm "
+                "counts and average firm size."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+        ),
+        FrenchDataset(
+            dataset_id="french_developed_ex_us_6_portfolios_2x3",
+            filename="Developed_ex_US_6_Portfolios_ME_BE-ME_CSV.zip",
+            description=(
+                "Six portfolios formed on size and book-to-market, developed "
+                "markets EXCLUDING the United States, 2x3 sorts. The regional "
+                "analogue of french_us_6_portfolios_2x3. Developed_6_Portfolios "
+                "is deliberately not registered: like Developed_5_Factors it "
+                "INCLUDES the United States, so it cannot be an ex-US check."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_INTERNATIONAL,
+        ),
+        FrenchDataset(
+            dataset_id="french_emerging_6_portfolios_2x3",
+            filename="Emerging_Markets_6_Portfolios_ME_BE-ME_CSV.zip",
+            description=(
+                "Six portfolios formed on size and book-to-market, emerging "
+                "markets, 2x3 sorts. Note the filename: the emerging portfolio "
+                "sorts are published under 'Emerging_Markets_', not the "
+                "'Emerging_' prefix the emerging FACTOR files use, and there is "
+                "no 25-portfolio emerging file at all. Emerging markets are "
+                "distributed as 2x3 sixes and 2x2 fours only, so no emerging "
+                "small-value CORNER exists in this library."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_INTERNATIONAL,
         ),
     )
 }

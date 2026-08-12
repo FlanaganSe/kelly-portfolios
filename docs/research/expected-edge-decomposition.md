@@ -275,7 +275,7 @@ average investor" is the standard way this argument is inflated, and the code re
 | Timing / behaviour gap avoided | average investor | probabilistic | 5 | **15 bp** | 60 | 150 bp | a decomposition attributing most of the gap to timing |
 | Rebalancing, net of diversification | stated index | probabilistic | 0 | **2.4 bp** | 18 | 27 bp | drift gap above `gamma_star`; cost/tax above the residual |
 | Securities-lending pass-through | stated index | deterministic | 0.1 | **1 bp** | 3 | 2 bp | fund report shows less, or the manager keeps the split |
-| Factor tilt | stated index | probabilistic | −30 | **21 bp** | 80 | 400 bp | long-only capture below the level that makes the chain positive |
+| Factor tilt | stated index | probabilistic | −30 | **21 bp** | 80 | 400 bp | the capture term is a range, not a number: 0.520 size-neutral against 0.958 market-relative, and the line is negative on the first ([Exp 007](long-only-capture.md)) |
 | **Total vs the stated index** | | | **−29.9** | **24.4 bp** | **101** | **401 bp** | P(ahead at 30 yr) = **0.631** |
 | **Total vs own counterfactual** | | | **40** | **89 bp** | **170** | **41 bp** | P(ahead at 30 yr) ≈ **1.00** |
 | **Total vs the average investor** | | | **5** | **15 bp** | **60** | **150 bp** | P(ahead at 30 yr) = **0.708** |
@@ -487,18 +487,29 @@ decay) × 0.42 post-publication retention
 0.30 portfolio exposure − 12 bp incremental fee = **21.3 bp/yr**. Halve the capture
 fraction and the exposure and add trading cost and the chain goes **negative**.
 
-Two of those four multipliers have since been measured in this repository, for value
+Three of those four multipliers have since been measured in this repository, for value
 only, and they pull in opposite directions.
 [Experiment 005](factor-persistence.md#experiment-005--the-regional-replication)
 pooled HML across three regions and found **+4.74 pp/yr** post-publication against
 +4.56 pp/yr in its US original sample, so for that factor the retention multiplier is
 nearer 1 than 0.42 — while the same experiment closed RMW and CMA on public data,
 where the retention multiplier is not estimable at all
-([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)). **The
-long-only capture fraction is still not established by any source**, so the line
-remains a construction rather than a measurement, and its *sign* still turns entirely
-on the one multiplier nobody here has measured. At 400 bp of tracking error it needs
-more than 500 years for 90% confidence regardless.
+([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)).
+
+**The long-only capture fraction is now measured, and the measurement is that the
+0.40 above is under-specified rather than wrong.**
+[Experiment 007](long-only-capture.md) rebuilt HML from the six long-only portfolios
+it is a difference of and priced the long leg against five defensible benchmarks. The
+answers span **0.846**: the size-neutral reading, which contains book-to-market and
+nothing else, is **0.520 `[0.434, 0.722]`** over 1963-07…2025-12; against the
+capitalisation-weighted market the same tilt reads **0.958**, and the gap between them
+is a size premium that a budget carrying a separate size line would be counting twice.
+So the line above is a construction whose sign turns on a benchmark choice this page
+never states. On the size-neutral capture and the US-only premium of +1.57 pp/yr the
+gross factor line is **0.28–0.34 pp/yr before cost**, against 0.35–0.93 pp/yr of
+assumed tilt cost — **negative**. On the pooled premium and the market-relative
+capture it is positive. At 400 bp of tracking error it needs more than 500 years for
+90% confidence either way. `as of 2026-08-12`.
 
 **Securities lending: 1 bp central, computed from filings.** Net securities-lending income
 as a fraction of average net assets, taken from N-CSR Statements of Operations and divided
@@ -624,11 +635,12 @@ measured advantage.
 
 **Open questions this page does not settle.**
 
-1. **The long-only capture fraction of a long-short factor premium.** Still unestablished
-   by any source, and the sign of the factor line depends on it. This is the single
-   highest-value gap on the page, and since Experiment 005 signed the premium term for
-   value it is now the highest-value gap in the factor programme as a whole — the
-   framework names measuring it as the next experiment.
+1. **Which benchmark the factor line's capture term may be taken against.** The
+   capture fraction itself is no longer a gap: [Experiment 007](long-only-capture.md)
+   measured it at 0.520 `[0.434, 0.722]` size-neutral and 0.958 against the market,
+   a 0.846 range across five defensible benchmarks. What remains open is which of
+   those a budget with no separate size line is entitled to book, and the sign of the
+   factor line still depends on the answer.
 2. **Tax outside the US, and the step-up interaction.** Every tax figure here is US and
    jurisdiction-specific. The harvesting alpha sits between the after-liquidation 1.10% and
    the before-liquidation 1.47% depending on whether the low-basis position is ever sold —

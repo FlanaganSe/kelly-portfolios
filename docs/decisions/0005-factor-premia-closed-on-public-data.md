@@ -35,8 +35,15 @@ pooled premium of +2.53 pp/yr is smaller than the smallest premium its own poole
 window can resolve**, and RMW is the factor pooling helped *most*, because its three
 regions are the least correlated in the grid.
 
-Branch (a) fired for HML, which is now `exploratory`. UMD was not testable: the Ken
-French momentum file registered and manifested in this repository is US-only.
+Branch (a) fired for HML, which is now `exploratory`. UMD was left out of Experiment
+005's frozen universe, on the stated ground that no regional momentum file existed
+here — a fact about the repository, not the data.
+[Experiment 006](../research/factor-persistence.md#experiment-006--regional-momentum)
+acquired the three files Ken French does publish and ran the identical design on
+UMD: branch (a) fired there too, on a pooled **+7.33 pp/yr** against a measured
+pooled detection threshold of **4.98 pp/yr** and **1.33 effective regions** out of
+three. **That threshold is now the worst pooled figure in this repository, and it
+raises the floor below rather than lowering it.**
 
 ## Decision
 
@@ -50,9 +57,12 @@ This decision also fixes the general statement the measurement supports:
 > distributes, **a post-publication premium between zero and about 2.6 percentage
 > points a year cannot be signed at 80% power, however the regions are pooled.**
 
-That floor — 2.62 pp/yr, RMW's pooled figure, the best across all nine pooled cells —
-is above the 2.0 pp/yr materiality threshold this repository uses. It is a property
-of the available data, not of the factors.
+That floor — 2.62 pp/yr, RMW's pooled figure, the best across all nine of Experiment
+005's pooled cells and all twelve once Experiment 006's three are added — is above
+the 2.0 pp/yr materiality threshold this repository uses. It is a property of the
+available data, not of the factors. Momentum's own pooled floor is **4.98 pp/yr**,
+roughly twice as high, because its three regions are the most correlated of the four
+factors and its volatility the largest.
 
 **What `rejected` means here, precisely.** It is the predeclared falsifier firing on
 these series over these windows under this construction. It is **not** a claim that
@@ -113,10 +123,13 @@ of its five clauses, and the falsifier's whole design was that both branches be
 decisive. Closing a factor whose premium exceeds its own measured detection
 threshold would be applying the rule to the conclusion rather than the evidence.
 
-**Extend the closure to UMD.** Rejected as unsupported. UMD was never tested
-regionally, because no regional momentum file is registered or manifested here.
-Closing it would claim a measurement that was not made. It stays `unresolved`, and
-what would resolve it is a data acquisition.
+**Extend the closure to UMD.** Rejected at the time as unsupported, because UMD had
+never been tested regionally, and **overtaken by events**: the data acquisition this
+record named as the missing step was made, and
+[Experiment 006](../research/factor-persistence.md#experiment-006--regional-momentum)
+signed UMD's premium under branch (a). UMD is `exploratory`, not `unresolved` and
+not closed. Its remaining obstacles are turnover, cost and a crash its three regions
+share — none of which this record's closure rule addresses.
 
 ## Consequences
 

@@ -117,9 +117,15 @@ Two things make this worse than it looks, not better.
   so the retention factor is closer to 1 than to 0.42 for that factor
   ([Exp 005](factor-persistence.md#experiment-005--the-regional-replication)) —
   though the pooled figure is gross and long-short in three regions, which is not the
-  same object the 0.42 was measured on. **The long-only capture fraction is still not
-  established by any source read here, and it is now the binding unknown.** Halve it
-  and halve the exposure and the chain goes negative regardless of the premium.
+  same object the 0.42 was measured on. **The long-only capture fraction is now
+  measured rather than assumed, and the measurement is that there is no single
+  number**: five defensible benchmarks span 0.846
+  ([Exp 007](long-only-capture.md)). The size-neutral reading, the only one that
+  contains book-to-market and nothing else, is **0.520 `[0.434, 0.722]`**; against
+  the capitalisation-weighted market the same tilt reads 0.958, and the difference
+  is a size premium wearing a value label. On the size-neutral capture and the
+  US-only premium the line is 0.28–0.34 pp/yr gross against 0.35–0.93 pp/yr of
+  assumed cost, so **it is negative on the defensible reading of both terms**.
 - **The rebalancing line is now refuted downward by this repository's own data.**
   [Experiment 003](rebalancing-policy.md) measured **−38.7 bp/yr** on the portfolio
   and **−62.9 bp/yr** on the canonical regional pair over 35 years. The +2.4 bp in
@@ -198,8 +204,11 @@ Five conditions, each of which is a measurable target rather than a hope.
 2. **An investable, low-correlation pair whose drift gap is genuinely below its
    `gamma_star`.** No such pair was tested. Every pair in Experiment 003 correlates
    0.72 to 0.79 in logs, and the drift gap dominated.
-3. **A measured long-only capture fraction of a long-short factor premium.** The sign
-   of the factor line depends on a number no source establishes.
+3. **A long-only capture fraction that survives its own benchmark.** The sign of the
+   factor line depends on a quantity now measured ([Exp 007](long-only-capture.md))
+   and found to move by 0.846 across five defensible benchmarks, so what is missing
+   is no longer the measurement but agreement on which benchmark an edge budget's
+   factor line is entitled to book.
 4. **Tracking error reduction, not edge enlargement.** Because `T = (z s / e)**2`,
    halving tracking error quarters the horizon to any confidence level. Every
    feasible improvement to the index-relative answer is on the `s` side.
@@ -476,10 +485,19 @@ independent re-derivation, not only by reading the source.
 
 **The benchmark is not investable.** Diversification return is *defined* as
 \(g_p-\sum_i w_i g_i\), and \(\sum_i w_i g_i\) is not the return of any portfolio
-one can hold ([Willenbrock 2011](https://arxiv.org/abs/1109.1256)). The
-investable comparison is buy-and-hold, whose geometric mean may be higher or lower.
-A random walk produces a positive measured diversification return with no skill
-involved.
+one can hold. The investable comparison is buy-and-hold, whose geometric mean may
+be higher or lower. A random walk produces a positive measured diversification
+return with no skill involved.
+
+Attribute that carefully, because this page previously got it wrong.
+[Willenbrock 2011](https://arxiv.org/abs/1109.1256) defines the strategic return
+\(\sum_i w_i g_i\) as the geometric return of a *hypothetical zero-volatility*
+portfolio and never calls it non-investable. The non-investability claim is
+**Chambers's**, who attributes it in turn to Brennan and Schwartz (1985) having
+"disproved the common misconception that a continuously balanced portfolio of
+risky assets earns a geometric return equal to the value-weighted average of the
+geometric mean returns of the portfolio's assets". The claim stands; the citation
+was misassigned.
 
 **A two-period rebalance is a short straddle on relative performance.** Under the
 source's two-asset, two-period setup, the exact identity is
@@ -511,13 +529,30 @@ growth rates are 1.2346% and 1.2201%. And their "arbitrary nonlinear transformat
 sentence is aimed at that annualised rate, not at log wealth, which they never
 analyse — so it is not the direct attack on log utility this page reported.
 
-Against \(E[\log W]\) the dismissal fails on its own terms, because
-\((1/T)\log W_T\) is a pathwise property containing no preferences, and Breiman's
-almost-sure dominance applies. Their own Exhibit 5 also stops where the effect is
-smallest: extended, the rebalanced portfolio's expected log growth stays constant
-while buy-and-hold's decays to zero, so their 12-period 12 bp gap grows without
-bound. What a log investor actually gains is a mean-preserving contraction —
-identical \(E[V_T]\), variance lower by 29%, median higher.
+The decisive evidence for that scope reading is Chambers's own footnote 6, which
+glosses the "arbitrary" charge as: "The magnitude of the effect is driven by the
+time it takes the planet to orbit the sun." His objection is that the *year* is an
+arbitrary unit of annualisation. \(E[\log W]\) contains no annualisation, so the
+charge does not reach it. He engages neither Breiman nor Algoet–Cover anywhere;
+his only citations on log-optimality are Samuelson (1971) and Elton–Gruber (1974).
+
+Against \(E[\log W]\) the dismissal therefore fails on its own terms, because
+\((1/T)\log W_T\) is a pathwise property containing no preferences. Breiman's
+Theorem 2 gives the log-optimal strategy almost-sure dominance
+(\(\lim_n S_n/S_n^*\) exists a.s. with \(E[\lim] \le 1\)), and Algoet and Cover
+extend it to any market process with no distributional restriction. Their own
+Exhibit 5 also stops where the effect is smallest: extended, the rebalanced
+portfolio's expected log growth stays constant while buy-and-hold's decays to
+zero, so their 12-period 12 bp gap grows without bound. What a log investor gains
+is a mean-preserving contraction — identical \(E[V_T]\), variance lower by 29%,
+median higher.
+
+What survives on the other side is Samuelson's actual objection, which is not
+Chambers's. Samuelson concedes the theorem and denies only the corollary: a
+finite-horizon CRRA maximiser with \(\gamma\neq0\) has no reason to adopt an
+asymptotic criterion, and "how much you win by counts". That is a live and
+unsettled disagreement about the objective. It is not the claim that log wealth is
+an arbitrary transformation.
 
 Rebalancing should therefore be tested as an explicit rule—calendar, threshold,
 or no rebalance—from identical starting weights and cash flows. A variance
@@ -1388,37 +1423,40 @@ Three consequences follow, and none of them is a promotion.
   [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md) records,
   and it is why no further public-data premium experiment on RMW or CMA should be
   commissioned.
-- **The blocking term for value and momentum has moved one link down the chain.** It
-  is no longer the premium; it is the **long-only capture fraction** — how much of a
-  gross long-short spread a long-only tilt actually delivers — and for momentum a
-  **measured** turnover beside it, since the academic long-short assumption belongs
-  to a monthly-rebalanced spread and not to any fund. The
-  [edge decomposition](expected-edge-decomposition.md) budgets 21 bp/yr for the factor
-  line using an *assumed* 0.40 capture, and states plainly that no source read here
-  establishes it. Halving it and halving the exposure turns the line negative.
+- **The blocking term for value and momentum has moved one link down the chain, and
+  that link has now been measured.** It was the **long-only capture fraction** — how
+  much of a gross long-short spread a long-only tilt actually delivers.
+  [Experiment 007](long-only-capture.md) measured it from the portfolios the factor is
+  assembled from, and found the size-neutral value capture at **0.520
+  `[0.434, 0.722]`** and momentum's at 0.501 `[0.438, 0.565]`, both close to one half
+  for a structural reason: a long leg is one half of a symmetric three-bucket spread.
+  It also found that the answer moves by **0.846** across five defensible benchmarks,
+  so the [edge decomposition](expected-edge-decomposition.md)'s *assumed* 0.40 is
+  neither confirmed nor refuted — it is under-specified, because the budget never
+  states which benchmark it is 0.40 of. For momentum a **measured** turnover is still
+  missing beside it, since the academic long-short assumption belongs to a
+  monthly-rebalanced spread and not to any fund.
 
-### The next experiment: measure the long-only capture fraction
+### The next experiment: a delivered capture, from holdings rather than sorts
 
-Regress a **long-only** value-tilted portfolio's excess return on the market and on
-HML, over the same frozen post-publication eras and the same three regions, and
-report the fraction of the long-short premium that the long-only tilt delivers, with
-its interval and its own minimum detectable effect. The falsifier should be frozen
-against the 0.40 the edge budget currently assumes, in both directions: a measured
-capture materially below it kills the factor line arithmetically, and a measured
-capture at or above it makes a licensed fund-level source worth buying for value
-specifically.
+[Experiment 007](long-only-capture.md) measured the capture fraction from the Ken
+French sorted portfolios, which are now registered and manifested for the US, for
+developed ex-US and for emerging markets. What it could not measure is a **fund's**
+capture, because a fund's tilt is its holdings and not a sort. That is the next
+move, and it needs Experiment 002's holdings data rather than French's returns.
 
-**Data it needs, stated honestly.** The Ken French sorted portfolio files —
-`25_Portfolios_5x5` and its regional equivalents — are the natural source, and
-`french_us_25_portfolios_5x5` is already **registered** in this repository's dataset
-registry with parser coverage and a test fixture. It is **not yet manifested**, so
-retrieving it and pinning its bytes is the first step rather than a formality. The
-regional sorted-portfolio files are neither registered nor manifested.
+**What 007 settled, and what it did not.** It settled that the arithmetic works:
+`HML = 0.5(SH + BH) − 0.5(SL + BL)` reproduces the published column to half a printed
+digit, so the long leg is a portfolio and its excess is computable. It settled that
+the answer is roughly one half against a size-neutral benchmark, in every region and
+for momentum as well as value, for a structural rather than an empirical reason. It
+did **not** settle which benchmark an edge budget may book, and the two candidates
+differ by more than the budgeted line is worth.
 
-**Its known limits, before it is designed.** A long-only tilt built from sorted
-portfolios is still not a fund: it has no fee, no turnover cost, no tax and no
-tracking error against a real index. Measuring the capture fraction removes the last
-*unmeasured* term in the chain but leaves the whole of implementation to
+**Its known limits, which the successor inherits.** A long-only tilt built from
+sorted portfolios is still not a fund: it has no fee, no turnover cost, no tax and no
+tracking error against a real index. The capture fraction is measured, but the whole
+of implementation remains with
 [Experiment 002](factor-product-audit.md), which cannot exceed `exploratory` on the
 data available ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
 
@@ -1599,10 +1637,12 @@ reader needs to know they were asked.
    RMW any such matrix inherits Phase 1's 3–5% systematic volatility band.
 10. How many days of autonomous cash liquidity are required, and which assets may
     genuinely be assumed monetizable during a systemic stress?
-11. **What fraction of a long-short factor premium does a long-only tilt capture?**
-    Promoted from a buried caveat to an open question because the sign of the entire
-    factor line in the edge budget depends on it and no source read here establishes
-    it.
+11. **Which benchmark may an edge budget's factor line book?** The capture fraction
+    itself is now measured ([Exp 007](long-only-capture.md)): 0.520 `[0.434, 0.722]`
+    size-neutral, 0.958 against the capitalisation-weighted market, and a 0.846 range
+    across five defensible benchmarks. What is open is which of those a budget with no
+    separate size line is entitled to use, because the gap between them is a size
+    premium and booking it under value counts it twice.
 
 ## Product and data contract
 
@@ -1669,8 +1709,10 @@ Neither may begin yet, and the reason is not sequencing. **Step 6 combines sleev
 and there are no promoted sleeves; step 7 sizes an edge and there is no edge to
 size** ([decision 0004](../decisions/0004-no-sleeve-promoted.md)). The next
 substantive move is still evidence rather than code. Experiment 005 has now run and
-signed exactly one premium; what it did **not** buy is a long-only capture fraction
-or a fund-level data contract, and both remain prerequisites.
+signed exactly one premium. [Experiment 007](long-only-capture.md) has since supplied
+the long-only capture fraction, with the finding that it is a range rather than a
+number; what remains unbought is a fund-level data contract, which is still a
+prerequisite.
 
 Three standing rules survive from that build order.
 
@@ -1831,9 +1873,11 @@ median spreads and expense ratios are in the
 [edge decomposition](expected-edge-decomposition.md) §2.1 `as of 2026-08-10`, and
 the finding there is that retail implementation friction is about 1.3 bp round trip,
 with nothing left to harvest. Current retail borrow rates, box-spread financing and
-futures roll costs remain unverified, and the fraction of a long-short premium that
-a long-only tilt captures was not established by any source — which matters, because
-a retail investor cannot implement most academic long-short factors at all.
+futures roll costs remain unverified. The fraction of a long-short premium that a
+long-only tilt captures was established by no source read here and is now measured
+in this repository instead ([Exp 007](long-only-capture.md)), on research portfolios
+rather than on funds — which still matters, because a retail investor cannot
+implement most academic long-short factors at all.
 
 No positive candidate on this page has passed this repository's full net-cost,
 point-in-time, independently reproduced, frozen out-of-sample protocol. Published

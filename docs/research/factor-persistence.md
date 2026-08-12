@@ -11,25 +11,28 @@ investable factor products, and whether more public factor data is worth reading
 all. Out of scope: whether any factor is investable, what it costs to hold, whether
 publication *caused* any change, and any allocation.
 
-**Two experiments answer it.** [Experiment 001](#experiment-001--the-united-states-grid)
+**Three experiments answer it.** [Experiment 001](#experiment-001--the-united-states-grid)
 measured the four factors across frozen pre- and post-publication eras in the US
 and left three `unresolved` on power grounds.
 [Experiment 005](#experiment-005--the-regional-replication) added developed-ex-US
 and emerging equity over the *same* frozen eras, pooled them under a cross-region
 block bootstrap, and **measured** how much effective sample size that actually
 bought. It was designed so that both branches of its falsifier are decisive, and
-both fired: one factor advanced and two were closed.
+both fired: one factor advanced and two were closed. It stated that momentum could
+not be tested because no regional momentum file existed.
+[Experiment 006](#experiment-006--regional-momentum) showed that reason was false,
+downloaded the three files Ken French does publish, and ran the identical design on
+UMD.
 
 ## Conclusion
 
-**Value advances to `exploratory`. Profitability and investment are `rejected` and
-closed on public data. Momentum stays `unresolved` and could not be tested,
-because no regional momentum file exists in this repository.**
+**Value and momentum are `exploratory`. Profitability and investment are `rejected`
+and closed on public data.**
 
 | Factor | Status | Decided by | Why |
 | --- | --- | --- | --- |
 | **HML** | **`exploratory`** | Exp 005, branch (a) | Pooled across three regions, **+4.74 pp/yr** post-publication, cross-region joint 90% interval `[+1.46, +8.10]`, positive in all three regions, and it survives dropping its own best calendar year (+3.96). Its adjusted *p* is 0.014 under Benjamini–Hochberg and **0.036 under Holm–Bonferroni**, which is valid under arbitrary dependence — **no post-publication cell in Experiment 001 survived either correction**. |
-| **UMD** | `unresolved` | Exp 001 only | +4.19 pp/yr US, `[−0.34, +8.50]`, detection threshold 7.27 pp/yr. **Experiment 005 could not test it**: the Ken French library file this repository manifests is US-only, so there is no regional momentum series to pool. |
+| **UMD** | **`exploratory`** | Exp 006, branch (a) | Pooled **+7.33 pp/yr** post-publication, joint 90% `[+3.92, +10.31]`, positive in all three regions, surviving its own best calendar year (+6.65) and Holm at 0.0016. **But its pooled detection threshold is 4.98 pp/yr, the worst in this repository**, its three regions are the least independent measured anywhere here (**1.33 effective regions**, ρ̄ = 0.66), and **they crash together**: all three lost their worst calendar year in the same year, 2009. Its academic construction rebalances monthly. |
 | **RMW** | **`rejected`** | Exp 005, branch (b) | Pooled **+2.53 pp/yr**, `[+1.07, +3.96]` — but the window's own minimum detectable effect is **2.62 pp/yr**, so the premium is *below the smallest one this window could resolve*. Adding two regions did not fix that. |
 | **CMA** | **`rejected`** | Exp 001, confirmed by Exp 005 branch (b) | −1.39 pp/yr in the US, +0.20 pp/yr pooled, against a pooled detection threshold of 3.41 pp/yr. |
 
@@ -41,14 +44,19 @@ repository uses.** No amount of currently available public data can sign RMW's o
 CMA's premium. That is a bounded, final answer, not a request for more research —
 see [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md).
 
-**HML advancing is not a discovery of a premium; it is a measurement that this
-premium is larger than the threshold the pooled window can see.** The pooled window
-could still only detect **3.35 pp/yr** at 80% power, which is above the 2.0 pp/yr
-materiality threshold. HML cleared it because its pooled premium is 4.74, not
-because the window became powerful. And the premium is carried by the two non-US
-regions: the US contributes **+1.57 pp/yr**, developed-ex-US **+5.07** and emerging
-**+7.58**, which is a five-fold spread in a result whose falsifier only required
-the *signs* to agree.
+**Neither advance is a discovery of a premium; each is a measurement that the
+premium is larger than the threshold its pooled window can see.** HML's pooled
+window could only detect **3.35 pp/yr** at 80% power and UMD's only **4.98**, both
+above the 2.0 pp/yr materiality threshold. They cleared it because their pooled
+premia are 4.74 and 7.33, not because the windows became powerful. **A premium
+between 2.0 and 4.98 pp/yr is invisible to the momentum grid however it is
+pooled**, and one between 2.0 and 3.35 is invisible to the value grid.
+
+Both premia are carried by the two non-US regions. For HML the US contributes
+**+1.57 pp/yr**, developed-ex-US **+5.07** and emerging **+7.58**. For UMD the US
+contributes **+4.19**, developed-ex-US **+8.35** and emerging **+9.44** — and the
+US momentum premium in the most recent decade is **+0.37 pp/yr**, against +5.75 and
++10.33 abroad. Both falsifiers only required the *signs* to agree.
 
 **No factor may be described as working on this evidence.** These are academic
 zero-investment long-short research portfolios, gross of transaction costs,
@@ -188,10 +196,11 @@ investable benchmark.
 
 ## Era boundaries, and the publication record behind them
 
-These boundaries are shared. **Experiment 005 copies every era name and both of its
-boundaries verbatim from Experiment 001's frozen specification, and a committed test
-compares the two files directly** so that neither can drift without breaking. The
-publication record below is the single canonical justification for both.
+These boundaries are shared. **Experiments 005 and 006 copy every era name and both
+of its boundaries verbatim from Experiment 001's frozen specification, and a
+committed test compares the files directly** so that none can drift without
+breaking. The publication record below is the single canonical justification for all
+three.
 
 Boundaries were frozen from the publication record before any result was
 computed, and each was set at **the first January strictly after the journal
@@ -318,11 +327,11 @@ not, because the latter includes the United States at roughly half its weight
 pooling it beside a US file would have inflated the very effective sample size this
 experiment exists to measure honestly.
 
-**UMD is absent by necessity.** The Ken French momentum file this repository
-registers and manifests is US-only, and no regional momentum file is committed
-here. Testing UMD regionally requires acquiring and pinning data this repository
-does not have, which is outside the frozen specification. UMD's `unresolved` status
-is untouched.
+**UMD is outside this experiment's frozen universe**, which names HML, RMW and CMA.
+The reason recorded at the time — that no regional momentum file existed — was true
+of this repository and **false of the data**.
+[Experiment 006](#experiment-006--regional-momentum) corrected it. Nothing in
+Experiment 005's HML, RMW or CMA results depends on that correction.
 
 ### The regional grid
 
@@ -567,6 +576,185 @@ cells; no verdict changes across them.
   `premium × delivered loading − cost`. This experiment moved the first term for
   HML only, and only in a gross long-short form.
 
+## Experiment 006 — regional momentum
+
+Experiment 005 recorded that UMD "could not be tested because no regional momentum
+file exists in this repository". **That was true of the repository and false of the
+data.** Ken French publishes `Developed_Mom_Factor_CSV.zip`,
+`Developed_ex_US_Mom_Factor_CSV.zip` and `Emerging_MOM_Factor_CSV.zip`. All three
+are monthly. None had ever been downloaded. The gap was an acquisition nobody had
+made, not a limit of the public data, and correcting it is what this experiment is.
+
+The files are small — 2.2 to 2.3 kB zipped — which is what a single-column monthly
+series of 428 rows costs, not evidence that they are annual. Each holds a monthly
+table and an annual one, in the standard library layout. The developed-ex-US and
+emerging files begin **1990-11** and **1990-01**, both later than the corresponding
+five-factor files because a 2-12 month prior return cannot be formed until twelve
+months of history exist, and both **before UMD's 1994-01 post-publication
+boundary** — with 38 and 48 months of head room, checked against the loaded series
+at run time rather than asserted.
+
+The design is Experiment 005's, unchanged: the same three regions, the same frozen
+era boundaries copied verbatim from Experiment 001, the same equal pooling weights,
+the same cross-region **joint** block bootstrap, the same four effective-sample-size
+definitions and the same two-branch falsifier — all imported from Experiment 005's
+module rather than rewritten. The grid is **1 factor × 3 regions × 3 era roles = 9
+cells**, plus 3 pooled cells corrected as their own family.
+`Developed_ex_US_Mom_Factor` is used and `Developed_Mom_Factor` is not, for the
+reason Experiment 005 gives: the Developed file includes the United States.
+
+### The regional grid
+
+Premium and MDE₈₀ in percentage points per year, gross. **BH** and **Holm** are
+adjusted one-sided HAC *p*-values across the whole 9-cell family at α = 0.10.
+
+| Era role | Region | n | Premium | Vol | Sharpe | MDE₈₀ | *p* | BH | Holm |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| first post-pub | US | 120 | +10.53 | 19.70 | 0.534 | 15.49 | 0.025 | **0.036** | 0.101 |
+| first post-pub | developed ex-US | 120 | +10.63 | 14.71 | 0.723 | 11.57 | 0.028 | **0.036** | 0.101 |
+| first post-pub | emerging | 120 | +9.82 | 11.20 | 0.877 | 8.81 | 0.005 | **0.012** | **0.031** |
+| full post-pub | US | 384 | +4.19 | 16.55 | 0.253 | 7.27 | 0.077 | **0.087** | 0.154 |
+| full post-pub | developed ex-US | 384 | +8.35 | 11.86 | 0.704 | 5.21 | 0.0004 | **0.001** | **0.003** |
+| full post-pub | emerging | 384 | **+9.44** | 9.93 | 0.950 | 4.37 | <0.0001 | **0.0000** | **0.0000** |
+| recent | US | 120 | +0.37 | 13.30 | 0.028 | 10.46 | 0.459 | 0.459 | 0.459 |
+| recent | developed ex-US | 120 | +5.75 | 8.90 | 0.646 | 7.00 | 0.013 | **0.023** | **0.065** |
+| recent | emerging | 120 | +10.33 | 8.73 | 1.183 | 6.86 | 0.0001 | **0.0003** | **0.0005** |
+
+**The three US rows reproduce Experiment 001's published UMD figures exactly** —
++10.53 / +4.19 / +0.37, volatilities 19.70 / 16.55 / 13.30, MDE₈₀ 15.49 / 7.27 /
+10.46. They read the same column of the same pinned file over the same windows, and
+the agreement is asserted in the output rather than assumed.
+
+Five cells survive Holm–Bonferroni, and **every one of them is non-US**. The US
+cells are not new evidence in any case: they are already members of Experiment
+001's 20-cell family, where UMD's first post-publication decade was precisely the
+cell that looked significant uncorrected and did not survive correction.
+
+**The US recent decade is the row to sit with.** +0.37 pp/yr against +5.75 in
+developed ex-US and +10.33 in emerging. Whatever has happened to US momentum since
+2016, the same construction on two disjoint universes over the same months does not
+show it — the same pattern Experiment 005 found for HML, and in the same direction.
+
+### Pooling, and the effective sample size actually achieved
+
+| Era role | Months | Pooled premium | Joint 90% interval | MDE₈₀ | MDE₈₀ 90% | MDE₈₀ HAC | Sharpe | ρ̄ | Eff. regions | Eff. N | Naive N |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| first post-pub | 120 | +10.33 | `[+5.05, +15.51]` | 10.27 | `[7.03, 12.83]` | 10.40 | 0.791 | 0.576 | 1.43 | 171 | 360 |
+| **full post-pub** | **384** | **+7.33** | **`[+3.92, +10.31]`** | **4.98** | `[3.87, 5.98]` | 5.55 | 0.647 | 0.659 | **1.33** | **512** | **1152** |
+| recent | 120 | +5.48 | `[+2.14, +8.74]` | 7.11 | `[5.64, 8.50]` | 6.51 | 0.607 | 0.641 | 1.36 | 163 | 360 |
+
+**384 months × 3 regions = 1152 naive region-months bought 512 effective ones — an
+effective 1.33 regions out of 3, the lowest figure measured anywhere in this
+repository.** HML got 1.49, CMA 1.76, RMW 2.26. Momentum's regions are the most
+correlated of the four (ρ̄ = 0.66 against HML's 0.52 and RMW's 0.18), so pooling
+bought it the least. The pooled MDE₈₀ of **4.98 pp/yr** is correspondingly the
+worst pooled detection threshold in the repository, and its whole 90% sampling
+interval `[3.87, 5.98]` sits above the 2.0 pp/yr materiality threshold.
+
+The three pooled cells, corrected as their own family: *p* = 0.0068 / 0.0005 /
+0.0182, BH 0.010 / 0.0016 / 0.018, Holm 0.014 / 0.0016 / 0.018. All three survive
+both corrections. **That is not what advanced UMD.** A *p*-value answers "could this
+be zero?"; the minimum detectable effect answers "could this window have found
+something worth having?", and only the second decides anything here.
+
+### What fired, clause by clause
+
+| Clause | UMD |
+| --- | --- |
+| (a1) pooled premium positive | ✓ +7.33 |
+| (a2) at or above 2.0 pp/yr | ✓ |
+| (a3) joint one-sided 95% lower bound above zero | ✓ +3.92 |
+| (a4) sign shared by ≥ 2 of 3 regions | ✓ 3 of 3 |
+| (a5) survives dropping its own best calendar year | ✓ +6.65 (1999) |
+| (b) measured pooled MDE₈₀ above 2.0 pp/yr | not reached |
+| **Verdict** | **`exploratory`** |
+
+Branch (b) is evaluated only after branch (a) fails, so it was never reached. **It
+would have fired**: the measured pooled MDE₈₀ is 4.98 pp/yr, far above the
+threshold. UMD advanced for the same reason HML did — its premium is larger than
+its window's blind spot, not because the blind spot closed.
+
+### Do the regions crash together? Yes, and it is the finding
+
+Momentum crashes are state-dependent: they occur in market rebounds after bear
+markets, when the short leg has become a portfolio of high-beta distressed stocks
+([Daniel and Moskowitz 2016](https://doi.org/10.1016/j.jfineco.2015.12.002)). Bear
+markets and their rebounds are global events, so the crash test was predeclared in
+the frozen specification, with the year **2009** named in advance.
+
+- **All three regions lost their worst calendar year in the same year: 2009.** US
+  **−52.9%**, developed ex-US **−36.8%**, emerging **−28.9%**, pooled **−39.9%**.
+  Experiment 005 found that only CMA's regions shared an episode; momentum's share
+  the largest one there is.
+- **Every one of the ten worst pooled months has all three regions negative.** The
+  worst, 2009-04, is −34.4% in the US, −22.5% in developed ex-US and −14.4% in
+  emerging.
+- All three regions are negative in the same month **17.5% of months, against 4.3%
+  if they were independent** — a factor of 4.1 on their own measured monthly
+  negative rates.
+- All three are simultaneously in **their own worst decile 3.65% of months, against
+  0.1% under independence** — a factor of 36. This measure conditions on nothing
+  and is the cleanest of the four.
+- The cross-region correlation on the worst decile of pooled months is **0.50**,
+  against a matched-covariance Gaussian null whose mean is **0.06** and whose 95th
+  percentile is 0.28. (Selecting on the composite conditions on a *collider* and
+  pushes a within-tail sample correlation **down**, not up — which is why the null
+  is required, and why this statistic is reported only against it. The own-decile
+  rate above is free of that problem.)
+
+**The consequence is precise.** The 1.33 effective regions and 512 effective months
+are measured over *all* months. In the tail they are worse. **The pooled MDE₈₀ of
+4.98 pp/yr is therefore an upper bound on what this window learned, not a
+measurement of it**, and a portfolio holding regional momentum tilts gets no
+diversification from the regional split in exactly the episode that would matter.
+
+Dropping 2009 *raises* the pooled premium, from +7.33 to **+9.05**. The crash is a
+drawdown, not a premium driver, and clause (a5) — which drops the *best* year — is
+the wrong question for momentum. Both are reported.
+
+### Hostile tests
+
+- **Independent resampling narrows the interval by 1.34× to 1.51×.** For the full
+  post-publication cell the valid joint interval is `[+3.92, +10.31]` and the
+  invalid independent one `[+5.17, +9.40]`. Experiment 005 measured about 1.5× on
+  HML; momentum, being the most correlated across regions, sits at the top of that
+  range. No cell changes its zero-crossing here, but the error is the same one.
+- **A pool that excludes the United States entirely** — the genuinely independent
+  look at the US result, since it shares no security with the US file — gives
+  **+8.90 pp/yr `[+5.84, +11.62]`**, MDE₈₀ 4.31, *stronger* without the US. In the
+  recent decade it is +8.04 against +5.48 including the US.
+- **Inverse-variance weights** move the pooled premium from +7.33 to +8.15, putting
+  0.18 on the US, 0.34 on developed ex-US and 0.49 on emerging, because the US
+  series is by far the most volatile of the three. No verdict changes.
+- **A zero-mean Gaussian panel with UMD's length and measured cross-region
+  covariance** produced +0.64 pp/yr, `[−2.17, +3.45]`, MDE₈₀ 4.91 and an effective
+  1.35 regions. The machinery recovers the right effective sample size from
+  correlated noise and produces no premium from it; UMD's +7.33 sits far outside
+  what it generates from nothing.
+- **Experiment 001's alternative Carhart (1997) publication date**, 1998-01, gives a
+  pooled +6.71 pp/yr `[+2.90, +9.96]` over 336 months, MDE₈₀ 5.60, effective 1.31
+  regions, with the US at +3.65 against +7.80 and +8.69 abroad. The status does not
+  depend on which of the two candidate dates is used.
+- **Block length.** The frozen 12-month mean block throughout, with 6 and 24 months
+  as predeclared neighbours and the corrected Politis–White automatic length
+  computed from every pooled composite. No verdict changes across them.
+
+### What Experiment 006 does not establish
+
+- **Not a publication effect**, for the reasons that apply to all three experiments.
+- **Not investability, and momentum is the worst case in this repository.** The
+  construction re-forms its portfolios *every month* in every region. See
+  [cost](#cost-as-a-function-of-turnover) below.
+- **Not a second-moment agreement, and here there is not even a band.** No momentum
+  file, in any region, has ever been gated against a printed table. Experiment 005
+  could bound the effect of the Phase 1 band on the MDE that branch (b) reads
+  because that band was measured; here it cannot be bounded at all. That is an
+  unquantified sensitivity on every volatility, Sharpe ratio and MDE on this page's
+  momentum rows.
+- **Not independent of Experiment 001.** The US leg *is* Experiment 001's UMD rows.
+- **Not a long-only capture fraction**, and for momentum the gap between the gross
+  long-short series and anything holdable is the largest of the four factors.
+
 ## The systematic volatility band inherited from Phase 1
 
 The [Phase 1 ingestion gate](fama-french-reproduction.md) is **UNRESOLVED, not
@@ -610,71 +798,114 @@ same band on a US-only one, because two of the three legs are unaffected by it.
 **Every branch (b) verdict holds at both ends of the systematic band and across the
 whole 90% sampling interval of the MDE.**
 
-**Two series carry no measured band at all, which is weaker than a band of zero.**
-UMD comes from the momentum file, and the developed-ex-US and emerging five-factor
-files come from a Bloomberg vintage; none of the three was ever gated against a
-printed table. Their second moments are **unmeasured**, and the output says so
-rather than quoting agreement.
+**Five series carry no measured band at all, which is weaker than a band of zero.**
+The developed-ex-US and emerging five-factor files come from a Bloomberg vintage,
+and **all three momentum files — US, developed-ex-US and emerging — were never
+gated against any printed table in any region**. Their second moments are
+**unmeasured**, and every output says so rather than quoting agreement. The
+practical consequence is sharpest for Experiment 006: its branch (b) would have
+read a pooled MDE built entirely on ungated volatilities, so unlike Experiment 005
+it could not have bounded the effect of that uncertainty at all.
 
 The band would matter for anything that divides by these volatilities — a
 volatility-scaled sleeve, a risk-parity weight, a covariance matrix, a Kelly
 fraction. None of those is computed here. **Experiment 002 and anything that sizes
 a position must carry it.**
 
-## Cost, as a separate column
+## Cost, as a function of turnover
 
 Not a haircut, and never subtracted from a premium above. The French series have
 no turnover, no holdings and no tradable form, so no net figure for them exists.
 This is the size of the gap between the gross numbers and anything an investor
-could have earned, for a tradable strategy of comparable turnover, using this
+could have earned, for a tradable strategy of the stated turnover, using this
 repository's `core/costs.py` turnover rule
-(`cost_bp/month ≈ k × one-sided turnover %`, *k* ∈ [1.0, 1.7]) with turnover
-assumptions declared before the run.
+(`cost_bp/month ≈ k × one-sided turnover %`, *k* ∈ [1.0, 1.7]).
 
-| Factor | Assumed one-sided monthly turnover | Illustrative cost | Gross post-pub premium | Retail-implementable? |
-| --- | --- | ---: | ---: | --- |
-| HML, RMW, CMA | 1.2–7.2% (low tier, annual June rebalance) | 0.14–1.47 pp/yr | +1.57 / +3.04 / −1.39 | yes at both ends |
-| UMD | 27.5–91.5% (mid-to-high tier, monthly rebalance) | **3.30–18.67 pp/yr** | +4.19 | **no** at the pessimistic end |
+**Cost is a function, not a number, and the input is turnover.** Turnover cannot be
+recovered from a return series, so every figure below is the arithmetic consequence
+of a *stated* turnover, and the only honest way to read the table is to bring your
+own.
 
-**UMD's illustrative cost at the pessimistic end is more than four times its gross
-post-publication premium**, and even the optimistic end consumes 79% of it. At
-91.5% one-sided monthly turnover it is outside the repository's retail-
-implementability limit of 50% entirely. HML fares no better in relative terms: a
-1.47 pp/yr cost against a 1.57 pp/yr gross premium.
+| One-sided turnover, %/month | %/year | Cost at *k* = 1.0 | Cost at *k* = 1.7 | Inside the 50%/month retail limit? |
+| ---: | ---: | ---: | ---: | --- |
+| 0.5 | 6 | 0.06 pp/yr | 0.10 pp/yr | yes |
+| 1.0 | 12 | 0.12 | 0.20 | yes |
+| 2.0 | 24 | 0.24 | 0.41 | yes |
+| 5.0 | 60 | 0.60 | 1.02 | yes |
+| 10.0 | 120 | 1.20 | 2.04 | yes |
+| 20.0 | 240 | 2.40 | 4.08 | yes |
+| **27.5** | 330 | **3.30** | 5.61 | yes |
+| 50.0 | 600 | 6.00 | 10.20 | at the limit |
+| **91.5** | 1098 | 10.98 | **18.67** | **no** |
+
+**Which turnover belongs to what, because getting this wrong is an order-of-
+magnitude error and it has been made here before.**
+
+- **The academic long-short factors are the only things on this page.** HML, RMW and
+  CMA rebalance annually at the end of June; Experiment 001's declared assumption
+  is 1.2–7.2% one-sided per month, giving **0.14–1.47 pp/yr**. UMD's construction
+  re-forms its six size × prior-return portfolios **every month, in every region**;
+  the declared assumption is 27.5–91.5%, giving **3.30–18.67 pp/yr**. Both are
+  assumptions declared before the run, not measurements.
+- **Against UMD's own gross figures**: 3.30–18.67 pp/yr against a US post-
+  publication +4.19 and a pooled +7.33. The pessimistic end is more than twice the
+  pooled gross premium and outside the retail limit entirely; the optimistic end
+  consumes 45% of it. HML fares no better in relative terms: 1.47 pp/yr against a
+  US gross premium of 1.57.
+- **That range belongs to the academic long-short series and to nothing else.** A
+  long-only momentum fund rebalancing semi-annually cannot carry the monthly
+  turnover of a monthly-rebalanced long-short spread. If such a fund turns over *x*%
+  one-sided at each of two rebalances a year, its one-sided monthly-equivalent
+  turnover is `2x/12 = x/6`. **That is arithmetic, and *x* is not measured anywhere
+  in this repository.** Applying 27.5–91.5%/month to such a fund overstates its cost
+  by roughly an order of magnitude, and an earlier analysis here did exactly that.
+  Read the schedule at whatever turnover the product actually discloses; do not
+  import the academic row.
 
 This is consistent with
 [Novy-Marx and Velikov (2016)](https://www.nber.org/papers/w20721), whose measured
 haircut is 17% in the low-turnover tier and **144%** in the high-turnover tier,
 where four of six strategies had strictly negative net returns. **The ordering of
-these factors by gross premium is not their ordering by net premium, and this
-experiment cannot establish the latter.**
+these factors by gross premium is not their ordering by net premium, and these
+experiments cannot establish the latter.**
 
 ## Verified facts, assumptions, open questions
 
 ### Verified
 
-- Experiment 001's 20-cell grid and Experiment 005's 27-cell grid, the era
-  boundaries, both falsifiers and the materiality threshold were frozen in their
-  specifications before any number was computed, and both specification hashes are
-  recorded in the ledger. Experiment 005's specification was written, validated and
-  hashed at **2026-08-12T09:54Z**, before its experiment module existed and 15
-  minutes before the run at 10:09Z; nothing had been seen of the regional factor
-  series at that point but the committed manifests' row counts and date ranges.
-- **Experiment 005's era boundaries are Experiment 001's, verbatim.** A committed
-  test loads both specifications and compares every era name and both boundaries, so
-  neither file can drift.
-- All four source files are pinned by the SHA-256 of their raw bytes *and* of the
-  derived table. A mismatch aborts rather than reporting numbers.
+- Experiment 001's 20-cell grid, Experiment 005's 27-cell grid and Experiment 006's
+  9-cell grid, the era boundaries, all three falsifiers and the materiality
+  threshold were frozen in their specifications before any number was computed, and
+  all three specification hashes are recorded in the ledger. Experiment 005's
+  specification was written, validated and hashed at **2026-08-12T09:54Z**, before
+  its experiment module existed and 15 minutes before the run at 10:09Z.
+  Experiment 006's was written and validated at **2026-08-12T13:16Z**, also before
+  its module existed; what had been seen of the momentum files at that point was
+  their sha256, byte size, row count, date range, column name and prose preamble,
+  obtained by downloading them and writing the committed manifests, and no return,
+  mean, volatility or correlation from any of them.
+- **Experiments 005's and 006's era boundaries are Experiment 001's, verbatim.** A
+  committed test loads the specifications and compares every era name and both
+  boundaries, so no file can drift. The same test pins Experiment 006's Carhart
+  alternative window to Experiment 001's `umd_post_carhart_alternative` era.
+- All seven source files are pinned by the SHA-256 of their raw bytes *and* of the
+  derived table; the three momentum files are pinned by row count and first
+  observation as well. A mismatch aborts rather than reporting numbers.
 - **The regional files begin before every post-publication boundary.** Checked at run
-  time against the loaded series, per region and per factor: developed-ex-US has 42
-  months of head room on HML's 1994-01 boundary and emerging has 54. A region that
-  started late would abort rather than truncate silently.
-- **Experiment 005's nine US cells reproduce Experiment 001's published figures
-  exactly**, on premium, volatility, Sharpe and MDE₈₀. They read the same column of
-  the same pinned file over the same windows, and the agreement is asserted in the
-  output rather than assumed.
-- The sample policy ends 2025-12 in both experiments. Six further months exist in
-  every file (through 2026-06) and were **not read**. They remain a genuinely
+  time against the loaded series, per region and per factor: on HML's 1994-01
+  boundary developed-ex-US has 42 months of head room and emerging 54; on UMD's
+  1994-01 boundary the momentum files have 38 and 48. A region that started late
+  would abort rather than truncate silently.
+- **Experiment 005's nine US cells and Experiment 006's three reproduce Experiment
+  001's published figures exactly**, on premium, volatility, Sharpe and MDE₈₀. They
+  read the same column of the same pinned file over the same windows, and the
+  agreement is asserted in the output rather than assumed.
+- **The three regional momentum files are monthly, not annual.** 428 rows from
+  1990-11 for Developed and Developed ex-US and 438 from 1990-01 for Emerging,
+  through 2026-06, each with a second annual table in the same file. Their small
+  zipped size is what one column of monthly data costs.
+- The sample policy ends 2025-12 in all three experiments. Six further months exist
+  in every file (through 2026-06) and were **not read**. They remain a genuinely
   post-specification window.
 - `RF` is not subtracted from anything: all five FF5 series and UMD are already
   excess or long-short returns, in every region. Subtracting it again would move
@@ -687,18 +918,21 @@ experiment cannot establish the latter.**
 - **Equal pooling weights.** One vote per region, declared before the run and not
   tuned. Inverse-variance weights are reported as a hostile test and change no
   verdict. No regional market-capitalisation series exists here to weight by.
-- **Turnover.** Experiment 001's cost figures rest on assumed turnover tiers,
+- **Turnover.** Every cost figure on this page rests on an assumed turnover,
   declared before the run. Turnover cannot be recovered from a return series; these
-  are assumptions, not measurements, and Experiment 005 does not recompute them
-  because the tiers are US assumptions.
-- **The frozen 12-month block length.** Chosen a priori, not tuned, in both
+  are assumptions, not measurements. Experiment 005 does not recompute them because
+  the tiers are US assumptions, and Experiment 006 replaces the single UMD figure
+  with a schedule in stated turnover for the same reason.
+- **The frozen 12-month block length.** Chosen a priori, not tuned, in all three
   experiments. The data-driven alternative is reported for every cell and disagrees
   materially in Experiment 001 (1–5 months), without changing a status.
 - **Normal-approximation power.** The MDE and the power figures assume normality of
   the sample mean. At n ≥ 72 with monthly returns this is the standard
   approximation; the HAC-based MDE is reported beside it because these series are
   autocorrelated. Branch (b) reads the **conventional** pooled MDE, which is the more
-  generous of the two for RMW, so firing on it is a fortiori.
+  generous of the two for RMW, so firing on it is a fortiori. For UMD the HAC reading
+  is the *larger* of the two (5.55 against 4.98), so the branch (b) it never reached
+  would have fired on either.
 - **The effective sample size is a sample statistic, not a constant.** `k` is its
   value under zero *population* correlation, and a finite sample whose regions
   happen to correlate negatively returns more than `k`. That is why every pooled
@@ -708,8 +942,8 @@ experiment cannot establish the latter.**
   overlapping holdings, and three regions of one factor share global risk factors.
   **The corrected *p*-values are a lower bound on the true correction.**
   Holm–Bonferroni, valid under arbitrary dependence, leaves three cells in
-  Experiment 001 (UMD, RMW and CMA original samples) and two in Experiment 005 (both
-  emerging HML).
+  Experiment 001 (UMD, RMW and CMA original samples), two in Experiment 005 (both
+  emerging HML) and five in Experiment 006 (all five non-US momentum cells).
 
 ### Open questions
 
@@ -718,23 +952,27 @@ experiment cannot establish the latter.**
   conclusion on either page.
 - What do the equal-weighted constructions do? Untestable from the distributed
   files; it needs the underlying sorted portfolios.
-- **Does UMD hold outside the US?** Unanswered and currently unanswerable here. The
-  Ken French momentum file this repository registers and manifests is US-only, so
-  UMD is the one factor Experiment 005 could not touch. Answering it needs a
-  regional momentum file acquired, hashed and manifested — which is a data
-  acquisition, not an analysis.
+- **Does UMD hold outside the US?** **Answered by Experiment 006: yes, and more
+  strongly than in the US.** +8.35 pp/yr in developed ex-US and +9.44 in emerging
+  against +4.19 in the US over the same 384 months, and +5.75 and +10.33 against
+  +0.37 in the most recent decade. What remains open is not the sign but the tail:
+  the three regions crash together, so the pooled evidence is thinner in exactly the
+  episode a holder would care about.
 - **What is the long-only capture fraction of a long-short factor premium?** Still
-  unmeasured, and it is now the binding unknown for HML specifically: the chain a
-  shareholder receives is `premium × delivered loading − cost`, and this page has
-  only moved the first term, in gross long-short form.
+  unmeasured, and it is now the binding unknown for **both** `exploratory` factors:
+  the chain a shareholder receives is `premium × delivered loading − cost`, and this
+  page has only moved the first term, in gross long-short form. For momentum the
+  second and third terms are the harder ones, and the third needs a **measured**
+  turnover for the product in question — never the academic long-short assumption.
 - **What premium would be worth detecting?** Harvey, Liu and Zhu's structural
   estimate for a genuinely true factor is 0.55%/month gross, or 6.6 pp/yr
   ([Harvey, Liu and Zhu 2016](https://doi.org/10.1093/rfs/hhv059)). Against the
   2.0 pp/yr materiality threshold this repository actually uses, **no US
   post-publication window in Experiment 001's grid exceeds 26% power**, and pooling
-  three regions leaves the best pooled detection threshold at 2.62 pp/yr — still
-  above 2.0. **On the currently available public data, a premium between 0 and about
-  2.6 pp/yr is invisible no matter how it is pooled.**
+  three regions leaves the best pooled detection threshold at 2.62 pp/yr and
+  momentum's at 4.98 — all above 2.0. **On the currently available public data, a
+  premium between 0 and about 2.6 pp/yr is invisible no matter how it is pooled, and
+  for momentum the blind spot runs to 5.0 pp/yr.**
 
 ## What this does not establish
 
@@ -745,7 +983,7 @@ experiment cannot establish the latter.**
 - **Not the authors' original series.** The distributed files apply the current
   vintage and the current construction to the whole history, *including the
   pre-publication eras*. The original-sample figures are not what the papers
-  printed, and a difference is expected. The two international files are built from
+  printed, and a difference is expected. All four international files are built from
   a Bloomberg vintage rather than CRSP.
 - **Not investability, and for HML the direction is unfavourable.** These are
   zero-investment long-short research portfolios. HML's largest measured premium is
@@ -758,17 +996,21 @@ experiment cannot establish the latter.**
   narrower: **the publicly available data cannot resolve the premium at the
   materiality threshold, so it cannot be signed either way.** It is not a claim that
   either premium is zero.
-- **Not a claim that HML works.** `exploratory` is the lowest rung of the promotion
-  ladder. It permits an investable implementation to be *tested* and permits nothing
-  else.
+- **Not a claim that HML or UMD works.** `exploratory` is the lowest rung of the
+  promotion ladder. It permits an investable implementation to be *tested* and
+  permits nothing else.
+- **Not a claim that momentum diversifies across regions.** Experiment 006 measured
+  the opposite: 1.33 effective regions out of three, and all three sharing their
+  worst calendar year.
 
 ## Consequence for this repository
 
-1. **HML is the first factor in this repository to reach `exploratory`, and it is
-   promoted to nothing.** A product may be audited against it under
+1. **HML and UMD are `exploratory`, and both are promoted to nothing.** A product
+   may be audited against either under
    [Experiment 002](factor-product-audit.md)'s frozen promotion protocol; that
-   protocol is unchanged and every screened value product still has to pass it on
-   its own terms.
+   protocol is unchanged and every screened product still has to pass it on its own
+   terms. MTUM, the entire retail momentum shelf that experiment screened, is
+   already `rejected` there on its own evidence, and nothing here revisits that.
 2. **RMW and CMA are closed on public data.** No further public-data experiment on
    either premium should be commissioned; the reopening conditions are in
    [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md).
@@ -776,22 +1018,30 @@ experiment cannot establish the latter.**
    grounds that it retained 96% of its premium, is **superseded**: it retained its
    premium and its premium is still smaller than the smallest one three regions of
    public data can resolve.
-3. **UMD should not be pursued as a standalone sleeve**, and it cannot be resolved
-   from what is here. Its illustrative cost exceeds its gross premium at the
-   pessimistic end, its turnover is outside the retail limit, its post-publication
-   path includes a −56.6% year, and no regional file exists to pool.
+3. **UMD's premium is signed and its problem has moved from power to
+   implementation.** The blockers are now the ones cost and tail risk create, not
+   sample size: the academic construction rebalances monthly and its assumed
+   turnover reaches outside the retail limit; the illustrative cost range straddles
+   the gross pooled premium; its post-publication path includes a −56.6% US year;
+   and the three regions crash together, so splitting a momentum tilt across regions
+   buys no protection in the episode that matters. **The next question for momentum
+   is a measured long-only capture fraction and a measured turnover, not another
+   premium experiment.**
 4. **HML and CMA must never be counted as two independent bets** in any
    construction: 0.63 correlated over the common US period.
 5. **Regional factor sleeves are not independent bets either.** US, developed-ex-US
    and emerging HML correlate 0.52 on average and amount to an effective **1.49**
-   regions. Any construction holding regional value tilts must use that number, not
-   three.
-6. **The HML/RMW volatility band propagates**, and the two regional files carry no
-   measured band at all. Any downstream calculation that divides by one of those
-   volatilities must carry ±3.03% and ±5.09% as a separate systematic band, and must
-   record that the regional second moments are *unmeasured*, or say that it did not.
-7. **The 2026-01 onward window is the natural confirmatory test** of anything either
-   experiment proposes. It has not been read, in any region.
+   regions; the same three momentum series correlate **0.66** and amount to an
+   effective **1.33**. Any construction holding regional value or momentum tilts must
+   use those numbers, not three — and for momentum must additionally assume no
+   regional diversification at all in a crash.
+6. **The HML/RMW volatility band propagates**, and five series carry no measured
+   band at all: the two regional five-factor files and **all three momentum files**.
+   Any downstream calculation that divides by one of those volatilities must carry
+   ±3.03% and ±5.09% as a separate systematic band, and must record that the other
+   second moments are *unmeasured*, or say that it did not.
+7. **The 2026-01 onward window is the natural confirmatory test** of anything these
+   experiments propose. It has not been read, in any region.
 
 ## Reproduce it
 
@@ -799,23 +1049,27 @@ experiment cannot establish the latter.**
 cd research
 uv run python -m portfolio_edge.experiments.exp_001_factor_decay --view-results
 uv run python -m portfolio_edge.experiments.exp_005_regional_replication --view-results
+uv run python -m portfolio_edge.experiments.exp_006_regional_momentum --view-results
 uv run pytest tests/unit/test_experiments_exp_001_factor_decay.py
 uv run pytest tests/unit/test_experiments_exp_005_regional_replication.py
+uv run pytest tests/unit/test_experiments_exp_006_regional_momentum.py
 uv run pytest tests/integration/test_exp_001_factor_decay.py           # offline
 uv run pytest tests/integration/test_exp_005_regional_replication.py   # offline
+uv run pytest tests/integration/test_exp_006_regional_momentum.py      # offline
 ```
 
-| Field | Experiment 001 | Experiment 005 |
-| --- | --- | --- |
-| Run | `37b77882963b45d09af9be418784ebda` | `aae878bfc1e649038966408ac9a29ba2` |
-| Specification hash | `f9184dfe26619e85b083fae3a08e283eea83daaea977d058fb707554e68f3d76` | `6fd843b790b799c4565cb7b8354b758ade70944d7c6ca91052c9e78fe562c13c` |
-| Specification | [`exp_001_factor_decay.yaml`](../../research/experiments/exp_001_factor_decay.yaml) | [`exp_005_regional_replication.yaml`](../../research/experiments/exp_005_regional_replication.yaml) |
-| Code | [`exp_001_factor_decay.py`](../../research/src/portfolio_edge/experiments/exp_001_factor_decay.py) | [`exp_005_regional_replication.py`](../../research/src/portfolio_edge/experiments/exp_005_regional_replication.py) |
-| Seed | 20260811 | 20260812 |
-| Grid | 4 factors × 5 eras = 20 cells | 3 factors × 3 regions × 3 eras = 27 cells, plus 9 pooled |
-| Bootstrap | stationary block (Politis–Romano), 10 000 resamples, frozen mean block 12 months | the same, drawn **jointly across regions** for every pooled statistic |
+| Field | Experiment 001 | Experiment 005 | Experiment 006 |
+| --- | --- | --- | --- |
+| Run | `37b77882963b45d09af9be418784ebda` | `aae878bfc1e649038966408ac9a29ba2` | `f52fd449df6540e5a0711697c8174140` |
+| Specification hash | `f9184dfe26619e85b083fae3a08e283eea83daaea977d058fb707554e68f3d76` | `6fd843b790b799c4565cb7b8354b758ade70944d7c6ca91052c9e78fe562c13c` | `3f13053c38d0e21cee9e1fbbe6ab366fe74d3eb90f82164c102bed4b67dc2e91` |
+| Specification | [`exp_001_factor_decay.yaml`](../../research/experiments/exp_001_factor_decay.yaml) | [`exp_005_regional_replication.yaml`](../../research/experiments/exp_005_regional_replication.yaml) | [`exp_006_regional_momentum.yaml`](../../research/experiments/exp_006_regional_momentum.yaml) |
+| Code | [`exp_001_factor_decay.py`](../../research/src/portfolio_edge/experiments/exp_001_factor_decay.py) | [`exp_005_regional_replication.py`](../../research/src/portfolio_edge/experiments/exp_005_regional_replication.py) | [`exp_006_regional_momentum.py`](../../research/src/portfolio_edge/experiments/exp_006_regional_momentum.py) |
+| Seed | 20260811 | 20260812 | 20260812 |
+| Grid | 4 factors × 5 eras = 20 cells | 3 factors × 3 regions × 3 eras = 27 cells, plus 9 pooled | 1 factor × 3 regions × 3 eras = 9 cells, plus 3 pooled |
+| Bootstrap | stationary block (Politis–Romano), 10 000 resamples, frozen mean block 12 months | the same, drawn **jointly across regions** for every pooled statistic | Experiment 005's implementation, imported unchanged |
 
-All four source files, pinned by the SHA-256 of their raw bytes:
+All seven source files, pinned by the SHA-256 of their raw bytes. The three
+momentum files are also pinned by row count and first observation.
 
 | File | sha256 | Rows | Coverage |
 | --- | --- | ---: | --- |
@@ -823,11 +1077,21 @@ All four source files, pinned by the SHA-256 of their raw bytes:
 | `F-F_Momentum_Factor_CSV.zip` | `f405ee2d47a5c75ce05025f789733d0599879361e9836a553504240b89159871` | 1194 | 1927-01…2026-06 |
 | `Developed_ex_US_5_Factors_CSV.zip` | `54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d` | 432 | 1990-07…2026-06 |
 | `Emerging_5_Factors_CSV.zip` | `ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8` | 444 | 1989-07…2026-06 |
+| `Developed_ex_US_Mom_Factor_CSV.zip` | `ca8297c338b45cc2121b81ac23f0bba9cd8b8cf3c6afb523a413542fd1557bb6` | 428 | 1990-11…2026-06 |
+| `Emerging_MOM_Factor_CSV.zip` | `5e684176192fb88e9103e6393e293f73d3aad265873224558f9532ccb0bb0f4e` | 438 | 1990-01…2026-06 |
+| `Developed_Mom_Factor_CSV.zip` (registered, **not used**) | `2bee31ed74c88f01bc8c8b33327c2a8506901d1f95a3785b3237f84cfcd25109` | 428 | 1990-11…2026-06 |
+
+`Developed_Mom_Factor` is registered and manifested but excluded from every pool,
+because like `Developed_5_Factors` it includes the United States. Registering it
+makes the exclusion a recorded choice rather than an absence. The `Mom` column of
+the US file and the `WML` column of the two international files are the same 30/70
+prior-return spread; both are called UMD throughout, and the source column of each
+region is pinned so a silent column change cannot pass unnoticed.
 
 Units are source percent → parsed decimal (`value / 100`) → reported percent
 throughout, on Python 3.12 with NumPy 2.x and pandas 2.x.
 
-Both runs, their git commits, specification hashes, dataset-manifest hashes,
+All three runs, their git commits, specification hashes, dataset-manifest hashes,
 artifact hashes and `results_viewed` events are in
 [`research/ledger.jsonl`](../../research/ledger.jsonl). Each specification refuses
 to run against a file whose SHA-256 is not the pinned one: when Ken French

@@ -470,12 +470,16 @@ inference:
 rejection_rule: >
   Evaluated in this fixed order, and the output must report every clause
   whether or not the branch fired.
-  (0) If the reconstructed HML differs from the published HML column by more
-  than the printed precision of the source file -- 0.005 percentage points per
-  month, half of the last printed digit, allowing 1.5 times that for the four
-  terms of the momentum reconstruction -- then the arithmetic this experiment
-  rests on is wrong and the status is `unresolved` with no capture fraction
-  reported at all. Nothing downstream may be salvaged.
+  (0) If any reconstruction identity this specification marks as required
+  differs from its published column by more than 0.015 percentage points per
+  month -- the rounding of a four-term weighted sum of two-decimal-place inputs
+  compared against an independently rounded two-decimal-place target, derived
+  in parameters.reconstruction_identities and in no other way -- then the
+  arithmetic this experiment rests on is wrong and the status is `unresolved`
+  with no capture fraction reported at all. Nothing downstream may be salvaged.
+  The comparison is at or inside the declared bound, and a residual exactly
+  equal to the bound PASSES: the bound is the largest value rounding can
+  produce, not the smallest value that is a defect.
   (1) Else, compute the definitional spread. If it exceeds 0.30 in either
   falsifier era, clause (i) of the hypothesis is REJECTED and the output must
   state, in the conclusion and not in a footnote, that no benchmark-free
@@ -543,12 +547,18 @@ parameters:
       - id: hml_from_6_portfolios_2x3
         formula: HML = 0.5 * (SH + BH) - 0.5 * (SL + BL)
         checked_against: the HML column of french_us_ff5, and of french_us_ff3
-        tolerance_decimal_per_month: 0.00005
+        tolerance_decimal_per_month: 0.00015
         tolerance_rationale: >
-          The portfolio file prints two decimal places in percent, so each of
-          the four terms carries up to 0.005 percentage points of rounding.
-          Half a printed digit on the assembled spread is 0.005 percentage
-          points, which is 0.00005 in decimal, and that is the tolerance.
+          Propagated, not guessed. The portfolio file prints two decimal places
+          in percent, so each of the four terms carries a rounding error of at
+          most 0.005 percentage points. The identity weights all four terms by
+          0.5, so the sum of the absolute weights is 2 and the reconstruction
+          inherits at most 2 * 0.005 = 0.010 percentage points. The published
+          HML column is itself printed to two decimal places, contributing a
+          further 0.005. The bound is 0.015 percentage points per month, which
+          is 0.00015 in decimal. See the correction record at the top of this
+          file: an earlier version of this specification declared 0.00005 here
+          on a wrong derivation, and that error is on the ledger.
       - id: smb_from_6_portfolios_2x3
         formula: SMB = (SL + SM + SH) / 3 - (BL + BM + BH) / 3
         checked_against: >
@@ -558,16 +568,24 @@ parameters:
           run and the five-factor disagreement is REPORTED as the expected
           finding it is, because a reader who assumed the two SMBs were the
           same series would draw a false conclusion from this experiment.
-        tolerance_decimal_per_month: 0.00005
+        tolerance_decimal_per_month: 0.00015
+        tolerance_rationale: >
+          The same propagation as the HML identity. The size identity weights
+          six terms by one third, so the sum of the absolute weights is 2
+          exactly as before, and the bound is the same 0.015 percentage points
+          per month.
       - id: umd_from_6_portfolios_me_prior_12_2
         formula: UMD = 0.5 * (SHiPRIOR + BHiPRIOR) - 0.5 * (SLoPRIOR + BLoPRIOR)
         checked_against: the Mom column of french_us_momentum
-        tolerance_decimal_per_month: 0.000075
+        tolerance_decimal_per_month: 0.00015
         tolerance_rationale: >
-          One and a half printed digits rather than one. The momentum sort is
-          reconstituted monthly and its file and the factor file are rounded
-          independently, so the same four-term rounding argument gives a
-          slightly wider bound. Stated in advance rather than widened later.
+          Identical in structure to the HML identity and therefore identical in
+          value: four terms weighted by 0.5, absolute weights summing to 2, at
+          most 0.005 percentage points of rounding each, plus 0.005 for the
+          independently rounded Mom column, giving 0.015 percentage points per
+          month. An earlier version of this specification declared 0.000075
+          here on a wrong derivation and that error fired clause (0) on the
+          first run; see the correction record at the top of this file.
 
   primary_definitions:
     description: >
