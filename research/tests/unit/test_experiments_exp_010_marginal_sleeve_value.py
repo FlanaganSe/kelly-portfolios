@@ -805,10 +805,11 @@ def test_par_bond_risk_matches_an_exact_repricing_of_the_bond() -> None:
     # And the textbook magnitudes, so a sign or factor error is obvious to a reader.
     assert modified == pytest.approx(8.176, abs=1e-3)
     assert convexity == pytest.approx(78.898, abs=1e-3)
-    # FINDING: exp_004's copy of this helper returns 39.449, exactly half, because
-    # its second-derivative formula drops a factor of two. Its own test asserts
-    # 39.4490, so it compares the implementation with itself and cannot catch this.
-    # The disagreement is recorded, not smoothed over.
+    # FINDING, surfaced here and since repaired: exp_004's copy of this helper
+    # returned 39.449, exactly half, because its second-derivative formula dropped
+    # a factor of two, and its own test asserted 39.4490 — the implementation's own
+    # output — so it could not catch it. Both copies now agree, and exp_004's test
+    # asserts that they do.
 
 
 def test_a_flat_yield_earns_only_its_coupon() -> None:

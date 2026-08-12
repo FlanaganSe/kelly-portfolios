@@ -401,12 +401,21 @@ def par_bond_risk(annual_yield: float, *, periods: float) -> tuple[float, float]
 
     For a semi-annual par bond priced at 1 with ``n`` periods and per-period yield
     ``i``, the coupon equals the yield, so ``P'(i)`` collapses to ``-(1 - v**n)/i``
-    with ``v = 1 / (1 + i)``. Differentiating once more gives
-    ``P''(i) = (1 - v**n)/i**2 - n v**(n+1)/i``. Dividing by 2 and 4 converts the
-    per-period derivatives to annual ones.
+    with ``v = 1 / (1 + i)``. Differentiating once more, with the COUPON HELD FIXED
+    while the yield moves, gives ``P''(i) = 2[(1 - v**n)/i**2 - n v**(n+1)/i]``.
+    Dividing by 2 and 4 converts the per-period derivatives to annual ones.
 
-    At a 4% yield and ten years this returns 8.1757 and 39.4467, which are the
-    textbook figures for a ten-year 4% par bond and are asserted as a fixture.
+    At a 4% yield and ten years this returns 8.1757 and 78.8979, both confirmed
+    against a numerical derivative of the exact price function in the unit test.
+
+    CORRECTION, 2026-08-12. This function previously dropped the factor of two in
+    ``P''(i)`` and returned 39.4490, exactly half the true convexity, and its unit
+    test asserted that output rather than an independent value. The error was
+    surfaced by exp_010, which carries the corrected form. Inside this experiment
+    it reaches only the declared ``research_grade = False`` GS10 bond-proxy
+    robustness arm, where the convexity term is second order in a monthly yield
+    change; the correction and its effect on every published figure are ledgered
+    rather than edited into the published numbers in place.
     """
     if annual_yield <= 0.0:
         raise ValueError(f"a par-bond yield must be positive, got {annual_yield}")
@@ -417,7 +426,7 @@ def par_bond_risk(annual_yield: float, *, periods: float) -> tuple[float, float]
     modified = (1.0 - discount) / (2.0 * half)
     convexity = (
         (1.0 - discount) / half**2 - periods * discount / (half * (1.0 + half))
-    ) / 4.0
+    ) / 2.0
     return modified, convexity
 
 

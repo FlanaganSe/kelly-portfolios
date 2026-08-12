@@ -164,7 +164,7 @@ distinguish much of anything, and the specification requires that to be reported
 | Cap leverage at 0.75 | +1.652 | **invalid, see below** |
 | Volatility lookback 20 days instead of 60 | +1.395 | −4% |
 | Volatility lookback 120 days instead of 60 | +1.400 | −4% |
-| Bond-leg robustness arm (modelled GS10 total return) | +1.255 | 6% |
+| Bond-leg robustness arm (modelled GS10 total return) | +1.254 | 6% |
 | Static long at matched ex-ante risk | −0.219 | destroys it |
 | Volatility-scaled long at matched ex-ante risk | −0.121 | destroys it |
 | **Static + volatility exposure replica, intercept removed** | **+0.586** | **56% — clause (d) fires** |
@@ -349,7 +349,7 @@ executable, each with the reason and a `made_before_any_result: true` flag.
   establishes that no free price source is research-grade, so no investable bond
   total-return history is available. The equity/bond form survives as a declared
   robustness arm built from a modelled GS10 duration approximation, which moves the
-  headline from +1.342 to +1.255 pp/yr. No conclusion rests on it.
+  headline from +1.342 to +1.254 pp/yr. No conclusion rests on it.
 - **The volatility lookback stayed at 60 days and moved to monthly frequency.** The
   recovered methodology text confirms 60 days is the vendor's own centre of mass, so
   the frozen number was right and only its frequency had to change.

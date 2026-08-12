@@ -1,8 +1,11 @@
 """Unit tests for the statistics Experiment 004 adds.
 
 Every expected value here is computed in this file, from first principles, never
-by calling the function under test. Where a textbook figure exists — the modified
-duration and convexity of a ten-year par bond — it is asserted directly.
+by calling the function under test. Where a closed form exists — the modified
+duration and convexity of a ten-year par bond — the constant is derived in the
+test's own docstring and then cross-checked against a numerical derivative of the
+exact price function. Asserting whatever the implementation happens to return
+pins its bugs instead of catching them, and did.
 """
 
 from __future__ import annotations
@@ -37,6 +40,9 @@ from portfolio_edge.experiments.exp_004_trend_marginal_value import (
     expanding_annualised_volatility,
     high_water_mark_performance_fee,
     par_bond_risk,
+)
+from portfolio_edge.experiments.exp_010_marginal_sleeve_value import (
+    par_bond_risk as exp_010_par_bond_risk,
 )
 from portfolio_edge.experiments.specification import JsonValue, load_specification
 
@@ -206,10 +212,58 @@ def test_a_zero_rate_charges_nothing() -> None:
 # --------------------------------------------------------------------------- #
 
 
-def test_par_bond_risk_matches_the_textbook_ten_year_figures() -> None:
+def test_par_bond_risk_matches_a_numerical_derivative_of_the_exact_price() -> None:
+    """Independently derived constants, then a numerical cross-check.
+
+    A ten-year semi-annual par bond has coupon equal to its yield, so with
+    ``i = y/2``, ``n = 20`` and ``v = 1/(1+i)`` its price is
+    ``P(y) = c * (1 - v**n)/i + v**n`` with the COUPON ``c = y0/2`` HELD FIXED
+    while ``y`` moves. Differentiating twice and setting ``y = y0`` gives
+    ``P'(i) = -(1 - v**n)/i`` and ``P''(i) = 2[(1 - v**n)/i**2 - n v**(n+1)/i]``.
+    Annualising by 2 and 4 at ``y0 = 4%``, where ``v**20 = 1.02**-20 = 0.6729713...``:
+
+        modified  = (1 - 0.6729713)/(2 * 0.02)                       = 8.175717
+        convexity = 2 * [0.3270287/0.0004 - 20*0.6729713/(1.02*0.02)] / 4
+                  = (817.5717 - 659.7758) / 2                        = 78.897925
+
+    Both constants are written out here rather than obtained from the function,
+    and both are then confirmed against central differences of the exact price
+    function below. That is the point of this test: a previous version asserted
+    ``convexity == 39.4490``, which was the implementation's own output with a
+    factor of two missing from ``P''``, so the test pinned the error instead of
+    catching it.
+    """
     modified, convexity = par_bond_risk(0.04, periods=20)
-    assert modified == pytest.approx(8.1757, abs=5e-4)
-    assert convexity == pytest.approx(39.4490, abs=5e-3)
+    assert modified == pytest.approx(8.175717, abs=1e-6)
+    assert convexity == pytest.approx(78.897925, abs=1e-6)
+
+    # Cross-check: differentiate the exact price function numerically.
+    y0, periods = 0.04, 20
+
+    def price(annual_yield: float) -> float:
+        coupon = y0 / 2.0
+        discount = 1.0 / (1.0 + annual_yield / 2.0)
+        return sum(coupon * discount**k for k in range(1, periods + 1)) + discount**periods
+
+    assert price(y0) == pytest.approx(1.0, abs=1e-15), "a par bond prices at one"
+    step = 1e-6
+    first = (price(y0 + step) - price(y0 - step)) / (2.0 * step)
+    second = (price(y0 + step) - 2.0 * price(y0) + price(y0 - step)) / step**2
+    assert modified == pytest.approx(-first / price(y0), rel=1e-8)
+    assert convexity == pytest.approx(second / price(y0), rel=1e-4)
+
+
+def test_par_bond_risk_agrees_with_the_copy_in_experiment_010() -> None:
+    """Two independent copies of the same helper must not drift apart again.
+
+    They did: exp_004's returned half exp_010's for as long as its test asserted
+    its own output. Any future divergence fails here rather than in a published
+    number.
+    """
+    for annual_yield in (0.01, 0.04, 0.09):
+        assert par_bond_risk(annual_yield, periods=20) == pytest.approx(
+            exp_010_par_bond_risk(annual_yield, periods=20), rel=1e-12
+        )
 
 
 def test_a_flat_yield_earns_only_its_coupon() -> None:
