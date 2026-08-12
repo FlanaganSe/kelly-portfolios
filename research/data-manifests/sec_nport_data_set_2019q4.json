@@ -1,0 +1,28 @@
+{
+  "schema_version": "1",
+  "dataset_id": "sec_nport_data_set_2019q4",
+  "source_url": "https://www.sec.gov/files/dera/data/form-n-port-data-sets/2019q4_nport.zip",
+  "retrieved_utc": "2026-08-12T08:09:23Z",
+  "sha256_raw": "f8e10bce83ac2251bcdb80111faa362b7c2b1ffb6581513e11559af0eac31390",
+  "sha256_normalized": "9af06d8a7113241353190cc636787964b57b17216b149c5942da93b3ef47a46a",
+  "content_type": "application/octet-stream",
+  "source_last_modified": "Thu, 25 Jul 2024 20:14:33 GMT",
+  "source_etag": null,
+  "parser_version": "exp002-universe/1",
+  "frequency": "unknown",
+  "units": "usd",
+  "source_units": "usd",
+  "unit_transform": "identity",
+  "first_observation": "S000000008|BNY Mellon Appreciation Fund, Inc.",
+  "last_observation": "S000066862|WCM Small Cap Growth Fund",
+  "rows": 8563,
+  "availability_policy": "Public N-PORT reporting begins with periods ending 2019-09-30; the first filings reached EDGAR on 2019-10-22. Nothing in this frame was public before then, and no earlier census exists.",
+  "revision_policy": "The quarterly data sets fold amendments into the same file rather than preserving both versions, so this frame is 'as most recently filed' and is not point-in-time: a fund's reported net assets for this quarter can be restated by a later NPORT-P/A and this file would show the restated figure. The raw EDGAR filings retain the full revision history.",
+  "license_or_terms_url": "https://www.sec.gov/os/webmaster-faq#developers",
+  "warnings": [
+    "This table is a UNIVERSE FRAME, not a time series. Its periods are series identifiers so that the canonical form pins exactly which funds the screen saw.",
+    "NPORT-P/A amendments are excluded; an amendment restates a filing already counted and would double a fund in the census.",
+    "SEC disclaimer: the data are derived from information provided by individual registrants and their accuracy is not guaranteed.",
+    "Used ONLY as a screening frame. No return is read from this archive."
+  ]
+}

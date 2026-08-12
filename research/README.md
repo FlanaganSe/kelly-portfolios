@@ -70,3 +70,4 @@ uv run ruff check
 | Goyal–Welch | Return-predictability tests | Describe an annually updated full-sample file as point-in-time |
 | Shiller | Long-horizon sensitivity | Use for modern execution backtests |
 | Stooq / free price feeds | Exploratory only | Use in a confirmatory experiment; there is no documented total-return or corporate-action contract |
+| SEC Form N-PORT | Fund-reported monthly total returns, net assets and the fund census, from the filings themselves | Treat as long, audited, or complete. Public filings begin 2019, figures are unaudited, and General Instruction G lets each filer use its own methodology |

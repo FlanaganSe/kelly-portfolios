@@ -50,6 +50,11 @@ CACHE_ENV_VAR: Final = "PORTFOLIO_EDGE_CACHE_DIR"
 #: Seconds to wait between retry attempts. Short, and bounded by ``attempts``.
 _RETRY_BACKOFF_SECONDS: Final = 2.0
 
+#: Statuses that mean "not now" rather than "not ever", and are retried within
+#: the attempt budget. Yahoo's edge in particular answers 429 to a client it
+#: serves normally seconds later.
+_RETRYABLE_STATUSES: Final = frozenset({429, 500, 502, 503, 504})
+
 #: Grace added to ``curl``'s own ``--max-time`` before the subprocess is killed,
 #: so that a timeout is reported by curl rather than by an opaque process kill.
 _CURL_TIMEOUT_SLACK_SECONDS: Final = 15.0
@@ -465,6 +470,13 @@ class RawCache:
                 last_error = exc
                 if attempt + 1 < attempts:
                     time.sleep(_RETRY_BACKOFF_SECONDS * (attempt + 1))
+                continue
+            if status in _RETRYABLE_STATUSES and attempt + 1 < attempts:
+                # Yahoo's edge answers 429 intermittently to a client it serves
+                # normally seconds later, so one refusal is not evidence that a
+                # source is unavailable. Back off and try again.
+                last_error = requests.HTTPError(f"HTTP {status} for {url}")
+                time.sleep(_RETRY_BACKOFF_SECONDS * (attempt + 1) ** 2)
                 continue
             if not 200 <= status < 300:
                 raise requests.HTTPError(f"HTTP {status} for {url}")

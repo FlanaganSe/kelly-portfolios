@@ -202,6 +202,104 @@ def test_exp_002_predeclares_a_screening_rule_and_records_every_fund() -> None:
     assert "common_period" in {era.name for era in spec.sample_policy.eras}
 
 
+def test_exp_002_freezes_the_numbers_its_decision_reads() -> None:
+    """Loosening any of these cannot be a quiet edit: it breaks a test and moves
+    the specification hash at the same time."""
+    spec = load("exp_002_fund_exposure")
+    parameters = as_mapping(spec.parameters)
+    assert parameters["minimum_intended_loading"] == 0.15
+    assert parameters["materiality_threshold_annual_percent"] == 1.0
+    assert parameters["minimum_net_assets_usd"] == 1_000_000_000
+    assert parameters["maximum_net_expense_ratio_percent"] == 0.60
+    assert parameters["inception_on_or_before"] == "2016-12-31"
+    assert parameters["hac_lags"] == 6
+    # 2020-01..2025-12 is 72 months, exactly six whole years, which is what makes
+    # the two calendar halves equal and complete.
+    assert spec.sample_policy.start == "2020-01"
+    assert spec.sample_policy.end == "2025-12"
+    assert parameters["minimum_monthly_observations"] == 72
+
+
+def test_exp_002_pins_the_shrinkage_arithmetic_and_its_annualisation_trap() -> None:
+    """An alpha that is not shrunk, or shrunk with sqrt(12), invents manager skill."""
+    shrinkage = as_mapping(
+        as_mapping(load("exp_002_fund_exposure").parameters)["alpha_shrinkage"]
+    )
+    assert shrinkage["sigma_true_annual_percent"] == 1.25
+    assert shrinkage["reference_standard_error_annual_percent"] == 3.36
+    assert shrinkage["reference_shrinkage_factor"] == 0.121
+    trap = str(shrinkage["annualisation_trap"])
+    assert "TWELVE" in trap and "sqrt(12)" in trap
+    assert "OWN HAC standard error" in str(shrinkage["worked_example"])
+
+
+def test_exp_002_takes_excess_returns_over_the_same_bill_that_defines_the_market() -> None:
+    """A three-month bill would push the maturity spread straight into every alpha."""
+    parameters = as_mapping(load("exp_002_fund_exposure").parameters)
+    assert parameters["cash_series"] == "french_rf_one_month_bill"
+    assert list(as_sequence(parameters["cash_series_alternatives_tested"])) == [
+        "TB3MS",
+        "DGS3MO",
+        "DFF",
+    ]
+    assert "same rate" in str(parameters["cash_series_rationale"])
+
+
+def test_exp_002_screens_a_census_taken_at_the_start_of_the_window() -> None:
+    """A universe assembled from today's listings is survivorship-contaminated."""
+    universe = as_mapping(load("exp_002_fund_exposure").universe)
+    frame = as_mapping(as_mapping(universe["screening_rule"])["frame"])
+    assert "2019Q4" in str(frame["source"])
+    assert "START of the observation window" in str(frame["frame_date_rationale"])
+    assert "LOWER BOUND" in str(frame["known_frame_limitation"])
+
+
+def test_exp_002_declares_the_intended_factor_per_mandate_before_estimating() -> None:
+    """Otherwise a fund can be graded against whichever loading turned out largest."""
+    universe = as_mapping(load("exp_002_fund_exposure").universe)
+    mapping = as_mapping(as_mapping(universe["intended_factor_map"])["mapping"])
+    assert as_mapping(mapping["value"]) == {"factor": "HML", "sign": 1}
+    assert as_mapping(mapping["growth"]) == {"factor": "HML", "sign": -1}
+    assert as_mapping(mapping["momentum"]) == {"factor": "UMD", "sign": 1}
+    assert as_mapping(mapping["quality"]) == {"factor": "RMW", "sign": 1}
+    # A size-and-style fund is graded on its STYLE leg: the plain size index is
+    # separately in the universe, so the tilt is the only thing distinguishing them.
+    assert as_mapping(mapping["small_cap_value"]) == {"factor": "HML", "sign": 1}
+    assert as_mapping(mapping["mid_cap_growth"]) == {"factor": "HML", "sign": -1}
+    assert "mandate_changed" not in set(mapping), (
+        "the reserved mandate must stay out of the map so a fund that changed its "
+        "objective fails the screen rather than being graded against a mandate it "
+        "no longer has"
+    )
+
+
+def test_exp_002_records_what_changed_when_the_frozen_fields_were_made_concrete() -> None:
+    """A change made before a result is a different thing from one made after."""
+    log = [
+        as_mapping(item)
+        for item in as_sequence(
+            as_mapping(load("exp_002_fund_exposure").parameters)["concretisation_log"]
+        )
+    ]
+    assert len(log) >= 6
+    assert all(item["made_before_any_result"] is True for item in log)
+    joined = " ".join(str(item["change"]) + str(item["reason"]) for item in log)
+    assert "N-PORT" in joined
+    assert "0002" in joined, "the return-source change must cite the decision record"
+    assert "survivorship" in joined
+
+
+def test_exp_002_keeps_a_low_alpha_t_statistic_out_of_the_falsifier() -> None:
+    """"t below two" over 72 months measures the window, not the fund."""
+    spec = load("exp_002_fund_exposure")
+    assert "is NOT a falsifier" in spec.falsifier
+    assert "no fund is rejected solely because its" in str(spec.rejection_rule)
+    requirements = " ".join(str(item) for item in as_sequence(spec.reporting_requirements))
+    assert "minimum detectable alpha at 80% power" in requirements
+    assert "Raw and shrunk alpha side by side" in requirements
+    assert "data contract" in requirements
+
+
 def test_exp_003_is_confirmatory_and_passes_its_own_gate() -> None:
     spec = load("exp_003_rebalancing")
     assert spec.run_kind is RunKind.CONFIRMATORY

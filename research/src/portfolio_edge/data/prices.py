@@ -329,6 +329,24 @@ class YahooChartAdapter:
     research_grade: bool = False
     range_: str = "max"
     interval: str = "1d"
+    attempts: int = 3
+    """Transport retries. Set to 1 for a best-effort call whose failure is a result.
+
+    The cross-source check is exactly that case: it is a diagnostic on a source
+    that is not research-grade, nothing depends on it, and retrying it 36 times
+    over would turn a nice-to-have into the longest step in the experiment.
+    """
+    transport: Literal["requests", "curl"] = "requests"
+    """Which client fetches the bytes.
+
+    ``requests`` is the default because it is the one every other reader uses.
+    ``curl`` exists because this endpoint discriminates on TLS and HTTP/2
+    fingerprint rather than on headers: measured repeatedly on 2026-08-12,
+    ``requests`` receives HTTP 429 where ``curl`` carrying identical headers is
+    served. Shelling out is the smallest available workaround and is preferred to
+    adding a dependency whose purpose is to imitate a browser. It changes nothing
+    about the data: ``research_grade`` is still ``False``.
+    """
 
     def url_for(self, symbol: str) -> str:
         return (
@@ -339,9 +357,20 @@ class YahooChartAdapter:
     def fetch(
         self, cache: RawCache, symbol: str, *, force: bool = False
     ) -> PriceSeries:
-        entry = cache.fetch(
-            self.url_for(symbol), force=force, user_agent=_YAHOO_USER_AGENT
-        )
+        if self.transport == "curl":
+            entry = cache.fetch_via_curl(
+                self.url_for(symbol),
+                force=force,
+                user_agent=_YAHOO_USER_AGENT,
+                attempts=self.attempts,
+            )
+        else:
+            entry = cache.fetch(
+                self.url_for(symbol),
+                force=force,
+                user_agent=_YAHOO_USER_AGENT,
+                attempts=self.attempts,
+            )
         return self.parse(cache, entry, symbol)
 
     def parse(self, cache: RawCache, entry: CacheEntry, symbol: str) -> PriceSeries:

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><edgarSubmission xmlns="http://www.sec.gov/edgar/nport" xmlns:com="http://www.sec.gov/edgar/common" xmlns:ncom="http://www.sec.gov/edgar/nportcommon" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sec.gov/edgar/nport eis_NPORT_Filer.xsd">
+  <headerData>
+    <submissionType>NPORT-P</submissionType>
+    <isConfidential>false</isConfidential>
+    <filerInfo>
+
+      <filer>
+        <issuerCredentials>
+          <cik>0001100663</cik>
+          <ccc>XXXXXXXX</ccc>
+        </issuerCredentials>
+      </filer>
+
+
+      <seriesClassInfo>
+        <seriesId>S000040316</seriesId>
+        <classId>C000125223</classId>
+      </seriesClassInfo>
+
+    </filerInfo>
+  </headerData>
+  <formData>
+    <genInfo>
+      <regName>iShares Trust</regName>
+      <regFileNumber>811-09729</regFileNumber>
+      <regCik>0001100663</regCik>
+      <regLei>5493000860OXIC4B5K91</regLei>
+      <regStreet1>400 Howard Street</regStreet1>
+      <regCity>San Francisco</regCity>
+      <regStateConditional regCountry="US" regState="US-CA"/>
+      <regZipOrPostalCode>94105</regZipOrPostalCode>
+      <regPhone>800-474-2737</regPhone>
+      <seriesName>iShares MSCI USA Momentum Factor ETF</seriesName>
+      <seriesId>S000040316</seriesId>
+      <seriesLei>5493002ZOOZ0SN3YYI81</seriesLei>
+      <repPdEnd>2026-07-31</repPdEnd>
+      <repPdDate>2026-04-30</repPdDate>
+      <isFinalFiling>N</isFinalFiling>
+    </genInfo>
+    <fundInfo>
+      <totAssets>24300771535.76</totAssets>
+      <totLiabs>122756691.73</totLiabs>
+      <netAssets>24178014844.03</netAssets>
+      <assetsAttrMiscSec>0.00000000</assetsAttrMiscSec>
+      <assetsInvested>0.00000000</assetsInvested>
+      <amtPayOneYrBanksBorr>0.00000000</amtPayOneYrBanksBorr>
+      <amtPayOneYrCtrldComp>0.00000000</amtPayOneYrCtrldComp>
+      <amtPayOneYrOthAffil>0.00000000</amtPayOneYrOthAffil>
+      <amtPayOneYrOther>0.00000000</amtPayOneYrOther>
+      <amtPayAftOneYrBanksBorr>0.00000000</amtPayAftOneYrBanksBorr>
+      <amtPayAftOneYrCtrldComp>0.00000000</amtPayAftOneYrCtrldComp>
+      <amtPayAftOneYrOthAffil>0.00000000</amtPayAftOneYrOthAffil>
+      <amtPayAftOneYrOther>0.00000000</amtPayAftOneYrOther>
+      <delayDeliv>0.00000000</delayDeliv>
+      <standByCommit>0.00000000</standByCommit>
+      <liquidPref>0.00000000</liquidPref>
+      <cshNotRptdInCorD>0.00000000</cshNotRptdInCorD>
+      <borrowers>
+        <borrower aggrVal="4914126.00000000" lei="549300KUN9K9K32C6D97" name="BNP PARIBAS PRIME BROKERAGE INTERNATIONAL LIMITED"/>
+        <borrower aggrVal="13472215.29000000" lei="MBNUM2BPBDO7JBLYG310" name="CITIGROUP GLOBAL MARKETS INC."/>
+        <borrower aggrVal="6403.28000000" lei="FOR8UP27PHTHYVLBNG30" name="GOLDMAN SACHS &amp; CO."/>
+        <borrower aggrVal="311227.20000000" lei="MP6I5ZYZBEU3UXPYFY54" name="HSBC BANK PLC"/>
+        <borrower aggrVal="15593845.38000000" lei="ZBUT11V806EZRVTWT807" name="JP MORGAN SECURITIES LLC"/>
+        <borrower aggrVal="5592116.00000000" lei="58PU97L1C0WSRCWADL48" name="Jefferies LLC"/>
+        <borrower aggrVal="1001732.90000000" lei="9R7GPTSO7KV3UQJZQ078" name="MORGAN STANLEY &amp; CO. LLC (US EQUITY SEC LENDING)"/>
+        <borrower aggrVal="24986390.00000000" lei="549300JRHF1MHHWUAW04" name="National Financial Services LLC"/>
+        <borrower aggrVal="50242.50000000" lei="571474TGEMMWANRLN572" name="STATE STREET BANK &amp; TRUST COMPANY"/>
+        <borrower aggrVal="38324664.00000000" lei="BFM8T61CT2L1QCEMIK50" name="UBS AG"/>
+        <borrower aggrVal="17078633.58000000" lei="VYVVCKR63DVZZN70PB21" name="Wells Fargo Securities LLC"/>
+      </borrowers>
+      <isNonCashCollateral>N</isNonCashCollateral>
+      <returnInfo>
+        <monthlyTotReturns>
+          <monthlyTotReturn classId="C000125223" rtn1="-1.09000000" rtn2="-4.96000000" rtn3="18.22000000"/>
+        </monthlyTotReturns>
+        <monthlyReturnCats>
+          <equityContracts>
+            <mon1 netRealizedGain="-152759.16000000" netUnrealizedAppr="-317452.84000000"/>
+            <mon2 netRealizedGain="-1185736.48000000" netUnrealizedAppr="-317225.64000000"/>
+            <mon3 netRealizedGain="912185.94000000" netUnrealizedAppr="2134109.74000000"/>
+            <futureCategory>
+              <instrMon1 netRealizedGain="-152759.16000000" netUnrealizedAppr="-317452.84000000"/>
+              <instrMon2 netRealizedGain="-1185736.48000000" netUnrealizedAppr="-317225.64000000"/>
+              <instrMon3 netRealizedGain="912185.94000000" netUnrealizedAppr="2134109.74000000"/>
+            </futureCategory>
+          </equityContracts>
+        </monthlyReturnCats>
+        <othMon1 netRealizedGain="126662568.59000000" netUnrealizedAppr="-370846653.11000000"/>
+        <othMon2 netRealizedGain="-630113232.26000000" netUnrealizedAppr="-443861534.15000000"/>
+        <othMon3 netRealizedGain="71059534.48000000" netUnrealizedAppr="3627671068.89000000"/>
+      </returnInfo>
+      <mon1Flow redemption="442684928.35000000" reinvestment="0.00000000" sales="632839095.95000000"/>
+      <mon2Flow redemption="338584295.70000000" reinvestment="0.00000000" sales="445422697.04000000"/>
+      <mon3Flow redemption="177946564.35000000" reinvestment="0.00000000" sales="421475730.10000000"/>
+
+
+
+    </fundInfo>
+    <invstOrSecs><!-- holdings removed: the parser never reads them --></invstOrSecs>
+    <explntrNotes>
+
+
+
+      <explntrNote note="Monthly returns presented in Item B.5(a) have been calculated without deducting any applicable sales loads or redemption fees." noteItem="B.5.a"/>
+
+
+    </explntrNotes>
+    <signature>
+      <ncom:dateSigned>2026-06-01</ncom:dateSigned>
+      <ncom:nameOfApplicant>iShares Trust</ncom:nameOfApplicant>
+      <ncom:signature>Chuck Pulsfort </ncom:signature>
+      <ncom:signerName>Chuck Pulsfort </ncom:signerName>
+      <ncom:title>Assistant Treasurer</ncom:title>
+    </signature>
+  </formData>
+  <documents>XXXX</documents>
+</edgarSubmission>

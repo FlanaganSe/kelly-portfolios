@@ -1,0 +1,657 @@
+{
+  "schema_version": "1",
+  "description": "Per-fund facts that Form N-PORT does not carry: net and gross expense ratio, inception, tracked index and stated mandate. Read from each sponsor's own prospectus, SAI or fund page and committed with a URL and a date, because a fee or an index can change and a number without a date cannot be rechecked. This file is an INPUT to the screen, not an output of it, and it contains no price, return or performance data of any kind.",
+  "date_read": "2026-08-12",
+  "mandate_change_policy": {
+    "tier_1_excluded": "A fund whose STATED INVESTMENT OBJECTIVE OR MANDATE changed inside the observation window is given the reserved mandate 'mandate_changed', which is absent from the predeclared intended-factor map and therefore fails the screen. It is recorded with its change date rather than silently dropped. The reason is not that such a fund is bad: it is that it has no single stated mandate over the window, so there is nothing to grade its exposure against.",
+    "tier_2_retained_and_reported": "A change of tracked index, index name or index methodology that leaves the stated mandate intact does NOT exclude a fund. Excluding those would remove most of the shelf and would hide exactly what the rolling-loading stability test exists to find. Every one is recorded below and reported beside the stability results."
+  },
+  "mandate_changes": [
+    {
+      "ticker": "USMC",
+      "tier": 1,
+      "date": "2022-06-10",
+      "change": "ceased to be an index fund; now actively managed by Principal Global Investors on a proprietary quantitative model, non-diversified",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1572661/000157266125000159/sp2025409principalusmega-c.htm",
+      "fund_own_words": "Prior to June 10, 2022, the objective and strategy of the Fund differed from its current objective and strategy. Accordingly, performance of the Fund for periods prior to that date may not be representative."
+    },
+    {
+      "ticker": "INTF",
+      "tier": 1,
+      "date": "2022-06-01",
+      "change": "renamed iShares MSCI Intl Multifactor ETF to iShares International Equity Factor ETF; index changed from MSCI World ex USA Diversified Multiple-Factor Index to STOXX International Equity Factor Index, whose quality score incorporates carbon-intensity and greenhouse-gas-target signals",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312522091846/d322918d497.htm",
+      "note": "also excluded by the non-US clause of the exclusion pattern"
+    },
+    {
+      "ticker": "SPMD",
+      "tier": 2,
+      "date": "2020-01-24",
+      "change": "index changed from the S&P 1000 Index to the S&P MidCap 400 Index, with a fund rename",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312519317504/d843215d497k.htm"
+    },
+    {
+      "ticker": "SPSM",
+      "tier": 2,
+      "date": "2020-01-24",
+      "change": "index changed from the SSGA Small Cap Index to the S&P SmallCap 600 Index, with a fund rename; third benchmark in the fund's life",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312519317490/d827180d497.htm"
+    },
+    {
+      "ticker": "MTUM",
+      "tier": 2,
+      "date": "2020-12-01",
+      "change": "index changed from the MSCI USA Momentum Index to the MSCI USA Momentum SR Variant Index, which staggers rebalance trades over three days",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312520249191/d46734d497.htm"
+    },
+    {
+      "ticker": "FTA",
+      "tier": 2,
+      "date": "2023-12-01",
+      "change": "base index changed from the Nasdaq US 500 Large Cap Index to the Nasdaq US 500 Large Cap Value Index; the AlphaDEX selection now starts from a value subset. Fund and index names unchanged, so a name-matching check would miss it.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1383496/000144554625007887/fta_497k.htm"
+    },
+    {
+      "ticker": "PDP",
+      "tier": 2,
+      "date": "2025-08-28",
+      "change": "eligible universe narrowed from approximately 1,000 securities in the Nasdaq US Benchmark Index to approximately 100 from the Nasdaq US Large Cap or Mid Cap Index. Index name unchanged, so a name-matching check would miss it. Renamed Invesco DWA Momentum ETF to Invesco Dorsey Wright Momentum ETF on 2023-08-25.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1209466/000119312525190380/d56632d497k.htm"
+    },
+    {
+      "ticker": "IWS,IWP,IWN",
+      "tier": 2,
+      "date": "2024-03-21",
+      "change": "FTSE Russell added RIC-diversification capping at the index review: a 22.5% single-name cap and a 45% aggregate cap on positions above 4.5%. Index names unchanged. Does not apply to IWR.",
+      "source_url": "https://www.lseg.com/en/ftse-russell/index-policy"
+    },
+    {
+      "ticker": "VO,VB,VTV,VBR,VBK,VOE,VOT,VTI,VUG",
+      "tier": 2,
+      "date": "2026-07-29",
+      "change": "index family renamed CRSP US ... to Morningstar US ... after Morningstar acquired CRSP; objectives, strategies and policies unchanged. AFTER the observation window ends, so it cannot affect any return here, but a historical index-name join will hit the CRSP names.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm"
+    },
+    {
+      "ticker": "ILCG",
+      "tier": 1,
+      "date": "2021-03-19",
+      "change": "iShares Morningstar Large-Cap Growth ETF (JKE) became iShares Morningstar Growth ETF (ILCG); the objective was restated from large-capitalisation to large- AND mid-capitalisation, the index changed from the Morningstar US Large Growth Index to the Morningstar US Large-Mid Cap Broad Growth Index, and shareholders approved a change from diversified to non-diversified",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312521079867/d157313d497.htm"
+    },
+    {
+      "ticker": "IWF,IWO,IWY",
+      "tier": 2,
+      "date": "2025-03-21",
+      "change": "FTSE Russell added a capping overlay to the Russell US Style Indexes at the March 2025 index review: a 22.5% single-issuer cap and a 45% aggregate cap on issuers above 4.5%, applied each quarter. Index names and fund objectives unchanged, so a name-matching check would miss it.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312525030937/d895008d497.htm",
+      "note": "an otherwise identical supplement dated 2025-02-20 prints 'March 21, 2024'; the 2025-02-21 filing supersedes it"
+    },
+    {
+      "ticker": "IVW,IUSG,SPYG",
+      "tier": 2,
+      "date": "2024-06-21",
+      "change": "S&P Dow Jones Indices added capping to the S&P US Style Indices at the June 2024 index review: single issuer at most 23%, aggregate of issuers above 4.8% at most 50%, quarterly with a secondary reweighting trigger. Index names and objectives unchanged.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312524166009/d755407d497.htm",
+      "note": "corroborated for SPYG by the appearance of capping language between the 2023-10-31 and 2024-10-31 summary prospectuses. The S&P PURE style indices, and so RPG, were NOT part of this change."
+    },
+    {
+      "ticker": "FTC",
+      "tier": 2,
+      "date": "2023-12-01",
+      "change": "described base universe changed from the Nasdaq US 500 Large Cap Index to the Nasdaq US 500 Large Cap Growth Index and the 'only growth stocks are eligible' selection step was dropped. The mirror image of the FTA change on the same date.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1383496/000144554623008059/ftc_497k.htm",
+      "note": "UNVERIFIED whether this was a Nasdaq methodology change or a disclosure correction, and its effective date is not stated: no First Trust supplement announcing it was found, and the growth index already appeared as a comparison index in the 2020 prospectus."
+    }
+  ],
+  "securities_lending": {
+    "note": "Whatever a fund keeps from lending is already inside net asset value and therefore already inside every return in this experiment; it is recorded here as a product fact, not added to anything. The four disclosures below use DIFFERENT DENOMINATORS and must never be put in one column: iShares' 81% excludes collateral investment fees, SPDR's 85% is of net proceeds after borrower rebates, Vanguard has no split at all, and Invesco states no ratio.",
+    "Vanguard": {
+      "split": "none; the SAI reports $0 of fees paid to a lending agent from a revenue split. Vanguard self-lends and charges administration and cash-collateral-management fees directly.",
+      "as_of": "FY ended 2025-12-31",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/f45032d1.htm"
+    },
+    "iShares/BlackRock": {
+      "split": "the fund retains 81% of securities lending income excluding collateral investment fees, never less than 70% of lending income plus collateral investment fees, stepping to 84% above a complex-wide annual threshold. The agent is an affiliate.",
+      "as_of": "FY ended 2026-03-31",
+      "source_url": "https://www.ishares.com/us/literature/annual-financial-statements/afs-b-ishares-core-s-and-p-etfs-03-31-en.pdf"
+    },
+    "State Street SPDR": {
+      "split": "the fund retains 85% of NET proceeds after borrower rebates, 15% to State Street; 90/10 above a threshold. The agent is an affiliate.",
+      "as_of": "FY ended 2025-06-30",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525197943/d941109dncsr.htm"
+    },
+    "Invesco": {
+      "split": "UNVERIFIED. Invesco discloses dollars only and states no ratio anywhere findable; the fund's share of GROSS derived from those tables is roughly 2-3%, because borrower rebates dominate, which is a different quantity from an agent split.",
+      "as_of": "FY ended 2025-04-30",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1209466/000110465925084008/tm2522887d1_485bpos.htm"
+    }
+  },
+  "unverified": [
+    "Vanguard's index PROVIDER entity is unverified: the 2026-07-29 supplement renames the indexes to Morningstar after Morningstar acquired CRSP, but the April 2026 prospectus trademark page still names Center for Research in Security Prices, LLC as licensor. The index NAMES are verified; which legal entity now licenses and calculates them is not.",
+    "IJK's expense ratio is 0.17 on the 2026-06-30 fact sheet and 0.16 in the 2026-07-31 prospectus and on the live page. 0.16 is used.",
+    "Invesco's securities-lending revenue split, as above.",
+    "The State Street 2025 name-prefix rebrand has no dedicated 497 and its effective date is unverified. Tickers, indexes, objectives and expense ratios are unchanged.",
+    "A 2023-05-26 Vanguard board approval to move VTI, VOO, VB and VO into different trusts appears never to have been effected; no withdrawal supplement was found, so the cancellation is inferred rather than documented.",
+    "SPYG's inception date is not in its summary prospectus and comes from the SSGA product page.",
+    "RPG's and FTC's inception dates are the 'Inception Date' column of the prospectus performance table rather than a separate statement.",
+    "The nature and effective date of the FTC/FTA base-index change of 2023-12-01, as above."
+  ],
+  "access_notes": [
+    "ishares.com returns HTTP 403 to a plain client and is served normally to curl with a browser agent; invesco.com returns HTTP 406 to curl, so PDP and SPHQ come from EDGAR; wisdomtree.com, jhinvestments.com return 403 and principalam.com/us/etf/USMC returns 404, so EZM, JHMM and USMC come from EDGAR.",
+    "Vanguard fund pages are JavaScript shells. Inception dates come from Vanguard's own JSON profile API because they appear in neither the prospectus nor the SAI."
+  ],
+  "funds": {
+    "VO": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2004-01-26",
+      "index_name": "Morningstar US Mid Cap Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "mid_cap",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "VB": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2004-01-26",
+      "index_name": "Morningstar US Small Cap Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "small_cap",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "VTV": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2004-01-26",
+      "index_name": "Morningstar US Large Cap Value Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "IJH": {
+      "net_expense_ratio_percent": 0.05,
+      "gross_expense_ratio_percent": 0.05,
+      "inception_date": "2000-05-22",
+      "index_name": "S&P MidCap 400",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "mid_cap",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/ijh-ishares-core-s-p-mid-cap-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IJR": {
+      "net_expense_ratio_percent": 0.06,
+      "gross_expense_ratio_percent": 0.06,
+      "inception_date": "2000-05-22",
+      "index_name": "S&P SmallCap 600",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "small_cap",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/ijr-ishares-core-s-p-small-cap-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IWD": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-05-22",
+      "index_name": "Russell 1000 Value Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "value",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/iwd-ishares-russell-1000-value-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "VBR": {
+      "net_expense_ratio_percent": 0.05,
+      "gross_expense_ratio_percent": 0.05,
+      "inception_date": "2004-01-26",
+      "index_name": "Morningstar US Small Cap Value Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "small_cap_value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "VBK": {
+      "net_expense_ratio_percent": 0.05,
+      "gross_expense_ratio_percent": 0.05,
+      "inception_date": "2004-01-26",
+      "index_name": "Morningstar US Small Cap Growth Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "small_cap_growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "IWR": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2001-07-17",
+      "index_name": "Russell Midcap Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "mid_cap",
+      "source_url": "https://www.ishares.com/us/products/239718/ishares-russell-midcap-etf",
+      "date_read": "2026-08-11"
+    },
+    "VOE": {
+      "net_expense_ratio_percent": 0.05,
+      "gross_expense_ratio_percent": 0.05,
+      "inception_date": "2006-08-17",
+      "index_name": "Morningstar US Mid Cap Value Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "mid_cap_value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "IVE": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-05-22",
+      "index_name": "S&P 500 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "value",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/ive-ishares-s-p-500-value-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "VOT": {
+      "net_expense_ratio_percent": 0.05,
+      "gross_expense_ratio_percent": 0.05,
+      "inception_date": "2006-08-17",
+      "index_name": "Morningstar US Mid Cap Growth Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "mid_cap_growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "QUAL": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2013-07-16",
+      "index_name": "MSCI USA Sector Neutral Quality Index",
+      "index_provider": "MSCI",
+      "stated_mandate": "quality",
+      "source_url": "https://www.ishares.com/us/products/256101/ishares-msci-usa-quality-factor-etf",
+      "date_read": "2026-08-11"
+    },
+    "IWS": {
+      "net_expense_ratio_percent": 0.23,
+      "gross_expense_ratio_percent": 0.23,
+      "inception_date": "2001-07-17",
+      "index_name": "Russell Midcap Value Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "mid_cap_value",
+      "source_url": "https://www.ishares.com/us/products/239719/ishares-russell-midcap-value-etf",
+      "date_read": "2026-08-11"
+    },
+    "IWP": {
+      "net_expense_ratio_percent": 0.23,
+      "gross_expense_ratio_percent": 0.23,
+      "inception_date": "2001-07-17",
+      "index_name": "Russell Midcap Growth Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "mid_cap_growth",
+      "source_url": "https://www.ishares.com/us/products/239717/ishares-russell-midcap-growth-etf",
+      "date_read": "2026-08-11"
+    },
+    "IWN": {
+      "net_expense_ratio_percent": 0.24,
+      "gross_expense_ratio_percent": 0.24,
+      "inception_date": "2000-07-24",
+      "index_name": "Russell 2000 Value Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "small_cap_value",
+      "source_url": "https://www.ishares.com/us/products/239712/ishares-russell-2000-value-etf",
+      "date_read": "2026-08-11"
+    },
+    "MTUM": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2013-04-16",
+      "index_name": "MSCI USA Momentum SR Variant Index",
+      "index_provider": "MSCI",
+      "stated_mandate": "momentum",
+      "source_url": "https://www.ishares.com/us/products/251614/ishares-msci-usa-momentum-factor-etf",
+      "date_read": "2026-08-11"
+    },
+    "IJK": {
+      "net_expense_ratio_percent": 0.16,
+      "gross_expense_ratio_percent": 0.16,
+      "inception_date": "2000-07-24",
+      "index_name": "S&P MidCap 400 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "mid_cap_growth",
+      "source_url": "https://www.ishares.com/us/literature/prospectus/p-ishares-trust-us-sp-cap-non-sector-3-31.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IJS": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-07-24",
+      "index_name": "S&P SmallCap 600 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "small_cap_value",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/ijs-ishares-s-p-small-cap-600-value-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IJJ": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-07-24",
+      "index_name": "S&P MidCap 400 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "mid_cap_value",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/ijj-ishares-s-p-mid-cap-400-value-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IUSV": {
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2000-07-24",
+      "index_name": "S&P 900 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "value",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/iusv-ishares-core-s-p-u-s-value-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IJT": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-07-24",
+      "index_name": "S&P SmallCap 600 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "small_cap_growth",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/ijt-ishares-s-p-small-cap-600-growth-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "VLUE": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2013-04-16",
+      "index_name": "MSCI USA Enhanced Value Index",
+      "index_provider": "MSCI",
+      "stated_mandate": "value",
+      "source_url": "https://www.ishares.com/us/products/251616/ishares-msci-usa-value-factor-etf",
+      "date_read": "2026-08-11"
+    },
+    "SPYV": {
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2000-09-25",
+      "index_name": "S&P 500 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "SLYV": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2000-09-25",
+      "index_name": "S&P SmallCap 600 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "small_cap_value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "SLYG": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2000-09-25",
+      "index_name": "S&P SmallCap 600 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "small_cap_growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "SPMD": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2005-11-08",
+      "index_name": "S&P MidCap 400 Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "mid_cap",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "MDYG": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2005-11-08",
+      "index_name": "S&P MidCap 400 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "mid_cap_growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "PDP": {
+      "net_expense_ratio_percent": 0.62,
+      "gross_expense_ratio_percent": 0.62,
+      "inception_date": "2007-03-01",
+      "index_name": "Dorsey Wright Technical Leaders Index",
+      "index_provider": "Dorsey, Wright & Associates, LLC",
+      "stated_mandate": "momentum",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1209466/000119312525190380/d56632d497k.htm",
+      "date_read": "2026-08-11"
+    },
+    "SPHQ": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.21,
+      "inception_date": "2005-12-06",
+      "index_name": "S&P 500 Quality Index",
+      "index_provider": "S&P Dow Jones Indices",
+      "stated_mandate": "quality",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1209466/000119312525190420/d56632d497k.htm",
+      "date_read": "2026-08-11"
+    },
+    "TILT": {
+      "net_expense_ratio_percent": 0.25,
+      "gross_expense_ratio_percent": 0.26,
+      "inception_date": "2011-09-16",
+      "index_name": "Morningstar US Market Factor Tilt Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "multifactor",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1491978/000119312526069078/d51296d497k.htm",
+      "date_read": "2026-08-11"
+    },
+    "JHMM": {
+      "net_expense_ratio_percent": 0.41,
+      "gross_expense_ratio_percent": 0.42,
+      "inception_date": "2015-09-28",
+      "index_name": "John Hancock Dimensional Mid Cap Index",
+      "index_provider": "John Hancock / Dimensional Fund Advisors LP",
+      "stated_mandate": "multifactor",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1478482/000119312526326977/d146203d497k.htm",
+      "date_read": "2026-08-11"
+    },
+    "USMC": {
+      "net_expense_ratio_percent": 0.12,
+      "gross_expense_ratio_percent": 0.12,
+      "inception_date": "2017-10-11",
+      "index_name": "actively managed",
+      "index_provider": "none",
+      "stated_mandate": "mandate_changed",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1572661/000157266125000159/sp2025409principalusmega-c.htm",
+      "date_read": "2026-08-11"
+    },
+    "SPSM": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2013-07-08",
+      "index_name": "S&P SmallCap 600 Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "small_cap",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "MDYV": {
+      "net_expense_ratio_percent": 0.15,
+      "gross_expense_ratio_percent": 0.15,
+      "inception_date": "2005-11-08",
+      "index_name": "S&P MidCap 400 Value Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "mid_cap_value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525250041/d74009d485bpos.htm",
+      "date_read": "2026-08-11"
+    },
+    "EZM": {
+      "net_expense_ratio_percent": 0.38,
+      "gross_expense_ratio_percent": 0.38,
+      "inception_date": "2007-02-23",
+      "index_name": "WisdomTree U.S. MidCap Index",
+      "index_provider": "WisdomTree, Inc.",
+      "stated_mandate": "mid_cap",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1350487/000121465926009366/ezm497k0726.htm",
+      "date_read": "2026-08-11"
+    },
+    "FTA": {
+      "net_expense_ratio_percent": 0.58,
+      "gross_expense_ratio_percent": 0.58,
+      "inception_date": "2007-05-08",
+      "index_name": "Nasdaq AlphaDEX Large Cap Value Index",
+      "index_provider": "Nasdaq, Inc.",
+      "stated_mandate": "value",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1383496/000144554625007887/fta_497k.htm",
+      "date_read": "2026-08-11"
+    },
+    "INTF": {
+      "net_expense_ratio_percent": 0.16,
+      "gross_expense_ratio_percent": 0.16,
+      "inception_date": "2015-04-28",
+      "index_name": "STOXX International Equity Factor Index",
+      "index_provider": "STOXX Ltd.",
+      "stated_mandate": "mandate_changed",
+      "source_url": "https://www.ishares.com/us/products/272822/ishares-msci-international-multi-factor-etf",
+      "date_read": "2026-08-11"
+    },
+    "VTI": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2001-05-24",
+      "index_name": "Morningstar US Total Market Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "total_market",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "VUG": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2004-01-26",
+      "index_name": "Morningstar US Large Cap Growth Index",
+      "index_provider": "Morningstar",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "VOO": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2010-09-07",
+      "index_name": "S&P 500 Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "large_cap",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/f45032d1.htm",
+      "date_read": "2026-08-11"
+    },
+    "ITOT": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2004-01-20",
+      "index_name": "S&P Total Market Index (TMI)",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "total_market",
+      "source_url": "https://www.ishares.com/us/literature/fact-sheet/itot-ishares-core-s-p-total-u-s-stock-market-etf-fund-fact-sheet-en-us.pdf",
+      "date_read": "2026-08-11"
+    },
+    "IWF": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-05-22",
+      "index_name": "Russell 1000 Growth Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526327908/d49639d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "IVW": {
+      "net_expense_ratio_percent": 0.18,
+      "gross_expense_ratio_percent": 0.18,
+      "inception_date": "2000-05-22",
+      "index_name": "S&P 500 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526327911/d70971d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "IWO": {
+      "net_expense_ratio_percent": 0.24,
+      "gross_expense_ratio_percent": 0.24,
+      "inception_date": "2000-07-24",
+      "index_name": "Russell 2000 Growth Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "small_cap_growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526327931/d114558d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "IUSG": {
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2000-07-24",
+      "index_name": "S&P 900 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526327943/d122669d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "SPYG": {
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2000-09-25",
+      "index_name": "S&P 500 Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1064642/000119312525256814/d119634d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "RPG": {
+      "net_expense_ratio_percent": 0.35,
+      "gross_expense_ratio_percent": 0.35,
+      "inception_date": "2006-03-01",
+      "index_name": "S&P 500 Pure Growth Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1209466/000119312525190418/d56632d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "IWY": {
+      "net_expense_ratio_percent": 0.2,
+      "gross_expense_ratio_percent": 0.2,
+      "inception_date": "2009-09-22",
+      "index_name": "Russell Top 200 Growth Index",
+      "index_provider": "FTSE Russell",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312526327919/d104445d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "ILCG": {
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2004-06-28",
+      "index_name": "Morningstar US Large-Mid Cap Broad Growth Index",
+      "index_provider": "Morningstar, Inc.",
+      "stated_mandate": "mandate_changed",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312525192542/d936705d497k.htm",
+      "date_read": "2026-08-12"
+    },
+    "FTC": {
+      "net_expense_ratio_percent": 0.58,
+      "gross_expense_ratio_percent": 0.58,
+      "inception_date": "2007-05-08",
+      "index_name": "Nasdaq AlphaDEX Large Cap Growth Index",
+      "index_provider": "Nasdaq, Inc.",
+      "stated_mandate": "growth",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1383496/000144554625007888/ftc_497k.htm",
+      "date_read": "2026-08-12"
+    }
+  },
+  "gathering_note": "The nine large-cap and small-cap GROWTH ETFs (IWF, IVW, IWO, IUSG, SPYG, RPG, IWY, ILCG, FTC) were added on 2026-08-12, before any return was downloaded. They entered the screen when the mandate pattern was widened to include 'growth', and were initially failing the expense-ratio criterion only because nobody had looked their fees up. That is a gathering gap, not a screen result, and leaving it would have stripped growth mandates out of the universe systematically -- which is a selection effect in exactly the direction that makes a value tilt look better."
+}
