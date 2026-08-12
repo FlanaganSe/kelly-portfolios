@@ -722,14 +722,14 @@ The defensible conclusion is that economic themes deserve a positive but heavily
 shrunk prior; no replication percentage establishes an investable edge.
 
 This repository has since measured HML, UMD, RMW and CMA over frozen pre- and
-post-publication eras in the US, and then re-measured HML, RMW and CMA across the
-US, developed-ex-US and emerging files over the *same* eras. See
+post-publication eras in the US, and then re-measured all four across the US,
+developed-ex-US and emerging files over the *same* eras. See
 [factor persistence and decay](factor-persistence.md) for the era boundaries, the
 power calculation that made three of them `unresolved` in the US, and what adding
 two regions did to that. The short version: **HML reached `exploratory` on a pooled
-+4.74 pp/yr carried by the two non-US regions; RMW and CMA are `rejected` and closed
-on public data, because the measured pooled window still cannot resolve a 2.0 pp/yr
-premium; UMD could not be tested regionally at all.** No sleeve is promoted.
++4.74 pp/yr and UMD on a pooled +7.33 pp/yr, both carried by the two non-US regions;
+RMW and CMA are `rejected` and closed on public data, because the measured pooled
+window still cannot resolve a 2.0 pp/yr premium.** No sleeve is promoted.
 
 Published effects decay. Across 97 predictors, returns were lower out of sample
 and lower again after publication, consistent with both statistical bias and
@@ -951,7 +951,14 @@ historical return from scaling; it is not evidence that the return is mispricing
   historically captured its gross edge. Over 1994–2012 CTA excess returns net of fees
   were insignificantly different from zero while gross excess returns were 6.1%, with
   no alpha relative to public-domain futures rules; fee income runs about 4% of assets
-  ([Bhardwaj, Gorton, and Rouwenhorst 2014](https://doi.org/10.1093/rfs/hhu040)). On
+  ([Bhardwaj, Gorton, and Rouwenhorst 2014](https://doi.org/10.1093/rfs/hhu040)).
+  **That fee load does not transfer to an exchange-traded fund and must not be quoted
+  as though it did**: the five listed managed-futures ETFs
+  [Experiment 008](trend-marginal-value.md#experiment-008--the-products) audited charge
+  0.66% to 0.98%, read from their own SEC-filed prospectus fee tables. What survives
+  the transfer is the *shape* of the finding — the gap between a gross strategy and
+  what a taxable holder keeps — and on the real products that gap is measured
+  distribution tax drag of 0.76 to 2.53 pp/yr, not 4. On
   the same universe, survivorship and backfill move measured returns from 12.6%
   (Sharpe 0.73) to 4.9% (Sharpe 0.09) — a 7.7pp distortion that is larger than the
   strategy's entire gross premium. Use transparent futures rules and treat the long
@@ -1124,12 +1131,12 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | Candidate sleeve | Baseline portfolio | Investable proxy | Expected mechanism | Experiment status |
 | --- | --- | --- | --- | --- |
 | **Cheap broad market** | itself; it is the control | VTI / VOO / ITOT and a broad ex-US fund, 3 bp, ~1.3 bp round trip | Equity risk premium; the only line whose delivery is contractual | **the control**, [decision 0003](../decisions/0003-cheap-broad-market-control.md) |
-| **Value (HML)** | cheap broad market | 33 of the 44 screened funds grade on HML; 15 reached `exploratory` as proxies only | Risk or behavioural premium on book-to-market | **`exploratory`** ([Exp 005](factor-persistence.md#experiment-005--the-regional-replication)), on a pooled +4.74 pp/yr carried by the two non-US regions; products `exploratory`/`rejected` ([Exp 002](factor-product-audit.md)) |
-| **Momentum (UMD)** | cheap broad market | MTUM — **the entire retail shelf** at $1bn / 0.60% | Underreaction; possibly risk | `unresolved` (Exp 001) and **untestable regionally**: no regional momentum file is manifested here; MTUM `rejected` (Exp 002) |
+| **Value (HML)** | cheap broad market | 33 of the 44 screened funds grade on HML; 15 reached `exploratory` as proxies only | Risk or behavioural premium on book-to-market | **`exploratory`** ([Exp 005](factor-persistence.md#experiment-005--the-regional-replication)), on a pooled +4.74 pp/yr carried by the two non-US regions; products `exploratory`/`rejected` ([Exp 002](factor-product-audit.md)); long-only capture **`0.520 [0.434, 0.722]` size-neutral, `rejected` as a single number** ([Exp 007](long-only-capture.md)) |
+| **Momentum (UMD)** | cheap broad market | MTUM — **the entire retail shelf** at $1bn / 0.60% | Underreaction; possibly risk | **`exploratory`** ([Exp 006](factor-persistence.md#experiment-006--regional-momentum)), on a pooled +7.33 pp/yr carried by the two non-US regions — but against the worst pooled detection threshold here (4.98 pp/yr), the fewest effective regions (1.33), and three regions that **crash together**; MTUM `rejected` (Exp 002) |
 | **Profitability (RMW)** | cheap broad market | QUAL (`rejected` on cost) and SPHQ (`unresolved`) — the entire shelf | Gross-profitability premium | **`rejected`** (Exp 005, branch b): pooled +2.53 pp/yr against its own 2.62 pp/yr detection threshold. **Closed on public data** |
 | **Investment (CMA)** | cheap broad market | none on the screened shelf | Conservative-minus-aggressive asset growth | **`rejected`** (Exp 001, confirmed by Exp 005 branch b). **Closed on public data** |
-| **Size (SMB)** | cheap broad market | IJH, IJR, VB, SPMD, SPSM, EZM | Compensation for illiquidity/distress, disputed | not tested as a premium; 3 of 8 products `rejected` on cost |
-| **Diversified trend** | 60/40 equity/cash | none audited; CTA funds unpriced here | Slow behavioural adjustment; crisis convexity | **`rejected`** on its frozen falsifier ([Exp 004](trend-marginal-value.md)) |
+| **Size (SMB)** | cheap broad market | IJH, IJR, VB, SPMD, SPSM, EZM | Compensation for illiquidity/distress, disputed | **tested and not signable** ([Exp 007](long-only-capture.md)): +1.91 pp/yr `[−1.90, +6.00]` full sample against a 4.73 threshold, +0.41 post-publication; 3 of 8 products `rejected` on cost |
+| **Diversified trend** | 60/40 equity/cash | **DBMF** — the whole listed shelf that delivers the exposure; CTA, FMF, KMLM and WTMF `rejected` on it | Slow behavioural adjustment; crisis convexity | Index **`rejected`** on its frozen falsifier under the absolute reading of clause (d), **`unresolved`** under the relative reading [Exp 008 judges better justified](trend-marginal-value.md#clause-d-re-read-under-both-readings); DBMF `exploratory` as a proxy only ([Exp 008](trend-marginal-value.md#experiment-008--the-products)) |
 | **Rebalancing as policy** | any multi-sleeve portfolio | the portfolio itself | `gamma_star` excess growth; short relative-performance continuation | **`rejected`** as return ([Exp 003](rebalancing-policy.md)); retained as risk control |
 | **Cost / tax / behaviour** | your own counterfactual | fund selection, account type, direct indexing, not trading | Contractual, not statistical | **deterministic**, 89 bp ([edge decomposition](expected-edge-decomposition.md)) |
 
@@ -1138,12 +1145,12 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | Candidate sleeve | Evidence supporting | Counterevidence | Data quality |
 | --- | --- | --- | --- |
 | **Cheap broad market** | Sharpe's arithmetic identity; measured fee gap 48–59 bp; ~1.3 bp round-trip friction at retail scale | Passive investors still trade: 7.6%/yr US turnover, implicit IPO/SEO costs (Pedersen 2018). And **FF5+UMD prices VTI itself at −0.55 pp/yr (HAC *t* = −3.41)** over 2020–2025, so the standard model does not even span the control | Highest available here. Filed N-PORT returns, sponsor-published fees and spreads, all dated — but N-PORT figures are unaudited, per-filer methodology, and uncorroborated |
-| **Value (HML)** | Pooled across three regions, **+4.74 pp/yr `[+1.46, +8.10]`** post-publication, positive in all three, surviving Holm and its own best calendar year. Ex-US only it is **+6.33 `[+3.19, +9.58]`**. Emerging HML's BH-adjusted *p* is **0.0002** | The **US** leg is +1.57 pp/yr and survives no correction; the result is a five-fold spread across regions (US +1.57, developed ex-US +5.07, emerging +7.58) and the largest leg sits where shorting is hardest. Pooled detection threshold is still 3.35 pp/yr, so 2.0–3.3 pp/yr remains invisible. Three regions are worth an effective **1.49**, not three | Phase 1 `unresolved`: US HML's standard deviation carries a **−3.03% systematic band**; the two regional files were **never gated at all**. Long-short, gross, USD unhedged, not investable |
-| **Momentum (UMD)** | +9.85 pp/yr original; +4.19 pp/yr post-publication; MTUM's UMD loading +0.444 `[+0.277, +0.562]`, sign stable across the fixed calendar split and all 37 rolling windows | Only post-publication cell that looked significant is exactly what BH removes; −56.6% worst year (2008-12…2009-11); illustrative cost **3.30–18.67 pp/yr** against a +4.19 gross premium; MTUM `rejected` after a **1.22 pp/yr** shortfall against a combination whose fee premium over it was 0.12 | **Second moment never gated** — the momentum file was never reproduced against a printed table. Weaker than a band of zero |
+| **Value (HML)** | Pooled across three regions, **+4.74 pp/yr `[+1.46, +8.10]`** post-publication, positive in all three, surviving Holm and its own best calendar year. Ex-US only it is **+6.33 `[+3.19, +9.58]`**. Emerging HML's BH-adjusted *p* is **0.0002**. The long leg is a portfolio: `HML = 0.5(SH+BH) − 0.5(SL+BL)` reproduces the published column to **0.005 pp/month**, half a printed digit ([Exp 007](long-only-capture.md)) | The **US** leg is +1.57 pp/yr and survives no correction; the result is a five-fold spread across regions (US +1.57, developed ex-US +5.07, emerging +7.58) and the largest leg sits where shorting is hardest. Pooled detection threshold is still 3.35 pp/yr, so 2.0–3.3 pp/yr remains invisible. Three regions are worth an effective **1.49**, not three. **Five defensible benchmarks give long-only captures spanning 0.846**, so the tilt's delivered share is not one number: 0.520 size-neutral, 0.958 against the market, 1.287 for the small-value half | Phase 1 `unresolved`: US HML's standard deviation carries a **−3.03% systematic band**; the two regional files were **never gated at all**. Long-short, gross, USD unhedged, not investable. The long-only legs are gross research portfolios too, with no fee, spread, tax or capacity |
+| **Momentum (UMD)** | +9.85 pp/yr original; +4.19 pp/yr US post-publication and **+7.33 pooled across three regions**, `[+3.92, +10.31]`, five non-US cells surviving Holm; MTUM's UMD loading +0.444 `[+0.277, +0.562]`, sign stable across the fixed calendar split and all 37 rolling windows | US recent decade **+0.37 pp/yr**; −56.6% worst US year (2008-12…2009-11) and **all three regions share 2009 as their worst calendar year**; academic long-short turnover **outside the retail limit**, illustrative cost **3.30–18.67 pp/yr** against a +7.33 pooled gross premium; MTUM `rejected` after a **1.22 pp/yr** shortfall against a combination whose fee premium over it was 0.12 | **Second moment never gated in any region** — no momentum file was ever reproduced against a printed table. Weaker than a band of zero |
 | **Profitability (RMW)** | 96% of its US premium retained; mildest post-publication drawdown (−14.8%); low-turnover tier; pooled +2.53 pp/yr `[+1.07, +3.96]`, positive in all three regions; its regions are the least correlated of the three factors (ρ̄ = 0.18), so pooling helped it most | **Its pooled premium is below its own pooled detection threshold** — 2.53 against 2.62 pp/yr, whose entire 90% interval `[2.15, 3.07]` sits above materiality. 59% of the US premium is 2021, and the pooled premium falls to +1.79 when its best year is dropped | Phase 1 `unresolved`: US RMW's standard deviation carries a **+5.09% systematic band**; the regional files were never gated. The branch (b) verdict holds across the whole band |
 | **Investment (CMA)** | +3.91 pp/yr in the original sample, the strongest of the four. Outside the US its post-publication premium is ~0 rather than negative (+0.53 developed ex-US, +1.46 emerging), so the US sign flip does **not** replicate | **−1.39 pp/yr post-publication in the US**; +0.20 pp/yr pooled against a 3.41 pp/yr pooled detection threshold. It is the one factor whose three regions share the same best calendar year (2022), so they are the least independent looks in the grid | Reproduced to 0.53% on the second moment, so it carries no Phase 1 band. Rejection tested against the most generous candidate discovery date, and now against two further regions |
-| **Size (SMB)** | Exposure is delivered and stable: SPSM/IJR +0.889, VB +0.599 | Weak as a standalone premium (Hou–Xue–Zhang); **never tested as a premium here**; VB carries the largest shortfall on the shelf, **+2.89 pp/yr** against the fitted cheap combination | 72 months of filed returns; MDE₈₀ 1.97–3.16 pp/yr on these funds |
-| **Diversified trend** | +1.342 pp/yr marginal CE `[+0.759, +1.916]`; survives every hostile test; payoff spread across four structurally different crises; crisis correlation −0.59, downside beta −0.67 | A static + volatility-exposure replica delivers **44%** of it; post-publication interval includes zero and fails Holm; standalone Sharpe 1.34 → 0.18; **vendor states no cost basis anywhere**; comparable CTA survivorship/backfill distortion is 7.7 pp/yr | Vendor-series evaluation, ceiling `exploratory` by construction. Early history substitutes index returns for futures |
+| **Size (SMB)** | Exposure is delivered and stable: SPSM/IJR +0.889, VB +0.599 | Weak as a standalone premium (Hou–Xue–Zhang), and **now tested here and not signable** ([Exp 007](long-only-capture.md)): the smallest-minus-largest quintile is **+1.91 pp/yr `[−1.90, +6.00]`** over 1963-07…2025-12 against its own 4.73 pp/yr detection threshold, and **+0.41** post-publication. VB carries the largest shortfall on the shelf, **+2.89 pp/yr** against the fitted cheap combination | 72 months of filed returns; MDE₈₀ 1.97–3.16 pp/yr on these funds. The premium test uses 750 months of French quintile and decile sorts, which are **not** the Fama–French SMB |
+| **Diversified trend** | +1.342 pp/yr marginal CE `[+0.759, +1.916]`; survives every hostile test; payoff spread across four structurally different crises; crisis correlation −0.59, downside beta −0.67. And the exposure IS purchasable: **DBMF loads +0.671 `[+0.513, +0.829]`** on the index, stable across the fixed split and all 19 rolling windows, trailing a cost-free vendor index by **0.48 pp/yr against an 0.85% fee** | A static + volatility-exposure replica delivers **44%** of it; post-publication interval includes zero and fails Holm; standalone Sharpe 1.34 → 0.18; **vendor states no cost basis anywhere**; comparable CTA survivorship/backfill distortion is 7.7 pp/yr. On the products: **four of five deliver a loading below 0.50**, 54% of the 2019 listed shelf is gone, and **prospectus tax drag is 0.76–2.53 pp/yr, 2.5× DBMF's fee** | Vendor-series evaluation, ceiling `exploratory` by construction. Early history substitutes index returns for futures. Products: 46–78 months of unaudited filed N-PORT returns, **median MDE₈₀ 12.75 pp/yr**, so exposure is measurable and alpha is not |
 | **Rebalancing as policy** | `gamma_star` closed form reproduces on real data to **0.09 bp/yr**; exposure held to 0.6–3.1 pp against 14.8 | Every policy lost on all three cost bases; realised drift gap **35× `gamma_star`**; `kappa` trends rather than reverts; drawdown equal or worse | French regional total returns, 420 months, pinned by sha256. Pretax only — no tax lots exist |
 | **Cost / tax / behaviour** | Morningstar and ICI fee studies; Chaudhuri–Burnham–Lo harvesting alpha after liquidation taxes; N-CSR securities-lending filings | Harvesting decays to ~0 within five years without new money; behaviour gap refuted from 1.2 pp to ~0.10 pp (Fulkerson et al. 2026); DALBAR must not be cited | Vendor research and regulatory filings, dated. US-only and jurisdiction-specific |
 
@@ -1152,12 +1159,12 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | Candidate sleeve | Shared exposures | Failure regimes | Conditions required for promotion |
 | --- | --- | --- | --- |
 | **Cheap broad market** | It *is* the shared exposure. Every other row inherits its beta and its crises | Any equity bear market, in full | None — it is the control, not a candidate |
-| **Value (HML)** | **0.63 correlated with CMA** over the common US post-publication period; its three regions correlate 0.52 and are worth an effective **1.49** looks, not three; shares equity beta and the same crowded exits | Prolonged growth regimes; intangible-heavy composition; 2010–2020 in full in the US | The premium is now signed, so what remains is the rest of the chain: **a long-only capture fraction measured rather than assumed**, and a product whose tracking difference against a cheap mix is not negative under [Exp 002](factor-product-audit.md)'s frozen promotion protocol |
-| **Momentum (UMD)** | −0.325 to HML; shares equity rebounds with every long-only tilt | Rebound after a bear market (Daniel–Moskowitz); any regime where turnover cost exceeds the premium | A net-of-cost premium measured from observed turnover, not assumed tiers; one-sided monthly turnover below 50%; a second product so the shelf is not a single point of failure |
+| **Value (HML)** | **0.63 correlated with CMA** over the common US post-publication period; its three regions correlate 0.52 and are worth an effective **1.49** looks, not three; shares equity beta and the same crowded exits. The market-relative capture shares most of its content with **size**, which is why the size-neutral reading is the one the value line may book | Prolonged growth regimes; intangible-heavy composition; 2010–2020 in full in the US. On the size-neutral capture and the US-only premium the chain is **0.28–0.34 pp/yr gross against 0.35–0.93 pp/yr of assumed cost**, i.e. negative | The capture fraction is now measured rather than assumed, so what remains is a product whose **delivered** capture is measured from holdings rather than from research portfolios, and whose tracking difference against a cheap mix is not negative under [Exp 002](factor-product-audit.md)'s frozen promotion protocol |
+| **Momentum (UMD)** | −0.325 to HML; shares equity rebounds with every long-only tilt; **its own three regions are 0.66 correlated and worth 1.33 independent looks, with no regional diversification at all in a crash** | Rebound after a bear market (Daniel–Moskowitz), measured: all three regions lost their worst calendar year in 2009 and all ten worst pooled months are negative in all three; any regime where turnover cost exceeds the premium | A net-of-cost premium measured from observed turnover, not assumed tiers; one-sided monthly turnover below 50%; a second product so the shelf is not a single point of failure |
 | **Profitability (RMW)** | 0.219 to CMA, 0.152 to HML in the US; its three regions correlate only 0.18 and are worth an effective 2.26 looks | Junk rallies; the same 2000–2002 window where its variance is concentrated; 2021 alone carries 62% of the US premium | **Closed on public data** ([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)). Reopening needs a materially longer or genuinely independent premium series — a further decade of out-of-sample months, or a licensed non-French construction — not another pass over these files |
 | **Investment (CMA)** | 0.63 to HML in the US — **never count them as two bets**; its three regions share the same best year and correlate 0.38 | Already failed: US post-publication sign flip, ~zero abroad | **Closed on public data**. Re-entry requires a new frozen specification and a genuinely post-2026 window; the current rejection stands |
-| **Size (SMB)** | Small-cap liquidity, borrow and spread; the same equity beta | Liquidity events; the cost tail (VB's round-trip spread is 2.72 bp, ~a year of expense ratio) | A premium test that was never run, plus a product whose tracking difference against a cheap mix is non-negative |
-| **Diversified trend** | **Leverage, funding liquidity, volatility estimation, short borrow**; it is a levered futures position and shares margin with everything else levered | Sharp reversals (measured: −0.53%/mo against +4.24% equity months); gaps a monthly series cannot even show; funding shocks; crowded exits | A multi-asset attribution that leaves a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |
+| **Size (SMB)** | Small-cap liquidity, borrow and spread; the same equity beta. The smallest French size quintile is **48.3% of listed firms and 0.68% of market capitalisation** at 2025-12, so its returns are not a capacity anyone can use | Liquidity events; the cost tail (VB's round-trip spread is 2.72 bp, ~a year of expense ratio); a premium that the longest available window cannot distinguish from zero | The premium test has now been run and did not sign it, so promotion needs a premium visible in some window this repository can reach, plus a product whose tracking difference against a cheap mix is non-negative |
+| **Diversified trend** | **Leverage, funding liquidity, volatility estimation, short borrow**; it is a levered futures position and shares margin with everything else levered. Plus **single-product risk**: one listed fund delivers the exposure, so a manager or structure failure has no fallback | Sharp reversals (measured: −0.53%/mo against +4.24% equity months); gaps a monthly series cannot even show; funding shocks; crowded exits; **and a taxable account**, where the measured distribution drag exceeds every fee on the shelf | A multi-asset attribution that leaves a residual after non-US-equity exposures; a contract-level test of the volatility scaling, which no public aggregate can support; and a fund-level audit on a **licensed** total-return source — Exp 008 is the N-PORT version of that audit and decision 0002 caps it at `exploratory` |
 | **Rebalancing as policy** | Sits **inside** the same equity portfolio as any factor tilt, so their tracking errors are not independent | Trending relative performance — which is the measured regime; crises, where it adds exposure to the fall | Promotion as *return* requires a real investable pair with drift gap below `gamma_star`. As *risk control* it needs no promotion and is already the recommended default |
 | **Cost / tax / behaviour** | Tax-loss harvesting and asset location share a *condition*: one tax-deferred account zeroes both at once | A single account type; no offsetting gains; no new money; a flat capital-gains rate; non-US tax law | Already deterministic. What is missing is a versioned, dated, jurisdiction-specific tax boundary rather than scattered constants |
 
@@ -1290,8 +1297,17 @@ citations.
 - **The AQR time-series-momentum series as a marginal sleeve.** `rejected` on clause
   (d), narrowly and on an *absolute* reading of the clause: a static
   time-varying-market-exposure replica with the intercept removed delivers 44% of the
-  benefit. Under a relative reading the verdict would be `unresolved`, and the page
-  says so ([Exp 004](trend-marginal-value.md)).
+  benefit. Under a relative reading the verdict is `unresolved`, and
+  [Experiment 008 re-decided the clause under both readings](trend-marginal-value.md#clause-d-re-read-under-both-readings)
+  and judges the relative reading better justified — because the absolute reading's bar
+  gets *easier* to clear as the sleeve gets better. `unresolved` is not a promotion,
+  and the honest finding is that the clause was ambiguously specified.
+- **Four of the five listed managed-futures ETFs, as trend implementations.**
+  `rejected` on a loading below 0.50 against the AQR index that Experiment 004
+  measured. **DBMF is `exploratory`** at +0.671 `[+0.513, +0.829]`. Read those
+  rejections as "this fund does not deliver *this benchmark's* exposure" — KMLM's index
+  holds no equity futures at all while AQR's holds nine — never as "this fund is badly
+  run" ([Exp 008](trend-marginal-value.md#experiment-008--the-products)).
 - **Twenty-four of 44 screened factor products.** Clause (c) did most of the work,
   firing on 22: a shortfall above 0.50 pp/yr against a fitted combination of VTI, VUG,
   VTV and VB, whose fee premium over those products was at most 0.32 pp/yr and
@@ -1309,12 +1325,11 @@ citations.
   volatilities** — a Sharpe ratio, a volatility-scaled sleeve, a risk-parity weight, a
   covariance matrix, a Kelly fraction. It is not sampling error and will not shrink
   with more data.
-- **UMD, and UMD alone among the four factors.** It is the one Experiment 005 could
-  not touch: the Ken French momentum file registered and manifested here is US-only,
-  so there is no regional momentum series to pool. Its US post-publication premium is
-  +4.19 pp/yr against a detection threshold of 7.27, and resolving it needs a data
-  acquisition rather than an analysis. HML and RMW were `unresolved` for the same
-  power reason and are no longer: one advanced and one closed.
+- **The tail behaviour of momentum, now that its premium is signed.** Experiment 006
+  measured a pooled +7.33 pp/yr but also that the three regions crash together, so
+  the effective sample it reports over all months overstates what is available in the
+  episode a holder would care about. Its pooled detection threshold, 4.98 pp/yr, is
+  the worst in this repository.
 - **Five of the 44 screened products**, whose intended exposure sits at or just above
   the 0.15 threshold with intervals that reach it.
 - **Whether any of this is investable.** Experiment 002 is `exploratory` by decision,
@@ -1348,14 +1363,14 @@ found the loading **delivered** and the cost **measurable**. Experiment 001 coul
 sign the first for any factor, which is why a licensed price source was the wrong
 purchase: it buys resolution on the two terms that already work.
 
-**Experiment 005 signed the first term for exactly one factor, and closed it for two.**
+**Experiments 005 and 006 signed the first term for two factors and closed it for two.**
 
 | Factor | Outcome | The number |
 | --- | --- | --- |
 | **HML** | branch (a): **`exploratory`** | Pooled +4.74 pp/yr, joint 90% `[+1.46, +8.10]`, positive in all three regions, survives Holm and its own best year |
 | **RMW** | branch (b): **`rejected`**, closed on public data | Pooled +2.53 pp/yr against a measured detection threshold of **2.62** |
 | **CMA** | branch (b): **`rejected`**, closed on public data | Pooled +0.20 pp/yr against a measured detection threshold of **3.41** |
-| **UMD** | not testable | No regional momentum file is manifested here |
+| **UMD** | branch (a) in [Exp 006](factor-persistence.md#experiment-006--regional-momentum): **`exploratory`** | Pooled +7.33 pp/yr, joint 90% `[+3.92, +10.31]`, against a measured detection threshold of **4.98** — the worst here — and **1.33** effective regions, the fewest |
 
 Three consequences follow, and none of them is a promotion.
 
@@ -1363,8 +1378,9 @@ Three consequences follow, and none of them is a promotion.
   quote.** Three regions of HML over 384 months are worth **573 independent
   single-region months, not 1152** — an effective 1.49 regions out of three, at a mean
   cross-region correlation of 0.52. RMW's regions are less correlated (0.18) and are
-  worth 2.26. **Any future claim that pooling n series adds n× the evidence must
-  measure it, and this repository now has the machinery to.**
+  worth 2.26. **UMD's are the most correlated (0.66) and worth only 1.33**, 512
+  effective months out of 1152. **Any future claim that pooling n series adds n× the
+  evidence must measure it, and this repository now has the machinery to.**
 - **Public factor data has a floor, and it has been measured.** The best pooled
   detection threshold across every factor and era is **2.62 pp/yr**, above the 2.0
   pp/yr materiality threshold this repository uses. A premium between zero and about
@@ -1372,9 +1388,11 @@ Three consequences follow, and none of them is a promotion.
   [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md) records,
   and it is why no further public-data premium experiment on RMW or CMA should be
   commissioned.
-- **The blocking term for value has moved one link down the chain.** It is no longer
-  the premium; it is the **long-only capture fraction** — how much of a gross
-  long-short spread a long-only tilt actually delivers. The
+- **The blocking term for value and momentum has moved one link down the chain.** It
+  is no longer the premium; it is the **long-only capture fraction** — how much of a
+  gross long-short spread a long-only tilt actually delivers — and for momentum a
+  **measured** turnover beside it, since the academic long-short assumption belongs
+  to a monthly-rebalanced spread and not to any fund. The
   [edge decomposition](expected-edge-decomposition.md) budgets 21 bp/yr for the factor
   line using an *assumed* 0.40 capture, and states plainly that no source read here
   establishes it. Halving it and halving the exposure turns the line negative.
@@ -1409,7 +1427,7 @@ data available ([decision 0002](../decisions/0002-no-research-grade-free-price-s
 | Alternative | Effort | Why it loses |
 | --- | --- | --- |
 | **Buy a licensed point-in-time source** | money | Still buys the loading and cost terms, which already work, plus one term — capture — that free sorted portfolios can measure first. Buy it *after* the capture fraction, not before |
-| Acquire a regional momentum file and finish UMD | low–moderate | Genuinely fills the one gap Experiment 005 could not reach, and is worth doing. But UMD is already outside the retail turnover limit and its illustrative cost exceeds its gross premium, so signing its premium unblocks nothing |
+| ~~Acquire a regional momentum file and finish UMD~~ | — | **Done.** [Experiment 006](factor-persistence.md#experiment-006--regional-momentum) acquired, pinned and manifested the three Ken French regional momentum files and signed UMD's premium at a pooled +7.33 pp/yr. It unblocked nothing, exactly as predicted: momentum's binding constraints are turnover, cost and a crash the regions share, not the premium |
 | Another public-data premium experiment on RMW or CMA | low | **Forbidden by decision 0005.** The floor has been measured; a further pass over the same files cannot clear it |
 | Exit census of the fund series that stopped filing | low | Sharpens a survivorship bound outside the blocking chain — though its known defect (renames counted as deaths) should be fixed regardless, as a repair rather than an experiment |
 | Read Form N-CSR for realised distributions and turnover | moderate | Sharpens *cost*, which is measured and is not the blocker |
@@ -1741,7 +1759,10 @@ and all five remain blocked on a data contract that does not exist yet.
   arbitrage, catastrophe risk, private credit, volatility selling and statistical
   arbitrage are now classified, and **trend is no longer among the untested**:
   [Experiment 004](trend-marginal-value.md) evaluated the AQR vendor series and
-  `rejected` it on its frozen falsifier, without touching investability. None of the
+  `rejected` it on its frozen falsifier, and
+  [Experiment 008](trend-marginal-value.md#experiment-008--the-products) then audited
+  the listed products the index says nothing about, finding one of five that delivers
+  its exposure. None of the
   five has passed a common point-in-time, net-cost, capacity-aware replication, and
   investable cat-risk data may be especially difficult to license. Catastrophe risk
   is the only one of the five

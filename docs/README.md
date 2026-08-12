@@ -30,12 +30,27 @@ setup and current status.
   rebalancing beats buy-and-hold, gives the closed-form probability of doing so,
   and separates what is beatable (your own counterfactual) from what is not (a
   cheap index).
-- [Factor persistence and decay](research/factor-persistence.md) — Experiments 001
-  and 005: what HML, UMD, RMW and CMA did before and after publication across frozen
-  eras in the US, and what adding developed-ex-US and emerging equity over the same
-  eras did to that. Holds the measured effective sample size that pooling correlated
-  regions actually buys, why value reached `exploratory`, and why profitability and
-  investment are closed on public data.
+- [Structural and tax-aware edges](research/structural-and-tax-edges.md) — what else
+  belongs in the contractual class the edge decomposition prices at 89 bp/yr, how large
+  each lever is, and which of them double-count. Sizes fund-structure capital gains,
+  foreign tax credit forfeiture, deferral and the step-up, harvesting decay net of its
+  fee, §1256 and capital efficiency, against one stated reference investor,
+  `as of 2026-08-12`.
+- [Factor persistence and decay](research/factor-persistence.md) — Experiments 001,
+  005 and 006: what HML, UMD, RMW and CMA did before and after publication across
+  frozen eras in the US, and what adding developed-ex-US and emerging equity over the
+  same eras did to that. Holds the measured effective sample size that pooling
+  correlated regions actually buys, why value and momentum reached `exploratory`, why
+  profitability and investment are closed on public data, whether the three regional
+  momentum series crash together, and the cost-versus-turnover schedule that must not
+  be applied to a long-only fund.
+- [The long-only capture fraction](research/long-only-capture.md) — Experiment 007:
+  what fraction of a long-short factor premium a long-only tilt actually delivers,
+  measured from the portfolios the factor is assembled from rather than assumed.
+  Finds that five defensible benchmarks disagree by 0.846, names the size-neutral
+  reading of `0.520 [0.434, 0.722]` as the only one entitled to be called a value
+  capture, tests size as a premium for the first time, and prices the small-value
+  corner against the share of market capitalisation it actually holds.
 - [Investable factor products](research/factor-product-audit.md) — Experiment 002:
   which of 44 screened ETFs deliver the exposure they advertise, what they cost
   against a cheap replication, why a 72-month N-PORT window decides nothing about
@@ -46,12 +61,15 @@ setup and current status.
   and emerging equity over 35 years. The excess-growth closed form reproduces to a
   tenth of a basis point, its 68.27% win-probability floor does not survive real
   drift gaps, and every policy loses to buy-and-hold.
-- [Trend as marginal crisis diversification](research/trend-marginal-value.md) —
-  Experiment 004, a vendor-series evaluation of AQR's time-series-momentum factor
+- [Trend: the index, the products, and a clause that was ambiguously specified](research/trend-marginal-value.md)
+  — Experiment 004, a vendor-series evaluation of AQR's time-series-momentum factor
   against a risk-matched cash comparator: what a 15% sleeve adds to a portfolio that
   already exists, why the standalone Sharpe collapsed after publication while the
   marginal benefit did not, and why a static-plus-volatility exposure replica fires
-  the falsifier.
+  the falsifier. Then Experiment 008, the audit of the five US-listed managed-futures
+  ETFs that clear a mechanical screen: only DBMF delivers the index's exposure, tax
+  drag is two to three times the expense ratio, and Experiment 004's clause (d) is
+  re-decided under both its readings.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers
