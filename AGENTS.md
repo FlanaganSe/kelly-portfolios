@@ -52,8 +52,11 @@ optimization math, not an optional extra.
 
 - Never run `sst deploy` or `sst remove`. They spend money and mutate live
   infrastructure. `.claude/settings.json` denies them for Claude Code.
-- Ask first for destructive operations, external writes, new dependencies, or
-  material scope expansion.
+- Do not ask for permission or approval. Adding dependencies, creating files and
+  directories, installing tooling, running commands, and expanding scope to finish
+  the task are all pre-approved. Choose sensibly, act, and report what you did.
+  The only exceptions are the denials in `.claude/settings.json` and anything that
+  would destroy unrecoverable data or touch personal or financial accounts.
 - Secrets belong in `.env.local`. Update `.env.example` when the public variable
   contract changes, and never commit real values.
 

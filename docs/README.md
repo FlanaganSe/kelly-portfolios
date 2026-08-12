@@ -18,5 +18,10 @@ setup and current status.
 - [Portfolio edge research framework](research/portfolio-edge-research-framework.md)
   — evidence, falsifiable hypotheses, numerical fixtures, and the validation
   protocol for leverage, rebalancing, crisis protection, factors, and manager alpha.
+  Answers whether a return source is real.
+- [Numerical engine specification](research/portfolio-engine-specification.md) —
+  the algorithms, closed-form test fixtures, and conditioning requirements
+  underneath any allocation feature, and where the optimiser should run. Answers
+  how to compute it, and defers to the edge framework on whether to.
 
 `docs/decisions/` does not exist yet. Create it with the first real decision record.
