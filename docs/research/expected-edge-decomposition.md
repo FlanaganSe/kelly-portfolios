@@ -350,11 +350,28 @@ portion of every paycheck or regularly rebalancing can open a gap"*. The peer-re
 refutation is decisive: Fulkerson, Jordan, Riley and Yan, *"Bad Timing Does Not Cost
 Investors 15% of Their Funds' Returns"*,
 [*Financial Analysts Journal* 82(3) (2026)](https://rpc.cfainstitute.org/research/financial-analysts-journal/2026/bad-timing-does-not-cost-investors-funds-returns),
-abstract verbatim: *"we find that, using the same sample, poor timing by mutual fund
-investors costs them only 0.10% per year."* The rest is a hindsight artefact — the same
-mechanism [Hayley (2014, *JFQA* 49(1))](https://openaccess.city.ac.uk/id/eprint/6226/1/Measuring%20Investors%20Historical%20Returns%20-%20March%202012.pdf)
-identified in Dichev's dollar-weighted returns, decomposing the 1.3 pp NYSE/AMEX gap into
-−0.21 pp of timing and −0.95 pp of bias.
+verbatim: *"we find that, using the same sample, poor timing by mutual fund
+investors costs them only 0.10% per year."* **The paper is open access and has now been
+read in full** (2026-08-12; Taylor & Francis blocks direct fetch, so it was read through a
+text-extraction proxy). Its Table 2 applies
+[Hayley (2014, *JFQA* 49(1))](https://openaccess.city.ac.uk/id/eprint/6226/1/Measuring%20Investors%20Historical%20Returns%20-%20March%202012.pdf)'s
+decomposition to Morningstar's own 2015–2024 sample and splits an overall **−0.17 pp** gap
+into **−0.10 pp of timing and −0.07 pp of hindsight**, with the same near-even split in
+every category group. Hayley's original decomposition of Dichev's 1.3 pp NYSE/AMEX gap is
+harsher still: **−0.21 pp of timing against −0.95 pp of bias**.
+
+**Two cautions the authors state and citations usually drop.** Their −0.17 pp is not
+Morningstar's −1.2 pp: implementing Hayley on monthly data forces them to *estimate*
+terminal assets, and that change alone removes most of the gap, so they claim only that
+*"substantial portions of the Return Gaps for aggregate investors are consistently not
+related to timing."* And the genuinely mechanical finding sits in their Appendix A,
+concerning Morningstar's **numerator** rather than its IRR: weighting by end-of-month
+rather than beginning-of-month assets overstates total return, because *"the portfolio is
+weighted using the uninvestable end-of-month assets."* Correcting it moves the measured
+gap from **−2.14% to −1.64% to −0.93%/yr** across Morningstar's 2023, 2024 and 2025
+methods — in the alternatives group, from −5.54% to −0.06%. Morningstar had already
+adopted the corrected method by the 2025 edition. **A large share of the historical
+behaviour-gap literature is measuring a weighting convention.**
 
 Fund-level evidence bounds the upper end: Friesen and Sapp (2007, *JBF* 31(9)), full text
 verified, report *"equity fund investor timing decisions reduce fund investor average
@@ -365,20 +382,41 @@ that circulates. That line is booked against the *average investor* and **does n
 the contractual budget**; §2.4 settles why, and why the gap is identically zero for an
 investor who does not trade.
 
-**DALBAR must not be cited.** Its own methodology document defines investor return as
+**DALBAR must not be cited, and the defect is now pinned to a specific step.** Its
+[live QAIB glossary](https://blog.dalbar.com/qaib-glossary) (retrieved 2026-08-12, and
+word-identical to the QAIB 2016, 2022 and 2023 report PDFs) defines investor return as
 *"the change in assets, after excluding sales, redemptions, and exchanges"* and annualises
-by *"the uniform rate that can be compounded annually"* — a compounding of a dollar amount,
-not an internal rate of return over dated cash flows.
+by *"the uniform rate that can be compounded annually"*. The QAIB 2016 report's own worked
+appendix shows what that means arithmetically: step 4 forms a "cost basis" by **adding up
+undiscounted contributions** — opening assets, plus new investments, minus withdrawals,
+plus and minus exchanges — step 5 divides dollar gain by that sum, and step 6 annualises
+with a plain root, *"[% Return ^(1/# of years)]-1"*. **There is no discounting of dated
+cash flows anywhere in the calculation.** It is not a mis-specified IRR; it is not an IRR.
+
+Three independent critics reach the same place, and none is peer-reviewed.
 Pfau, "A Warning to the Advisory Profession: DALBAR's Math is Wrong", *Advisor
 Perspectives*, 6 March 2017 (the canonical URL returns HTTP 403; read via the Internet
 Archive) shows the consequence: *"DALBAR ignores dollar-cost averaging component of these systematic
 investments and instead assumes that the entire $10,000 was invested at the beginning of
 1997"*, so a saver who simply did not yet have the money is scored as having mistimed. On
 his worked 1997–2016 example the true dollar-cost-averaging IRR is 7.34%/yr and DALBAR's
-method returns 4.05% — a 3.3 pp gap that is pure methodology and zero behaviour. There is
-**no peer-reviewed critique of DALBAR**; the credible objections are practitioner writing,
-and they are correct. Morningstar, by contrast, does use a proper IRR, so Pfau's central
-objection does not apply to it.
+method returns 4.05% — a 3.3 pp gap that is pure methodology and zero behaviour.
+[Edesess, "Investors Do Not Underperform their Investments"](https://web.archive.org/web/20220125045454id_/https://www.advisorperspectives.com/articles/2017/10/09/investors-do-not-underperform-their-investments),
+9 October 2017, names step 5 as *"the fatal flaw"* and builds the cleanest possible
+counterexample: an investor who contributes the same amount every month and earns the same
+return every month is scored by DALBAR as underperforming by **6.43%/yr**, which is the
+same artefact §2.4 reproduces from first principles. And Blanchett — then at Morningstar,
+writing in *Advisor Perspectives*, 8 May 2017 — replicated the exercise on fund data and
+concluded *"DALBAR's numbers are wrong and should not be cited in the context in which
+they are commonly used"*, measuring average rolling five-year gaps of **−0.32%, −0.16% and
+−0.23%** for equity, fixed income and allocation funds.
+
+**The absence of a refereed critique was checked rather than assumed.** Crossref and
+OpenAlex return no journal article critiquing QAIB; the only DALBAR hits are trade-press
+items and papers citing it as a data source. DALBAR's own rebuttal, appended to the Pfau
+article, concedes the mechanism while disputing its relevance — *"IRR is neither necessary
+nor relevant"* — which is the disagreement stated plainly. Morningstar, by contrast, does
+use a proper IRR (§2.4), so Pfau's central objection does not apply to it.
 
 **Trading-cost avoidance is real but its magnitude does not transfer.**
 [Barber and Odean (2000)](https://faculty.haas.berkeley.edu/odean/papers%20current%20versions/individual_investor_performance_final.pdf)
@@ -540,8 +578,16 @@ income in a taxable account, and SPY, QQQ, MDY and DIA are unit investment trust
 
 - **"Diversification return" as an edge.** It is measured against `sum_i w_i g_i`, which
   nobody can hold. Rejected as a benchmark, per Willenbrock.
-- **The 1.2 pp behaviour gap.** Refuted at ~0.10 pp/yr by Fulkerson et al. (2026) on the
-  same sample. Rejected at its headline magnitude, retained at 15 bp central.
+- **The 1.2 pp behaviour gap.** Fulkerson et al. (2026), running Hayley's decomposition on
+  Morningstar's 2015–2024 sample, put the timing component at **0.10 pp/yr** of a 0.17 pp
+  gap, and show separately that an end-of-month asset-weighting convention accounted for
+  more than a percentage point of the historical figure. Rejected at its headline
+  magnitude, retained at 15 bp central.
+- **"Not trading" as a quantified edge, and as a line in the contractual budget.**
+  Rejected on both counts (§2.4). The gap is identically zero for an investor with no cash
+  flows, Morningstar disclaims the individual-level reading of it, and it is measured
+  against a benchmark the budget may not aggregate with. The application may display the
+  15 bp line against the average investor; it may never add it to the 109 bp.
 - **The index-inclusion cost as a current benchmark-choice saving.** Real at 21–28 bp for
   1990–2005; approximately zero by the 2010s on two independent measurements. Rejected as
   a 2026 magnitude.
@@ -635,13 +681,143 @@ Two consequences, and the second is the one that matters.
   investor, and it stays exactly where it is: probabilistic, 150 bp of tracking error,
   `AVERAGE_INVESTOR`, never added to the 109 bp.
 
-**What is genuinely controllable is product selection, not restraint.** The gap is a
-property of the fund's volatility and the flows it attracts, and the actions that reduce
-it — hold broad, low-volatility, low-tracking-error funds — are the actions the
-[recommended portfolio](portfolio-recommendation.md) already takes. An investor who
-follows that construction has **already spent** this edge. Booking it again on top of
-the 109 bp would be the same dollars counted twice, which is precisely what §2.3 exists
-to prevent.
+**Morningstar says all of this itself, and the sentences are easy to miss.** *Mind the
+Gap 2026* (Jeffrey Ptak, published 2026-08-06; PDF retrieved and read in full
+2026-08-12) pools roughly **23,000** US open-end funds and ETFs and computes *"the
+constant monthly rate of return that makes the pool's beginning net assets equal its
+ending assets with all monthly cash flows accounted for"* — a proper IRR, and the reason
+Pfau's objection to DALBAR does not transfer. But the thing it is compared against is a
+**lump sum**: the 9.9% total return is stated *"assuming an initial lump-sum purchase"*.
+So the headline 1.2 pp is the difference between the average dated dollar and a dollar
+invested on 2016-01-01 — exactly the pairing the arithmetic above shows to be
+path-determined. Three further caveats, verbatim, and each is load-bearing:
+
+- *"It is important to note that this estimate is not a proxy for the average investor's
+  dollar-weighted return, as this will depend on the particular magnitude and timing of
+  an individual investor's purchases and sales, which is beyond the scope of this
+  study."* **The vendor disclaims the individual-level reading outright.**
+- *"it is a truism that for the theoretical 'total market,' there can be no 'gap,' as for
+  every buyer, there is a seller, meaning one's shortfall is another's surplus."* The gap
+  is **zero-sum**, so it cannot be a population-wide edge — only a redistribution between
+  investors. That is precisely why it belongs to `AVERAGE_INVESTOR` and nowhere else.
+  **Morningstar qualifies this in the next paragraph and the qualification has to travel
+  with the quote:** the study covers only US open-end funds and ETFs that existed at
+  2016-01-01, which is *"only a subset of the global market"*, so *"the zero-sum
+  total-market truism won't necessarily hold for it as theory might suggest."* The
+  argument above therefore rests on the truism holding for the **total** market, which is
+  an identity, and not on Morningstar's sample reproducing it, which is not measured.
+- *"Nor should timing effects be interpreted as literal opportunity costs. For instance,
+  the investor who bought a fund after it had risen sharply, for reasons or circumstances
+  outside their control, hasn't 'lost' out on those earlier gains."*
+
+One methodological limit Morningstar states and nobody quotes: *"we do not correct for
+creation bias… we exclude funds that launched after Dec. 31, 2015, from the study."*
+
+**The dispersion is the actionable finding, not the headline.** Exhibit 4, gap in
+percentage points per year over the ten years to 2025-12-31, and Exhibit 10's volatility
+quintiles beside it:
+
+| Category group | Investor | Total | **Gap** | | Volatility quintile (all funds) | **Gap** |
+| --- | ---: | ---: | ---: | --- | --- | ---: |
+| US equity | 12.8% | 13.3% | **−0.4** | | Least volatile | **−0.4** |
+| Allocation | 7.8% | 8.4% | **−0.7** | | 2nd | −1.5 |
+| Taxable bond | 1.9% | 3.0% | **−1.0** | | 3rd | −1.8 |
+| International equity | 7.8% | 8.9% | **−1.1** | | 4th | −1.3 |
+| Municipal bond | 1.1% | 2.2% | **−1.1** | | Most volatile | **−2.1** |
+| Sector equity | 9.4% | 10.6% | **−1.2** | | *Alternative, most volatile* | **−13.2** |
+| Alternative | 2.6% | 4.1% | **−1.6** | | | |
+| **Overall** | **8.7%** | **9.9%** | **−1.2** | | | |
+
+**And for the fund this repository actually recommends, the gap is zero.** Exhibit 6 puts
+**large blend at 0.0 pp** — *"the average dollar earning essentially all the funds'
+aggregate total return"* — and Exhibit 8 puts **US equity index funds at −0.1 pp**
+against −1.1 pp for active US equity. Mid-cap blend is −0.1 and intermediate core bond
+−0.4. Morningstar's own reading of the cross-section is that the driver is neither cost
+nor management style but **volatility**: *"There's no strong evidence of a link between
+management style—active or passive—and timing gaps"*, fees *"appear to play at best an
+indirect role"*, while *"more-volatile funds appear to push investors' buttons"* and the
+volatility relationship *"has been one of the more vivid and enduring findings from the
+study through the years."*
+
+**What is genuinely controllable is product selection, and it is measured.** The gap runs
+from **−0.4 pp** on the least-volatile quintile to **−2.1 pp** on the most volatile, and
+to **−13.2 pp** on the most-volatile alternative funds. The spread between a broad US
+equity index fund (**−0.1 pp**) and the alternatives shelf is roughly **1.5 pp/yr** —
+larger than the entire 109 bp contractual budget. So there is a real, large, controllable
+quantity here, and the action that captures it is **choosing broad, low-volatility,
+low-tracking-error funds** rather than exercising restraint inside a volatile one.
+
+**Which is largely what the [recommended portfolio](portfolio-recommendation.md) already
+does.** Its US sleeve sits in the least-volatile, lowest-tracking-error cells of
+Morningstar's own cross-section, where the measured gap is 0.0 to −0.4 pp. An investor
+who holds that construction has **already spent** most of this edge; the residual on the
+US side is the 0 to 10 bp between large blend and a US equity index fund, not 120 bp.
+Booking it on top of the 109 bp would be the same decision counted twice — the fund
+choice is *already* the 49 bp cost line — which is precisely what §2.3 exists to prevent.
+
+**But "index fund" is not the thing that closes the gap, and Exhibit 8 is where that
+claim breaks.** Read down its management-style split rather than across the US row:
+
+| Category group, Exhibit 8 | Investor return | Total return | Gap |
+| --- | ---: | ---: | ---: |
+| US equity, **index** | 13.7% | 13.8% | **−0.1** |
+| US equity, active | 11.8% | 12.9% | −1.1 |
+| **International equity, index** | **7.7%** | **9.3%** | **−1.6** |
+| International equity, active | 7.9% | 8.7% | −0.8 |
+| Alternative, index | −5.2% | 3.4% | −8.6 |
+| **Overall, index** | **10.3%** | **11.4%** | **−1.1** |
+
+**Index funds in aggregate ran a −1.1 pp gap, and international equity index funds ran
+−1.6 — twice the gap of *active* international.** The near-zero figure belongs to US
+equity index specifically and generalises to nothing else on the shelf. Morningstar says
+so in its own words: active investors captured more of their funds' returns than index
+investors *"across most category groups, with the notable exception of US equity"*.
+
+This matters here and not in the abstract, because **the recommended construction holds
+40% of its equity outside the US** — VEA at 30 and VWO at 10 — which is the cell with the
+worst index-fund gap Morningstar measured outside alternatives. Two readings, and this
+page cannot choose between them: either an ex-US index sleeve is genuinely harder to hold
+through (its worst drawdowns arrive on a different schedule from the US ones a US
+investor is braced for), or the figure is the mechanical artefact §2.4 opens with, since
+the decade to 2025 is exactly the period when US outperformance was drawing flows out of
+ex-US funds at the wrong times. **Neither reading is tested here, and the cross-section
+cannot separate them.** What it does establish is that *"hold index funds and the gap
+goes away"* is false as stated, and no line on this page may rest on it.
+`as of 2026-08-12`, from Exhibit 8, ten years ended 2025-12-31.
+
+**The counter-case is stronger than its citation record suggests, and it is three
+independent attacks.** Keswani and Stolin, *Finance Research Letters* 5(4) (2008),
+abstract verbatim: *"Dichev's findings are not robust."* Their subperiod split of the
+NYSE/AMEX gap is **+1.8 pp for 1926–1951, −0.2 pp for 1951–1977 and −0.3 pp for
+1977–2002** — the effect is confined to the pre-war data and reverses afterwards — and
+replacing Datastream with a comprehensive price database moves the UK gap *"from 1.1 to
+−1.3 percent"*. Johnston, Hatem and Paul, *Quarterly Journal of Finance and Accounting*
+53(1/2) (2015), abstract only, make the purely arithmetic claim: *"the relative magnitude
+of beginning and ending balances are the principal determinants of the differences in the
+estimated returns"* — the gap tracks the asset base, which is what §2.4's simulation
+shows. And Hayley attacks **his own 2014 method** in a 2019 working paper
+([free full text](https://core.ac.uk/download/389055452.pdf)): using in-sample mean
+returns means *"above-average returns prior to any given period must by construction be
+followed by subsequent below-average returns… This is an entirely spurious correlation."*
+His simulations put roughly **a third of the remaining measured gap** in that category.
+Stack the three and very little survives.
+
+**At the individual level the quantity has never been measured at all, and that is the
+finding.** Every dollar-weighted gap in this literature — Dichev, Friesen–Sapp,
+Dichev–Yu, Morningstar, DALBAR — is computed on **fund-level or market-level aggregate
+flow series**. No peer-reviewed study computes a dollar-weighted-versus-time-weighted gap
+for identifiable individuals. What the account-level evidence does show cuts against the
+folklore twice over. Barber and Odean's 66,465 households earned an average **gross 18.7%
+against the market's 17.9%** — they beat the index before costs — and their 1.5 pp net
+shortfall is transaction costs, not timing; in the Taiwan whole-market study the authors
+relegate *"a somewhat smaller role… to poor market timing choices"* than to selection,
+commissions or transaction tax. And Calvet, Campbell and Sodini's complete Swedish
+administrative panel of ~4.8m households finds a median return loss of **−0.11%/yr
+against the domestic index** — the median household *beats* it — while their 2009
+companion finds households offset *"about one half of idiosyncratic passive variations in
+the risky asset share"*, which is contrarian rebalancing, not return chasing. **The modal
+retail investor in complete population data is not the investor the behaviour-gap
+narrative describes.**
 
 **Correction this makes to material already in the repository.** Four places describe
 *not trading* as part of the ~109 bp contractual budget: the
@@ -739,16 +915,18 @@ measured advantage.
    the budget assumes it; a factor tilt and a rebalancing policy on the same equity
    portfolio plainly are not. Correlated components would widen the stated-index
    dispersion and lower the 0.631.
-6. **The behaviour gap's dispersion by category, which is the actionable part and was
-   not retrieved.** §2.4 argues that what an investor controls is *which funds they own*
-   rather than *whether they trade*, and the evidence that would size that is
-   Morningstar's own breakdown of the gap by category group and by fund volatility. The
-   1.2 pp headline and the two verbatim caveats in §2.1 are the only figures taken from
-   *Mind the Gap 2026*; **no per-category or per-volatility figure from it has been read
-   in this repository**, so the claim that the gap concentrates in narrow and volatile
-   products is currently reasoning from mechanism, not a measurement. Retrieving that
-   table is the cheapest next step, and it would either size the 5–60 bp range properly
-   or refute the product-selection reading outright.
+6. **Whether the 15 bp central estimate should now move, given the dispersion.** The
+   category and volatility breakdowns in §2.4 were retrieved and closed the question they
+   were asked to answer, but they also make the 5–60 bp range look poorly shaped rather
+   than merely wide. The measured gap for the products this repository recommends is
+   **0.0 to −0.4 pp**, which argues the *low* end should be near zero, while the gap for
+   the products it rejects runs to **−13.2 pp**, which argues the high end is far above
+   60 bp for an investor who would genuinely have bought them — Hsu, Myers and Whitby's
+   131–401 bp by style and fee quintile point the same way. The line is probably two
+   different quantities — a residual near zero for the recommended construction, and a
+   large product-selection saving that the 49 bp cost line already partly claims. Splitting
+   it requires deciding how much of the volatility effect is the fund choice the cost line
+   is already paid for, and that was not settled here.
 
 **Reproducibility.** All figures regenerate from
 `research/src/portfolio_edge/studies/` with `uv run pytest tests/unit/test_studies_*.py`.
@@ -766,15 +944,22 @@ should acquire both before any feature leans on it.
 
 **Sources that could not be retrieved**, named so nobody re-spends the budget.
 
-- **Fulkerson, Jordan, Riley and Yan (2026), *FAJ* 82(3)** — paywalled at Taylor & Francis
-  and SSRN; **abstract only**. This matters most, because it carries the single most
-  load-bearing correction on the page.
+- ~~Fulkerson, Jordan, Riley and Yan (2026)~~ — **no longer unretrieved. Read in full
+  2026-08-12**, tables included. The paper is **open access**, funded by the University of
+  Arkansas libraries; Taylor & Francis serves it behind Cloudflare, which blocks direct
+  fetch, so it was read through a text-extraction proxy. Anyone re-checking it should not
+  conclude from a 403 that it is paywalled. Its numbers are now in §2.1 and supersede the
+  abstract-only treatment this page previously carried.
 - **Dichev (2007), *AER* 97(1)** — paywalled at AEA, JSTOR and SSRN; no open-access copy
   exists. Its 1.3%/5.3%/1.5% figures come from the author's 2004 working-paper abstract and
   from Hayley's table. **The published AER abstract contains none of those numbers**, so
   anyone citing them "to Dichev (2007) AER" is citing the working paper.
-- **Hsu, Myers and Whitby (2016), *JPM* 42(2)** — paywalled; SSRN marked "not available for
-  download"; abstract only. Not relied on for any number here.
+- **Hsu, Myers and Whitby (2016), *JPM* 42(2)** — paywalled; SSRN CAPTCHA-blocked. The
+  authors' own firm publishes an executive summary carrying the headline figures — value
+  fund investors **131 bp/yr**, growth **316 bp**, small-cap **155 bp**, high-expense
+  funds **401 bp** against low-expense **134 bp**, on CRSP equity funds 1991 to mid-2013.
+  Not booked, because the summary is not the paper and the figures are equal-weighted
+  across funds, but they are the reason open question 6 doubts the 60 bp high bound.
 - **Chaudhuri, Burnham and Lo (2020), *FAJ* 76(3)** — published text paywalled. The tables
   above are from the January 2020 accepted manuscript, whose headline is **1.10%/0.85%**
   against the published **1.08%/0.82%**. Do not mix the two versions.
@@ -824,3 +1009,16 @@ touched. Separately, §2.4 corrects four pages that described *not trading* as p
    gain must show 2.4 bp/yr against a 5th percentile of −80 bp/yr, or it is misleading.
 6. **The `studies` package is the executable record.** Any change to a number on this page
    changes a test, by construction.
+7. **Do not build a behaviour-gap feature, and do not let "not trading" into the 109 bp.**
+   The application may render the 15 bp line, labelled `AVERAGE_INVESTOR` and
+   `probabilistic`, and it must never sum it with the contractual budget — which is
+   already [decision 0007](../decisions/0007-application-may-render-research.md)
+   constraint 3 and is enforced by `aggregate()`. It must not compute a personal behaviour
+   gap for a reader: the source disclaims that reading, the statistic carries about 2.6 pp
+   of mechanical noise, and no study has ever measured it for an identifiable individual.
+   What the application *may* honestly say is the product-selection finding — the measured
+   gap runs from 0.0 pp on a broad large-blend fund to −13.2 pp on the most volatile
+   alternatives — because that is a fund choice, computable from the reader's own holdings.
+8. **Pin §2.4's arithmetic before anything leans on it.** It wants a small
+   `studies/investor_return_gap.py` and a test, on the same footing as every other number
+   here. Until then it is the one unpinned block on the page.
