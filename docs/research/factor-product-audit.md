@@ -630,43 +630,53 @@ feed Decision 0002 tested, and it is still not enough to promote anything.
 
 ---
 
-## 12. How this composes with Experiment 001
+## 12. How this composes with Experiments 001 and 005
 
-[Experiment 001](factor-persistence.md) left HML, UMD and RMW `unresolved` and CMA
-`rejected`. **No factor reached `exploratory`, so no premium is established for any
-exposure audited here.** The two experiments answer different halves of one product and
-they multiply rather than add: what a shareholder receives is
-`premium × delivered loading − cost`. Experiment 001 could not sign the first term for
-any factor; this page measures the second and finds it delivered; the third is a cost
-for 27 of 44 products against a look-ahead replication. **A product audit cannot rescue
-an exposure whose premium is not established.**
+The two experiments on [factor persistence](factor-persistence.md) answer the other
+half of one product, and the halves multiply rather than add: what a shareholder
+receives is `premium × delivered loading − cost`. This page measures the second term
+and finds it delivered; the third is a cost for 27 of 44 products against a look-ahead
+replication. The first term now reads, after Experiment 005 pooled three regions:
+**HML `exploratory`, RMW and CMA `rejected` and closed on public data, UMD
+`unresolved` and untestable outside the US**.
 
-Two instances make that concrete.
+**Nothing here changes as a result, and the reason is worth stating.** Every product
+verdict on this page was reached under Experiment 002's own frozen protocol, which
+never depended on a premium being signed. What changes is which rows are *worth
+revisiting*, and the answer is narrow.
 
+- **Only the value shelf is now worth revisiting at all.** HML's premium is signed —
+  gross, long-short, and carried by two non-US regions. The 33 funds graded on HML
+  still have to pass this page's promotion protocol on their own terms, and 22 of the
+  44 rejections fired on clause (c), a shortfall against a look-ahead four-fund
+  combination that no premium result touches.
 - **Sixteen of the 44 funds are graded on a *negative* HML loading and three reached
   `exploratory`** (VUG, IWF, IWY). "Delivering the intended exposure" there means
-  reliably holding the *short* leg of a premium whose post-publication estimate in
-  Experiment 001 is +1.57 pp/yr on a 90% interval of `[−2.28, +5.54]` — unresolved in
-  sign. A product that manufactures the short leg of an unresolved premium precisely
-  and cheaply is not a candidate for anything.
-- **The two factors Experiment 001 singled out have almost no shelf.** RMW was
-  prioritised there because it alone did not decay (96% retained); its entire
-  investable shelf here is QUAL (`rejected` on clause (c)) and SPHQ (`unresolved`). UMD
-  was ruled out there as a standalone sleeve on cost; its entire shelf here is MTUM,
-  which **does** deliver its exposure — UMD loading +0.444, `[+0.277, +0.562]` — and is
-  `rejected` on clause (c) after losing 1.22 pp/yr to a three-fund combination whose
-  fee premium over it was 0.12. That is the cost result Experiment 001 predicted,
-  showing up in a product.
+  reliably holding the *short* leg of a premium that is now signed **positive** at
+  +4.74 pp/yr pooled. A product that manufactures the short leg of a positive premium
+  precisely and cheaply is a worse candidate after Experiment 005 than before it, not
+  a better one.
+- **The quality and momentum shelves are now closed for a stronger reason than a thin
+  shelf.** RMW was once prioritised because it alone did not decay (96% retained); it
+  is now `rejected` and closed on public data
+  ([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)), so QUAL
+  (`rejected` on clause (c)) and SPHQ (`unresolved`) may not be revisited on premium
+  grounds at all. UMD was ruled out as a standalone sleeve on cost; its entire shelf
+  here is MTUM, which **does** deliver its exposure — UMD loading +0.444,
+  `[+0.277, +0.562]` — and is `rejected` on clause (c) after losing 1.22 pp/yr to a
+  three-fund combination whose fee premium over it was 0.12. That is the cost result
+  Experiment 001 predicted, showing up in a product.
 
 ---
 
 ## Consequence for this repository
 
 1. **Nothing is promoted, and Decision 0002 is not the only reason.** Even with a
-   licensed source, no product here would qualify: the exposures that are cleanly
-   delivered belong to factors with no established premium, the alpha column is
-   unmeasurable, and the cost comparison that rejected 22 products is decided by a
-   look-ahead comparator. The 15 `exploratory` products may be used as implementation
+   licensed source, no product here would qualify: the alpha column is unmeasurable,
+   the cost comparison that rejected 22 products is decided by a look-ahead
+   comparator, and of the exposures that are cleanly delivered only value has a signed
+   premium behind it — signed in a gross long-short form whose long-only capture
+   fraction remains unmeasured. The 15 `exploratory` products may be used as implementation
    proxies in a later experiment and for nothing else; the programme-wide statement of
    what that leaves is [decision 0004](../decisions/0004-no-sleeve-promoted.md).
 2. **Exactly what would change that.** A licensed, point-in-time, survivorship-free

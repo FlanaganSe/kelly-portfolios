@@ -1,27 +1,33 @@
 # 0004 — No sleeve is promoted; the portfolio is the control alone
 
-Date: 2026-08-12. Status: accepted.
+Date: 2026-08-12. Status: accepted. Amended 2026-08-12 after Experiment 005; the
+decision is unchanged and the factor rows are updated. Supersede rather than amend
+when the first sleeve is promoted.
 
 ## Context
 
-Five frozen experiments have run, across fifteen ledgered executions of six distinct
-specifications, with 1,037 tests passing `as of 2026-08-12`, 18 of them
+Six frozen experiments have run, across sixteen ledgered executions of seven distinct
+specifications, with 1,082 tests passing `as of 2026-08-12`, 18 of them
 network-marked. The outcomes, in the closed status vocabulary:
 
 | Hypothesis | Status | The number that decides it |
 | --- | --- | --- |
 | Phase 1 ingestion gate | `unresolved` | HML and RMW standard deviations do not reproduce; variance ratios 0.940 and 1.104 |
-| HML, UMD, RMW premia persist post-publication | `unresolved` | 16 of 20 cells hold a premium smaller than their window can detect at 80% power |
-| CMA premium persists post-publication | **`rejected`** | −1.39 pp/yr post-publication against +3.91 in-sample |
+| HML, UMD, RMW premia persist post-publication (US) | `unresolved` | 16 of 20 cells hold a premium smaller than their window can detect at 80% power |
+| CMA premium persists post-publication | **`rejected`** | −1.39 pp/yr post-publication against +3.91 in-sample; +0.20 pp/yr pooled across three regions |
+| Pooling three regions signs the HML, RMW, CMA premia | **`exploratory` (HML), `rejected` (RMW, CMA)** | HML +4.74 pp/yr `[+1.46, +8.10]` pooled; RMW's +2.53 sits below its own measured 2.62 pp/yr detection threshold ([decision 0005](0005-factor-premia-closed-on-public-data.md)) |
 | Retail factor products deliver exposure worth buying | `exploratory` | 24 of 44 `rejected`; clause (c) fired on 22, a shortfall above 0.50 pp/yr to a fitted four-fund combination |
 | Rebalancing is a source of return | **`rejected`** | Every policy lost on all three cost bases; drift gap ran ~35× `gamma_star` |
 | A trend sleeve adds marginal value a simpler exposure cannot | **`rejected`** | A static + volatility-exposure replica delivers 44% of the benefit |
 
-Three of those are `rejected` against a falsifier frozen before any result was seen.
-Three are `unresolved`, and in every case the reason is that the available window
-cannot detect the effect it is looking for — not that the effect is absent. Nothing
-reached `walk-forward-tested`, `shadow-live` or `production-eligible`, and nothing
-could have: the fund-level data contract caps that work at `exploratory`
+Those are `rejected` against falsifiers frozen before any result was seen. Where a
+row is `unresolved`, the reason is that the available window cannot detect the effect
+it is looking for — not that the effect is absent, and for RMW and CMA that
+"cannot detect" has now been *measured* and made permanent on public data. **One
+factor, value, advanced to `exploratory` on the strength of a premium; it is the
+first thing in this programme to do so.** Nothing reached `walk-forward-tested`,
+`shadow-live` or `production-eligible`, and nothing could have: the fund-level data
+contract caps that work at `exploratory`
 ([decision 0002](0002-no-research-grade-free-price-source.md)).
 
 Recording this is not bookkeeping. The failure mode of a research programme with this
@@ -60,22 +66,22 @@ unsigned**, which is why every product row below points back at a factor row.
 
 | Candidate | Condition for promotion |
 | --- | --- |
-| Value, profitability | A post-publication window with more than the current 12–26% power against the 2.0 pp/yr materiality threshold; a **measured** long-only capture fraction; and a product meeting Experiment 002's frozen promotion protocol — loading ≥ 0.15 with a 95% interval excluding 0.15 from below, the same on both fixed halves, shortfall ≤ 0 pp/yr against a replication fitted on a **prior** window, and total cost of ownership including realised distributions and turnover ≤ 1.0 pp/yr |
+| Value | The premium is now signed (`exploratory`), so two conditions remain: a **measured** long-only capture fraction, which no source read here establishes and which the edge budget currently *assumes* at 0.40; and a product meeting Experiment 002's frozen promotion protocol — loading ≥ 0.15 with a 95% interval excluding 0.15 from below, the same on both fixed halves, shortfall ≤ 0 pp/yr against a replication fitted on a **prior** window, and total cost of ownership including realised distributions and turnover ≤ 1.0 pp/yr |
+| Profitability (RMW) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Reopening needs a materially longer out-of-sample window — roughly a further decade — or a genuinely independent, non-French premium series. Not another pass over these files |
 | Momentum | A net premium computed from **observed** turnover rather than assumed tiers, with one-sided monthly turnover below 50%; and more than one investable product, since the entire retail shelf clearing a $1bn / 0.60% screen is one fund — MTUM, which delivers its exposure and was still `rejected` on cost |
-| Investment (CMA) | Re-entry requires a new frozen specification on a genuinely post-2026 window. The current rejection stands |
+| Investment (CMA) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Re-entry requires a new frozen specification on a genuinely post-2026 window. The current rejection stands |
 | Size | A premium test that has never been run, plus the same product protocol |
 | Trend | A multi-asset attribution leaving a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |
 | Rebalancing as return | A real, investable, low-correlation pair whose drift gap is genuinely below its `gamma_star`. None was found; every pair tested correlated 0.72–0.79 in logs |
 | Anything fund-level | A licensed, survivorship-free, point-in-time total-return source covering the listed shelf from at least 2003, so the window is 240 months rather than 72. Required contents are specified in the research framework under "The next experiment" |
 
-**The immediate next step is not a promotion attempt, and it is not the purchase.** It
-is Experiment 005, the regional replication of the post-publication premia across US,
-developed-ex-US and emerging equity on files this repository has already downloaded and
-hash-pinned. It attacks the only unsigned term in the chain, costs nothing, and is
-decisive in both directions: either a factor advances, or public factor data is shown
-to be permanently unable to sign these premia — at which point the licensed purchase
-should **not** be made for factor products, because it buys the two terms that already
-work.
+**Experiment 005 has run and did both things at once.** Value advanced; profitability
+and investment were closed on public data. **The immediate next step is still not a
+promotion attempt and still not the purchase.** It is the measurement of the long-only
+capture fraction — how much of a gross long-short spread a long-only tilt actually
+delivers — which is now the only unmeasured term in the chain for value, and which the
+Ken French sorted-portfolio files can address before any money is spent. The framework
+sets out that design under "The premium is signed for one factor".
 
 ## Alternatives considered
 
@@ -85,9 +91,18 @@ and the vendor states no cost basis anywhere in the archived workbook, so every
 figure is gross of the vendor's own trading costs by omission.
 
 **Promote RMW on the grounds that it is the only factor that did not decay (96%
-retained).** Rejected. That is a prioritisation for future work, not a finding: its
-post-publication interval includes zero, 59% of its premium is the single year 2021,
-and its volatility carries an unresolved ±5.09% systematic band from Phase 1.
+retained).** Rejected then as a prioritisation rather than a finding, and now closed
+outright: pooled across three regions its premium is +2.53 pp/yr against its own
+measured 2.62 pp/yr detection threshold, 62% of its US premium is the single year
+2021, dropping the pooled best year takes it to +1.79, and its volatility carries an
+unresolved ±5.09% systematic band from Phase 1
+([decision 0005](0005-factor-premia-closed-on-public-data.md)).
+
+**Promote value now that its premium is signed.** Rejected. `exploratory` is the
+lowest rung of the ladder and permits an implementation to be *tested*, nothing more.
+The premium is gross, long-short and not investable; its long-only capture fraction is
+unmeasured; and its pooled figure is carried by the two non-US regions, with the
+largest leg in emerging markets where shorting is hardest and dearest.
 
 **Report the 2000–2019 era, in which annual rebalancing was worth +0.575 pp/yr and
 cleared the materiality threshold twice over.** Rejected, and the rejection rule was

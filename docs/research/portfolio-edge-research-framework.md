@@ -61,7 +61,7 @@ must beat, not a claim that the final answer has already been found
 
 This section is written to be read on its own. Everything in it is derived on the
 pages linked beside it; nothing here is new evidence. `as of 2026-08-12`, after
-fifteen ledgered runs across five frozen experiments.
+sixteen ledgered runs across six frozen experiments.
 
 The commissioning premise was: *"The goal is to have information and strategies and
 research to near definitively beat the market. Beating the market is not
@@ -109,11 +109,17 @@ the second bullet below.
 
 Two things make this worse than it looks, not better.
 
-- **The factor line is a construction, not a measurement.** Its 21 bp is
-  `6.6%/yr gross long-short × 0.42 post-publication retention × 0.40 long-only
-  capture × 0.30 portfolio exposure − 12 bp incremental fee`. The long-only capture
-  fraction *is not established by any source read here*. Halve it and halve the
-  exposure and the chain goes negative.
+- **The factor line is still a construction, and one term of it is now measured.**
+  Its 21 bp is `6.6%/yr gross long-short × 0.42 post-publication retention × 0.40
+  long-only capture × 0.30 portfolio exposure − 12 bp incremental fee`. The first two
+  terms are now measurements for value rather than literature: pooling three regions
+  gives HML **+4.74 pp/yr** post-publication against +4.56 in its US original sample,
+  so the retention factor is closer to 1 than to 0.42 for that factor
+  ([Exp 005](factor-persistence.md#experiment-005--the-regional-replication)) —
+  though the pooled figure is gross and long-short in three regions, which is not the
+  same object the 0.42 was measured on. **The long-only capture fraction is still not
+  established by any source read here, and it is now the binding unknown.** Halve it
+  and halve the exposure and the chain goes negative regardless of the premium.
 - **The rebalancing line is now refuted downward by this repository's own data.**
   [Experiment 003](rebalancing-policy.md) measured **−38.7 bp/yr** on the portfolio
   and **−62.9 bp/yr** on the canonical regional pair over 35 years. The +2.4 bp in
@@ -197,10 +203,17 @@ Five conditions, each of which is a measurable target rather than a hope.
 4. **Tracking error reduction, not edge enlargement.** Because `T = (z s / e)**2`,
    halving tracking error quarters the horizon to any confidence level. Every
    feasible improvement to the index-relative answer is on the `s` side.
-5. **Post-publication windows with power.** Against this repository's own 2.0 pp/yr
-   materiality threshold, **no post-publication window in Experiment 001's 20-cell
-   grid exceeds 26% power**, and most sit between 12% and 24%. The public data cannot
-   answer the question the experiment asks; more of the same data will not fix it.
+5. **Post-publication windows with power. This one is now settled, and negatively.**
+   Against this repository's own 2.0 pp/yr materiality threshold, no post-publication
+   window in Experiment 001's US grid exceeds 26% power.
+   [Experiment 005](factor-persistence.md#experiment-005--the-regional-replication)
+   added every independent region the public library distributes and **measured** what
+   that bought: 1.49 effective regions out of three for HML and 2.26 for RMW, leaving
+   the best pooled detection threshold at **2.62 pp/yr**, still above 2.0. **A premium
+   between zero and about 2.6 pp/yr is invisible in public factor data no matter how
+   it is pooled** ([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)).
+   One factor cleared it anyway, because its premium is larger than the threshold:
+   pooled HML is +4.74 pp/yr `[+1.46, +8.10]` and is now `exploratory`.
 
 Absent those, the defensible statement is the one this repository will make: *you can
 near-definitively beat the portfolio you would otherwise have owned, by roughly 90
@@ -708,11 +721,15 @@ fund-fee model and tests mostly academic zero-investment long-short portfolios.
 The defensible conclusion is that economic themes deserve a positive but heavily
 shrunk prior; no replication percentage establishes an investable edge.
 
-This repository has since measured HML, UMD, RMW and CMA over frozen
-pre- and post-publication eras. None of the four was promoted; see
+This repository has since measured HML, UMD, RMW and CMA over frozen pre- and
+post-publication eras in the US, and then re-measured HML, RMW and CMA across the
+US, developed-ex-US and emerging files over the *same* eras. See
 [factor persistence and decay](factor-persistence.md) for the era boundaries, the
-power calculation that makes three of them `unresolved` rather than negative, and
-the one that was `rejected`.
+power calculation that made three of them `unresolved` in the US, and what adding
+two regions did to that. The short version: **HML reached `exploratory` on a pooled
++4.74 pp/yr carried by the two non-US regions; RMW and CMA are `rejected` and closed
+on public data, because the measured pooled window still cannot resolve a 2.0 pp/yr
+premium; UMD could not be tested regionally at all.** No sleeve is promoted.
 
 Published effects decay. Across 97 predictors, returns were lower out of sample
 and lower again after publication, consistent with both statistical bias and
@@ -1107,10 +1124,10 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | Candidate sleeve | Baseline portfolio | Investable proxy | Expected mechanism | Experiment status |
 | --- | --- | --- | --- | --- |
 | **Cheap broad market** | itself; it is the control | VTI / VOO / ITOT and a broad ex-US fund, 3 bp, ~1.3 bp round trip | Equity risk premium; the only line whose delivery is contractual | **the control**, [decision 0003](../decisions/0003-cheap-broad-market-control.md) |
-| **Value (HML)** | cheap broad market | 33 of the 44 screened funds grade on HML; 15 reached `exploratory` as proxies only | Risk or behavioural premium on book-to-market | `unresolved` ([Exp 001](factor-persistence.md)); products `exploratory`/`rejected` ([Exp 002](factor-product-audit.md)) |
-| **Momentum (UMD)** | cheap broad market | MTUM — **the entire retail shelf** at $1bn / 0.60% | Underreaction; possibly risk | `unresolved` (Exp 001); MTUM `rejected` (Exp 002) |
-| **Profitability (RMW)** | cheap broad market | QUAL (`rejected` on cost) and SPHQ (`unresolved`) — the entire shelf | Gross-profitability premium | `unresolved` (Exp 001) — the only factor that did not decay |
-| **Investment (CMA)** | cheap broad market | none on the screened shelf | Conservative-minus-aggressive asset growth | **`rejected`** (Exp 001) |
+| **Value (HML)** | cheap broad market | 33 of the 44 screened funds grade on HML; 15 reached `exploratory` as proxies only | Risk or behavioural premium on book-to-market | **`exploratory`** ([Exp 005](factor-persistence.md#experiment-005--the-regional-replication)), on a pooled +4.74 pp/yr carried by the two non-US regions; products `exploratory`/`rejected` ([Exp 002](factor-product-audit.md)) |
+| **Momentum (UMD)** | cheap broad market | MTUM — **the entire retail shelf** at $1bn / 0.60% | Underreaction; possibly risk | `unresolved` (Exp 001) and **untestable regionally**: no regional momentum file is manifested here; MTUM `rejected` (Exp 002) |
+| **Profitability (RMW)** | cheap broad market | QUAL (`rejected` on cost) and SPHQ (`unresolved`) — the entire shelf | Gross-profitability premium | **`rejected`** (Exp 005, branch b): pooled +2.53 pp/yr against its own 2.62 pp/yr detection threshold. **Closed on public data** |
+| **Investment (CMA)** | cheap broad market | none on the screened shelf | Conservative-minus-aggressive asset growth | **`rejected`** (Exp 001, confirmed by Exp 005 branch b). **Closed on public data** |
 | **Size (SMB)** | cheap broad market | IJH, IJR, VB, SPMD, SPSM, EZM | Compensation for illiquidity/distress, disputed | not tested as a premium; 3 of 8 products `rejected` on cost |
 | **Diversified trend** | 60/40 equity/cash | none audited; CTA funds unpriced here | Slow behavioural adjustment; crisis convexity | **`rejected`** on its frozen falsifier ([Exp 004](trend-marginal-value.md)) |
 | **Rebalancing as policy** | any multi-sleeve portfolio | the portfolio itself | `gamma_star` excess growth; short relative-performance continuation | **`rejected`** as return ([Exp 003](rebalancing-policy.md)); retained as risk control |
@@ -1121,10 +1138,10 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | Candidate sleeve | Evidence supporting | Counterevidence | Data quality |
 | --- | --- | --- | --- |
 | **Cheap broad market** | Sharpe's arithmetic identity; measured fee gap 48–59 bp; ~1.3 bp round-trip friction at retail scale | Passive investors still trade: 7.6%/yr US turnover, implicit IPO/SEO costs (Pedersen 2018). And **FF5+UMD prices VTI itself at −0.55 pp/yr (HAC *t* = −3.41)** over 2020–2025, so the standard model does not even span the control | Highest available here. Filed N-PORT returns, sponsor-published fees and spreads, all dated — but N-PORT figures are unaudited, per-filer methodology, and uncorroborated |
-| **Value (HML)** | +4.56 pp/yr in its original sample, BH-significant; +1.57 pp/yr post-publication | Retained 34%; −0.44 pp/yr in the recent decade; **79% of the post-publication premium is the year 2000**; 228 of 384 months under water; −47.4% worst decade | Phase 1 `unresolved`: HML's standard deviation carries a **−3.03% systematic band**. Long-short, gross, not investable |
+| **Value (HML)** | Pooled across three regions, **+4.74 pp/yr `[+1.46, +8.10]`** post-publication, positive in all three, surviving Holm and its own best calendar year. Ex-US only it is **+6.33 `[+3.19, +9.58]`**. Emerging HML's BH-adjusted *p* is **0.0002** | The **US** leg is +1.57 pp/yr and survives no correction; the result is a five-fold spread across regions (US +1.57, developed ex-US +5.07, emerging +7.58) and the largest leg sits where shorting is hardest. Pooled detection threshold is still 3.35 pp/yr, so 2.0–3.3 pp/yr remains invisible. Three regions are worth an effective **1.49**, not three | Phase 1 `unresolved`: US HML's standard deviation carries a **−3.03% systematic band**; the two regional files were **never gated at all**. Long-short, gross, USD unhedged, not investable |
 | **Momentum (UMD)** | +9.85 pp/yr original; +4.19 pp/yr post-publication; MTUM's UMD loading +0.444 `[+0.277, +0.562]`, sign stable across the fixed calendar split and all 37 rolling windows | Only post-publication cell that looked significant is exactly what BH removes; −56.6% worst year (2008-12…2009-11); illustrative cost **3.30–18.67 pp/yr** against a +4.19 gross premium; MTUM `rejected` after a **1.22 pp/yr** shortfall against a combination whose fee premium over it was 0.12 | **Second moment never gated** — the momentum file was never reproduced against a printed table. Weaker than a band of zero |
-| **Profitability (RMW)** | 96% of its premium retained; mildest post-publication drawdown (−14.8%); low-turnover tier | Post-publication interval `[−0.32, +6.76]` includes zero; **59% of the premium is 2021**; window can only detect 5.27 pp/yr at 80% power | Phase 1 `unresolved`: RMW's standard deviation carries a **+5.09% systematic band** |
-| **Investment (CMA)** | +3.91 pp/yr in the original sample, the strongest of the four | **−1.39 pp/yr post-publication**, sign flip; falsifier clauses (a) and (c) both fired | Reproduced to 0.53% on the second moment. Rejection tested against the most generous candidate discovery date |
+| **Profitability (RMW)** | 96% of its US premium retained; mildest post-publication drawdown (−14.8%); low-turnover tier; pooled +2.53 pp/yr `[+1.07, +3.96]`, positive in all three regions; its regions are the least correlated of the three factors (ρ̄ = 0.18), so pooling helped it most | **Its pooled premium is below its own pooled detection threshold** — 2.53 against 2.62 pp/yr, whose entire 90% interval `[2.15, 3.07]` sits above materiality. 59% of the US premium is 2021, and the pooled premium falls to +1.79 when its best year is dropped | Phase 1 `unresolved`: US RMW's standard deviation carries a **+5.09% systematic band**; the regional files were never gated. The branch (b) verdict holds across the whole band |
+| **Investment (CMA)** | +3.91 pp/yr in the original sample, the strongest of the four. Outside the US its post-publication premium is ~0 rather than negative (+0.53 developed ex-US, +1.46 emerging), so the US sign flip does **not** replicate | **−1.39 pp/yr post-publication in the US**; +0.20 pp/yr pooled against a 3.41 pp/yr pooled detection threshold. It is the one factor whose three regions share the same best calendar year (2022), so they are the least independent looks in the grid | Reproduced to 0.53% on the second moment, so it carries no Phase 1 band. Rejection tested against the most generous candidate discovery date, and now against two further regions |
 | **Size (SMB)** | Exposure is delivered and stable: SPSM/IJR +0.889, VB +0.599 | Weak as a standalone premium (Hou–Xue–Zhang); **never tested as a premium here**; VB carries the largest shortfall on the shelf, **+2.89 pp/yr** against the fitted cheap combination | 72 months of filed returns; MDE₈₀ 1.97–3.16 pp/yr on these funds |
 | **Diversified trend** | +1.342 pp/yr marginal CE `[+0.759, +1.916]`; survives every hostile test; payoff spread across four structurally different crises; crisis correlation −0.59, downside beta −0.67 | A static + volatility-exposure replica delivers **44%** of it; post-publication interval includes zero and fails Holm; standalone Sharpe 1.34 → 0.18; **vendor states no cost basis anywhere**; comparable CTA survivorship/backfill distortion is 7.7 pp/yr | Vendor-series evaluation, ceiling `exploratory` by construction. Early history substitutes index returns for futures |
 | **Rebalancing as policy** | `gamma_star` closed form reproduces on real data to **0.09 bp/yr**; exposure held to 0.6–3.1 pp against 14.8 | Every policy lost on all three cost bases; realised drift gap **35× `gamma_star`**; `kappa` trends rather than reverts; drawdown equal or worse | French regional total returns, 420 months, pinned by sha256. Pretax only — no tax lots exist |
@@ -1135,10 +1152,10 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | Candidate sleeve | Shared exposures | Failure regimes | Conditions required for promotion |
 | --- | --- | --- | --- |
 | **Cheap broad market** | It *is* the shared exposure. Every other row inherits its beta and its crises | Any equity bear market, in full | None — it is the control, not a candidate |
-| **Value (HML)** | **0.63 correlated with CMA** over the common post-publication period; shares equity beta and the same crowded exits | Prolonged growth regimes; intangible-heavy composition; 2010–2020 in full | A post-publication window with >26% power against 2.0 pp/yr, plus a long-only capture fraction measured rather than assumed, plus a product whose tracking difference against a cheap mix is not negative |
+| **Value (HML)** | **0.63 correlated with CMA** over the common US post-publication period; its three regions correlate 0.52 and are worth an effective **1.49** looks, not three; shares equity beta and the same crowded exits | Prolonged growth regimes; intangible-heavy composition; 2010–2020 in full in the US | The premium is now signed, so what remains is the rest of the chain: **a long-only capture fraction measured rather than assumed**, and a product whose tracking difference against a cheap mix is not negative under [Exp 002](factor-product-audit.md)'s frozen promotion protocol |
 | **Momentum (UMD)** | −0.325 to HML; shares equity rebounds with every long-only tilt | Rebound after a bear market (Daniel–Moskowitz); any regime where turnover cost exceeds the premium | A net-of-cost premium measured from observed turnover, not assumed tiers; one-sided monthly turnover below 50%; a second product so the shelf is not a single point of failure |
-| **Profitability (RMW)** | 0.219 to CMA, 0.152 to HML; same universe, same beta | Junk rallies; the same 2000–2002 window where its variance is concentrated | Same as value, plus the ±5.09% volatility band removed by obtaining a 2013–14 CRSP vintage or an equivalent |
-| **Investment (CMA)** | 0.63 to HML — **never count them as two bets** | Already failed: post-publication sign flip | Re-entry requires a new frozen specification and a genuinely post-2026 window; the current rejection stands |
+| **Profitability (RMW)** | 0.219 to CMA, 0.152 to HML in the US; its three regions correlate only 0.18 and are worth an effective 2.26 looks | Junk rallies; the same 2000–2002 window where its variance is concentrated; 2021 alone carries 62% of the US premium | **Closed on public data** ([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)). Reopening needs a materially longer or genuinely independent premium series — a further decade of out-of-sample months, or a licensed non-French construction — not another pass over these files |
+| **Investment (CMA)** | 0.63 to HML in the US — **never count them as two bets**; its three regions share the same best year and correlate 0.38 | Already failed: US post-publication sign flip, ~zero abroad | **Closed on public data**. Re-entry requires a new frozen specification and a genuinely post-2026 window; the current rejection stands |
 | **Size (SMB)** | Small-cap liquidity, borrow and spread; the same equity beta | Liquidity events; the cost tail (VB's round-trip spread is 2.72 bp, ~a year of expense ratio) | A premium test that was never run, plus a product whose tracking difference against a cheap mix is non-negative |
 | **Diversified trend** | **Leverage, funding liquidity, volatility estimation, short borrow**; it is a levered futures position and shares margin with everything else levered | Sharp reversals (measured: −0.53%/mo against +4.24% equity months); gaps a monthly series cannot even show; funding shocks; crowded exits | A multi-asset attribution that leaves a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |
 | **Rebalancing as policy** | Sits **inside** the same equity portfolio as any factor tilt, so their tracking errors are not independent | Trending relative performance — which is the measured regime; crises, where it adds exposure to the fall | Promotion as *return* requires a real investable pair with drift gap below `gamma_star`. As *risk control* it needs no promotion and is already the recommended default |
@@ -1187,23 +1204,23 @@ the closed status vocabulary. `as of 2026-08-12`.
 ### The ledger, counted rather than described
 
 Verified directly from [`research/ledger.jsonl`](../../research/ledger.jsonl):
-**41 entries, 15 runs, 6 distinct specification hashes, 5 experiment families.**
+**44 entries, 16 runs, 7 distinct specification hashes, 6 experiment families.**
 
 | Terminal outcome | Runs | Which |
 | --- | ---: | --- |
 | `unresolved` | 2 | Phase 1 gate; Experiment 001 |
 | `rejected` | 5 | Experiment 003 (1); Experiment 004 (4 executions of one specification) |
-| `exploratory` | 3 | Experiment 002 (3 executions of one specification) |
+| `exploratory` | 4 | Experiment 002 (3 executions of one specification); Experiment 005 (1) |
 | no terminal status | 5 | 1 `failed` (a parser table-name error), 4 `abandoned` (one operator interrupt, three SIGTERMs) |
 
-Ten runs recorded a `results_viewed` event; **no run consumed the final holdout**.
+Eleven runs recorded a `results_viewed` event; **no run consumed the final holdout**.
 Two facts about this count matter more than the count.
 
 - **Repeated executions of one specification are not independent hypotheses, and the
   ledger keeps them distinguishable.** Four of the five `rejected` rows are one
   specification hash run four times, and all three `exploratory` rows are one
   specification hash run three times. The number of distinct specifications searched
-  is **six**, not fifteen, and that is the number any deflated-Sharpe trial count
+  is **seven**, not sixteen, and that is the number any deflated-Sharpe trial count
   must start from.
 - **The ledger contains a correction to itself.** One `abandoned` entry was appended
   prematurely and for the wrong run's reason; rather than repair it in place, a
@@ -1212,8 +1229,23 @@ Two facts about this count matter more than the count.
 
 ### Advanced
 
-Nothing was promoted to a sleeve. What advanced is the machinery and four specific
-results that are now measurements rather than citations.
+Nothing was promoted to a sleeve. One *factor* advanced a rung, and the rest of what
+advanced is machinery and specific results that are now measurements rather than
+citations.
+
+- **Value reached `exploratory`, and it is the first thing on this page to do so on
+  the strength of a premium.** Pooled across the US, developed-ex-US and emerging
+  files over Experiment 001's own frozen post-publication era, HML returned
+  **+4.74 pp/yr** with a cross-region joint 90% interval of `[+1.46, +8.10]`, the
+  same sign in all three regions, survival of Holm–Bonferroni at an adjusted *p* of
+  0.036, and survival of dropping its own best calendar year. It is `exploratory`, which permits an
+  investable implementation to be *tested* and permits nothing else
+  ([Exp 005](factor-persistence.md#experiment-005--the-regional-replication)).
+- **The cost of naive pooling was measured, not asserted.** Resampling the three
+  regions independently rather than jointly narrows HML's pooled interval by about
+  1.5×, and in the recent decade it converts `[−2.36, +10.16]` into `[+0.06, +8.09]`
+  — a significant result manufactured entirely by treating correlated regions as
+  independent samples.
 
 - **The excess-growth closed form is `source-reproduced` and now confirmed on real
   data.** `0.5 (sum w_i sigma_i^2 − sigma_p^2)` matched realised excess growth to
@@ -1231,7 +1263,7 @@ results that are now measurements rather than citations.
   ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
 - **The research loop exists end to end** — frozen specification, hashed input,
   deterministic calculation, adversarial validation, append-only ledger, synthesis —
-  with 1,037 tests passing and a runner that refuses a confirmatory
+  with 1,082 tests passing and a runner that refuses a confirmatory
   experiment lacking a benchmark, primary metric, cost model, sample policy and
   rejection rule.
 
@@ -1241,11 +1273,20 @@ results that are now measurements rather than citations.
   bases over 35 years; four independent rejection clauses fired at once. The
   mechanism that would make it pay is absent and its opposite is present at
   conventional significance ([Exp 003](rebalancing-policy.md)).
-- **Conservative-minus-aggressive investment (CMA).** −1.39 pp/yr post-publication
-  against +3.91 in-sample; clauses (a) and (c) fired. This is the weakest of the
-  page's rejections and says so: shifting the window back 24 months moves it to
-  +0.40 pp/yr, though that window reaches inside the authors' own estimation sample
-  and +0.40 still fails the 2.0 pp/yr materiality threshold ([Exp 001](factor-persistence.md)).
+- **Profitability (RMW) and conservative-minus-aggressive investment (CMA), both now
+  closed on public data.** CMA first: −1.39 pp/yr post-publication in the US against
+  +3.91 in-sample, clauses (a) and (c) firing ([Exp 001](factor-persistence.md)).
+  Experiment 005 then added two regions to both and fired **branch (b)** on each —
+  the measured pooled minimum detectable effect is 2.62 pp/yr for RMW and 3.41 for
+  CMA, both above the 2.0 pp/yr materiality threshold, and both with their entire
+  90% sampling interval and Phase 1 systematic band above it too. **RMW's pooled
+  premium of +2.53 pp/yr is smaller than the smallest premium its own pooled window
+  can resolve.** Neither rejection says the premium is zero; both say the publicly
+  available data cannot sign it, permanently
+  ([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)).
+  CMA's US rejection is also now better understood: outside the US its
+  post-publication premium is approximately zero rather than negative, so the sign
+  flip is a US phenomenon and the rejection rests on materiality, not on the flip.
 - **The AQR time-series-momentum series as a marginal sleeve.** `rejected` on clause
   (d), narrowly and on an *absolute* reading of the clause: a static
   time-varying-market-exposure replica with the intercept removed delivers 44% of the
@@ -1268,13 +1309,12 @@ results that are now measurements rather than citations.
   volatilities** — a Sharpe ratio, a volatility-scaled sleeve, a risk-parity weight, a
   covariance matrix, a Kelly fraction. It is not sampling error and will not shrink
   with more data.
-- **HML, UMD and RMW.** Not negative — *underpowered*. Sixteen of the 20 factor × era
-  cells hold a premium smaller than their own window could detect at 80% power, and
-  the four exceptions are the four original paper samples. **Every cell surviving
-  Benjamini–Hochberg is a pre-publication cell.** The calibration is the finding: a
-  zero-mean Gaussian series matched to HML's length and volatility produced
-  +1.98 pp/yr, a 90% interval of `[−1.70, +5.65]`, a −53.2% maximum drawdown and 247
-  months under water, against HML's real +1.57, `[−2.28, +5.54]`, −57.8% and 228.
+- **UMD, and UMD alone among the four factors.** It is the one Experiment 005 could
+  not touch: the Ken French momentum file registered and manifested here is US-only,
+  so there is no regional momentum series to pool. Its US post-publication premium is
+  +4.19 pp/yr against a detection threshold of 7.27, and resolving it needs a data
+  acquisition rather than an analysis. HML and RMW were `unresolved` for the same
+  power reason and are no longer: one advanced and one closed.
 - **Five of the 44 screened products**, whose intended exposure sits at or just above
   the 0.15 threshold with intervals that reach it.
 - **Whether any of this is investable.** Experiment 002 is `exploratory` by decision,
@@ -1289,10 +1329,13 @@ designs, comparators and falsifiers on this page and no ledgered run. Leverage
 remains at zero, which is the correct state: it was conditioned on an unlevered edge
 surviving the protocol, and none has.
 
-## The next experiment: sign the premium, or close the factor programme
+## The premium is signed for one factor. What that changed, and what is next
 
-**One recommendation, and it is not the expensive one. It should not be a purchase,
-and the reason is a chain that the experiments have now closed.**
+**Experiment 005 has run.** Its design, its frozen falsifier, its 27-cell regional
+grid, its pooled tables and every hostile test live in
+[factor persistence and decay](factor-persistence.md#experiment-005--the-regional-replication),
+which is their canonical home. This section records only what the result changes for
+the programme.
 
 What a shareholder actually receives from any factor product is
 
@@ -1302,96 +1345,90 @@ premium  ×  delivered loading  −  cost
 
 [Experiment 002](factor-product-audit.md) §12 measured the second and third terms and
 found the loading **delivered** and the cost **measurable**. Experiment 001 could not
-sign the first for any factor. So a licensed price source — the obvious expensive next
-step — would buy resolution on the two terms that already work and none on the term
-that blocks everything. **Product promotion is gated on the factor being `exploratory`
-or better, and no factor is.** Spending money first would be spending it on the wrong
-half.
+sign the first for any factor, which is why a licensed price source was the wrong
+purchase: it buys resolution on the two terms that already work.
 
-### Experiment 005 — the regional replication of the post-publication premia
+**Experiment 005 signed the first term for exactly one factor, and closed it for two.**
 
-Re-run Experiment 001's post-publication grid for **HML, RMW and CMA** across **US,
-developed-ex-US and emerging** equity, over the *same* frozen era boundaries, and form
-a pooled estimate under a cross-region block bootstrap that resamples the joint panel
-so contemporaneous correlation is preserved rather than assumed away.
+| Factor | Outcome | The number |
+| --- | --- | --- |
+| **HML** | branch (a): **`exploratory`** | Pooled +4.74 pp/yr, joint 90% `[+1.46, +8.10]`, positive in all three regions, survives Holm and its own best year |
+| **RMW** | branch (b): **`rejected`**, closed on public data | Pooled +2.53 pp/yr against a measured detection threshold of **2.62** |
+| **CMA** | branch (b): **`rejected`**, closed on public data | Pooled +0.20 pp/yr against a measured detection threshold of **3.41** |
+| **UMD** | not testable | No regional momentum file is manifested here |
 
-**Falsifier, frozen before any number is computed. Both branches are decisive.**
+Three consequences follow, and none of them is a promotion.
 
-- **(a) A factor advances toward `exploratory`** only if its pooled post-publication
-  premium exceeds the 2.0 pp/yr materiality threshold, its one-sided pooled interval
-  excludes zero after Benjamini–Hochberg across the whole factor × region × era family,
-  **and** the sign agrees in at least two of the three regions.
-- **(b) The factor programme is closed** — not paused — if the **measured** pooled
-  effective sample size leaves a minimum detectable effect above 2.0 pp/yr for every
-  factor. That would establish that publicly available factor data cannot sign these
-  premia at all, which is a bounded, permanent statement rather than another
-  `unresolved`.
+- **The effective sample size is now a measured quantity, and it is the number to
+  quote.** Three regions of HML over 384 months are worth **573 independent
+  single-region months, not 1152** — an effective 1.49 regions out of three, at a mean
+  cross-region correlation of 0.52. RMW's regions are less correlated (0.18) and are
+  worth 2.26. **Any future claim that pooling n series adds n× the evidence must
+  measure it, and this repository now has the machinery to.**
+- **Public factor data has a floor, and it has been measured.** The best pooled
+  detection threshold across every factor and era is **2.62 pp/yr**, above the 2.0
+  pp/yr materiality threshold this repository uses. A premium between zero and about
+  2.6 pp/yr cannot be signed from these files however they are combined. That is what
+  [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md) records,
+  and it is why no further public-data premium experiment on RMW or CMA should be
+  commissioned.
+- **The blocking term for value has moved one link down the chain.** It is no longer
+  the premium; it is the **long-only capture fraction** — how much of a gross
+  long-short spread a long-only tilt actually delivers. The
+  [edge decomposition](expected-edge-decomposition.md) budgets 21 bp/yr for the factor
+  line using an *assumed* 0.40 capture, and states plainly that no source read here
+  establishes it. Halving it and halving the exposure turns the line negative.
 
-**Data it needs: none that is not already here.**
-`Developed_ex_US_5_Factors_CSV.zip` (1990-07…2026-06, 432 monthly rows) and
-`Emerging_5_Factors_CSV.zip` (1989-07…2026-06, 444 rows) are already downloaded,
-hash-pinned and manifested in `research/data-manifests/`, and Experiment 003 already
-uses both. The block bootstrap, HAC, Benjamini–Hochberg, Holm, minimum-detectable-effect
-and frozen-era machinery all exist and are tested. **Cost is hours, not dollars.**
+### The next experiment: measure the long-only capture fraction
 
-**Experiment 001's stated reason for skipping this does not hold, and that is the
-opening.** It records that the regional files "start 1990-07 and 1989-07, so they are
-shorter than the post-publication windows already shown to be underpowered." That is
-true only of the *original-sample* eras, which begin 1963-07. HML's post-publication
-era begins **1994-01** and RMW's and CMA's **2014-01**, and **both regional files begin
-before both boundaries** — so the regional post-publication windows are exactly the
-same length as the US ones. The eras that are underpowered are precisely the eras where
-the regional data is complete.
+Regress a **long-only** value-tilted portfolio's excess return on the market and on
+HML, over the same frozen post-publication eras and the same three regions, and
+report the fraction of the long-short premium that the long-only tilt delivers, with
+its interval and its own minimum detectable effect. The falsifier should be frozen
+against the 0.40 the edge budget currently assumes, in both directions: a measured
+capture materially below it kills the factor line arithmetically, and a measured
+capture at or above it makes a licensed fund-level source worth buying for value
+specifically.
 
-**Limits to freeze into the specification rather than discover.**
+**Data it needs, stated honestly.** The Ken French sorted portfolio files —
+`25_Portfolios_5x5` and its regional equivalents — are the natural source, and
+`french_us_25_portfolios_5x5` is already **registered** in this repository's dataset
+registry with parser coverage and a test fixture. It is **not yet manifested**, so
+retrieving it and pinning its bytes is the first step rather than a formality. The
+regional sorted-portfolio files are neither registered nor manifested.
 
-- **UMD is not covered.** Only a US momentum file is registered here; a regional
-  momentum test needs a file this repository does not currently manifest.
-- **These are the same global risk factors**, so contemporaneous correlation is high
-  and the effective sample size is the quantity being *measured*. If it comes back at
-  1.2 rather than 3, that is the finding, and branch (b) fires.
-- **Regional returns are USD and unhedged**, so a currency term enters that the US
-  series does not carry.
-- **The regional files were never gated against any printed table.** Their second
-  moments are *unmeasured*, which is weaker than Phase 1's ±3–5% band on US HML and RMW,
-  not stronger.
-- **It remains a before/after comparison** and cannot identify publication as a cause —
-  the same limit Experiment 001 states about itself.
+**Its known limits, before it is designed.** A long-only tilt built from sorted
+portfolios is still not a fund: it has no fee, no turnover cost, no tax and no
+tracking error against a real index. Measuring the capture fraction removes the last
+*unmeasured* term in the chain but leaves the whole of implementation to
+[Experiment 002](factor-product-audit.md), which cannot exceed `exploratory` on the
+data available ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
 
-**Why it beats the alternatives on information per unit of effort.**
+**Why it beats the alternatives now.**
 
 | Alternative | Effort | Why it loses |
 | --- | --- | --- |
-| **Buy a licensed point-in-time source** | money, plus a budget decision not taken | Buys the loading and cost terms, which already work. Cannot sign a premium. Experiment 002's own promotion protocol would still refuse every product |
-| Exit census of the fund series that stopped filing | low | Sharpens a survivorship bound that sits outside the blocking chain — and the attrition count has a **known defect** (renames counted as deaths) that should be fixed regardless, as a repair rather than an experiment |
-| Read Form N-CSR for realised distributions and turnover | moderate | Genuinely fills a gap — clause (d) is currently evaluated without the distribution term its own falsifier names — but it sharpens *cost*, which is not the blocker |
-| A per-style model-misfit pedestal | low | Bounds how much of the −2.38 pp/yr median alpha is the model. The alpha column is already unmeasurable on power grounds, so bounding its bias unblocks nothing |
-| Multi-asset attribution of the trend sleeve | moderate | Sharpens a verdict already `rejected`, on a vendor-series evaluation that cannot exceed `exploratory` in any case |
-| The frozen construction tournament | high | Decides *how to weight* sleeves; there are none to weight, and the [edge budget](expected-edge-decomposition.md) prices the optimiser as the smallest line in it |
-| Obtain the 2013–14 CRSP vintage to settle Phase 1 | unbounded, likely impossible | The band it would remove is checked cell by cell and **changes no conclusion anywhere** |
-| Read the 2026-01-onward holdout | low | Six to eight months against windows already under 26% power. Spends a genuine holdout for nothing |
+| **Buy a licensed point-in-time source** | money | Still buys the loading and cost terms, which already work, plus one term — capture — that free sorted portfolios can measure first. Buy it *after* the capture fraction, not before |
+| Acquire a regional momentum file and finish UMD | low–moderate | Genuinely fills the one gap Experiment 005 could not reach, and is worth doing. But UMD is already outside the retail turnover limit and its illustrative cost exceeds its gross premium, so signing its premium unblocks nothing |
+| Another public-data premium experiment on RMW or CMA | low | **Forbidden by decision 0005.** The floor has been measured; a further pass over the same files cannot clear it |
+| Exit census of the fund series that stopped filing | low | Sharpens a survivorship bound outside the blocking chain — though its known defect (renames counted as deaths) should be fixed regardless, as a repair rather than an experiment |
+| Read Form N-CSR for realised distributions and turnover | moderate | Sharpens *cost*, which is measured and is not the blocker |
+| The frozen construction tournament | high | Decides how to weight sleeves; there is one `exploratory` factor and no promoted sleeve to weight |
+| Obtain the 2013–14 CRSP vintage to settle Phase 1 | unbounded, likely impossible | The band it would remove is checked cell by cell in both experiments and **changes no conclusion anywhere** |
+| Read the 2026-01-onward holdout | low | Six to eight months against windows whose pooled detection threshold is 2.6 pp/yr. Spends a genuine holdout for nothing |
 
-**What its result would actually change.** Branch (a) reopens the factor programme and
-makes a licensed source worth buying, because there would finally be a premium whose
-delivery is worth auditing. **Branch (b) closes it, and — more valuably — says the
-licensed purchase should not be made for factor products at all.** Either way the
-budget decision that has been deferred since
-[decision 0002](../decisions/0002-no-research-grade-free-price-source.md) stops being a
-matter of faith. An `unresolved` verdict absorbs effort indefinitely; a measured
-statement that public data can never resolve it does not.
-
-**If branch (a) fires, this is what the dataset must contain.** Stated now
-so the specification exists before the budget does: fund and share-class total returns
-net of fees at monthly or finer frequency, covering the listed shelf **from at least
-2003 so the window is 240 months rather than 72**; a **survivorship-free
-universe with post-delisting observations and a coded exit reason**; stable economic
-fund identity across share class, ticker change, merger and vendor migration;
-inception and first-trade dates and a vendor first-seen date so backfill is
-detectable; point-in-time expense ratios, net assets and index-mandate history;
-documented total-return, distribution and corporate-action treatment; and a stated
-revision policy with retrievable vintages. A source that supplies returns but not exit
-reasons or vintages does not lift Experiment 002 above `exploratory`, and paying for
-one that does not would be the most expensive way to learn nothing.
+**If a licensed purchase is eventually made, this is what the dataset must contain.**
+Stated now so the specification exists before the budget does: fund and share-class
+total returns net of fees at monthly or finer frequency, covering the listed shelf
+**from at least 2003 so the window is 240 months rather than 72**; a
+**survivorship-free universe with post-delisting observations and a coded exit
+reason**; stable economic fund identity across share class, ticker change, merger and
+vendor migration; inception and first-trade dates and a vendor first-seen date so
+backfill is detectable; point-in-time expense ratios, net assets and index-mandate
+history; documented total-return, distribution and corporate-action treatment; and a
+stated revision policy with retrievable vintages. A source that supplies returns but
+not exit reasons or vintages does not lift Experiment 002 above `exploratory`, and
+paying for one that does not would be the most expensive way to learn nothing.
 
 ## Research protocol for scripts
 
@@ -1603,7 +1640,7 @@ passive and rebalancing policies, volatility scaling applied identically to
 benchmark and sleeve, the factor and trend replications with frozen specifications,
 and walk-forward, block-bootstrap and multiple-testing diagnostics all exist in
 `research/` under a test runner ([decision 0001](../decisions/0001-contained-python-research-workspace.md)),
-with 1,037 tests passing `as of 2026-08-12`, 18 of them network-marked. What
+with 1,082 tests passing `as of 2026-08-12`, 18 of them network-marked. What
 remains, in order:
 
 6. portfolio combination and stress testing; and only then
@@ -1613,8 +1650,9 @@ remains, in order:
 Neither may begin yet, and the reason is not sequencing. **Step 6 combines sleeves
 and there are no promoted sleeves; step 7 sizes an edge and there is no edge to
 size** ([decision 0004](../decisions/0004-no-sleeve-promoted.md)). The next
-substantive move is evidence, not code: Experiment 005 above, then a licensed
-point-in-time data contract.
+substantive move is still evidence rather than code. Experiment 005 has now run and
+signed exactly one premium; what it did **not** buy is a long-only capture fraction
+or a fund-level data contract, and both remain prerequisites.
 
 Three standing rules survive from that build order.
 
@@ -1622,7 +1660,7 @@ Three standing rules survive from that build order.
   remain testable without market data; they now live in `research/tests/unit/`.
 - **The trial ledger must precede the first backtest**, because the effective number
   of independent trials cannot be reconstructed afterwards. It did, and the current
-  count is six distinct specifications across fifteen runs.
+  count is seven distinct specifications across sixteen runs.
 - **Any estimated alpha passes through shrinkage before it reaches a sizing
   function**, using *that estimate's own* standard error. The reference factor of
   0.121 comes from a 3.36%/yr standard error typical of an active fund; on index
@@ -1692,8 +1730,8 @@ absence from this page is not evidence against a strategy.
 
 Coverage remains uneven. The gaps below are what is left after five experiments;
 each could change a construction decision rather than add a minor caveat. **None of
-them is the recommended next step** — that is Experiment 005 above, and the reason
-is that all five of these are blocked on a data contract that does not exist yet.
+them was the recommended next step** — that was Experiment 005, which has now run —
+and all five remain blocked on a data contract that does not exist yet.
 
 - **Lifecycle implementation.** The theoretical claim and human-capital
   counterexample are now documented, but taxes, realized margin paths, investor

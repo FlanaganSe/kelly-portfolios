@@ -485,10 +485,20 @@ budget, not a central estimate**, and the 0.631 probability beside it inherits t
 decay) × 0.42 post-publication retention
 ([McLean and Pontiff 2016](https://doi.org/10.1111/jofi.12365)) × 0.40 long-only capture ×
 0.30 portfolio exposure − 12 bp incremental fee = **21.3 bp/yr**. Halve the capture
-fraction and the exposure and add trading cost and the chain goes **negative**. The
-long-only capture fraction is recorded in the framework as *not established by any source*,
-so this is a construction, not a measurement. At 400 bp of tracking error it needs more
-than 500 years for 90% confidence.
+fraction and the exposure and add trading cost and the chain goes **negative**.
+
+Two of those four multipliers have since been measured in this repository, for value
+only, and they pull in opposite directions.
+[Experiment 005](factor-persistence.md#experiment-005--the-regional-replication)
+pooled HML across three regions and found **+4.74 pp/yr** post-publication against
++4.56 pp/yr in its US original sample, so for that factor the retention multiplier is
+nearer 1 than 0.42 — while the same experiment closed RMW and CMA on public data,
+where the retention multiplier is not estimable at all
+([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)). **The
+long-only capture fraction is still not established by any source**, so the line
+remains a construction rather than a measurement, and its *sign* still turns entirely
+on the one multiplier nobody here has measured. At 400 bp of tracking error it needs
+more than 500 years for 90% confidence regardless.
 
 **Securities lending: 1 bp central, computed from filings.** Net securities-lending income
 as a fraction of average net assets, taken from N-CSR Statements of Operations and divided
@@ -616,7 +626,9 @@ measured advantage.
 
 1. **The long-only capture fraction of a long-short factor premium.** Still unestablished
    by any source, and the sign of the factor line depends on it. This is the single
-   highest-value gap on the page.
+   highest-value gap on the page, and since Experiment 005 signed the premium term for
+   value it is now the highest-value gap in the factor programme as a whole — the
+   framework names measuring it as the next experiment.
 2. **Tax outside the US, and the step-up interaction.** Every tax figure here is US and
    jurisdiction-specific. The harvesting alpha sits between the after-liquidation 1.10% and
    the before-liquidation 1.47% depending on whether the low-basis position is ever sold —

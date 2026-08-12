@@ -14,7 +14,7 @@ setup and current status.
 - [Portfolio edge research framework](research/portfolio-edge-research-framework.md)
   — **the canonical synthesis, and the place to start.** Answers the commissioning
   question directly, holds the provisional portfolio-design map, accounts for what
-  advanced, failed and remains unresolved across all five experiments, and names the
+  advanced, failed and remains unresolved across all six experiments, and names the
   single next experiment. Also carries the evidence, falsifiable hypotheses and
   validation protocol for leverage, rebalancing, crisis protection, factors and
   manager alpha. Answers whether a return source is real.
@@ -30,9 +30,12 @@ setup and current status.
   rebalancing beats buy-and-hold, gives the closed-form probability of doing so,
   and separates what is beatable (your own counterfactual) from what is not (a
   cheap index).
-- [Factor persistence and decay](research/factor-persistence.md) — Experiment 001:
-  what HML, UMD, RMW and CMA did before and after publication across frozen eras,
-  how little those windows can detect, and why none of the four is promoted.
+- [Factor persistence and decay](research/factor-persistence.md) — Experiments 001
+  and 005: what HML, UMD, RMW and CMA did before and after publication across frozen
+  eras in the US, and what adding developed-ex-US and emerging equity over the same
+  eras did to that. Holds the measured effective sample size that pooling correlated
+  regions actually buys, why value reached `exploratory`, and why profitability and
+  investment are closed on public data.
 - [Investable factor products](research/factor-product-audit.md) — Experiment 002:
   which of 44 screened ETFs deliver the exposure they advertise, what they cost
   against a cheap replication, why a 72-month N-PORT window decides nothing about
@@ -67,5 +70,9 @@ setup and current status.
   report: benchmark and certainty class, a cheap combination, a risk match, and the
   model-misfit pedestal.
 - [0004 — No sleeve is promoted](decisions/0004-no-sleeve-promoted.md) — the outcome
-  of all five experiments in the closed status vocabulary, why leverage stays at
+  of all six experiments in the closed status vocabulary, why leverage stays at
   zero, and the per-candidate conditions that would change it.
+- [0005 — Profitability and investment premia are closed on public data](decisions/0005-factor-premia-closed-on-public-data.md)
+  — the measured floor on what public factor data can detect, why RMW and CMA are
+  `rejected` rather than `unresolved` again, and the four conditions that would
+  reopen either.
