@@ -1,0 +1,692 @@
+# FROZEN BEFORE ANY RESULT WAS EXAMINED.
+#
+# FREEZE RECORD, stated so it can be attacked. This file was written and
+# committed on 2026-08-12 BEFORE the experiment module existed, before any
+# regional factor statistic was computed, and before any output of
+# exp_005_regional_replication was produced or read. What HAD been seen when it
+# was frozen, and nothing else:
+#
+#   * the three committed data manifests in research/data-manifests/, which give
+#     each file's sha256, row count and first/last observation and no returns;
+#   * the whole of Experiment 001 (docs/research/factor-persistence.md) and its
+#     committed specification, whose era boundaries, publication-date
+#     justifications, power methodology, materiality threshold and block-length
+#     policy this specification inherits UNCHANGED;
+#   * the Ken French dataset registry in src/portfolio_edge/data/french.py, read
+#     to establish which regional files this repository actually has.
+#
+# No regional HML, RMW or CMA mean, volatility, correlation, interval or
+# effective sample size had been computed or seen. The pooling weights, the
+# effective-sample-size definition, the falsifier and the status rule below were
+# all chosen without reference to any regional number.
+#
+# Editing any field changes the specification hash and therefore creates a new
+# hypothesis in the ledger.
+experiment_family: exp_005_regional_replication
+title: Regional replication of the post-publication factor premia
+entry_point: exp_005_regional_replication
+run_kind: exploratory
+evidence_class: public-series-evaluation
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  Pooling the United States, developed-ex-US and emerging regional Fama-French
+  files adds enough EFFECTIVE sample size to sign the post-publication premium of
+  each of HML, RMW and CMA against this repository's 2.0 percentage-point-per-year
+  materiality threshold, and that pooled premium is positive, economically
+  material, and reasonably stable across the three regions rather than carried by
+  one region or one episode. This is a hypothesis about the published long-short
+  research series only. It is not a hypothesis that any factor is investable, and
+  no result from this experiment can establish that.
+
+mechanism: >
+  Experiment 001 left HML, UMD and RMW `unresolved` because 16 of its 20 cells
+  held a premium smaller than their own window could detect at 80% power, not
+  because a premium was shown to be absent. More United States history cannot fix
+  that: the US post-publication window is the length it is, and it ends at the
+  frozen sample end. Independent regions are the only way to add effective sample
+  size without waiting decades. The mechanism under test is therefore arithmetic
+  rather than economic: k regions each of length T give k*T region-months of
+  evidence only if their contemporaneous correlation is low. HML, RMW and CMA are
+  built by the same construction on the same accounting variables in every region
+  and are exposed to the same global risk factors, so the correlation is expected
+  to be high and the effective sample size well below k*T. HOW FAR below is the
+  quantity this experiment MEASURES rather than assumes, and it is the decisive
+  output. If the measured pooled effective sample size still leaves a minimum
+  detectable effect above the materiality threshold, then no currently available
+  public factor data can sign these premia, which is a bounded and permanent
+  finding rather than another request for more research.
+
+falsifier: >
+  Both branches are decisive and both are frozen here before any number exists.
+  BRANCH (a), advance. A factor advances to `exploratory` only when ALL FIVE of
+  the following hold for its pooled full-post-publication cell: (a1) the pooled
+  annualised premium is strictly positive; (a2) the pooled annualised premium is
+  at or above the materiality threshold of 2.0 percentage points per year;
+  (a3) the one-sided 95% lower bound of the CROSS-REGION JOINT block-bootstrap
+  interval is strictly above zero; (a4) the sign of the full-post-publication
+  premium agrees with the pooled sign in at least two of the three regions;
+  (a5) the pooled premium remains strictly positive and at or above the
+  materiality threshold after the single best calendar year of the pooled
+  composite is dropped, so that the premium is not a description of one episode.
+  BRANCH (b), close. If the MEASURED pooled effective sample size leaves the
+  pooled minimum detectable effect at 80% power above 2.0 percentage points per
+  year over the full post-publication era, the factor is `rejected` and the
+  factor programme is CLOSED on public data rather than left `unresolved` again.
+  That verdict is permanent on this evidence base: it states that adding every
+  independent region the public data library distributes still does not buy the
+  power to sign the premium, so no amount of currently available public data can.
+  It is not a request for more research and must not be softened into one.
+  `unresolved` is available only in the narrow case defined in `rejection_rule`,
+  and using it requires stating precisely which clause failed and what would fire.
+
+universe:
+  description: >
+    Published long-short factor return series from the Ken French data library,
+    monthly, at the vintages pinned below, for three regions whose equity
+    universes do not overlap. No individual securities, no funds, no portfolios.
+  factors: [HML, RMW, CMA]
+  regions:
+    - id: us
+      dataset_id: french_us_ff5
+      manifest_dataset_id: french_us_ff5_monthly
+      coverage: "1963-07..2026-06, 756 monthly rows"
+      gated_against_a_printed_table: true
+    - id: developed_ex_us
+      dataset_id: french_developed_ex_us_ff5
+      manifest_dataset_id: french_developed_ex_us_ff5_monthly
+      coverage: "1990-07..2026-06, 432 monthly rows"
+      gated_against_a_printed_table: false
+    - id: emerging
+      dataset_id: french_emerging_ff5
+      manifest_dataset_id: french_emerging_ff5_monthly
+      coverage: "1989-07..2026-06, 444 monthly rows"
+      gated_against_a_printed_table: false
+  region_non_overlap: >
+    Developed_ex_US_5_Factors is used and Developed_5_Factors is NOT, because the
+    latter INCLUDES the United States: Experiment 003 regressed its Mkt-RF on the
+    US and developed-ex-US Mkt-RF over 1990-07..2026-06 and obtained 0.460 and
+    0.549, summing to 1.009. Pooling that file with the US file would count the
+    US twice and would inflate the very effective sample size this experiment
+    exists to measure honestly.
+  umd_is_not_covered: >
+    UMD is absent by necessity, not by choice. The Ken French dataset registry in
+    this repository holds exactly one momentum file, F-F_Momentum_Factor_CSV.zip,
+    which is US only, and there is no committed manifest for any regional
+    momentum file. A regional momentum test therefore requires acquiring and
+    pinning a file this repository does not have, which is a new data
+    acquisition and outside this specification. UMD's Experiment 001 status of
+    `unresolved` is untouched by this experiment and must be reported as such.
+  excluded:
+    - Developed_5_Factors, which double-counts the United States.
+    - The original-sample eras of Experiment 001. They begin 1963-07, which
+      precedes both regional files, so a regional original-sample cell would be a
+      different window rather than a replication. This experiment tests the
+      POST-PUBLICATION eras only, which is exactly where both regional files are
+      complete.
+    - Any investable fund. Exposure and implementation are exp_002.
+  currency: >
+    All three files are in US dollars and unhedged. For a WITHIN-region long-short
+    spread the exchange-rate term is multiplicative rather than additive, by the
+    identity r_usd = (1 + r_local)(1 + f) - 1 applied to both legs, which gives
+    spread_usd = (1 + f) * spread_local exactly. Currency therefore scales the
+    spread rather than adding to it: it moves the second moment first-order and
+    the mean only through the covariance E[f * spread_local], which is not zero a
+    priori and is NOT measured here. This is recorded as a declared limitation.
+
+sample_policy:
+  start: "1994-01"
+  end: "2025-12"
+  held_out: >
+    Observations after 2025-12 are not read by this experiment under any
+    circumstance. Six further months exist in all three files, through 2026-06,
+    and remain a genuinely post-specification window. This experiment is
+    exploratory and does not consume the final holdout. The start of 1994-01 is
+    the earliest month any cell reads; regional history before it exists and is
+    deliberately not read, because the only eras it could serve are the
+    original-sample eras this specification excludes.
+  embargo: >
+    None required: eras are calendar windows and no forecast is made across an
+    era boundary.
+  eras:
+    - name: hml_first_post_publication
+      start: "1994-01"
+      end: "2003-12"
+      rationale: >
+        Inherited verbatim from exp_001. First decade genuinely after Fama and
+        French (1993), whose February 1993 journal issue puts the first clean
+        January at 1994-01. Both regional files begin before this boundary.
+    - name: hml_full_post_publication
+      start: "1994-01"
+      end: "2025-12"
+      rationale: >
+        Inherited verbatim from exp_001. The full available post-publication
+        window for HML, and the era the falsifier reads for HML.
+    - name: rmw_cma_first_post_publication
+      start: "2014-01"
+      end: "2019-12"
+      rationale: >
+        Inherited verbatim from exp_001. Six years is a short window with low
+        power; it is frozen anyway so that it cannot be silently widened.
+    - name: rmw_cma_full_post_publication
+      start: "2014-01"
+      end: "2025-12"
+      rationale: >
+        Inherited verbatim from exp_001. The full available post-publication
+        window for RMW and CMA, and the era the falsifier reads for both.
+    - name: recent
+      start: "2016-01"
+      end: "2025-12"
+      rationale: >
+        Inherited verbatim from exp_001. A common recent decade for all factors,
+        which doubles as the predeclared alternative post-publication boundary
+        for RMW and CMA, whose Journal of Financial Economics issue is dated
+        April 2015.
+    - name: common_period
+      start: "2014-01"
+      end: "2025-12"
+      rationale: >
+        Inherited verbatim from exp_001. The only window in which all three
+        factors are simultaneously post-publication. It is NOT a cell of the
+        multiple-testing family here, because for RMW and CMA it is byte-for-byte
+        the same window as rmw_cma_full_post_publication and counting a test
+        twice would corrupt the correction. It is used solely as the declared
+        window for cross-factor and cross-region correlation.
+
+benchmark:
+  null_hypothesis: zero arithmetic premium in the era, per region and pooled
+  reference: >
+    Experiment 001's US-only result over the identical eras. The US cells of this
+    experiment must reproduce it, because they read the same column of the same
+    pinned file over the same window; any disagreement is a defect in this
+    experiment and is reported as one rather than explained.
+  note: >
+    A long-short factor series has no investable benchmark. Nothing in this
+    experiment is a portfolio anyone can hold.
+
+primary_metric:
+  name: pooled annualised arithmetic premium across regions, per factor per era
+  definition: >
+    Form the equal-weighted cross-region composite of the three regional monthly
+    long-short returns over the months in which all three regions are observed,
+    then take 12 * mean(composite) in decimal and report as percentage points per
+    year. Equal weights are declared a priori and are not tuned: they give each
+    region one vote, which is the neutral choice when the object of the
+    experiment is to count independent looks rather than to build a portfolio.
+  units: percentage points per year
+  uncertainty: >
+    A CROSS-REGION JOINT stationary block bootstrap. The same block of time
+    indices is drawn once and applied to all three regional series
+    simultaneously, so contemporaneous cross-region correlation survives the
+    resample. Resampling the three regions independently would treat them as
+    three independent samples, inflate the effective sample size, and produce a
+    spuriously narrow interval; that error is exactly what this experiment exists
+    to avoid, so the invalid independent version is ALSO computed and reported
+    beside the valid one to show its size.
+
+secondary_metrics:
+  - name: per-region annualised premium, volatility and Sharpe ratio with a block-bootstrap interval
+    units: percentage points per year, and ratio
+  - name: minimum detectable effect at 80% power, per region and pooled
+    units: percentage points per year
+  - name: measured pooled effective sample size
+    units: independent single-region months, and effective number of regions
+    note: >
+      The decisive output. See parameters.effective_sample_size for the exact
+      three definitions, all of which are reported.
+  - name: mean pairwise cross-region correlation, per factor per era
+    units: correlation
+  - name: HAC (Newey-West) standard error of the mean, per region and pooled
+    units: percentage points per year
+  - name: calendar-year contribution to the pooled premium
+    units: percentage points per year
+  - name: maximum drawdown, time under water and worst rolling returns
+    units: percent and months
+
+cost_model:
+  applied: false
+  reason: >
+    These are academic zero-investment long-short research portfolios, gross of
+    transaction costs, shorting costs, borrow, fees and taxes, and a retail
+    investor cannot implement them at all. Applying a cost model would manufacture
+    a net figure for a portfolio nobody can hold. The regional series are worse
+    than the US ones on this axis, not better: emerging-market shorting is more
+    expensive and less available than US shorting, so a pooled gross premium is a
+    LOOSER upper bound than a US gross premium, not a tighter one.
+  consequence: >
+    Every number this experiment produces is a GROSS UPPER BOUND of unknown
+    tightness. No net claim may be made from it. Experiment 001's illustrative
+    cost column is not recomputed here, because turnover cannot be recovered from
+    a return series and the assumptions that produced it are US assumptions.
+
+rebalance_rule:
+  source: as embedded in the Ken French construction, not chosen here
+  hml_rmw_cma: annual rebalance at the end of June on prior fiscal-year accounting
+  note: >
+    This experiment rebalances nothing. The rule is recorded because it fixes
+    turnover and therefore the size of the cost gap this experiment cannot close.
+    The international files use the same 2x3 sorting scheme as the US file within
+    each region, which is what makes a regional cell a replication rather than a
+    different experiment.
+
+inference:
+  bootstrap: >
+    stationary block bootstrap (Politis and Romano), drawn JOINTLY across regions
+    for every pooled statistic
+  block_length_policy: >
+    Mean block length frozen at 12 months, inherited unchanged from exp_001, with
+    6 and 24 months as predeclared neighbours. The length is NOT tuned on the
+    statistic being tested. The corrected Politis-White automatic length (Politis
+    and White 2004 with the Patton, Politis and White 2009 correction) is
+    additionally computed from each cell's own series and from the pooled
+    composite, and reported at equal prominence. A frozen length that disagrees
+    materially with the data-driven one is a finding about the frozen length, not
+    a reason to omit either.
+  multiple_testing_correction: >
+    Benjamini-Hochberg FDR at 0.10 across the predeclared primary family of
+    3 factors x 3 regions x 3 era roles = 27 cells, reported alongside the
+    uncorrected values, with Holm-Bonferroni as the stricter reading valid under
+    arbitrary dependence. The 9 pooled cells are corrected as their own separate
+    family and are NOT added to the 27: a pooled cell is a function of the same
+    observations as the three regional cells beneath it, so counting it again
+    would be counting one piece of evidence twice. Both families are strongly
+    dependent - three regions of one factor share a global risk factor, eras nest,
+    and RMW and CMA share every era - so Benjamini-Hochberg, which assumes
+    independence or positive regression dependence, is a LOWER BOUND on the true
+    correction in both.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Power is the point, exactly as in exp_001. Every cell reports the premium
+    detectable at 80% power given its own realised volatility and length, and the
+    pooled cells additionally report the MEASURED effective sample size that
+    pooling actually achieved. A pooled interval that contains zero is evidence of
+    absence only if the pooled minimum detectable effect is small.
+
+rejection_rule: >
+  Per factor, evaluated on the FULL post-publication era only, in this fixed
+  order. (1) If the pooled cell cannot be computed - fewer than 24 aligned months
+  in any region, or a boundary finding showing the window is incomplete - the
+  status is `unresolved` and the defect is named. (2) Else if all five clauses
+  a1-a5 of the falsifier hold, the status is `exploratory`; that permits an
+  investable implementation to be TESTED and permits nothing else. (3) Else if
+  the measured pooled minimum detectable effect at 80% power exceeds the 2.0
+  percentage-point materiality threshold, the status is `rejected` under branch
+  (b) and the factor programme is closed on public data. (4) Else if the window IS
+  powered and clause a1 or clause a2 fails - the pooled premium is not positive,
+  or is below materiality - the status is `rejected`: a powered window measured a
+  premium that is not worth having. (5) Else the status is `unresolved`: the
+  window is powered and the premium is positive and material, but it is
+  regionally unstable (a4) or episode-concentrated (a5). In that case the output
+  MUST name the failing clause and state exactly what would fire.
+  No factor may be described as working, validated, optimal, or an edge on the
+  basis of this experiment, and the word "works" may not appear in the output.
+  CMA carries `rejected` from exp_001; only a full branch (a) could lift it, and
+  the same rule decides that without exception.
+
+parameters:
+  materiality_threshold_annual_percent: 2.0
+  power_target: 0.80
+  rolling_windows_months: [12, 36, 60, 120]
+  benjamini_hochberg_alpha: 0.10
+  minimum_observations_per_cell: 24
+
+  inherited_from_exp_001:
+    era_inheritance: >
+      Every era in sample_policy is copied VERBATIM from exp_001_factor_decay.yaml,
+      name and both boundaries unchanged. Experiment 005 exists to add regions,
+      not to move a boundary, and moving one would make the two experiments
+      incomparable while creating an unrecorded degree of freedom. The publication
+      record that justifies each boundary is in exp_001_factor_decay.yaml under
+      parameters.publication_record and is inherited unchanged rather than
+      restated here, so that it has exactly one canonical home.
+    specification: research/experiments/exp_001_factor_decay.yaml
+    specification_hash: f9184dfe26619e85b083fae3a08e283eea83daaea977d058fb707554e68f3d76
+    inherited:
+      - every era name and both of its boundaries, unchanged
+      - the publication record and boundary justifications, by reference
+      - the 2.0 percentage-point-per-year materiality threshold
+      - the 80% power target and the closed-form minimum detectable effect
+      - the frozen 12-month mean block length and its 6 and 24 month neighbours
+      - the 10000 resample count and the 0.10 Benjamini-Hochberg alpha
+      - the Phase 1 second-moment band on US HML and US RMW
+      - the sample end of 2025-12 and the holdout beyond it
+    not_inherited:
+      - the original-sample eras, which precede both regional files
+      - UMD, for which no regional file is manifested in this repository
+      - the illustrative cost column, whose turnover assumptions are US-specific
+    rule: >
+      Nothing inherited may be re-derived differently here. Where this
+      specification and exp_001 disagree on an era boundary, exp_001 is correct
+      and this specification has a bug.
+
+  regional_data_availability_check:
+    claim_under_test: >
+      Experiment 001's stated reason for skipping regional data is that "the
+      regional files start 1990-07 and 1989-07, so they are shorter than the
+      post-publication windows already shown to be underpowered."
+    finding: >
+      That reason is FALSE for the eras that matter, and the experiment must
+      verify it against the committed manifests at run time rather than assert
+      it. HML's post-publication era begins 1994-01 and RMW's and CMA's begin
+      2014-01. The developed-ex-US file begins 1990-07 and the emerging file
+      1989-07, so both begin before both boundaries and the regional
+      post-publication windows are exactly as long as the US ones. The statement
+      is true only of the ORIGINAL-SAMPLE eras, which begin 1963-07 and which
+      this experiment excludes for precisely that reason.
+    enforcement: >
+      The experiment asserts, from the loaded series and not from this text, that
+      every region's first observation is at or before the start of every era it
+      is asked to evaluate, and ABORTS if it is not. A silently truncated regional
+      window would look exactly like a shorter one.
+
+  primary_grid:
+    description: >
+      The predeclared multiple-testing family: 3 factors x 3 regions x 3 era
+      roles = 27 cells. Fixing the family before the run is what stops the
+      correction from being applied to whichever subset survives. The
+      `common_period` era is deliberately NOT a role here: for RMW and CMA it is
+      the identical window to `full_post_publication`, and a family containing a
+      test twice is not a family.
+    era_roles: [first_post_publication, full_post_publication, recent]
+    regions: [us, developed_ex_us, emerging]
+    cells:
+      HML:
+        first_post_publication: hml_first_post_publication
+        full_post_publication: hml_full_post_publication
+        recent: recent
+      RMW:
+        first_post_publication: rmw_cma_first_post_publication
+        full_post_publication: rmw_cma_full_post_publication
+        recent: recent
+      CMA:
+        first_post_publication: rmw_cma_first_post_publication
+        full_post_publication: rmw_cma_full_post_publication
+        recent: recent
+    dependence_warning: >
+      These 27 tests are strongly dependent in two directions at once. Across
+      regions, the three cells of one factor and era are the same construction on
+      the same accounting variables applied to disjoint but globally correlated
+      universes. Across eras, `recent` is nested inside `full_post_publication`
+      for every factor, and `first_post_publication` is nested inside it too.
+      Across factors, RMW and CMA share every era. Benjamini-Hochberg treats them
+      as independent, so the corrected p-values are a LOWER BOUND on the true
+      correction, and Holm-Bonferroni is reported because it is valid under
+      arbitrary dependence.
+
+  pooling:
+    weights: equal
+    weight_values: {us: 0.3333333333333333, developed_ex_us: 0.3333333333333333, emerging: 0.3333333333333333}
+    rationale: >
+      One vote per region. The object under test is how many independent looks
+      three regions actually supply, and any weighting fitted to the data would
+      answer a different question. Equal weighting is also the only choice that
+      does not require a regional market-capitalisation series this repository
+      does not have.
+    alignment: >
+      A pooled cell uses the months in which ALL THREE regions are observed
+      within the era, intersected. No series is forward-filled and no month is
+      imputed. The count of months dropped by the intersection is reported for
+      every pooled cell; on the frozen eras it is expected to be zero, and a
+      non-zero count is a finding.
+    alternatives_reported_but_not_in_the_falsifier:
+      - inverse-variance weights across regions
+      - a two-region pool of developed-ex-US and emerging only, which is the
+        genuinely independent look at the US result
+      - the US region alone, which must reproduce exp_001
+
+  effective_sample_size:
+    why: >
+      This is the decisive measurement of the experiment. Three regions of T
+      months each supply 3T independent region-months only if the regions are
+      uncorrelated. They are not, and how far short they fall is the number that
+      decides branch (b).
+    definitions_all_reported:
+      - id: effective_regions
+        formula: mean_over_regions(var_region) / var(composite)
+        reading: >
+          The number of independent regions the three actually amount to. Equals
+          3 under zero correlation and equal variances, and 1 under perfect
+          correlation. Computed from the realised sample covariance over the
+          era, not assumed.
+      - id: effective_region_months_iid
+        formula: months * mean_over_regions(var_region) / var(composite)
+        reading: >
+          The pooled evidence expressed in independent single-region months,
+          ignoring serial dependence. Directly comparable to the observation
+          count of an Experiment 001 cell.
+      - id: effective_region_months_hac
+        formula: >
+          months * mean_over_regions(var_region) / newey_west_long_run_variance(composite)
+        reading: >
+          The same quantity with serial dependence in the composite folded in.
+          This is the honest measure and is expected to be the smallest of the
+          three.
+      - id: naive_region_months
+        formula: 3 * months
+        reading: >
+          What treating the three regions as independent samples would claim. The
+          ratio of this to the effective figures is the size of the error this
+          experiment exists to avoid, and it is reported explicitly.
+    mde_definition: >
+      MDE_80 = 12 * (z_0.95 + z_0.80) * standard_error_of_the_monthly_mean,
+      identical to exp_001. It is reported from the conventional standard error
+      sigma/sqrt(T) of the composite AND from the composite's HAC standard error.
+    which_one_the_falsifier_reads: >
+      Branch (b) reads the CONVENTIONAL pooled MDE_80, which is the more generous
+      of the two because it ignores autocorrelation. Firing branch (b) on the
+      generous reading is a fortiori, and the HAC figure is reported beside it so
+      that a reader can see how much more generous it was.
+
+  cross_region_bootstrap:
+    method: >
+      Draw one set of stationary-bootstrap time indices of shape
+      (n_resamples, months) with the frozen mean block length, and apply THE SAME
+      row of indices to all three regional series at once. Because the composite
+      is a fixed linear combination of contemporaneous regional observations,
+      resampling the composite series with those indices is algebraically
+      identical to resampling the panel and then compositing, and the
+      implementation uses that identity.
+    what_it_preserves: >
+      Contemporaneous cross-region dependence, and short-range serial dependence
+      within each region.
+    the_error_it_avoids: >
+      Resampling each region with its own independent index draw. That destroys
+      the contemporaneous correlation, makes the composite behave like an average
+      of three independent samples, and narrows the interval by a factor that
+      grows with the true correlation. The independent version IS computed and
+      reported beside the joint one, labelled invalid, because the size of the
+      gap is itself a finding about how much a naive pooling would have
+      overstated.
+
+  second_moment_uncertainty:
+    source: docs/research/fama-french-reproduction.md
+    us_band:
+      HML: 0.0303
+      RMW: 0.0509
+      CMA: 0.0
+      finding: >
+        The Phase 1 ingestion gate is UNRESOLVED, not passed. Means, t-statistics
+        and all ten cross-factor correlations reproduce Fama and French (2015)
+        Table 4; the standard deviations of HML and RMW do not, by -3.03% and
+        +5.09%, against two independently typeset vintages. This is a systematic
+        disagreement between data vintages, not sampling error. It does not
+        shrink with more data and is in no bootstrap interval.
+    regional_bands: unmeasured
+    regional_statement: >
+      The developed-ex-US and emerging files were NEVER gated against any printed
+      table. Their second moments are UNMEASURED, which is a weaker statement
+      than a band of zero and must be reported as such rather than as agreement.
+      No band is quoted for them because none has been established.
+    application_rule: >
+      Carried through every statistic that divides by a volatility - the Sharpe
+      ratio, the minimum detectable effect and therefore branch (b) - and
+      reported as a SEPARATE band, never combined with a sampling interval. For a
+      pooled statistic the band is propagated by rescaling the US leg's deviations
+      by (1 +/- u) and recomputing, since a relative error u in the US
+      volatility is exactly a scale error of that size on that leg. Where a
+      conclusion would flip inside the band, the output must say so explicitly.
+
+  episode_concentration:
+    why: >
+      Experiment 001 found 79% of HML's entire US post-publication premium in the
+      single year 2000 and 59% of RMW's in 2021. A premium that lives in one
+      calendar year is a description of that year. Three regions that share the
+      same episode are not three independent looks, and this experiment must say
+      so rather than count them as three.
+    reported:
+      - the calendar-year contribution to every regional and pooled premium
+      - the best calendar year of every regional and pooled cell, and the premium
+        after it is dropped
+      - whether the best calendar year is the SAME year across regions, which is
+        the direct test of whether the regions share an episode
+      - the two episodes exp_001 named, 2000 for HML and 2021 for RMW, evaluated
+        in every region by name rather than by whichever year turned out best
+    consequence: >
+      Clause a5 of the falsifier reads this. A pooled premium that does not
+      survive dropping its own best calendar year cannot advance.
+
+  annualisation:
+    mean: multiply the monthly arithmetic mean by 12
+    volatility: multiply the monthly standard deviation by sqrt(12)
+    note: >
+      sqrt(12) assumes serial independence, which monthly factor returns violate.
+      The HAC standard error is reported precisely because that assumption is
+      wrong, and the two are always shown side by side.
+  risk_free_treatment: >
+    HML, RMW and CMA are already long-short spreads in every regional file. RF is
+    NOT subtracted from any of them, in any region. Ken French defines every
+    region's MARKET factor against the US one-month Treasury bill, but that
+    concerns Mkt-RF and not the long-short spreads this experiment reads; no
+    market factor enters any statistic here.
+  missing_data_policy: >
+    A month missing from any of the three regions is dropped from the pooled
+    statistic for that era in every region, and the dropped count is reported.
+    Series are never forward-filled. The emerging file carries the -99.99 sentinel
+    for RMW and CMA in its earliest years; the manifest records the last such cell
+    as 1992-06, which precedes every era here, and the experiment reports the
+    realised dropped count rather than trusting that.
+
+  source_pin:
+    policy: >
+      All three files are pinned by the sha256 of their raw bytes AND by the
+      sha256 of the derived table, and a mismatch ABORTS rather than producing a
+      graded result. Ken French rebuilds the entire history from the current
+      source vintage on every rebuild, so a changed hash is a new vintage, not a
+      corrupt download, and a premium computed from an unrecognised file looks
+      exactly like a good one.
+    series:
+      - region: us
+        dataset_id: french_us_ff5
+        table_id: monthly
+        manifest_dataset_id: french_us_ff5_monthly
+        committed_manifest: data-manifests/french_us_ff5_monthly.json
+        source_url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+        expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+        expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_first_observation: "1963-07"
+      - region: developed_ex_us
+        dataset_id: french_developed_ex_us_ff5
+        table_id: monthly
+        manifest_dataset_id: french_developed_ex_us_ff5_monthly
+        committed_manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+        source_url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+        expected_sha256_raw: 54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d
+        expected_sha256_normalized: 8e09ae56db0222f8f633b448f54690cb0f18a3f43282e11e77a183a9a5820fd2
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_first_observation: "1990-07"
+      - region: emerging
+        dataset_id: french_emerging_ff5
+        table_id: monthly
+        manifest_dataset_id: french_emerging_ff5_monthly
+        committed_manifest: data-manifests/french_emerging_ff5_monthly.json
+        source_url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+        expected_sha256_raw: ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8
+        expected_sha256_normalized: 300e14451a59af3e4a34dc4db6d4f9677052672373a7f9f860ab68bf58182406
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_first_observation: "1989-07"
+
+  power:
+    definition: >
+      The minimum detectable effect is the smallest true annualised premium that a
+      test of the given size would reject the null for with probability
+      power_target, given the realised volatility and length:
+      MDE_monthly = (z_{1-alpha} + z_{power}) * sigma / sqrt(T), annualised by 12.
+      Identical to exp_001, so the figures are directly comparable to its grid.
+    alpha_one_sided: 0.05
+    alpha_two_sided: 0.05
+    reported_for_every_cell: true
+    also_report:
+      - the realised power to detect the 2.0 percentage-point materiality
+        threshold, per region and pooled
+      - the realised power to detect 0.55% per month gross, Harvey, Liu and Zhu's
+        (2016) structural estimate of the mean return of a genuinely true factor,
+        which is 6.6 percentage points per year
+      - the same MDE recomputed from the HAC standard error rather than
+        sigma/sqrt(T)
+      - the pooled MDE and the pooled effective sample size, which are the
+        decisive outputs of the whole experiment
+
+data_sources:
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_developed_ex_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+  - id: french_emerging_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+
+hostile_tests:
+  - Resample the three regions INDEPENDENTLY rather than jointly and report how
+    much narrower the interval becomes. This is the error the experiment exists to
+    avoid and its size must be shown, not asserted.
+  - Drop the best calendar year of every regional and pooled cell and re-report.
+  - Test whether the best calendar year is the same across regions, which decides
+    whether the regions share an episode.
+  - Evaluate 2000 for HML and 2021 for RMW by name in every region, since those
+    are the episodes exp_001 named in the US.
+  - Pool developed-ex-US and emerging only, excluding the US entirely, which is
+    the genuinely independent look at the US result.
+  - Re-pool with inverse-variance weights instead of equal weights.
+  - Re-run on the 6 and 24 month bootstrap block lengths without retuning, and
+    report the corrected Politis-White automatic length for every cell.
+  - Run the identical pooled procedure on three synthetic zero-mean Gaussian
+    panels of matched volatility and matched cross-region correlation, to show
+    what the machinery produces from noise that is correlated the same way.
+  - Report the US cells against Experiment 001's published figures for the same
+    windows; a disagreement is a defect in this experiment.
+
+reporting_requirements:
+  - Source file URL, SHA-256 and retrieval time for all three files.
+  - Number of monthly observations per factor per region per era, and the count of
+    months dropped by the cross-region intersection.
+  - Both uncorrected and FDR-corrected inference over the frozen 27-cell family,
+    with Holm-Bonferroni beside it.
+  - The 80%-power minimum detectable effect for every cell, regional and pooled.
+  - The MEASURED pooled effective sample size, in all three declared forms, beside
+    the naive 3T that independence would have claimed.
+  - The joint and the independent cross-region bootstrap intervals side by side,
+    with the independent one labelled invalid.
+  - The mean pairwise cross-region correlation for every factor and era.
+  - Whether the regions share the same best calendar year, stated as a yes or no.
+  - The Phase 1 systematic band on US HML and US RMW, reported separately from
+    every sampling interval, and an explicit statement that the two regional files
+    carry no measured band at all.
+  - An explicit statement that all figures are gross, long-short and not
+    investable, and that shorting in emerging markets is harder than in the US.
+  - An explicit statement that UMD is not covered and why.
+  - A closed status from the result taxonomy for every factor, and for a status of
+    `unresolved` an explicit statement of exactly what would fire.
+
+notes: >
+  A before-and-after comparison across a publication date is descriptive and
+  confounds publication with changing composition, valuation regimes, crowding and
+  chance. Adding regions does not change that: it adds sample, not identification.
+  This specification does not claim to identify a publication effect. It asks only
+  whether three regions together can sign a premium that one region could not, and
+  it measures - rather than assumes - how much sample three correlated regions
+  actually supply.

@@ -1,30 +1,65 @@
 # Factor persistence and decay: what survives publication in the French series
 
 **Question.** Do HML, UMD, RMW and CMA, as distributed in the Ken French data
-library, retain a positive and economically meaningful premium after publication,
-and is the result stable enough to justify building and testing an investable
-implementation?
+library, retain a positive and economically meaningful premium after publication —
+and when the United States window turns out to be too short to answer that, do
+independent regions supply the sample size it lacks?
 
 **Decision it informs.** Whether any of the four factors earns a place in
 [Experiment 002](factor-product-audit.md), the exposure and implementation audit of
-investable factor products. Out of scope: whether any factor is investable, what
-it costs to hold, whether publication *caused* any change, and any allocation.
+investable factor products, and whether more public factor data is worth reading at
+all. Out of scope: whether any factor is investable, what it costs to hold, whether
+publication *caused* any change, and any allocation.
+
+**Two experiments answer it.** [Experiment 001](#experiment-001--the-united-states-grid)
+measured the four factors across frozen pre- and post-publication eras in the US
+and left three `unresolved` on power grounds.
+[Experiment 005](#experiment-005--the-regional-replication) added developed-ex-US
+and emerging equity over the *same* frozen eras, pooled them under a cross-region
+block bootstrap, and **measured** how much effective sample size that actually
+bought. It was designed so that both branches of its falsifier are decisive, and
+both fired: one factor advanced and two were closed.
 
 ## Conclusion
 
-**No factor reaches even `exploratory` status. Three are `unresolved` and one is
-`rejected`.** The reason is not that the premia are absent; it is that the
-post-publication windows are too short, relative to how volatile these series
-are, to tell a modest surviving premium from nothing.
+**Value advances to `exploratory`. Profitability and investment are `rejected` and
+closed on public data. Momentum stays `unresolved` and could not be tested,
+because no regional momentum file exists in this repository.**
 
-| Factor | Status | Why |
-| --- | --- | --- |
-| **HML** | `unresolved` | +1.57 pp/yr post-publication, 90% interval `[−2.28, +5.54]`. The window could only detect 5.03 pp/yr at 80% power. |
-| **UMD** | `unresolved` | +4.19 pp/yr, `[−0.34, +8.50]`, detection threshold 7.27 pp/yr. |
-| **RMW** | `unresolved` | +3.04 pp/yr, `[−0.32, +6.76]`, detection threshold 5.27 pp/yr. Alone among the four it did not decay. |
-| **CMA** | `rejected` | −1.39 pp/yr post-publication against +3.91 in-sample. Falsifier clauses (a) and (c) both fired. |
+| Factor | Status | Decided by | Why |
+| --- | --- | --- | --- |
+| **HML** | **`exploratory`** | Exp 005, branch (a) | Pooled across three regions, **+4.74 pp/yr** post-publication, cross-region joint 90% interval `[+1.46, +8.10]`, positive in all three regions, and it survives dropping its own best calendar year (+3.96). It also survives Holm–Bonferroni, which nothing in Experiment 001 did. |
+| **UMD** | `unresolved` | Exp 001 only | +4.19 pp/yr US, `[−0.34, +8.50]`, detection threshold 7.27 pp/yr. **Experiment 005 could not test it**: the Ken French library file this repository manifests is US-only, so there is no regional momentum series to pool. |
+| **RMW** | **`rejected`** | Exp 005, branch (b) | Pooled **+2.53 pp/yr**, `[+1.07, +3.96]` — but the window's own minimum detectable effect is **2.62 pp/yr**, so the premium is *below the smallest one this window could resolve*. Adding two regions did not fix that. |
+| **CMA** | **`rejected`** | Exp 001, confirmed by Exp 005 branch (b) | −1.39 pp/yr in the US, +0.20 pp/yr pooled, against a pooled detection threshold of 3.41 pp/yr. |
 
-Two results dominate everything else in this page.
+`rejected` under branch (b) has a precise and permanent meaning here, and it is not
+"the premium is zero". It means: **every independent region the public data library
+distributes was added, the effective sample size that bought was measured, and the
+result still cannot resolve a premium at the 2.0 pp/yr materiality threshold this
+repository uses.** No amount of currently available public data can sign RMW's or
+CMA's premium. That is a bounded, final answer, not a request for more research —
+see [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md).
+
+**HML advancing is not a discovery of a premium; it is a measurement that this
+premium is larger than the threshold the pooled window can see.** The pooled window
+could still only detect **3.35 pp/yr** at 80% power, which is above the 2.0 pp/yr
+materiality threshold. HML cleared it because its pooled premium is 4.74, not
+because the window became powerful. And the premium is carried by the two non-US
+regions: the US contributes **+1.57 pp/yr**, developed-ex-US **+5.07** and emerging
+**+7.58**, which is a five-fold spread in a result whose falsifier only required
+the *signs* to agree.
+
+**No factor may be described as working on this evidence.** These are academic
+zero-investment long-short research portfolios, gross of transaction costs,
+shorting costs, borrow, fees and taxes, and a retail investor cannot implement most
+of them at all. The pooled figures are a *looser* upper bound than the US ones, not
+a tighter one, because emerging-market shorting is harder and dearer than US
+shorting and the largest measured premium sits in exactly that region.
+
+## Experiment 001 — the United States grid
+
+Two results dominate this experiment.
 
 **First: every cell that survives multiple-testing correction is a
 pre-publication cell.** Of the 20 predeclared factor × era cells, five have a
@@ -50,12 +85,7 @@ these statistics, HML's post-publication record is not distinguishable from
 noise.** That is not a claim that HML is noise; it is a measurement of how little
 this window can say.
 
-**No factor may be described as working on this evidence.** These are academic
-zero-investment long-short research portfolios, gross of transaction costs,
-shorting costs, borrow, fees and taxes, and a retail investor cannot implement
-most of them at all. Every number below is an upper bound of unknown tightness.
-
-## The grid
+### The grid
 
 Computed from the pinned vintages over the frozen eras. Premium and MDE in
 percentage points per year, gross. `90% interval` is a stationary block bootstrap
@@ -158,6 +188,11 @@ investable benchmark.
 
 ## Era boundaries, and the publication record behind them
 
+These boundaries are shared. **Experiment 005 copies every era name and both of its
+boundaries verbatim from Experiment 001's frozen specification, and a committed test
+compares the two files directly** so that neither can drift without breaking. The
+publication record below is the single canonical justification for both.
+
 Boundaries were frozen from the publication record before any result was
 computed, and each was set at **the first January strictly after the journal
 issue date**, so that no month of a "post-publication" era can precede the printed
@@ -198,7 +233,7 @@ gives +1.89 pp/yr `[−1.48, +5.32]` against +1.57 from 1994-01; UMD from 1998-0
 gives +3.65 pp/yr `[−1.52, +8.56]` against +4.19 from 1994-01. Both remain
 `unresolved` on either date.
 
-## Hostile tests
+## Hostile tests on the United States grid
 
 ### The premium lives in single years
 

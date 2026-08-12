@@ -32,6 +32,7 @@ SPEC_NAMES = (
     "exp_002_fund_exposure",
     "exp_003_rebalancing",
     "exp_004_trend_marginal_value",
+    "exp_005_regional_replication",
     "phase1_ff_reproduction",
 )
 
@@ -493,6 +494,141 @@ def test_exp_004_declares_the_bond_leg_as_modelled_and_not_research_grade() -> N
     assert proxy["research_grade"] is False
     assert "robustness arm only" in str(proxy["used_as"])
     assert "MODELLED" in str(proxy["warning"])
+
+
+def test_exp_005_inherits_exp_001_era_boundaries_without_moving_one() -> None:
+    """Experiment 005 adds regions. Moving a boundary would make it a different test.
+
+    Comparing the two committed specifications directly means a boundary cannot
+    drift in either file without breaking this test.
+    """
+    exp_001 = {
+        era.name: (era.start, era.end)
+        for era in load("exp_001_factor_decay").sample_policy.eras
+    }
+    exp_005 = load("exp_005_regional_replication")
+    inherited = {era.name: (era.start, era.end) for era in exp_005.sample_policy.eras}
+    assert set(inherited) <= set(exp_001), (
+        "exp_005 must not invent an era exp_001 does not define"
+    )
+    for name, window in inherited.items():
+        assert window == exp_001[name], f"{name} moved between exp_001 and exp_005"
+    # The original-sample eras are excluded on purpose: they begin 1963-07, which
+    # precedes both regional files, so a regional cell there would be a different
+    # window rather than a replication.
+    assert not any("original_sample" in name for name in inherited)
+    assert exp_005.sample_policy.end == "2025-12"
+    assert exp_005.consumes_final_holdout is False
+
+
+def test_exp_005_freezes_both_branches_of_a_decisive_falsifier() -> None:
+    """Branch (b) must close the programme rather than defer it, in writing."""
+    spec = load("exp_005_regional_replication")
+    assert spec.run_kind is RunKind.EXPLORATORY
+    assert spec.evidence_class is EvidenceClass.PUBLIC_SERIES_EVALUATION
+    falsifier = spec.falsifier
+    for clause in ("(a1)", "(a2)", "(a3)", "(a4)", "(a5)"):
+        assert clause in falsifier
+    assert "BRANCH (b)" in falsifier
+    assert "CLOSED on public data" in falsifier
+    assert "not a request for more research" in falsifier
+    parameters = as_mapping(spec.parameters)
+    assert parameters["materiality_threshold_annual_percent"] == 2.0
+    assert parameters["power_target"] == 0.80
+    assert parameters["benjamini_hochberg_alpha"] == 0.10
+    rule = str(spec.rejection_rule)
+    assert "`unresolved`" in rule and "exactly what would fire" in rule
+
+
+def test_exp_005_pools_with_declared_equal_weights_and_a_joint_bootstrap() -> None:
+    """Independent per-region resampling is the error the design exists to avoid."""
+    parameters = as_mapping(load("exp_005_regional_replication").parameters)
+    pooling = as_mapping(parameters["pooling"])
+    assert pooling["weights"] == "equal"
+    weights = as_mapping(pooling["weight_values"])
+    assert set(weights) == {"us", "developed_ex_us", "emerging"}
+    assert sum(float(str(value)) for value in weights.values()) == pytest.approx(1.0)
+
+    bootstrap = as_mapping(parameters["cross_region_bootstrap"])
+    assert "THE SAME row of indices" in str(bootstrap["method"])
+    assert "labelled invalid" in str(bootstrap["the_error_it_avoids"])
+
+
+def test_exp_005_declares_the_effective_sample_size_as_the_decisive_measurement() -> None:
+    parameters = as_mapping(load("exp_005_regional_replication").parameters)
+    sample = as_mapping(parameters["effective_sample_size"])
+    definitions = [as_mapping(item) for item in as_sequence(sample["definitions_all_reported"])]
+    assert [str(item["id"]) for item in definitions] == [
+        "effective_regions",
+        "effective_region_months_iid",
+        "effective_region_months_hac",
+        "naive_region_months",
+    ]
+    assert "CONVENTIONAL pooled MDE_80" in str(sample["which_one_the_falsifier_reads"])
+    assert "a fortiori" in str(sample["which_one_the_falsifier_reads"])
+
+
+def test_exp_005_uses_developed_ex_us_and_records_why_umd_is_absent() -> None:
+    spec = load("exp_005_regional_replication")
+    universe = as_mapping(spec.universe)
+    regions = [as_mapping(item) for item in as_sequence(universe["regions"])]
+    assert {str(item["dataset_id"]) for item in regions} == {
+        "french_us_ff5",
+        "french_developed_ex_us_ff5",
+        "french_emerging_ff5",
+    }
+    assert [bool(item["gated_against_a_printed_table"]) for item in regions] == [
+        True,
+        False,
+        False,
+    ], "only the US file was ever gated against a printed table"
+    assert "INCLUDES the United States" in str(universe["region_non_overlap"])
+    assert "one momentum file" in str(universe["umd_is_not_covered"])
+    assert list(as_sequence(universe["factors"])) == ["HML", "RMW", "CMA"]
+
+
+def test_exp_005_tests_the_claim_exp_001_made_about_regional_coverage() -> None:
+    """The claim is checked against the data at run time, not restated as prose."""
+    parameters = as_mapping(load("exp_005_regional_replication").parameters)
+    check = as_mapping(parameters["regional_data_availability_check"])
+    assert "shorter than the post-publication windows" in str(check["claim_under_test"])
+    assert "FALSE for the eras that matter" in str(check["finding"])
+    assert "ABORTS" in str(check["enforcement"])
+
+
+def test_exp_005_carries_the_us_band_and_calls_the_regional_files_unmeasured() -> None:
+    """Ungated is weaker than a band of zero, and must not be read as agreement."""
+    parameters = as_mapping(load("exp_005_regional_replication").parameters)
+    band = as_mapping(parameters["second_moment_uncertainty"])
+    us = as_mapping(band["us_band"])
+    assert us["HML"] == 0.0303
+    assert us["RMW"] == 0.0509
+    assert us["CMA"] == 0.0
+    assert band["regional_bands"] == "unmeasured"
+    assert "weaker statement than a band of zero" in str(band["regional_statement"])
+
+
+def test_exp_005_pins_all_three_regional_vintages() -> None:
+    parameters = as_mapping(load("exp_005_regional_replication").parameters)
+    series = [
+        as_mapping(item)
+        for item in as_sequence(as_mapping(parameters["source_pin"])["series"])
+    ]
+    assert len(series) == 3
+    pins = {str(entry["region"]): entry for entry in series}
+    assert pins["us"]["expected_sha256_raw"] == (
+        "cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b"
+    )
+    assert pins["developed_ex_us"]["expected_sha256_raw"] == (
+        "54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d"
+    )
+    assert pins["emerging"]["expected_sha256_raw"] == (
+        "ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8"
+    )
+    # Both regional files must begin before every post-publication boundary,
+    # which is the whole reason this experiment is possible.
+    assert pins["developed_ex_us"]["expected_first_observation"] == "1990-07"
+    assert pins["emerging"]["expected_first_observation"] == "1989-07"
 
 
 def test_phase1_targets_table_4_and_pins_its_vintage() -> None:
