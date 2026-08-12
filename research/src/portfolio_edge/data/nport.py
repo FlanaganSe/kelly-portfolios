@@ -77,9 +77,11 @@ __all__ = [
     "ClassReturn",
     "FilingRef",
     "FrameRow",
+    "MonthlyFlow",
     "NportError",
     "NportFiling",
     "browse_edgar_url",
+    "build_flow_table",
     "build_return_table",
     "data_set_url",
     "fetch_filing",
@@ -271,6 +273,30 @@ class ClassReturn:
 
 
 @dataclass(frozen=True, slots=True, kw_only=True)
+class MonthlyFlow:
+    """One month of Item B.6: fund-level sales, redemptions and reinvestment.
+
+    ``reinvestment`` is the dollar value of distributions **reinvested in shares**
+    during the month. It is the only distribution figure Form N-PORT carries, and it
+    is a **lower bound**: a shareholder who takes a distribution in cash contributes
+    nothing to it, and the split between ordinary income, short-term gain and
+    long-term gain -- which is what decides the tax bill on a managed-futures fund --
+    is not in this form at all. It is reported as a lower bound wherever it appears
+    and is never described as "distributions".
+
+    The figures are FUND-level, not share-class level, so a multi-class fund's
+    reinvestment cannot be attributed to one class. Every fund in Experiment 008 has
+    a single share class, which is why the figure is usable there.
+    """
+
+    month: int
+    """1, 2 or 3: the position within the filing's three-month reporting period."""
+    sales: float | None
+    redemption: float | None
+    reinvestment: float | None
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
 class NportFiling:
     """The header, fund totals and Item B.5 returns of one N-PORT filing."""
 
@@ -286,6 +312,7 @@ class NportFiling:
     net_assets: float | None
     class_returns: tuple[ClassReturn, ...]
     entry: CacheEntry
+    monthly_flows: tuple[MonthlyFlow, ...] = ()
 
     def returns_for(self, class_id: str) -> tuple[float | None, ...] | None:
         for item in self.class_returns:
@@ -355,6 +382,25 @@ def parse_filing(payload: bytes, *, ref: FilingRef, entry: CacheEntry) -> NportF
             )
         )
 
+    # Item B.6 flows. ``mon1Flow`` is the FIRST month of the reporting period, the
+    # same ordering as ``rtn1``, so the two are aligned by construction rather than
+    # by assumption. A filer that omits the block leaves an empty tuple; it is never
+    # filled with zeros, because "the fund reinvested nothing" and "the fund did not
+    # report" are different statements.
+    flows: list[MonthlyFlow] = []
+    for position in (1, 2, 3):
+        flow_node = root.find(f".//{_NPORT_NS}mon{position}Flow")
+        if flow_node is None:
+            continue
+        flows.append(
+            MonthlyFlow(
+                month=position,
+                sales=_optional_float(flow_node.get("sales", "")),
+                redemption=_optional_float(flow_node.get("redemption", "")),
+                reinvestment=_optional_float(flow_node.get("reinvestment", "")),
+            )
+        )
+
     return NportFiling(
         accession=ref.accession,
         form_type=ref.form_type,
@@ -367,6 +413,7 @@ def parse_filing(payload: bytes, *, ref: FilingRef, entry: CacheEntry) -> NportF
         net_assets=net_assets,
         class_returns=tuple(class_returns),
         entry=entry,
+        monthly_flows=tuple(flows),
     )
 
 
@@ -459,6 +506,24 @@ def build_return_table(
         unit_transform="value / 100",
         warnings=tuple(warnings),
     )
+
+
+def build_flow_table(filings: Sequence[NportFiling]) -> dict[str, MonthlyFlow]:
+    """``{YYYY-MM: flow}`` across every filing, later filing dates winning.
+
+    Conflicts follow :func:`build_return_table`'s rule rather than a different one:
+    an amendment restates, so the filing with the later filing date supersedes. The
+    dollar figures are left in dollars; scaling them by net assets is the caller's
+    job, because the right denominator depends on what is being asked.
+    """
+    chosen: dict[str, MonthlyFlow] = {}
+    for filing in sorted(filings, key=lambda item: (item.filing_date, item.accession)):
+        periods = months_covered(filing.report_period_end)
+        for flow in filing.monthly_flows:
+            if not 1 <= flow.month <= 3:  # pragma: no cover - parser fixes the range
+                continue
+            chosen[periods[flow.month - 1]] = flow
+    return chosen
 
 
 def _month_span(first: str, last: str) -> tuple[str, ...]:

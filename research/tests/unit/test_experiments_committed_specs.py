@@ -33,6 +33,9 @@ SPEC_NAMES = (
     "exp_003_rebalancing",
     "exp_004_trend_marginal_value",
     "exp_005_regional_replication",
+    "exp_006_regional_momentum",
+    "exp_007_longonly_capture",
+    "exp_008_managed_futures_products",
     "phase1_ff_reproduction",
 )
 
@@ -629,6 +632,154 @@ def test_exp_005_pins_all_three_regional_vintages() -> None:
     # which is the whole reason this experiment is possible.
     assert pins["developed_ex_us"]["expected_first_observation"] == "1990-07"
     assert pins["emerging"]["expected_first_observation"] == "1989-07"
+
+
+def test_exp_006_inherits_exp_001_era_boundaries_without_moving_one() -> None:
+    """Experiment 006 adds regions to UMD. Moving a boundary would make it a different test.
+
+    Comparing the two committed specifications directly means a boundary cannot
+    drift in either file without breaking this test, exactly as for exp_005.
+    """
+    exp_001 = {
+        era.name: (era.start, era.end)
+        for era in load("exp_001_factor_decay").sample_policy.eras
+    }
+    exp_006 = load("exp_006_regional_momentum")
+    inherited = {era.name: (era.start, era.end) for era in exp_006.sample_policy.eras}
+    assert set(inherited) <= set(exp_001), (
+        "exp_006 must not invent an era exp_001 does not define"
+    )
+    for name, window in inherited.items():
+        assert window == exp_001[name], f"{name} moved between exp_001 and exp_006"
+    assert set(inherited) == {
+        "umd_first_post_publication",
+        "umd_full_post_publication",
+        "recent",
+    }
+    # The original-sample era is excluded on purpose: it begins 1965-01, which
+    # precedes every regional momentum file.
+    assert not any("original_sample" in name for name in inherited)
+    assert exp_006.sample_policy.end == "2025-12"
+    assert exp_006.consumes_final_holdout is False
+
+
+def test_exp_006_carhart_alternative_matches_exp_001s_predeclared_era() -> None:
+    """The hostile test's window is exp_001's, not a number invented here."""
+    from portfolio_edge.experiments.exp_006_regional_momentum import (
+        CARHART_ALTERNATIVE_END,
+        CARHART_ALTERNATIVE_START,
+    )
+
+    era = next(
+        item
+        for item in load("exp_001_factor_decay").sample_policy.eras
+        if item.name == "umd_post_carhart_alternative"
+    )
+    assert (era.start, era.end) == (CARHART_ALTERNATIVE_START, CARHART_ALTERNATIVE_END)
+
+
+def test_exp_006_reuses_exp_005s_falsifier_pooling_and_joint_bootstrap() -> None:
+    spec = load("exp_006_regional_momentum")
+    assert spec.run_kind is RunKind.EXPLORATORY
+    assert spec.evidence_class is EvidenceClass.PUBLIC_SERIES_EVALUATION
+    falsifier = spec.falsifier
+    for clause in ("(a1)", "(a2)", "(a3)", "(a4)", "(a5)"):
+        assert clause in falsifier
+    assert "BRANCH (b)" in falsifier
+    assert "CLOSED on public data" in falsifier
+    assert "not a request for more research" in falsifier
+
+    parameters = as_mapping(spec.parameters)
+    assert parameters["materiality_threshold_annual_percent"] == 2.0
+    assert parameters["power_target"] == 0.80
+    assert parameters["benjamini_hochberg_alpha"] == 0.10
+
+    pooling = as_mapping(parameters["pooling"])
+    assert pooling["weights"] == "equal"
+    weights = as_mapping(pooling["weight_values"])
+    assert set(weights) == {"us", "developed_ex_us", "emerging"}
+    assert sum(float(str(value)) for value in weights.values()) == pytest.approx(1.0)
+
+    bootstrap = as_mapping(parameters["cross_region_bootstrap"])
+    assert "THE SAME row of indices" in str(bootstrap["method"])
+    assert "labelled invalid" in str(bootstrap["the_error_it_avoids"])
+
+    sample = as_mapping(parameters["effective_sample_size"])
+    definitions = [as_mapping(item) for item in as_sequence(sample["definitions_all_reported"])]
+    assert [str(item["id"]) for item in definitions] == [
+        "effective_regions",
+        "effective_region_months_iid",
+        "effective_region_months_hac",
+        "naive_region_months",
+    ]
+    assert "CONVENTIONAL pooled MDE_80" in str(sample["which_one_the_falsifier_reads"])
+
+
+def test_exp_006_pins_three_regional_momentum_vintages_and_their_columns() -> None:
+    parameters = as_mapping(load("exp_006_regional_momentum").parameters)
+    series = [
+        as_mapping(item)
+        for item in as_sequence(as_mapping(parameters["source_pin"])["series"])
+    ]
+    assert len(series) == 3
+    pins = {str(entry["region"]): entry for entry in series}
+    assert set(pins) == {"us", "developed_ex_us", "emerging"}
+    # The US file calls the column Mom and both international files call it WML.
+    assert str(pins["us"]["source_column"]) == "Mom"
+    assert str(pins["developed_ex_us"]["source_column"]) == "WML"
+    assert str(pins["emerging"]["source_column"]) == "WML"
+    # Both non-US momentum files must begin before UMD's 1994-01 boundary, which
+    # is the whole reason this experiment is possible.
+    assert str(pins["developed_ex_us"]["expected_first_observation"]) == "1990-11"
+    assert str(pins["emerging"]["expected_first_observation"]) == "1990-01"
+    assert int(str(pins["developed_ex_us"]["expected_rows"])) == 428
+    assert int(str(pins["emerging"]["expected_rows"])) == 438
+
+
+def test_exp_006_calls_every_momentum_second_moment_unmeasured() -> None:
+    """No momentum file in any region was ever gated against a printed table."""
+    parameters = as_mapping(load("exp_006_regional_momentum").parameters)
+    band = as_mapping(parameters["second_moment_uncertainty"])
+    assert band["regional_bands"] == "unmeasured"
+    assert "numerical placeholder" in str(band["unmeasured_not_zero"])
+    assert "NO momentum file, in ANY region" in str(band["unmeasured_not_zero"])
+    universe = as_mapping(load("exp_006_regional_momentum").universe)
+    regions = [as_mapping(item) for item in as_sequence(universe["regions"])]
+    assert [bool(item["gated_against_a_printed_table"]) for item in regions] == [
+        False,
+        False,
+        False,
+    ]
+    assert list(as_sequence(universe["factors"])) == ["UMD"]
+    assert "FALSE OF THE DATA" in str(universe["what_experiment_005_got_wrong"])
+
+
+def test_exp_006_predeclares_the_crash_test_and_names_its_year() -> None:
+    """Momentum crashes are state-dependent, so the test must be named in advance."""
+    parameters = as_mapping(load("exp_006_regional_momentum").parameters)
+    crash = as_mapping(parameters["crash_state_dependence"])
+    assert str(crash["named_crash_year"]) == "2009"
+    assert "Daniel and Moskowitz" in str(crash["why"])
+    assert "state-dependent" in str(crash["why"])
+    assert "does not enter the falsifier" in str(crash["consequence"])
+
+
+def test_exp_006_reports_cost_as_a_schedule_and_refuses_a_long_only_turnover() -> None:
+    """Applying long-short turnover to a long-only product is the error being fixed."""
+    parameters = as_mapping(load("exp_006_regional_momentum").parameters)
+    cost = as_mapping(parameters["cost_sensitivity"])
+    assert cost["applied_to_results"] is False
+    assert cost["k_optimistic"] == 1.0
+    assert cost["k_pessimistic"] == 1.7
+    which = as_mapping(cost["which_turnover_belongs_to_what"])
+    academic = as_mapping(which["academic_long_short_factor"])
+    turnover = as_mapping(academic["turnover_one_sided_monthly_percent"])
+    assert turnover["optimistic"] == 27.5
+    assert turnover["pessimistic"] == 91.5
+    long_only = as_mapping(which["long_only_implementation"])
+    assert long_only["turnover_one_sided_monthly_percent"] == "UNMEASURED"
+    assert "ORDER OF MAGNITUDE" in str(long_only["basis"])
+    assert "MUST NOT" in str(long_only["forbidden"])
 
 
 def test_phase1_targets_table_4_and_pins_its_vintage() -> None:

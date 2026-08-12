@@ -20,9 +20,11 @@ from portfolio_edge.data.cache import CacheEntry, RawCache
 from portfolio_edge.data.nport import (
     ClassReturn,
     FilingRef,
+    MonthlyFlow,
     NportError,
     NportFiling,
     browse_edgar_url,
+    build_flow_table,
     build_return_table,
     data_set_url,
     load_frame,
@@ -482,3 +484,99 @@ def test_the_two_cash_rate_conventions_are_not_the_same_number() -> None:
     assert abs(french_annual_percent - fred_annual_percent) < 0.10
     # Compared without converting they differ by roughly the whole rate.
     assert abs(french_annual_percent - fred_annual_rate) > 2.6
+
+
+# --------------------------------------------------------------------------- #
+# Item B.6 monthly flows
+# --------------------------------------------------------------------------- #
+
+
+def test_monthly_flows_are_parsed_and_ordered_like_the_returns() -> None:
+    """``mon1Flow`` is the first month of the period, exactly as ``rtn1`` is.
+
+    If the two blocks were read in opposite orders a distribution would be
+    attributed to the wrong month while every number stayed plausible, which is the
+    same failure the return alignment test exists to prevent.
+    """
+    filing = parse_filing(FIXTURE.read_bytes(), ref=_ref(), entry=_entry())
+    assert [flow.month for flow in filing.monthly_flows] == [1, 2, 3]
+    first = filing.monthly_flows[0]
+    assert first.sales == pytest.approx(632839095.95)
+    assert first.redemption == pytest.approx(442684928.35)
+    assert first.reinvestment == pytest.approx(0.0)
+
+
+def test_a_filing_without_a_flow_block_carries_no_flows_rather_than_zeros() -> None:
+    """"Reported nothing" and "reported zero" are different statements."""
+    payload = FIXTURE.read_bytes()
+    for position in (1, 2, 3):
+        start = payload.index(f"<mon{position}Flow".encode())
+        end = payload.index(b"/>", start) + 2
+        payload = payload[:start] + payload[end:]
+    filing = parse_filing(payload, ref=_ref(), entry=_entry())
+    assert filing.monthly_flows == ()
+
+
+def test_build_flow_table_assigns_each_flow_to_its_calendar_month() -> None:
+    filings = [
+        _filing_with_flows(
+            "2020-03-31", accession="a", filing_date="2020-05-01", reinvestments=(1.0, 2.0, 3.0)
+        ),
+        _filing_with_flows(
+            "2020-06-30", accession="b", filing_date="2020-08-01", reinvestments=(4.0, 5.0, 6.0)
+        ),
+    ]
+    table = build_flow_table(filings)
+    assert sorted(table) == [
+        "2020-01", "2020-02", "2020-03", "2020-04", "2020-05", "2020-06",
+    ]
+    assert table["2020-01"].reinvestment == pytest.approx(1.0)
+    assert table["2020-06"].reinvestment == pytest.approx(6.0)
+
+
+def test_a_later_filing_supersedes_an_earlier_one_for_a_shared_flow_month() -> None:
+    """The same rule as the returns: an amendment restates, it does not average."""
+    filings = [
+        _filing_with_flows(
+            "2020-03-31", accession="a", filing_date="2020-05-01", reinvestments=(1.0, 2.0, 3.0)
+        ),
+        _filing_with_flows(
+            "2020-03-31",
+            accession="b",
+            filing_date="2020-09-01",
+            reinvestments=(9.0, 9.0, 9.0),
+            form_type="NPORT-P/A",
+        ),
+    ]
+    assert build_flow_table(filings)["2020-02"].reinvestment == pytest.approx(9.0)
+
+
+def _filing_with_flows(
+    period_end: str,
+    *,
+    accession: str,
+    filing_date: str,
+    reinvestments: tuple[float, float, float],
+    form_type: str = "NPORT-P",
+) -> NportFiling:
+    filing = _filing(
+        period_end, (0.0, 0.0, 0.0), accession=accession, filing_date=filing_date,
+        form_type=form_type,
+    )
+    return NportFiling(
+        accession=filing.accession,
+        form_type=filing.form_type,
+        filing_date=filing.filing_date,
+        series_id=filing.series_id,
+        series_name=filing.series_name,
+        report_period_end=filing.report_period_end,
+        fiscal_year_end=filing.fiscal_year_end,
+        is_final_filing=filing.is_final_filing,
+        net_assets=filing.net_assets,
+        class_returns=filing.class_returns,
+        entry=filing.entry,
+        monthly_flows=tuple(
+            MonthlyFlow(month=index + 1, sales=None, redemption=None, reinvestment=value)
+            for index, value in enumerate(reinvestments)
+        ),
+    )
