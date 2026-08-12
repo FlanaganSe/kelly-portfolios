@@ -546,6 +546,12 @@ fund-fee model and tests mostly academic zero-investment long-short portfolios.
 The defensible conclusion is that economic themes deserve a positive but heavily
 shrunk prior; no replication percentage establishes an investable edge.
 
+This repository has since measured HML, UMD, RMW and CMA over frozen
+pre- and post-publication eras. None of the four was promoted; see
+[factor persistence and decay](factor-persistence.md) for the era boundaries, the
+power calculation that makes three of them `unresolved` rather than negative, and
+the one that was `rejected`.
+
 Published effects decay. Across 97 predictors, returns were lower out of sample
 and lower again after publication, consistent with both statistical bias and
 arbitrage/crowding ([McLean and Pontiff 2016](https://doi.org/10.1111/jofi.12365)).

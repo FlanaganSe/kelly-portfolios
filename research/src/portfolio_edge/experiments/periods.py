@@ -33,7 +33,7 @@ class PeriodError(ValueError):
 def month_index(period: str) -> int:
     """Months since year zero, so differences and shifts are plain integers."""
     parts = period.split("-")
-    if len(parts) != 2:
+    if len(parts) != 2 or len(parts[0]) != 4 or len(parts[1]) != 2:
         raise PeriodError(f"not a YYYY-MM period label: {period!r}")
     try:
         year, month = int(parts[0]), int(parts[1])

@@ -306,6 +306,14 @@ parameters:
           throughout. The rename is recorded here rather than assumed in code.
 
   publication_record:
+    verification: >
+      Every journal, volume, issue, page range and ISSUE MONTH below was checked
+      against publisher-deposited Crossref metadata for the article's DOI, and
+      the sample periods against the article full text, on 2026-08-11. All
+      eleven citations verified with no correction to any field used to set a
+      boundary. The Fama and French (2015) working paper's own title page reads
+      "First draft: June 2013 / This draft: November 2013", which is the primary
+      evidence for the 2013 circulation date.
     policy: >
       Every era boundary below is justified from the publication record, not
       chosen as a round number. A boundary is set at the first January that
@@ -356,9 +364,17 @@ parameters:
         1998-01, the first January after Carhart (1997), as era
         umd_post_carhart_alternative.
       construction_caveat: >
-        The window 1965-01 to 1989-12 is Jegadeesh and Titman's. The series is
-        French's six-portfolio 30/70 UMD, which is a different construction from
-        their decile 6-6 strategies. The window is theirs; the data are not.
+        The window 1965-01 to 1989-12 is Jegadeesh and Titman's main sample. The
+        series is French's six-portfolio 30/70 UMD, which is a different
+        construction from their decile 6-6 strategies. The window is theirs; the
+        data are not.
+      sample_caveat: >
+        1965-1989 is their MAIN sample, not their only one: their Section VII
+        additionally back-tests 1927-1964. French's UMD series also starts in
+        1927. There is therefore no window of the momentum series that is
+        genuinely unseen by the discovering authors, which is a limitation of the
+        original-sample era for UMD specifically and is not repairable from this
+        data.
     RMW:
       defining_publication: >
         Fama and French (2015), "A five-factor asset pricing model", Journal of

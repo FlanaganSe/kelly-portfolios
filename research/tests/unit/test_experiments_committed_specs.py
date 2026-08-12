@@ -84,6 +84,110 @@ def test_exp_001_falsifier_is_not_a_bare_95_percent_test() -> None:
         assert required in era_names
 
 
+def test_exp_001_pins_its_source_vintages() -> None:
+    """Without a pin the experiment would silently follow the next CRSP rebuild."""
+    parameters = as_mapping(load("exp_001_factor_decay").parameters)
+    entries = as_sequence(as_mapping(parameters["source_pin"])["series"])
+    series = [as_mapping(item) for item in entries]
+    assert len(series) == 2
+    pins = {str(entry["dataset_id"]): entry for entry in series}
+    assert pins["french_us_ff5"]["expected_sha256_raw"] == (
+        "cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b"
+    )
+    assert pins["french_us_momentum"]["expected_sha256_raw"] == (
+        "f405ee2d47a5c75ce05025f789733d0599879361e9836a553504240b89159871"
+    )
+    assert list(as_sequence(pins["french_us_ff5"]["factor_columns"])) == ["HML", "RMW", "CMA"]
+    assert list(as_sequence(pins["french_us_momentum"]["factor_columns"])) == ["UMD"]
+
+
+def test_exp_001_freezes_the_multiple_testing_family_before_the_run() -> None:
+    """A family fixed after the fact is a family fitted to whatever survived."""
+    parameters = as_mapping(load("exp_001_factor_decay").parameters)
+    grid = as_mapping(parameters["primary_grid"])
+    roles = [str(role) for role in as_sequence(grid["era_roles"])]
+    assert roles == [
+        "original_sample",
+        "first_post_publication",
+        "full_post_publication",
+        "recent",
+        "common_period",
+    ]
+    cells = as_mapping(grid["cells"])
+    assert set(cells) == {"HML", "UMD", "RMW", "CMA"}
+    for factor in cells:
+        assert set(as_mapping(cells[factor])) == set(roles)
+    # RMW and CMA share every era, so the 20 tests are not 20 independent ones.
+    assert as_mapping(cells["RMW"]) == as_mapping(cells["CMA"])
+    assert "LOWER BOUND" in str(grid["dependence_warning"])
+
+
+def test_exp_001_carries_the_phase_1_volatility_band_it_inherited() -> None:
+    """The Phase 1 gate is UNRESOLVED; this is the band that inheritance implies.
+
+    Pinning the two numbers here means loosening or dropping them cannot be a
+    quiet edit: it breaks a test and changes the specification hash at once.
+    """
+    parameters = as_mapping(load("exp_001_factor_decay").parameters)
+    band = as_mapping(parameters["second_moment_uncertainty"])
+    relative = as_mapping(band["relative_band_on_volatility"])
+    assert relative["HML"] == 0.0303
+    assert relative["RMW"] == 0.0509
+    assert relative["CMA"] == 0.0
+    assert "SYSTEMATIC" in str(band["consequence"])
+    assert "never combined" in str(band["consequence"])
+
+
+def test_exp_001_justifies_every_boundary_from_the_publication_record() -> None:
+    parameters = as_mapping(load("exp_001_factor_decay").parameters)
+    record = as_mapping(parameters["publication_record"])
+    assert set(record) >= {"HML", "UMD", "RMW", "CMA"}
+    expected_years = {"HML": 1993, "UMD": 1993, "RMW": 2015, "CMA": 2015}
+    expected_boundaries = {
+        "HML": "1994-01",
+        "UMD": "1994-01",
+        "RMW": "2014-01",
+        "CMA": "2014-01",
+    }
+    for factor, year in expected_years.items():
+        entry = as_mapping(record[factor])
+        assert entry["publication_year_used"] == year
+        assert entry["first_post_publication_boundary"] == expected_boundaries[factor]
+        assert str(entry["boundary_justification"]).strip()
+        assert as_sequence(entry["predecessor_evidence"]), (
+            f"{factor} must record its predecessor evidence; no date here is clean"
+        )
+        assert str(entry["alternative_date_tested"]).strip()
+
+
+def test_exp_001_declares_its_cost_illustration_as_a_column_not_a_haircut() -> None:
+    parameters = as_mapping(load("exp_001_factor_decay").parameters)
+    illustration = as_mapping(parameters["cost_illustration"])
+    assert illustration["applied_to_results"] is False
+    assert illustration["k_optimistic"] == 1.0
+    assert illustration["k_pessimistic"] == 1.7
+    turnover = as_mapping(illustration["one_sided_monthly_turnover_percent"])
+    assert set(turnover) == {"HML", "UMD", "RMW", "CMA"}
+    assert as_mapping(turnover["UMD"])["pessimistic"] == 91.5
+    assert as_mapping(turnover["HML"])["pessimistic"] == 7.2
+    assert "144%" in str(illustration["published_outcome_to_keep_in_view"])
+
+
+def test_exp_001_requires_power_for_every_cell() -> None:
+    """The single most important statistical requirement of this experiment."""
+    parameters = as_mapping(load("exp_001_factor_decay").parameters)
+    assert parameters["power_target"] == 0.80
+    assert list(as_sequence(parameters["rolling_windows_months"])) == [12, 36, 60, 120]
+    power = as_mapping(parameters["power"])
+    assert power["reported_for_every_cell"] is True
+    assert len(as_sequence(power["also_report"])) >= 3
+    requirements = " ".join(
+        str(item) for item in as_sequence(load("exp_001_factor_decay").reporting_requirements)
+    )
+    assert "80%-power" in requirements
+    assert "Politis-White" in requirements
+
+
 def test_exp_002_predeclares_a_screening_rule_and_records_every_fund() -> None:
     spec = load("exp_002_fund_exposure")
     assert spec.run_kind is RunKind.EXPLORATORY

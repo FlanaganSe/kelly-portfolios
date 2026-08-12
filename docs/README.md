@@ -29,6 +29,9 @@ setup and current status.
   rebalancing beats buy-and-hold, gives the closed-form probability of doing so,
   and separates what is beatable (your own counterfactual) from what is not (a
   cheap index).
+- [Factor persistence and decay](research/factor-persistence.md) — Experiment 001:
+  what HML, UMD, RMW and CMA did before and after publication across frozen eras,
+  how little those windows can detect, and why none of the four is promoted.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers
