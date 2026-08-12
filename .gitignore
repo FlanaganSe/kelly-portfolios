@@ -34,3 +34,6 @@ research/.pytest_cache/
 research/.mypy_cache/
 research/.ruff_cache/
 research/*.egg-info/
+
+# Working plans and prompts are not durable documentation (docs/AGENTS.md).
+docs/the-plan.md
