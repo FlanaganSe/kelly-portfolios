@@ -32,6 +32,11 @@ setup and current status.
 - [Factor persistence and decay](research/factor-persistence.md) — Experiment 001:
   what HML, UMD, RMW and CMA did before and after publication across frozen eras,
   how little those windows can detect, and why none of the four is promoted.
+- [Factor product exposure and implementation audit](research/factor-product-audit.md)
+  — Experiment 002: which retail factor ETFs deliver the exposure they advertise,
+  what they cost against a cheap replication, and why a 2019-onward window
+  decides nothing about alpha. Also measures how much of the 2019 factor shelf
+  no longer exists.
 - [Rebalancing policy on real regional equity](research/rebalancing-policy.md) —
   Experiment 003, the first confirmatory run: five policies on US, developed-ex-US
   and emerging equity over 35 years. The excess-growth closed form reproduces to a

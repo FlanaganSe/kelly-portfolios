@@ -1064,6 +1064,16 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
 
     cash_sensitivity = _cash_rate_sensitivity(panel, common_periods)
 
+    pedestal = _model_misfit_pedestal(
+        comparator=comparator,
+        series=series,
+        panel=panel,
+        periods=common_periods,
+        n_lags=hac_lags,
+        dispersion_annual_percent=dispersion,
+        power=power,
+    )
+
     promoted = [item.ticker for item in outcomes if item.status == "exploratory"]
     summary = _summary_sentence(
         universe=universe,
@@ -1099,6 +1109,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
         "replication": [item.to_json() for item in replications.values()],
         "cross_source_check": cross_source,
         "cash_rate_sensitivity": cash_sensitivity,
+        "model_misfit_pedestal": pedestal,
         "multiple_testing": {
             "family_definition": (
                 "every fund with usable returns times every model specification "
@@ -1524,6 +1535,8 @@ def _cash_rate_sensitivity(panel: FactorPanel, periods: Sequence[str]) -> dict[s
 
     cache = RawCache()
     rows = _rows_for(panel, periods)
+    # French's RF is a decimal rate per month; twelve of them, in percent, is the
+    # annual figure that a FRED annualised rate can be compared against.
     french_mean_annual = float(np.mean(panel.risk_free[rows])) * MONTHS_PER_YEAR * 100.0
     out: dict[str, JsonValue] = {
         "primary": "French one-month Treasury bill, from the same file as the factors",
@@ -1544,6 +1557,22 @@ def _cash_rate_sensitivity(panel: FactorPanel, periods: Sequence[str]) -> dict[s
         except Exception as exc:
             alternatives.append({"series": series_id, "error": f"{type(exc).__name__}: {exc}"})
             continue
+        # UNITS. FRED parses these to ``decimal_per_year`` -- 0.0366 means 3.66%
+        # a year -- while French's RF is a decimal rate PER MONTH. Comparing the
+        # two without converting is a factor-of-100 error that would have printed
+        # a +2.6 pp/yr alpha shift where the truth is a few basis points, so the
+        # units are asserted rather than assumed.
+        if table.units != "decimal_per_year":
+            alternatives.append(
+                {
+                    "series": series_id,
+                    "error": (
+                        f"expected decimal_per_year, got {table.units!r}; refusing to "
+                        "convert a series whose units have changed"
+                    ),
+                }
+            )
+            continue
         monthly: dict[str, list[float]] = {}
         for label, row in zip(table.periods, table.values, strict=True):
             value = row[0]
@@ -1554,7 +1583,9 @@ def _cash_rate_sensitivity(panel: FactorPanel, periods: Sequence[str]) -> dict[s
         if not wanted:
             alternatives.append({"series": series_id, "error": "no overlap with the window"})
             continue
-        annual = float(np.mean([float(np.mean(monthly[period])) for period in wanted]))
+        # Daily series are averaged within a month first, so a month with more
+        # observations does not get more weight than one with fewer.
+        annual = 100.0 * float(np.mean([float(np.mean(monthly[period])) for period in wanted]))
         alternatives.append(
             {
                 "series": series_id,
@@ -1566,6 +1597,73 @@ def _cash_rate_sensitivity(panel: FactorPanel, periods: Sequence[str]) -> dict[s
         )
     out["alternatives"] = alternatives
     return out
+
+
+
+
+def _model_misfit_pedestal(
+    *,
+    comparator: str,
+    series: Mapping[str, FundSeries],
+    panel: FactorPanel,
+    periods: Sequence[str],
+    n_lags: int,
+    dispersion_annual_percent: float,
+    power: float,
+) -> dict[str, JsonValue]:
+    """The alpha the factor model gives a fund that is, by construction, the market.
+
+    The single most important calibration on this page. A cap-weighted total-market
+    fund holds the market portfolio, so under a correctly specified model its alpha
+    must be approximately minus its expense ratio -- three basis points. Anything
+    further from zero is the model failing to span this window, not the fund doing
+    something.
+
+    Whatever that number is, EVERY fund's alpha carries it, because every fund is
+    priced by the same six factors over the same 72 months. So it is measured and
+    reported beside the fund alphas rather than left for a reader to infer, and a
+    fund's alpha is meaningful only as a distance from this pedestal, never as a
+    distance from zero.
+    """
+    if comparator not in series:
+        return {"available": False, "reason": f"{comparator} has no usable history"}
+    rows = _rows_for(panel, periods)
+    excess = _excess(series[comparator], panel, periods)
+    by_specification: dict[str, JsonValue] = {}
+    for name, factors in FACTOR_SPECIFICATIONS.items():
+        fit = fit_exposure(
+            ticker=comparator,
+            specification=name,
+            era="common_period",
+            excess_returns=excess,
+            design=panel.design(factors, rows),
+            factor_names=factors,
+            n_lags=n_lags,
+            dispersion_annual_percent=dispersion_annual_percent,
+            power=power,
+        )
+        by_specification[name] = {
+            "alpha_annual_percent": fit.alpha_annual_percent,
+            "alpha_se_annual_percent": fit.alpha_se_annual_percent,
+            "alpha_t": fit.alpha_t,
+            "market_beta": fit.loadings["Mkt-RF"],
+            "r_squared": fit.r_squared,
+        }
+    primary = by_specification[PRIMARY_SPECIFICATION]
+    assert isinstance(primary, Mapping)
+    return {
+        "available": True,
+        "comparator": comparator,
+        "by_specification": by_specification,
+        "pedestal_annual_percent": primary["alpha_annual_percent"],
+        "interpretation": (
+            "A cap-weighted total-market fund IS the market portfolio, so its alpha "
+            "under a correctly specified model should be about minus its expense "
+            "ratio. The distance of this number from that is model misfit shared by "
+            "every fund in the audit. Read each fund's alpha as a distance from this "
+            "pedestal, not from zero."
+        ),
+    }
 
 
 def _correction_json(
@@ -1884,6 +1982,11 @@ def _build_universe_command(specification: Specification) -> int:
     return 0
 
 
+def _as_mapping(value: JsonValue) -> Mapping[str, JsonValue]:
+    assert isinstance(value, Mapping)
+    return value
+
+
 def _render_console_report(outcome: RunOutcome) -> str:
     """The numbers, for a human. Calling this is what ``results_viewed`` records."""
     result = outcome.result
@@ -2072,6 +2175,22 @@ def _render_console_report(outcome: RunOutcome) -> str:
                 f"  range {float(str(item['range'])):.3f}"
                 f"  sign changes {item['sign_changes']}"
             )
+        lines.append("")
+
+    pedestal = diagnostics.get("model_misfit_pedestal")
+    if isinstance(pedestal, Mapping) and pedestal.get("available"):
+        specs = pedestal["by_specification"]
+        assert isinstance(specs, Mapping)
+        rendered = ", ".join(
+            f"{name} {float(str(_as_mapping(block)['alpha_annual_percent'])):+.2f}"
+            for name, block in specs.items()
+        )
+        lines.append(
+            f"MODEL-MISFIT PEDESTAL. {pedestal['comparator']} is the market "
+            f"portfolio, so its alpha should be about minus its 0.03% fee. It is: "
+            f"{rendered} pp/yr. Every fund alpha above carries this; read them as "
+            "distances from the pedestal, not from zero."
+        )
         lines.append("")
 
     cash = diagnostics.get("cash_rate_sensitivity")

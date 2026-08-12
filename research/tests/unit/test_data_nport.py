@@ -460,3 +460,25 @@ def test_a_row_with_a_blank_series_identifier_is_dropped_not_merged(tmp_path: Pa
     cache.store(data_set_url("2019q4"), payload)
     frame, _ = load_frame(cache, "2019q4")
     assert set(frame) == {"S1"}
+
+
+def test_the_two_cash_rate_conventions_are_not_the_same_number() -> None:
+    """The units trap behind the cash-rate substitution test.
+
+    Ken French distributes RF as a decimal rate PER MONTH; this repository's FRED
+    reader normalises TB3MS, DGS3MO and DFF to ``decimal_per_year``. Treating one
+    as the other is a factor-of-100 error in the direction that makes the choice
+    of cash series look enormously important when it is worth a few basis points.
+    """
+    french_monthly_rate = 0.00222  # about 2.66% a year
+    fred_annual_rate = 0.0270  # 2.70% a year, as FRED is parsed
+
+    french_annual_percent = french_monthly_rate * 12 * 100
+    fred_annual_percent = fred_annual_rate * 100
+
+    assert french_annual_percent == pytest.approx(2.664, abs=0.001)
+    assert fred_annual_percent == pytest.approx(2.700, abs=0.001)
+    # Converted correctly the two agree to a few basis points a year.
+    assert abs(french_annual_percent - fred_annual_percent) < 0.10
+    # Compared without converting they differ by roughly the whole rate.
+    assert abs(french_annual_percent - fred_annual_rate) > 2.6

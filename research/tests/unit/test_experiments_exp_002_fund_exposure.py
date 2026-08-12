@@ -443,3 +443,53 @@ def test_a_family_smaller_than_the_tests_run_is_refused() -> None:
 
     with pytest.raises(ValueError, match="smaller than"):
         inflated_family([0.1, 0.2, 0.3], family_size=2)
+
+
+# --------------------------------------------------------------------------- #
+# The model-misfit pedestal
+# --------------------------------------------------------------------------- #
+
+
+def test_a_fund_that_is_the_market_has_an_alpha_of_about_zero_by_construction() -> None:
+    """The calibration every other alpha is read against.
+
+    A portfolio whose excess return IS the market factor must price at alpha zero
+    under any model containing that factor. If this ever fails, the fund alphas
+    are measuring the data path rather than the funds.
+    """
+    from portfolio_edge.inference.hac import hac_ols
+
+    rng = np.random.default_rng(23)
+    names = FACTOR_SPECIFICATIONS[PRIMARY_SPECIFICATION]
+    design = rng.normal(scale=0.04, size=(72, len(names)))
+    market_only = design[:, 0].copy()
+    fit = hac_ols(market_only, design, n_lags=6)
+    assert float(fit.coefficients[0]) * 12 * 100 == pytest.approx(0.0, abs=1e-8)
+    assert float(fit.coefficients[1]) == pytest.approx(1.0, abs=1e-8)
+
+
+def test_a_pedestal_shifts_every_alpha_by_the_same_amount() -> None:
+    """Why the pedestal is subtracted from all funds or from none.
+
+    Adding a constant to every fund's monthly return moves every intercept by
+    twelve times that constant and leaves every loading untouched, so a shared
+    model misfit is a common shift and not a per-fund effect.
+    """
+    betas = dict.fromkeys(FACTOR_SPECIFICATIONS[PRIMARY_SPECIFICATION], 0.4)
+    y, design, names = _synthetic(0.001, betas)
+    shift = 0.0005
+    base = fit_exposure(
+        ticker="A", specification=PRIMARY_SPECIFICATION, era="common_period",
+        excess_returns=y, design=design, factor_names=names, n_lags=6,
+        dispersion_annual_percent=1.25, power=0.80,
+    )
+    shifted = fit_exposure(
+        ticker="B", specification=PRIMARY_SPECIFICATION, era="common_period",
+        excess_returns=y + shift, design=design, factor_names=names, n_lags=6,
+        dispersion_annual_percent=1.25, power=0.80,
+    )
+    assert shifted.alpha_annual_percent - base.alpha_annual_percent == pytest.approx(
+        shift * 12 * 100, rel=1e-10
+    )
+    for name in names:
+        assert shifted.loadings[name] == pytest.approx(base.loadings[name], abs=1e-12)
