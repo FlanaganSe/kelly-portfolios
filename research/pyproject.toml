@@ -33,7 +33,9 @@ packages = ["src/portfolio_edge"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
-addopts = "-q --strict-markers"
+# Network tests are opt-in, as research/README.md and AGENTS.md both promise.
+# Run them with `uv run pytest -m network` or `-m ""` for everything.
+addopts = "-q --strict-markers -m 'not network'"
 markers = [
     "network: test requires live network access to a primary data source",
 ]
