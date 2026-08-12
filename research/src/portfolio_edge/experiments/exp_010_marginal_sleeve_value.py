@@ -546,15 +546,15 @@ def par_bond_risk(annual_yield: float, *, periods: float) -> tuple[float, float]
     in the tests by numerically differentiating the exact price function, not
     against this function's own output.
 
-    FINDING, recorded here rather than silently corrected elsewhere: the same
-    helper in ``exp_004_trend_marginal_value`` omits the factor of 2 in ``P''(i)``
-    and therefore reports HALF the true convexity, 39.4490 instead of 78.8979. Its
-    unit test asserts that number, so the error is pinned rather than caught: the
-    test compares the implementation with itself. The consequence for exp_004 is
-    confined to its declared, research-grade-false GS10 bond proxy, where the
-    convexity term is second order in the monthly yield change, but it is an error
-    and it is reported as one rather than repaired inside a ledgered experiment by
-    this module.
+    FINDING, since REPAIRED: the same helper in ``exp_004_trend_marginal_value``
+    omitted the factor of 2 in ``P''(i)`` and therefore reported HALF the true
+    convexity, 39.4490 instead of 78.8979, behind a unit test that asserted the
+    implementation's own output and so pinned the error rather than catching it.
+    This module surfaced it and carried the corrected form without touching the
+    ledgered experiment; exp_004 was then re-run against its unchanged frozen
+    specification and exactly one figure moved, its bond-leg robustness arm's
+    marginal, by -0.000585 pp/yr. A test now holds the two copies against each
+    other at three yields so they cannot diverge again.
     """
     if annual_yield <= 0.0:
         raise ValueError(f"a par-bond yield must be positive, got {annual_yield}")
@@ -1523,12 +1523,18 @@ class MarginalResult:
     window: str
     observations: int
     reference_weight: float
+    deciding_basis: str
     marginal_percent: float
+    """The paired difference on the DECIDING basis. Every interval, p-value and
+    falsifier clause on this row reads this number and no other."""
     marginal_growth_percent: float
-    """The same paired difference on the GEOMETRIC GROWTH basis, gamma = 1. It has
-    no interval because the interval that decides this experiment is on the CRRA
-    metric; it is reported because the gap between the two IS the de-risking
-    component that a risk-averse utility rewards and a growth rate does not."""
+    """The same paired difference on the GEOMETRIC GROWTH basis, gamma = 1."""
+    marginal_crra_percent: float
+    """The same paired difference on the reported CRRA basis. One of these two is
+    the deciding figure and the other is its companion; which is which is stated
+    by ``deciding_basis`` rather than left to the reader. The gap between them IS
+    the de-risking component that a risk-averse utility rewards and a growth rate
+    does not, and decision record 0008 is the record of why it may not decide."""
     lower_95: float
     upper_95: float
     standard_error: float
@@ -1555,10 +1561,12 @@ class MarginalResult:
             "observations": self.observations,
             "effective_independent_blocks_at_12m": self.observations / self.block_length,
             "reference_weight": self.reference_weight,
-            "marginal_certainty_equivalent_pp_per_year": self.marginal_percent,
+            "deciding_basis": self.deciding_basis,
+            "marginal_on_the_deciding_basis_pp_per_year": self.marginal_percent,
+            "marginal_certainty_equivalent_pp_per_year": self.marginal_crra_percent,
             "marginal_geometric_growth_pp_per_year": self.marginal_growth_percent,
             "de_risking_component_pp_per_year": (
-                self.marginal_percent - self.marginal_growth_percent
+                self.marginal_crra_percent - self.marginal_growth_percent
             ),
             "two_sided_95": [self.lower_95, self.upper_95],
             "bootstrap_standard_error": self.standard_error,
@@ -1617,19 +1625,22 @@ def _marginal(
     reference_weight: float,
     levered: bool,
     rng: np.random.Generator,
-    gamma: float,
+    settings: Settings,
     block_length: float,
     neighbours: Sequence[float],
     n_resamples: int,
 ) -> MarginalResult:
-    point = 100.0 * (
-        certainty_equivalent_annual(_annual_gross_matrix(treatment), gamma=gamma)
-        - certainty_equivalent_annual(_annual_gross_matrix(comparator), gamma=gamma)
-    )
-    growth_point = 100.0 * (
-        certainty_equivalent_annual(_annual_gross_matrix(treatment), gamma=1.0)
-        - certainty_equivalent_annual(_annual_gross_matrix(comparator), gamma=1.0)
-    )
+    gamma = settings.decision_gamma
+
+    def paired(at_gamma: float) -> float:
+        return 100.0 * (
+            certainty_equivalent_annual(_annual_gross_matrix(treatment), gamma=at_gamma)
+            - certainty_equivalent_annual(_annual_gross_matrix(comparator), gamma=at_gamma)
+        )
+
+    point = paired(gamma)
+    growth_point = paired(1.0)
+    crra_point = paired(settings.report_gamma)
     replicates = _paired_replicates(
         treatment,
         comparator,
@@ -1667,8 +1678,10 @@ def _marginal(
         window=window,
         observations=treatment.size,
         reference_weight=reference_weight,
+        deciding_basis=settings.deciding_basis,
         marginal_percent=point,
         marginal_growth_percent=growth_point,
+        marginal_crra_percent=crra_point,
         lower_95=float(low),
         upper_95=float(high),
         standard_error=standard_error,
@@ -1796,7 +1809,19 @@ def _whole_year_mask(periods: Sequence[str], start: str, end: str) -> BoolArray:
 class Settings:
     """Everything the frozen specification says about how to run this."""
 
-    gamma: float
+    decision_gamma: float
+    """The risk aversion whose metric DECIDES every threshold and every falsifier
+    clause. Decision record 0008 sets it to 1 -- geometric growth -- for any
+    specification frozen after that record, because the exact CRRA certainty
+    equivalent over 35 calendar years rewards de-risking: this experiment's own
+    cash control, which supplies zero alpha and zero diversification credit by
+    construction, scores +0.166 pp/yr at gamma = 3 while LOSING 0.643 pp/yr of
+    growth. A specification that does not name one falls back to
+    :attr:`report_gamma`, which is what every specification frozen before that
+    record meant."""
+    report_gamma: float
+    """The CRRA risk aversion reported BESIDE the deciding figure. Never alone and
+    never as the deciding number, which is the whole content of decision 0008."""
     materiality: float
     reference_weight: float
     weight_cap: float
@@ -1807,11 +1832,36 @@ class Settings:
     neighbours: tuple[float, ...]
     resamples: int
 
+    @property
+    def deciding_basis(self) -> str:
+        """A stable identifier for the basis, written beside every deciding figure."""
+        if math.isclose(self.decision_gamma, 1.0):
+            return "geometric_growth_gamma_1"
+        return f"crra_certainty_equivalent_gamma_{self.decision_gamma:g}"
+
+    @property
+    def deciding_metric_name(self) -> str:
+        """How the deciding figure is named in prose, in the falsifier's own words."""
+        if math.isclose(self.decision_gamma, 1.0):
+            return "marginal geometric growth rate"
+        return "marginal certainty equivalent"
+
+    @property
+    def decides_on_growth(self) -> bool:
+        return math.isclose(self.decision_gamma, 1.0)
+
 
 def _settings(specification: Specification) -> Settings:
     parameters = _mapping(specification.parameters, where="parameters")
+    report_gamma = _number(parameters, "crra_gamma", where="parameters")
+    decision_gamma = (
+        _number(parameters, "decision_gamma", where="parameters")
+        if "decision_gamma" in parameters
+        else report_gamma
+    )
     return Settings(
-        gamma=_number(parameters, "crra_gamma", where="parameters"),
+        decision_gamma=decision_gamma,
+        report_gamma=report_gamma,
         materiality=_number(
             parameters, "materiality_threshold_annual_percent", where="parameters"
         ),
@@ -1968,7 +2018,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
                 reference_weight=settings.reference_weight,
                 levered=paths.levered[reference_index],
                 rng=rng,
-                gamma=settings.gamma,
+                settings=settings,
                 block_length=settings.block_length,
                 neighbours=settings.neighbours if is_primary_cell else (),
                 n_resamples=settings.resamples,
@@ -2003,7 +2053,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
                     realised_growth_marginal=result.marginal_growth_percent,
                 )
             )
-            gains = _gain_curve(paths, full_mask, gamma=settings.gamma)
+            gains = _gain_curve(paths, full_mask, gamma=settings.decision_gamma)
             surface = optimal_long_only_weight(
                 [float(value) for value in fine_grid],
                 [float(value) for value in gains],
@@ -2053,7 +2103,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
                             rng=rng,
                             block_length=settings.block_length,
                             n_resamples=settings.resamples,
-                            gamma=settings.gamma,
+                            gamma=settings.decision_gamma,
                         ),
                     }
                 )
@@ -2082,7 +2132,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
     ]
     holm = holm_bonferroni([item.one_sided_p_value for item in family], alpha=0.05)
 
-    control_check = _calibration_control(marginals)
+    control_check = _calibration_control(marginals, settings)
 
     verdicts = _apply_rejection_rule(
         primary=primary,
@@ -2096,6 +2146,26 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
     )
 
     diagnostics: dict[str, JsonValue] = {
+        "deciding_metric": {
+            "basis": settings.deciding_basis,
+            "gamma": settings.decision_gamma,
+            "name": settings.deciding_metric_name,
+            "reported_beside_it": {
+                "geometric_growth_gamma_1": True,
+                "crra_certainty_equivalent_gamma": settings.report_gamma,
+            },
+            "decision_record": "docs/decisions/0008-growth-decides-crra-reports.md",
+            "why": (
+                "Geometric growth decides because the exact CRRA certainty equivalent "
+                "over 35 calendar-year returns pays a sleeve for reducing risk, and "
+                "any investor obtains that reduction free by holding less equity. The "
+                "cash calibration control in this same experiment measures the size of "
+                "the payment: it supplies no alpha and no diversification credit and "
+                "still scores positively at gamma = 3. The certainty equivalent stays "
+                "reported beside the growth figure because the gap between them IS "
+                "that de-risking component, and hiding it would be the opposite error."
+            ),
+        },
         "evaluation_disclosure": _at(
             _mapping(specification.parameters, where="parameters"),
             "evaluation_disclosure",
@@ -2199,13 +2269,13 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
         "verdicts": verdicts,
     }
 
-    status, summary = _experiment_status(verdicts, primary, control_check)
+    status, summary = _experiment_status(verdicts, primary, control_check, settings)
     return ExperimentResult(
         status=status,
         summary=summary,
         estimates=_estimates(primary, decompositions, surfaces, settings, sleeve_index),
         diagnostics=diagnostics,
-        caveats=_caveats(),
+        caveats=_caveats(settings),
         frames=_frames(marginals, decompositions, surfaces),
     )
 
@@ -2292,8 +2362,9 @@ def _decomposition_row(
         cov_funding_portfolio=float(covariance[1, 2]),
         variance_sleeve=float(covariance[0, 0]),
         variance_portfolio=float(covariance[2, 2]),
-        gamma=settings.gamma,
+        gamma=settings.report_gamma,
     )
+    deciding = growth if settings.decides_on_growth else crra
     exact = exact_growth_derivative(sleeve_net, funding, portfolio)
     relative_variance = MONTHS_PER_YEAR * float(np.var(sleeve_net - funding, ddof=1))
     analytic = closed_form_optimum(
@@ -2353,17 +2424,35 @@ def _decomposition_row(
             ),
         },
         "crra_gamma": {
-            "gamma": settings.gamma,
+            "gamma": settings.report_gamma,
             "alpha_term_pp_per_year_per_unit_weight": 100.0 * crra.alpha_term,
             "diversification_credit_pp_per_year_per_unit_weight": 100.0 * crra.credit_term,
             "moment_total_pp_per_year_per_unit_weight": 100.0 * crra.moment_total,
         },
+        "deciding_basis": settings.deciding_basis,
         "at_the_reference_weight": {
             "reference_weight": settings.reference_weight,
             "alpha_term_pp_per_year": 100.0 * settings.reference_weight * crra.alpha_term,
             "diversification_credit_pp_per_year": (
                 100.0 * settings.reference_weight * crra.credit_term
             ),
+            "on_the_deciding_basis": {
+                "basis": settings.deciding_basis,
+                "gamma": settings.decision_gamma,
+                "alpha_term_pp_per_year": (
+                    100.0 * settings.reference_weight * deciding.alpha_term
+                ),
+                "diversification_credit_pp_per_year": (
+                    100.0 * settings.reference_weight * deciding.credit_term
+                ),
+                "note": (
+                    "The alpha term does not depend on gamma at all; only the credit "
+                    "is scaled by it. A basis that scales the credit by three is "
+                    "therefore paying three times over for the same covariance, which "
+                    "is the second-moment shadow of the de-risking reward decision "
+                    "record 0008 removes from the deciding metric."
+                ),
+            },
         },
         "closed_form_growth_optimum": {
             **analytic.to_json(),
@@ -2418,7 +2507,7 @@ def _hostile_row(
     periods: Sequence[str],
 ) -> JsonValue:
     """Every hostile test the frozen specification demands, favourable or not."""
-    gamma = settings.gamma
+    gamma = settings.decision_gamma
 
     def marginal_point(sleeve_gross: FloatArray, *, bps: float, fee: FeeTier) -> float:
         paths = _paths_for(
@@ -2638,9 +2727,18 @@ def _apply_rejection_rule(
 
         if result.marginal_percent < settings.materiality:
             fired.append(
-                f"(a) the marginal certainty equivalent at the reference weight is "
+                f"(a) the {settings.deciding_metric_name} at the reference weight is "
                 f"{result.marginal_percent:+.3f} pp/yr, below the frozen materiality "
                 f"threshold of {settings.materiality:.2f}"
+                + (
+                    f" (the CRRA gamma={settings.report_gamma:g} companion is "
+                    f"{result.marginal_crra_percent:+.3f}, which would NOT have fired "
+                    "this clause; decision record 0008 is why the growth figure "
+                    "decides and the companion does not)"
+                    if settings.decides_on_growth
+                    and result.marginal_crra_percent >= settings.materiality
+                    else ""
+                )
             )
         credit = math.nan
         if decomposition is not None:
@@ -2671,7 +2769,8 @@ def _apply_rejection_rule(
             )
         if abs(result.marginal_percent) < result.mde_bootstrap:
             unresolved.append(
-                f"(u2) the marginal figure {result.marginal_percent:+.3f} is smaller than "
+                f"(u2) the marginal figure on the deciding basis "
+                f"{result.marginal_percent:+.3f} is smaller than "
                 f"its own minimum detectable effect at 80% power, {result.mde_bootstrap:.3f}"
             )
         named = named_leg_marginal(sleeve_id)
@@ -2720,6 +2819,11 @@ def _apply_rejection_rule(
                 "proxy_note": proxy_note,
                 "status": status.value,
                 "marginal_pp_per_year": result.marginal_percent,
+                "marginal_geometric_growth_pp_per_year": result.marginal_growth_percent,
+                "marginal_certainty_equivalent_pp_per_year": result.marginal_crra_percent,
+                "de_risking_component_pp_per_year": (
+                    result.marginal_crra_percent - result.marginal_growth_percent
+                ),
                 "two_sided_95": [result.lower_95, result.upper_95],
                 "minimum_detectable_effect": result.mde_bootstrap,
                 "diversification_credit_pp_per_year_per_unit_weight": _json_float(credit),
@@ -2731,6 +2835,8 @@ def _apply_rejection_rule(
     return {
         "materiality_threshold_annual_percent": settings.materiality,
         "reference_weight": settings.reference_weight,
+        "deciding_basis": settings.deciding_basis,
+        "deciding_gamma": settings.decision_gamma,
         "primary_cell": (
             f"{BASE_PORTFOLIO_IDS[0]}, pro-rata funding, net-pessimistic costs, "
             "full period"
@@ -2775,8 +2881,9 @@ def _credit_ceiling(decompositions: Sequence[JsonValue], settings: Settings) -> 
                     settings.reference_weight * growth_ceiling
                 ),
                 "maximum_credit_crra_basis_pp_per_year_per_unit_weight": (
-                    settings.gamma * growth_ceiling
+                    settings.report_gamma * growth_ceiling
                 ),
+                "deciding_basis": settings.deciding_basis,
                 "materiality_threshold_annual_percent": settings.materiality,
                 "reading": (
                     f"On the growth basis the diversification credit cannot exceed "
@@ -2792,7 +2899,9 @@ def _credit_ceiling(decompositions: Sequence[JsonValue], settings: Settings) -> 
     return out
 
 
-def _calibration_control(marginals: Sequence[MarginalResult]) -> JsonValue:
+def _calibration_control(
+    marginals: Sequence[MarginalResult], settings: Settings
+) -> JsonValue:
     """Evaluate the frozen machine check on BOTH readings, and name which decides.
 
     The frozen hostile test reads: "Cash added to an equity core and funded from US
@@ -2812,6 +2921,13 @@ def _calibration_control(marginals: Sequence[MarginalResult]) -> JsonValue:
       cash must lose. That is the reading that actually tests the machinery, and it
       is the one this module treats as decisive.
 
+    This control is what CALIBRATED the choice. It supplies zero alpha and zero
+    diversification credit by construction, so anything it scores is measurement
+    error in the metric rather than value in the sleeve, and the size of what it
+    scores is the size of the reward the metric hands out for de-risking. Decision
+    record 0008 turned that reading from this module's own preference into the
+    repository's rule.
+
     The resolution is outcome-neutral: it cannot promote any sleeve, because the
     control is excluded from the Holm family and its own status is decided by the
     same clauses as everything else.
@@ -2828,6 +2944,20 @@ def _calibration_control(marginals: Sequence[MarginalResult]) -> JsonValue:
     growth_values = [item.marginal_growth_percent for item in rows]
     machinery_ok = bool(growth_values) and all(value < 0.0 for value in growth_values)
     return {
+        "deciding_basis_of_this_specification": settings.deciding_basis,
+        "de_risking_reward_measured_by_this_control_pp_per_year": {
+            leg: item.marginal_crra_percent - item.marginal_growth_percent
+            for leg, item in sorted(by_leg.items())
+        },
+        "why_this_control_calibrates_the_metric": (
+            "Cash funded out of the equity core supplies NO alpha and NO "
+            "diversification credit by construction. Any positive score it records "
+            "is therefore a property of the metric and not of the sleeve, and its "
+            "size is the size of the reward that metric pays for de-risking. Every "
+            "certainty-equivalent figure in this experiment contains a component of "
+            "that kind, which is why decision record 0008 forbids the certainty "
+            "equivalent from deciding a threshold on its own."
+        ),
         "frozen_text": (
             "Cash added to an equity core and funded from US equity MUST show a "
             "materially negative marginal certainty equivalent. If it does not, the "
@@ -2879,6 +3009,7 @@ def _experiment_status(
     verdicts: JsonValue,
     primary: Mapping[str, MarginalResult],
     control_check: JsonValue,
+    settings: Settings,
 ) -> tuple[ResultStatus, str]:
     rows = verdicts.get("per_sleeve") if isinstance(verdicts, Mapping) else None
     statuses: list[tuple[str, str]] = []
@@ -2921,17 +3052,21 @@ def _experiment_status(
     control_note = (
         f"The cash calibration control loses {control.marginal_growth_percent:+.3f} pp/yr "
         f"of growth, as the machine check requires, while GAINING "
-        f"{control.marginal_percent:+.3f} pp/yr of certainty equivalent -- a gamma=3 "
-        "investor is paid to de-risk, and that de-risking sits inside every "
-        "certainty-equivalent figure here"
+        f"{control.marginal_crra_percent:+.3f} pp/yr of certainty equivalent at "
+        f"gamma={settings.report_gamma:g} -- a de-risking reward of "
+        f"{control.marginal_crra_percent - control.marginal_growth_percent:+.3f} pp/yr "
+        "bought by a sleeve that supplies no alpha and no credit at all"
         if control is not None
         else "The cash calibration control was not computed"
     )
     summary = (
         "Public-series evaluation of MARGINAL sleeve value inside a portfolio, "
         "decomposed into a standalone alpha term and a diversification credit. "
-        f"{headline}. {control_note}. Gold was not tested: no research-grade series "
-        f"is reachable. Status: {status.value}."
+        f"Every threshold and every falsifier clause is decided on the "
+        f"{settings.deciding_basis} basis (decision record 0008); the CRRA "
+        f"gamma={settings.report_gamma:g} certainty equivalent is reported beside it "
+        f"and decides nothing. {headline}. {control_note}. Gold was not tested: no "
+        f"research-grade series is reachable. Status: {status.value}."
     )
     return status, summary
 
@@ -2953,7 +3088,7 @@ def _estimates(
         label = "PROXY " if sleeves[sleeve_id].is_proxy else ""
         out.append(
             Estimate(
-                name=f"{label}marginal certainty equivalent, {sleeve_id}",
+                name=f"{label}{settings.deciding_metric_name}, {sleeve_id}",
                 value=result.marginal_percent,
                 units="percentage points per year",
                 interval=(result.lower_95, result.upper_95),
@@ -2966,7 +3101,11 @@ def _estimates(
                 n_obs=result.observations,
                 notes=(
                     f"weight {result.reference_weight:.2f} funded pro rata from "
-                    f"{result.base_portfolio}, CRRA gamma={settings.gamma:g}; MDE at 80% "
+                    f"{result.base_portfolio}, deciding basis {settings.deciding_basis} "
+                    f"(gamma={settings.decision_gamma:g}); the CRRA "
+                    f"gamma={settings.report_gamma:g} companion is "
+                    f"{result.marginal_crra_percent:+.3f} and the geometric-growth "
+                    f"companion {result.marginal_growth_percent:+.3f} pp/yr; MDE at 80% "
                     f"power {result.mde_bootstrap:.3f} pp/yr"
                     + (
                         f"; PROXY for {sleeves[sleeve_id].proxy_for}"
@@ -3050,8 +3189,31 @@ def _estimates(
     return tuple(out)
 
 
-def _caveats() -> tuple[str, ...]:
+def _caveats(settings: Settings) -> tuple[str, ...]:
+    basis = (
+        "EVERY THRESHOLD AND EVERY FALSIFIER CLAUSE HERE IS DECIDED ON THE GEOMETRIC "
+        "GROWTH RATE, gamma = 1, and the CRRA certainty equivalent is reported beside "
+        "it and decides nothing. Decision record 0008 records why: the exact CRRA "
+        "utility over only 35 calendar-year returns REWARDS DE-RISKING, and this "
+        "experiment's own cash control measures the reward. Cash funded out of the "
+        "equity core supplies zero alpha and zero diversification credit by "
+        "construction, yet scores positively at gamma = 3 while losing growth. Any "
+        "investor obtains that component free by holding less equity, so a sleeve "
+        "scoring on it has been paid for something it did not supply."
+        if settings.decides_on_growth
+        else (
+            f"EVERY THRESHOLD AND EVERY FALSIFIER CLAUSE HERE IS DECIDED ON THE CRRA "
+            f"CERTAINTY EQUIVALENT AT gamma = {settings.decision_gamma:g}. Decision "
+            "record 0008 forbids that for any specification frozen after it, because "
+            "the exact CRRA utility over 35 calendar-year returns rewards de-risking: "
+            "this experiment's own cash control, which supplies zero alpha and zero "
+            "diversification credit by construction, scores positively on it while "
+            "losing growth. The geometric-growth figure is reported beside every "
+            "certainty-equivalent figure in this result and is the one to read."
+        )
+    )
     return (
+        basis,
         "THIS IS A PUBLIC-SERIES EVALUATION, NOT AN INVESTABLE BACKTEST. Ken French's "
         "research portfolios and factor files are paper portfolios rebuilt from the "
         "current CRSP or Bloomberg vintage on every release, with no trading cost, no "
@@ -3070,15 +3232,15 @@ def _caveats() -> tuple[str, ...]:
         "Treasury sleeve. The frozen falsifier orders its rejection clauses ahead of "
         "clause (u5), so the proxy reaches `unresolved` only when no rejection clause "
         "fires; that ordering is applied as frozen rather than reinterpreted.",
-        "FINDING SURFACED BY THIS EXPERIMENT, not by its data: the par-bond convexity "
-        "helper in exp_004 drops a factor of two in the second derivative and therefore "
-        "returns half the true convexity, 39.4490 against 78.8979 for a ten-year 4% par "
-        "bond. Its unit test asserts the implementation's own output, so it pins the "
-        "error rather than catching it. This module carries the corrected form and a "
-        "test that differentiates the exact price function instead. The consequence for "
-        "exp_004 is confined to its declared, research-grade-false GS10 bond proxy, "
-        "where the convexity term is second order in the monthly yield change; it has "
-        "NOT been repaired inside that ledgered experiment by this one.",
+        "FINDING SURFACED BY THIS EXPERIMENT, not by its data, and SINCE REPAIRED: the "
+        "par-bond convexity helper in exp_004 dropped a factor of two in the second "
+        "derivative and therefore returned half the true convexity, 39.4490 against "
+        "78.8979 for a ten-year 4% par bond, behind a unit test that asserted the "
+        "implementation's own output. This module carried the corrected form and a test "
+        "that differentiates the exact price function instead. exp_004 has since been "
+        "re-run against its unchanged frozen specification: exactly one figure moved, "
+        "its declared research-grade-false bond-leg robustness arm, by -0.000585 pp/yr, "
+        "and its headline, all five falsifier clauses and its status are unmoved.",
         "The trend sleeve is AQR's published vendor series, maintained by a firm that "
         "sells the strategy, whose fee and transaction-cost basis exp_004 established "
         "to be UNSTATED in the archived workbook. Its figures here are NOT comparable "
@@ -3186,9 +3348,13 @@ def _render_console_report(outcome: RunOutcome) -> str:
                 float(str(growth.get("diversification_credit_pp_per_year_per_unit_weight"))),
                 float(str(item.get("beta_sleeve_to_portfolio"))),
             )
+    basis = "?"
+    if isinstance(verdicts, Mapping):
+        basis = str(verdicts.get("deciding_basis", "?"))
+    lines.append(f"deciding basis: {basis}   (marg is on that basis)")
     lines.append(
-        f"{'sleeve':<30}{'marg':>8}{'95% low':>9}{'95% hi':>9}{'MDE':>8}"
-        f"{'alpha':>9}{'credit':>9}{'beta':>7}{'holm p':>9}  status"
+        f"{'sleeve':<30}{'marg':>8}{'growth':>8}{'CE':>8}{'95% low':>9}{'95% hi':>9}"
+        f"{'MDE':>8}{'alpha':>9}{'credit':>9}{'beta':>7}{'holm p':>9}  status"
     )
     if isinstance(verdicts, Mapping):
         rows = verdicts.get("per_sleeve")
@@ -3206,6 +3372,8 @@ def _render_console_report(outcome: RunOutcome) -> str:
                 lines.append(
                     f"{name[:29]:<30}"
                     f"{float(str(item.get('marginal_pp_per_year'))):>8.3f}"
+                    f"{float(str(item.get('marginal_geometric_growth_pp_per_year'))):>8.3f}"
+                    f"{float(str(item.get('marginal_certainty_equivalent_pp_per_year'))):>8.3f}"
                     f"{low:>9.3f}{high:>9.3f}"
                     f"{float(str(item.get('minimum_detectable_effect'))):>8.3f}"
                     f"{alpha:>9.3f}{credit:>9.3f}{beta:>7.2f}"

@@ -38,6 +38,7 @@ SPEC_NAMES = (
     "exp_008_managed_futures_products",
     "exp_009_exus_factor_products",
     "exp_010_marginal_sleeve_value",
+    "exp_010b_growth_basis",
     "phase1_ff_reproduction",
 )
 
@@ -831,3 +832,67 @@ def test_phase1_gate_tolerance_is_the_one_that_was_predeclared() -> None:
 def test_committed_specifications_do_not_spend_the_final_holdout() -> None:
     for name in SPEC_NAMES:
         assert load(name).consumes_final_holdout is False
+
+
+def test_exp_010b_changes_the_deciding_metric_and_nothing_else() -> None:
+    """The re-judgement must differ from exp_010 in the metric and in nothing else.
+
+    Decision record 0008 makes geometric growth the basis every threshold is
+    decided on. Its whole evidential value here rests on the two specifications
+    being otherwise identical: if the window, the universe, the costs or the seed
+    also moved, the change in verdict would not be attributable to the metric.
+    Comparing the two committed files directly means neither can drift.
+    """
+    base = load("exp_010_marginal_sleeve_value")
+    rejudged = load("exp_010b_growth_basis")
+
+    assert rejudged.entry_point == base.entry_point
+    assert rejudged.seed == base.seed, "a different seed would draw a different bootstrap"
+    assert rejudged.sample_policy == base.sample_policy
+    assert rejudged.universe != base.universe, "only the control's prose may differ"
+    assert rejudged.cost_model == base.cost_model
+    assert rejudged.rebalance_rule == base.rebalance_rule
+    assert rejudged.data_sources == base.data_sources
+    assert rejudged.evidence_class is base.evidence_class
+    assert rejudged.run_kind is base.run_kind
+    assert rejudged.spec_hash != base.spec_hash
+
+    original = as_mapping(base.parameters)
+    parameters = as_mapping(rejudged.parameters)
+    assert original.get("decision_gamma") is None, (
+        "exp_010 must not name a deciding gamma; it decided on crra_gamma, which is "
+        "what the fallback in the module means"
+    )
+    assert parameters["decision_gamma"] == 1
+    assert parameters["crra_gamma"] == 3 == original["crra_gamma"]
+    assert parameters["materiality_threshold_annual_percent"] == 0.30 == (
+        original["materiality_threshold_annual_percent"]
+    )
+    assert parameters["reference_weight"] == original["reference_weight"]
+    assert parameters["weight_cap"] == original["weight_cap"]
+    assert parameters["source_pin"] == original["source_pin"]
+
+    metric = as_mapping(rejudged.primary_metric)
+    assert metric["gamma"] == 1
+    assert "geometric growth" in str(metric["name"])
+    assert str(metric["reported_beside_it_and_deciding_nothing"]).strip()
+
+    rejudgement = as_mapping(parameters["rejudgement"])
+    assert rejudgement["supersedes"] == "exp_010_marginal_sleeve_value"
+    assert rejudgement["superseded_specification_hash"] == base.spec_hash
+    assert rejudgement["data_already_examined"] is True
+    assert rejudgement["adds_no_new_trial"] is True
+    assert "AFTER" in str(rejudgement["when_it_was_decided"])
+
+
+def test_exp_010b_restates_every_falsifier_clause_on_the_growth_basis() -> None:
+    """A clause left reading the certainty equivalent would decide on de-risking."""
+    falsifier = load("exp_010b_growth_basis").falsifier
+    for clause in ("(a)", "(b)", "(c)", "(d)", "(u1)", "(u2)", "(u3)", "(u4)", "(u5)"):
+        assert clause in falsifier
+    assert "GEOMETRIC GROWTH gain" in falsifier
+    assert "growth rate contains zero" in falsifier
+    assert "marginal GROWTH is positive" in falsifier
+    # The only surviving mention of the certainty equivalent is the one that says
+    # the clause used to read it.
+    assert "certainty-equivalent gain" not in falsifier

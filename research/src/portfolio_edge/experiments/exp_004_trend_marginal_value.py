@@ -235,10 +235,22 @@ def _annual_gross_matrix(monthly: FloatArray) -> FloatArray:
 
 
 def _certainty_equivalent_rows(monthly: FloatArray, *, gamma: float) -> FloatArray:
-    """Vectorised certainty equivalent for every row of a ``(R, T)`` return matrix."""
+    """Vectorised certainty equivalent for every row of a ``(R, T)`` return matrix.
+
+    ``gamma = 1`` is the geometric mean minus one, the limit of the CRRA form as
+    ``gamma -> 1``. It is branched on rather than computed, because ``1 - gamma``
+    is the exponent and its reciprocal divides by zero. The scalar
+    :func:`certainty_equivalent_annual` has carried this branch since it was
+    written; this row-wise form did not, so a bootstrap on the geometric growth
+    basis raised :class:`ZeroDivisionError` instead of answering. Decision record
+    0008 makes that basis the one every threshold is decided on, so the branch is
+    a prerequisite rather than a convenience.
+    """
     annual = _annual_gross_matrix(monthly)
     if np.any(annual <= 0.0):
         raise ValueError("a resampled path reached non-positive wealth over a calendar year")
+    if math.isclose(gamma, 1.0):
+        return np.asarray(np.exp(np.mean(np.log(annual), axis=-1)) - 1.0, dtype=np.float64)
     power = 1.0 - gamma
     return np.asarray(np.mean(annual**power, axis=-1) ** (1.0 / power) - 1.0, dtype=np.float64)
 

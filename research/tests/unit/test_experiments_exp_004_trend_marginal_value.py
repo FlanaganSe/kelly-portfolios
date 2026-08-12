@@ -95,12 +95,36 @@ def test_annual_blocks_compound_and_reject_a_partial_year() -> None:
 def test_the_vectorised_certainty_equivalent_matches_the_scalar_one() -> None:
     rng = np.random.default_rng(7)
     panel = rng.normal(0.006, 0.03, size=(5, 36 * 12))
-    rows = _certainty_equivalent_rows(panel, gamma=3.0)
-    for index in range(panel.shape[0]):
-        expected = certainty_equivalent_annual(
-            _annual_gross_matrix(panel[index]), gamma=3.0
-        )
-        assert rows[index] == pytest.approx(expected, rel=1e-12)
+    for gamma in (1.0, 3.0):
+        rows = _certainty_equivalent_rows(panel, gamma=gamma)
+        for index in range(panel.shape[0]):
+            expected = certainty_equivalent_annual(
+                _annual_gross_matrix(panel[index]), gamma=gamma
+            )
+            assert rows[index] == pytest.approx(expected, rel=1e-12)
+
+
+def test_the_vectorised_certainty_equivalent_answers_at_gamma_one() -> None:
+    """The geometric-growth basis must not divide by ``1 - gamma``.
+
+    Decision record 0008 makes geometric growth the basis every materiality
+    threshold and every falsifier clause is decided on, so this row-wise form is
+    called at ``gamma = 1`` inside the bootstrap. Before the branch existed it
+    raised ``ZeroDivisionError`` there. The expected value is the geometric mean
+    of two hand-written calendar years, computed here from the monthly inputs
+    rather than by calling the code under test.
+    """
+    monthly = np.zeros((1, 24), dtype=float)
+    monthly[0, :12] = 0.01
+    monthly[0, 12:] = -0.005
+    first, second = 1.01**12, 0.995**12
+    expected = math.sqrt(first * second) - 1.0
+    rows = _certainty_equivalent_rows(monthly, gamma=1.0)
+    assert rows.shape == (1,)
+    assert rows[0] == pytest.approx(expected, rel=1e-12)
+    # At gamma = 1 there is no risk penalty, so the geometric mean is reached
+    # exactly and sits strictly above the gamma = 3 certainty equivalent.
+    assert rows[0] > _certainty_equivalent_rows(monthly, gamma=3.0)[0]
 
 
 # --------------------------------------------------------------------------- #
