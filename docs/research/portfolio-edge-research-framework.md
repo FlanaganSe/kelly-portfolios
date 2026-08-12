@@ -72,9 +72,9 @@ The honest answer has two halves and both are load-bearing.
 
 ### Yes — against your own counterfactual, and the arithmetic is deterministic
 
-Against **the portfolio you would otherwise have owned**, roughly **89 basis points
-a year** is available, at about **41 bp of tracking error**, reaching 90% confidence
-in about **four months** and 99% in about **fourteen**. It decomposes into three
+Against **the portfolio you would otherwise have owned**, roughly **109 basis points
+a year** is available, at about **46 bp of tracking error**, reaching 90% confidence
+in about **3.5 months** and 99% in about **twelve**. Its core decomposes into three
 lines, none of which is a forecast
 ([edge decomposition](expected-edge-decomposition.md) §2):
 
@@ -83,11 +83,26 @@ lines, none of which is a forecast
 | Fund cost reduction | **49 bp** | 40–59 | Asset-weighted 0.09% for broad index funds against 0.57% for active (Morningstar 2026); ICI gives 0.05% against 0.64% |
 | Tax-loss harvesting | **30 bp** | 0–90 | Conditional on a taxable account, direct security ownership, offsetting gains and continuing contributions |
 | Asset location | **10 bp** | 0–21 | Conditional on holding more than one account type and more than one asset class |
-| **Total** | **89 bp** | 40–170 | TE ≈ 41 bp; `P(ahead at 30 yr) ≈ 1.00` |
+| **Subtotal** | **89 bp** | 40–170 | TE ≈ 41 bp; `P(ahead at 30 yr) ≈ 1.00` |
+
+**Four further lines revise that to about 109 bp**
+([structural and tax-aware edges](structural-and-tax-edges.md)). Two are additive: the
+capital-gain distributions an active mutual fund makes and an ETF does not, **+23 bp**,
+and specific identification of tax lots, **+5 bp**. Two are corrections to lines
+already above: the foreign tax credit forfeited inside any shelter, **−3.4 bp**, and
+the direct-indexing fee the harvesting line never subtracted, **−4.4 bp**. The +23 bp
+is **decaying while being measured** — 94 SEC orders `as of 2026-08-11` let mutual
+funds add ETF share classes — so that line carries a review trigger.
 
 The certainty comes from the *pairing*, not from the size. `P(outperform) =
-Phi(e sqrt(T) / s)`, so at `e = 89 bp` and `s = 41 bp` a single year already gives
-0.985 and fourteen months gives 0.99. The reason the tracking error is small is that
+Phi(e sqrt(T) / s)`, so at `e = 109 bp` and `s = 46 bp` a single year already gives
+0.99. **A fifth more edge buys about two months**, which is the same lesson in a
+different currency.
+
+What that budget implies as an actual portfolio — named funds, weights and the account
+each belongs in — is [the recommended portfolio](portfolio-recommendation.md), which
+promotes nothing and is bound by
+[decision 0006](../decisions/0006-reference-portfolio-without-promotion.md). The reason the tracking error is small is that
 none of these lines is a bet: a fee not paid and a tax not realised are contractual,
 and [Sharpe (1991)](https://web.stanford.edu/~wfsharpe/art/active/active.htm) makes
 the fee half an accounting identity — *"they depend only on the laws of addition,
@@ -225,7 +240,7 @@ Five conditions, each of which is a measurable target rather than a hope.
    pooled HML is +4.74 pp/yr `[+1.46, +8.10]` and is now `exploratory`.
 
 Absent those, the defensible statement is the one this repository will make: *you can
-near-definitively beat the portfolio you would otherwise have owned, by roughly 90
+near-definitively beat the portfolio you would otherwise have owned, by roughly 110
 basis points a year, because most of that edge is contractual rather than
 statistical. You cannot near-definitively beat a cheap index, at any horizon a human
 has.* The asymmetry is not a fact about markets. It is a fact about which benchmark a
@@ -1173,7 +1188,7 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | **Size (SMB)** | cheap broad market | IJH, IJR, VB, SPMD, SPSM, EZM | Compensation for illiquidity/distress, disputed | **tested and not signable** ([Exp 007](long-only-capture.md)): +1.91 pp/yr `[−1.90, +6.00]` full sample against a 4.73 threshold, +0.41 post-publication; 3 of 8 products `rejected` on cost |
 | **Diversified trend** | 60/40 equity/cash | **DBMF** — the whole listed shelf that delivers the exposure; CTA, FMF, KMLM and WTMF `rejected` on it | Slow behavioural adjustment; crisis convexity | Index **`rejected`** on its frozen falsifier under the absolute reading of clause (d), **`unresolved`** under the relative reading [Exp 008 judges better justified](trend-marginal-value.md#clause-d-re-read-under-both-readings); DBMF `exploratory` as a proxy only ([Exp 008](trend-marginal-value.md#experiment-008--the-products)) |
 | **Rebalancing as policy** | any multi-sleeve portfolio | the portfolio itself | `gamma_star` excess growth; short relative-performance continuation | **`rejected`** as return ([Exp 003](rebalancing-policy.md)); retained as risk control |
-| **Cost / tax / behaviour** | your own counterfactual | fund selection, account type, direct indexing, not trading | Contractual, not statistical | **deterministic**, 89 bp ([edge decomposition](expected-edge-decomposition.md)) |
+| **Cost / tax / behaviour** | your own counterfactual | fund selection, account type, fund *structure*, lot selection, direct indexing, not trading | Contractual, not statistical | **deterministic**, **≈109 bp** ([structural and tax-aware edges](structural-and-tax-edges.md), revising the 89 bp in the [edge decomposition](expected-edge-decomposition.md)). The construction it implies is [the recommended portfolio](portfolio-recommendation.md) |
 
 ### Map B — the evidence on each side, and how good the data is
 
@@ -1187,7 +1202,7 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | **Size (SMB)** | Exposure is delivered and stable: SPSM/IJR +0.889, VB +0.599 | Weak as a standalone premium (Hou–Xue–Zhang), and **now tested here and not signable** ([Exp 007](long-only-capture.md)): the smallest-minus-largest quintile is **+1.91 pp/yr `[−1.90, +6.00]`** over 1963-07…2025-12 against its own 4.73 pp/yr detection threshold, and **+0.41** post-publication. VB carries the largest shortfall on the shelf, **+2.89 pp/yr** against the fitted cheap combination | 72 months of filed returns; MDE₈₀ 1.97–3.16 pp/yr on these funds. The premium test uses 750 months of French quintile and decile sorts, which are **not** the Fama–French SMB |
 | **Diversified trend** | +1.342 pp/yr marginal CE `[+0.759, +1.916]`; survives every hostile test; payoff spread across four structurally different crises; crisis correlation −0.59, downside beta −0.67. And the exposure IS purchasable: **DBMF loads +0.671 `[+0.513, +0.829]`** on the index, stable across the fixed split and all 19 rolling windows, trailing a cost-free vendor index by **0.48 pp/yr against an 0.85% fee** | A static + volatility-exposure replica delivers **44%** of it; post-publication interval includes zero and fails Holm; standalone Sharpe 1.34 → 0.18; **vendor states no cost basis anywhere**; comparable CTA survivorship/backfill distortion is 7.7 pp/yr. On the products: **four of five deliver a loading below 0.50**, 54% of the 2019 listed shelf is gone, and **prospectus tax drag is 0.76–2.53 pp/yr, 2.5× DBMF's fee** | Vendor-series evaluation, ceiling `exploratory` by construction. Early history substitutes index returns for futures. Products: 46–78 months of unaudited filed N-PORT returns, **median MDE₈₀ 12.75 pp/yr**, so exposure is measurable and alpha is not |
 | **Rebalancing as policy** | `gamma_star` closed form reproduces on real data to **0.09 bp/yr**; exposure held to 0.6–3.1 pp against 14.8 | Every policy lost on all three cost bases; realised drift gap **35× `gamma_star`**; `kappa` trends rather than reverts; drawdown equal or worse | French regional total returns, 420 months, pinned by sha256. Pretax only — no tax lots exist |
-| **Cost / tax / behaviour** | Morningstar and ICI fee studies; Chaudhuri–Burnham–Lo harvesting alpha after liquidation taxes; N-CSR securities-lending filings | Harvesting decays to ~0 within five years without new money; behaviour gap refuted from 1.2 pp to ~0.10 pp (Fulkerson et al. 2026); DALBAR must not be cited | Vendor research and regulatory filings, dated. US-only and jurisdiction-specific |
+| **Cost / tax / behaviour** | Morningstar and ICI fee studies; Chaudhuri–Burnham–Lo harvesting alpha after liquidation taxes; N-CSR securities-lending filings. Two lines added from filings and statute: **capital-gain distributions an ETF does not make, +23 bp**, and specific-identification of lots, +5 bp | Harvesting decays to ~0 within five years without new money and is booked gross of a 9–40 bp direct-indexing fee (−4.4 bp); the foreign tax credit is forfeited inside any shelter (−3.4 bp); behaviour gap refuted from 1.2 pp to ~0.10 pp (Fulkerson et al. 2026); DALBAR must not be cited. **The largest new line is decaying: 94 SEC orders `as of 2026-08-11` let mutual funds add ETF share classes** | Vendor research and regulatory filings, dated. US-only and jurisdiction-specific |
 
 ### Map C — what they share, how they fail, and what would promote them
 
@@ -1201,7 +1216,7 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | **Size (SMB)** | Small-cap liquidity, borrow and spread; the same equity beta. The smallest French size quintile is **48.3% of listed firms and 0.68% of market capitalisation** at 2025-12, so its returns are not a capacity anyone can use | Liquidity events; the cost tail (VB's round-trip spread is 2.72 bp, ~a year of expense ratio); a premium that the longest available window cannot distinguish from zero | The premium test has now been run and did not sign it, so promotion needs a premium visible in some window this repository can reach, plus a product whose tracking difference against a cheap mix is non-negative |
 | **Diversified trend** | **Leverage, funding liquidity, volatility estimation, short borrow**; it is a levered futures position and shares margin with everything else levered. Plus **single-product risk**: one listed fund delivers the exposure, so a manager or structure failure has no fallback | Sharp reversals (measured: −0.53%/mo against +4.24% equity months); gaps a monthly series cannot even show; funding shocks; crowded exits; **and a taxable account**, where the measured distribution drag exceeds every fee on the shelf | A multi-asset attribution that leaves a residual after non-US-equity exposures; a contract-level test of the volatility scaling, which no public aggregate can support; and a fund-level audit on a **licensed** total-return source — Exp 008 is the N-PORT version of that audit and decision 0002 caps it at `exploratory` |
 | **Rebalancing as policy** | Sits **inside** the same equity portfolio as any factor tilt, so their tracking errors are not independent | Trending relative performance — which is the measured regime; crises, where it adds exposure to the fall | Promotion as *return* requires a real investable pair with drift gap below `gamma_star`. As *risk control* it needs no promotion and is already the recommended default |
-| **Cost / tax / behaviour** | Tax-loss harvesting and asset location share a *condition*: one tax-deferred account zeroes both at once | A single account type; no offsetting gains; no new money; a flat capital-gains rate; non-US tax law | Already deterministic. What is missing is a versioned, dated, jurisdiction-specific tax boundary rather than scattered constants |
+| **Cost / tax / behaviour** | Tax-loss harvesting and asset location share a *condition*: one tax-deferred account zeroes both at once | A single account type; no offsetting gains; no new money; a flat capital-gains rate; non-US tax law; and a shelter that forfeits foreign withholding, which **inverts** the location rule for emerging-market equity at a 15% or 18.8% qualified rate | Already deterministic, and the versioned dated tax boundary this row used to ask for now exists as `TaxRegime` in `studies/tax_structure.py`. What remains is a **review trigger** on the fund-structure line, whose mechanism of decay is visible and running |
 
 **Strategies are not additive because their backtests have low correlation.** The
 sleeves above share, concretely: **leverage** (trend is a levered futures book),
@@ -1246,24 +1261,24 @@ the closed status vocabulary. `as of 2026-08-12`.
 ### The ledger, counted rather than described
 
 Verified directly from [`research/ledger.jsonl`](../../research/ledger.jsonl):
-**44 entries, 16 runs, 7 distinct specification hashes, 6 experiment families.**
+**64 entries, 23 runs, 12 distinct specification hashes, 9 experiment families.**
 
 | Terminal outcome | Runs | Which |
 | --- | ---: | --- |
-| `unresolved` | 2 | Phase 1 gate; Experiment 001 |
-| `rejected` | 5 | Experiment 003 (1); Experiment 004 (4 executions of one specification) |
-| `exploratory` | 4 | Experiment 002 (3 executions of one specification); Experiment 005 (1) |
-| no terminal status | 5 | 1 `failed` (a parser table-name error), 4 `abandoned` (one operator interrupt, three SIGTERMs) |
+| `unresolved` | 3 | Phase 1 gate; Experiment 001; Experiment 007's superseded specification |
+| `rejected` | 6 | Experiment 003 (1); Experiment 004 (4 executions of one specification); Experiment 007 (1) |
+| `exploratory` | 8 | Experiment 002 (3 executions of one specification); Experiment 005 (1); Experiment 006 (1); Experiment 008 (3, two of them one specification) |
+| no terminal status | 6 | 2 `failed` (a parser table-name error; a clause-(d) verification guard refusing the run), 4 `abandoned` (one operator interrupt, three SIGTERMs) |
 
-Eleven runs recorded a `results_viewed` event; **no run consumed the final holdout**.
-Two facts about this count matter more than the count.
+Seventeen runs recorded a `results_viewed` event; **no run consumed the final
+holdout**. Two facts about this count matter more than the count.
 
 - **Repeated executions of one specification are not independent hypotheses, and the
-  ledger keeps them distinguishable.** Four of the five `rejected` rows are one
-  specification hash run four times, and all three `exploratory` rows are one
+  ledger keeps them distinguishable.** Four of the six `rejected` rows are one
+  specification hash run four times, and three of the eight `exploratory` rows are one
   specification hash run three times. The number of distinct specifications searched
-  is **seven**, not sixteen, and that is the number any deflated-Sharpe trial count
-  must start from.
+  is **twelve**, not twenty-three, and that is the number any deflated-Sharpe trial
+  count must start from.
 - **The ledger contains a correction to itself.** One `abandoned` entry was appended
   prematurely and for the wrong run's reason; rather than repair it in place, a
   superseding entry was appended saying so. That is why there are five `abandoned`

@@ -18,28 +18,40 @@ experiment ledger. Nothing the client renders is yet backed by it.
 
 ## Where the research has got to
 
-`as of 2026-08-12`. Six frozen experiments have run, across sixteen ledgered
-executions of seven distinct specifications, with 1,082 tests passing.
+`as of 2026-08-12`. Nine experiment families have run, across 23 ledgered
+executions of **12 distinct specifications** and 64 ledger entries, with 1,383
+tests passing. Twelve is the number a later trial count starts from, not 23.
 
 **No sleeve was promoted.** Hypotheses are `rejected` against falsifiers frozen
-before any result was seen — rebalancing as a source of return, the AQR trend series
-as a marginal sleeve, and the CMA and RMW factor premia. The last two are `rejected`
-in a specific and permanent sense: pooling every independent region the Ken French
-library distributes was tried, the effective sample size it bought was **measured**,
-and it still cannot resolve a premium at this repository's 2.0 pp/yr materiality
-threshold ([decision 0005](docs/decisions/0005-factor-premia-closed-on-public-data.md)).
-One factor, value, reached `exploratory` on a pooled +4.74 pp/yr — the first thing
-here to advance on the strength of a premium, and still gross, long-short and not
-investable. Momentum stays `unresolved` and could not be tested outside the US. The
-retail factor-product audit is `exploratory` by decision, capped there because no
-free price source carries a total-return contract.
+before any result was seen — rebalancing as a source of return, and the CMA and
+RMW factor premia. The last two are `rejected` in a specific and permanent sense:
+pooling every independent region the Ken French library distributes was tried, the
+effective sample size it bought was **measured**, and it still cannot resolve a
+premium at this repository's 2.0 pp/yr materiality threshold
+([decision 0005](docs/decisions/0005-factor-premia-closed-on-public-data.md)).
 
-The one result worth stating plainly: **roughly 89 basis points a year is available,
-near-certainly, against the portfolio you would otherwise have owned** — fund cost,
-tax location, and not trading — because that edge is contractual rather than
-statistical. Against a cheap index the honest budget is about 24 bp against 401 bp
-of tracking error, a 63% chance of being ahead after thirty years. The full argument,
-the design map, and what would have to change are in the
+Two factors reached `exploratory` on pooled cross-region evidence: value at
++4.74 pp/yr and momentum at **+7.33 pp/yr**, the larger of the two. Both are still
+gross, long-short and not investable, and momentum's three regions crash together
+— 1.33 effective regions of three, sharing 2009 as their worst year. The trend
+sleeve is `unresolved` rather than rejected once its contested falsifier clause is
+read as a share rather than a level, and only one product on the shelf delivers
+the exposure at all.
+
+The result that decides what a tilt is worth: **the long-only capture fraction is
+about 0.520**, and five defensible definitions of it span 0.846. Chaining
+`premium × loading × capture − cost` leaves a US-only long-only value tilt
+negative after cost.
+
+The one result worth stating plainly: **roughly 109 basis points a year is
+available, near-certainly, against the portfolio you would otherwise have owned**
+— fund cost, fund structure, tax-lot method, account placement, and not trading —
+because that edge is contractual rather than statistical, and reaches 99%
+confidence in about twelve months. Against a cheap index the honest budget is
+about 24 bp against 401 bp of tracking error, a 63% chance of being ahead after
+thirty years. The construction that follows is in the
+[portfolio recommendation](docs/research/portfolio-recommendation.md); the
+argument and design map are in the
 [research framework](docs/research/portfolio-edge-research-framework.md); the
 non-promotion and its conditions are
 [decision 0004](docs/decisions/0004-no-sleeve-promoted.md).

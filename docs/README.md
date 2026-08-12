@@ -70,6 +70,11 @@ setup and current status.
   ETFs that clear a mechanical screen: only DBMF delivers the index's exposure, tax
   drag is two to three times the expense ratio, and Experiment 004's clause (d) is
   re-decided under both its readings.
+- [The recommended portfolio](research/portfolio-recommendation.md) — the named funds,
+  weights and account placement the evidence supports, with the certainty class and
+  confidence horizon behind every line, the foreign-tax-credit arithmetic that decides
+  where an international sleeve belongs, and a sleeve-by-sleeve verdict on the
+  portfolio the project owner proposed. Answers what to hold; promotes nothing.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers
@@ -94,3 +99,6 @@ setup and current status.
   — the measured floor on what public factor data can detect, why RMW and CMA are
   `rejected` rather than `unresolved` again, and the four conditions that would
   reopen either.
+- [0006 — A named-fund reference portfolio without promotion](decisions/0006-reference-portfolio-without-promotion.md)
+  — why a concrete construction may now be published, what "recommended" is allowed to
+  mean, and the four constraints that keep it from becoming a promotion.
