@@ -23,7 +23,7 @@ CLAUDE.local.md
 .env.development
 .env.production
 
-# Keep source, documentation, and .env.example in version control.
+# Keep source and documentation in version control.
 
 # Python research workspace
 research/.venv/

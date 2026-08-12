@@ -125,6 +125,8 @@ const Layout: ParentComponent = (props) => {
 export default function App() {
   return (
     <ErrorBoundary>
+      {/* The defaults. A route's own <Title> or <Meta> cascades over these and
+          is restored when that route unmounts. */}
       <MetaProvider>
         <Title>Portfolio Edge</Title>
         <Meta
