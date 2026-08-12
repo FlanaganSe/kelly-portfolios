@@ -20,6 +20,7 @@ import io
 import zipfile
 from pathlib import Path
 
+import openpyxl  # type: ignore[import-untyped]
 import pytest
 
 from portfolio_edge.data import aqr
@@ -113,7 +114,6 @@ def test_the_data_block_is_found_structurally_not_by_row_offset(
     tmp_path: Path, dataset: aqr.AqrDataset
 ) -> None:
     """AQR edits the disclaimer block, so a hardcoded offset is wrong by construction."""
-    import openpyxl
 
     workbook = openpyxl.load_workbook(WORKBOOK)
     sheet = workbook["TSMOM Factors"]
@@ -178,7 +178,6 @@ def test_a_percent_magnitude_in_a_decimal_declaration_is_a_loud_contradiction(
     tmp_path: Path, dataset: aqr.AqrDataset
 ) -> None:
     """A file read at the wrong scale survives every other check."""
-    import openpyxl
 
     workbook = openpyxl.load_workbook(WORKBOOK)
     sheet = workbook["TSMOM Factors"]
@@ -238,7 +237,6 @@ def test_bytes_that_are_not_a_workbook_are_refused(
 def test_a_sheet_with_no_date_keyed_rows_is_refused(
     tmp_path: Path, dataset: aqr.AqrDataset
 ) -> None:
-    import openpyxl
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active
@@ -259,7 +257,6 @@ def test_a_bare_number_is_not_accepted_as_a_date(
     tmp_path: Path, dataset: aqr.AqrDataset
 ) -> None:
     """An unformatted Excel serial is indistinguishable from a return."""
-    import openpyxl
 
     workbook = openpyxl.Workbook()
     sheet = workbook.active

@@ -1271,10 +1271,15 @@ cannot be attributed between capped value weighting, terciles, and the longer
 sample; nor can the pure uncapped value-weighted rate, which is the number that
 would settle the weighting dispute. No Hou–Xue–Zhang reply to that paper was found,
 and no rebuttal to Huang et al. on time-series momentum was found — in both cases
-searched for and absent, not merely uncited. Post-publication trend index returns
-(2013–2025, including 2022) were never verified, so the decay hypothesis remains
-untested here; note though that the statistical failure occurs inside the original
-1985–2009 sample, so it is an inferential problem rather than a decay story.
+searched for and absent, not merely uncited. Post-publication trend returns are no
+longer an open gap: [Experiment 004](trend-marginal-value.md) measured them on the
+AQR series, and the standalone decay is severe — Sharpe 1.34 pre-publication
+against 0.18 recently, geometric 19.4% against 3.1%. The decay is in the
+*standalone* series; the sleeve's *marginal* contribution to a portfolio falls far
+less (2.00 to 1.01 pp/yr), though its post-publication interval now includes zero.
+Note also that the statistical failure Huang et al. identify occurs inside the
+original 1985–2009 sample, so it is an inferential problem as well as a decay
+story, and the two are separate objections.
 Current retail borrow rates, box-spread financing, futures roll costs and ETF
 bid-ask spreads are unverified, and the fraction of a long-short premium that a
 long-only tilt captures was not established by any source — which matters, because

@@ -8,6 +8,8 @@ duration and convexity of a ten-year par bond — it is asserted directly.
 from __future__ import annotations
 
 import math
+from collections.abc import Mapping, Sequence
+from dataclasses import FrozenInstanceError
 
 import numpy as np
 import pytest
@@ -36,7 +38,7 @@ from portfolio_edge.experiments.exp_004_trend_marginal_value import (
     high_water_mark_performance_fee,
     par_bond_risk,
 )
-from portfolio_edge.experiments.specification import load_specification
+from portfolio_edge.experiments.specification import JsonValue, load_specification
 
 # --------------------------------------------------------------------------- #
 # Certainty equivalent
@@ -306,7 +308,7 @@ def test_a_window_mask_selects_its_own_months_inclusively() -> None:
 
 def test_a_whole_year_mask_refuses_a_window_that_is_not_whole_years() -> None:
     """Chopping a partial year would silently drop months from the CE."""
-    periods = tuple(f"2001-{month:02d}" for month in range(1, 13)) + ("2002-01",)
+    periods = (*(f"2001-{month:02d}" for month in range(1, 13)), "2002-01")
     assert int(_whole_year_mask(periods, "2001-01", "2001-12").sum()) == 12
     assert int(_whole_year_mask(periods, "2001-03", "2002-01").sum()) == 0
 
@@ -326,7 +328,10 @@ def test_the_crisis_union_is_the_union_of_the_frozen_windows() -> None:
 def test_share_lost_is_none_when_the_baseline_is_zero() -> None:
     assert _share_lost(0.0, 0.5) is None
     assert _share_lost(1.0, 0.4) == pytest.approx(0.6)
-    assert _share_lost(-1.0, -2.0) == pytest.approx(-1.0)
+    # A stress that makes an already-negative baseline worse loses a positive share.
+    assert _share_lost(-1.0, -2.0) == pytest.approx(1.0)
+    # A stress that improves the result loses a negative share, and is reported, not hidden.
+    assert _share_lost(1.0, 1.5) == pytest.approx(-0.5)
 
 
 # --------------------------------------------------------------------------- #
@@ -335,26 +340,34 @@ def test_share_lost_is_none_when_the_baseline_is_zero() -> None:
 
 
 def test_a_sleeve_that_is_exactly_a_static_market_position_is_attributed_to_one() -> None:
+    """If a static exposure IS the sleeve, the attribution must say so exactly."""
     rng = np.random.default_rng(23)
     equity = rng.normal(0.006, 0.04, size=300)
-    scaled = 0.5 * equity
+    exposure = np.clip(1.0 + 0.5 * rng.normal(size=300), 0.2, 2.0)
+    scaled = exposure * equity
     sleeve = 0.7 * equity
     attribution = _attribute(sleeve, equity_excess=equity, scaled_equity_excess=scaled)
     assert attribution.r_squared == pytest.approx(1.0, abs=1e-8)
     assert attribution.annualised_alpha_percent == pytest.approx(0.0, abs=1e-8)
-    # The static and scaled legs are collinear here, so only their sum is
-    # identified; that sum must be 0.7.
-    assert attribution.coefficients[1] + 0.5 * attribution.coefficients[2] == pytest.approx(
-        0.7, abs=1e-8
-    )
+    assert attribution.coefficients[1] == pytest.approx(0.7, abs=1e-8)
+    assert attribution.coefficients[2] == pytest.approx(0.0, abs=1e-8)
+
+
+def test_a_collinear_design_is_refused_rather_than_producing_a_number() -> None:
+    """A singular design would otherwise crash deep inside a linear-algebra call."""
+    rng = np.random.default_rng(31)
+    equity = rng.normal(0.006, 0.04, size=120)
+    with pytest.raises(TrendMarginalValueError, match="collinear"):
+        _attribute(equity, equity_excess=equity, scaled_equity_excess=0.5 * equity)
 
 
 def test_a_sleeve_uncorrelated_with_the_market_leaves_its_mean_in_the_intercept() -> None:
     rng = np.random.default_rng(29)
     equity = rng.normal(0.006, 0.04, size=600)
     sleeve = rng.normal(0.004, 0.03, size=600)
+    exposure = np.clip(1.0 + 0.5 * rng.normal(size=600), 0.2, 2.0)
     attribution = _attribute(
-        sleeve, equity_excess=equity, scaled_equity_excess=0.5 * equity
+        sleeve, equity_excess=equity, scaled_equity_excess=exposure * equity
     )
     assert attribution.r_squared < 0.05
     assert attribution.annualised_alpha_percent == pytest.approx(
@@ -373,17 +386,26 @@ def test_the_registry_resolves_the_committed_entry_point() -> None:
     assert registry.resolve(ENTRY_POINT).__name__ == "run"
 
 
+def _as_mapping(value: JsonValue) -> Mapping[str, JsonValue]:
+    assert isinstance(value, Mapping)
+    return value
+
+
+def _as_sequence(value: JsonValue) -> Sequence[JsonValue]:
+    assert isinstance(value, Sequence) and not isinstance(value, str)
+    return value
+
+
 def test_the_comparison_ids_match_the_frozen_specification() -> None:
     specification = load_specification(default_specification_path())
-    universe = specification.universe
-    assert isinstance(universe, dict) or hasattr(universe, "keys")
-    comparison = universe["comparison_set"]  # type: ignore[index]
-    assert tuple(str(item["id"]) for item in comparison) == COMPARISON_IDS
+    comparison = _as_sequence(_as_mapping(specification.universe)["comparison_set"])
+    assert tuple(str(_as_mapping(item)["id"]) for item in comparison) == COMPARISON_IDS
 
 
 def test_the_specification_pins_the_workbook_sheet_this_module_reads() -> None:
     specification = load_specification(default_specification_path())
-    pin = specification.parameters["source_pin"]["aqr_tsmom"]  # type: ignore[index]
+    pins = _as_mapping(_as_mapping(specification.parameters)["source_pin"])
+    pin = _as_mapping(pins["aqr_tsmom"])
     dataset = aqr.get_dataset(str(pin["dataset_id"]))
     assert str(pin["sheet"]) == dataset.data_sheet
     assert str(pin["column"]) in dataset.expected_columns
@@ -400,7 +422,7 @@ def test_a_scenario_carries_everything_a_hostile_test_varies() -> None:
         equity_weight=0.6,
     )
     assert scenario.use_bond_leg is False
-    with pytest.raises(Exception, match="frozen|attribute"):
+    with pytest.raises(FrozenInstanceError):
         scenario.sleeve_weight = 0.2  # type: ignore[misc]
 
 

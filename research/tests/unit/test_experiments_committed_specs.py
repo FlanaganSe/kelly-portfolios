@@ -334,6 +334,69 @@ def test_exp_004_declares_itself_a_vendor_series_evaluation() -> None:
         assert required in hostile
 
 
+def test_exp_004_pins_the_workbook_sheet_and_the_vintages_it_reads() -> None:
+    """A manifest that does not pin the sheet is not reproducible."""
+    parameters = as_mapping(load("exp_004_trend_marginal_value").parameters)
+    pin = as_mapping(parameters["source_pin"])
+    aqr_pin = as_mapping(pin["aqr_tsmom"])
+    assert aqr_pin["sheet"] == "TSMOM Factors"
+    assert aqr_pin["column"] == "TSMOM"
+    assert aqr_pin["expected_sha256_raw"] == (
+        "33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb"
+    )
+    assert as_mapping(pin["french_us_market"])["expected_sha256_raw"] == (
+        "cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b"
+    )
+    # AQR and Ken French rewrite history in place, so they abort; FRED appends.
+    assert "ABORTS" in str(pin["pin_policy"])
+
+
+def test_exp_004_freezes_the_numbers_its_decision_reads() -> None:
+    """Loosening any of these cannot be a quiet edit: it breaks a test and moves
+    the specification hash at the same time."""
+    spec = load("exp_004_trend_marginal_value")
+    parameters = as_mapping(spec.parameters)
+    assert parameters["materiality_threshold_annual_percent"] == 0.30
+    assert parameters["crra_gamma"] == 3
+    assert parameters["sleeve_weight"] == 0.15
+    assert parameters["equity_weight"] == 0.60
+    assert parameters["exposure_cap"] == 1.5
+    assert parameters["volatility_lookback_days"] == 60
+    assert list(as_sequence(parameters["volatility_lookback_alternatives_days"])) == [20, 120]
+    assert parameters["cash_series"] == "TB3MS"
+    # 1990-01..2025-12 is 432 months, exactly 36 whole years, which is what makes
+    # the calendar-year certainty equivalent complete.
+    assert spec.sample_policy.start == "1990-01"
+    assert spec.sample_policy.end == "2025-12"
+    assert spec.inference.resamples == 20000
+
+    crises = [as_mapping(item) for item in as_sequence(parameters["crisis_windows"])]
+    assert [str(item["name"]) for item in crises] == [
+        "dotcom",
+        "gfc",
+        "covid",
+        "inflation_2022",
+    ]
+
+
+def test_exp_004_records_what_changed_when_the_frozen_fields_were_made_concrete() -> None:
+    """A change made before a result is a different thing from one made after."""
+    parameters = as_mapping(load("exp_004_trend_marginal_value").parameters)
+    log = [as_mapping(item) for item in as_sequence(parameters["concretisation_log"])]
+    assert len(log) >= 4
+    assert all(item["made_before_any_result"] is True for item in log)
+    joined = " ".join(str(item["change"]) + str(item["reason"]) for item in log)
+    assert "0002" in joined, "the benchmark change must cite the decision record"
+    assert "monthly" in joined
+
+
+def test_exp_004_declares_the_bond_leg_as_modelled_and_not_research_grade() -> None:
+    proxy = as_mapping(as_mapping(load("exp_004_trend_marginal_value").parameters)["bond_proxy"])
+    assert proxy["research_grade"] is False
+    assert "robustness arm only" in str(proxy["used_as"])
+    assert "MODELLED" in str(proxy["warning"])
+
+
 def test_phase1_targets_table_4_and_pins_its_vintage() -> None:
     spec = load("phase1_ff_reproduction")
     assert spec.run_kind is RunKind.CONFIRMATORY

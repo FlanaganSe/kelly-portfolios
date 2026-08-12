@@ -37,6 +37,12 @@ setup and current status.
   and emerging equity over 35 years. The excess-growth closed form reproduces to a
   tenth of a basis point, its 68.27% win-probability floor does not survive real
   drift gaps, and every policy loses to buy-and-hold.
+- [Trend as marginal crisis diversification](research/trend-marginal-value.md) —
+  Experiment 004, a vendor-series evaluation of AQR's time-series-momentum factor
+  against a risk-matched cash comparator: what a 15% sleeve adds to a portfolio that
+  already exists, why the standalone Sharpe collapsed after publication while the
+  marginal benefit did not, and why a static-plus-volatility exposure replica fires
+  the falsifier.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers

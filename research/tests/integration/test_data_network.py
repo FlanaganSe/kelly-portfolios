@@ -22,7 +22,7 @@ from pathlib import Path
 import pytest
 import requests
 
-from portfolio_edge.data import fred, french, prices
+from portfolio_edge.data import aqr, fred, french, prices
 from portfolio_edge.data.cache import RawCache
 from portfolio_edge.data.validation import validate_table
 
@@ -112,6 +112,51 @@ def test_a_cached_file_is_not_downloaded_twice(cache: RawCache) -> None:
     first = french.download(cache, dataset)
     second = french.download(cache, dataset)
     assert first == second
+
+
+def test_the_aqr_workbook_downloads_parses_and_pins_its_sheet(cache: RawCache) -> None:
+    """Shape and provenance only. AQR reconstructs its history on every update, so
+    a test that pinned a value would fail for the wrong reason."""
+    dataset = aqr.get_dataset("aqr_tsmom_factors")
+    entry, parsed, manifests = aqr.load(cache, dataset)
+
+    assert entry.http_status == 200
+    assert entry.size_bytes > 0
+    assert entry.last_modified, "the Last-Modified header is the only availability bound"
+    assert parsed.data_sheet == dataset.data_sheet
+    assert dataset.data_sheet in parsed.sheet_names
+    assert parsed.table.frequency == "monthly"
+    assert parsed.table.columns == dataset.expected_columns
+    assert parsed.table.rows > 400
+
+    report = validate_table(
+        parsed.table,
+        dataset_id="aqr_tsmom_factors_monthly",
+        expected_columns=dataset.expected_columns,
+        expected_frequency="monthly",
+    )
+    assert report.ok, report.summary()
+
+    manifest = manifests[0]
+    assert manifest.sha256_raw == entry.sha256
+    assert any(w.startswith("SHEET PINNED:") for w in manifest.warnings)
+    assert "not point-in-time" in manifest.revision_policy.lower()
+
+
+def test_the_aqr_methodology_is_shipped_as_pictures_not_text(cache: RawCache) -> None:
+    """The finding that decides how much this repository can say about the series.
+
+    Definitions, Data Sources and Disclosures carry their content as embedded EMF
+    drawings, so a cell reader sees nothing. The recovered text states the
+    volatility model and the position-sizing rule and states no cost basis at all.
+    """
+    dataset = aqr.get_dataset("aqr_tsmom_factors")
+    _, parsed, _ = aqr.load(cache, dataset)
+
+    assert any("NOT machine-readable" in warning for warning in parsed.warnings)
+    recovered = " ".join(text for _, text in parsed.narrative)
+    assert recovered, "no drawing text was recovered; the workbook layout has changed"
+    assert "volatility" in recovered.lower()
 
 
 def test_fred_tb3ms_downloads_parses_and_validates(cache: RawCache) -> None:

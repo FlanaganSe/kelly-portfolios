@@ -23,6 +23,8 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
+import tempfile
 import time
 from collections.abc import Mapping
 from dataclasses import dataclass
@@ -39,6 +41,7 @@ __all__ = [
     "RawArtifactMissing",
     "RawCache",
     "default_cache_root",
+    "range_key",
     "sha256_hex",
 ]
 
@@ -46,6 +49,92 @@ CACHE_ENV_VAR: Final = "PORTFOLIO_EDGE_CACHE_DIR"
 
 #: Seconds to wait between retry attempts. Short, and bounded by ``attempts``.
 _RETRY_BACKOFF_SECONDS: Final = 2.0
+
+#: Grace added to ``curl``'s own ``--max-time`` before the subprocess is killed,
+#: so that a timeout is reported by curl rather than by an opaque process kill.
+_CURL_TIMEOUT_SLACK_SECONDS: Final = 15.0
+
+
+def range_key(url: str, byte_range: tuple[int, int] | None) -> str:
+    """The cache key for a possibly-ranged fetch of ``url``.
+
+    A ranged response is a *prefix*, not the file, so it is stored under its own
+    key. Without this a 64 KB prefix and the whole document would collide in the
+    URL index and the parser could silently be handed the wrong one.
+    """
+    if byte_range is None:
+        return url
+    return f"{url}#bytes={byte_range[0]}-{byte_range[1]}"
+
+
+def _parse_header_block(text: str) -> tuple[int, dict[str, str]]:
+    """Return the status code and headers of the *last* response in ``text``.
+
+    ``curl --location`` writes one header block per hop. Only the final hop
+    describes the bytes that were actually saved.
+    """
+    blocks = [block for block in text.replace("\r\n", "\n").split("\n\n") if block.strip()]
+    if not blocks:
+        raise RuntimeError("curl returned no response headers")
+    lines = [line for line in blocks[-1].split("\n") if line.strip()]
+    status_parts = lines[0].split()
+    if len(status_parts) < 2 or not status_parts[1].isdigit():
+        raise RuntimeError(f"unparseable curl status line: {lines[0]!r}")
+    headers: dict[str, str] = {}
+    for line in lines[1:]:
+        name, separator, value = line.partition(":")
+        if separator:
+            headers[name.strip()] = value.strip()
+    return int(status_parts[1]), headers
+
+
+def _run_curl(
+    url: str,
+    *,
+    timeout: float,
+    user_agent: str | None,
+    byte_range: tuple[int, int] | None,
+) -> tuple[int, dict[str, str], bytes]:
+    """Run ``curl`` once, returning the final status, headers and body bytes."""
+    with tempfile.TemporaryDirectory(prefix="portfolio-edge-curl-") as workspace:
+        body_path = Path(workspace) / "body"
+        header_path = Path(workspace) / "headers"
+        command = [
+            "curl",
+            "--silent",
+            "--show-error",
+            "--location",
+            "--max-time",
+            str(int(timeout)),
+            "--dump-header",
+            str(header_path),
+            "--output",
+            str(body_path),
+        ]
+        if user_agent is not None:
+            command += ["--user-agent", user_agent]
+        if byte_range is not None:
+            command += ["--range", f"{byte_range[0]}-{byte_range[1]}"]
+        command.append(url)
+        try:
+            completed = subprocess.run(
+                command,
+                capture_output=True,
+                check=False,
+                timeout=timeout + _CURL_TIMEOUT_SLACK_SECONDS,
+            )
+        except (OSError, subprocess.SubprocessError) as exc:
+            raise RuntimeError(f"curl could not run for {url}: {exc}") from exc
+        if completed.returncode != 0:
+            detail = completed.stderr.decode("utf-8", errors="replace").strip()
+            raise RuntimeError(f"curl exited {completed.returncode} for {url}: {detail}")
+        if not header_path.is_file():
+            raise RuntimeError(f"curl wrote no headers for {url}")
+        status, headers = _parse_header_block(
+            header_path.read_text(encoding="utf-8", errors="replace")
+        )
+        body = body_path.read_bytes() if body_path.is_file() else b""
+    return status, headers, body
 
 
 class RawArtifactMissing(KeyError):
@@ -315,6 +404,73 @@ class RawCache:
         if last_error is None:  # pragma: no cover - unreachable with attempts >= 1
             raise RuntimeError(f"fetch({url!r}) made no attempt")
         raise last_error
+
+    def fetch_via_curl(
+        self,
+        url: str,
+        *,
+        force: bool = False,
+        timeout: float = 60.0,
+        user_agent: str | None = None,
+        byte_range: tuple[int, int] | None = None,
+        attempts: int = 3,
+    ) -> CacheEntry:
+        """Fetch ``url`` by shelling out to ``curl``, and cache the bytes verbatim.
+
+        Why this exists, and why it is not the default
+        ----------------------------------------------
+        Some hosts distinguish clients by their TLS and HTTP/2 fingerprint rather
+        than by their headers. Yahoo's chart endpoint is the measured example:
+        ``requests`` receives HTTP 429 for a URL that ``curl`` carrying the same
+        headers is served normally, and no header this package could send closes
+        that gap. Shelling out to the system ``curl`` is the smallest way to reach
+        such a host, and it is deliberately preferred to adding a dependency whose
+        purpose is to imitate a browser's TLS stack.
+
+        This does **not** make such a source research-grade. It only means the
+        bytes can be snapshotted, hashed and manifested, so that an exploratory
+        result stays reconstructible. See
+        ``docs/decisions/0002-no-research-grade-free-price-source.md``.
+
+        Args:
+            byte_range: Inclusive ``(first, last)`` byte offsets, sent as an HTTP
+                ``Range`` header. A ranged response is cached under a key that
+                carries the range, so a prefix can never be mistaken for, or
+                overwrite, the whole file. Servers that ignore ``Range`` return
+                the whole body and HTTP 200; the caller sees the real status and
+                length and can decide, which is why this method does not enforce
+                206.
+
+        Raises:
+            RuntimeError: ``curl`` is unavailable, or every attempt failed.
+            requests.HTTPError: the server answered with a non-2xx status. The
+                exception type matches :meth:`fetch` so callers handle one kind.
+        """
+        key = range_key(url, byte_range)
+        if not force:
+            cached = self.entry_for(key)
+            if cached is not None:
+                return cached
+
+        last_error: Exception | None = None
+        for attempt in range(max(1, attempts)):
+            try:
+                status, headers, body = _run_curl(
+                    url,
+                    timeout=timeout,
+                    user_agent=user_agent,
+                    byte_range=byte_range,
+                )
+            except RuntimeError as exc:
+                last_error = exc
+                if attempt + 1 < attempts:
+                    time.sleep(_RETRY_BACKOFF_SECONDS * (attempt + 1))
+                continue
+            if not 200 <= status < 300:
+                raise requests.HTTPError(f"HTTP {status} for {url}")
+            return self.store(key, body, headers=headers, http_status=status)
+
+        raise last_error or RuntimeError(f"fetch_via_curl({url!r}) made no attempt")
 
     def require(self, url: str) -> CacheEntry:
         """Return the cached entry for ``url`` or raise.

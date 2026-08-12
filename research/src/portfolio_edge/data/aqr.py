@@ -258,7 +258,10 @@ def parse(cache: RawCache, entry: CacheEntry, *, dataset: AqrDataset) -> AqrFile
 
 def parse_bytes(raw: bytes, *, dataset: AqrDataset) -> AqrFile:
     """Parse workbook bytes. Split out so fixtures can exercise it directly."""
-    import openpyxl
+    # No type stubs are published for openpyxl and this repository's dependency
+    # set is frozen, so the import is ignored here rather than in a global
+    # override that would silence it for code that has not been reviewed.
+    import openpyxl  # type: ignore[import-untyped]
 
     if not raw.startswith(b"PK\x03\x04"):
         raise AqrParseError(
@@ -270,7 +273,7 @@ def parse_bytes(raw: bytes, *, dataset: AqrDataset) -> AqrFile:
     warnings: list[str] = []
     try:
         workbook = openpyxl.load_workbook(io.BytesIO(raw), data_only=True, read_only=False)
-    except Exception as exc:  # noqa: BLE001 - openpyxl raises a wide family here
+    except Exception as exc:  # openpyxl raises a wide family of errors here
         raise AqrParseError(
             f"{dataset.dataset_id}: openpyxl could not open the workbook: {exc}"
         ) from exc
