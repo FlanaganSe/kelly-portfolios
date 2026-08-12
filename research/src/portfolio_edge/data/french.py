@@ -161,7 +161,26 @@ DATASETS: Final[dict[str, FrenchDataset]] = {
         FrenchDataset(
             dataset_id="french_developed_ff5",
             filename="Developed_5_Factors_CSV.zip",
-            description="Fama-French five factors, developed markets ex-US aggregate.",
+            description=(
+                "Fama-French five factors, developed markets INCLUDING the United "
+                "States. This file is not an ex-US series: regressing its Mkt-RF on "
+                "the US and Developed ex-US Mkt-RF over 1990-07..2026-06 gives "
+                "weights 0.460 and 0.549 summing to 1.009, so the US is roughly "
+                "half of it. Use french_developed_ex_us_ff5 for a sleeve that must "
+                "not overlap a US sleeve."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_INTERNATIONAL,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_developed_ex_us_ff5",
+            filename="Developed_ex_US_5_Factors_CSV.zip",
+            description=(
+                "Fama-French five factors, developed markets excluding the United "
+                "States. The non-overlapping complement of the US file, and the "
+                "series a two-region portfolio needs."
+            ),
             availability_policy=_AVAILABILITY_MONTHLY,
             revision_policy=_REVISION_POLICY_INTERNATIONAL,
             default_source_units="percent",

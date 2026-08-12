@@ -1,8 +1,28 @@
 # CONFIRMATORY. Every field required by the confirmatory gate is frozen below:
 # benchmark, primary_metric, cost_model, sample_policy and rejection_rule, plus a
 # seed. Editing any of them creates a new specification and a new hypothesis.
+#
+# FREEZE RECORD. This file was rewritten on 2026-08-12 from the version committed
+# with the plan, which named a US-equity / developed-ex-US-equity / US-aggregate-
+# bond / cash universe. No investable bond total-return history is obtainable:
+# decision 0002 rules out every free price source, and FRED's ICE BofA bond total-
+# return indexes are truncated to roughly three years. The universe was therefore
+# replaced with three regional equity total-return series, and the sample start,
+# the era boundaries and the cash-flow schedule were adjusted to fit them. The
+# threshold band, the utility and its parameter, the cost assumptions, the
+# materiality threshold, the drawdown tolerance and the seed are unchanged from
+# the earlier version.
+#
+# What had been seen when this file was frozen, stated so it can be attacked: the
+# monthly Mkt-RF means, standard deviations and cross-correlations of the three
+# French regional files, read while diagnosing the mislabelled Developed dataset
+# (see universe.data_integrity_finding). No portfolio simulation, no gamma*, no
+# kappa autocorrelation, no certainty equivalent and no policy comparison of any
+# kind had been computed. Because first moments had been seen, the starting
+# weights are pinned to an external anchor -- approximate global equity market
+# capitalisation -- rather than chosen here.
 experiment_family: exp_003_rebalancing
-title: Unlevered rebalancing policy comparison, pretax
+title: Unlevered rebalancing policy comparison on regional equity sleeves, pretax
 entry_point: exp_003_rebalancing
 run_kind: confirmatory
 evidence_class: policy-simulation
@@ -10,24 +30,30 @@ consumes_final_holdout: false
 seed: 20260813
 
 hypothesis: >
-  Among five rebalancing policies applied to one investable unlevered portfolio
-  from identical starting weights and identical cash flows, at least one policy
-  improves pretax net certainty-equivalent return relative to buy-and-hold by at
-  least the materiality threshold, without a worse maximum drawdown. Rebalancing
-  is a portfolio-maintenance policy under test, not an assumed source of return.
+  Among five rebalancing policies applied to one unlevered three-sleeve regional
+  equity portfolio from identical starting weights and identical cash flows, at
+  least one policy improves pretax net certainty-equivalent return relative to
+  buy-and-hold by at least the materiality threshold, without a worse maximum
+  drawdown. Rebalancing is a portfolio-maintenance policy under test, not an
+  assumed source of return.
 
 mechanism: >
   Rebalancing has no unconditional expected profit in the Markov-price model of
   Chambers and Zdanowicz (2014), and a two-period rebalance is exactly a short
   straddle on relative performance: R_rebal - R_hold = -w1*w2*k1*k2, where k is
   the difference in simple returns. It therefore loses when relative performance
-  trends and gains when it reverses, and the loss concentrates in crises. The
-  diversification-return identity is NOT a mechanism: it is defined against
-  sum(w_i * g_i), which is not the return of any portfolio anyone can hold
-  (Willenbrock 2011), and a random walk produces a positive measured
-  diversification return with no skill involved. The only live mechanism is the
-  serial dependence of the relative-return difference k_t, plus the utility
-  effect of holding risk closer to the declared target.
+  trends and gains when it reverses, and the loss concentrates in crises. In
+  continuous time the same statement is exact and pathwise:
+  log V_reb(T) - log V_hold(T) = gamma_star*T - log cosh(D(T)/2), a short straddle
+  on relative log performance struck at zero with premium gamma_star*T, where
+  gamma_star = 0.5*(sum w_i sigma_i^2 - sigma_p^2). The diversification-return
+  identity is NOT a mechanism: it is defined against sum(w_i * g_i), which is not
+  the return of any portfolio anyone can hold (Willenbrock 2011), and a random
+  walk produces a positive measured diversification return with no skill involved.
+  The only live mechanism is the serial dependence of the relative-return
+  difference k_t, plus the utility effect of holding risk closer to the declared
+  target. This experiment tests that closed form against real regional equity
+  returns and looks for the places where real returns break it.
 
 falsifier: >
   The hypothesis is rejected when no policy's pretax net certainty-equivalent
@@ -41,66 +67,126 @@ falsifier: >
 
 universe:
   description: >
-    One investable unlevered multi-asset portfolio built from actual total-return
-    indexes or investable fund histories. French developed and emerging factor
-    series are NOT combined with bonds as though they were investable sleeves;
-    the shorter sample that this restriction forces is accepted.
+    One unlevered three-sleeve regional equity portfolio built from Ken French
+    regional market total returns in US dollars. Each sleeve's total return is
+    reconstructed as that region's Mkt-RF plus the RF column of the same file.
+    That is an identity, not an approximation, because French subtracts the same
+    rate from every region.
   sleeves:
-    - id: us_total_market_equity
-      instrument_kind: total-return index or investable fund history
+    - id: us_equity
+      instrument_kind: regional value-weight market total return, USD
+      dataset_id: french_us_ff5
+      table: monthly
+      construction: Mkt-RF + RF
     - id: developed_ex_us_equity
-      instrument_kind: total-return index or investable fund history
-    - id: us_aggregate_bond
-      instrument_kind: total-return index or investable fund history
-    - id: cash
-      instrument_kind: 3-month Treasury bill, TB3MS
+      instrument_kind: regional value-weight market total return, USD
+      dataset_id: french_developed_ex_us_ff5
+      table: monthly
+      construction: Mkt-RF + RF
+    - id: emerging_equity
+      instrument_kind: regional value-weight market total return, USD
+      dataset_id: french_emerging_ff5
+      table: monthly
+      construction: Mkt-RF + RF
+  risk_free_treatment: >
+    ONE risk-free rate is used for all three regions: the US one-month Treasury
+    bill, which is the RF column of every French file. Verbatim from the Ken
+    French international data page, retrieved 2026-08-12: "The market factor is
+    the return on a region's value-weight market portfolio minus the U.S. one
+    month T-bill rate", and "All returns are in U.S. dollars, include dividends
+    and capital gains, and are not continuously compounded." Adding back the rate
+    that was subtracted therefore recovers each region's USD total return exactly.
+    The three files' RF columns were checked and agree to 0.01 percentage points,
+    which is their printing precision. No cash-rate mismatch is introduced, and
+    the experiment reports the residual reconstruction error, which is the
+    source's two-decimal rounding in percent, not a rate choice.
+  data_integrity_finding: >
+    The dataset previously registered in this repository as
+    french_developed_ff5, described as "developed markets ex-US aggregate", is
+    Developed_5_Factors_CSV.zip, which INCLUDES the United States. Regressing its
+    Mkt-RF on the US and Developed ex-US Mkt-RF over 1990-07..2026-06 gives 0.460
+    and 0.549, summing to 1.009. Using it as a non-US sleeve beside a US sleeve
+    would have double-counted roughly half the US market. This experiment uses
+    Developed_ex_US_5_Factors_CSV.zip instead, registered as
+    french_developed_ex_us_ff5, and the mislabelled description was corrected.
+  why_this_universe: >
+    US versus developed-ex-US equity is the canonical real-world instance of two
+    assets that both, in expectation, return "the market" -- exactly the premise
+    the closed-form decomposition models. If the closed form holds anywhere, it
+    holds here. Testing it here is therefore the strongest available test of the
+    premise, not a convenience.
   starting_weights:
-    us_total_market_equity: 0.45
-    developed_ex_us_equity: 0.15
-    us_aggregate_bond: 0.38
-    cash: 0.02
+    us_equity: 0.60
+    developed_ex_us_equity: 0.30
+    emerging_equity: 0.10
   weights_rationale: >
-    A conventional unlevered allocation frozen before any result is examined. It
-    is not optimised, not selected for a good backtest, and not a recommendation.
+    Approximate global equity market-capitalisation weights, an external anchor
+    fixed before any simulation and not optimised, not selected for a good
+    backtest and not a recommendation. Pinned to an external anchor deliberately,
+    because sample first moments had been seen during the data-integrity
+    diagnosis recorded above.
   excluded:
     - Leverage of any kind. Financing is a separate, later experiment.
     - Any after-tax claim. See cost_model.
+    - >
+      A bond sleeve. No investable bond total-return history of adequate length
+      is obtainable: decision 0002 rules out every free price source, and FRED's
+      ICE BofA total-return bond indexes carry roughly three years of history.
+      Constructing one from yields would be a CONSTRUCTED series, not an
+      investable fund, and is out of scope here.
+  investability_limit: >
+    These are index-like series. They carry no expense ratio, no bid-ask spread,
+    no tracking difference and no withholding tax on foreign dividends. Those are
+    modelled as an explicit, separately reported drag column with its assumptions
+    stated, never as a silent adjustment. Any conclusion about what an investor
+    would actually have received is capped at exploratory by decision 0002. The
+    rebalancing mechanics measured on this data are not so capped.
 
 sample_policy:
-  start: "1990-01"
+  start: "1991-01"
   end: "2025-12"
   held_out: >
-    Observations after 2025-12 are not read. This confirmatory run does not
-    consume the final holdout: the reserved window is 2026-01 onward and is spent
-    only by a specification that declares consumes_final_holdout true.
+    Observations after 2025-12 are not read. The distributed files run to
+    2026-06. This confirmatory run does not consume the final holdout: the
+    reserved window is 2026-01 onward and is spent only by a specification that
+    declares consumes_final_holdout true.
   embargo: >
-    Trades execute at the close following the signal date, so no observation is
-    used before its availability timestamp. No estimation window is fitted, so no
-    purge is required.
+    Every sleeve is a realised monthly total return used only after its own month
+    has ended, so no observation is used before its availability timestamp. No
+    estimation window is fitted, so no purge is required. The threshold policy
+    tests weights at the end of month t and trades at the month-t+1 return, which
+    is the one-period execution lag the rebalance_rule declares.
   eras:
     - name: era_1990s
-      start: "1990-01"
+      start: "1991-01"
       end: "1999-12"
       rationale: >
-        Positive nominal bond-stock beta regime for most of the window. Frozen as
-        a diagnostic era, not as an independent observation.
+        Boundary inherited unchanged from the previously committed version of
+        this specification, clipped to the first whole calendar year in which all
+        three sleeves exist. A period of sustained US and emerging-market
+        divergence; frozen as a diagnostic era, not as an independent observation.
     - name: era_2000s_2010s
       start: "2000-01"
       end: "2019-12"
       rationale: >
-        Negative bond-stock beta regime, per Campbell et al. (2025). Rebalancing
-        into a falling asset behaves differently here by construction.
+        Boundary inherited unchanged. Twenty years spanning both directions of
+        relative regional performance, which is what the short-straddle mechanism
+        is sensitive to. A diagnostic era, not an independent observation.
     - name: era_2020s
       start: "2020-01"
       end: "2025-12"
       rationale: >
-        Includes the 2022 joint stock-bond drawdown and the return of a positive
-        beta, which is hostile to any policy that relies on the two legs
-        diversifying each other.
+        Boundary inherited unchanged. Contains the 2020 crash and the 2022
+        drawdown, both of which move every equity region together and are
+        therefore hostile to any policy relying on the sleeves diversifying each
+        other. A diagnostic era, not an independent observation.
     - name: full_sample
-      start: "1990-01"
+      start: "1991-01"
       end: "2025-12"
-      rationale: Primary evaluation window. The eras above are diagnostics of it.
+      rationale: >
+        Primary evaluation window: 420 months, exactly 35 whole calendar years,
+        which makes the annual certainty-equivalent blocks non-overlapping and
+        complete. The eras above are diagnostics of it.
 
 benchmark:
   policy: buy-and-hold from the identical starting weights with identical cash flows
@@ -114,18 +200,32 @@ benchmark:
 primary_metric:
   name: pretax net certainty-equivalent return, CRRA
   definition: >
-    The constant annual return whose CRRA utility with gamma = 3 equals the
-    expected utility of the realised annual net wealth path, computed on the same
-    cash-flow schedule for every policy.
+    Let R_t be the policy's time-weighted net return in month t, defined as
+    W_{t+1} / (W_t + f_t) - 1, where f_t is the month's external cash flow and
+    W is the simulated wealth path net of every transaction cost actually paid.
+    Compound R_t into 35 non-overlapping calendar-year gross returns G_y. The
+    certainty-equivalent return is the constant c solving
+    u(1 + c) = mean_y u(G_y) with u(x) = x^(1 - gamma) / (1 - gamma), gamma = 3,
+    so c = (mean_y G_y^(1 - gamma))^(1 / (1 - gamma)) - 1. Identical cash flows
+    and identical calendar-year blocks for every policy.
   units: percentage points per year
   uncertainty: >
-    Stationary block bootstrap on the joint return panel, 95% two-sided interval
-    on the DIFFERENCE from buy-and-hold. Intervals on levels are reported too but
-    the decision is made on the paired difference.
+    Stationary block bootstrap on the joint three-sleeve monthly return panel,
+    resampling the same time index for every sleeve so cross-sectional dependence
+    survives. Every policy is re-simulated on each resample and the 95% two-sided
+    interval is taken on the DIFFERENCE from buy-and-hold. Intervals on levels are
+    reported too, but the decision is made on the paired difference.
   gamma: 3
+  utility_is_a_declared_preference: >
+    CRRA with gamma = 3 is a declared preference, not a derived truth. It is
+    stated here so that a different gamma is a different specification.
 
 secondary_metrics:
+  - name: terminal wealth
+    units: multiples of initial wealth
   - name: net geometric return
+    units: percentage points per year
+  - name: arithmetic mean return
     units: percentage points per year
   - name: annualised volatility
     units: percentage points per year
@@ -143,21 +243,30 @@ secondary_metrics:
     units: percentage points
   - name: number of rebalancing trades
     units: count
-  - name: realised capital-gain distributions
-    units: percentage points of portfolio value per year
-    note: Recorded as an observation only. It is not converted into a tax cost.
+  - name: realised excess growth rate gamma_star, predicted versus realised
+    units: basis points per year
+    note: >
+      Predicted from the closed form 0.5*(sum w_i sigma_i^2 - sigma_p^2) on log
+      returns, and from the discrete monthly form B(tau^2 h)/h; realised as the
+      constant-weight portfolio's log growth minus sum w_i g_i. Reported for each
+      50/50 regional pair and for the three-sleeve portfolio.
   - name: serial dependence of the relative-return difference k_t
-    units: autocorrelation at lags 1 to 12
+    units: autocorrelation at lags 1 to 12, and variance ratios
     note: >
       This is the correct diagnostic for whether rebalancing can add value. The
       diversification-return statistic is not, and is not reported as one.
+  - name: index-to-fund investability drag
+    units: basis points per year
+    note: >
+      Expense ratio, bid-ask spread and non-recoverable foreign dividend
+      withholding. Reported in its own column and never folded into a return.
 
 cost_model:
   applied: true
   rule_effect: >
     Costs alter the trading rule and are charged on the traded notional at the
-    moment of trade. They are never applied as a constant haircut after the
-    simulation.
+    moment of trade, inside the simulation. They are never applied as a constant
+    haircut after it.
   spread_and_commission:
     net_optimistic:
       one_way_bps: 2.0
@@ -174,6 +283,44 @@ cost_model:
       than an oversight.
   reporting_columns: [gross, net-optimistic, net-pessimistic]
   default_reported_column: net-pessimistic
+  index_to_fund_drag:
+    applied_to_returns: false
+    reported_separately: true
+    expense_ratio_bp_per_year:
+      us_equity: 3.0
+      developed_ex_us_equity: 5.0
+      emerging_equity: 7.0
+    expense_ratio_source: >
+      docs/research/expected-edge-decomposition.md, section 2.1, which records
+      published Vanguard expense ratios and 30-day median bid/ask spreads as of
+      2026-08-10. Those are the figures used; nothing here re-derives them.
+    round_trip_spread_bp:
+      us_equity: 0.55
+      developed_ex_us_equity: 1.18
+      emerging_equity: 2.72
+    spread_note: >
+      The spread figures are 30-day medians for VTI, VXUS and VB from the same
+      dated source. VB is a US small-cap fund and is used only as the widest
+      retail broad-fund spread available, standing in for an emerging-market
+      fund whose published spread was not retrieved. That substitution is an
+      ASSUMPTION, recorded as one.
+    non_recoverable_withholding_bp_per_year:
+      us_equity: 0.0
+      developed_ex_us_equity: 21.0
+      emerging_equity: 30.0
+    withholding_basis: >
+      ASSUMPTION, not a measurement, and no primary source was retrieved for it.
+      Arithmetic: a 3.0% dividend yield on developed ex-US at 7% non-recoverable
+      withholding gives 21 bp/yr; a 2.7% yield on emerging at 11% gives 30 bp/yr.
+      Recoverability depends on account type and on the foreign tax credit, which
+      this experiment does not model. Both figures are reported with their
+      arithmetic so a reader can substitute their own.
+    why_it_cannot_change_the_ranking: >
+      Expense ratio and withholding are charged on assets held, not on trades, so
+      they are identical across all five policies and cancel in every paired
+      difference. Only the spread interacts with turnover, and the spread is
+      already inside the net-optimistic and net-pessimistic columns. This column
+      changes the level of every policy's return and cannot change their order.
   taxes:
     modelled: false
     reason: >
@@ -183,8 +330,15 @@ cost_model:
       haircut is FORBIDDEN: applying one would make the result look precise while
       being wrong in an unknown direction and magnitude.
     recorded_instead: >
-      Realised capital-gain distributions per policy are reported as a raw
-      observation, so that a later after-tax experiment has an input.
+      Turnover per policy is reported as a raw observation, so that a later
+      after-tax experiment has an input. Turnover is not converted into a tax
+      cost, and no realised-gain figure is claimed, because the simulation holds
+      no tax lots and therefore cannot know a basis.
+    qualitative_direction_only: >
+      In a taxable account the ranking would move against the higher-turnover
+      policies, because a rebalance sells appreciated positions and realises gain
+      that buy-and-hold defers indefinitely. The size of that move is not
+      estimated here and must not be guessed.
 
 rebalance_rule:
   policies:
@@ -202,33 +356,52 @@ rebalance_rule:
         of its target weight, relative not absolute. Checked monthly, executed at
         the next close.
       frozen_note: >
-        ONE threshold, frozen at 25% before any result is examined. A grid over
-        thresholds would be a search and would change the number of trials.
+        ONE threshold, frozen at 25% before any result is examined, and unchanged
+        from the version of this specification committed with the plan. A grid
+        over thresholds would be a search and would change the number of trials.
     - id: cash_flow_directed
       description: >
         Rebalance only by directing contributions and withdrawals toward the most
         underweight sleeves, never by selling to buy. Falls back to no trade when
         the cash flow is insufficient.
   execution:
-    signal_to_trade_lag: one trading day
-    price_used: next available close after the signal
+    signal_to_trade_lag: one month
+    price_used: the next monthly total return after the signal
     partial_fills: not modelled; recorded as a limitation
+    frequency_note: >
+      The source series are monthly, so "last trading day" is the month boundary
+      and there is no intramonth execution. That is a limitation of the data, not
+      a modelling choice, and it means intramonth threshold breaches are invisible.
   cash_flows:
     schedule: identical across all five policies
-    kind: monthly contribution, constant in real terms
-    real_annual_amount_fraction_of_initial: 0.05
+    kind: monthly contribution, constant in NOMINAL terms
+    annual_amount_fraction_of_initial_wealth: 0.05
+    indexation: none
+    indexation_rationale: >
+      The earlier version of this specification indexed the contribution to
+      realised CPI. That was replaced, because scaling a schedule by inflation
+      that had not yet happened uses information unavailable at the start of the
+      path, and because CPIAUCSL is revised in place. A flat nominal contribution
+      needs no external series and cannot look ahead. It does shrink relative to
+      a growing portfolio, which weakens the cash-flow-directed policy late in the
+      sample; that is reported, and the hostile tests include a schedule held at
+      a constant fraction of CURRENT wealth so the policy keeps its power.
     rationale: >
       Without external cash flows, permuting returns leaves terminal wealth
       unchanged, so the cash-flow-directed policy would be untestable. The
       schedule is identical everywhere so that the policy, not the funding, is
       what differs.
+    timing: beginning of period, so a contribution earns that month's return
 
 inference:
   bootstrap: stationary block bootstrap on the joint multi-asset return panel
   block_length_policy: >
     Mean block length frozen at 24 months for monthly data, preserving the
     multi-year relative-performance runs that drive the short-straddle mechanism.
-    12 and 36 months are predeclared neighbours reported without retuning.
+    12 and 36 months are predeclared neighbours reported without retuning. The
+    Politis-White automatic length is reported alongside as a diagnostic and is
+    NOT used to choose the block, because a data-chosen block length would be a
+    tuned parameter.
   multiple_testing_correction: >
     Holm family-wise error rate at 0.05 across the four non-benchmark policies
     tested against buy-and-hold. Four comparisons, declared here, are the entire
@@ -240,7 +413,12 @@ inference:
   notes: >
     The panel is bootstrapped jointly so that cross-asset dependence, which is
     the whole mechanism, is preserved. Independent per-asset resampling would
-    destroy exactly the dependence under test.
+    destroy exactly the dependence under test. Every policy is re-simulated on
+    every resample rather than resampling a return series, because turnover,
+    costs and the threshold trigger are all path-dependent. Era-level figures and
+    hostile tests are point estimates without intervals; they are diagnostics,
+    and bootstrapping them would suggest a precision that three overlapping
+    regimes cannot support.
 
 rejection_rule: >
   Mark `rejected` when the falsifier fires. Mark `unresolved` when a policy's
@@ -249,8 +427,10 @@ rejection_rule: >
   one of the three diagnostic eras. Mark `walk-forward-tested` only if a policy
   clears the threshold with an interval excluding zero, survives Holm correction,
   appears in at least two eras, and survives every hostile test below without
-  retuning. Decades are diagnostics, never six independent observations, and no
-  statement about a policy may be made from a single era.
+  retuning. Decades are diagnostics, never independent observations, and no
+  statement about a policy may be made from a single era. The decision is taken
+  on the net-pessimistic column; gross and net-optimistic are reported beside it
+  and are never what the rule reads.
 
 parameters:
   materiality_threshold_annual_percent: 0.25
@@ -259,51 +439,129 @@ parameters:
   relative_threshold: 0.25
   rebalance_check_frequency: monthly
   weight_tolerance_after_rebalance: 0.0005
-  cash_series: TB3MS
-  cash_series_rationale: >
-    Frozen for consistency with exp_002. TB3MS, DGS3MO and DFF are not
-    interchangeable and the choice is not revisited after seeing results.
+  initial_wealth: 1.0
   currency: USD
-  inflation_series: CPIAUCSL
-  inflation_use: >
-    Only to hold the contribution schedule constant in real terms. Returns are
-    reported in nominal terms with the real series as a declared sensitivity.
+  annual_calendar_rebalance_month: 12
+  kappa_lags: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 24, 36]
+  variance_ratio_horizons_months: [2, 3, 6, 12, 24, 36, 60]
+  regional_pairs:
+    - [us_equity, developed_ex_us_equity]
+    - [us_equity, emerging_equity]
+    - [developed_ex_us_equity, emerging_equity]
+  pair_weights: 0.5
+  pair_weights_rationale: >
+    Equal weights, so the closed forms in
+    portfolio_edge.studies.volatility_harvesting -- which are exact only at 50/50
+    with equal volatilities -- apply with the fewest additional assumptions, and
+    so that any gap to the realised figure is attributable to the data rather
+    than to a weighting choice.
+  source_pin:
+    tables:
+      - dataset_id: french_us_ff5
+        sleeve: us_equity
+        table_id: monthly
+        manifest_dataset_id: french_us_ff5_monthly
+        committed_manifest: data-manifests/french_us_ff5_monthly.json
+        expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+        expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+      - dataset_id: french_developed_ex_us_ff5
+        sleeve: developed_ex_us_equity
+        table_id: monthly
+        manifest_dataset_id: french_developed_ex_us_ff5_monthly
+        committed_manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+        expected_sha256_raw: 54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d
+        expected_sha256_normalized: 8e09ae56db0222f8f633b448f54690cb0f18a3f43282e11e77a183a9a5820fd2
+      - dataset_id: french_emerging_ff5
+        sleeve: emerging_equity
+        table_id: monthly
+        manifest_dataset_id: french_emerging_ff5_monthly
+        committed_manifest: data-manifests/french_emerging_ff5_monthly.json
+        expected_sha256_raw: ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8
+        expected_sha256_normalized: 300e14451a59af3e4a34dc4db6d4f9677052672373a7f9f860ab68bf58182406
+    expected_columns: [Mkt-RF, SMB, HML, RMW, CMA, RF]
+    rationale: >
+      Without a pin the experiment silently follows the next Bloomberg or CRSP
+      rebuild. A hash mismatch is a new vintage and therefore a new
+      specification, not a hash to update.
+  reconstruction_error:
+    source: >
+      Each French value is printed to two decimal places in percent, so a
+      reconstructed total return Mkt-RF + RF carries the rounding of two printed
+      cells. The experiment reports the implied standard error of each sleeve's
+      annualised mean under a uniform rounding model, because it is the same
+      order of magnitude as the effect under test.
+    affects_kappa: false
+    affects_kappa_reason: >
+      kappa is a difference of two sleeves and the RF term is the identical
+      column in both, so it cancels exactly. The relative-performance diagnostic
+      carries no RF rounding at all.
 
 data_sources:
-  - id: total_return_indexes
-    url: recorded per sleeve in the data manifest at retrieval time
-  - id: fred_tb3ms
-    url: https://fred.stlouisfed.org/series/TB3MS
-  - id: fred_cpiaucsl
-    url: https://fred.stlouisfed.org/series/CPIAUCSL
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_developed_ex_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+  - id: french_emerging_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
 
 hostile_tests:
   - Double every transaction-cost assumption.
-  - Delay execution by a further five trading days.
+  - Delay execution by a further month.
   - Remove the best month for the winning policy and re-report.
   - Remove the 2008-2009 crisis window entirely and re-report.
-  - Remove the 2022 joint drawdown entirely and re-report.
+  - Remove the 2020 and 2022 drawdowns entirely and re-report.
   - Re-run on the 12 and 36 month bootstrap block lengths without retuning.
-  - Shift the annual rebalance month from December to June and to March, since a
+  - >
+    Shift the annual rebalance month from December to June and to March, since a
     calendar policy whose advantage depends on the month is a calendar artefact.
-  - Shift the relative threshold to 20% and 30% and report all three; the frozen
+  - >
+    Shift the relative threshold to 20% and 30% and report all three; the frozen
     25% remains the decision rule regardless of which looks better.
-  - Vary the starting weights by plus and minus 10 percentage points of equity.
-  - Set the cash-flow schedule to zero and re-report, which should make the
+  - Vary the starting weights by plus and minus 10 percentage points of US equity.
+  - >
+    Set the cash-flow schedule to zero and re-report, which must make the
     cash-flow-directed policy identical to buy-and-hold.
-  - Reproduce the two-period identity R_rebal - R_hold = -w1*w2*k1*k2 exactly on
+  - >
+    Set the cash-flow schedule to a constant fraction of CURRENT wealth and
+    re-report, so the cash-flow-directed policy keeps its power late in the
+    sample.
+  - >
+    Reproduce the two-period identity R_rebal - R_hold = -w1*w2*k1*k2 exactly on
     a two-asset two-period fixture, as a correctness check on the accounting.
+  - >
+    Compare each pair's realised rebalanced-minus-held log growth with the
+    closed-form prediction and its 5th and 95th percentiles, and report where the
+    realised value falls in that band.
 
 reporting_requirements:
   - Gross, net-optimistic and net-pessimistic in separate columns, never collapsed.
   - Every figure labelled PRETAX.
+  - The index-to-fund drag in its own column, never folded into a return.
   - Turnover and costs per policy, per era.
   - The paired difference from buy-and-hold with its interval, not only levels.
-  - The serial dependence of k_t, with an explicit statement of whether the
+  - >
+    Predicted versus realised gamma_star for every regional pair and for the
+    portfolio, with the continuous and the discrete-monthly prediction separated.
+  - >
+    The serial dependence of k_t at every declared lag with block-bootstrap
+    intervals and variance ratios, with an explicit statement of whether the
     mechanism that could make rebalancing profitable is present in this sample.
+  - >
+    Every place the realised data contradicts the closed-form model: fat tails,
+    volatility clustering, drift gaps, and any horizon at which the realised win
+    frequency departs from the closed-form probability.
   - A statement that the diversification-return identity was not used as evidence.
+  - >
+    Decades labelled as diagnostics wherever they appear, never as independent
+    observations.
 
 notes: >
   This is the first confirmatory experiment in the repository and it deliberately
   tests a maintenance policy rather than a return source. Financing and leverage
-  are out of scope until an unlevered portfolio survives.
+  are out of scope until an unlevered portfolio survives. The investability
+  conclusion is capped at exploratory by decision 0002; the rebalancing mechanics
+  measured on index-like regional total returns are not, because they do not
+  depend on a tradable price contract.

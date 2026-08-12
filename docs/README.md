@@ -32,6 +32,11 @@ setup and current status.
 - [Factor persistence and decay](research/factor-persistence.md) — Experiment 001:
   what HML, UMD, RMW and CMA did before and after publication across frozen eras,
   how little those windows can detect, and why none of the four is promoted.
+- [Rebalancing policy on real regional equity](research/rebalancing-policy.md) —
+  Experiment 003, the first confirmatory run: five policies on US, developed-ex-US
+  and emerging equity over 35 years. The excess-growth closed form reproduces to a
+  tenth of a basis point, its 68.27% win-probability floor does not survive real
+  drift gaps, and every policy loses to buy-and-hold.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers

@@ -231,6 +231,83 @@ def test_exp_003_is_confirmatory_and_passes_its_own_gate() -> None:
     ]
 
 
+def test_exp_003_freezes_the_numbers_its_decision_reads() -> None:
+    """Pinning them here means loosening one cannot be a quiet edit.
+
+    A widened materiality threshold, a lowered gamma, or a cheapened cost
+    assumption would each move the verdict without moving anything a reader sees.
+    Changing any of them now breaks a test and changes the specification hash at
+    the same time.
+    """
+    spec = load("exp_003_rebalancing")
+    parameters = as_mapping(spec.parameters)
+    assert parameters["materiality_threshold_annual_percent"] == 0.25
+    assert parameters["drawdown_tolerance_percentage_points"] == 1.0
+    assert parameters["crra_gamma"] == 3
+    assert parameters["relative_threshold"] == 0.25
+
+    metric = as_mapping(spec.primary_metric)
+    assert metric["gamma"] == 3
+
+    spread = as_mapping(as_mapping(spec.cost_model)["spread_and_commission"])
+    assert as_mapping(spread["net_optimistic"])["one_way_bps"] == 2.0
+    assert as_mapping(spread["net_pessimistic"])["one_way_bps"] == 8.0
+    assert as_mapping(spec.cost_model)["default_reported_column"] == "net-pessimistic"
+
+    # 420 months is exactly 35 whole calendar years, which is what makes the
+    # annual certainty-equivalent blocks non-overlapping and complete.
+    assert spec.sample_policy.start == "1991-01"
+    assert spec.sample_policy.end == "2025-12"
+    assert spec.inference.resamples == 20000
+    assert spec.inference.confidence_level == 0.95
+
+
+def test_exp_003_uses_developed_ex_us_and_not_the_file_that_contains_the_us() -> None:
+    """The bug this experiment found, asserted so it cannot come back.
+
+    ``Developed_5_Factors`` includes the United States at roughly half its weight.
+    Using it beside a US sleeve would double-count half the US market and destroy
+    the very comparison the experiment exists to make.
+    """
+    spec = load("exp_003_rebalancing")
+    universe = as_mapping(spec.universe)
+    sleeves = [as_mapping(item) for item in as_sequence(universe["sleeves"])]
+    datasets = {str(item["dataset_id"]) for item in sleeves}
+    assert datasets == {
+        "french_us_ff5",
+        "french_developed_ex_us_ff5",
+        "french_emerging_ff5",
+    }
+    assert "french_developed_ff5" not in datasets
+    assert all(item["construction"] == "Mkt-RF + RF" for item in sleeves)
+    assert "INCLUDES the United States" in str(universe["data_integrity_finding"])
+
+    weights = as_mapping(universe["starting_weights"])
+    assert sum(float(str(value)) for value in weights.values()) == pytest.approx(1.0)
+
+
+def test_exp_003_reports_the_investability_drag_without_applying_it() -> None:
+    """An index-like series is not a fund, and the gap is a column, not a haircut."""
+    drag = as_mapping(as_mapping(load("exp_003_rebalancing").cost_model)["index_to_fund_drag"])
+    assert drag["applied_to_returns"] is False
+    assert drag["reported_separately"] is True
+    assert set(as_mapping(drag["expense_ratio_bp_per_year"])) == {
+        "us_equity",
+        "developed_ex_us_equity",
+        "emerging_equity",
+    }
+    assert "ASSUMPTION" in str(drag["withholding_basis"])
+    assert "cannot change their order" in str(drag["why_it_cannot_change_the_ranking"])
+
+
+def test_exp_003_cash_flow_schedule_cannot_look_ahead() -> None:
+    """Indexing a contribution to realised CPI would use tomorrow's information."""
+    flows = as_mapping(as_mapping(load("exp_003_rebalancing").rebalance_rule)["cash_flows"])
+    assert flows["indexation"] == "none"
+    assert flows["annual_amount_fraction_of_initial_wealth"] == 0.05
+    assert "unavailable at the start of the path" in str(flows["indexation_rationale"])
+
+
 def test_exp_004_declares_itself_a_vendor_series_evaluation() -> None:
     spec = load("exp_004_trend_marginal_value")
     assert spec.evidence_class is EvidenceClass.VENDOR_SERIES_EVALUATION

@@ -3,6 +3,10 @@
 # THIS IS A VENDOR-SERIES EVALUATION, NOT AN INDEPENDENT REPLICATION.
 # See evidence_class below and parameters.evaluation_disclosure. No result from
 # this specification may be described as a replication of time-series momentum.
+#
+# Concretisation log. The fields below were made executable on 2026-08-12, BEFORE
+# any statistic was computed, and every substantive change is recorded in
+# parameters.concretisation_log so that a reader can see what moved and why.
 experiment_family: exp_004_trend_marginal_value
 title: AQR trend series as marginal crisis diversification, vendor-series evaluation
 entry_point: exp_004_trend_marginal_value
@@ -51,49 +55,80 @@ falsifier: >
 universe:
   description: >
     Published vendor time-series-momentum return series plus one unlevered
-    passive equity/bond portfolio and a cash series. No futures contracts, no
-    rolls, no contract-level data. This experiment therefore cannot and does not
+    passive portfolio and a cash series. No futures contracts, no rolls, no
+    contract-level data. This experiment therefore cannot and does not
     reimplement the strategy.
   comparison_set:
     - id: passive_benchmark
-      description: Unlevered 60/40 equity/bond from investable total-return histories.
+      description: >
+        Unlevered 60/40, monthly rebalanced to fixed weights: 60% US equity total
+        return (Ken French Mkt-RF + RF) and 40% cash (FRED TB3MS). The bond leg of
+        the originally drafted equity/bond benchmark could not be sourced: decision
+        record 0002 establishes that no free price source carries a documented
+        total-return contract, and no investable bond total-return history is
+        available to this repository. Cash is the honest substitute because it is
+        the one non-equity leg whose return is actually measured rather than
+        modelled. The equity/bond form is retained as a declared robustness arm
+        (see parameters.bond_proxy) and never as the primary benchmark.
     - id: volatility_scaled_passive
       description: >
         The same passive benchmark scaled by the SAME lagged volatility estimator
         and the SAME exposure cap applied to the trend sleeve, so the comparison
-        is not a scaled strategy against an unscaled benchmark.
+        is not a scaled strategy against an unscaled benchmark. Exposure at t is
+        min(target_t / sigma_hat_{t-1}, exposure_cap) applied to the benchmark's
+        excess return, with the remainder in cash; target_t is the benchmark's own
+        realised volatility over [burn_in_start, t-1] only, so nothing in the
+        scaling uses a future observation.
     - id: trend_alone
-      description: The vendor trend series on its own, as published.
+      description: >
+        The vendor trend series on its own, as published, plus cash. The published
+        series is an EXCESS return, so cash is added to make it a funded portfolio
+        comparable with the other four.
     - id: passive_plus_trend
       description: >
         Passive benchmark with the trend sleeve funded proportionally from both
-        legs at the frozen sleeve weight.
+        legs at the frozen sleeve weight of 0.15.
     - id: passive_plus_cash
       description: >
         Passive benchmark plus cash at a MATCHED ex-ante risk budget, which is the
-        comparator that decides the experiment.
+        comparator that decides the experiment. The passive weight alpha_t solves
+        alpha_t * sigma_hat_passive,t-1 = sigma_hat_{passive+trend},t-1 using only
+        lagged volatilities and a lagged correlation.
   excluded:
     - Any claim of independent replication.
     - Any CTA index or peer-group average, which carry survivorship and backfill
       distortions of the order of the entire gross premium.
+    - >
+      Any attempt to remove the vendor's internal per-instrument volatility
+      scaling. The published series is an aggregate, so the Kim-Tse-Wald test that
+      collapses the pooled statistic from 4.34 to 1.68 CANNOT be performed on it.
+      That is a limitation of the public series and is reported as one.
 
 sample_policy:
   start: "1990-01"
   end: "2025-12"
   held_out: >
-    Observations after 2025-12 are not read. The pre-2000 reconstructed portion
-    of the vendor history is additionally treated as a separate, weaker era and
-    is never pooled with the live-era results without the split being shown.
+    Observations after 2025-12 are not read. The archived workbook reaches
+    2026-05, so five months exist beyond the boundary and are clipped before any
+    statistic is computed. The pre-2000 reconstructed portion of the vendor
+    history is additionally treated as a separate, weaker era and is never pooled
+    with the live-era results without the split being shown.
   embargo: >
     The volatility estimator uses only data through t-1 and the exposure applies
-    at t+1, so no observation is used before its availability timestamp.
+    at t+1, so no observation is used before its availability timestamp. The
+    60 months of vendor history from 1985-01 to 1989-12 are used ONLY to
+    initialise the volatility and correlation estimators, never as a reported
+    observation, so the first reported month already has a fully warmed estimator.
   eras:
     - name: reconstructed_history
       start: "1990-01"
       end: "2000-12"
       rationale: >
         Vendor-reconstructed or early history. Reported separately because a
-        reconstruction is not live evidence and pooling it hides that.
+        reconstruction is not live evidence and pooling it hides that. The
+        vendor's own Data Sources sheet states that MSCI country index returns and
+        JP Morgan country bond index returns are used PRIOR to the availability of
+        futures returns, so part of this era is not a futures strategy at all.
     - name: pre_publication
       start: "2001-01"
       end: "2011-12"
@@ -131,12 +166,17 @@ primary_metric:
   name: marginal certainty-equivalent return over the risk-matched cash comparator
   definition: >
     CRRA gamma = 3 certainty-equivalent return of passive_plus_trend minus that of
-    passive_plus_cash, on identical cash flows and identical risk budgets.
+    passive_plus_cash, on identical cash flows and identical risk budgets. The
+    certainty equivalent is computed from non-overlapping calendar-year gross
+    returns, which is why the sample is frozen at exactly 432 months = 36 whole
+    years and why no partial year can be silently dropped.
+  gamma: 3
   units: percentage points per year
   uncertainty: >
-    Stationary block-bootstrap 95% interval on the paired difference, plus a
-    crisis-conditional interval computed on the crisis windows only, where the
-    effective sample is small and the interval will be wide.
+    Stationary block-bootstrap 95% interval on the paired difference, resampling
+    the joint monthly panel so that the pairing between the two portfolios is
+    preserved, plus a crisis-conditional interval computed on the crisis windows
+    only, where the effective sample is small and the interval will be wide.
 
 secondary_metrics:
   - name: crisis-conditional marginal drawdown reduction
@@ -161,7 +201,14 @@ cost_model:
   vendor_series_basis: >
     The published series is reported by its vendor on a stated fee and cost
     basis, which is recorded verbatim in the manifest. It is NOT re-costed from
-    the inside, because the underlying trades are not observable here.
+    the inside, because the underlying trades are not observable here. FINDING,
+    recorded before any result: the archived workbook states NO fee, transaction
+    cost, slippage or financing basis anywhere. Its Definitions, Data Sources and
+    Disclosures sheets carry their content as embedded pictures rather than cells,
+    and the text recovered from those pictures describes the volatility model, the
+    40% per-position volatility target and the instrument universe while saying
+    nothing about costs. The series must therefore be treated as gross of every
+    cost, and the vendor cost basis is UNESTABLISHED rather than known.
   investor_level_costs:
     net_optimistic:
       management_fee_annual_percent: 0.65
@@ -169,6 +216,11 @@ cost_model:
     net_pessimistic:
       management_fee_annual_percent: 1.50
       performance_fee_percent_of_gains: 10.0
+      performance_fee_basis: >
+        Charged monthly on gains above a high-water mark, which is the standard
+        contract and is strictly more favourable to the strategy than charging on
+        every up month. Choosing the favourable convention is deliberate: the
+        conclusion must not depend on an unnecessarily harsh fee model.
       assumption: >
         Typical accessible fee for a liquid alternative, plus the historical
         finding that CTA investors did not capture the gross edge: excess returns
@@ -176,18 +228,33 @@ cost_model:
         gross excess returns were 6.1%, with fee income around 4% of assets.
   reporting_columns: [gross, net-optimistic, net-pessimistic]
   default_reported_column: net-pessimistic
-  rebalancing_costs_of_the_sleeve: >
-    Charged on the portfolio-level trades that fund and rebalance the sleeve, at
-    the same spread assumptions as exp_003.
+  gross_column_definition: >
+    No investor-level fee and no portfolio trading cost. It is not an achievable
+    outcome and exists only to size the gap to the net columns.
+  spread_and_commission:
+    net_optimistic:
+      one_way_bps: 2.0
+    net_pessimistic:
+      one_way_bps: 8.0
+    basis: >
+      The same spread assumptions as exp_003, charged on the portfolio-level
+      trades that rebalance to fixed weights and that fund and rebalance the
+      sleeve. They are NOT charged on the trades inside the vendor sleeve, which
+      are not observable.
 
 rebalance_rule:
   sleeve_weight: frozen at 0.15 of portfolio value, funded pro rata from equity and bonds
   frequency: monthly, at the same lag and execution convention as exp_003
+  execution_lag_months: 1
   volatility_targeting: >
     The same lagged volatility estimator and the same exposure cap are applied to
     the trend sleeve and to the volatility-scaled passive comparator wherever
     logically possible, so that scaling cannot be the source of a measured
-    advantage.
+    advantage. "Wherever logically possible" excludes re-scaling the vendor
+    sleeve: it is already volatility-scaled internally to a 40% per-position
+    target, and scaling it again would double-count. The estimator is instead
+    applied to the sleeve to size the matched risk budget of passive_plus_cash and
+    to report the sleeve's realised volatility against its ex-ante estimate.
 
 inference:
   bootstrap: stationary block bootstrap on the joint panel of portfolio and sleeve returns
@@ -240,9 +307,36 @@ parameters:
   materiality_threshold_annual_percent: 0.30
   crra_gamma: 3
   sleeve_weight: 0.15
+  equity_weight: 0.60
+  cash_weight: 0.40
   volatility_lookback_days: 60
   volatility_lookback_alternatives_days: [20, 120]
+  volatility_estimator:
+    form: >
+      Exponentially weighted variance of lagged returns with the centre of mass
+      stated in the vendor's own recovered methodology text: sigma_t^2 =
+      k * sum_i (1-delta) delta^i (r_{t-1-i} - rbar_t)^2 with
+      delta / (1 - delta) = the centre of mass, and k the annualisation factor.
+    vendor_form: >
+      The vendor applies this to DAILY returns with a 60-day centre of mass and
+      k = 261, and uses the estimate at t-1 on the returns at t. Both facts come
+      from text recovered from the workbook's embedded picture, not from cells.
+    this_repository_form: >
+      The public series is MONTHLY, so a daily estimator is not computable from
+      it. The identical exponentially weighted form is applied to monthly returns
+      at the same calendar centre of mass, days / 21, with k = 12. The 60-, 20-
+      and 120-day lookbacks become 2.857, 0.952 and 5.714 months. This is an
+      approximation of the vendor's estimator, not the vendor's estimator, and the
+      frozen day-based values are retained above so that the translation stays
+      visible.
+    minimum_effective_observations: 24
   exposure_cap: 1.5
+  exposure_cap_half: 0.75
+  volatility_target_policy: >
+    The volatility-scaled passive comparator targets the passive benchmark's own
+    realised volatility computed on an EXPANDING window ending at t-1. A
+    full-sample target would be a look-ahead normalisation, and a fixed number
+    would be a tuned parameter.
   crisis_windows:
     - name: dotcom
       start: "2000-09"
@@ -260,28 +354,161 @@ parameters:
     Frozen before any result is examined and defined by peak-to-trough equity
     drawdown dates, not by when the sleeve performed well.
   cash_series: TB3MS
+  cash_series_rationale: >
+    TB3MS is the monthly average secondary-market three-month Treasury bill rate
+    on a discount basis: the conventional monthly cash proxy in the US
+    asset-pricing literature, at the same monthly frequency as every other series
+    here, and the series against which the vendor's "excess return" is most nearly
+    defined. DGS3MO and DFF are registered in this repository and were NOT used:
+    DGS3MO is a daily constant-maturity interpolated yield on a different basis and
+    DFF is an overnight interbank rate with no three-month maturity. Swapping them
+    moves a Sharpe ratio, so the choice is declared here and not revisited after
+    seeing a result.
+  bond_proxy:
+    used_as: declared robustness arm only, never the primary benchmark
+    construction: >
+      A ten-year Treasury total return reconstructed from FRED GS10 by the
+      standard duration-and-convexity approximation on a par bond: r_t =
+      y_{t-1}/12 - D_t (y_t - y_{t-1}) + 0.5 C_t (y_t - y_{t-1})^2, with D_t and
+      C_t the modified duration and convexity of a ten-year par bond at y_{t-1}.
+    research_grade: false
+    warning: >
+      This is a MODELLED series, not an investable total-return history. It has no
+      documented total-return contract, no coupon reinvestment convention and no
+      transaction costs. It exists so that the 2022 window, in which equities and
+      bonds fell together, is not silently removed from the experiment by the
+      absence of a bond leg. No conclusion may rest on it alone.
+  attribution:
+    regressors:
+      - constant
+      - market_excess_return
+      - volatility_scaled_market_excess_return
+      - absolute_market_excess_return
+      - lagged_market_excess_return
+    rationale: >
+      Goyal and Jegadeesh (2018) show the strategy carries a large embedded
+      net-long market position and that adding a time-varying market position to a
+      cross-sectional strategy reproduces the time-series result. The decisive
+      test is therefore whether a static market exposure plus a volatility-scaled
+      market position reproduces the sleeve. The absolute market term is a
+      convexity proxy: a strategy that is genuinely long crisis convexity should
+      load positively on it. The lagged market term captures the slow signal.
+    replica_is_fitted_in_sample: true
+    replica_caveat: >
+      The replica is fitted on the same sample it is evaluated on, so its marginal
+      benefit is an UPPER bound. That is the conservative direction for this test:
+      it makes clause (d) of the falsifier easier to fire, which is correct,
+      because the question is whether a simpler exposure COULD explain the result.
+  concretisation_log:
+    - date: "2026-08-12"
+      change: >
+        passive_benchmark changed from "60/40 equity/bond from investable
+        total-return histories" to 60% Ken French US market total return / 40%
+        FRED TB3MS cash.
+      reason: >
+        Decision record 0002: no free price source is research-grade and no
+        investable bond total-return history is available. The equity/bond form is
+        preserved as parameters.bond_proxy, a declared robustness arm built from a
+        modelled GS10 duration approximation and flagged research_grade false.
+      made_before_any_result: true
+    - date: "2026-08-12"
+      change: >
+        volatility_lookback_days retained at 60 and translated to a monthly
+        exponentially weighted centre of mass of 60/21 months.
+      reason: >
+        The public vendor series is monthly, so the vendor's own daily 60-day
+        exponentially weighted estimator is not computable from it. The recovered
+        methodology text confirms 60 days is the vendor's centre of mass, so the
+        frozen number was right and only its frequency had to change.
+      made_before_any_result: true
+    - date: "2026-08-12"
+      change: >
+        The execution-delay hostile test changed from "one and five additional
+        trading days" to one additional MONTH.
+      reason: >
+        A monthly series cannot express a one- or five-day delay. One month is the
+        smallest implementable delay and is strictly more hostile than either
+        frozen value, so the substitution cannot flatter the result.
+      made_before_any_result: true
+    - date: "2026-08-12"
+      change: Source pins added with the sha256 of every input actually used.
+      reason: >
+        The vendor reconstructs its full history on every update, so an
+        unrecognised hash is a new vintage and must abort rather than silently
+        change every number.
+      made_before_any_result: true
+  source_pin:
+    aqr_tsmom:
+      dataset_id: aqr_tsmom_factors
+      sheet: TSMOM Factors
+      column: TSMOM
+      expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+      expected_sha256_normalized: b58b9f527de8fa1aff06c292895b53ed6a5c69bf8331f7c9c367cf84b104e03e
+      committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    french_us_market:
+      dataset_id: french_us_ff5
+      table_id: monthly
+      columns: ["Mkt-RF", "RF"]
+      expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+      expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+      committed_manifest: data-manifests/french_us_ff5_monthly.json
+    fred_tb3ms:
+      series_id: TB3MS
+      expected_sha256_raw: a44dc72332a838dac7a9f1fc0731e4927a7b3217431b3e012bd88dff4b6986fa
+      committed_manifest: data-manifests/fred_tb3ms.json
+    fred_gs10:
+      series_id: GS10
+      expected_sha256_raw: a875d88b7ed6a413f697ddb6332f13e61ac58ac7ae0ef52d66a62174995ec6f7
+      committed_manifest: data-manifests/fred_gs10.json
+    pin_policy: >
+      A raw-hash mismatch ABORTS the experiment. AQR reconstructs its full history
+      on every update and Ken French rebuilds his from each new CRSP vintage, so an
+      unrecognised hash is a new vintage rather than a corrupted download, and a
+      result computed from an unrecognised file looks exactly like a good one.
+      FRED hashes change whenever a new observation is appended, so the FRED pins
+      are recorded and reported but do NOT abort; the abort applies to the two
+      sources whose history is rewritten in place.
 
 data_sources:
   - id: aqr_time_series_momentum
-    url: recorded in the data manifest, with workbook name, sheet name and
-      retrieval time, because the vendor's URLs and workbooks change
-  - id: total_return_indexes
-    url: recorded per sleeve in the data manifest at retrieval time
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    sheet: TSMOM Factors
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    note: >
+      Workbook name, sheet name and retrieval time are recorded in the manifest
+      because the vendor's URLs and workbooks change.
+  - id: french_us_market_total_return
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+    construction: Mkt-RF + RF
   - id: fred_tb3ms
     url: https://fred.stlouisfed.org/series/TB3MS
+    manifest: data-manifests/fred_tb3ms.json
+  - id: fred_gs10
+    url: https://fred.stlouisfed.org/series/GS10
+    manifest: data-manifests/fred_gs10.json
+    note: robustness arm only; feeds the modelled bond proxy, which is not research grade
 
 hostile_tests:
   - Remove the best trend month and re-report every statistic.
   - Remove the best crisis entirely and re-report every statistic.
-  - Delay execution by one and by five additional trading days.
+  - >
+    Delay execution. The frozen one- and five-trading-day delays are not
+    expressible in a monthly series, so the sleeve is delayed by one additional
+    MONTH, which is strictly more hostile than either.
   - Double every cost and fee assumption.
   - Cap leverage at the frozen exposure cap and at half of it.
-  - Stress overnight gaps and sharp reversals, since slow signals miss gaps and
-    whipsaw on reversals.
-  - Change the volatility lookback to 20 and 120 days WITHOUT retuning anything
+  - >
+    Stress overnight gaps and sharp reversals, since slow signals miss gaps and
+    whipsaw on reversals. Measured as the sleeve's conditional mean in the month a
+    drawdown opens abruptly versus one that develops over several months, and in
+    months that reverse the prior month's sign at both large magnitudes.
+  - >
+    Change the volatility lookback to 20 and 120 days WITHOUT retuning anything
     else, since volatility scaling is the effect and not an implementation detail.
   - Compare pre-publication and post-publication performance explicitly.
-  - Attribute returns to static asset exposures and to a time-varying market
+  - >
+    Attribute returns to static asset exposures and to a time-varying market
     position, and report how much marginal benefit survives the attribution.
   - Replace the trend sleeve with a static long position sized to the same
     ex-ante risk and report whether the marginal benefit disappears.
@@ -295,6 +522,12 @@ reporting_requirements:
   - The result of every hostile test, favourable or not.
   - An explicit statement of which of the five comparison portfolios each figure
     refers to.
+  - The archived workbook sha256, the sheet name, and the observed first and last
+    observation, beside every figure derived from the vendor series.
+  - >
+    An explicit statement that the Kim-Tse-Wald unscaled test cannot be run on
+    this series, since the published aggregate cannot be unwound to per-instrument
+    positions.
 
 notes: >
   Retain `unresolved` rather than `rejected` when the available public series
