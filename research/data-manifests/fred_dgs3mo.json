@@ -1,0 +1,32 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_dgs3mo",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DGS3MO",
+  "retrieved_utc": "2026-08-12T06:19:24Z",
+  "sha256_raw": "fc310262b97c5a7115329ca9e6a13e88c7e08c116834d754c2b0afd5a5a52da6",
+  "sha256_normalized": "0f7bf933126324b82924efb09fa8ded51a0002bb24b5b1641de80fe9f850806e",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "daily",
+  "units": "decimal_per_year",
+  "source_units": "percent_per_year",
+  "unit_transform": "value / 100",
+  "first_observation": "1981-09-01",
+  "last_observation": "2026-08-10",
+  "rows": 11725,
+  "availability_policy": "Next business day, on the Federal Reserve H.15 schedule. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "Rarely revised; corrections are possible. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "491 observations were the FRED missing token '.' and became missing values, not zeros: ['1981-09-07', '1981-10-12', '1981-11-03', '1981-11-11', '1981-11-26', '1981-12-09']",
+    "values are an annualised rate expressed as a decimal after dividing the published percent by 100, on a bond-equivalent, investment basis basis. This is a rate, not a period return: converting it to a monthly or daily return requires an explicit, recorded compounding or day-count assumption that this parser does not make.",
+    "series definition: Daily constant-maturity three-month Treasury yield, interpolated by the Treasury from the daily yield curve. Same nominal maturity as TB3MS but a different construction, a different basis and a different frequency, so the two are not substitutable even after averaging.",
+    "release timing: Next business day, on the Federal Reserve H.15 schedule.",
+    "revision behaviour: Rarely revised; corrections are possible.",
+    "transformation applied by the source: none (level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: 3.0 months (construction: constant_maturity_yield). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable."
+  ]
+}

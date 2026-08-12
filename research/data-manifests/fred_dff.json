@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_dff",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DFF",
+  "retrieved_utc": "2026-08-12T06:19:24Z",
+  "sha256_raw": "dd0949ac7091b450177b262206e1c47d57ac82a4e689d9a422c50246f6a8f1d9",
+  "sha256_normalized": "7438daf2a6f1f8c3c567572ce7c795827fcc67157610fff2a0a7eaee1f37cd0f",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "daily",
+  "units": "decimal_per_year",
+  "source_units": "percent_per_year",
+  "unit_transform": "value / 100",
+  "first_observation": "1954-07-01",
+  "last_observation": "2026-08-10",
+  "rows": 26339,
+  "availability_policy": "Next business day from the New York Fed. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "The effective rate is occasionally revised when reported transaction data are corrected. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "values are an annualised rate expressed as a decimal after dividing the published percent by 100, on a actual/360, overnight basis. This is a rate, not a period return: converting it to a monthly or daily return requires an explicit, recorded compounding or day-count assumption that this parser does not make.",
+    "series definition: Daily volume-weighted median of overnight federal funds transactions between depository institutions. An overnight unsecured interbank rate, not a Treasury yield: it carries bank credit and settlement characteristics that a bill does not, and its maturity is one day, not three months.",
+    "release timing: Next business day from the New York Fed.",
+    "revision behaviour: The effective rate is occasionally revised when reported transaction data are corrected.",
+    "transformation applied by the source: none (level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: None months (construction: overnight_effective_rate). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable."
+  ]
+}
