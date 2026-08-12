@@ -18,15 +18,21 @@ experiment ledger. Nothing the client renders is yet backed by it.
 
 ## Where the research has got to
 
-`as of 2026-08-12`. Five frozen experiments have run, across fifteen ledgered
-executions of six distinct specifications, with 1,037 tests passing.
+`as of 2026-08-12`. Six frozen experiments have run, across sixteen ledgered
+executions of seven distinct specifications, with 1,082 tests passing.
 
-**Nothing was promoted.** Three hypotheses are `rejected` against falsifiers frozen
-before any result was seen — rebalancing as a source of return, the CMA factor, and
-the AQR trend series as a marginal sleeve. Three are `unresolved`, in every case
-because the available window cannot detect the effect it is looking for rather than
-because the effect is absent. The retail factor-product audit is `exploratory` by
-decision, capped there because no free price source carries a total-return contract.
+**No sleeve was promoted.** Hypotheses are `rejected` against falsifiers frozen
+before any result was seen — rebalancing as a source of return, the AQR trend series
+as a marginal sleeve, and the CMA and RMW factor premia. The last two are `rejected`
+in a specific and permanent sense: pooling every independent region the Ken French
+library distributes was tried, the effective sample size it bought was **measured**,
+and it still cannot resolve a premium at this repository's 2.0 pp/yr materiality
+threshold ([decision 0005](docs/decisions/0005-factor-premia-closed-on-public-data.md)).
+One factor, value, reached `exploratory` on a pooled +4.74 pp/yr — the first thing
+here to advance on the strength of a premium, and still gross, long-short and not
+investable. Momentum stays `unresolved` and could not be tested outside the US. The
+retail factor-product audit is `exploratory` by decision, capped there because no
+free price source carries a total-return contract.
 
 The one result worth stating plainly: **roughly 89 basis points a year is available,
 near-certainly, against the portfolio you would otherwise have owned** — fund cost,
