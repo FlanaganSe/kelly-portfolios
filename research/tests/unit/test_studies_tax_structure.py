@@ -20,6 +20,7 @@ records that verification killed *framing* more often than arithmetic:
 from __future__ import annotations
 
 import math
+from fractions import Fraction
 
 import pytest
 
@@ -472,22 +473,64 @@ def test_the_shelter_ranking_inverts_between_brackets(
 
 
 def test_the_credit_costs_the_ranking_its_margin_not_its_order_at_the_top() -> None:
-    """At 23.8% the credit cuts developed markets from 61.9 to 46.1 bp of priority.
+    """At 23.8% the credit cuts developed markets from 61.88 to 46.1032 bp of priority.
 
-    Emerging markets is cut from 48.3 to 28.3, which leaves it only 2.1 bp above US
+    Emerging markets is cut from 48.314 to 28.3124, which leaves it 2.1324 bp above US
     equity — a margin far inside the uncertainty in either yield. The honest reading is
     that at the top bracket the credit makes the emerging/US shelter choice a **tie**,
     not that it reverses it.
+
+    Derived from the stated inputs rather than read back from the implementation.
+    ``priority = (w y + max(US tax - credit, 0)) - w y``, and with a fully usable credit
+    (``u = 1``, and ``w < q`` for both sleeves so the credit never exceeds the US tax)
+    this collapses to **the US tax alone, less the withholding**:
+
+        bonds      0.408 x 0.0465                         = 189.7200 bp  (interest is
+                                                            ordinary income in full, so
+                                                            the ordinary rate is right)
+        developed  0.238 x 0.0260 - 0.06068 x 0.0260
+                 = 61.8800 - 15.7768                      =  46.1032 bp
+        emerging   0.238 x 0.0203 - 0.09853 x 0.0203
+                 = 48.3140 - 20.0016                      =  28.3124 bp
+        US equity  0.238 x 0.0110                         =  26.1800 bp
+
+    The bond line is the only one at the ordinary rate. That is correct here because
+    ``qualified_fraction`` is 0.0 for bonds, but it makes 189.72 a *top-bracket* figure
+    that cannot be carried across a table indexed by the qualified rate; see the caveat
+    under the priority table in ``docs/research/portfolio-recommendation.md``. At a 22%
+    ordinary rate the bond line would be 102.3 bp and would still lead by more than four
+    to one, so the ranking survives either reading.
     """
+    ordinary, qualified = 0.408, 0.238
+    expected = {
+        "Taxable investment-grade bonds": ordinary * 0.0465 / 1e-4,
+        "Developed ex-US equity": (qualified - 0.06068) * 0.0260 / 1e-4,
+        "Emerging-market equity": (qualified - 0.09853) * 0.0203 / 1e-4,
+        "US equity": qualified * 0.0110 / 1e-4,
+    }
+    assert expected == pytest.approx(
+        {
+            "Taxable investment-grade bonds": 189.7200,
+            "Developed ex-US equity": 46.1032,
+            "Emerging-market equity": 28.3124,
+            "US equity": 26.1800,
+        },
+        abs=5e-5,
+    )
     ranking = dict(shelter_priority_bp(SHELTER_CANDIDATES, regime=TOP_BRACKET))
-    assert ranking["Taxable investment-grade bonds"] == pytest.approx(189.72, abs=0.01)
-    assert ranking["Developed ex-US equity"] == pytest.approx(46.10, abs=0.01)
-    assert ranking["Emerging-market equity"] == pytest.approx(28.31, abs=0.01)
-    assert ranking["US equity"] == pytest.approx(26.18, abs=0.01)
-    assert ranking["Emerging-market equity"] - ranking["US equity"] < 3.0
+    assert ranking == pytest.approx(expected, rel=1e-12)
+    assert ranking["Emerging-market equity"] - ranking["US equity"] == pytest.approx(
+        2.1324, abs=5e-5
+    )
+    # A 22% ordinary rate would move the bond line but not the order.
+    assert pytest.approx(102.3, abs=5e-5) == 0.22 * 0.0465 / 1e-4
+    assert 102.3 / ranking["Developed ex-US equity"] > 2.0
     # Without the forfeiture the margin would be more than ten times larger.
     emerging = next(c for c in SHELTER_CANDIDATES if c.label == "Emerging-market equity")
-    assert emerging.taxable_cost_bp(TOP_BRACKET) == pytest.approx(48.31, abs=0.01)
+    assert emerging.taxable_cost_bp(TOP_BRACKET) == pytest.approx(
+        qualified * 0.0203 / 1e-4, rel=1e-12
+    )
+    assert emerging.taxable_cost_bp(TOP_BRACKET) == pytest.approx(48.3140, abs=5e-5)
     assert emerging.taxable_cost_bp(TOP_BRACKET) - ranking["US equity"] > 20.0
 
 
@@ -514,38 +557,160 @@ def test_form_1116_thresholds_translate_into_sleeve_sizes(limit: float, assets: 
 
 
 # --------------------------------------------------------------------------------------
+# An independent re-derivation of ``after_tax_path``, in a different state variable
+# --------------------------------------------------------------------------------------
+#
+# ``after_tax_path`` carries (wealth, basis). The algebra below carries (wealth,
+# *standing unrealised gain*), which is the parameterisation in which the distribution
+# and partial-realisation branches both close. Writing the same year in a different
+# state is what makes this a check rather than a transcription of the loop.
+#
+# In a taxable account with no dividend, no fee and no section 1256 position, with
+# ``G = e**g``, ``q`` the all-in long-term rate, ``d`` the distribution yield and ``f``
+# the realised fraction of standing gain, one year is:
+#
+#     U'     = (G - 1) W + U        standing gain after growth
+#     D      = min(d G W, U')       capital-gain distribution, capped by the gain
+#     R      = f (U' - D)           the investor's chosen realisation
+#     W_next = G W - q (D + R)
+#     U_next = U' - D - R
+#
+# because a distribution and a realisation each raise basis by exactly the amount
+# distributed or realised less the tax met by selling shares. Terminal wealth is
+# ``W_H - q U_H`` under LIQUIDATE and ``W_H`` under STEP_UP.
+
+
+def _independent_growth(
+    *,
+    log_growth: float,
+    years: int,
+    capital_gain_rate: float,
+    distribution_yield: float = 0.0,
+    realised_gain_fraction: float = 0.0,
+    step_up: bool = False,
+) -> float:
+    """Annualised after-tax log growth of one taxable dollar, derived from scratch."""
+    g = math.exp(log_growth)
+    q = capital_gain_rate
+    wealth, unrealised = 1.0, 0.0
+    for _ in range(years):
+        standing = (g - 1.0) * wealth + unrealised
+        distributed = min(distribution_yield * g * wealth, standing)
+        realised = realised_gain_fraction * (standing - distributed)
+        wealth = g * wealth - q * (distributed + realised)
+        unrealised = standing - distributed - realised
+    terminal = wealth if step_up else wealth - q * unrealised
+    return math.log(terminal) / years
+
+
+def _realisation_growth_by_matrix_power(
+    *, log_growth: float, years: int, capital_gain_rate: float, realised_gain_fraction: float
+) -> float:
+    """The same partial-realisation path as a closed form: a 2x2 map raised to ``H``.
+
+    With ``d = 0`` the recursion above is linear in ``(W, U)``:
+
+        M = [[G - q f (G - 1),  -q f],
+             [(1 - f)(G - 1),   1 - f]]
+
+    so ``(W_H, U_H) = M**H (1, 0)`` exactly. This is a genuinely different evaluation
+    of the same algebra — a matrix power rather than a year loop — and it is the reason
+    the partial-realisation branch is not taken on trust.
+    """
+    g, q, f = math.exp(log_growth), capital_gain_rate, realised_gain_fraction
+    m = ((g - q * f * (g - 1.0), -q * f), ((1.0 - f) * (g - 1.0), 1.0 - f))
+    state = (1.0, 0.0)
+    for _ in range(years):
+        state = (
+            m[0][0] * state[0] + m[0][1] * state[1],
+            m[1][0] * state[0] + m[1][1] * state[1],
+        )
+    return math.log(state[0] - q * state[1]) / years
+
+
+def _deferring_growth(*, log_growth: float, years: int, capital_gain_rate: float) -> float:
+    """``log(e**(gH)(1 - q) + q) / H``: never realise, then liquidate. Exact."""
+    terminal = math.exp(log_growth * years) * (1.0 - capital_gain_rate) + capital_gain_rate
+    return math.log(terminal) / years
+
+
+# --------------------------------------------------------------------------------------
 # 2. Capital-gain distributions
 # --------------------------------------------------------------------------------------
 
 
 @pytest.mark.parametrize(
     ("distribution_yield", "liquidate_bp", "step_up_bp"),
-    [(0.02, 25.69, 47.71), (0.05, 62.97, 119.71), (0.07, 84.12, 162.21)],
+    [
+        (0.02, 25.687195, 47.713649),
+        (0.05, 62.967802, 119.713718),
+        (0.07, 84.119754, 162.211248),
+    ],
 )
 def test_distribution_drag_is_far_below_its_headline_tax(
     distribution_yield: float, liquidate_bp: float, step_up_bp: float
 ) -> None:
-    """A 5%-of-NAV distribution costs 63 bp/yr, not the 119 bp of tax it triggers.
+    """A 5%-of-NAV distribution costs 62.97 bp/yr, not the 119 bp of tax it triggers.
 
     The headline tax at the top bracket is ``23.8% x 5% = 119 bp``. Almost half of that
     comes back through the basis step the distribution creates, so the true cost is the
     lost deferral. Quoting the headline is the standard overstatement, and quoting the
     ``STEP_UP`` figure as though it applied to a liquidating investor is the standard
     understatement running the other way.
+
+    Every literal above is produced by ``_independent_growth``, the (wealth, standing
+    gain) re-derivation, against the ``d = 0`` benchmark whose closed forms are
+    ``log(e**(gH)(1-q)+q)/H`` (liquidate) and ``g`` (step up). The ``d = 0.07`` row has
+    a further closed form because ``0.07 x G > G - 1``: the cap binds in every one of
+    the thirty years, the fund distributes the whole year's gain, ``U`` is zero
+    throughout and ``W_H = (G(1-q)+q)**H``. That collapses both figures onto the
+    horizon-free pair 84.119754 / 162.211248 asserted for full turnover in section 4 —
+    distributing every gain and realising every gain are the same path.
     """
-    assert capital_gain_distribution_drag_bp(
+    liquidate = capital_gain_distribution_drag_bp(
         regime=TOP_BRACKET,
         pretax_log_growth=0.07,
         years=30,
         distribution_yield=distribution_yield,
-    ) == pytest.approx(liquidate_bp, abs=0.01)
-    assert capital_gain_distribution_drag_bp(
+    )
+    stepped = capital_gain_distribution_drag_bp(
         regime=TOP_BRACKET,
         pretax_log_growth=0.07,
         years=30,
         distribution_yield=distribution_yield,
         disposal=Disposal.STEP_UP,
-    ) == pytest.approx(step_up_bp, abs=0.01)
+    )
+    assert liquidate == pytest.approx(liquidate_bp, abs=5e-6)
+    assert stepped == pytest.approx(step_up_bp, abs=5e-6)
+
+    q = TOP_BRACKET.capital_gain
+    benchmark = _deferring_growth(log_growth=0.07, years=30, capital_gain_rate=q)
+    derived_liquidate = (
+        benchmark
+        - _independent_growth(
+            log_growth=0.07,
+            years=30,
+            capital_gain_rate=q,
+            distribution_yield=distribution_yield,
+        )
+    ) / 1e-4
+    derived_step_up = (
+        0.07
+        - _independent_growth(
+            log_growth=0.07,
+            years=30,
+            capital_gain_rate=q,
+            distribution_yield=distribution_yield,
+            step_up=True,
+        )
+    ) / 1e-4
+    assert liquidate == pytest.approx(derived_liquidate, rel=1e-9)
+    assert stepped == pytest.approx(derived_step_up, rel=1e-9)
+
+    if distribution_yield == 0.07:
+        full_turnover = math.log(math.exp(0.07) * (1.0 - q) + q)
+        assert liquidate == pytest.approx((benchmark - full_turnover) / 1e-4)
+        assert stepped == pytest.approx((0.07 - full_turnover) / 1e-4)
 
 
 def test_distribution_drag_is_zero_in_a_sheltered_account_by_construction() -> None:
@@ -659,24 +824,67 @@ def test_the_deferral_hurdle_exceeds_the_whole_booked_contractual_budget() -> No
 
 @pytest.mark.parametrize(
     ("realised_fraction", "drag_bp"),
-    [(0.10, 41.52), (0.25, 63.89), (0.50, 76.40), (1.00, 84.12)],
+    [(0.10, 41.521052), (0.25, 63.886598), (0.50, 76.401227), (1.00, 84.119754)],
 )
 def test_the_deferral_penalty_is_sharply_concave_in_turnover(
     realised_fraction: float, drag_bp: float
 ) -> None:
     """Half the full penalty arrives in the first tenth of the turnover.
 
-    Realising a tenth of standing gain each year costs 41.5 bp against the 84.1 bp of
+    Realising a tenth of standing gain each year costs 41.52 bp against the 84.12 bp of
     realising all of it. "Low turnover" is therefore not a defence: the marginal cost of
     the *first* unit of turnover is by far the largest, because it starts the basis
     ratchet that every later year inherits.
+
+    The partial-realisation branch has no scalar closed form, so it is derived twice by
+    two different evaluations of the same 2x2 linear map — a year loop in (wealth,
+    standing gain), and that map raised to the thirtieth power — against a benchmark
+    with the exact closed form ``log(e**(gH)(1-q)+q)/H``. The ``f = 1`` end point closes
+    completely: ``U`` is zero after every year, so ``W_H = (G(1-q)+q)**H`` and the drag
+    is ``log(e**(gH)(1-q)+q)/H - log(G(1-q)+q)``, which is 84.119754 bp with no horizon
+    dependence in the second term at all.
     """
-    assert deferral_value(
+    drag = deferral_value(
         regime=TOP_BRACKET,
         pretax_log_growth=0.07,
         years=30,
         realised_gain_fraction=realised_fraction,
-    ).deferral_bp == pytest.approx(drag_bp, abs=0.01)
+    ).deferral_bp
+    assert drag == pytest.approx(drag_bp, abs=5e-6)
+
+    q = TOP_BRACKET.capital_gain
+    benchmark = _deferring_growth(log_growth=0.07, years=30, capital_gain_rate=q)
+    by_loop = (
+        benchmark
+        - _independent_growth(
+            log_growth=0.07,
+            years=30,
+            capital_gain_rate=q,
+            realised_gain_fraction=realised_fraction,
+        )
+    ) / 1e-4
+    by_matrix = (
+        benchmark
+        - _realisation_growth_by_matrix_power(
+            log_growth=0.07,
+            years=30,
+            capital_gain_rate=q,
+            realised_gain_fraction=realised_fraction,
+        )
+    ) / 1e-4
+    assert by_loop == pytest.approx(drag_bp, abs=5e-6)
+    assert by_matrix == pytest.approx(drag_bp, abs=5e-6)
+    assert drag == pytest.approx(by_loop, rel=1e-9)
+
+    if realised_fraction == 1.0:
+        closed = (benchmark - math.log(math.exp(0.07) * (1.0 - q) + q)) / 1e-4
+        assert drag == pytest.approx(closed, rel=1e-12)
+
+    # Concavity, stated as the property the four levels are here to demonstrate: each
+    # further increment of turnover buys less penalty than the one before it.
+    marginals = [41.521052 / 0.10, (63.886598 - 41.521052) / 0.15]
+    marginals += [(76.401227 - 63.886598) / 0.25, (84.119754 - 76.401227) / 0.50]
+    assert marginals == sorted(marginals, reverse=True)
 
 
 def test_deferral_is_worth_nothing_at_a_zero_capital_gains_rate() -> None:
@@ -692,24 +900,50 @@ def test_deferral_is_worth_nothing_at_a_zero_capital_gains_rate() -> None:
 @pytest.mark.parametrize(
     ("profile", "year_one", "average_30", "net_of_nine"),
     [
-        (HARVESTING_NO_FLOW_LONG_TERM, 155.3, 5.57, -3.43),
-        (HARVESTING_NO_FLOW_SHORT_TERM, 339.1, 36.22, 27.22),
-        (HARVESTING_WITH_CONTRIBUTIONS, 164.3, 34.59, 25.59),
+        (HARVESTING_NO_FLOW_LONG_TERM, Fraction(1553, 10), Fraction(418, 75), Fraction(-257, 75)),
+        (HARVESTING_NO_FLOW_SHORT_TERM, Fraction(3391, 10), Fraction(1811, 50), Fraction(1361, 50)),
+        (
+            HARVESTING_WITH_CONTRIBUTIONS,
+            Fraction(1643, 10),
+            Fraction(5189, 150),
+            Fraction(3839, 150),
+        ),
     ],
 )
 def test_the_horizon_average_is_an_order_below_the_year_one_headline(
-    profile: HarvestingProfile, year_one: float, average_30: float, net_of_nine: float
+    profile: HarvestingProfile, year_one: Fraction, average_30: Fraction, net_of_nine: Fraction
 ) -> None:
-    """155.3 bp in year one becomes 5.6 bp averaged over thirty years.
+    """155.3 bp in year one becomes 5.573 bp averaged over thirty years.
 
     Vendor headlines quote year one, which is the largest number any of these profiles
     ever takes. The 30-year average is what a "bp/yr" claim about a long-horizon holding
     actually means, and for the modal case — no new money, only long-term gains to offset
-    — it is **negative once any fee is charged**.
+    — it is **negative once any fee is charged**. That sign is the finding on this page,
+    so the expectations are exact rationals derived by hand from the published tables
+    rather than decimals read back from the implementation. Nine explicit years plus
+    twenty-one at the terminal level:
+
+    * no flow, long-term:  ``(515/2) + 21 x (-43/10) = 836/5``; ``/30 = 418/75``
+      = 5.573333 bp, and ``- 9`` = ``-257/75`` = **-3.426667 bp — negative**.
+    * no flow, short-term: ``(3522/5) + 21 x (91/5) = 5433/5``; ``/30 = 1811/50``
+      = 36.22 bp, and ``- 9`` = ``1361/50`` = 27.22 bp.
+    * with contributions:  ``(2312/5) + 21 x (137/5) = 5189/5``; ``/30 = 5189/150``
+      = 34.593333 bp, and ``- 9`` = ``3839/150`` = 25.593333 bp.
+
+    Cross-checked below by re-summing each profile's own table in exact rational
+    arithmetic, so a changed table cannot leave a stale literal standing.
     """
-    assert profile.horizon_average_bp(1) == pytest.approx(year_one)
-    assert profile.horizon_average_bp(30) == pytest.approx(average_30, abs=0.01)
-    assert profile.net_of_fee_bp(years=30, fee_bp=9.0) == pytest.approx(net_of_nine, abs=0.01)
+    assert profile.horizon_average_bp(1) == pytest.approx(float(year_one), rel=1e-15)
+    assert profile.horizon_average_bp(30) == pytest.approx(float(average_30), rel=1e-12)
+    assert profile.net_of_fee_bp(years=30, fee_bp=9.0) == pytest.approx(
+        float(net_of_nine), rel=1e-12
+    )
+
+    explicit = [Fraction(str(bp)) for bp in profile.annual_bp]
+    tail = (30 - len(explicit)) * Fraction(str(profile.terminal_bp))
+    assert (sum(explicit) + tail) / 30 == average_30
+    assert average_30 - 9 == net_of_nine
+    assert explicit[0] == year_one
 
 
 def test_the_static_investor_profile_goes_negative_in_year_seven() -> None:

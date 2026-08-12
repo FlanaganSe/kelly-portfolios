@@ -12,6 +12,8 @@ import math
 
 import numpy as np
 import pytest
+from numpy.polynomial.hermite import hermgauss
+from numpy.typing import NDArray
 from scipy.stats import norm
 
 from portfolio_edge.core.portfolio import excess_growth_rate
@@ -37,6 +39,8 @@ from portfolio_edge.studies.volatility_harvesting import (
     rebalancing_beats_buy_and_hold_asymptotically,
     relative_log_volatility,
 )
+
+FloatArray = NDArray[np.float64]
 
 SIGMA = 0.2
 DRIFT = 0.05
@@ -648,12 +652,67 @@ def test_more_assets_makes_buy_and_hold_capture_more_not_less() -> None:
     assert (result.buy_and_hold_growth - drift) / gamma > 0.95
 
 
+def _monthly_advantage_mean_by_quadrature(
+    *, weight_a: float, tau_squared: float, horizon_years: float, steps_per_year: int
+) -> float:
+    """``E[advantage]`` for monthly rebalancing, by Gauss-Hermite quadrature.
+
+    Derived from scratch, and the derivation is the point. Writing ``D_m = X_b,m -
+    X_a,m`` for the step-by-step log-return difference and ``f(x) = log(w_a + w_b
+    e**x)``:
+
+        log V_reb(T) = X_a(T) + sum_m f(D_m)      (rebalance each step)
+        log V_hold(T) = X_a(T) + f(sum_m D_m)     (never trade)
+
+    ``X_a(T)`` cancels exactly, so the *entire* rebalancing advantage is a functional of
+    one scalar iid sequence ``D_m ~ N(0, tau**2 / steps_per_year)`` — the individual
+    volatilities, the drifts and the correlation enter only through ``tau``. Taking
+    expectations,
+
+        E[advantage] = steps_per_year x E[f(D_1)] - E[f(sum D_m)] / T
+
+    and both expectations are one-dimensional Gaussian integrals. This routine uses
+    Gauss-Hermite, which shares no code path with the adaptive quadrature inside
+    :func:`buy_and_hold_growth_rate`.
+    """
+    nodes, weights = hermgauss(200)
+    log_a, log_b = math.log(weight_a), math.log(1.0 - weight_a)
+
+    def expectation(variance: float) -> float:
+        z = nodes * math.sqrt(2.0 * variance)
+        return float((weights / math.sqrt(math.pi)) @ np.logaddexp(log_a, log_b + z))
+
+    per_step = steps_per_year * expectation(tau_squared / steps_per_year)
+    whole = expectation(tau_squared * horizon_years) / horizon_years
+    return per_step - whole
+
+
 def test_sixty_forty_median_and_win_probability_are_pinned_by_simulation() -> None:
     """The 60/40 median advantage and win rate quoted in the synthesis.
 
     The closed-form quantile machinery needs equal volatilities at 50/50, so at 60/40 the
-    median and the win probability come from the seeded simulation and are pinned here
-    with their standard errors rather than asserted as exact.
+    median and the win probability come from the seeded simulation. Three literals below
+    are therefore **reproducibility pins on one RNG stream**, and were nothing else
+    asserted they would only ever confirm whatever the simulator did. The independent
+    statements are the ones that follow them:
+
+    * the *mean* has a closed form. By the reduction in
+      :func:`_monthly_advantage_mean_by_quadrature` it is
+      ``12 E[f(D_month)] - E[f(D_30y)]/30 = 0.00024376``. The seeded run reports
+      0.000272, which is 1.7 standard errors above it — ordinary Monte Carlo noise, and
+      exactly why the reproducibility pin's own tolerance (1e-5) must not be read as a
+      claim about the quantity. The run's standard error is 1.65e-5, larger than that
+      tolerance.
+    * ``12 E[f(D_month)] = 0.00327278`` sits 0.08 bp/yr *below* ``gamma* = 0.0032736``.
+      That gap is the cost of rebalancing monthly rather than continuously, and it is
+      three hundred times smaller than the rebalancing advantage itself, which is why
+      the continuous-time algebra is a legitimate stand-in for a monthly policy here.
+    * the median and the win probability have no closed form, so they are checked
+      against a 4,000,000-path simulation of the one-dimensional reduction above, run
+      with a different generator seed: median 0.0017867 (se 2.5e-6) and
+      P(win) 0.690069 (se 2.3e-4). Both agree with the seeded two-asset run to within
+      its own standard error, so the reduction and the full simulator describe the same
+      distribution.
     """
     result = simulate_growth_comparison(
         growth_rates=[DRIFT, DRIFT],
@@ -665,7 +724,95 @@ def test_sixty_forty_median_and_win_probability_are_pinned_by_simulation() -> No
         paths=60_000,
         chunk_size=3_000,
     )
+    # Reproducibility pins: this seed, this path count, this generator.
     assert result.advantage_mean == pytest.approx(0.000272, rel=0.0, abs=1e-5)
     assert result.advantage_median == pytest.approx(0.001792, rel=0.0, abs=5e-5)
     assert result.probability_rebalanced_wins == pytest.approx(0.6923, rel=0.0, abs=2e-3)
     assert result.advantage_standard_error < 2e-5
+
+    tau = relative_log_volatility(volatility_a=0.16, volatility_b=0.06, correlation=0.1)
+    assert tau**2 == pytest.approx(0.02728, rel=0.0, abs=1e-15)
+    analytic_mean = _monthly_advantage_mean_by_quadrature(
+        weight_a=0.6, tau_squared=tau**2, horizon_years=HORIZON, steps_per_year=12
+    )
+    assert analytic_mean == pytest.approx(0.000243764322, rel=0.0, abs=1e-11)
+    # The simulated mean must agree with it inside the run's OWN standard error, which
+    # is the only tolerance that is not a tuning knob.
+    assert abs(result.advantage_mean - analytic_mean) < 3.0 * result.advantage_standard_error
+    assert result.advantage_standard_error == pytest.approx(1.65e-5, rel=0.0, abs=5e-7)
+
+    # Monthly rebalancing captures all but 0.08 bp/yr of the continuous-time gamma*.
+    held_excess = (
+        buy_and_hold_growth_rate(
+            growth_a=DRIFT,
+            growth_b=DRIFT,
+            volatility_a=0.16,
+            volatility_b=0.06,
+            correlation=0.1,
+            horizon_years=HORIZON,
+            weight_a=0.6,
+        )
+        - DRIFT
+    )
+    monthly_capture = analytic_mean + held_excess
+    gamma = excess_growth_two_asset(
+        volatility_a=0.16, volatility_b=0.06, correlation=0.1, weight_a=0.6
+    )
+    assert monthly_capture == pytest.approx(0.00327278188, rel=0.0, abs=1e-9)
+    assert 0.0 < gamma - monthly_capture < 1e-6
+
+    # Median and win rate, against an independent simulation of the scalar reduction,
+    # judged against that sample's own standard errors rather than a tuned tolerance.
+    sample = _reduced_advantage_sample(
+        weight_a=0.6,
+        tau_squared=tau**2,
+        horizon_years=HORIZON,
+        steps_per_year=12,
+        paths=200_000,
+        seed=987654321,
+    )
+    median = float(np.median(sample))
+    win_rate = float((sample > 0.0).mean())
+    median_se = 1.2533 * float(np.std(sample, ddof=1)) / math.sqrt(sample.size)
+    win_se = math.sqrt(win_rate * (1.0 - win_rate) / sample.size)
+    # The 4,000,000-path reference values quoted in the docstring.
+    assert abs(median - 0.0017867) < 5.0 * median_se
+    assert abs(win_rate - 0.690069) < 5.0 * win_se
+    # And the seeded two-asset run describes the same distribution.
+    assert abs(median - result.advantage_median) < 5.0 * median_se
+    assert abs(win_rate - result.probability_rebalanced_wins) < 5.0 * (
+        win_se + result.probability_standard_error
+    )
+
+
+def _reduced_advantage_sample(
+    *,
+    weight_a: float,
+    tau_squared: float,
+    horizon_years: float,
+    steps_per_year: int,
+    paths: int,
+    seed: int,
+    chunk: int = 20_000,
+) -> FloatArray:
+    """Per-path rebalancing advantage from the scalar reduction, in one dimension.
+
+    ``advantage x T = sum_m f(D_m) - f(sum_m D_m)``; see
+    :func:`_monthly_advantage_mean_by_quadrature` for the derivation. Two assets, a
+    Cholesky factor and a 3-tensor of shocks all collapse to one array of iid normals,
+    so this shares nothing with :func:`simulate_growth_comparison` except the model.
+    """
+    rng = np.random.default_rng(seed)
+    steps = round(horizon_years * steps_per_year)
+    log_a, log_b = math.log(weight_a), math.log(1.0 - weight_a)
+    scale = math.sqrt(tau_squared / steps_per_year)
+    out = np.empty(paths, dtype=np.float64)
+    done = 0
+    while done < paths:
+        size = min(chunk, paths - done)
+        d = rng.normal(0.0, scale, size=(size, steps))
+        block = np.logaddexp(log_a, log_b + d).sum(axis=1)
+        whole = np.logaddexp(log_a, log_b + d.sum(axis=1))
+        out[done : done + size] = (block - whole) / horizon_years
+        done += size
+    return out

@@ -100,6 +100,26 @@ def test_dropping_dykstras_correction_converges_to_a_worse_point() -> None:
     assert naive.matrix[0, 1] == pytest.approx(0.76300194, abs=1e-7)
     assert naive.matrix[0, 2] == pytest.approx(0.16434392, abs=1e-7)
 
+    # The no-Dykstra branch is deliberately wrong, so nothing else in the suite would
+    # notice it drifting. Both figures are therefore tied back to the input by hand.
+    # HIGHAM_EXAMPLE is symmetric under reversing the index order, so a fixed point has
+    # the form [[1, a, b], [a, 1, a], [b, a, 1]] and its distance to [[1,1,0],[1,1,1],
+    # [0,1,1]] is sqrt(4(1 - a)**2 + 2 b**2) — an identity in a and b alone, which the
+    # published pair must satisfy:
+    #   sqrt(4 x 0.23699806**2 + 2 x 0.16434392**2) = 0.52791114.
+    for matrix, distance in ((naive.matrix, 0.52791114), (dykstra.matrix, 0.52779046)):
+        assert matrix[0, 1] == pytest.approx(matrix[1, 2], abs=1e-9)
+        assert matrix == pytest.approx(matrix.T, abs=1e-12)
+        algebraic = math.sqrt(4.0 * (1.0 - matrix[0, 1]) ** 2 + 2.0 * matrix[0, 2] ** 2)
+        assert algebraic == pytest.approx(distance, abs=5e-9)
+    assert math.sqrt(4.0 * 0.23699806**2 + 2.0 * 0.16434392**2) == pytest.approx(
+        0.52791114, abs=5e-9
+    )
+    # And it really is a fixed point: PSD, unit diagonal, so both projections are the
+    # identity there and the iteration has stopped rather than stalled.
+    assert np.diag(naive.matrix) == pytest.approx([1.0, 1.0, 1.0], abs=1e-12)
+    assert float(np.linalg.eigvalsh(naive.matrix).min()) > -1e-12
+
 
 def test_a_valid_correlation_matrix_is_returned_unchanged() -> None:
     valid = np.array([[1.0, 0.3, 0.1], [0.3, 1.0, -0.2], [0.1, -0.2, 1.0]])

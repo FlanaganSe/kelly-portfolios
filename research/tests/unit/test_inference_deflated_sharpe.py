@@ -172,7 +172,24 @@ def test_trial_dispersion_is_across_trials_not_the_sampling_error_of_one_sharpe(
         kurtosis=6.0,
     )
     # The error inflates significance from 4% to essentially certain — the failure mode.
-    assert with_correct_input.deflated_significance == pytest.approx(0.040474, abs=5e-7)
+    #
+    # 0.04047449 is composed by hand rather than read back from the implementation,
+    # because the composition is the arithmetic most likely to be wrong:
+    #
+    #   E[max Z] = (1 - gamma) Phi^-1(0.99) + gamma Phi^-1(1 - 1/(100e))
+    #            = 0.4227843351 x 2.3263478740 + 0.5772156649 x 2.6802104450
+    #            = 2.5306028932
+    #   SR*      = 0.5 x 2.5306028932 = 1.2653014466
+    #   variance = 1 - g3 SR + (g4 - 1)/4 SR^2 = 1 + 0.5 + 1.25 = 2.75
+    #   statistic= (1.0 - 1.2653014466) sqrt(119) / sqrt(2.75) = -1.7452062187
+    #   PSR      = Phi(-1.7452062187) = 0.0404744896
+    #
+    # Each intermediate is asserted too, so a future failure names the step that moved.
+    assert with_correct_input.expected_max_z == pytest.approx(2.5306028932, abs=5e-10)
+    assert with_correct_input.sharpe_threshold == pytest.approx(1.2653014466, abs=5e-10)
+    statistic = (1.0 - 1.2653014466) * math.sqrt(119.0) / math.sqrt(2.75)
+    assert statistic == pytest.approx(-1.7452062187, abs=5e-10)
+    assert with_correct_input.deflated_significance == pytest.approx(0.0404744896, abs=5e-10)
     assert with_the_common_error.deflated_significance > 0.99
 
 

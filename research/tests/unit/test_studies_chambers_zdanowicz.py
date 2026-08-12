@@ -345,11 +345,61 @@ def test_rebalanced_log_growth_is_horizon_invariant_while_holding_decays_to_zero
         assert row.rebalanced_log_growth == pytest.approx(0.0123463063, rel=0.0, abs=1e-9)
         assert row.held_log_growth < previous
         previous = row.held_log_growth
-    assert exhibit_five(periods=12).rate_gap == pytest.approx(0.00118018, rel=0.0, abs=1e-8)
-    assert exhibit_five(periods=3_000).rate_gap == pytest.approx(0.0103387, rel=0.0, abs=1e-6)
+    # ln(1.25) = -ln(0.80), so the outer terms of g_p cancel exactly and
+    # g_p = 0.5 ln(1.025) = 0.01234630629519 with no residual from the up and down legs.
+    assert 0.5 * math.log(1.025) == pytest.approx(0.0123463063, rel=0.0, abs=1e-10)
+    assert asymptotic_rebalanced_rate() == pytest.approx(
+        math.expm1(0.5 * math.log(1.025)), rel=0.0, abs=1e-15
+    )
     assert asymptotic_rebalanced_rate() == pytest.approx(0.0124228366, rel=0.0, abs=1e-9)
+
+    # The two lattice gaps, derived independently of the O(T**2) table.
+    #
+    # The rebalanced side needs no lattice at all: the 50/50 portfolio's per-period
+    # multiplier is iid over {1.25, 1.025, 0.80} with probabilities {1/4, 1/2, 1/4}, and
+    # W**(1/T) is the PRODUCT of the m_t**(1/T), so independence gives
+    # E[W**(1/T)] = (E[m**(1/T)])**T exactly. The held side is the mean of two
+    # independent binomial wealth relatives; at T = 12 it is a 13 x 13 sum over exact
+    # powers of 1.25 and 0.80, which shares no code with the log-space table.
+    assert _rebalanced_rate_by_independence(12) == pytest.approx(
+        exhibit_five(periods=12).rebalanced_mean_annualised_rate, rel=1e-12
+    )
+    assert _rebalanced_rate_by_independence(3_000) == pytest.approx(
+        exhibit_five(periods=3_000).rebalanced_mean_annualised_rate, rel=1e-12
+    )
+    assert _held_rate_by_enumeration(12) == pytest.approx(
+        exhibit_five(periods=12).held_mean_annualised_rate, rel=1e-12
+    )
+    assert _rebalanced_rate_by_independence(12) - _held_rate_by_enumeration(12) == pytest.approx(
+        0.001180176412, rel=0.0, abs=5e-12
+    )
+    assert exhibit_five(periods=12).rate_gap == pytest.approx(0.001180176412, rel=0.0, abs=5e-12)
+    # 0.010339142 at 3,000 periods, not the 0.0103387 previously pinned here: the old
+    # literal was a rounding that happened to sit inside its own 1e-6 tolerance.
+    assert exhibit_five(periods=3_000).rate_gap == pytest.approx(
+        0.010339142421, rel=0.0, abs=5e-12
+    )
     # The held portfolio's limit is exactly zero: it converges on a single zero-growth asset.
     assert exhibit_five(periods=3_000).held_log_growth < 0.0021
+
+
+def _rebalanced_rate_by_independence(periods: int) -> float:
+    """``E[W**(1/T)] - 1 = (E[m**(1/T)])**T - 1`` for the rebalanced 50/50 portfolio."""
+    root = 1.0 / periods
+    per_period = 0.25 * 1.25**root + 0.5 * 1.025**root + 0.25 * 0.80**root
+    return float(per_period**periods) - 1.0
+
+
+def _held_rate_by_enumeration(periods: int) -> float:
+    """``E[W**(1/T)] - 1`` for buy-and-hold, summed over the two binomial counts."""
+    relatives = [1.25**i * 0.80 ** (periods - i) for i in range(periods + 1)]
+    weights = [math.comb(periods, i) for i in range(periods + 1)]
+    total = sum(
+        weights[i] * weights[j] * (0.5 * (relatives[i] + relatives[j])) ** (1.0 / periods)
+        for i in range(periods + 1)
+        for j in range(periods + 1)
+    )
+    return float(total) / 4.0**periods - 1.0
 
 
 def test_exhibit_five_refuses_an_unmanageable_horizon() -> None:
