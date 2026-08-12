@@ -28,4 +28,11 @@ setup and current status.
   underneath any allocation feature, and where the optimiser should run. Answers
   how to compute it, and defers to the edge framework on whether to.
 
-`docs/decisions/` does not exist yet. Create it with the first real decision record.
+## Decisions
+
+- [0001 — Contained Python research workspace](decisions/0001-contained-python-research-workspace.md)
+  — why portfolio research runs in `research/` under `uv` rather than in the
+  client, and what that costs.
+- [0002 — No research-grade free price source](decisions/0002-no-research-grade-free-price-source.md)
+  — every free price feed was tested and none carries a total-return contract, so
+  fund-level work is exploratory until a source is licensed.
