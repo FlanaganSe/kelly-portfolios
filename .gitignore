@@ -24,3 +24,13 @@ CLAUDE.local.md
 .env.production
 
 # Keep source, documentation, and .env.example in version control.
+
+# Python research workspace
+research/.venv/
+research/cache/
+research/artifacts/
+research/**/__pycache__/
+research/.pytest_cache/
+research/.mypy_cache/
+research/.ruff_cache/
+research/*.egg-info/
