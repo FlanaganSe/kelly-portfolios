@@ -11,14 +11,15 @@ setup and current status.
 
 ## Research
 
-- [Repository assessment](research/2026-08-11-repository-assessment.md) — what this
-  project is, what exists, and the gaps between its claims and its code.
+- [Portfolio edge research framework](research/portfolio-edge-research-framework.md)
+  — **the canonical synthesis, and the place to start.** Answers the commissioning
+  question directly, holds the provisional portfolio-design map, accounts for what
+  advanced, failed and remains unresolved across all five experiments, and names the
+  single next experiment. Also carries the evidence, falsifiable hypotheses and
+  validation protocol for leverage, rebalancing, crisis protection, factors and
+  manager alpha. Answers whether a return source is real.
 - [Agent configuration](research/2026-08-11-agent-configuration.md) — the evidence
   behind the instruction files, permissions, hook, and skills in this repository.
-- [Portfolio edge research framework](research/portfolio-edge-research-framework.md)
-  — evidence, falsifiable hypotheses, numerical fixtures, and the validation
-  protocol for leverage, rebalancing, crisis protection, factors, and manager alpha.
-  Answers whether a return source is real.
 - [Fama-French factor reproduction](research/fama-french-reproduction.md) — the
   Phase 1 ingestion gate: which published table was reproduced from which data
   vintage, the two cells that do not reproduce, and what a downstream experiment
@@ -32,11 +33,11 @@ setup and current status.
 - [Factor persistence and decay](research/factor-persistence.md) — Experiment 001:
   what HML, UMD, RMW and CMA did before and after publication across frozen eras,
   how little those windows can detect, and why none of the four is promoted.
-- [Factor product exposure and implementation audit](research/factor-product-audit.md)
-  — Experiment 002: which retail factor ETFs deliver the exposure they advertise,
-  what they cost against a cheap replication, and why a 2019-onward window
-  decides nothing about alpha. Also measures how much of the 2019 factor shelf
-  no longer exists.
+- [Investable factor products](research/factor-product-audit.md) — Experiment 002:
+  which of 44 screened ETFs deliver the exposure they advertise, what they cost
+  against a cheap replication, why a 72-month N-PORT window decides nothing about
+  alpha, and why nothing is promoted. Also measures how much of the 2019 factor
+  shelf no longer exists.
 - [Rebalancing policy on real regional equity](research/rebalancing-policy.md) —
   Experiment 003, the first confirmatory run: five policies on US, developed-ex-US
   and emerging equity over 35 years. The excess-growth closed form reproduces to a
