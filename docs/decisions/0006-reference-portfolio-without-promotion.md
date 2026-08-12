@@ -68,7 +68,10 @@ experiment page does not.
 - **No sleeve is promoted.** Decision 0004 stands in full, including zero leverage,
   rebalancing as risk control only, and the fifteen `exploratory` products being usable
   as implementation proxies and for nothing else.
-- **No number from `research/` may appear in the shipped application as a finding**
+- ~~**No number from `research/` may appear in the shipped application as a finding**~~
+  **Amended by [decision 0007](0007-application-may-render-research.md):** the
+  application may render a finding provided its status, date, interval and source
+  travel with it. The ban on shipping *price data* is separate and still stands
   ([decision 0002](0002-no-research-grade-free-price-source.md)).
 - **The cheap broad-market portfolio remains the control**
   ([decision 0003](0003-cheap-broad-market-control.md)). The reference portfolio *is*

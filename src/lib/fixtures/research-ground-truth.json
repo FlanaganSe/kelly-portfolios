@@ -1,0 +1,1375 @@
+{
+  "_provenance": {
+    "generatedBy": "research/src/portfolio_edge/reporting/client_fixtures.py",
+    "regenerate": "cd research && uv run python -m portfolio_edge.reporting.client_fixtures > ../src/lib/fixtures/research-ground-truth.json",
+    "sourceModules": [
+      "portfolio_edge.studies.outperformance_horizon",
+      "portfolio_edge.studies.tax_structure"
+    ],
+    "asOf": "2026-08-12",
+    "purpose": "Expected values for the TypeScript ports in src/lib/. Computed by the Python research workspace, so a passing test checks the port against something calculated independently of it. Do not hand-edit; regenerate."
+  },
+  "probabilityOfOutperformance": [
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "horizonYears": 1.0,
+      "expected": 0.9910954930342003
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "horizonYears": 3.0,
+      "expected": 0.9999797148262419
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "horizonYears": 5.0,
+      "expected": 0.9999999416239075
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "horizonYears": 10.0,
+      "expected": 0.9999999999999664
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "horizonYears": 30.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "horizonYears": 50.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "horizonYears": 1.0,
+      "expected": 0.9850242705386061
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "horizonYears": 3.0,
+      "expected": 0.9999149813592633
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "horizonYears": 5.0,
+      "expected": 0.9999993947271848
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "horizonYears": 10.0,
+      "expected": 0.9999999999966628
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "horizonYears": 30.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "horizonYears": 50.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 24.4,
+      "trackingErrorBp": 401.0,
+      "horizonYears": 1.0,
+      "expected": 0.5242598210134671
+    },
+    {
+      "edgeBp": 24.4,
+      "trackingErrorBp": 401.0,
+      "horizonYears": 3.0,
+      "expected": 0.5419674674316354
+    },
+    {
+      "edgeBp": 24.4,
+      "trackingErrorBp": 401.0,
+      "horizonYears": 5.0,
+      "expected": 0.5541130742833419
+    },
+    {
+      "edgeBp": 24.4,
+      "trackingErrorBp": 401.0,
+      "horizonYears": 10.0,
+      "expected": 0.5762925609749106
+    },
+    {
+      "edgeBp": 24.4,
+      "trackingErrorBp": 401.0,
+      "horizonYears": 30.0,
+      "expected": 0.6305376140278011
+    },
+    {
+      "edgeBp": 24.4,
+      "trackingErrorBp": 401.0,
+      "horizonYears": 50.0,
+      "expected": 0.6664965533818216
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 1.0,
+      "expected": 0.5432287882720552
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 3.0,
+      "expected": 0.5745817543318945
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 5.0,
+      "expected": 0.5959094102860475
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 10.0,
+      "expected": 0.6343260224161411
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 30.0,
+      "expected": 0.7239680291792309
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 50.0,
+      "expected": 0.7786720161413592
+    },
+    {
+      "edgeBp": 5.6,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 1.0,
+      "expected": 0.5159534368528308
+    },
+    {
+      "edgeBp": 5.6,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 3.0,
+      "expected": 0.527617436243418
+    },
+    {
+      "edgeBp": 5.6,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 5.0,
+      "expected": 0.5356349627175987
+    },
+    {
+      "edgeBp": 5.6,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 10.0,
+      "expected": 0.5503284057193168
+    },
+    {
+      "edgeBp": 5.6,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 30.0,
+      "expected": 0.5867096492803215
+    },
+    {
+      "edgeBp": 5.6,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 50.0,
+      "expected": 0.6113512946052392
+    },
+    {
+      "edgeBp": 1.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 1.0,
+      "expected": 0.5051291165780908
+    },
+    {
+      "edgeBp": 1.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 3.0,
+      "expected": 0.5088834010257632
+    },
+    {
+      "edgeBp": 1.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 5.0,
+      "expected": 0.5114677895498483
+    },
+    {
+      "edgeBp": 1.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 10.0,
+      "expected": 0.5162156699359917
+    },
+    {
+      "edgeBp": 1.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 30.0,
+      "expected": 0.5280708991283154
+    },
+    {
+      "edgeBp": 1.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 50.0,
+      "expected": 0.536219429400705
+    },
+    {
+      "edgeBp": -7.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 1.0,
+      "expected": 0.4777847094128893
+    },
+    {
+      "edgeBp": -7.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 3.0,
+      "expected": 0.46156174746087536
+    },
+    {
+      "edgeBp": -7.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 5.0,
+      "expected": 0.45042766314010985
+    },
+    {
+      "edgeBp": -7.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 10.0,
+      "expected": 0.4300746790272215
+    },
+    {
+      "edgeBp": -7.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 30.0,
+      "expected": 0.3801222580200019
+    },
+    {
+      "edgeBp": -7.8,
+      "trackingErrorBp": 140.0,
+      "horizonYears": 50.0,
+      "expected": 0.3468054730618399
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 1.0,
+      "expected": 0.6067723092782256
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 3.0,
+      "expected": 0.6805512574798279
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 5.0,
+      "expected": 0.7276720113922375
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 10.0,
+      "expected": 0.804198151091714
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 30.0,
+      "expected": 0.9310782776468403
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 50.0,
+      "expected": 0.9722963015607256
+    },
+    {
+      "edgeBp": 37.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 1.0,
+      "expected": 0.5585959350558448
+    },
+    {
+      "edgeBp": 37.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 3.0,
+      "expected": 0.600762884364721
+    },
+    {
+      "edgeBp": 37.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 5.0,
+      "expected": 0.6291562878733827
+    },
+    {
+      "edgeBp": 37.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 10.0,
+      "expected": 0.6794468209135051
+    },
+    {
+      "edgeBp": 37.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 30.0,
+      "expected": 0.7902819048913642
+    },
+    {
+      "edgeBp": 37.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 50.0,
+      "expected": 0.8513749658007295
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 1.0,
+      "expected": 0.6400400087993104
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 3.0,
+      "expected": 0.7327179775046585
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 5.0,
+      "expected": 0.7886591221509865
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 10.0,
+      "expected": 0.8715784833796827
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 30.0,
+      "expected": 0.9752317894122732
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "horizonYears": 50.0,
+      "expected": 0.9943847340796667
+    },
+    {
+      "edgeBp": 49.0,
+      "trackingErrorBp": 0.0,
+      "horizonYears": 1.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 49.0,
+      "trackingErrorBp": 0.0,
+      "horizonYears": 3.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 49.0,
+      "trackingErrorBp": 0.0,
+      "horizonYears": 5.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 49.0,
+      "trackingErrorBp": 0.0,
+      "horizonYears": 10.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 49.0,
+      "trackingErrorBp": 0.0,
+      "horizonYears": 30.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 49.0,
+      "trackingErrorBp": 0.0,
+      "horizonYears": 50.0,
+      "expected": 1.0
+    }
+  ],
+  "horizonForConfidence": [
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "confidence": 0.75,
+      "expected": 0.0810239433819557
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "confidence": 0.9,
+      "expected": 0.29250604010243336
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "confidence": 0.95,
+      "expected": 0.4818559000812972
+    },
+    {
+      "edgeBp": 109.0,
+      "trackingErrorBp": 46.0,
+      "confidence": 0.99,
+      "expected": 0.9638556195699843
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "confidence": 0.75,
+      "expected": 0.09654691671051657
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "confidence": 0.9,
+      "expected": 0.3485458138955739
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "confidence": 0.95,
+      "expected": 0.5741722694526432
+    },
+    {
+      "edgeBp": 89.0,
+      "trackingErrorBp": 41.0,
+      "confidence": 0.99,
+      "expected": 1.1485159119558572
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "confidence": 0.75,
+      "expected": 38.59398326326016
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "confidence": 0.9,
+      "expected": 139.328854470812
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "confidence": 0.95,
+      "expected": 229.521518785795
+    },
+    {
+      "edgeBp": 15.2,
+      "trackingErrorBp": 140.0,
+      "confidence": 0.99,
+      "expected": 459.1115428006625
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.75,
+      "expected": 6.198410379099524
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.9,
+      "expected": 22.376996221637885
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.95,
+      "expected": 36.862444453171506
+    },
+    {
+      "edgeBp": 68.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.99,
+      "expected": 73.73589123072114
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.75,
+      "expected": 3.5384505670316297
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.9,
+      "expected": 12.77422599121649
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.95,
+      "expected": 21.04344977178581
+    },
+    {
+      "edgeBp": 90.0,
+      "trackingErrorBp": 251.0,
+      "confidence": 0.99,
+      "expected": 42.0931803766487
+    }
+  ],
+  "detectableEdgeBp": [
+    {
+      "trackingErrorBp": 46.0,
+      "horizonYears": 10.0,
+      "confidence": 0.9,
+      "expected": 18.64206067594731
+    },
+    {
+      "trackingErrorBp": 46.0,
+      "horizonYears": 10.0,
+      "confidence": 0.95,
+      "expected": 23.926825842275637
+    },
+    {
+      "trackingErrorBp": 46.0,
+      "horizonYears": 30.0,
+      "confidence": 0.9,
+      "expected": 10.762998749507517
+    },
+    {
+      "trackingErrorBp": 46.0,
+      "horizonYears": 30.0,
+      "confidence": 0.95,
+      "expected": 13.814159340891134
+    },
+    {
+      "trackingErrorBp": 46.0,
+      "horizonYears": 50.0,
+      "confidence": 0.9,
+      "expected": 8.336982982418773
+    },
+    {
+      "trackingErrorBp": 46.0,
+      "horizonYears": 50.0,
+      "confidence": 0.95,
+      "expected": 10.700401813825398
+    },
+    {
+      "trackingErrorBp": 140.0,
+      "horizonYears": 10.0,
+      "confidence": 0.9,
+      "expected": 56.73670640505703
+    },
+    {
+      "trackingErrorBp": 140.0,
+      "horizonYears": 10.0,
+      "confidence": 0.95,
+      "expected": 72.82077430257802
+    },
+    {
+      "trackingErrorBp": 140.0,
+      "horizonYears": 30.0,
+      "confidence": 0.9,
+      "expected": 32.756952715892446
+    },
+    {
+      "trackingErrorBp": 140.0,
+      "horizonYears": 30.0,
+      "confidence": 0.95,
+      "expected": 42.0430936461904
+    },
+    {
+      "trackingErrorBp": 140.0,
+      "horizonYears": 50.0,
+      "confidence": 0.9,
+      "expected": 25.37342646823105
+    },
+    {
+      "trackingErrorBp": 140.0,
+      "horizonYears": 50.0,
+      "confidence": 0.95,
+      "expected": 32.56644030294686
+    },
+    {
+      "trackingErrorBp": 251.0,
+      "horizonYears": 10.0,
+      "confidence": 0.9,
+      "expected": 101.7208093404951
+    },
+    {
+      "trackingErrorBp": 251.0,
+      "horizonYears": 10.0,
+      "confidence": 0.95,
+      "expected": 130.55724535676487
+    },
+    {
+      "trackingErrorBp": 251.0,
+      "horizonYears": 30.0,
+      "confidence": 0.9,
+      "expected": 58.72853665492145
+    },
+    {
+      "trackingErrorBp": 251.0,
+      "horizonYears": 30.0,
+      "confidence": 0.95,
+      "expected": 75.37726075138421
+    },
+    {
+      "trackingErrorBp": 251.0,
+      "horizonYears": 50.0,
+      "confidence": 0.9,
+      "expected": 45.49092888232852
+    },
+    {
+      "trackingErrorBp": 251.0,
+      "horizonYears": 50.0,
+      "confidence": 0.95,
+      "expected": 58.386975114569005
+    },
+    {
+      "trackingErrorBp": 401.0,
+      "horizonYears": 10.0,
+      "confidence": 0.9,
+      "expected": 162.51013763162766
+    },
+    {
+      "trackingErrorBp": 401.0,
+      "horizonYears": 10.0,
+      "confidence": 0.95,
+      "expected": 208.5795035380985
+    },
+    {
+      "trackingErrorBp": 401.0,
+      "horizonYears": 30.0,
+      "confidence": 0.9,
+      "expected": 93.82527170766336
+    },
+    {
+      "trackingErrorBp": 401.0,
+      "horizonYears": 30.0,
+      "confidence": 0.95,
+      "expected": 120.42343251515966
+    },
+    {
+      "trackingErrorBp": 401.0,
+      "horizonYears": 50.0,
+      "confidence": 0.9,
+      "expected": 72.67674295543321
+    },
+    {
+      "trackingErrorBp": 401.0,
+      "horizonYears": 50.0,
+      "confidence": 0.95,
+      "expected": 93.27958972486923
+    }
+  ],
+  "normalCdf": [
+    {
+      "x": -4.0,
+      "expected": 3.167124183311986e-05
+    },
+    {
+      "x": -3.0,
+      "expected": 0.001349898031630093
+    },
+    {
+      "x": -2.5758293035489004,
+      "expected": 0.005000000000000002
+    },
+    {
+      "x": -1.959963984540054,
+      "expected": 0.024999999999999998
+    },
+    {
+      "x": -1.0,
+      "expected": 0.15865525393145707
+    },
+    {
+      "x": -0.5,
+      "expected": 0.3085375387259869
+    },
+    {
+      "x": 0.0,
+      "expected": 0.5
+    },
+    {
+      "x": 0.5,
+      "expected": 0.6914624612740131
+    },
+    {
+      "x": 1.0,
+      "expected": 0.8413447460685429
+    },
+    {
+      "x": 1.2815515655446004,
+      "expected": 0.8999999999999999
+    },
+    {
+      "x": 2.0,
+      "expected": 0.9772498680518208
+    },
+    {
+      "x": 3.0,
+      "expected": 0.9986501019683699
+    },
+    {
+      "x": 4.0,
+      "expected": 0.9999683287581669
+    },
+    {
+      "x": 6.0,
+      "expected": 0.9999999990134123
+    }
+  ],
+  "normalPpf": [
+    {
+      "p": 0.5,
+      "expected": 0.0
+    },
+    {
+      "p": 0.75,
+      "expected": 0.6744897501960817
+    },
+    {
+      "p": 0.9,
+      "expected": 1.2815515655446004
+    },
+    {
+      "p": 0.95,
+      "expected": 1.644853626951472
+    },
+    {
+      "p": 0.975,
+      "expected": 1.959963984540054
+    },
+    {
+      "p": 0.99,
+      "expected": 2.3263478740408408
+    },
+    {
+      "p": 0.995,
+      "expected": 2.5758293035489004
+    },
+    {
+      "p": 0.999,
+      "expected": 3.090232306167813
+    }
+  ],
+  "regimes": [
+    {
+      "label": "US top marginal bracket",
+      "asOf": "2026-08-12",
+      "ordinaryIncome": 0.37,
+      "longTermCapitalGain": 0.2,
+      "netInvestmentIncome": 0.038,
+      "ordinary": 0.408,
+      "capitalGain": 0.23800000000000002,
+      "qualifiedDividend": 0.23800000000000002,
+      "section1256Blended": 0.30600000000000005
+    },
+    {
+      "label": "US upper-middle bracket",
+      "asOf": "2026-08-12",
+      "ordinaryIncome": 0.24,
+      "longTermCapitalGain": 0.15,
+      "netInvestmentIncome": 0.0,
+      "ordinary": 0.24,
+      "capitalGain": 0.15,
+      "qualifiedDividend": 0.15,
+      "section1256Blended": 0.186
+    },
+    {
+      "label": "US zero long-term-rate bracket",
+      "asOf": "2026-08-12",
+      "ordinaryIncome": 0.12,
+      "longTermCapitalGain": 0.0,
+      "netInvestmentIncome": 0.0,
+      "ordinary": 0.12,
+      "capitalGain": 0.0,
+      "qualifiedDividend": 0.0,
+      "section1256Blended": 0.048
+    }
+  ],
+  "shelterCandidates": [
+    {
+      "label": "Taxable investment-grade bonds",
+      "dividendYield": 0.0465,
+      "qualifiedFraction": 0.0,
+      "foreignWithholdingRate": 0.0
+    },
+    {
+      "label": "Developed ex-US equity",
+      "dividendYield": 0.026,
+      "qualifiedFraction": 1.0,
+      "foreignWithholdingRate": 0.06068
+    },
+    {
+      "label": "Emerging-market equity",
+      "dividendYield": 0.0203,
+      "qualifiedFraction": 1.0,
+      "foreignWithholdingRate": 0.09853
+    },
+    {
+      "label": "US equity",
+      "dividendYield": 0.011,
+      "qualifiedFraction": 1.0,
+      "foreignWithholdingRate": 0.0
+    }
+  ],
+  "candidateCosts": [
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 189.71999999999997,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 189.71999999999997,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 189.71999999999997,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 61.879999999999995,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 69.7684,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 77.65679999999999,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 48.31399999999999,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 58.31479499999999,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 68.31558999999999,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 26.18,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 26.18,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US top marginal bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 26.18,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 111.6,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 111.6,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 111.6,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 38.99999999999999,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 46.8884,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 54.776799999999994,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 30.449999999999992,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 40.45079499999999,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 50.451589999999996,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 16.499999999999996,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 16.499999999999996,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 16.499999999999996,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 55.8,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 55.8,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Taxable investment-grade bonds",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 55.8,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 15.776799999999998,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 15.776799999999998,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Developed ex-US equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 15.776799999999998,
+      "shelteredCostBp": 15.776799999999998
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 20.00159,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 20.00159,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "Emerging-market equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 20.00159,
+      "shelteredCostBp": 20.00159
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 1.0,
+      "taxableCostBp": 0.0,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 0.5,
+      "taxableCostBp": 0.0,
+      "shelteredCostBp": 0.0
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "candidate": "US equity",
+      "foreignCreditUtilisation": 0.0,
+      "taxableCostBp": 0.0,
+      "shelteredCostBp": 0.0
+    }
+  ],
+  "shelterPriority": [
+    {
+      "regime": "US top marginal bracket",
+      "foreignCreditUtilisation": 1.0,
+      "ranking": [
+        {
+          "label": "Taxable investment-grade bonds",
+          "priorityBp": 189.71999999999997
+        },
+        {
+          "label": "Developed ex-US equity",
+          "priorityBp": 46.1032
+        },
+        {
+          "label": "Emerging-market equity",
+          "priorityBp": 28.312409999999993
+        },
+        {
+          "label": "US equity",
+          "priorityBp": 26.18
+        }
+      ]
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "foreignCreditUtilisation": 1.0,
+      "ranking": [
+        {
+          "label": "Taxable investment-grade bonds",
+          "priorityBp": 111.6
+        },
+        {
+          "label": "Developed ex-US equity",
+          "priorityBp": 23.223199999999995
+        },
+        {
+          "label": "US equity",
+          "priorityBp": 16.499999999999996
+        },
+        {
+          "label": "Emerging-market equity",
+          "priorityBp": 10.448409999999992
+        }
+      ]
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "foreignCreditUtilisation": 1.0,
+      "ranking": [
+        {
+          "label": "Taxable investment-grade bonds",
+          "priorityBp": 55.8
+        },
+        {
+          "label": "Developed ex-US equity",
+          "priorityBp": 0.0
+        },
+        {
+          "label": "Emerging-market equity",
+          "priorityBp": 0.0
+        },
+        {
+          "label": "US equity",
+          "priorityBp": 0.0
+        }
+      ]
+    }
+  ],
+  "foreignSleeves": [
+    {
+      "label": "Developed ex-US equity",
+      "dividendYield": 0.026,
+      "withholdingRate": 0.06068,
+      "forfeitedBp": 15.776799999999998,
+      "breakevenQualifiedRate": 0.10517866666666667,
+      "form1116SingleAssets": 190152.62917701944,
+      "form1116JointAssets": 380305.2583540389
+    },
+    {
+      "label": "Emerging-market equity",
+      "dividendYield": 0.0203,
+      "withholdingRate": 0.09853,
+      "forfeitedBp": 20.00159,
+      "breakevenQualifiedRate": 0.21507086021505376,
+      "form1116SingleAssets": 149988.07594796212,
+      "form1116JointAssets": 299976.15189592424
+    }
+  ],
+  "deferralPaths": [
+    {
+      "years": 10,
+      "realisedGainFraction": 0.0,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 1.7724795630925039,
+      "terminalBasis": 1.7724795630925039,
+      "cumulativeTaxPaid": 0.24127314437797368,
+      "annualisedLogGrowth": 0.05723794493675499
+    },
+    {
+      "years": 10,
+      "realisedGainFraction": 0.05,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 1.762890550837373,
+      "terminalBasis": 1.762890550837373,
+      "cumulativeTaxPaid": 0.23827815104894332,
+      "annualisedLogGrowth": 0.05669548202846296
+    },
+    {
+      "years": 10,
+      "realisedGainFraction": 0.1,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 1.7549486538034824,
+      "terminalBasis": 1.7549486538034824,
+      "cumulativeTaxPaid": 0.23579761103048413,
+      "annualisedLogGrowth": 0.05624395993977993
+    },
+    {
+      "years": 10,
+      "realisedGainFraction": 0.25,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 1.738217787982097,
+      "terminalBasis": 1.738217787982097,
+      "cumulativeTaxPaid": 0.23057196002590435,
+      "annualisedLogGrowth": 0.0552860328533523
+    },
+    {
+      "years": 10,
+      "realisedGainFraction": 0.5,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 1.7236581699060582,
+      "terminalBasis": 1.7236581699060582,
+      "cumulativeTaxPaid": 0.2260244677659341,
+      "annualisedLogGrowth": 0.054444887526528395
+    },
+    {
+      "years": 10,
+      "realisedGainFraction": 1.0,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 1.712216537328574,
+      "terminalBasis": 1.712216537328574,
+      "cumulativeTaxPaid": 0.22245083449370165,
+      "annualisedLogGrowth": 0.053778875180581345
+    },
+    {
+      "years": 20,
+      "realisedGainFraction": 0.0,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 3.328062374735645,
+      "terminalBasis": 3.328062374735645,
+      "cumulativeTaxPaid": 0.7271375921090334,
+      "annualisedLogGrowth": 0.060119513259593624
+    },
+    {
+      "years": 20,
+      "realisedGainFraction": 0.05,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 3.225337129452948,
+      "terminalBasis": 3.225337129452948,
+      "cumulativeTaxPaid": 0.6950528042123381,
+      "annualisedLogGrowth": 0.05855187405243406
+    },
+    {
+      "years": 20,
+      "realisedGainFraction": 0.1,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 3.1554817650472975,
+      "terminalBasis": 3.1554817650472975,
+      "cumulativeTaxPaid": 0.6732344620488936,
+      "annualisedLogGrowth": 0.057457059162076315
+    },
+    {
+      "years": 20,
+      "realisedGainFraction": 0.25,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 3.044455331317879,
+      "terminalBasis": 3.044455331317879,
+      "cumulativeTaxPaid": 0.6385569145061093,
+      "annualisedLogGrowth": 0.05566610060158683
+    },
+    {
+      "years": 20,
+      "realisedGainFraction": 0.5,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 2.975716444184914,
+      "terminalBasis": 2.975716444184914,
+      "cumulativeTaxPaid": 0.6170872883412197,
+      "annualisedLogGrowth": 0.05452424157897466
+    },
+    {
+      "years": 20,
+      "realisedGainFraction": 1.0,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 2.931685470701452,
+      "terminalBasis": 2.931685470701452,
+      "cumulativeTaxPaid": 0.6033348320563591,
+      "annualisedLogGrowth": 0.05377887518058133
+    },
+    {
+      "years": 30,
+      "realisedGainFraction": 0.0,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 6.4606214733765555,
+      "terminalBasis": 6.4606214733765555,
+      "cumulativeTaxPaid": 1.7055484391911029,
+      "annualisedLogGrowth": 0.06219085054921111
+    },
+    {
+      "years": 30,
+      "realisedGainFraction": 0.05,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 5.981389740780085,
+      "terminalBasis": 5.981389740780085,
+      "cumulativeTaxPaid": 1.5558671368840689,
+      "annualisedLogGrowth": 0.05962176463620132
+    },
+    {
+      "years": 30,
+      "realisedGainFraction": 0.1,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 5.703969641218366,
+      "terminalBasis": 5.703969641218366,
+      "cumulativeTaxPaid": 1.4692188643175474,
+      "annualisedLogGrowth": 0.058038745357692816
+    },
+    {
+      "years": 30,
+      "realisedGainFraction": 0.25,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 5.333809557800432,
+      "terminalBasis": 5.333809557800432,
+      "cumulativeTaxPaid": 1.3536045600479047,
+      "annualisedLogGrowth": 0.05580219072243171
+    },
+    {
+      "years": 30,
+      "realisedGainFraction": 0.5,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 5.137270133303967,
+      "terminalBasis": 5.137270133303967,
+      "cumulativeTaxPaid": 1.2922182306120003,
+      "annualisedLogGrowth": 0.05455072786373852
+    },
+    {
+      "years": 30,
+      "realisedGainFraction": 1.0,
+      "pretaxLogGrowth": 0.07,
+      "terminalWealth": 5.019680345180928,
+      "terminalBasis": 5.019680345180928,
+      "cumulativeTaxPaid": 1.2554907114869571,
+      "annualisedLogGrowth": 0.05377887518058132
+    }
+  ],
+  "disposalPaths": [
+    {
+      "years": 10,
+      "disposal": "liquidate",
+      "terminalWealth": 1.7724795630925039,
+      "annualisedLogGrowth": 0.05723794493675499
+    },
+    {
+      "years": 10,
+      "disposal": "step_up",
+      "terminalWealth": 2.0137527074704775,
+      "annualisedLogGrowth": 0.07000000000000005
+    },
+    {
+      "years": 20,
+      "disposal": "liquidate",
+      "terminalWealth": 3.328062374735645,
+      "annualisedLogGrowth": 0.060119513259593624
+    },
+    {
+      "years": 20,
+      "disposal": "step_up",
+      "terminalWealth": 4.055199966844678,
+      "annualisedLogGrowth": 0.07000000000000003
+    },
+    {
+      "years": 30,
+      "disposal": "liquidate",
+      "terminalWealth": 6.4606214733765555,
+      "annualisedLogGrowth": 0.06219085054921111
+    },
+    {
+      "years": 30,
+      "disposal": "step_up",
+      "terminalWealth": 8.166169912567659,
+      "annualisedLogGrowth": 0.07000000000000003
+    }
+  ]
+}
