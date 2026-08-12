@@ -1,13 +1,18 @@
 """Emit ground-truth fixtures for the TypeScript client ports.
 
-Run with `uv run python -m portfolio_edge.reporting.client_fixtures`. The values it prints come from the
-research workspace's own study modules, so a TypeScript test that matches them is checked
-against something computed independently of itself.
+Run with ``uv run python -m portfolio_edge.reporting.client_fixtures``. Every value it
+prints comes from this workspace's own study modules, so a TypeScript test that matches
+them is checked against something calculated independently of the code under test.
+
+Redirect it to ``src/lib/fixtures/research-ground-truth.json`` in the client. Decision
+0007 requires that path to exist and requires the client's ports to be tested against it.
 """
 
 from __future__ import annotations
 
 import json
+
+from scipy.stats import norm
 
 from portfolio_edge.studies.outperformance_horizon import (
     detectable_edge_bp,
@@ -20,8 +25,6 @@ from portfolio_edge.studies.tax_structure import (
     REGIMES,
     SHELTER_CANDIDATES,
     TOP_BRACKET,
-    UPPER_MIDDLE_BRACKET,
-    ZERO_RATE_BRACKET,
     Account,
     Disposal,
     after_tax_path,
@@ -93,11 +96,24 @@ for te_bp in (46.0, 140.0, 251.0, 401.0):
 out["detectableEdgeBp"] = detectable_cases
 
 # normal cdf / ppf spot values, so the TS special functions are pinned directly
-from scipy.stats import norm  # noqa: E402
-
 out["normalCdf"] = [
     {"x": x, "expected": float(norm.cdf(x))}
-    for x in (-4.0, -3.0, -2.5758293035489004, -1.959963984540054, -1.0, -0.5, 0.0, 0.5, 1.0, 1.2815515655446004, 2.0, 3.0, 4.0, 6.0)
+    for x in (
+        -4.0,
+        -3.0,
+        -2.5758293035489004,
+        -1.959963984540054,
+        -1.0,
+        -0.5,
+        0.0,
+        0.5,
+        1.0,
+        1.2815515655446004,
+        2.0,
+        3.0,
+        4.0,
+        6.0,
+    )
 ]
 out["normalPpf"] = [
     {"p": p, "expected": float(norm.ppf(p))}
