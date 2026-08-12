@@ -22,6 +22,17 @@ evidence would be needed to promote one. Neither informs an allocation.
 | Experiment 008, **DBMF** | **`exploratory`** | It delivers the index's exposure at a loading of **+0.671** and trails it by less than its own fee. It may be used as an implementation proxy in a later experiment and for nothing else. |
 | Experiment 008, **CTA, FMF, KMLM, WTMF** | **`rejected`** | They do not deliver *this benchmark's* exposure at the frozen 0.50 bar. That is a statement about a measured loading, not about whether they are well run. |
 
+> **A third experiment has since judged the same sleeve against a different
+> comparator, and rejected it.** [Experiment 010b](marginal-sleeve-value.md) measures a
+> **10%** trend sleeve added to a **global equity core**, with no risk match: on the
+> deciding growth basis it contributes **+0.258 pp/yr** against a 0.30 threshold, and
+> clause (a) fires. Its certainty-equivalent companion is +1.172, and the +0.913 pp/yr
+> between them is de-risking — which any investor obtains free by holding less equity,
+> and which is therefore not an edge. **Neither
+> experiment supersedes the other** — they ask different questions of different
+> portfolios at different weights — but a reader who wants one number for "what is
+> trend worth" should know there are two, and that the portfolio-level one is smaller.
+
 > **Experiment 004 evaluated an INDEX. It said nothing about any product, and its
 > verdict was for a time repeated to the project owner as though it applied to KMLM,
 > DBMF and CTA.** It did not. Those products were never tested, they are differently
@@ -47,13 +58,29 @@ evidence would be needed to promote one. Neither informs an allocation.
 
 ## Conclusion
 
-Adding a 15% trend sleeve to a 60/40 US equity / cash portfolio raised the CRRA
-(γ=3) certainty-equivalent return by **+1.34 percentage points a year** over a
-risk-matched cash comparator, net-pessimistic, 95% interval **[+0.76, +1.92]** on
-432 months. That survived every hostile test: removing the best month costs 6%,
-removing the best crisis costs 9%, doubling all costs costs 27%, delaying execution
-a full month *improves* it, and the benefit is spread across all four predeclared
-crises rather than concentrated in one.
+Adding a 15% trend sleeve to a 60/40 US equity / cash portfolio raised **geometric
+growth by +1.312 percentage points a year** and the CRRA (γ=3) certainty-equivalent
+return by **+1.342**, over a risk-matched cash comparator, net-pessimistic, on 432
+months. The certainty equivalent's 95% interval is **[+0.76, +1.92]**. That survived
+every hostile test: removing the best month costs 6%, removing the best crisis costs
+9%, doubling all costs costs 27%, delaying execution a full month *improves* it, and
+the benefit is spread across all four predeclared crises rather than concentrated in
+one.
+
+**The two bases agree to 97.8%, and this experiment is the repository's worked
+example of why that is worth paying for.**
+[Decision 0008](../decisions/0008-growth-decides-crra-reports.md) makes geometric
+growth the deciding metric everywhere, because an exact CRRA utility over a few dozen
+calendar years pays a candidate for *reducing risk* — something any investor obtains
+free by holding less equity. Only **+0.030 pp/yr** of this headline is that payment,
+and the reason is the comparator: `passive_plus_trend` carries 7.65% annualised
+volatility against `passive_plus_cash`'s 7.88%, so the de-risking is removed from
+**both sides** before the difference is taken. Experiment 010, which measures a sleeve
+against the portfolio it de-risks rather than against a risk match, sees the same
+metric hand a cash control that supplies nothing **+0.809 pp/yr**
+([marginal sleeve value](marginal-sleeve-value.md)). This is the only place in the
+repository that pays for a risk-matched comparator, and it is therefore the only place
+a certainty equivalent may be quoted as a primary at all.
 
 It nonetheless fires the frozen falsifier, on clause (d). A replica built only from
 a static US-equity position, a volatility-scaled US-equity position, a convexity
@@ -68,8 +95,9 @@ Two further findings matter more than the verdict.
 **The standalone series decayed enormously after publication and the marginal
 benefit barely moved.** Trend's own Sharpe ratio fell 1.34 → 0.83 → 0.18 across the
 reconstructed, pre-publication and post-publication eras, and its geometric return
-fell 19.4% → 12.3% → 3.1% a year. The marginal portfolio benefit fell only +2.00 →
-+1.18 → +1.01 pp/yr. Almost all of what survives is the correlation, not the mean.
+fell 19.4% → 12.3% → 3.1% a year. The marginal portfolio benefit fell only +2.05 →
++1.15 → +0.88 pp/yr of growth (+2.00 → +1.18 → +1.01 on the certainty equivalent).
+Almost all of what survives is the correlation, not the mean.
 That is a materially different claim from "trend still works", and it is the reason
 a standalone Sharpe ratio is not an answer to this question.
 
@@ -101,23 +129,47 @@ a year management fee and 10% of gains over a high-water mark on the sleeve.
 | `passive_plus_cash` **matched ex-ante risk budget** | **6.28** | 7.14 | 7.88 | 0.57 | −28.4 | 0.99 |
 
 The last two rows are the experiment. Comparing `passive_plus_trend` against
-`passive_benchmark` would credit trend with +1.34 pp/yr of certainty equivalent that
-is partly just de-risking — the benchmark carries 9.12% volatility against the
-sleeve portfolio's 7.65%. The risk-matched comparator removes that, and it is the
-comparator the specification froze as primary for exactly the reason Israelov (2019)
-gives about protection strategies: the benchmark choice decides the answer.
+`passive_benchmark` would credit trend with certainty equivalent that is partly just
+de-risking — the benchmark carries 9.12% volatility against the sleeve portfolio's
+7.65%. The risk-matched comparator removes that, and it is the comparator the
+specification froze as primary for exactly the reason Israelov (2019) gives about
+protection strategies: the benchmark choice decides the answer. The size of what it
+removes is measurable on this page's own numbers: against `passive_benchmark` the two
+metrics disagree by 0.380 pp/yr, against the risk match by **0.030**.
 
-### Marginal certainty equivalent, against the risk-matched comparator
+### The marginal figure, against the risk-matched comparator
 
-| Comparison | n | pp/yr | 95% interval | one-sided p | Holm p |
-| --- | ---: | ---: | --- | ---: | ---: |
-| `passive_plus_trend`, full period | 432 | **+1.342** | [+0.759, +1.916] | 0.0001 | 0.0006 ✓ |
-| `passive_plus_trend`, reconstructed 1990–2000 | 132 | +1.998 | [+1.361, +2.746] | 0.0000 | 0.0000 ✓ |
-| `passive_plus_trend`, pre-publication 2001–2011 | 132 | +1.179 | [+0.356, +1.953] | 0.0014 | 0.0072 ✓ |
-| `passive_plus_trend`, post-publication 2012–2025 | 168 | +1.011 | [−0.175, +2.165] | 0.0498 | 0.1992 ✗ |
-| `trend_alone` | 432 | +2.892 | [−2.950, +8.487] | 0.1754 | 0.4930 ✗ |
-| `volatility_scaled_passive` | 432 | +0.408 | [−0.827, +2.066] | 0.2178 | 0.4930 ✗ |
-| `passive_benchmark` | 432 | +0.330 | [−0.454, +1.191] | 0.1643 | 0.4930 ✗ |
+Growth decides and the certainty equivalent is reported beside it
+([decision 0008](../decisions/0008-growth-decides-crra-reports.md)); the third column
+is the difference. Interval, *p*-values and Holm are on the certainty equivalent,
+which is what the frozen specification named as primary and what — uniquely in this
+repository — the risk-matched comparator entitles it to be.
+
+| Comparison | n | **Growth, γ=1** | CE, γ=3 | De-risking | 95% interval on CE | one-sided p | Holm p |
+| --- | ---: | ---: | ---: | ---: | --- | ---: | ---: |
+| `passive_plus_trend`, full period | 432 | **+1.312** | +1.342 | +0.030 | [+0.759, +1.916] | 0.0001 | 0.0006 ✓ |
+| `passive_plus_trend`, reconstructed 1990–2000 | 132 | **+2.045** | +1.998 | −0.047 | [+1.361, +2.746] | 0.0000 | 0.0000 ✓ |
+| `passive_plus_trend`, pre-publication 2001–2011 | 132 | **+1.152** | +1.179 | +0.027 | [+0.356, +1.953] | 0.0014 | 0.0072 ✓ |
+| `passive_plus_trend`, post-publication 2012–2025 | 168 | **+0.883** | +1.011 | +0.128 | [−0.175, +2.165] | 0.0498 | 0.1992 ✗ |
+| `trend_alone` | 432 | **+3.556** | +2.892 | −0.664 | [−2.950, +8.487] | 0.1754 | 0.4930 ✗ |
+| `volatility_scaled_passive` | 432 | **+1.061** | +0.408 | −0.653 | [−0.827, +2.066] | 0.2178 | 0.4930 ✗ |
+| `passive_benchmark` | 432 | **+0.709** | +0.330 | −0.380 | [−0.454, +1.191] | 0.1643 | 0.4930 ✗ |
+
+Growth is the difference of the `Geo %/yr` column above, on the net-pessimistic basis,
+so every figure in it can be recomputed from the table two rows up. **Read the
+de-risking column downward, because it is the whole of decision 0008's argument in one
+place.** For the four rows that carry the risk match it never exceeds 0.128 pp/yr and
+is twice negative. For the three rows that do *not* — `trend_alone`,
+`volatility_scaled_passive` and `passive_benchmark` all carry more volatility than the
+comparator — it reaches −0.664, and there the certainty equivalent is *charging* for
+added risk rather than paying for removed risk. The metric is not biased in one
+direction. It answers a different question, and only the risk match makes the two
+questions the same.
+
+Among the matched rows the gap is widest post-publication: +0.883 on growth against
++1.011 on the certainty equivalent, so **13% of the post-publication headline is
+de-risking**. That is the era whose interval already includes zero and already fails
+Holm, and growth makes it slightly weaker rather than stronger.
 
 Paired stationary block bootstrap, mean block 12 months, 20 000 resamples,
 resampling the joint monthly panel so the pairing is preserved. The predeclared 6-
@@ -153,6 +205,13 @@ distinguish much of anything, and the specification requires that to be reported
 `unresolved` rather than narrowed by changing the estimator.
 
 ## Every hostile test
+
+Certainty equivalent, against the +1.342 baseline. **The artifact publishes no
+per-test geometric return, so no growth companion can be quoted here without inventing
+one.** Every row shares the risk-matched comparator, where the de-risking component of
+the baseline is +0.030 pp/yr — 2.2% of it — so the ranking these rows produce is not
+one the metric change can plausibly reorder. That is an argument from the headline's
+own agreement, not a published number, and it is stated as one.
 
 | Test | Result | Share of the +1.342 baseline lost |
 | --- | --- | ---: |
@@ -632,6 +691,14 @@ Experiment 004's falsifier clause (d), verbatim:
 *decision*, not the data: the three deciding quantities are quoted in its frozen
 specification from Experiment 004's ledgered artifact and verified against that
 artifact at run time, to a tolerance of 1e-6.
+
+All three are certainty equivalents at `gamma = 3`, and they are entitled to be:
+every one of them is measured against the same risk-matched cash comparator, which is
+the condition [decision 0008](../decisions/0008-growth-decides-crra-reports.md)
+constraint 3 sets for a certainty-equivalent primary. The sleeve's own de-risking
+component under that comparator is +0.030 pp/yr; the tighter of the two readings sits
+0.286 pp/yr clear of its bar, nearly ten times that, so no de-risking of this size
+moves either verdict.
 
 | Reading | Deciding quantity | Value | Threshold | Clause fires? | Experiment 004's verdict |
 | --- | --- | ---: | ---: | --- | --- |

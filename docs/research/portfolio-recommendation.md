@@ -153,7 +153,7 @@ the equity or total allocation rather than added to it.
 
 | Sleeve | Fund | ER | Size | Where | Verdict |
 | --- | --- | ---: | --- | --- | --- |
-| Small-cap value | **VBR** | 0.05% | 0–20% of US equity | treat as US equity in §3's ranking | `exploratory` product, `exploratory` premium, **chain negative on the defensible reading** |
+| Small-cap value | **VBR** | 0.05% | 0–20% of US equity | treat as US equity in §3's ranking | `exploratory` product, `exploratory` premium, **chain negative on the defensible reading**, and **negative again on the portfolio-level view** (§5.5) |
 | Managed futures | **DBMF** | 0.85% | 0–10% of total | **tax-deferred only** | `exploratory` product, index `unresolved`; single-product risk |
 
 Two sizing notes, because both weights are judgements and neither is measured.
@@ -337,13 +337,13 @@ ambiguous which sleeve absorbs the five points.
 | --- | --- | --- |
 | **US 45 / international 35** | **Supported, as an investor choice.** No change required | That is a 56:44 US:ex-US equity split against the repository's own declared 60:40. No page here can distinguish them: there is no global market-capitalisation series in this repository, and no experiment signed a regional tilt. Choose either and stop |
 | **"Other" 25%** | **Underspecified. Split it.** | If it is bonds, they go in the shelter first, by a factor of four over any equity sleeve. If it is managed futures at anything like 25%, that is far too large for a sleeve whose index is `unresolved` and whose only delivering product is one fund |
-| **Small-cap value** | **Reduce, and know what you are buying.** 0–20% of US equity, via VBR | The chain is `premium × loading × capture − cost`. On the size-neutral capture (0.520) and the US-only premium (+1.57 pp/yr) it is **+0.09 to −0.39 pp/yr — negative on the defensible reading of both terms**. It is positive only on the pooled premium (+4.74) *and* the market-relative capture (0.958–1.287), and the gap between those captures is a **size premium wearing a value label** — which the size test then failed to sign |
+| **Small-cap value** | **Reduce, and know what you are buying.** 0–20% of US equity, via VBR | The chain is `premium × loading × capture − cost`. On the size-neutral capture (0.520) and the US-only premium (+1.57 pp/yr) it is **+0.09 to −0.39 pp/yr — negative on the defensible reading of both terms**. It is positive only on the pooled premium (+4.74) *and* the market-relative capture (0.958–1.287), and the gap between those captures is a **size premium wearing a value label** — which the size test then failed to sign. **Judged marginally rather than standalone it gets worse, not better**: US small value's beta to an equity core is 1.083, so its diversification credit is **−0.181 pp/yr per unit of weight** and the portfolio-level clause (b) fires on it (§5.5) |
 | **Momentum** | **Drop.** | Not because the premium is weak — it is the **largest** gross factor measured here, pooled **+7.33 pp/yr `[+3.92, +10.31]`**. Because: its pooled detection threshold is **4.98 pp/yr, the worst in this repository**; its three regions are worth **1.33 effective regions** out of three and **crash together** (all three lost their worst calendar year in 2009); the academic construction rebalances **monthly**, with an assumed cost of 3.30–18.67 pp/yr against that 7.33 gross premium; and the entire retail shelf is MTUM, which delivers its exposure and is `rejected` on cost |
 | **Managed futures** | **Keep, smaller, and only in a tax-deferred account.** DBMF only | **Only DBMF delivers the exposure** (+0.671, interval clear of the 0.50 bar, three independent measurements agreeing). KMLM's loading interval `[−0.148, +0.446]` includes zero. Tax drag is 0.76–2.53 pp/yr across the shelf and 2.09 for DBMF — **2.5× its own fee** — and **zero in a shelter** |
 
 ### What changed since the earlier answer to the owner
 
-Four corrections, all of which run against what was said before.
+Six corrections, all of which run against what was said before.
 
 1. **Momentum is the strongest gross factor, not the weakest.** Pooled UMD +7.33 pp/yr
    against HML's +4.74. The case against a momentum sleeve is now entirely about
@@ -362,6 +362,19 @@ Four corrections, all of which run against what was said before.
    value tilt negative after cost.** Five defensible benchmarks span **0.846**, which
    is why Experiment 007 is `rejected` on its own dispersion clause: what was
    rejected is not the capture fraction but the premise that there is one.
+5. **The chain that judged every sleeve on this page except trend was the wrong
+   shape, and fixing it makes the equity tilts look worse.** `premium × loading ×
+   capture − cost` sets the covariance term to zero by construction, which is
+   inconsistent with the excess-growth identity this repository is founded on.
+   [Experiment 010](marginal-sleeve-value.md) added the missing term and §5.5 is what
+   it changes. **No holding on this page moves; the reasoning behind three of them
+   does.**
+6. **Zero ex-US factor products had been audited, and twelve now reach `exploratory`.**
+   That was named on this page as the single largest gap between where the premium was
+   measured and where a product was tested. It is closed
+   ([Exp 009](ex-us-factor-products.md)), and what it found is a **cost** problem
+   rather than an exposure problem — with one exception that matters here: **no
+   emerging product reached `exploratory` at all.**
 
 ---
 
@@ -407,19 +420,28 @@ is the tilt demonstrable from the investor's own experience.
 
 ### 5.3 A 15%-of-portfolio managed-futures sleeve (DBMF)
 
-Experiment 004 measured a 15% sleeve of the **index** at +1.342 pp/yr of marginal
-certainty equivalent `[+0.759, +1.916]` over 432 months, falling to **+1.011 pp/yr
-post-publication with an interval that includes zero and fails Holm**. DBMF delivers
-0.671 of that exposure. Tracking error is **derived**, not published: from Experiment
-004's own table, `passive_plus_trend` runs 7.65% volatility against the passive
-benchmark's 9.12% at correlation 0.97, giving
+Experiment 004 measured a 15% sleeve of the **index** at **+1.312 pp/yr of marginal
+geometric growth** and +1.342 of certainty equivalent, over 432 months against a
+risk-matched cash comparator, falling to **+0.883 growth / +1.011 CE post-publication
+with an interval that includes zero and fails Holm**. Growth is the deciding basis
+([decision 0008](../decisions/0008-growth-decides-crra-reports.md)) and the two agree
+to 97.8% here because — uniquely in this repository — the comparator is risk-matched.
+DBMF delivers 0.671 of that exposure. Tracking error is **derived**, not published:
+from Experiment 004's own table, `passive_plus_trend` runs 7.65% volatility against the
+passive benchmark's 9.12% at correlation 0.97, giving
 `sqrt(7.65² + 9.12² − 2 × 0.97 × 7.65 × 9.12) = 2.52 pp/yr`.
 
-| Case | Net edge | TE | P(30 yr) | 90% at |
-| --- | ---: | ---: | ---: | ---: |
-| Post-publication, **tax-deferred** (`0.671 × 1.011`) | +68 bp | 251 bp | 0.931 | 22 yr |
-| Post-publication, **taxable** (less `0.15 × 2.09`) | +37 bp | 251 bp | 0.790 | 76 yr |
-| Full-period, tax-deferred (`0.671 × 1.342`) | +90 bp | 251 bp | 0.975 | 13 yr |
+| Case | **Net edge, growth** | Net edge, CE | TE | **P(30 yr)** | 90% at |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Post-publication, **tax-deferred** (`0.671 ×` the index figure) | **+59 bp** | +68 bp | 251 bp | **0.902** | 30 yr |
+| Post-publication, **taxable** (less `0.15 × 2.09`) | **+28 bp** | +37 bp | 251 bp | **0.729** | 133 yr |
+| Full-period, tax-deferred | **+88 bp** | +90 bp | 251 bp | **0.973** | 13 yr |
+
+Probabilities and horizons are on the growth column, from the same
+`P = Phi(e sqrt(T) / s)` and `T = (z s / e)²` as everywhere else on this page. The
+metric change costs the post-publication case about eight years to 90% confidence and
+costs the full-period case half a year, which is the difference between a de-risking
+component of +0.128 pp/yr and one of +0.030.
 
 **The account, not the product, is the largest controllable term** — 31 bp/yr of
 portfolio return, larger than the whole fee. Set against those probabilities: the
@@ -435,11 +457,62 @@ no fallback.
 | --- | ---: | ---: | --- |
 | Cost, placement, fund structure, lot discipline | **109 bp** | 46 bp | **~12 months** |
 | Best case for a 20% small-value tilt | 15.2 bp | 140 bp | ~460 years |
-| Best case for a 15% trend sleeve in a shelter | 90 bp | 251 bp | ~42 years |
+| Best case for a 15% trend sleeve in a shelter | 88 bp | 251 bp | ~44 years |
 
 **A certain 109 bp is worth more than any tilt's gross premium, and it is available
 first.** That is the honest headline and it is not a rhetorical preference: it is what
 the pairing of edge and tracking error produces.
+
+### 5.5 The chain above sets a term to zero, and adding it back makes the tilts worse
+
+Every sleeve on this page except trend was judged by
+
+```
+premium × loading × capture − cost
+```
+
+which asks whether an asset beats the market **on its own**. Inside a portfolio that
+already exists, the quantity that matters is different: funding weight `w` in sleeve
+`i` out of leg `f` inside portfolio `p`, the first-order effect on the portfolio's
+growth rate is `(mu_i − mu_f) − (sigma_ip − sigma_fp)`. The first term is what the
+chain above measures. **The second is a diversification credit the chain sets to zero
+by construction**, which is inconsistent with the excess-growth identity every other
+page here is built on. [Experiment 010](marginal-sleeve-value.md) measured it.
+
+**What it confirms.** The equity sleeves stay out, and the case against them is now
+stronger rather than weaker. Judged marginally against a 60/40 base, **every long-only
+equity sleeve carries a beta above one and therefore a *negative* credit** — the tilt
+raises the portfolio's variance faster than its weight, and the portfolio-level view
+charges for that. Against a pure equity core the credits turn positive for four of the
+six equity sleeves but are worth at most **+0.041 pp/yr at a 10% weight**. Every one of
+the ten sleeves in the family is `rejected`.
+
+**What it overturns.** The direction of the error. It had been reasonable to expect
+that a portfolio-level view would be *kinder* than a standalone chain, because
+diversification is the thing the standalone chain omits — and for a diversifying
+sleeve it is. For an equity tilt inside an equity portfolio it is not, and the reason
+is arithmetic: under pro-rata funding the credit is `sigma_p^2 (1 − beta)` per unit of
+weight, so **`beta > 1` makes it negative** and `beta = 0` caps it at `sigma_p^2`. That
+cap is **+0.217 pp/yr at a 10% weight against the equity core and +0.078 against
+60/40**, both below the 0.30 pp/yr materiality threshold. A perfect zero-beta asset
+would fail on the credit alone. The portfolio-level view is therefore closed as a route
+to rescuing anything the standalone chain dismissed.
+
+**The one equity sleeve with a materially positive credit is not a US one.** Developed
+ex-US small value carries **beta 0.809 to the equity core and a credit of +0.413 pp/yr
+per unit of weight**, the largest of any long-only equity sleeve and the only one worth
+calling material. It still cannot be signed: its own marginal growth is **+0.029 pp/yr
+with an interval of `[−0.416, +0.502]`**, inside its own minimum detectable effect of
+0.580, and it is `rejected` on clauses (a) and (d). It is a reason to look at a
+developed ex-US small-value product before a US one, which the shelf now contains
+([Exp 009](ex-us-factor-products.md) — AVDV at +0.510, DISV at +0.495, both
+`exploratory`). It is not a reason to hold one.
+
+**What does not move.** No holding, no weight and no account. §1.2 and §1.3 are
+unchanged, and §5.2's small-value table stands as the case for and against VBR on the
+standalone chain — with the note that the marginal view makes the negative corner more
+likely rather than less, since US small value's own credit against an equity core is
+**−0.181 pp/yr per unit of weight**.
 
 ---
 
@@ -453,7 +526,7 @@ Each is measurable and dated. None is a hope.
 | **§852(b)(6) is repealed.** A 2021 Senate Finance discussion draft proposed exactly that; never enacted, no successor found | Removes the ETF wrapper advantage outright |
 | **A qualified-dividend rate below 10.52%, or at or above 21.51%** | Below 10.52%: developed ex-US belongs in taxable too. At or above 21.51%: emerging returns to the shelter and §3's inversion disappears |
 | **A licensed, survivorship-free, point-in-time total-return source from at least 2003**, with coded exit reasons and retrievable vintages | Lifts Experiments 002 and 008 above `exploratory` for the first time. Without it, VBR and DBMF cannot be promoted **or** properly rejected |
-| **An audited ex-US or emerging value product** | The value premium's weight is +5.07 pp/yr developed ex-US and +7.58 emerging against +1.57 in the US. Experiment 002's screen removed **185 international, 82 global and 51 emerging** series, so this repository has audited **zero** ex-US factor products. This is the single largest gap between where the premium was measured and where a product was tested |
+| ~~**An audited ex-US or emerging value product**~~ **Done for developed ex-US; still open for emerging** | The value premium's weight is +5.07 pp/yr developed ex-US and +7.58 emerging against +1.57 in the US. [Experiment 009](ex-us-factor-products.md) audited the ex-US shelf and **12 products reach `exploratory`**, including AVDV and DISV in developed ex-US small value. **No emerging product did**: the whole emerging shelf clearing the screen is four funds, two `rejected` and two `unresolved` on 44- and 51-month windows. An audited emerging value product is still the gap, and it is now a gap in the *shelf* rather than in this repository's coverage of it |
 | **A second managed-futures ETF with a loading ≥ 0.50** on a per-fund benchmark built from its own stated universe | Removes DBMF's single-product risk and separates "does not deliver trend" from "does not deliver *this* trend" |
 | **A measured one-sided monthly turnover below 50% for a long-only momentum fund** | Reopens momentum. The 27.5–91.5%/month figure belongs to a monthly-rebalanced academic long-short spread and must never be applied to a fund |
 | **A measured implied financing spread, a signed term premium, a defined investor policy, and a modelled forced-liquidation path** — all four | Reopens capital efficiency and [decision 0004](../decisions/0004-no-sleeve-promoted.md)'s zero-leverage rule |
@@ -522,9 +595,13 @@ ones: the ~109 bp budget and its component lines
 +7.33 with their detection thresholds of 3.35 and 4.98 and effective region counts of
 1.49 and 1.33 ([Exps 005 and 006](factor-persistence.md)); every fund loading, fee and
 status ([Exp 002](factor-product-audit.md),
-[Exp 008](trend-marginal-value.md#experiment-008--the-products)); the trend marginal
-CE of +1.342 falling to +1.011 post-publication ([Exp 004](trend-marginal-value.md));
-and the −38.7 bp rebalancing result ([Exp 003](rebalancing-policy.md)).
+[Exp 008](trend-marginal-value.md#experiment-008--the-products),
+[Exp 009](ex-us-factor-products.md)); the trend marginal **growth** of +1.312 falling
+to +0.883 post-publication, with its certainty-equivalent companions of +1.342 and
++1.011 ([Exp 004](trend-marginal-value.md)); the diversification credit's ceiling of
++0.217 pp/yr and every sleeve's beta to the equity core
+([Exp 010](marginal-sleeve-value.md)); and the −38.7 bp rebalancing result
+([Exp 003](rebalancing-policy.md)).
 
 ### Assumed on this page, and nowhere else
 
@@ -532,11 +609,17 @@ and the −38.7 bp rebalancing result ([Exp 003](rebalancing-policy.md)).
    Experiment 002's measured 1.38–8.65 pp/yr range (VTV 7.48, VB 8.31), but **VBR's
    own tracking error is not published anywhere in this repository**. §5.2 is
    proportionally sensitive to it in the horizon column and not in the sign.
-2. **That a trend sleeve's marginal certainty equivalent scales linearly in the
-   product's loading on the index.** `0.671 × 1.011` is an approximation; the
+2. **That a trend sleeve's marginal growth contribution scales linearly in the
+   product's loading on the index.** `0.671 × 0.883` is an approximation; the
    experiment measured the index at a 15% weight, not DBMF at any weight. Experiment
    008's own marginal-contribution arm is labelled **invalid** for every fund on
-   warm-up grounds, so no direct measurement exists.
+   warm-up grounds, so no direct measurement exists. **A second reason to distrust the
+   scaling now exists**: [Experiment 010b](marginal-sleeve-value.md) measured a 10%
+   trend sleeve against a *global equity core* rather than a risk match and got
+   +0.258 pp/yr of growth, which fails its 0.30 bar. The two experiments answer
+   different questions and neither figure transfers to the other's comparator, but a
+   reader entitled to only one of them should know that the portfolio-level one is
+   smaller.
 3. **A derived 2.52 pp/yr portfolio tracking error for the trend sleeve**, computed
    from Experiment 004's published volatilities and correlation against the *fully
    invested* passive benchmark rather than the risk-matched comparator the experiment
@@ -570,10 +653,14 @@ and the −38.7 bp rebalancing result ([Exp 003](rebalancing-policy.md)).
    framework holds the design map and answers *whether a return source is real*; this
    page answers *what to hold given that*. It must never state a premium, a status or
    a cost that its source page does not.
-2. **The application may not render any of this as a finding.** No number from
-   `research/` may appear in the shipped app, and the shipped UI copy still claims
-   real-time data, optimality and professional validation that nothing here supports.
-   Correcting that copy is a product decision to raise, not an edit to make unasked.
+2. **The application may render this, under four constraints and not otherwise.**
+   [Decision 0007](../decisions/0007-application-may-render-research.md) lifted the
+   blanket ban that this item used to state: a research number may now be shown, but
+   only from the typed content layer in `src/content/`, only with its status, `as of`
+   date, interval and source attached, never aggregated across benchmarks, and only
+   with any client arithmetic tested against fixtures the research workspace
+   generates. `exploratory` is displayed as `exploratory`. A number hardcoded in a
+   route is a defect.
 3. **The asset-location ranking must be computed, not asserted.** Any location feature
    must run §3.1's expression and state the bracket it assumed. "Shelter the
    higher-yielding asset" is right for bonds by a factor of four and wrong for

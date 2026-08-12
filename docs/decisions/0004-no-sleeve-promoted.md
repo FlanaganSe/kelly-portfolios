@@ -6,9 +6,12 @@ when the first sleeve is promoted.
 
 ## Context
 
-Six frozen experiments have run, across sixteen ledgered executions of seven distinct
-specifications, with 1,082 tests passing `as of 2026-08-12`, 18 of them
-network-marked. The outcomes, in the closed status vocabulary:
+Six frozen experiments had run when this record was amended, across sixteen ledgered
+executions of seven distinct specifications, with 1,082 tests passing, 18 of them
+network-marked. That is a snapshot of the search at that moment and is deliberately
+not refreshed; the current count is
+[recounted from the ledger in the framework](../research/portfolio-edge-research-framework.md#the-ledger-counted-rather-than-described).
+The outcomes then, in the closed status vocabulary:
 
 | Hypothesis | Status | The number that decides it |
 | --- | --- | --- |
@@ -51,7 +54,10 @@ Consequently:
   actual allocation should rebalance. No rebalancing-bonus feature may be built.
 - **The fifteen `exploratory` products may be used as implementation proxies in a
   later experiment and for nothing else.**
-- **No number from `research/` may appear in the shipped application as a finding.**
+- ~~**No number from `research/` may appear in the shipped application as a
+  finding.**~~ **Lifted by [decision 0007](0007-application-may-render-research.md)**,
+  which replaces the ban with four constraints. Everything else in this record stands
+  in full, including the non-promotion itself.
 
 ## The conditions that would change this
 

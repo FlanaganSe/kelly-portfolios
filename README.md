@@ -21,9 +21,11 @@ must never be described as market data.
 
 ## Where the research has got to
 
-`as of 2026-08-12`. Nine experiment families have run, across 23 ledgered
-executions of **12 distinct specifications** and 64 ledger entries, with 1,383
-tests passing. Twelve is the number a later trial count starts from, not 23.
+`as of 2026-08-12`. Twelve experiment families have run, across 33 ledgered
+executions of **15 distinct specifications** and 93 ledger entries, with 1,716
+tests passing. Fifteen is the number a later trial count starts from, not 33 —
+and it is an upper bound, because `exp_010b` re-judges data `exp_010` had already
+spent and the two are one search.
 
 **No sleeve was promoted.** Hypotheses are `rejected` against falsifiers frozen
 before any result was seen — rebalancing as a source of return, and the CMA and
@@ -38,13 +40,26 @@ Two factors reached `exploratory` on pooled cross-region evidence: value at
 gross, long-short and not investable, and momentum's three regions crash together
 — 1.33 effective regions of three, sharing 2009 as their worst year. The trend
 sleeve is `unresolved` rather than rejected once its contested falsifier clause is
-read as a share rather than a level, and only one product on the shelf delivers
-the exposure at all.
+read as a share rather than a level, only one product on the shelf delivers the
+exposure at all, and a **second** experiment then rejected it on a different clause
+when it was measured against the portfolio it de-risks rather than against a
+risk match.
 
 The result that decides what a tilt is worth: **the long-only capture fraction is
 about 0.520**, and five defensible definitions of it span 0.846. Chaining
 `premium × loading × capture − cost` leaves a US-only long-only value tilt
-negative after cost.
+negative after cost. That chain sets the covariance term to zero by construction;
+measuring it instead makes the equity tilts look **worse**, because the
+diversification credit is capped by the base portfolio's own variance — 0.217 pp/yr
+at a 10% weight against a global equity core, below the 0.30 pp/yr bar — and turns
+negative for any sleeve with a beta above one
+([marginal sleeve value](docs/research/marginal-sleeve-value.md)).
+
+**Geometric growth decides; the certainty equivalent reports beside it.** A cash
+sleeve that supplies no return and no diversification by construction scored
++0.166 pp/yr of CRRA certainty equivalent while *losing* 0.643 pp/yr of growth. Any
+investor obtains that reward free by holding less equity, so it is not an edge
+([decision 0008](docs/decisions/0008-growth-decides-crra-reports.md)).
 
 The one result worth stating plainly: **roughly 109 basis points a year is
 available, near-certainly, against the portfolio you would otherwise have owned**

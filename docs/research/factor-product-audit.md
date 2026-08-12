@@ -167,6 +167,14 @@ what makes the funnel add up.
 about investability rather than quality.** Whatever this page concludes, it concludes
 about the *listed* shelf.
 
+**The 325 international, global, emerging and developed series removed by
+`exclusion_regex` are now audited separately**, by
+[Experiment 009](ex-us-factor-products.md), whose screen is the complement of this one
+over the same censuses: a fund can appear in at most one of them. That experiment
+asserts this specification's two regexes byte-for-byte before it runs, so nothing on
+this page changed. It did correct one diagnostic below — the attrition count, which
+counted a renamed series as a dead one.
+
 Two structural facts about what survived. **The 44 are not 44 independent products**:
 IVW/SPYG, IVE/SPYV, IJK/MDYG, IJJ/MDYV, IJS/SLYV and IJT/SLYG each track one index
 under two sponsors, IJH/SPMD both track the S&P MidCap 400 and IJR/SPSM the S&P
@@ -494,6 +502,12 @@ the 2025Q4 census altogether gives 312 and 138.7 bn. **The 46-series difference 
 194.8 bn, 58% of the headline asset figure, and one fund is most of it.** The same
 error runs in reverse through the 751 "launched" count.
 
+**The recomputation has since been reproduced independently.**
+[Experiment 009](ex-us-factor-products.md) applies a death-versus-rename decomposition
+to this specification's own patterns, as a diagnostic and without touching this
+experiment, and reaches the same **312 series and $138.7bn** against a naive rate of
+23.7%. The defect is in the artifact, not in the frame.
+
 **The direction of the finding is unchanged and the caveat still holds.** Even at
 20.6%, a fifth of the 2019 listed factor shelf is gone in six years, and this is a
 **lower bound**: public N-PORT filings begin in 2019, so a fund that closed before
@@ -707,10 +721,12 @@ revisiting*, and the answer is narrow.
    typically 0.12, with the five largest shortfalls at 2.5 to 2.9 — against a
    look-ahead comparator, so a best case for it. **A fee comparison is not a cost
    comparison.**
-5. **Two defects remain open**, neither of which changes a status: the attrition rename
-   count (§8), and the degenerate replication for the three basis funds that are
-   themselves audited (§7). The cash-rate unit error is fixed and its history is
-   recorded in §9 rather than erased.
+5. **Two defects remain open in this experiment's own artifact**, neither of which
+   changes a status: the attrition rename count (§8), and the degenerate replication
+   for the three basis funds that are themselves audited (§7). The first now has a
+   corrected figure computed elsewhere and confirmed twice — 312 series, $138.7bn — so
+   what is open is the artifact, not the number. The cash-rate unit error is fixed and
+   its history is recorded in §9 rather than erased.
 6. **The listed factor shelf is thinner than it looks.** After a mechanical screen, 44
    products, of which 16 are eight indices sold twice, one is the entire momentum
    shelf, and two each are quality and multifactor. Any later work needing a momentum

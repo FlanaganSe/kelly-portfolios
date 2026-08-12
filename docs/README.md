@@ -14,7 +14,7 @@ setup and current status.
 - [Portfolio edge research framework](research/portfolio-edge-research-framework.md)
   — **the canonical synthesis, and the place to start.** Answers the commissioning
   question directly, holds the provisional portfolio-design map, accounts for what
-  advanced, failed and remains unresolved across all six experiments, and names the
+  advanced, failed and remains unresolved across every ledgered experiment, and names the
   single next experiment. Also carries the evidence, falsifiable hypotheses and
   validation protocol for leverage, rebalancing, crisis protection, factors and
   manager alpha. Answers whether a return source is real.
@@ -57,6 +57,20 @@ setup and current status.
   against a cheap replication, why a 72-month N-PORT window decides nothing about
   alpha, and why nothing is promoted. Also measures how much of the 2019 factor
   shelf no longer exists.
+- [Ex-US factor products](research/ex-us-factor-products.md) — Experiment 009, the
+  missing half of 002: the shelf where the value premium's weight actually sits.
+  Twelve of 25 audited products deliver their intended exposure against their own
+  region's panel, eight are rejected mostly on cost, and substituting the US factor
+  panel would put 16 of 25 below the loading bar rather than 5 — which is why a
+  loading without its panel named is not a number. No emerging product reached
+  `exploratory`.
+- [Marginal sleeve value](research/marginal-sleeve-value.md) — Experiments 010 and
+  010b: what a sleeve is worth *inside* a portfolio rather than on its own, split
+  into a standalone term and a diversification credit. Finds that the credit has a
+  ceiling equal to the base portfolio's own variance, below the materiality
+  threshold at both base portfolios, so the portfolio-level view cannot rescue a
+  sleeve the standalone chain dismissed. Carries the cash control that produced
+  decision 0008.
 - [Rebalancing policy on real regional equity](research/rebalancing-policy.md) —
   Experiment 003, the first confirmatory run: five policies on US, developed-ex-US
   and emerging equity over 35 years. The excess-growth closed form reproduces to a
@@ -102,8 +116,10 @@ setup and current status.
   report: benchmark and certainty class, a cheap combination, a risk match, and the
   model-misfit pedestal.
 - [0004 — No sleeve is promoted](decisions/0004-no-sleeve-promoted.md) — the outcome
-  of all six experiments in the closed status vocabulary, why leverage stays at
-  zero, and the per-candidate conditions that would change it.
+  of each frozen hypothesis in the closed status vocabulary, why leverage stays at
+  zero, and the per-candidate conditions that would change it. Its context block is a
+  snapshot taken at Experiment 005; the current ledger count is in the
+  [framework](research/portfolio-edge-research-framework.md#the-ledger-counted-rather-than-described).
 - [0005 — Profitability and investment premia are closed on public data](decisions/0005-factor-premia-closed-on-public-data.md)
   — the measured floor on what public factor data can detect, why RMW and CMA are
   `rejected` rather than `unresolved` again, and the four conditions that would

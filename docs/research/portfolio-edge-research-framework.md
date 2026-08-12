@@ -61,7 +61,7 @@ must beat, not a claim that the final answer has already been found
 
 This section is written to be read on its own. Everything in it is derived on the
 pages linked beside it; nothing here is new evidence. `as of 2026-08-12`, after
-23 ledgered runs of 12 distinct specifications across nine experiment families —
+33 ledgered runs of 15 distinct specifications across twelve experiment families —
 the count [this page verifies against the ledger itself](#the-ledger-counted-rather-than-described),
 not an estimate.
 
@@ -1267,24 +1267,27 @@ the closed status vocabulary. `as of 2026-08-12`.
 ### The ledger, counted rather than described
 
 Verified directly from [`research/ledger.jsonl`](../../research/ledger.jsonl):
-**64 entries, 23 runs, 12 distinct specification hashes, 9 experiment families.**
+**93 entries, 33 runs, 15 distinct specification hashes, 12 experiment families.**
 
 | Terminal outcome | Runs | Which |
 | --- | ---: | --- |
-| `unresolved` | 3 | Phase 1 gate; Experiment 001; Experiment 007's superseded specification |
-| `rejected` | 6 | Experiment 003 (1); Experiment 004 (4 executions of one specification); Experiment 007 (1) |
-| `exploratory` | 8 | Experiment 002 (3 executions of one specification); Experiment 005 (1); Experiment 006 (1); Experiment 008 (3, two of them one specification) |
-| no terminal status | 6 | 2 `failed` (a parser table-name error; a clause-(d) verification guard refusing the run), 4 `abandoned` (one operator interrupt, three SIGTERMs) |
+| `unresolved` | 6 | Phase 1 gate; Experiment 001; Experiment 007's superseded specification; Experiment 010 (3 executions of one specification) |
+| `rejected` | 9 | Experiment 003 (1); Experiment 004 (5 executions of one specification); Experiment 007 (1); Experiment 010b (2 executions of one specification) |
+| `exploratory` | 11 | Experiment 002 (3 executions of one specification); Experiment 005 (1); Experiment 006 (1); Experiment 008 (3 executions of one specification); Experiment 009 (3 executions of one specification) |
+| no terminal status | 7 | 3 `failed` (a parser table-name error; a clause-(d) verification guard refusing the run; a `NaN` that is not JSON-compliant), 4 `abandoned` (one operator interrupt, three SIGTERMs) |
 
-Seventeen runs recorded a `results_viewed` event; **no run consumed the final
+Twenty-six runs recorded a `results_viewed` event; **no run consumed the final
 holdout**. Two facts about this count matter more than the count.
 
 - **Repeated executions of one specification are not independent hypotheses, and the
-  ledger keeps them distinguishable.** Four of the six `rejected` rows are one
-  specification hash run four times, and three of the eight `exploratory` rows are one
-  specification hash run three times. The number of distinct specifications searched
-  is **twelve**, not twenty-three, and that is the number any deflated-Sharpe trial
-  count must start from.
+  ledger keeps them distinguishable.** Five of the nine `rejected` rows are one
+  specification hash run five times, and six of the eleven `exploratory` rows are two
+  specification hashes run three times each. The number of distinct specifications
+  searched is **fifteen**, not thirty-three, and that is the number any
+  deflated-Sharpe trial count must start from. Fifteen is also the *upper* bound on
+  independent searches, not the effective one: `exp_010b_growth_basis`
+  [re-judges data `exp_010_marginal_sleeve_value` had already spent](marginal-sleeve-value.md),
+  so the two are one search of ten sleeves and adding them as two would double-count.
 - **The ledger contains a correction to itself.** One `abandoned` entry was appended
   prematurely and for the wrong run's reason; rather than repair it in place, a
   superseding entry was appended saying so. That is why there are five `abandoned`
@@ -1324,6 +1327,23 @@ citations.
 - **The binding constraint was identified and written down**: no free price source
   carries a total-return contract, so fund-level work cannot exceed `exploratory`
   ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
+- **The ex-US product gap is closed as a gap.** Twelve ex-US factor products reach
+  `exploratory` on delivered exposure against **their own region's** panel, from
+  DFIV's HML loading of +0.671 down to EFV's +0.368
+  ([Exp 009](ex-us-factor-products.md)). That was the largest distance in this
+  repository between where a premium was measured and where a product had been
+  audited. It also produced a result that governs how every ex-US loading may be
+  quoted: **substituting the US factor panel puts 16 of 25 funds below the 0.15 bar
+  rather than 5**, so a loading without its panel named is not a number.
+- **The metric that decides was corrected, and it was corrected by a control rather
+  than by an argument.** A cash sleeve that supplies no alpha and no diversification
+  credit by construction scored **+0.166 pp/yr** of certainty equivalent while losing
+  **0.643 pp/yr** of growth — a de-risking reward of **+0.809**, 2.7× the materiality
+  threshold, paid for supplying nothing. Geometric growth now decides every threshold
+  and every falsifier clause and the certainty equivalent is reported beside it
+  ([decision 0008](../decisions/0008-growth-decides-crra-reports.md),
+  [Exp 010](marginal-sleeve-value.md)). The change is strictly hostile: it removes a
+  reward and moves a family to a worse status.
 - **The research loop exists end to end** — frozen specification, hashed input,
   deterministic calculation, adversarial validation, append-only ledger, synthesis —
   under a test suite in the low thousands and a runner that refuses a confirmatory
@@ -1359,6 +1379,27 @@ citations.
   and judges the relative reading better justified — because the absolute reading's bar
   gets *easier* to clear as the sleeve gets better. `unresolved` is not a promotion,
   and the honest finding is that the clause was ambiguously specified.
+  **A second, independent experiment then rejected the same sleeve on a different
+  clause.** Experiment 010b measured a 10% trend sleeve against a global equity core
+  rather than against a risk-matched cash comparator, and on the deciding growth basis
+  it contributes **+0.258 pp/yr** against the 0.30 threshold — clause (a) — with a Holm
+  adjusted *p* of 1.000 ([Exp 010](marginal-sleeve-value.md)). Its certainty-equivalent
+  companion is +1.172, and the **+0.913 pp/yr gap between the two is de-risking**. The
+  two experiments are not comparable and neither supersedes the other: exp_004 asks
+  what a 15% sleeve adds against a *risk match*, exp_010b what a 10% sleeve adds to a
+  portfolio that keeps its risk. The trend sleeve fails a clause in both.
+- **Every sleeve tested as a marginal contribution to a portfolio, on the growth
+  basis.** All ten in the Holm family, plus a modelled long-duration Treasury proxy.
+  The binding fact is a **ceiling rather than a measurement**: under pro-rata funding
+  the diversification credit is `sigma_p^2 (1 − beta)` per unit weight, so at
+  `beta = 0` it equals `sigma_p^2` exactly — **+0.217 pp/yr at a 10% weight against the
+  equity core and +0.078 against 60/40, both below the 0.30 threshold**. A perfect
+  zero-beta asset would fail on the credit alone. Against the 60/40 base every one of
+  the six long-only equity sleeves carries `beta > 1` and a **negative** credit, so the
+  portfolio view *strengthens* the standalone dismissals rather than softening them
+  ([Exp 010](marginal-sleeve-value.md)). `exp_010` itself recorded `unresolved` on the
+  certainty-equivalent basis and is superseded by `exp_010b` on what to believe; the
+  two are **one search**, not two.
 - **Four of the five listed managed-futures ETFs, as trend implementations.**
   `rejected` on a loading below 0.50 against the AQR index that Experiment 004
   measured. **DBMF is `exploratory`** at +0.671 `[+0.513, +0.829]`. Read those
@@ -1371,6 +1412,14 @@ citations.
   typically 0.12. The comparator is fitted **in sample**, so every (c) rejection reads
   as "a look-ahead combination of four cheap funds beat this product over these 72
   months", never as "this product is badly run" ([Exp 002](factor-product-audit.md)).
+- **Eight of 25 audited ex-US factor products.** The same pattern as the US shelf and
+  for the same reason: clause (c) fired on five of the eight, a shortfall above
+  0.50 pp/yr against an **in-sample fitted** combination of cheap ex-US funds. Three
+  failed on a loading below 0.15 instead, and two failed both. The largest intended
+  loading in the whole audit — GWX's SMB at **+0.856** — belongs to a rejected fund,
+  which is the cleanest available demonstration that exposure delivery and
+  implementation value are different questions
+  ([Exp 009](ex-us-factor-products.md)).
 
 ### Unresolved — and why, which is not the same as negative
 
@@ -1387,8 +1436,13 @@ citations.
   the effective sample it reports over all months overstates what is available in the
   episode a holder would care about. Its pooled detection threshold, 4.98 pp/yr, is
   the worst in this repository.
-- **Five of the 44 screened products**, whose intended exposure sits at or just above
-  the 0.15 threshold with intervals that reach it.
+- **Five of the 44 screened US products**, whose intended exposure sits at or just
+  above the 0.15 threshold with intervals that reach it.
+- **Five of the 25 audited ex-US products**, for the same reason, and **both emerging
+  value products are among them** — AVES and DFEV, on 51- and 44-month windows. The
+  emerging shelf that clears this screen is four products in total: two rejected, two
+  unresolved, none `exploratory`. That is where Experiment 005 measured the largest
+  value premium ([Exp 009](ex-us-factor-products.md)).
 - **Whether any of this is investable.** Experiment 002 is `exploratory` by decision,
   not by outcome, and cannot promote anything on a 72-month unaudited self-reported
   window whose median minimum detectable alpha is 4.52 pp/yr and whose returns have no
@@ -1489,7 +1543,7 @@ data available ([decision 0002](../decisions/0002-no-research-grade-free-price-s
 | **Buy a licensed point-in-time source** | money | Still buys the loading and cost terms, which already work, plus one term — capture — that free sorted portfolios can measure first. Buy it *after* the capture fraction, not before |
 | ~~Acquire a regional momentum file and finish UMD~~ | — | **Done.** [Experiment 006](factor-persistence.md#experiment-006--regional-momentum) acquired, pinned and manifested the three Ken French regional momentum files and signed UMD's premium at a pooled +7.33 pp/yr. It unblocked nothing, exactly as predicted: momentum's binding constraints are turnover, cost and a crash the regions share, not the premium |
 | Another public-data premium experiment on RMW or CMA | low | **Forbidden by decision 0005.** The floor has been measured; a further pass over the same files cannot clear it |
-| Exit census of the fund series that stopped filing | low | Sharpens a survivorship bound outside the blocking chain — though its known defect (renames counted as deaths) should be fixed regardless, as a repair rather than an experiment |
+| ~~Exit census of the fund series that stopped filing~~ | — | **Done, and the defect is repaired.** [Experiment 009](ex-us-factor-products.md) separates a death from a rename and applies the decomposition to Experiment 002's own patterns: **312 of 1,513 series, 20.6%, $138.7bn**, against that artifact's 358 / $333.5bn. No US result changed |
 | Read Form N-CSR for realised distributions and turnover | moderate | Sharpens *cost*, which is measured and is not the blocker |
 | The frozen construction tournament | high | Decides how to weight sleeves; there is one `exploratory` factor and no promoted sleeve to weight |
 | Obtain the 2013–14 CRSP vintage to settle Phase 1 | unbounded, likely impossible | The band it would remove is checked cell by cell in both experiments and **changes no conclusion anywhere** |
@@ -1630,9 +1684,10 @@ reader needs to know they were asked.
    seed, run kind, `results_viewed` and `consumes_final_holdout`; the runner refuses
    a confirmatory run whose specification lacks a benchmark, primary metric, cost
    model, sample policy or rejection rule. What the ledger does **not** solve is the
-   dependence between trials: six distinct specifications across fifteen runs is a
-   count, not an effective number of independent tests, and no procedure recovers
-   that automatically.
+   dependence between trials: fifteen distinct specifications across thirty-three runs
+   is a count, not an effective number of independent tests, and no procedure recovers
+   that automatically. Experiments 010 and 010b are the sharpest case: two
+   specification hashes, one search.
 6. Which factor themes survive both the strict frequentist Hou–Xue–Zhang
    construction and the hierarchical Bayesian Jensen–Kelly–Pedersen construction,
    then remain positive after executable costs? **Still open, and narrowed.**
@@ -1720,7 +1775,7 @@ passive and rebalancing policies, volatility scaling applied identically to
 benchmark and sleeve, the factor and trend replications with frozen specifications,
 and walk-forward, block-bootstrap and multiple-testing diagnostics all exist in
 `research/` under a test runner ([decision 0001](../decisions/0001-contained-python-research-workspace.md)),
-under a test suite in the low thousands, 18 of them network-marked. What
+under a test suite in the low thousands, 27 of them network-marked. What
 remains, in order:
 
 6. portfolio combination and stress testing; and only then
@@ -1742,7 +1797,7 @@ Three standing rules survive from that build order.
   remain testable without market data; they now live in `research/tests/unit/`.
 - **The trial ledger must precede the first backtest**, because the effective number
   of independent trials cannot be reconstructed afterwards. It did, and the count is
-  12 distinct specifications across 23 runs `as of 2026-08-12`. **Recount rather than
+  15 distinct specifications across 33 runs `as of 2026-08-12`. **Recount rather than
   quoting that figure** — the ledger is append-only and has grown since:
 
   ```sh
@@ -1767,24 +1822,26 @@ are specified separately in the
 settles where the optimiser should run. That page is subordinate to this one: it
 says how to compute, never whether a return source is real.
 
-Two existing files are inconsistent with this page and should be resolved rather
-than extended. `src/utils/calculateOptimizedPortfolio.ts` is named for Kelly but
-maximises a mean-variance utility with \(\gamma=5\), which silently answers open
-question 2 in a way this page does not support — and because Merton's solution is
-the mean-variance one divided by \(\gamma\), presenting that output as Kelly
-overstates leverage by a factor of \(\gamma\). It has two further defects noted in
-the engine specification: its finite-difference gradient normalises weights while
-its objective does not, so it differentiates a different function from the one it
-minimises, and it never checks that the user-supplied correlation matrix is positive
-semi-definite, so an inconsistent matrix yields a negative variance and a `NaN`
-risk. `scripts/seed-database.ts` emits an unseeded random walk, so it cannot
-regenerate any fixture above; seeding it and exposing \(\mu\), \(\sigma\), and
-correlation as explicit inputs would make it useful for exactly that.
+The client-side optimiser this section used to argue against has since been deleted,
+along with the intended-backend contract beside it. It was named for Kelly, maximised a
+mean-variance utility at \(\gamma=5\) — which silently answered open question 2 in a
+way this page does not support — differentiated a different function from the one it
+minimised, and never checked its correlation matrix for positive semi-definiteness.
+**No optimiser ships**, and anything that searches a weight space belongs in
+`research/` with a frozen specification and a ledger entry. The defects are kept in
+the [engine specification](portfolio-engine-specification.md) as the reasons, not as a
+description of code that still exists.
 
-Separately, the shipped UI copy claims real-time data, optimality, and professional
-validation. Nothing on this page supports those claims and the rebalancing findings
-contradict any "rebalancing bonus" language. Per the root `AGENTS.md`, correcting
-that copy is a product decision to raise, not an edit to make unasked.
+`scripts/seed-database.ts` still emits an unseeded random walk, so it cannot regenerate
+any fixture above; seeding it and exposing \(\mu\), \(\sigma\), and correlation as
+explicit inputs would make it useful for exactly that.
+
+The shipped copy that claimed real-time data, optimality and professional validation
+has also been deleted. The client may now show a research finding, but only with its
+status, `as of` date, interval and source attached and only from `src/content/`
+([decision 0007](../decisions/0007-application-may-render-research.md)). A number
+hardcoded in a route or a component is a defect, and the rebalancing findings above
+still forbid any "rebalancing bonus" language anywhere.
 
 ## How this page was researched, and what that does not cover
 
@@ -1815,10 +1872,10 @@ volatility targeting is risk control rather than established alpha, and manager
 skill need not accrue to fund investors. It is still not a systematic review, and
 absence from this page is not evidence against a strategy.
 
-Coverage remains uneven. The gaps below are what is left after five experiments;
-each could change a construction decision rather than add a minor caveat. **None of
-them was the recommended next step** — that was Experiment 005, which has now run —
-and all five remain blocked on a data contract that does not exist yet.
+Coverage remains uneven. The gaps below are what is left after every ledgered
+experiment; each could change a construction decision rather than add a minor caveat.
+**None of them was ever the recommended next step**, and all of them remain blocked on
+a data contract that does not exist yet.
 
 - **Lifecycle implementation.** The theoretical claim and human-capital
   counterexample are now documented, but taxes, realized margin paths, investor
@@ -1859,8 +1916,11 @@ and all five remain blocked on a data contract that does not exist yet.
   2019Q4 frame — 20.6%, holding $138.7bn — were absent from the 2025Q4 census.** (The
   artifact's own headline of 358 / $333.5bn is defective: it counts a series that
   renamed out of the mandate pattern as a death, and four of its fifteen largest
-  "disappeared" series are recorded in the same file as still filing. The defect is
-  documented and open.) That figure is a **lower bound**, because public N-PORT filings
+  "disappeared" series are recorded in the same file as still filing. **The corrected
+  figure quoted here is [Experiment 009](ex-us-factor-products.md)'s**, which
+  recomputed the decomposition on Experiment 002's own patterns without touching that
+  experiment; the defect in the original artifact is documented and left in place.)
+  That figure is a **lower bound**, because public N-PORT filings
   begin in 2019 and a fund that closed earlier is invisible to both censuses; and the
   fact that all 44 audited funds survived is **true by construction**, since 72 months
   of filed returns were required to enter the panel. A point-in-time fund population
@@ -1908,7 +1968,7 @@ implement most academic long-short factors at all.
 
 No positive candidate on this page has passed this repository's full net-cost,
 point-in-time, independently reproduced, frozen out-of-sample protocol. Published
-gross returns are hypothesis inputs, not portfolio return forecasts. Five
-experiments have now been run against frozen falsifiers and **nothing was promoted**
-([decision 0004](../decisions/0004-no-sleeve-promoted.md)); the conditions that
-would change that are in Map C above.
+gross returns are hypothesis inputs, not portfolio return forecasts. Every ledgered
+experiment has been run against a falsifier frozen before its result was seen, and
+**nothing was promoted** ([decision 0004](../decisions/0004-no-sleeve-promoted.md));
+the conditions that would change that are in Map C above.

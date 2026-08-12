@@ -18,23 +18,42 @@ scope: leverage and financing, taxes, and any claim about an investable fund.
 **`rejected`.** Experiment 003, the repository's first confirmatory experiment, was
 run once against its frozen falsifier and the falsifier fired on every clause at once.
 
-Certainty-equivalent advantage over buy-and-hold, PRETAX, in percentage points per
-year. Gross, net-optimistic and net-pessimistic stay in separate columns and are never
-collapsed; the interval and the two *p*-values are on the **net-pessimistic** column,
-which the frozen rejection rule names as the decision basis.
+Advantage over buy-and-hold, PRETAX, in percentage points per year, on the
+**net-pessimistic** basis the frozen rejection rule names as the decision basis.
+Growth is the deciding figure and the certainty equivalent is reported beside it
+([decision 0008](../decisions/0008-growth-decides-crra-reports.md)); the third column
+is the difference between them, which is what a policy was paid for reducing risk. The
+interval and the two *p*-values are on the certainty-equivalent difference, because
+that is the statistic the frozen specification named.
 
-| Policy | Gross | Net-optimistic | **Net-pessimistic** | 95% interval | bootstrap *p* | Holm-adjusted *p* |
-| --- | --- | --- | --- | --- | --- | --- |
-| Annual calendar | −0.194 | −0.196 | **−0.199** | `[−1.829, +0.402]` | 0.738 | 1.000 |
-| Relative threshold, 25% | −0.210 | −0.211 | **−0.213** | `[−1.698, +0.444]` | 0.710 | 1.000 |
-| Monthly calendar | −0.326 | −0.329 | **−0.339** | `[−1.951, +0.313]` | 0.578 | 1.000 |
-| Cash-flow-directed | −0.373 | −0.373 | **−0.373** | `[−0.871, +0.256]` | 0.206 | 0.822 |
+| Policy | **Growth, γ=1** | CE, γ=3 | De-risking | 95% interval on CE | bootstrap *p* | Holm-adjusted *p* |
+| --- | ---: | ---: | ---: | --- | ---: | ---: |
+| Relative threshold, 25% | **−0.240** | −0.213 | +0.027 | `[−1.698, +0.444]` | 0.710 | 1.000 |
+| Cash-flow-directed | **−0.262** | −0.373 | −0.111 | `[−0.871, +0.256]` | 0.206 | 0.822 |
+| Annual calendar | **−0.265** | −0.199 | +0.066 | `[−1.829, +0.402]` | 0.738 | 1.000 |
+| Monthly calendar | **−0.438** | −0.339 | +0.100 | `[−1.951, +0.313]` | 0.578 | 1.000 |
 
-Every policy lost, on all three cost bases, over 35 years. None came near the frozen
-materiality threshold of +0.25 pp/yr, none had an interval excluding zero, none
-survived Holm correction, none appeared in two of the three diagnostic eras, and every
-one of them had a **worse** maximum drawdown than the untouched portfolio. Four
-independent rejection clauses, all firing.
+Growth is `geo(policy) − geo(buy-and-hold)` on the time-weighted wealth index in §2,
+which is the `gamma = 1` certainty equivalent by construction. Gross and
+net-optimistic are not shown because cost moves no figure in the table by more than
+**0.013 pp/yr** on the certainty equivalent or **0.012** on growth — §2 carries all
+three cost columns and the point of that paragraph is exactly how little they change.
+
+Every policy lost on **both bases**, on all three cost bases, over 35 years. None came
+near the frozen materiality threshold of +0.25 pp/yr, none had an interval excluding
+zero, none survived Holm correction, none appeared in two of the three diagnostic
+eras, and every one of them had a **worse** maximum drawdown than the untouched
+portfolio. Four independent rejection clauses, all firing.
+
+**The metric change costs this experiment nothing, and that was checked rather than
+assumed.** The de-risking component never exceeds 0.111 pp/yr in magnitude anywhere in
+the grid, against a gap to the threshold of at least 0.45 pp/yr, so no clause can turn
+on it. What does change is the *identity of the least-bad policy*: annual calendar on
+the certainty equivalent, the 25% relative threshold on growth. Neither is within
+0.44 pp/yr of the bar, so the swap decides nothing and is recorded only because a
+reader comparing the two bases would otherwise find it unexplained. The one policy
+whose de-risking component is **negative** is the cash-flow-directed one — it *adds*
+risk relative to buy-and-hold, and the certainty equivalent was charging it for that.
 
 **The three findings that matter more than the verdict.**
 
@@ -70,7 +89,7 @@ Rebalancing did not lose to friction. It lost to the drift gap.
 | Sample | 1991-01 to 2025-12, **420 months = 35 whole calendar years**; 2026-01 onward held out |
 | Sleeves | US 60%, developed ex-US 30%, emerging 10%, USD total returns |
 | Cash flows | Identical everywhere: 5%/yr of initial wealth, flat nominal, contributed monthly, 1.75× initial wealth in total |
-| Objective | CRRA certainty-equivalent return, `gamma = 3`, on 35 non-overlapping calendar-year net returns. A **declared preference**, not a derived truth |
+| Objective | **As frozen:** CRRA certainty-equivalent return, `gamma = 3`, on 35 non-overlapping calendar-year net returns — a **declared preference**, not a derived truth. **As read now:** the specification predates [decision 0008](../decisions/0008-growth-decides-crra-reports.md) and names no `decision_gamma`, so it falls back to its `crra_gamma` and its frozen falsifier still decides on `gamma = 3`. Geometric growth at `gamma = 1` is reported beside every verdict figure and reaches the same verdict on every clause |
 | Costs | 2.0 bp (optimistic) and 8.0 bp (pessimistic) one-way, charged on traded notional inside the simulation, never as a haircut |
 | Inference | Stationary block bootstrap on the joint sleeve panel, mean block **24 months frozen not tuned**, 20,000 resamples, every policy re-simulated on every resample |
 | Seed | 20260813 |
@@ -110,7 +129,9 @@ cancels exactly in `kappa`, because `RF` is the identical column in both files.
 Gross, net-optimistic and net-pessimistic are separate columns and are never
 collapsed. Drawdown, volatility and geometric return are computed on the
 **time-weighted** wealth index, so contributions cannot hide a drawdown; terminal
-wealth is the equity curve, which should include them.
+wealth is the equity curve, which should include them. **The `Geo %/yr` column is the
+deciding basis in level form** — the conclusion's growth figures are this column minus
+buy-and-hold's, on the matching cost basis.
 
 | Policy | Basis | CE %/yr | Geo %/yr | Vol %/yr | Max DD % | Under water, months | Turnover %/yr | Cost %/yr | Trades | Mean abs. deviation, pp | Max deviation, pp | Terminal wealth |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
@@ -287,7 +308,12 @@ silent on drawdown; the sales pitch is not. Buy-and-hold −53.0%, threshold −
 cash-flow-directed −53.9%.
 
 **The 2000s–2010s era is the only one that supports rebalancing, and it supports it
-loudly.** Diagnostics, never independent observations:
+loudly.** Diagnostics, never independent observations. **Certainty equivalent only:
+the artifact publishes no era-level geometric return, so no growth companion and no
+de-risking component can be quoted here without inventing one.** Under
+[decision 0008](../decisions/0008-growth-decides-crra-reports.md) that is exactly why
+these rows may not decide anything — the specification already forbade it on
+era-dependence grounds, and the missing companion is a second, independent reason.
 
 | Era | Annual | Monthly | Threshold 25% | Cash-flow-directed |
 | --- | --- | --- | --- | --- |
@@ -305,7 +331,13 @@ that this cannot be reported as a finding.
 ## 7. Hostile tests
 
 Every declared test, on the net-pessimistic basis, in pp/yr against buy-and-hold.
-Nothing rescues any policy.
+Nothing rescues any policy. **Certainty equivalent only, for the same reason as the
+era table**: the artifact carries no per-test geometric return, so the growth
+companion decision 0008 requires cannot be sourced. The **smallest** gap any test
+leaves to the +0.25 threshold is 0.355 pp/yr, at the 30% threshold band, and the
+largest de-risking component measured anywhere in this experiment is 0.111 — so no
+plausible companion changes a verdict. That is an argument, not a published number,
+and it is stated as one.
 
 | Test | Annual | Monthly | Threshold 25% | Cash-flow-directed |
 | --- | --- | --- | --- | --- |
@@ -357,7 +389,10 @@ includes the US. That the cash-flow-directed policy degenerates to buy-and-hold 
 cash flow.
 
 **Assumptions, stated so they can be attacked.** CRRA `gamma = 3` is a declared
-preference; a different `gamma` is a different specification. Starting weights are
+preference; a different `gamma` is a different specification — which is precisely why
+[decision 0008](../decisions/0008-growth-decides-crra-reports.md) froze a *new*
+specification for Experiment 010 rather than editing the old one, and why this
+experiment's frozen falsifier is still read at `gamma = 3`. Starting weights are
 pinned to approximate global market capitalisation, an external anchor chosen because
 sample first moments had already been seen while diagnosing the mislabelled dataset —
 that sequence is recorded in the specification's freeze note. The withholding-tax
