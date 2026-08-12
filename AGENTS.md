@@ -31,7 +31,9 @@ or an implementation supports it.
 - `research/` is a separate Python workspace with its own toolchain and its own
   `README.md`. It is not deployed and the client does not import it. No result it
   has produced yet supports a shipped claim: every candidate return source tested
-  so far is `unresolved` or `rejected`.
+  so far is `unresolved`, `rejected`, or capped at `exploratory` by its data
+  contract, and no sleeve is promoted
+  (`docs/decisions/0004-no-sleeve-promoted.md`).
 - Free price sources are not research-grade and the code raises rather than warns
   when a confirmatory experiment reaches for one. See
   `docs/decisions/0002-no-research-grade-free-price-source.md` before "fixing" it.

@@ -16,6 +16,31 @@ It holds the deterministic numerical core, the data-provenance layer, the
 statistical inference used to make overfitting visible, and an append-only
 experiment ledger. Nothing the client renders is yet backed by it.
 
+## Where the research has got to
+
+`as of 2026-08-12`. Five frozen experiments have run, across fifteen ledgered
+executions of six distinct specifications, with 1,037 tests passing.
+
+**Nothing was promoted.** Three hypotheses are `rejected` against falsifiers frozen
+before any result was seen — rebalancing as a source of return, the CMA factor, and
+the AQR trend series as a marginal sleeve. Three are `unresolved`, in every case
+because the available window cannot detect the effect it is looking for rather than
+because the effect is absent. The retail factor-product audit is `exploratory` by
+decision, capped there because no free price source carries a total-return contract.
+
+The one result worth stating plainly: **roughly 89 basis points a year is available,
+near-certainly, against the portfolio you would otherwise have owned** — fund cost,
+tax location, and not trading — because that edge is contractual rather than
+statistical. Against a cheap index the honest budget is about 24 bp against 401 bp
+of tracking error, a 63% chance of being ahead after thirty years. The full argument,
+the design map, and what would have to change are in the
+[research framework](docs/research/portfolio-edge-research-framework.md); the
+non-promotion and its conditions are
+[decision 0004](docs/decisions/0004-no-sleeve-promoted.md).
+
+**No number from `research/` backs anything the client shows, and none may be
+presented as a finding in the application.**
+
 ## Start locally
 
 Requirements: Node.js 22 and pnpm 10.
@@ -31,13 +56,19 @@ still run, but asset search and server-side optimization do not.
 
 ## Checks
 
+Two independent toolchains; run the checks for the half you touched.
+
 ```sh
-pnpm biome check
+pnpm biome check      # client
 pnpm typecheck
 pnpm build
+
+cd research && uv run pytest && uv run mypy && uv run ruff check
 ```
 
-`pnpm install` also installs the pre-push hook, which runs the first two checks.
+`pnpm install` also installs the pre-push hook, which runs the first two client
+checks. CI runs the client's three on Node 22 and does not yet run the research
+workspace at all.
 
 ## Repository map
 

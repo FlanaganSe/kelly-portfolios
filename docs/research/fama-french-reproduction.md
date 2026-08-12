@@ -5,10 +5,11 @@ extraction, multi-table parsing, percent-to-decimal conversion, sample-boundary
 selection and monthly summary statistics — reproduce a precisely identified
 published table?
 
-**Decision it informs.** Whether Phase 1 of [`docs/the-plan.md`](../the-plan.md)
-is closed, and therefore whether any downstream experiment may begin drawing
-strategy conclusions from Ken French data. Out of scope: whether any factor is
-real, investable, or worth holding.
+**Decision it informs.** Whether the Phase 1 ingestion gate is closed, and therefore
+whether any downstream experiment may begin drawing strategy conclusions from Ken
+French data. Out of scope: whether any factor is real, investable, or worth holding —
+that is the
+[research framework](portfolio-edge-research-framework.md).
 
 ## Conclusion
 

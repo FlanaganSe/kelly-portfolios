@@ -54,7 +54,160 @@ unproven rather than disproven.
 
 **No positive, independently replicated, net-of-cost edge was established.** A
 low-cost diversified-beta baseline is therefore the control every proposed edge
-must beat, not a claim that the final answer has already been found.
+must beat, not a claim that the final answer has already been found
+([decision 0003](../decisions/0003-cheap-broad-market-control.md)).
+
+## Can you near-definitively beat the market? The direct answer
+
+This section is written to be read on its own. Everything in it is derived on the
+pages linked beside it; nothing here is new evidence. `as of 2026-08-12`, after
+fifteen ledgered runs across five frozen experiments.
+
+The commissioning premise was: *"The goal is to have information and strategies and
+research to near definitively beat the market. Beating the market is not
+hypothetical; it's definitely possible (ie, capture rebalancing bonus against two
+assets that both return the market). But that's not enough."*
+
+The honest answer has two halves and both are load-bearing.
+
+### Yes — against your own counterfactual, and the arithmetic is deterministic
+
+Against **the portfolio you would otherwise have owned**, roughly **89 basis points
+a year** is available, at about **41 bp of tracking error**, reaching 90% confidence
+in about **four months** and 99% in about **fourteen**. It decomposes into three
+lines, none of which is a forecast
+([edge decomposition](expected-edge-decomposition.md) §2):
+
+| Line | Central | Range | Mechanism |
+| --- | ---: | --- | --- |
+| Fund cost reduction | **49 bp** | 40–59 | Asset-weighted 0.09% for broad index funds against 0.57% for active (Morningstar 2026); ICI gives 0.05% against 0.64% |
+| Tax-loss harvesting | **30 bp** | 0–90 | Conditional on a taxable account, direct security ownership, offsetting gains and continuing contributions |
+| Asset location | **10 bp** | 0–21 | Conditional on holding more than one account type and more than one asset class |
+| **Total** | **89 bp** | 40–170 | TE ≈ 41 bp; `P(ahead at 30 yr) ≈ 1.00` |
+
+The certainty comes from the *pairing*, not from the size. `P(outperform) =
+Phi(e sqrt(T) / s)`, so at `e = 89 bp` and `s = 41 bp` a single year already gives
+0.985 and fourteen months gives 0.99. The reason the tracking error is small is that
+none of these lines is a bet: a fee not paid and a tax not realised are contractual,
+and [Sharpe (1991)](https://web.stanford.edu/~wfsharpe/art/active/active.htm) makes
+the fee half an accounting identity — *"they depend only on the laws of addition,
+subtraction, multiplication and division."*
+
+**Cost, tax location, and not trading. That is the whole of the near-definite part,**
+and none of it requires a view on any market. It is also the part that is *already
+spent* once taken: an index fund cannot beat its own index by cutting its fee again.
+
+### No — against a cheap index, at any horizon a human has
+
+Against **a stated cheap index**, the entire honest budget is about **24 bp/yr,
+ranging −30 to +101 bp, against 401 bp of tracking error**. That gives a thirty-year
+probability of being ahead of **0.631**, and 90% confidence would take roughly
+**443 years**. The budget's three probabilistic lines are a factor tilt (21 bp
+central, sign not robust), rebalancing (2.4 bp) and securities-lending pass-through
+(1 bp). **Read 24 bp as an upper bound, not a central estimate** — for the reason in
+the second bullet below.
+
+Two things make this worse than it looks, not better.
+
+- **The factor line is a construction, not a measurement.** Its 21 bp is
+  `6.6%/yr gross long-short × 0.42 post-publication retention × 0.40 long-only
+  capture × 0.30 portfolio exposure − 12 bp incremental fee`. The long-only capture
+  fraction *is not established by any source read here*. Halve it and halve the
+  exposure and the chain goes negative.
+- **The rebalancing line is now refuted downward by this repository's own data.**
+  [Experiment 003](rebalancing-policy.md) measured **−38.7 bp/yr** on the portfolio
+  and **−62.9 bp/yr** on the canonical regional pair over 35 years. The +2.4 bp in
+  the budget is an equal-drift upper bound that a real drift gap removes.
+
+Read the arithmetic the other way and it stops being about markets at all. Thirty
+years against 400 bp of tracking error can *demonstrate* an edge of only about
+94 bp/yr at 90% confidence, and fifty years only 72 bp. **No probabilistic line in this budget is demonstrable
+from an investor's own experience.** The horizon scales with the square of `s/e`, so
+tracking error, not edge size, decides whether a lifetime is enough: the same 50 bp
+edge reaches 90% confidence in 24 days against 10 bp of tracking error and in
+105 years against 400 bp.
+
+### The rebalancing example: mathematically true, conditionally true, empirically dead
+
+The premise named one specific mechanism, and it deserves a specific answer in three
+parts.
+
+**It is mathematically true.** For constant long-only weights, portfolio log growth
+carries a non-negative excess term `gamma_star = 0.5 (sum_i w_i sigma_i^2 −
+sigma_p^2)`. A buy-and-hold portfolio converges almost surely on its single best
+component, so it asymptotically throws the whole of `gamma_star` away. With *equal*
+drifts, a constant-weight portfolio beats buy-and-hold eventually, always
+([edge decomposition](expected-edge-decomposition.md) §1.1).
+
+**It is provably conditional, and the condition is exact.** Constant weights beat
+buy-and-hold in almost-sure growth rate **iff `g_p > max_i g_i`**. The break-even is
+horizon-free: at a drift gap equal to `gamma_star`, the probability is exactly 0.5 at
+*every* horizon, and above it rebalancing loses with probability approaching one.
+Waiting does not help. Even in the ideal equal-drift case the win probability has a
+floor of `2 Phi(1) − 1 = 68.27%` and reaches 90% only at `gamma_star × T ≈ 3.90` —
+**390 years** at the most favourable plausible `gamma_star` of 100 bp/yr. "Near
+definitively" is refuted quantitatively, not rhetorically.
+
+**It is empirically dead on the canonical real pair.** [Experiment 003](rebalancing-policy.md)
+tested it on US, developed-ex-US and emerging equity over 420 months. The closed form
+for `gamma_star` reproduced **to within 0.09 bp/yr on the portfolio** — the
+mathematics is not the problem. What failed is the premise that two broad equity
+markets "both return the market":
+
+- US against developed-ex-US ran a realised drift gap of **4.34 pp/yr against a
+  `gamma_star` of 12.5 bp/yr — a factor of about 35**.
+- The realised advantage was **−62.9 bp/yr**, against **−70.5 bp/yr** predicted once
+  the closed form is extended to that drift gap. The theory predicted the loss.
+- The 68.27% floor did not survive: over rolling 30-year windows of that pair the
+  realised frequency was **0.0%, zero of 61 windows**.
+- `kappa_t`, the difference in simple returns between the two sleeves, is
+  **positively** autocorrelated in every pair tested — every Lo–MacKinlay variance
+  ratio at every horizon exceeds one. Relative regional performance *trends*.
+  Rebalancing is short exactly that.
+- Every rebalanced policy had an equal or **worse** maximum drawdown than the
+  untouched portfolio.
+
+Costs are not the explanation and must not be offered as one: the most expensive
+policy paid 1.2 bp/yr, and quadrupling every cost moved the result by about a tenth
+of the shortfall. **Rebalancing lost to the drift gap, not to friction.**
+
+What rebalancing *did* buy is real and is not return: it held the portfolio within
+0.6 to 3.1 percentage points of its declared weights against buy-and-hold's 14.8, for
+0.3 to 1.2 bp/yr. That is keeping a promise, and it is the only claim the evidence
+supports.
+
+### What would have to be true for this answer to change
+
+Five conditions, each of which is a measurable target rather than a hope.
+
+1. **A licensed, survivorship-free, point-in-time total-return source.** This is the
+   binding constraint on every investable conclusion
+   ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
+   [Experiment 002](factor-product-audit.md) can only see 72 months, where the median
+   minimum detectable alpha across its 132 fund-by-specification tests is **4.52 pp/yr**
+   against a true cross-sectional dispersion of gross alpha of about 1.25 pp/yr. The
+   window cannot see the effect it is looking for by roughly a factor of three, and
+   its returns have **no independent corroboration of any kind** — the cross-source
+   check refused all 44 requests.
+2. **An investable, low-correlation pair whose drift gap is genuinely below its
+   `gamma_star`.** No such pair was tested. Every pair in Experiment 003 correlates
+   0.72 to 0.79 in logs, and the drift gap dominated.
+3. **A measured long-only capture fraction of a long-short factor premium.** The sign
+   of the factor line depends on a number no source establishes.
+4. **Tracking error reduction, not edge enlargement.** Because `T = (z s / e)**2`,
+   halving tracking error quarters the horizon to any confidence level. Every
+   feasible improvement to the index-relative answer is on the `s` side.
+5. **Post-publication windows with power.** Against this repository's own 2.0 pp/yr
+   materiality threshold, **no post-publication window in Experiment 001's 20-cell
+   grid exceeds 26% power**, and most sit between 12% and 24%. The public data cannot
+   answer the question the experiment asks; more of the same data will not fix it.
+
+Absent those, the defensible statement is the one this repository will make: *you can
+near-definitively beat the portfolio you would otherwise have owned, by roughly 90
+basis points a year, because most of that edge is contractual rather than
+statistical. You cannot near-definitively beat a cheap index, at any horizon a human
+has.* The asymmetry is not a fact about markets. It is a fact about which benchmark a
+saving is measured against.
 
 ## What is established, and what is not
 
@@ -358,6 +511,15 @@ or no rebalance—from identical starting weights and cash flows. A variance
 identity must never be reported as realized alpha, and the correct diagnostic for
 whether rebalancing adds value is the serial dependence of \(\kappa_t\), not the
 diversification-return statistic.
+
+**That test has now been run and it is `rejected`.**
+[Experiment 003](rebalancing-policy.md) applied exactly that design to US,
+developed-ex-US and emerging equity over 420 months. The \(\kappa_t\) diagnostic
+came back **positive** in every pair — relative performance trends rather than
+reverts — and every policy lost to buy-and-hold on all three cost bases with a worse
+maximum drawdown. Rebalancing is retained as a *risk-control* policy, which is what
+the same experiment measured it to be: exposure held within 0.6 to 3.1 percentage
+points of target against buy-and-hold's 14.8, for 0.3 to 1.2 bp/yr.
 
 ### Drawdowns, crisis diversification, and tail protection
 
@@ -879,64 +1041,120 @@ record publication date, live assets/capacity, ownership concentration when
 available, and performance before and after publication. Mechanism decay is not an
 unexpected nuisance; it is a core falsifier.
 
-## Numerical fixtures
+## Numerical fixtures live in the tests
 
-These are closed-form, need no market data, and were each recomputed independently
-of the paper that states them. They satisfy the root `AGENTS.md` requirement for
-"at least one fixture computed independently of the implementation under test".
+The closed-form fixtures that used to be tabulated here are now pinned by named
+tests, re-derived in each test from its stated inputs rather than hardcoded. They
+need no market data, so they satisfy the root `AGENTS.md` requirement for "at least
+one fixture computed independently of the implementation under test" without any
+data contract. **Adding a new fixture to this page rather than to a test is a
+regression.**
 
-The test runner now exists, and every fixture below has been reproduced in
-`research/tests/unit/`, re-derived in the test from its stated inputs rather than
-hardcoded. This table is therefore scheduled for deletion: it survives only until
-the last row is confirmed pinned by a named test, at which point the durable
-outcome lives in the tests and this section becomes a pointer to them. Adding a
-new fixture here rather than to a test is a regression.
+| Fixture family | Pinned by |
+| --- | --- |
+| Kelly optimum, the two leverage boundaries, the vertex form, ERC financing sensitivity | `research/tests/unit/test_core_kelly.py` |
+| Exact diversification return, the two-period rebalance identity, the zero-expected-profit lattice, `kappa` as the diagnostic | `research/tests/unit/test_core_rebalance.py` |
+| Two-asset ERC equals inverse volatility independent of `rho`, Euler risk contributions, the `sigma_MV <= sigma_ERC <= sigma_1/n` ordering | `research/tests/unit/test_core_portfolio.py` |
+| One-sided turnover convention, the cost-by-turnover constants `k`, square-root impact, the retail implementability limit | `research/tests/unit/test_core_costs.py` |
+| Expected maximum Sharpe, trial dispersion *across trials*, effective trial count under correlation | `research/tests/unit/test_inference_deflated_sharpe.py` |
+| The `1.25**2 / (1.25**2 + 3.36**2) = 0.121` shrinkage factor and the ×12 (never ×√12) annualisation trap | `research/tests/unit/test_experiments_exp_002_fund_exposure.py` |
+| The `gamma_star` closed form, the short-straddle identity, the 68.27% floor, the horizon-free break-even drift gap | `research/tests/unit/test_studies_volatility_harvesting.py` |
+| Chambers–Zdanowicz Exhibit 5, the mean-preserving contraction, the annualised-rate mislabel | `research/tests/unit/test_studies_chambers_zdanowicz.py` |
 
-| Fixture | Inputs | Expected result |
-| --- | --- | --- |
-| Diversification return, exact | Two assets, equal weights, returns +25%/−10% and +50%/−20%, \(\rho=1\) | \(g_A=6.0660\%\), \(g_B=9.5445\%\), \(\sum w_ig_i=7.8053\%\), \(g_p=8.1087\%\), DR = **+0.3035%** |
-| Erb–Harvey form is wrong | Same, and \(\sigma=[5,10,20,35,50]\%\) equal-weighted | \(\tfrac12(1-1/N)\bar\sigma^2(1-\bar\rho)\) wrongly vanishes at \(\bar\rho=1\), where the exact diversification return is **+1.37%** — dispersed volatilities leave a Jensen gap even at perfect correlation. **The "overstates by 10.6%" half of this row did not reproduce** and is withdrawn: recomputed under both readings of \(\bar\sigma^2\) (mean variance, and the square of mean volatility) the approximation *understates* for every \(\bar\rho>0\), by ratios of 0.853 / 0.623 / 0.216 at \(\bar\rho=0.3/0.6/0.9\), and is exact at \(\bar\rho=0\) under the mean-variance reading. The direction of the error, not only its size, was recorded wrongly. |
-| Rebalance identity | \(w_S=0.6\), \(w_B=0.4\), \(\kappa_1=\kappa_2=-40\%\) | \(R_{\text{REBAL}}-R_{\text{HOLD}}=-3.84\) pp exactly; coefficient \(-w_Sw_B=-0.24\) |
-| Zero-expected-profit test | Two assets, i.i.d. ±25%/−20% at \(p=0.5\), equal weights, two periods, 16 paths | \(E[W_T]=1.050625\) for **both** strategies; long/short trade \(E[\text{profit}]=0\), s.d. \$0.02531 |
-| Kelly boundaries | \(\mu-r=5\%\), \(\sigma=18\%\), \(r=5\%\) | \(L^*=1.5432098765\); growth = \(r\) at \(3.0864\); growth = 0 at \(3.8815675216\) |
-| Kelly vertex form | Same | \(g(L^*)=0.0885802469=r+(\mu-r)^2/2\sigma^2\); \(g(L)=r+\tfrac12\sigma^2[(L^*)^2-(L-L^*)^2]\) agrees with the quadratic to machine precision at \(L=0,0.5,1,1.5432,2,3,3.88\) |
-| Equal risk contribution, two assets | \(\sigma_e=16\%\), \(\sigma_b=6\%\), \(\rho=0\) | \(w=(3/11,\ 8/11)\) exactly — equals inverse-volatility, and is *independent of \(\rho\)*; \(\sigma_p^2=288/75625\), \(\sigma_p=0.06171113727\); \(RC_e=RC_b=0.030855568634\), summing to \(\sigma_p\) (Euler) at 50/50 |
-| ERC financing sensitivity | Same, levered to 16% volatility | \(L=2.5927249\) → 70.7107% equity, 188.5618% bonds, borrowing 159.2725% of NAV, so each 100 bp of spread costs 159.27 bp/yr |
-| Cost-by-turnover rule | Novy-Marx–Velikov tier means | \(k=\text{cost}/\text{turnover}\) = 1.70 (low), 1.71 (mid), 1.57 (high) — stable across tiers, floor 1.0 |
-| Expected maximum Sharpe | \(N\) independent zero-skill trials | \(\text{maxZ}=(1-\gamma)\Phi^{-1}(1-1/N)+\gamma\Phi^{-1}(1-1/(Ne))\), \(\gamma=0.5772156649\); at \(N=100\) gives 2.5306 against an exact 2.5076 |
+Three things a test cannot carry survive here.
 
-Three constants must be **re-derived per parameterisation, never hardcoded**: the
-36.5% return-matched equity weight, the \$0.050625 per-path gap, and the −3.84 pp
-two-period figure (its multiperiod analogue in the same paper is −5.3 pp). The
-0.44 prior Sharpe scales as \(\sqrt{240/N_{\text{months}}}\).
+**The Erb–Harvey approximation is wrong and is deliberately not implemented, so no
+test pins it.** For two assets at equal weights with returns +25%/−10% and
++50%/−20% and \(\sigma=[5,10,20,35,50]\%\) equal-weighted,
+\(\tfrac12(1-1/N)\bar\sigma^2(1-\bar\rho)\) wrongly vanishes at \(\bar\rho=1\),
+where the exact diversification return is **+1.37%** — dispersed volatilities leave
+a Jensen gap even at perfect correlation. **The "overstates by 10.6%" half of the
+original record did not reproduce** and is withdrawn: recomputed under both readings
+of \(\bar\sigma^2\) (mean variance, and the square of mean volatility) the
+approximation *understates* for every \(\bar\rho>0\), by ratios of 0.853 / 0.623 /
+0.216 at \(\bar\rho=0.3/0.6/0.9\), and is exact at \(\bar\rho=0\) under the
+mean-variance reading. The direction of the error, not only its size, was recorded
+wrongly. Use `core/rebalance.py`'s exact form.
 
-Two implementation traps are worth recording because both are easy to get wrong
-and neither is visible in the formula. In the deflated Sharpe ratio,
-\(V[\{SR_n\}]\) is the variance of Sharpe ratios *across trials*, not the sampling
-variance of one Sharpe ratio, and \(N\) must be the number of *independent* trials.
-In the manager-skill shrinkage, an annual alpha is twelve times a monthly
-intercept, so the standard error annualises as \(\times12\), never \(\times\sqrt{12}\).
-The resulting shrinkage factor is
-\(\sigma^2_{\text{true}}/(\sigma^2_{\text{true}}+SE^2)=1.25^2/(1.25^2+3.36^2)=0.121\):
-an observed 5%/yr alpha implies a posterior of about 0.6%/yr.
+**Three constants must be re-derived per parameterisation, never hardcoded**: the
+36.5% return-matched equity weight in the put-protection comparison, the \$0.050625
+per-path gap, and the −3.84 pp two-period rebalance figure (its multiperiod analogue
+in the same paper is −5.3 pp). The 0.44 prior Sharpe scales as
+\(\sqrt{240/N_{\text{months}}}\).
 
-## Candidate hypotheses and rejection rules
+**A fixture that disagrees with our own computation is a finding, not a tolerance to
+loosen.** The Phase 1 gate is the standing example: it is
+[`unresolved`](fama-french-reproduction.md) because two published standard deviations
+did not reproduce and the declared tolerance was not touched.
 
-| Candidate | Plausible source | Required comparison | Reject or cap when |
+## The provisional portfolio-design map
+
+**This is not an allocation, and it is not a recommendation.** An allocation becomes
+appropriate only after the investor policy is defined — benchmark, horizon, tax
+status, liabilities, cash flows, drawdown tolerance, liquidity reserve, permitted
+instruments and objective — and none of that is settled here. This map records, per
+candidate, what would have to become true before it could be held. It supersedes the
+earlier "candidate hypotheses and rejection rules" table, which carried the same
+candidates without their evidence, their data quality, or their measured status.
+
+Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
+`independently-reproduced`, `walk-forward-tested`, `shadow-live`,
+`production-eligible`, `rejected`, `unresolved` — and are never collapsed into
+"works" or "does not work". `not tested` means no ledgered run exists.
+
+### Map A — what each candidate is
+
+| Candidate sleeve | Baseline portfolio | Investable proxy | Expected mechanism | Experiment status |
+| --- | --- | --- | --- | --- |
+| **Cheap broad market** | itself; it is the control | VTI / VOO / ITOT and a broad ex-US fund, 3 bp, ~1.3 bp round trip | Equity risk premium; the only line whose delivery is contractual | **the control**, [decision 0003](../decisions/0003-cheap-broad-market-control.md) |
+| **Value (HML)** | cheap broad market | 33 of the 44 screened funds grade on HML; 15 reached `exploratory` as proxies only | Risk or behavioural premium on book-to-market | `unresolved` ([Exp 001](factor-persistence.md)); products `exploratory`/`rejected` ([Exp 002](factor-product-audit.md)) |
+| **Momentum (UMD)** | cheap broad market | MTUM — **the entire retail shelf** at $1bn / 0.60% | Underreaction; possibly risk | `unresolved` (Exp 001); MTUM `rejected` (Exp 002) |
+| **Profitability (RMW)** | cheap broad market | QUAL (`rejected` on cost) and SPHQ (`unresolved`) — the entire shelf | Gross-profitability premium | `unresolved` (Exp 001) — the only factor that did not decay |
+| **Investment (CMA)** | cheap broad market | none on the screened shelf | Conservative-minus-aggressive asset growth | **`rejected`** (Exp 001) |
+| **Size (SMB)** | cheap broad market | IJH, IJR, VB, SPMD, SPSM, EZM | Compensation for illiquidity/distress, disputed | not tested as a premium; 3 of 8 products `rejected` on cost |
+| **Diversified trend** | 60/40 equity/cash | none audited; CTA funds unpriced here | Slow behavioural adjustment; crisis convexity | **`rejected`** on its frozen falsifier ([Exp 004](trend-marginal-value.md)) |
+| **Rebalancing as policy** | any multi-sleeve portfolio | the portfolio itself | `gamma_star` excess growth; short relative-performance continuation | **`rejected`** as return ([Exp 003](rebalancing-policy.md)); retained as risk control |
+| **Cost / tax / behaviour** | your own counterfactual | fund selection, account type, direct indexing, not trading | Contractual, not statistical | **deterministic**, 89 bp ([edge decomposition](expected-edge-decomposition.md)) |
+
+### Map B — the evidence on each side, and how good the data is
+
+| Candidate sleeve | Evidence supporting | Counterevidence | Data quality |
 | --- | --- | --- | --- |
-| Value plus profitability | Risk or behavioral premium | Cheap broad index; matching factor exposures | Net result vanishes outside microcaps, one region, or one definition |
-| Cross-sectional momentum | Underreaction/behavior; possibly risk | Same universe without the signal | Costs erase it or rebound crashes violate the risk budget |
-| Diversified time-series trend | Slow behavioral adjustment; crisis convexity | Cash and buy-and-hold, each with identical volatility scaling | Unscaled signal has no value, or net crisis benefit depends on selected episodes |
-| Volatility targeting | Volatility is more forecastable than return | Fixed exposure at equal realized risk | Benefit disappears with lagged inputs, gaps, caps, or financing |
-| Threshold rebalancing | Maintains risk and may harvest relative oscillation | Untouched shares and calendar rebalance | Turnover/tax dominates or result requires tuned bands |
-| Levered diversified portfolio | Access to a higher-Sharpe base portfolio | Same unlevered portfolio and benchmark | Robust growth optimum includes or falls below 1× |
-| Betting against beta | Leverage constraints | Tradable value-weighted BAB with factor controls | Alpha disappears after microcap, financing, borrow, and factor adjustments |
-| Tail puts | Purchased jump convexity | Cash, trend, put spreads, and collars at equal budget | Crisis utility gain does not justify long-run premium and spread |
-| Active-fund selection | Persistent manager skill | Investable index plus matched factors | Frozen selection rule has no future net alpha or depends on surviving funds |
+| **Cheap broad market** | Sharpe's arithmetic identity; measured fee gap 48–59 bp; ~1.3 bp round-trip friction at retail scale | Passive investors still trade: 7.6%/yr US turnover, implicit IPO/SEO costs (Pedersen 2018). And **FF5+UMD prices VTI itself at −0.55 pp/yr (HAC *t* = −3.41)** over 2020–2025, so the standard model does not even span the control | Highest available here. Filed N-PORT returns, sponsor-published fees and spreads, all dated — but N-PORT figures are unaudited, per-filer methodology, and uncorroborated |
+| **Value (HML)** | +4.56 pp/yr in its original sample, BH-significant; +1.57 pp/yr post-publication | Retained 34%; −0.44 pp/yr in the recent decade; **79% of the post-publication premium is the year 2000**; 228 of 384 months under water; −47.4% worst decade | Phase 1 `unresolved`: HML's standard deviation carries a **−3.03% systematic band**. Long-short, gross, not investable |
+| **Momentum (UMD)** | +9.85 pp/yr original; +4.19 pp/yr post-publication; MTUM's UMD loading +0.444 `[+0.277, +0.562]`, sign stable across the fixed calendar split and all 37 rolling windows | Only post-publication cell that looked significant is exactly what BH removes; −56.6% worst year (2008-12…2009-11); illustrative cost **3.30–18.67 pp/yr** against a +4.19 gross premium; MTUM `rejected` after a **1.22 pp/yr** shortfall against a combination whose fee premium over it was 0.12 | **Second moment never gated** — the momentum file was never reproduced against a printed table. Weaker than a band of zero |
+| **Profitability (RMW)** | 96% of its premium retained; mildest post-publication drawdown (−14.8%); low-turnover tier | Post-publication interval `[−0.32, +6.76]` includes zero; **59% of the premium is 2021**; window can only detect 5.27 pp/yr at 80% power | Phase 1 `unresolved`: RMW's standard deviation carries a **+5.09% systematic band** |
+| **Investment (CMA)** | +3.91 pp/yr in the original sample, the strongest of the four | **−1.39 pp/yr post-publication**, sign flip; falsifier clauses (a) and (c) both fired | Reproduced to 0.53% on the second moment. Rejection tested against the most generous candidate discovery date |
+| **Size (SMB)** | Exposure is delivered and stable: SPSM/IJR +0.889, VB +0.599 | Weak as a standalone premium (Hou–Xue–Zhang); **never tested as a premium here**; VB carries the largest shortfall on the shelf, **+2.89 pp/yr** against the fitted cheap combination | 72 months of filed returns; MDE₈₀ 1.97–3.16 pp/yr on these funds |
+| **Diversified trend** | +1.342 pp/yr marginal CE `[+0.759, +1.916]`; survives every hostile test; payoff spread across four structurally different crises; crisis correlation −0.59, downside beta −0.67 | A static + volatility-exposure replica delivers **44%** of it; post-publication interval includes zero and fails Holm; standalone Sharpe 1.34 → 0.18; **vendor states no cost basis anywhere**; comparable CTA survivorship/backfill distortion is 7.7 pp/yr | Vendor-series evaluation, ceiling `exploratory` by construction. Early history substitutes index returns for futures |
+| **Rebalancing as policy** | `gamma_star` closed form reproduces on real data to **0.09 bp/yr**; exposure held to 0.6–3.1 pp against 14.8 | Every policy lost on all three cost bases; realised drift gap **35× `gamma_star`**; `kappa` trends rather than reverts; drawdown equal or worse | French regional total returns, 420 months, pinned by sha256. Pretax only — no tax lots exist |
+| **Cost / tax / behaviour** | Morningstar and ICI fee studies; Chaudhuri–Burnham–Lo harvesting alpha after liquidation taxes; N-CSR securities-lending filings | Harvesting decays to ~0 within five years without new money; behaviour gap refuted from 1.2 pp to ~0.10 pp (Fulkerson et al. 2026); DALBAR must not be cited | Vendor research and regulatory filings, dated. US-only and jurisdiction-specific |
 
-Strategies are not additive merely because their backtests have low full-sample
-correlation. The combined portfolio must expose common dependence on leverage,
-liquidity, volatility estimation, short borrow, equity rebounds, and crowded exits.
+### Map C — what they share, how they fail, and what would promote them
+
+| Candidate sleeve | Shared exposures | Failure regimes | Conditions required for promotion |
+| --- | --- | --- | --- |
+| **Cheap broad market** | It *is* the shared exposure. Every other row inherits its beta and its crises | Any equity bear market, in full | None — it is the control, not a candidate |
+| **Value (HML)** | **0.63 correlated with CMA** over the common post-publication period; shares equity beta and the same crowded exits | Prolonged growth regimes; intangible-heavy composition; 2010–2020 in full | A post-publication window with >26% power against 2.0 pp/yr, plus a long-only capture fraction measured rather than assumed, plus a product whose tracking difference against a cheap mix is not negative |
+| **Momentum (UMD)** | −0.325 to HML; shares equity rebounds with every long-only tilt | Rebound after a bear market (Daniel–Moskowitz); any regime where turnover cost exceeds the premium | A net-of-cost premium measured from observed turnover, not assumed tiers; one-sided monthly turnover below 50%; a second product so the shelf is not a single point of failure |
+| **Profitability (RMW)** | 0.219 to CMA, 0.152 to HML; same universe, same beta | Junk rallies; the same 2000–2002 window where its variance is concentrated | Same as value, plus the ±5.09% volatility band removed by obtaining a 2013–14 CRSP vintage or an equivalent |
+| **Investment (CMA)** | 0.63 to HML — **never count them as two bets** | Already failed: post-publication sign flip | Re-entry requires a new frozen specification and a genuinely post-2026 window; the current rejection stands |
+| **Size (SMB)** | Small-cap liquidity, borrow and spread; the same equity beta | Liquidity events; the cost tail (VB's round-trip spread is 2.72 bp, ~a year of expense ratio) | A premium test that was never run, plus a product whose tracking difference against a cheap mix is non-negative |
+| **Diversified trend** | **Leverage, funding liquidity, volatility estimation, short borrow**; it is a levered futures position and shares margin with everything else levered | Sharp reversals (measured: −0.53%/mo against +4.24% equity months); gaps a monthly series cannot even show; funding shocks; crowded exits | A multi-asset attribution that leaves a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |
+| **Rebalancing as policy** | Sits **inside** the same equity portfolio as any factor tilt, so their tracking errors are not independent | Trending relative performance — which is the measured regime; crises, where it adds exposure to the fall | Promotion as *return* requires a real investable pair with drift gap below `gamma_star`. As *risk control* it needs no promotion and is already the recommended default |
+| **Cost / tax / behaviour** | Tax-loss harvesting and asset location share a *condition*: one tax-deferred account zeroes both at once | A single account type; no offsetting gains; no new money; a flat capital-gains rate; non-US tax law | Already deterministic. What is missing is a versioned, dated, jurisdiction-specific tax boundary rather than scattered constants |
+
+**Strategies are not additive because their backtests have low correlation.** The
+sleeves above share, concretely: **leverage** (trend is a levered futures book),
+**funding liquidity** (March 2020 impaired even the Treasury market — Fed staff put
+hedge-fund Treasury holdings down $141bn), **volatility estimation** (trend, any
+volatility target and any risk-parity weight all divide by the same estimated
+covariance, which for HML and RMW carries a 3–5% systematic band from Phase 1),
+**short borrow** (every academic long-short premium above; retail cannot implement
+them at all), **equity rebounds** (momentum crashes exactly there), and **crowded
+exits** (the August 2007 quant unwind was a three-day −6.85%, twelve daily standard
+deviations, followed by a +5.92% rebound — a liquidity event, not a signal failure).
+Any combination must expose that shared dependence explicitly, not assume it away.
 
 Nor does combining twenty strategies that each win 55% of trades imply a durable
 portfolio edge. A hit rate omits win and loss sizes: a strategy that wins $1 with
@@ -960,6 +1178,220 @@ estimate joint downside and conditional crisis dependence, attribute shared fact
 and funding exposures, shrink expected returns, and cap the effective number of
 independent bets. A new sleeve whose residual return is not distinct after these
 tests is a repackaging of an existing exposure, not another vote for leverage.
+
+## What advanced, what failed, and what remains unresolved
+
+The accounting below is against the hypotheses this repository actually froze, in
+the closed status vocabulary. `as of 2026-08-12`.
+
+### The ledger, counted rather than described
+
+Verified directly from [`research/ledger.jsonl`](../../research/ledger.jsonl):
+**41 entries, 15 runs, 6 distinct specification hashes, 5 experiment families.**
+
+| Terminal outcome | Runs | Which |
+| --- | ---: | --- |
+| `unresolved` | 2 | Phase 1 gate; Experiment 001 |
+| `rejected` | 5 | Experiment 003 (1); Experiment 004 (4 executions of one specification) |
+| `exploratory` | 3 | Experiment 002 (3 executions of one specification) |
+| no terminal status | 5 | 1 `failed` (a parser table-name error), 4 `abandoned` (one operator interrupt, three SIGTERMs) |
+
+Ten runs recorded a `results_viewed` event; **no run consumed the final holdout**.
+Two facts about this count matter more than the count.
+
+- **Repeated executions of one specification are not independent hypotheses, and the
+  ledger keeps them distinguishable.** Four of the five `rejected` rows are one
+  specification hash run four times, and all three `exploratory` rows are one
+  specification hash run three times. The number of distinct specifications searched
+  is **six**, not fifteen, and that is the number any deflated-Sharpe trial count
+  must start from.
+- **The ledger contains a correction to itself.** One `abandoned` entry was appended
+  prematurely and for the wrong run's reason; rather than repair it in place, a
+  superseding entry was appended saying so. That is why there are five `abandoned`
+  events across four abandoned runs.
+
+### Advanced
+
+Nothing was promoted to a sleeve. What advanced is the machinery and four specific
+results that are now measurements rather than citations.
+
+- **The excess-growth closed form is `source-reproduced` and now confirmed on real
+  data.** `0.5 (sum w_i sigma_i^2 − sigma_p^2)` matched realised excess growth to
+  within 0.2 bp/yr on every regional pair and 0.09 bp/yr on the portfolio
+  ([Exp 003](rebalancing-policy.md)). On synthetic paths the Monte Carlo agrees with
+  the closed form within three of its own standard errors.
+- **The exact condition for constant weights to beat buy-and-hold was proved, not
+  cited**: `g_p > max_i g_i`, with the break-even drift gap shown to be horizon-free
+  ([edge decomposition](expected-edge-decomposition.md) §1.1).
+- **The objective is declared.** Net geometric growth, equivalently expected log
+  wealth, recorded as a *preference* justified by Breiman's asymptotic theorem rather
+  than as a proof. This closes the Chambers–Zdanowicz half of open question 2.
+- **The binding constraint was identified and written down**: no free price source
+  carries a total-return contract, so fund-level work cannot exceed `exploratory`
+  ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
+- **The research loop exists end to end** — frozen specification, hashed input,
+  deterministic calculation, adversarial validation, append-only ledger, synthesis —
+  with 1,037 tests passing and a runner that refuses a confirmatory
+  experiment lacking a benchmark, primary metric, cost model, sample policy and
+  rejection rule.
+
+### Failed — `rejected` against a predeclared falsifier
+
+- **Rebalancing as a source of return.** All four policies lost on all three cost
+  bases over 35 years; four independent rejection clauses fired at once. The
+  mechanism that would make it pay is absent and its opposite is present at
+  conventional significance ([Exp 003](rebalancing-policy.md)).
+- **Conservative-minus-aggressive investment (CMA).** −1.39 pp/yr post-publication
+  against +3.91 in-sample; clauses (a) and (c) fired. This is the weakest of the
+  page's rejections and says so: shifting the window back 24 months moves it to
+  +0.40 pp/yr, though that window reaches inside the authors' own estimation sample
+  and +0.40 still fails the 2.0 pp/yr materiality threshold ([Exp 001](factor-persistence.md)).
+- **The AQR time-series-momentum series as a marginal sleeve.** `rejected` on clause
+  (d), narrowly and on an *absolute* reading of the clause: a static
+  time-varying-market-exposure replica with the intercept removed delivers 44% of the
+  benefit. Under a relative reading the verdict would be `unresolved`, and the page
+  says so ([Exp 004](trend-marginal-value.md)).
+- **Twenty-four of 44 screened factor products.** Clause (c) did most of the work,
+  firing on 22: a shortfall above 0.50 pp/yr against a fitted combination of VTI, VUG,
+  VTV and VB, whose fee premium over those products was at most 0.32 pp/yr and
+  typically 0.12. The comparator is fitted **in sample**, so every (c) rejection reads
+  as "a look-ahead combination of four cheap funds beat this product over these 72
+  months", never as "this product is badly run" ([Exp 002](factor-product-audit.md)).
+
+### Unresolved — and why, which is not the same as negative
+
+- **The Phase 1 ingestion gate.** Thirteen of fifteen gating cells reproduce; the
+  standard deviations of HML and RMW do not, by variance ratios of 0.940 and 1.104,
+  against two independently typeset vintages. Exact reproduction is unavailable at
+  any tolerance because Ken French publishes no vintage archive. **Consequence: a
+  systematic 3–5% denominator uncertainty on anything that divides by those
+  volatilities** — a Sharpe ratio, a volatility-scaled sleeve, a risk-parity weight, a
+  covariance matrix, a Kelly fraction. It is not sampling error and will not shrink
+  with more data.
+- **HML, UMD and RMW.** Not negative — *underpowered*. Sixteen of the 20 factor × era
+  cells hold a premium smaller than their own window could detect at 80% power, and
+  the four exceptions are the four original paper samples. **Every cell surviving
+  Benjamini–Hochberg is a pre-publication cell.** The calibration is the finding: a
+  zero-mean Gaussian series matched to HML's length and volatility produced
+  +1.98 pp/yr, a 90% interval of `[−1.70, +5.65]`, a −53.2% maximum drawdown and 247
+  months under water, against HML's real +1.57, `[−2.28, +5.54]`, −57.8% and 228.
+- **Five of the 44 screened products**, whose intended exposure sits at or just above
+  the 0.15 threshold with intervals that reach it.
+- **Whether any of this is investable.** Experiment 002 is `exploratory` by decision,
+  not by outcome, and cannot promote anything on a 72-month unaudited self-reported
+  window whose median minimum detectable alpha is 4.52 pp/yr and whose returns have no
+  independent corroboration at all.
+
+### Never started
+
+The **deferred financing experiment** and the **frozen construction tournament** have
+designs, comparators and falsifiers on this page and no ledgered run. Leverage
+remains at zero, which is the correct state: it was conditioned on an unlevered edge
+surviving the protocol, and none has.
+
+## The next experiment: sign the premium, or close the factor programme
+
+**One recommendation, and it is not the expensive one. It should not be a purchase,
+and the reason is a chain that the experiments have now closed.**
+
+What a shareholder actually receives from any factor product is
+
+```
+premium  ×  delivered loading  −  cost
+```
+
+[Experiment 002](factor-product-audit.md) §12 measured the second and third terms and
+found the loading **delivered** and the cost **measurable**. Experiment 001 could not
+sign the first for any factor. So a licensed price source — the obvious expensive next
+step — would buy resolution on the two terms that already work and none on the term
+that blocks everything. **Product promotion is gated on the factor being `exploratory`
+or better, and no factor is.** Spending money first would be spending it on the wrong
+half.
+
+### Experiment 005 — the regional replication of the post-publication premia
+
+Re-run Experiment 001's post-publication grid for **HML, RMW and CMA** across **US,
+developed-ex-US and emerging** equity, over the *same* frozen era boundaries, and form
+a pooled estimate under a cross-region block bootstrap that resamples the joint panel
+so contemporaneous correlation is preserved rather than assumed away.
+
+**Falsifier, frozen before any number is computed. Both branches are decisive.**
+
+- **(a) A factor advances toward `exploratory`** only if its pooled post-publication
+  premium exceeds the 2.0 pp/yr materiality threshold, its one-sided pooled interval
+  excludes zero after Benjamini–Hochberg across the whole factor × region × era family,
+  **and** the sign agrees in at least two of the three regions.
+- **(b) The factor programme is closed** — not paused — if the **measured** pooled
+  effective sample size leaves a minimum detectable effect above 2.0 pp/yr for every
+  factor. That would establish that publicly available factor data cannot sign these
+  premia at all, which is a bounded, permanent statement rather than another
+  `unresolved`.
+
+**Data it needs: none that is not already here.**
+`Developed_ex_US_5_Factors_CSV.zip` (1990-07…2026-06, 432 monthly rows) and
+`Emerging_5_Factors_CSV.zip` (1989-07…2026-06, 444 rows) are already downloaded,
+hash-pinned and manifested in `research/data-manifests/`, and Experiment 003 already
+uses both. The block bootstrap, HAC, Benjamini–Hochberg, Holm, minimum-detectable-effect
+and frozen-era machinery all exist and are tested. **Cost is hours, not dollars.**
+
+**Experiment 001's stated reason for skipping this does not hold, and that is the
+opening.** It records that the regional files "start 1990-07 and 1989-07, so they are
+shorter than the post-publication windows already shown to be underpowered." That is
+true only of the *original-sample* eras, which begin 1963-07. HML's post-publication
+era begins **1994-01** and RMW's and CMA's **2014-01**, and **both regional files begin
+before both boundaries** — so the regional post-publication windows are exactly the
+same length as the US ones. The eras that are underpowered are precisely the eras where
+the regional data is complete.
+
+**Limits to freeze into the specification rather than discover.**
+
+- **UMD is not covered.** Only a US momentum file is registered here; a regional
+  momentum test needs a file this repository does not currently manifest.
+- **These are the same global risk factors**, so contemporaneous correlation is high
+  and the effective sample size is the quantity being *measured*. If it comes back at
+  1.2 rather than 3, that is the finding, and branch (b) fires.
+- **Regional returns are USD and unhedged**, so a currency term enters that the US
+  series does not carry.
+- **The regional files were never gated against any printed table.** Their second
+  moments are *unmeasured*, which is weaker than Phase 1's ±3–5% band on US HML and RMW,
+  not stronger.
+- **It remains a before/after comparison** and cannot identify publication as a cause —
+  the same limit Experiment 001 states about itself.
+
+**Why it beats the alternatives on information per unit of effort.**
+
+| Alternative | Effort | Why it loses |
+| --- | --- | --- |
+| **Buy a licensed point-in-time source** | money, plus a budget decision not taken | Buys the loading and cost terms, which already work. Cannot sign a premium. Experiment 002's own promotion protocol would still refuse every product |
+| Exit census of the fund series that stopped filing | low | Sharpens a survivorship bound that sits outside the blocking chain — and the attrition count has a **known defect** (renames counted as deaths) that should be fixed regardless, as a repair rather than an experiment |
+| Read Form N-CSR for realised distributions and turnover | moderate | Genuinely fills a gap — clause (d) is currently evaluated without the distribution term its own falsifier names — but it sharpens *cost*, which is not the blocker |
+| A per-style model-misfit pedestal | low | Bounds how much of the −2.38 pp/yr median alpha is the model. The alpha column is already unmeasurable on power grounds, so bounding its bias unblocks nothing |
+| Multi-asset attribution of the trend sleeve | moderate | Sharpens a verdict already `rejected`, on a vendor-series evaluation that cannot exceed `exploratory` in any case |
+| The frozen construction tournament | high | Decides *how to weight* sleeves; there are none to weight, and the [edge budget](expected-edge-decomposition.md) prices the optimiser as the smallest line in it |
+| Obtain the 2013–14 CRSP vintage to settle Phase 1 | unbounded, likely impossible | The band it would remove is checked cell by cell and **changes no conclusion anywhere** |
+| Read the 2026-01-onward holdout | low | Six to eight months against windows already under 26% power. Spends a genuine holdout for nothing |
+
+**What its result would actually change.** Branch (a) reopens the factor programme and
+makes a licensed source worth buying, because there would finally be a premium whose
+delivery is worth auditing. **Branch (b) closes it, and — more valuably — says the
+licensed purchase should not be made for factor products at all.** Either way the
+budget decision that has been deferred since
+[decision 0002](../decisions/0002-no-research-grade-free-price-source.md) stops being a
+matter of faith. An `unresolved` verdict absorbs effort indefinitely; a measured
+statement that public data can never resolve it does not.
+
+**If branch (a) fires, this is what the dataset must contain.** Stated now
+so the specification exists before the budget does: fund and share-class total returns
+net of fees at monthly or finer frequency, covering the listed shelf **from at least
+2003 so the window is 240 months rather than 72**; a **survivorship-free
+universe with post-delisting observations and a coded exit reason**; stable economic
+fund identity across share class, ticker change, merger and vendor migration;
+inception and first-trade dates and a vendor first-seen date so backfill is
+detectable; point-in-time expense ratios, net assets and index-mandate history;
+documented total-return, distribution and corporate-action treatment; and a stated
+revision policy with retrievable vintages. A source that supplies returns but not exit
+reasons or vintages does not lift Experiment 002 above `exploratory`, and paying for
+one that does not would be the most expensive way to learn nothing.
 
 ## Research protocol for scripts
 
@@ -1040,51 +1472,82 @@ identify the violated assumption, and fall back to the last explicitly safe stat
 
 The working assumptions, to be challenged rather than silently embedded, are:
 
-- the investable baseline is a low-cost, diversified passive portfolio;
+- the investable baseline is a low-cost, diversified passive portfolio, and it is
+  now the formal control ([decision 0003](../decisions/0003-cheap-broad-market-control.md));
 - the objective is net geometric growth subject to a drawdown or expected-shortfall
-  constraint, but the precise utility and horizon are not yet chosen;
+  constraint, declared as a preference rather than derived, with the horizon and the
+  liability model still unchosen;
 - strategies must be implementable by the intended investor at realistic scale;
 - no expected alpha is accepted solely because a historical mean is positive; and
 - leverage begins at zero until an unlevered edge survives the research protocol.
+  **None has**, so leverage stays at zero
+  ([decision 0004](../decisions/0004-no-sleeve-promoted.md)).
 
-Open decisions must be settled before performance code is authoritative:
+Open decisions must be settled before performance code is authoritative. Two of the
+original ten are closed and are recorded as closed rather than deleted, because a
+reader needs to know they were asked.
 
-1. Who is the modeled investor—taxable or tax-advantaged, horizon, currency,
-   liabilities, cash flows, drawdown tolerance, and accessible instruments?
-2. What exact benchmark and objective define “beat the market”: terminal wealth,
-   log growth, inflation-adjusted return, expected utility, or downside-constrained
-   return? The Chambers–Zdanowicz half of this question is now answered in the
-   [expected-edge decomposition](expected-edge-decomposition.md): their dismissal
-   targets an annualised rate rather than log wealth, and does not survive against
-   \(E[\log W]\). What remains open is the genuine product choice — terminal
-   wealth, log growth, or a liability/consumption objective — which evidence
-   cannot settle and the investor policy must.
-3. Which point-in-time datasets are licensed, reproducible, and rich enough to
-   model delistings, publications, spreads, borrow, futures, and options?
+1. Who is the modelled investor — taxable or tax-advantaged, horizon, currency,
+   liabilities, cash flows, drawdown tolerance, and accessible instruments? **Still
+   open, and it is now the binding constraint on producing an allocation rather than
+   a design map.** Experiments 003 and 004 each declared CRRA `gamma = 3` for their
+   own comparison; that is a per-experiment preference, not a product decision.
+2. What exact benchmark and objective define "beat the market"? **Closed on the
+   objective, open on the horizon and liability model.** The
+   [edge decomposition](expected-edge-decomposition.md) settles the
+   Chambers–Zdanowicz half — their dismissal targets an annualised rate rather than
+   log wealth and does not survive against \(E[\log W]\) — and declares net geometric
+   growth as a preference justified by Breiman rather than as a proof. On the
+   benchmark, the answer is that there is no single one: cost savings are measured
+   against the investor's own counterfactual, factor and rebalancing lines against a
+   stated index, and the two must never be aggregated.
+3. Which point-in-time datasets are licensed, reproducible, and rich enough to model
+   delistings, publications, spreads, borrow, futures, and options? **Open, and now
+   the single binding constraint on every investable conclusion**
+   ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)). The
+   required contents are specified above under "The next experiment".
 4. What capital scale, tax model, leverage source, margin rules, and liquidity
    reserve define implementability?
-5. How will the experiment ledger prevent undisclosed researcher degrees of
-   freedom across code revisions and researchers? Note that the effective number of
-   independent trials is unrecoverable retroactively, so the ledger must start
-   before the first backtest, not after.
-6. Which factor themes, definitions, and benchmarks survive both the strict
-   frequentist Hou–Xue–Zhang construction and the hierarchical Bayesian
-   Jensen–Kelly–Pedersen construction, then remain positive after executable costs?
-7. What is the net-of-cost equivalent of each gross figure on this page? No source
-   cited here deducts transaction costs, shorting costs, or capacity constraints.
-   Every replication rate, premium, and Sharpe ratio above is an upper bound of
-   unknown tightness.
+5. ~~How will the experiment ledger prevent undisclosed researcher degrees of
+   freedom?~~ **Closed by implementation.** `research/src/portfolio_edge/experiments/ledger.py`
+   appends every attempted run including failures and abandonments, with
+   specification hash, git commit, worktree diff hash, dataset-manifest hashes,
+   seed, run kind, `results_viewed` and `consumes_final_holdout`; the runner refuses
+   a confirmatory run whose specification lacks a benchmark, primary metric, cost
+   model, sample policy or rejection rule. What the ledger does **not** solve is the
+   dependence between trials: six distinct specifications across fifteen runs is a
+   count, not an effective number of independent tests, and no procedure recovers
+   that automatically.
+6. Which factor themes survive both the strict frequentist Hou–Xue–Zhang
+   construction and the hierarchical Bayesian Jensen–Kelly–Pedersen construction,
+   then remain positive after executable costs? **Still open, and narrowed.**
+   Experiment 001 measured four factors on the French value-weighted construction
+   only; the equal-weighted variant is not distributed and the test was **not run**,
+   which matters because that single choice moves published replication rates from
+   35% to 58.6%.
+7. What is the net-of-cost equivalent of each gross figure on this page? **Partly
+   answered, still open in general.** Experiment 003 charged costs inside the
+   simulation rather than as a haircut; Experiment 002 used returns already net of
+   fund fees; Experiment 001 reports an illustrative cost column beside — never
+   subtracted from — its gross premia. Every academic long-short figure above remains
+   an upper bound of unknown tightness.
 8. Does risk-constrained Kelly beat fractional Kelly on bootstrapped historical
    returns? It does so by about 34% in growth at matched drawdown risk on the
    finite-outcome case in
    [Busseti, Ryu, and Boyd](https://web.stanford.edu/~boyd/papers/pdf/kelly.pdf), but the
    advantage vanished on that paper's own fat-tailed mixture — the case it says
    resembles a real portfolio problem — and only two synthetic single draws were
-   ever tested.
+   ever tested. Untested here, and correctly deferred: it sizes an edge, and there is
+   no edge to size.
 9. What estimation window and regime-conditioning scheme should the covariance
-   matrix use, given the documented bond–stock beta sign flip?
+   matrix use, given the documented bond–stock beta sign flip? Note that for HML and
+   RMW any such matrix inherits Phase 1's 3–5% systematic volatility band.
 10. How many days of autonomous cash liquidity are required, and which assets may
     genuinely be assumed monetizable during a systemic stress?
+11. **What fraction of a long-short factor premium does a long-only tilt capture?**
+    Promoted from a buried caveat to an open question because the sign of the entire
+    factor line in the edge budget depends on it and no source read here establishes
+    it.
 
 ## Product and data contract
 
@@ -1133,38 +1596,45 @@ be a separately versioned transform with its assumptions exposed.
 
 ## Consequence for this repository
 
-Do not extend the current optimizer or label its output Kelly-optimal. The next
-implementation change to financial math must first install a test runner, define
-the investor objective and benchmark, and establish a point-in-time data contract.
-Then build small, independent research modules in this order:
+Do not extend the current optimizer or label its output Kelly-optimal.
 
-1. return, wealth, cost, turnover, drawdown, expected-shortfall, and attribution
-   primitives with independently calculated fixtures;
-2. passive buy-and-hold plus calendar and threshold rebalancing;
-3. volatility scaling applied identically to benchmark and candidate sleeves;
-4. canonical factor and time-series-trend replications with frozen specifications;
-5. walk-forward evaluation, block bootstrap, experiment ledger, and multiple-test
-   diagnostics;
+Steps 1 through 5 of the original build order are **done**: the primitives, the
+passive and rebalancing policies, volatility scaling applied identically to
+benchmark and sleeve, the factor and trend replications with frozen specifications,
+and walk-forward, block-bootstrap and multiple-testing diagnostics all exist in
+`research/` under a test runner ([decision 0001](../decisions/0001-contained-python-research-workspace.md)),
+with 1,037 tests passing `as of 2026-08-12`, 18 of them network-marked. What
+remains, in order:
+
 6. portfolio combination and stress testing; and only then
 7. fractional/risk-constrained Kelly and leverage with live financing and margin
    rules.
 
-Three of those steps have a specific first move that the evidence now fixes.
+Neither may begin yet, and the reason is not sequencing. **Step 6 combines sleeves
+and there are no promoted sleeves; step 7 sizes an edge and there is no edge to
+size** ([decision 0004](../decisions/0004-no-sleeve-promoted.md)). The next
+substantive move is evidence, not code: Experiment 005 above, then a licensed
+point-in-time data contract.
 
-- Step 1's fixtures are already written: the table under "Numerical fixtures" is
-  closed-form and needs no data, so the primitives can be tested before any market
-  data contract exists.
-- Step 5's trial ledger must begin before the first backtest. Every deflated-Sharpe
-  threshold depends on the effective number of independent trials, and that number
-  cannot be reconstructed after the fact.
-- Any estimated alpha must pass through a shrinkage step before it reaches a sizing
-  function. With signal 1.25%/yr against noise 3.36%/yr the factor is 0.121, and
-  omitting it is the most likely catastrophic sizing error in a Kelly system.
+Three standing rules survive from that build order.
+
+- **Closed-form fixtures come before any data contract.** The primitives were and
+  remain testable without market data; they now live in `research/tests/unit/`.
+- **The trial ledger must precede the first backtest**, because the effective number
+  of independent trials cannot be reconstructed afterwards. It did, and the current
+  count is six distinct specifications across fifteen runs.
+- **Any estimated alpha passes through shrinkage before it reaches a sizing
+  function**, using *that estimate's own* standard error. The reference factor of
+  0.121 comes from a 3.36%/yr standard error typical of an active fund; on index
+  funds with tighter errors the median factor was 0.431, and hardcoding the
+  reference would have over-shrunk every one of them. Omitting shrinkage entirely is
+  the most likely catastrophic sizing error in a Kelly system.
 
 The first useful script should make false confidence harder. It should reproduce a
 benchmark, expose every assumption and cost, and fail loudly on look-ahead,
 unavailable data, weight violations, insolvency, and unrecorded experiments before
-it searches for an optimal portfolio.
+it searches for an optimal portfolio. That is now what
+[`research/`](../../research/README.md) is.
 
 The algorithms, conditioning requirements, and closed-form fixtures for all of this
 are specified separately in the
@@ -1220,9 +1690,10 @@ volatility targeting is risk control rather than established alpha, and manager
 skill need not accrue to fund investors. It is still not a systematic review, and
 absence from this page is not evidence against a strategy.
 
-Coverage remains uneven. The gaps below are the highest-value next research
-questions because each could change a construction decision rather than add a
-minor caveat.
+Coverage remains uneven. The gaps below are what is left after five experiments;
+each could change a construction decision rather than add a minor caveat. **None of
+them is the recommended next step** — that is Experiment 005 above, and the reason
+is that all five of these are blocked on a data contract that does not exist yet.
 
 - **Lifecycle implementation.** The theoretical claim and human-capital
   counterexample are now documented, but taxes, realized margin paths, investor
@@ -1230,9 +1701,12 @@ minor caveat.
   audit before any glidepath can be recommended.
 - **Alternative-return implementation.** The risk mechanisms for trend, merger
   arbitrage, catastrophe risk, private credit, volatility selling and statistical
-  arbitrage are now classified. None has yet passed a common point-in-time,
-  net-cost, capacity-aware replication, and investable cat-risk data may be
-  especially difficult to license. Catastrophe risk is the only one of the five
+  arbitrage are now classified, and **trend is no longer among the untested**:
+  [Experiment 004](trend-marginal-value.md) evaluated the AQR vendor series and
+  `rejected` it on its frozen falsifier, without touching investability. None of the
+  five has passed a common point-in-time, net-cost, capacity-aware replication, and
+  investable cat-risk data may be especially difficult to license. Catastrophe risk
+  is the only one of the five
   whose capacity constraint is physical rather than competitive — the supply of
   insured catastrophe risk is bounded by exposed property, not by how many funds
   want the trade — so it is the one worth settling first. The test is explicit:
@@ -1250,15 +1724,28 @@ minor caveat.
   comparison design, and falsifiers, but no common point-in-time walk-forward
   result. That experiment is still required before choosing a default beyond the
   simple constrained linear-shrinkage baseline.
-- **Hedge-fund investability.** Historical survivorship, backfill, self-reporting,
-  and smoothing magnitudes are now bounded well enough to reject naive index use.
-  A current point-in-time fund population with post-delisting observations,
-  subscription terms, capacity, fees, and executable proxies has not been acquired.
-  The old studies cannot supply a universal bias correction.
-- **The ergodicity-economics critique.** The specific Itô/Kelly equations and the
-  mainstream normative objection have now been checked. What remains unsettled is
-  the product decision: which finite-horizon investor objective and liability model
-  this repository will implement. Ergodicity cannot settle that choice.
+- **Fund and hedge-fund investability.** Historical survivorship, backfill,
+  self-reporting and smoothing magnitudes are now bounded well enough to reject naive
+  index use, and [Experiment 002](factor-product-audit.md) put a floor under the
+  problem in the retail ETF shelf: **312 of the 1,513 mandate-qualifying series in the
+  2019Q4 frame — 20.6%, holding $138.7bn — were absent from the 2025Q4 census.** (The
+  artifact's own headline of 358 / $333.5bn is defective: it counts a series that
+  renamed out of the mandate pattern as a death, and four of its fifteen largest
+  "disappeared" series are recorded in the same file as still filing. The defect is
+  documented and open.) That figure is a **lower bound**, because public N-PORT filings
+  begin in 2019 and a fund that closed earlier is invisible to both censuses; and the
+  fact that all 44 audited funds survived is **true by construction**, since 72 months
+  of filed returns were required to enter the panel. A point-in-time fund population
+  with post-delisting
+  observations, subscription terms, capacity, fees and executable proxies has still
+  not been acquired
+  ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)), and
+  the old studies cannot supply a universal bias correction.
+- **The ergodicity-economics critique.** Closed on the algebra and on the objective:
+  the Itô/Kelly equations and the mainstream normative objection were checked, and
+  net geometric growth is now declared as a *preference*. What remains is the
+  finite-horizon liability model — consumption, drawdown, or terminal wealth — which
+  no evidence can settle and the investor policy must.
 - **Taxes beyond the US and household data.** Asset location can reverse portfolio
   rankings, but tax lots, wash-sale networks, withdrawal sequencing, estate rules,
   currency/home bias and account types remain jurisdiction-specific data and legal
@@ -1280,11 +1767,18 @@ less (2.00 to 1.01 pp/yr), though its post-publication interval now includes zer
 Note also that the statistical failure Huang et al. identify occurs inside the
 original 1985–2009 sample, so it is an inferential problem as well as a decay
 story, and the two are separate objections.
-Current retail borrow rates, box-spread financing, futures roll costs and ETF
-bid-ask spreads are unverified, and the fraction of a long-short premium that a
-long-only tilt captures was not established by any source — which matters, because
+**ETF bid-ask spreads are no longer unverified**: dated, sponsor-published 30-day
+median spreads and expense ratios are in the
+[edge decomposition](expected-edge-decomposition.md) §2.1 `as of 2026-08-10`, and
+the finding there is that retail implementation friction is about 1.3 bp round trip,
+with nothing left to harvest. Current retail borrow rates, box-spread financing and
+futures roll costs remain unverified, and the fraction of a long-short premium that
+a long-only tilt captures was not established by any source — which matters, because
 a retail investor cannot implement most academic long-short factors at all.
 
 No positive candidate on this page has passed this repository's full net-cost,
 point-in-time, independently reproduced, frozen out-of-sample protocol. Published
-gross returns are hypothesis inputs, not portfolio return forecasts.
+gross returns are hypothesis inputs, not portfolio return forecasts. Five
+experiments have now been run against frozen falsifiers and **nothing was promoted**
+([decision 0004](../decisions/0004-no-sleeve-promoted.md)); the conditions that
+would change that are in Map C above.

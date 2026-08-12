@@ -62,3 +62,10 @@ setup and current status.
 - [0002 — No research-grade free price source](decisions/0002-no-research-grade-free-price-source.md)
   — every free price feed was tested and none carries a total-return contract, so
   fund-level work is exploratory until a source is licensed.
+- [0003 — The cheap broad-market portfolio is the control](decisions/0003-cheap-broad-market-control.md)
+  — what every candidate is measured against, and the four comparators a result must
+  report: benchmark and certainty class, a cheap combination, a risk match, and the
+  model-misfit pedestal.
+- [0004 — No sleeve is promoted](decisions/0004-no-sleeve-promoted.md) — the outcome
+  of all five experiments in the closed status vocabulary, why leverage stays at
+  zero, and the per-candidate conditions that would change it.

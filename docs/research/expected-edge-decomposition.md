@@ -467,6 +467,17 @@ portfolio, subject to Pedersen's correction above. The 18 bp high figure is the 
 median, not the mean; the low figure is the multi-asset case where buy-and-hold captures
 almost everything.
 
+**This line has since been measured on real data and it is negative.**
+[Experiment 003](rebalancing-policy.md) ran the four policies on US, developed-ex-US
+and emerging equity over 420 months and found **−38.7 bp/yr on the portfolio and
+−62.9 bp/yr on the US/developed-ex-US pair**, because the realised drift gap ran about
+**35× `gamma_star`** and `kappa_t` trends rather than reverts. The whole of this row —
+its `0` low bound included — is an **equal-drift upper bound that a real drift gap
+removes**, and so, therefore, is the stated-index total below it. The numbers in this
+table are left as computed rather than patched, because they are regenerated and pinned
+by tests; the correction is that **24.4 bp/yr is an upper bound on the stated-index
+budget, not a central estimate**, and the 0.631 probability beside it inherits that.
+
 **Factor tilt: 21 bp central, sign not robust.** Every multiplier written out:
 6.6%/yr gross long-short (the
 [Harvey, Liu and Zhu (2016)](https://doi.org/10.1093/rfs/hhv059) structural prior of

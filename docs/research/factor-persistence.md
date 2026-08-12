@@ -6,7 +6,7 @@ and is the result stable enough to justify building and testing an investable
 implementation?
 
 **Decision it informs.** Whether any of the four factors earns a place in
-[Experiment 002](../the-plan.md), the exposure and implementation audit of
+[Experiment 002](factor-product-audit.md), the exposure and implementation audit of
 investable factor products. Out of scope: whether any factor is investable, what
 it costs to hold, whether publication *caused* any change, and any allocation.
 
