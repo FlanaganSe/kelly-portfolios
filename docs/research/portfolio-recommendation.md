@@ -88,9 +88,9 @@ series exists in this repository, so no page here can tell you the market weight
 | Sleeve | Fund | ER | % of equity | Status of what it buys |
 | --- | --- | ---: | ---: | --- |
 | US total market | **VTI** (or ITOT, VOO) | **0.03%** | 60 | the control |
-| Developed ex-US | **VEA** (or IEFA) | not read here | 30 | the control |
-| Emerging markets | **VWO** (or IEMG) | not read here | 10 | the control |
-| Investment-grade bonds | **BND** (or a Treasury fund) | not read here | — | risk control, sized by variant |
+| Developed ex-US | **VEA** (or IEFA at **0.07%**) | **0.03%** | 30 | the control |
+| Emerging markets | **VWO** (or IEMG at **0.09%**) | **0.06%** | 10 | the control |
+| Investment-grade bonds | **BND** (or a Treasury fund) | **0.03%** | — | risk control, sized by variant |
 
 **Use VXUS instead of VEA + VWO only if you will hold the whole international sleeve
 in one account.** Splitting developed from emerging is what makes §3's placement
@@ -104,9 +104,25 @@ comes from the sponsor's own prospectus or fund page with its URL and date recor
 ([Exp 002](factor-product-audit.md)), and every managed-futures fee from the fund's
 SEC-filed 497K summary prospectus fee table with its accession number
 ([Exp 008](trend-marginal-value.md#experiment-008--the-products)), both
-`as of 2026-08-12`. VEA, VWO, BND, IEFA
-and IEMG were never priced by any experiment here. Look them up; do not take a
-number from this page that this page does not have.
+`as of 2026-08-12`. The five fees this page previously refused to state are now read
+from their sponsors. Each is a **dated lookup, not an experiment result**:
+
+| Fund | ER | Primary source | Dated |
+| --- | ---: | --- | --- |
+| VEA | 0.03% | Vanguard's published fund-profile endpoint, `expenseRatioAsOfDate` | 2026-04-28 |
+| VWO | 0.06% | same endpoint | 2026-02-27 |
+| BND | 0.03% | same endpoint | 2026-04-28 |
+| IEFA | 0.07% | SEC-filed 497K fee table, accession [0001193125-25-302120](https://www.sec.gov/Archives/edgar/data/1100663/000119312525302120/d35638d497k.htm) | 2025-11-28 |
+| IEMG | 0.09% | SEC-filed 497K fee table, accession [0001193125-25-336670](https://www.sec.gov/Archives/edgar/data/930667/000119312525336670/d947325d497k.htm) | 2025-12-30 |
+
+Two qualifications, because these are not like-for-like with the Vanguard numbers above.
+**IEMG's fee table carries a waiver line, currently `(0.00)%`** — a waiver sitting at
+zero is one that can be withdrawn, so IEMG's 0.09% is the least stable figure here. And
+the footnote to both iShares tables excludes acquired fund fees and expenses, so neither
+is an all-in number.
+
+Where a figure is still absent, look it up; do not take a number from this page that
+this page does not have.
 
 ### 1.3 The two optional sleeves, and nothing else
 
@@ -517,8 +533,9 @@ and the −38.7 bp rebalancing result ([Exp 003](rebalancing-policy.md)).
   returns — Experiment 002's data, and the next experiment nobody has run.
 - **Whether the emerging-market inversion survives capital-gain distributions and
   harvesting value**, neither of which §3 quantifies.
-- **What the fees on VEA, VWO, BND, IEFA and IEMG are.** Never read by any experiment
-  here.
+- **What a fund's own tracking error against a cheap combination is.** §5.2 assumes 7
+  pp/yr for VBR from Experiment 002's range for *other* funds. VBR's own is unpublished
+  here, and it is the input the small-value horizon column is most sensitive to.
 - **What a liquidity reserve should be.** Framework open decision 10, unsized.
 
 ---
