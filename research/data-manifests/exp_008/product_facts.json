@@ -1,0 +1,261 @@
+{
+  "schema_version": "1",
+  "built_utc": "2026-08-12T13:35:00Z",
+  "what_this_is": "Per-fund facts that Form N-PORT does not carry: net and gross expense ratio, inception date, index, stated mandate, and the prospectus's standardised average-annual-total-return table including after-tax rows. Every figure is read from the fund's own SEC-filed summary prospectus (Form 497K) rather than from a sponsor web page, because a filing carries an accession number, a filing date and an immutable document. Read on 2026-08-12, BEFORE any fund return was downloaded.",
+  "after_tax_methodology": "Item 4(b)(2)(iii) of Form N-1A. After-tax returns are computed by the fund using the HIGHEST individual federal marginal income and capital-gains tax rates in effect at the time of each distribution, and reflect NO state or local tax. They assume shares held in a taxable account; they are irrelevant to an IRA or a 401(k). They are the fund's own figures, not this repository's estimate.",
+  "why_no_threshold_uses_these": "The after-tax figures were read while assembling this file, so any falsifier threshold placed on them now would be a threshold chosen after seeing the quantity. They are measured and reported and are in NO clause of Experiment 008's frozen falsifier. See parameters.clause_d_disclosure in the specification.",
+  "sponsor_page_note": "The sponsor web pages for DBMF, KMLM and WisdomTree returned HTTP 403 to an automated client on 2026-08-12. The SEC-filed summary prospectus was used instead for every fund, which is the stronger source in any case.",
+  "funds": {
+    "DBMF": {
+      "net_expense_ratio_percent": 0.85,
+      "gross_expense_ratio_percent": 0.85,
+      "expense_detail": "Management Fees 0.85%, 12b-1 None (plan authorised but inactive), Other Expenses 0.00%, Total Annual Fund Operating Expenses 0.85%",
+      "inception_date": "2019-05-07",
+      "inception_source": "the Average Annual Total Returns table's 'Since Inception (5/7/2019)' column heading in the 497K below",
+      "index_name": "none; actively managed",
+      "index_provider": "Dynamic Beta investments (sub-adviser); the 'Dynamic Beta Engine' replication model",
+      "stated_mandate": "managed_futures_replication",
+      "mandate_evidence": "The fund's stated strategy is to replicate the pre-fee performance of the largest managed-futures hedge funds by regressing their reported returns on a set of liquid futures and holding the fitted positions. This is the single most informative product on this shelf given Experiment 004's finding that a static replica captured 44% of the index's marginal benefit.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1020425/000119312526197034/d62276d497k.htm",
+      "source_form": "497K summary prospectus, Litman Gregory Funds Trust, filed 2026-04-30, accession 0001193125-26-197034",
+      "date_read": "2026-08-12",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "methodology": "SEC standardised, highest individual federal marginal rates, no state or local tax",
+        "rows": [
+          {
+            "period": "1_year",
+            "before_tax_percent": 13.85,
+            "after_tax_on_distributions_percent": 11.14,
+            "after_tax_on_distributions_and_sale_percent": 8.14
+          },
+          {
+            "period": "5_year",
+            "before_tax_percent": 8.52,
+            "after_tax_on_distributions_percent": 6.37,
+            "after_tax_on_distributions_and_sale_percent": 5.79
+          },
+          {
+            "period": "since_inception",
+            "before_tax_percent": 8.28,
+            "after_tax_on_distributions_percent": 6.19,
+            "after_tax_on_distributions_and_sale_percent": 5.69
+          }
+        ]
+      }
+    },
+    "KMLM": {
+      "net_expense_ratio_percent": 0.9,
+      "gross_expense_ratio_percent": 0.9,
+      "expense_detail": "Management Fees 0.89%, 12b-1 0.00% (plan permits up to 0.25%, none currently paid), Other Expenses 0.01%, Total Annual Fund Operating Expenses 0.90%",
+      "inception_date": "2020-12-01",
+      "inception_source": "the Average Annual Total Returns table's 'Since Inception (12-1-2020)' column heading in the 497K below",
+      "index_name": "KFA MLM Index",
+      "index_provider": "Mount Lucas Management",
+      "stated_mandate": "diversified_managed_futures",
+      "mandate_evidence": "Tracks an index of twenty-two liquid futures contracts: 11 commodities, 6 currencies and 5 global bond markets, weighted by historical volatility and equal-dollar-weighted within each category. NOTE, AND IT MATTERS FOR THE EXPOSURE TEST: the KFA MLM Index holds NO equity index futures, while AQR's TSMOM universe holds nine.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1547576/000182912626008212/kraneshares-kmlm_497k.htm",
+      "source_form": "497K summary prospectus, KraneShares Trust, filed 2026-07-31, accession 0001829126-26-008212",
+      "date_read": "2026-08-12",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "methodology": "SEC standardised, highest individual federal marginal rates, no state or local tax",
+        "rows": [
+          {
+            "period": "1_year",
+            "before_tax_percent": -3.21,
+            "after_tax_on_distributions_percent": -5.1,
+            "after_tax_on_distributions_and_sale_percent": -1.9
+          },
+          {
+            "period": "5_year",
+            "before_tax_percent": 4.75,
+            "after_tax_on_distributions_percent": 2.92,
+            "after_tax_on_distributions_and_sale_percent": 3.06
+          },
+          {
+            "period": "since_inception",
+            "before_tax_percent": 5.77,
+            "after_tax_on_distributions_percent": 3.96,
+            "after_tax_on_distributions_and_sale_percent": 3.88
+          }
+        ]
+      }
+    },
+    "CTA": {
+      "net_expense_ratio_percent": 0.75,
+      "gross_expense_ratio_percent": 0.75,
+      "expense_detail": "Management Fees 0.75%, 12b-1 0.00%, Other Expenses 0.00%, Total Annual Fund Operating Expenses 0.75%",
+      "inception_date": "2022-03-07",
+      "inception_source": "the Average Annual Total Returns table's 'Since Inception (3/7/22)' column heading in the 497K below; the same document states the fund 'commenced operations in March 2022'",
+      "index_name": "none; actively managed. The SG CTA Index is named as a reference benchmark",
+      "index_provider": "Altis Partners systematic models, sub-advised",
+      "stated_mandate": "diversified_managed_futures",
+      "mandate_evidence": "Systematically invests across 50+ markets including commodity futures, Treasury futures and currency contracts, seeking an absolute return profile with low correlation to equities.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1810747/000182912625008748/simplifyetf-cta_497k.htm",
+      "source_form": "497K summary prospectus, Simplify Exchange Traded Funds, filed 2025-10-31, accession 0001829126-25-008748",
+      "date_read": "2026-08-12",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "methodology": "SEC standardised, highest individual federal marginal rates, no state or local tax. NOTE the different as-of date: Simplify files its summary prospectus in October, so the most recent filed table ends 2024-12-31 while DBMF's, KMLM's and FMF's end 2025-12-31. The periods are not comparable across funds and are never averaged.",
+        "rows": [
+          {
+            "period": "1_year",
+            "before_tax_percent": 24.18,
+            "after_tax_on_distributions_percent": 21.72,
+            "after_tax_on_distributions_and_sale_percent": 14.25
+          },
+          {
+            "period": "since_inception",
+            "before_tax_percent": 10.93,
+            "after_tax_on_distributions_percent": 8.4,
+            "after_tax_on_distributions_and_sale_percent": 7.49
+          }
+        ]
+      }
+    },
+    "FMF": {
+      "net_expense_ratio_percent": 0.98,
+      "gross_expense_ratio_percent": 0.98,
+      "expense_detail": "Management Fees 0.95%, 12b-1 0.00%, Other Expenses 0.00%, Acquired Fund Fees and Expenses 0.03%, Total Annual Fund Operating Expenses 0.98% (as of 2026-05-01)",
+      "inception_date": "2013-08-01",
+      "inception_source": "the Average Annual Total Returns table's explicit 'Inception Date 8/1/2013' column in the 497K below",
+      "index_name": "none; actively managed",
+      "index_provider": "First Trust Advisors L.P.",
+      "stated_mandate": "diversified_managed_futures",
+      "mandate_evidence": "Actively managed ETF seeking positive returns not directly correlated to broad equity or fixed-income returns, holding exchange-listed futures on equity indexes, other financial indexes, currencies and global debt, with commodity futures held through a Cayman subsidiary.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1549548/000144554626003340/etf5_497k.htm",
+      "source_form": "497K summary prospectus, First Trust Exchange-Traded Fund VII, filed 2026-05-01, accession 0001445546-26-003340",
+      "date_read": "2026-08-12",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "methodology": "SEC standardised, highest individual federal marginal rates, no state or local tax",
+        "rows": [
+          {
+            "period": "1_year",
+            "before_tax_percent": 4.04,
+            "after_tax_on_distributions_percent": 1.73,
+            "after_tax_on_distributions_and_sale_percent": 2.37
+          },
+          {
+            "period": "5_year",
+            "before_tax_percent": 4.31,
+            "after_tax_on_distributions_percent": 2.89,
+            "after_tax_on_distributions_and_sale_percent": 2.71
+          },
+          {
+            "period": "10_year",
+            "before_tax_percent": 1.56,
+            "after_tax_on_distributions_percent": 0.72,
+            "after_tax_on_distributions_and_sale_percent": 0.83
+          },
+          {
+            "period": "since_inception",
+            "before_tax_percent": 1.32,
+            "after_tax_on_distributions_percent": 0.56,
+            "after_tax_on_distributions_and_sale_percent": 0.67
+          }
+        ]
+      }
+    },
+    "WTMF": {
+      "net_expense_ratio_percent": 0.66,
+      "gross_expense_ratio_percent": 0.67,
+      "expense_detail": "Management Fees 0.65%, 12b-1 None, Other Expenses 0.00%, Acquired Fund Fees and Expenses 0.02%, Total Annual Fund Operating Expenses 0.67%, Fee Waivers (0.01)%, Total After Fee Waivers 0.66%",
+      "inception_date": "2011-01",
+      "inception_source": "the 497K below states a portfolio manager has served 'since its inception in January 2011'. The DAY is not disclosed in the summary prospectus and is NOT invented here; the month is sufficient to decide the 2022-12-31 cutoff and nothing else in this experiment reads it.",
+      "index_name": "none; actively managed since 2020. Formerly tracked the WisdomTree Managed Futures Index",
+      "index_provider": "WisdomTree Asset Management",
+      "stated_mandate": "diversified_managed_futures",
+      "mandate_evidence": "A diversified managed-futures programme across commodity, currency and financial futures, with commodity exposure held through a Cayman subsidiary.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1350487/000121465925018677/wtmf497k1225.htm",
+      "source_form": "497K summary prospectus, WisdomTree Trust, filed 2025-12-31, accession 0001214659-25-018677",
+      "date_read": "2026-08-12",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "methodology": "SEC standardised, highest individual federal marginal rates, no state or local tax. As-of date differs from DBMF, KMLM and FMF; see CTA's note.",
+        "rows": [
+          {
+            "period": "1_year",
+            "before_tax_percent": 3.31,
+            "after_tax_on_distributions_percent": 1.85,
+            "after_tax_on_distributions_and_sale_percent": 1.96
+          },
+          {
+            "period": "5_year",
+            "before_tax_percent": 4.33,
+            "after_tax_on_distributions_percent": 2.08,
+            "after_tax_on_distributions_and_sale_percent": 2.34
+          },
+          {
+            "period": "10_year",
+            "before_tax_percent": 1.04,
+            "after_tax_on_distributions_percent": -0.26,
+            "after_tax_on_distributions_and_sale_percent": 0.22
+          }
+        ]
+      }
+    },
+    "TFPN": {
+      "net_expense_ratio_percent": 1.96,
+      "gross_expense_ratio_percent": 1.96,
+      "expense_detail": "Management Fees 0.99%, 12b-1 0.00%, Other Expenses 0.93%, Acquired Fund Fees and Expenses 0.04%, Total Annual Fund Operating Expenses 1.96%",
+      "inception_date": null,
+      "inception_source": "Not read. The fund fails the expense-ratio criterion, which is applied BEFORE the inception cutoff, so its inception date could not change its screen outcome and was not looked up. Its earliest NPORT-P filing reached EDGAR on 2023-11-28.",
+      "index_name": "none; actively managed",
+      "index_provider": "Blueprint Investment Partners / Chesapeake Capital, sub-advised",
+      "stated_mandate": "diversified_managed_futures",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1924868/000199937125016261/0001999371-25-016261-index.htm",
+      "source_form": "497K summary prospectus, Tidal Trust II, filed 2025, accession 0001999371-25-016261",
+      "date_read": "2026-08-12"
+    },
+    "FCTE": {
+      "net_expense_ratio_percent": 0.85,
+      "gross_expense_ratio_percent": 0.85,
+      "inception_date": "2024-07-02",
+      "inception_source": "third-party listing data, corroborated by the primary record: EDGAR lists no NPORT-P filing for this series before 2024-11-29, so inception is certainly after 2022-12-31 and the screen outcome does not depend on the exact day.",
+      "index_name": "none; actively managed",
+      "index_provider": "3Fourteen Research / Sound Mind Investing",
+      "stated_mandate": "equity_and_gold_full_cycle_rotation",
+      "mandate_evidence": "A full-cycle trend rotation between US equities, gold and cash. It is NOT a diversified futures programme and is therefore absent from the frozen intended-exposure map. It is recorded here with its reason rather than dropped, and it would fail the inception cutoff in any case.",
+      "source_url": "https://3fourteensmi.com/fcte",
+      "date_read": "2026-08-12"
+    },
+    "IMF": {
+      "net_expense_ratio_percent": 0.65,
+      "gross_expense_ratio_percent": 0.8,
+      "expense_detail": "Management Fees 0.65%, Other Expenses None, Acquired Fund Fees and Expenses 0.15%, Total 0.80%, Fee Waiver/Reimbursement 0.15%, Total After Waiver 0.65%",
+      "inception_date": "2025-03-19",
+      "inception_source": "third-party listing data, corroborated by the primary record: EDGAR lists no NPORT-P filing for this series before 2025-06-30.",
+      "index_name": "none; actively managed",
+      "index_provider": "Invesco Capital Management LLC",
+      "stated_mandate": "diversified_managed_futures",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1418144/000119312526079074/0001193125-26-079074-index.htm",
+      "source_form": "497K summary prospectus, Invesco Actively Managed Exchange-Traded Fund Trust, accession 0001193125-26-079074",
+      "date_read": "2026-08-12"
+    },
+    "FFUT": {
+      "net_expense_ratio_percent": 0.8,
+      "gross_expense_ratio_percent": 0.83,
+      "inception_date": "2025-06-03",
+      "inception_source": "third-party listing data, corroborated by the primary record: EDGAR lists no NPORT-P filing for this series before 2025-09-26.",
+      "index_name": "none; actively managed",
+      "index_provider": "Fidelity Management & Research Company LLC",
+      "stated_mandate": "trend_following",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1898391/000189839126000077/0001898391-26-000077-index.htm",
+      "source_form": "497K summary prospectus, Fidelity Greenwood Street Trust, accession 0001898391-26-000077",
+      "date_read": "2026-08-12"
+    },
+    "VTI": {
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2001-05-24",
+      "index_name": "CRSP US Total Market Index",
+      "index_provider": "CRSP",
+      "stated_mandate": "total_market_comparator",
+      "mandate_evidence": "NOT a screened product. VTI is the model-misfit pedestal: a cap-weighted total-market fund IS the market portfolio, so under a correctly specified model its alpha should be about minus its three-basis-point fee. It is resolved outside the screen so the benchmark cannot be selected by the thing being screened. Facts carried over unchanged from Experiment 002's committed product facts.",
+      "source_url": "https://investor.vanguard.com/investment-products/etfs/profile/vti",
+      "date_read": "2026-08-12"
+    }
+  }
+}

@@ -1,0 +1,940 @@
+# FROZEN BEFORE ANY CAPTURE FRACTION WAS EXAMINED.
+#
+# FREEZE RECORD, stated so it can be attacked. This file was written and
+# committed at 2026-08-12T13:17Z, BEFORE the experiment module existed and
+# before any output of exp_007_longonly_capture was produced or read.
+#
+# What HAD been seen when it was frozen, stated in full because a partial
+# declaration is worse than none:
+#
+#   * the whole of Experiment 001 and Experiment 005
+#     (docs/research/factor-persistence.md) and their committed
+#     specifications, whose eras, materiality threshold, power methodology and
+#     block-length policy this specification inherits UNCHANGED;
+#   * Experiment 002 (docs/research/factor-product-audit.md) section 12, whose
+#     chain `premium x delivered loading - cost` this experiment supplies the
+#     missing middle term of;
+#   * the design map and the edge decomposition's ASSUMED 0.40 long-only
+#     capture, in docs/research/portfolio-edge-research-framework.md. That 0.40
+#     is the number this specification's falsifier is written against, and it
+#     was written into the repository long before this experiment existed;
+#   * a data-probing step that downloaded the candidate files, listed their
+#     tables, banners and units, and computed the HML and UMD RECONSTRUCTION
+#     RESIDUALS. Those residuals are an integration test of the arithmetic, not
+#     a result, and reproducing them is clause (0) of the rejection rule below.
+#
+# AND, DECLARED AS A GENUINE DEGREE OF FREEDOM RATHER THAN HIDDEN: that same
+# probing step also printed two full-sample (1963-07..2026-06, i.e. INCLUDING
+# the six held-out months) capture ratios before this file was written -- the
+# value halves against the market factor, and the value halves against the
+# equal-weighted six. Their approximate values were seen. They are the reason
+# clause (1) of the falsifier -- the DEFINITIONAL SPREAD test -- exists at all,
+# and a reader must discount clause (1) accordingly. Clause (2), the test
+# against 0.40, is NOT affected: 0.40 was fixed in the repository before this
+# experiment, and the 0.30 spread threshold in clause (1) is set at three
+# quarters of it by the rule stated in parameters.spread_threshold_rationale
+# rather than by reference to anything observed. No era-conditional figure, no
+# interval, no volatility, no drawdown, no loading, no regional figure, no
+# momentum figure and no size figure had been computed or seen.
+#
+# CORRECTION RECORD, appended 2026-08-12T13:44Z. THIS SPECIFICATION HAS BEEN
+# EDITED ONCE SINCE IT WAS FIRST FROZEN, and the edit is on the record here and
+# in the ledger rather than hidden by a rewrite.
+#
+#   * The version first frozen hashes to
+#     265ebd1232e45e765fb428f5a3b35b03cc57f3651ba9874293adeca15adcd5ba and was
+#     RUN. Its run is in the ledger as run_id 0d37fe33c09a4d379fd9b8a2507a76de
+#     with status `unresolved`, and it stays there permanently.
+#   * That run fired clause (0). It did NOT fire because the arithmetic failed.
+#     It fired because the tolerances this file declared for the reconstruction
+#     identities were DERIVED WRONGLY, by a hand-wave about "half a printed
+#     digit" and "one and a half printed digits" rather than by propagating the
+#     rounding through the identity.
+#   * The correct derivation, which depends only on the printed precision of
+#     the files and on the number of terms in each identity and on no observed
+#     quantity: the portfolio files print returns to two decimal places in
+#     percent, so each portfolio return carries a rounding error of at most
+#     0.005 percentage points. Both the HML and the momentum identities are
+#     four-term weighted sums with weights of 0.5, so the sum of the absolute
+#     weights is 2 and the reconstruction inherits at most 2 * 0.005 = 0.010
+#     percentage points. The published factor column is itself printed to two
+#     decimal places, contributing a further 0.005. The bound is therefore
+#     0.015 percentage points per month, or 0.00015 in decimal, for HML, for
+#     SMB and for the momentum spread alike. Every tolerance below is now that
+#     one uniformly derived number, and the earlier per-identity values are
+#     gone because they were arithmetic errors, not judgements.
+#   * WHAT HAD BEEN SEEN WHEN THIS EDIT WAS MADE, stated so it can be attacked:
+#     the whole output of run 0d37fe33c09a4d379fd9b8a2507a76de, INCLUDING every
+#     capture fraction, interval, spread, corner statistic and regional figure.
+#     This edited specification is therefore NOT pre-registered blind, and no
+#     reader should treat it as if it were.
+#   * WHAT DID NOT CHANGE, which is what makes the edit defensible: the
+#     hypothesis, the mechanism, the falsifier, both of its clauses, the 0.40
+#     assumed capture, the 0.30 spread threshold and its rationale, the
+#     primary definitions and their family membership, the eras, the benchmark,
+#     the primary metric, the cost model, the seed, and every source pin. The
+#     only edited fields are the three reconstruction tolerances and the
+#     sentence in `rejection_rule` that quotes them. Nothing that decides
+#     anything about the capture fraction moved.
+#
+# Editing any field changes the specification hash and therefore creates a new
+# hypothesis in the ledger.
+experiment_family: exp_007_longonly_capture
+title: The long-only capture fraction, and the small-value corner
+entry_point: exp_007_longonly_capture
+run_kind: exploratory
+evidence_class: public-series-evaluation
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  A long-only tilt towards value delivers a fraction of the HML long-short
+  premium that is (i) well defined, in the sense that it does not depend on
+  which reasonable benchmark the researcher subtracts, and (ii) at or above the
+  0.40 that this repository's edge decomposition assumes when it budgets 21
+  basis points a year for the factor line. Clause (i) is the load-bearing one:
+  a capture fraction that moves by more than its own size when the benchmark
+  changes is not a multiplier, and cannot be used as one in a chain. This is a
+  hypothesis about published research portfolios. It is not a hypothesis that
+  any long-only tilt is worth holding, and no result here can establish that.
+
+mechanism: >
+  Every factor premium this repository has measured is an academic long-short
+  spread: long the high-scoring portfolio, short the low, zero net investment,
+  gross of every cost. A retail investor holds neither leg separately and
+  cannot short at all at that scale. What they can hold is a long-only fund
+  that overweights the high-scoring stocks inside an ordinary portfolio, so
+  what reaches them is the LONG LEG'S EXCESS over whatever they would otherwise
+  have held, and not the spread.
+  The arithmetic that makes this computable, rather than a matter of opinion,
+  is that Ken French publishes the long-only portfolios HML is assembled from.
+  With SL, SM, SH, BL, BM, BH the six value-weighted size x book-to-market
+  portfolios, HML = 0.5(SH + BH) - 0.5(SL + BL) exactly. The long leg
+  L = 0.5(SH + BH) is therefore a portfolio anyone could in principle hold, and
+  L - benchmark is the long-only excess. The capture fraction is
+  (L - benchmark) / HML over the same months.
+  There is a mechanical reason to expect clause (i) to fail, and it is stated
+  here BEFORE the run rather than discovered afterwards. A three-bucket sort is
+  symmetric: if the middle bucket sits near the midpoint of the outer two, then
+  L minus the equal-weighted average of all six is arithmetically close to
+  HML/2 whatever the data do, because the long leg is one half of a symmetric
+  spread. Against a CAPITALISATION-weighted market the same L is a different
+  object, because weighting the small and big halves equally is a large size
+  tilt relative to a market that is overwhelmingly big. The gap between those
+  two readings is not a modelling subtlety; it is the difference between
+  crediting the value line of a budget with a value premium and crediting it
+  with a size premium under another name.
+
+falsifier: >
+  Two clauses, both frozen here before any capture figure was computed, both
+  read on the SIZE-NEUTRAL definition and on the predeclared family of five.
+  CLAUSE (1), well-definedness. The hypothesis' clause (i) is REJECTED if the
+  spread between the largest and the smallest point estimate across the five
+  predeclared primary definitions exceeds 0.30 in either the primary full
+  sample or the full post-publication era. A spread that wide means the
+  benchmark, not the data, carries the answer, and no single capture fraction
+  may then be quoted anywhere without the benchmark that produced it.
+  CLAUSE (2), level. The hypothesis' clause (ii) is REJECTED if the two-sided
+  90% JOINT block-bootstrap interval of the SIZE-NEUTRAL capture fraction lies
+  entirely below 0.40 in BOTH the primary full sample and the full
+  post-publication era. It is supported, to `exploratory` and no further, if
+  that interval lies entirely above 0.40 in both. It is `unresolved` if the
+  interval straddles 0.40 in either.
+  NEITHER CLAUSE MAY BE READ AS A STATEMENT THAT A LONG-ONLY TILT IS WORTH
+  HOLDING. The capture fraction is one term of `premium x loading x capture -
+  cost`, and this experiment measures that term and nothing else.
+
+universe:
+  description: >
+    Long-only value- and equal-weighted research portfolios from the Ken French
+    data library, monthly, at the vintages pinned below, together with the
+    long-short factor files built from the same sorts. No individual
+    securities, no funds. Nothing here is a product anyone sells.
+  primary_sorts:
+    - id: us_6_portfolios_2x3
+      dataset_id: french_us_6_portfolios_2x3
+      what: 2 size x 3 book-to-market, value-weighted, US, 1926-07 onwards
+      why: The six portfolios HML is defined as a difference of.
+    - id: us_25_portfolios_5x5
+      dataset_id: french_us_25_portfolios_5x5
+      what: 5 size x 5 book-to-market, value-weighted, US, 1926-07 onwards
+      why: >
+        A sharper corner than the 2x3 halves, and the only file here that also
+        carries firm counts and average market capitalisation per cell, which
+        is what makes the microcap question answerable rather than assertable.
+    - id: us_6_portfolios_me_prior_12_2
+      dataset_id: french_us_6_portfolios_me_prior_12_2
+      what: 2 size x 3 prior 2-12 month return, value-weighted, US
+      why: The momentum analogue, so the value answer is not read as universal.
+    - id: us_portfolios_formed_on_me
+      dataset_id: french_us_portfolios_formed_on_me
+      what: size deciles, quintiles and 30/40/30 splits, value-weighted, US
+      why: >
+        The design map records that size "was never tested as a premium" here.
+        This file is the test, and it is a long-only test by construction.
+  factor_references:
+    - id: us_ff3
+      dataset_id: french_us_ff3
+      what: Mkt-RF, SMB, HML, RF, US, 1926-07 onwards
+      why: >
+        The three-factor file and NOT the five-factor one. Its SMB is built
+        from the same six size x book-to-market portfolios, so it is the file a
+        reconstruction of SMB from those six can be checked against; the
+        five-factor SMB averages the size legs of three different sorts and
+        will NOT reconcile. It also reaches back to 1926-07, which the
+        five-factor file does not.
+    - id: us_ff5
+      dataset_id: french_us_ff5
+      what: Mkt-RF, SMB, HML, RMW, CMA, RF, US, 1963-07 onwards
+      why: >
+        The file Experiments 001 and 005 read. Its HML column is the one this
+        experiment must reproduce from the six portfolios, so that the
+        denominator of every capture fraction is the same series those
+        experiments measured and not a lookalike.
+    - id: us_momentum
+      dataset_id: french_us_momentum
+      what: Mom, US
+      why: The published momentum spread, for the same reconstruction check.
+  regional:
+    - id: developed_ex_us
+      portfolios: french_developed_ex_us_6_portfolios_2x3
+      factors: french_developed_ex_us_ff5
+      coverage: "1990-07..2026-06"
+    - id: emerging
+      portfolios: french_emerging_6_portfolios_2x3
+      factors: french_emerging_ff5
+      coverage: "1989-07..2026-06"
+  emerging_file_naming: >
+    The emerging portfolio sorts are published under the prefix
+    `Emerging_Markets_`, not the `Emerging_` prefix the emerging FACTOR files
+    use, and `Emerging_25_Portfolios_ME_BE-ME_CSV.zip` does not exist: the
+    library distributes emerging markets as 2x3 sixes and 2x2 fours only. There
+    is therefore NO emerging small-value corner in this data library, and the
+    emerging leg of this experiment is a 2x3 halves computation or nothing.
+  excluded:
+    - Developed_6_Portfolios and Developed_25_Portfolios, which INCLUDE the
+      United States and therefore cannot serve as an ex-US check. The ex-US
+      files of the same sorts are used instead. This is the same trap
+      Experiment 005 recorded for Developed_5_Factors.
+    - Equal-weighted return tables. Every return read here is value-weighted,
+      because an equal-weighted portfolio of the smallest quintile is the
+      single least implementable object in the library and using it would
+      flatter every number this experiment produces.
+    - The `Wout_Div` variants, which are price returns.
+    - Any investable fund. Products are exp_002.
+
+sample_policy:
+  start: "1926-07"
+  end: "2025-12"
+  held_out: >
+    Observations after 2025-12 are not read by this experiment under any
+    circumstance. Six further months exist in every file, through 2026-06, and
+    remain a genuinely post-specification window. This experiment is
+    exploratory and does not consume the final holdout. NOTE that the two
+    capture ratios declared as seen in the freeze record above were computed
+    over 1963-07..2026-06 during probing, which INCLUDED those six months; no
+    statistic reported by this experiment does.
+  embargo: >
+    None required: eras are calendar windows and no forecast is made across an
+    era boundary.
+  eras:
+    - name: full_sample_since_1963
+      start: "1963-07"
+      end: "2025-12"
+      rationale: >
+        The PRIMARY era. It is the whole of the modern sample, chosen because a
+        capture fraction is a ratio of two means and a ratio needs every month
+        it can get, and because 1963-07 is where Experiments 001 and 005 begin
+        and where the five-factor file begins, so the denominator is exactly
+        the HML series they measured. It is not a boundary choice: it is all
+        the data both files share.
+    - name: full_sample_since_1926
+      start: "1926-07"
+      end: "2025-12"
+      rationale: >
+        The maximum history the six-portfolio and three-factor files jointly
+        support. Reported at equal prominence so that the primary era cannot be
+        read as a window that was selected. The pre-1963 data are thinner and
+        the market portfolio of the 1930s is not the one anyone holds now.
+    - name: hml_original_sample
+      start: "1963-07"
+      end: "1991-12"
+      rationale: >
+        Inherited verbatim from exp_001. Fama and French (1993) sample.
+    - name: hml_first_post_publication
+      start: "1994-01"
+      end: "2003-12"
+      rationale: >
+        Inherited verbatim from exp_001. First decade genuinely after the
+        February 1993 journal issue.
+    - name: hml_full_post_publication
+      start: "1994-01"
+      end: "2025-12"
+      rationale: >
+        Inherited verbatim from exp_001. The era the falsifier reads beside the
+        primary full sample.
+    - name: recent
+      start: "2016-01"
+      end: "2025-12"
+      rationale: >
+        Inherited verbatim from exp_001. Reported and NOT read by the
+        falsifier, because Experiment 001 measured US HML at -0.44 pp/yr here
+        and a capture fraction whose denominator is near zero is a number
+        without meaning. That is stated in advance so it cannot be discovered
+        later and used selectively.
+    - name: umd_original_sample
+      start: "1965-01"
+      end: "1989-12"
+      rationale: >
+        Inherited verbatim from exp_001. Jegadeesh and Titman (1993) sample.
+    - name: umd_full_post_publication
+      start: "1994-01"
+      end: "2025-12"
+      rationale: Inherited verbatim from exp_001.
+
+benchmark:
+  primary: >
+    The SIZE-NEUTRAL benchmark: the equal-weighted average of all six 2x3
+    portfolios, (SL + SM + SH + BL + BM + BH) / 6. It is identical to
+    0.5 * (small average) + 0.5 * (big average), so it carries exactly the same
+    50/50 size weighting as the long-only value tilt 0.5(SH + BH) and differs
+    from it only in book-to-market. Subtracting it therefore isolates the value
+    tilt, which is the term the value line of an edge budget is entitled to.
+  investor_relevant: >
+    The capitalisation-weighted total market, Mkt-RF + RF from the same
+    vintage. This is what a retail investor actually holds instead, so
+    L - market is what they actually gain or lose. It is reported at equal
+    prominence and it is NOT the primary, because it also contains the return
+    to weighting the small and big halves equally in a market that is
+    overwhelmingly big, and that is a size effect wearing a value label.
+  null_hypothesis: >
+    For the capture fraction, that it equals the 0.40 the edge decomposition
+    assumes. For the long-only spread in percentage points, that it is zero.
+  note: >
+    These long-only portfolios are closer to investable than a long-short
+    spread but they are still not products. They carry no fee, no spread, no
+    tax and no capacity limit, they are reconstituted on a schedule no fund
+    follows exactly, and the smallest ones are dominated by stocks a retail
+    investor cannot buy in size. Every figure is an upper bound.
+
+primary_metric:
+  name: long-only capture fraction of the HML premium, size-neutral definition
+  definition: >
+    Over the months of the era, form the long-only value tilt
+    L = 0.5(SH + BH) and the size-neutral benchmark
+    N = (SL + SM + SH + BL + BM + BH) / 6 from the value-weighted 2x3 table,
+    and the reconstructed spread H = 0.5(SH + BH) - 0.5(SL + BL). The capture
+    fraction is mean(L - N) / mean(H), reported as a dimensionless ratio. The
+    same quantity is also reported as 12 * mean(L - N) in percentage points per
+    year, which is well behaved when the denominator is not.
+  units: dimensionless ratio, and percentage points per year
+  uncertainty: >
+    A JOINT stationary block bootstrap. One set of time indices is drawn with
+    the frozen 12-month mean block and applied to the numerator and the
+    denominator series SIMULTANEOUSLY, so that the near-perfect contemporaneous
+    dependence between a long leg and the spread it is half of survives the
+    resample. Resampling them independently would treat the ratio as a ratio of
+    independent estimates and is invalid; it is NOT computed, because unlike
+    Experiment 005's cross-region case there is no reading under which it is
+    even approximately right.
+  ratio_instability: >
+    A ratio whose denominator can be near zero has no finite variance and its
+    bootstrap distribution can be bimodal. This is Fieller's problem and it is
+    not solved here, it is REPORTED: every capture fraction carries the count
+    of resamples in which the denominator's mean fell below one tenth of its
+    full-sample value or changed sign, and any interval computed from a
+    replicate set where that count exceeds 1% of resamples is marked UNSTABLE
+    and may not be quoted without that mark.
+
+secondary_metrics:
+  - name: HML and UMD reconstruction residual against the published factor files
+    units: decimal return per month
+    note: >
+      The integration test. Reported as maximum absolute, mean and root mean
+      square residual, against the printed precision of the source files.
+  - name: capture fraction under each of the predeclared definitions
+    units: dimensionless ratio
+  - name: long-only excess spread
+    units: percentage points per year
+  - name: small-value corner premium over the market
+    units: percentage points per year
+  - name: annualised volatility, maximum drawdown and time under water
+    units: percentage points per year, percent, months
+  - name: HAC factor loadings of the small-value corner on Mkt-RF, SMB and HML
+    units: dimensionless
+  - name: share of firm count and of market capitalisation in each 5x5 cell
+    units: percent
+  - name: illustrative cost of ownership, as a separate column
+    units: percentage points per year
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+
+cost_model:
+  applied: true
+  applied_how: >
+    As a SEPARATE COLUMN beside the gross figure, never as a haircut folded
+    into it, and never as a subtraction from a number presented as the result.
+    Three components, each priced by core/costs.py and each labelled with
+    whether it is measured or assumed.
+  measured_component:
+    what: the rebalance back to 50/50 between the small-value and big-value halves
+    how: >
+      The two halves drift apart between rebalances. The realised drift is
+      recovered exactly from the two return series, the one-sided turnover of
+      restoring the 50/50 weights is computed by core.costs.one_sided_turnover,
+      and the cost is charged AGAINST THE WEALTH PATH at the moment of the
+      trade by core.costs.apply_trade_costs, so it alters the compounded result
+      rather than being subtracted from a mean afterwards. This is the only
+      turnover in this experiment that is measured rather than assumed, and it
+      is small; saying so is the point.
+    frequencies_reported: [monthly, annual]
+  assumed_components:
+    expense_ratio_percent_per_year:
+      shelf_median: 0.15
+      small_value_product: 0.25
+      source: >
+        Experiment 002's screened shelf: median net expense ratio 0.15%, and
+        the small-value and small-cap products on it run 0.05 to 0.24%. The
+        0.25% figure is the top of that range and is an ASSUMPTION about a
+        product this experiment does not audit.
+    internal_sort_turnover_one_sided_percent_per_year:
+      value_sorts: [20.0, 40.0]
+      momentum_sorts: [300.0, 900.0]
+      source: >
+        ASSUMPTIONS, and the weakest numbers in this experiment. Turnover
+        cannot be recovered from a return series. The value range brackets the
+        annual June reconstitution of a book-to-market sort; the momentum range
+        is 25 to 75 percent one-sided per MONTH, which is what a monthly
+        reconstitution of a prior-return sort implies and which
+        core.costs.is_retail_implementable rejects outright against its 50%
+        monthly limit. Both are reported as scenarios and neither is presented
+        as measured.
+    coefficient_k: [1.0, 1.7]
+    coefficient_source: >
+      core.costs.K_FLOOR and core.costs.K_PESSIMISTIC, the Novy-Marx and
+      Velikov (2016) tier fit, cost_bp = k * one_sided_turnover_percent.
+  consequence: >
+    The net column is an ILLUSTRATION built on two assumed turnovers and an
+    assumed fee. It is not a net result and may not be quoted as one. Its
+    purpose is to show whether the gross capture fraction survives a cost of
+    the order any real product carries, and the answer to that is allowed to be
+    "not at the momentum sorts' turnover", which is itself the finding.
+
+rebalance_rule:
+  source: as embedded in the Ken French construction, not chosen here
+  book_to_market_sorts: >
+    Reconstituted once a year at the end of June on the prior fiscal year's
+    book equity, with the portfolios held fixed between reconstitutions and
+    weights allowed to drift with prices.
+  prior_return_sorts: >
+    Reconstituted MONTHLY on the prior 2-12 month return. The two are not
+    comparable on turnover and their capture fractions must never be compared
+    without that stated.
+  imposed_here: >
+    The only rule this experiment imposes is the 50/50 rebalance between the
+    small-value and big-value halves of the long-only tilt, which is a choice
+    and is priced. Both a monthly and an annual rebalance are reported, and a
+    buy-and-hold variant that never rebalances is reported beside them so the
+    cost of the choice is visible.
+
+inference:
+  bootstrap: >
+    stationary block bootstrap (Politis and Romano), drawn JOINTLY across the
+    numerator and denominator of every ratio
+  block_length_policy: >
+    Mean block length frozen at 12 months, inherited unchanged from exp_001 and
+    exp_005, with 6 and 24 months as predeclared neighbours. The length is NOT
+    tuned on the statistic being tested. The corrected Politis-White automatic
+    length (Politis and White 2004 with the Patton, Politis and White 2009
+    correction) is computed from each series and reported at equal prominence.
+  multiple_testing_correction: >
+    Benjamini-Hochberg FDR at 0.10 over the predeclared family of the five
+    primary capture definitions crossed with the two falsifier eras, ten tests,
+    on the one-sided HAC p-value that the long-only excess SPREAD in percentage
+    points is positive. The capture FRACTIONS themselves are not p-value
+    objects and are not corrected: they are ratios whose null is 0.40, not
+    zero, and a correction over a family of ratios with a common denominator
+    would be arithmetic theatre. Holm-Bonferroni is reported beside it because
+    it is valid under arbitrary dependence, which matters more here than
+    anywhere else in this repository: the five definitions share a denominator
+    and four of them share most of a numerator, so the tests are close to the
+    same test.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Power is reported for every spread, as in exp_001 and exp_005: the smallest
+    true annualised spread the window could reject a zero mean for at 80%
+    power, one-sided, given its realised volatility and length. An interval
+    containing zero is evidence of absence only where that figure is small.
+
+rejection_rule: >
+  Evaluated in this fixed order, and the output must report every clause
+  whether or not the branch fired.
+  (0) If the reconstructed HML differs from the published HML column by more
+  than the printed precision of the source file -- 0.005 percentage points per
+  month, half of the last printed digit, allowing 1.5 times that for the four
+  terms of the momentum reconstruction -- then the arithmetic this experiment
+  rests on is wrong and the status is `unresolved` with no capture fraction
+  reported at all. Nothing downstream may be salvaged.
+  (1) Else, compute the definitional spread. If it exceeds 0.30 in either
+  falsifier era, clause (i) of the hypothesis is REJECTED and the output must
+  state, in the conclusion and not in a footnote, that no benchmark-free
+  capture fraction exists and that every quoted figure carries its benchmark.
+  (2) Independently, read the size-neutral interval against 0.40 by the three
+  cases in the falsifier.
+  (3) The run's status is the weaker of the two clauses: `rejected` if either
+  clause is rejected, `unresolved` if clause (2) straddles and clause (1)
+  holds, `exploratory` only if clause (1) holds and clause (2) is supported.
+  A run whose status is `rejected` under clause (1) has still MEASURED the
+  capture fraction under every definition, and those measurements stand. What
+  is rejected is the use of one number as a multiplier, not the numbers.
+  No result here may be described as working, validated, optimal or an edge,
+  the word "works" may not appear in the output, and no figure may be quoted
+  without stating that it is gross and that the portfolios are not products.
+
+parameters:
+  materiality_threshold_annual_percent: 2.0
+  power_target: 0.80
+  benjamini_hochberg_alpha: 0.10
+  minimum_observations_per_cell: 24
+  assumed_capture_under_test: 0.40
+  spread_threshold: 0.30
+  spread_threshold_rationale: >
+    Three quarters of the 0.40 under test. The rule is that a multiplier whose
+    benchmark-driven range covers three quarters of its own assumed value
+    cannot be used as a multiplier, because substituting a defensible
+    alternative benchmark would move the edge-budget line it feeds by more than
+    the line is worth. The threshold is a function of 0.40 alone and of no
+    observed quantity.
+
+  inherited_from_exp_001_and_005:
+    specifications:
+      - research/experiments/exp_001_factor_decay.yaml
+      - research/experiments/exp_005_regional_replication.yaml
+    inherited:
+      - the era names hml_original_sample, hml_first_post_publication,
+        hml_full_post_publication, recent, umd_original_sample and
+        umd_full_post_publication, with both boundaries unchanged
+      - the publication record and boundary justifications, by reference
+      - the 2.0 percentage-point-per-year materiality threshold
+      - the 80% power target and the closed-form minimum detectable effect
+      - the frozen 12-month mean block length and its 6 and 24 month neighbours
+      - the 10000 resample count and the 0.10 Benjamini-Hochberg alpha
+      - the sample end of 2025-12 and the holdout beyond it
+    not_inherited:
+      - the RMW and CMA eras, which this experiment does not test
+      - the cost_model.applied = false of both, because a long-only portfolio
+        is close enough to holdable that refusing to price it would be an
+        evasion rather than a discipline
+    rule: >
+      Nothing inherited may be re-derived differently here. Where this
+      specification and exp_001 disagree on an era boundary, exp_001 is correct
+      and this specification has a bug. The experiment asserts the shared
+      boundaries against exp_001's own file at run time.
+
+  reconstruction_identities:
+    why: >
+      These are the integration test and clause (0) of the rejection rule. If
+      the published factor cannot be rebuilt from the published portfolios,
+      then the long legs read here are not the legs of the factor measured
+      elsewhere in this repository, and every capture fraction is a ratio of
+      two unrelated things.
+    identities:
+      - id: hml_from_6_portfolios_2x3
+        formula: HML = 0.5 * (SH + BH) - 0.5 * (SL + BL)
+        checked_against: the HML column of french_us_ff5, and of french_us_ff3
+        tolerance_decimal_per_month: 0.00005
+        tolerance_rationale: >
+          The portfolio file prints two decimal places in percent, so each of
+          the four terms carries up to 0.005 percentage points of rounding.
+          Half a printed digit on the assembled spread is 0.005 percentage
+          points, which is 0.00005 in decimal, and that is the tolerance.
+      - id: smb_from_6_portfolios_2x3
+        formula: SMB = (SL + SM + SH) / 3 - (BL + BM + BH) / 3
+        checked_against: >
+          the SMB column of french_us_ff3 ONLY. It will NOT reconcile against
+          french_us_ff5, whose SMB averages the size legs of the
+          book-to-market, profitability and investment sorts. Both checks are
+          run and the five-factor disagreement is REPORTED as the expected
+          finding it is, because a reader who assumed the two SMBs were the
+          same series would draw a false conclusion from this experiment.
+        tolerance_decimal_per_month: 0.00005
+      - id: umd_from_6_portfolios_me_prior_12_2
+        formula: UMD = 0.5 * (SHiPRIOR + BHiPRIOR) - 0.5 * (SLoPRIOR + BLoPRIOR)
+        checked_against: the Mom column of french_us_momentum
+        tolerance_decimal_per_month: 0.000075
+        tolerance_rationale: >
+          One and a half printed digits rather than one. The momentum sort is
+          reconstituted monthly and its file and the factor file are rounded
+          independently, so the same four-term rounding argument gives a
+          slightly wider bound. Stated in advance rather than widened later.
+
+  primary_definitions:
+    description: >
+      The predeclared family of five. Clause (1) of the falsifier reads the
+      spread of their POINT ESTIMATES. Fixing the family before the run is what
+      stops the spread from being computed over whichever subset is widest.
+    family:
+      - id: value_halves_vs_size_neutral
+        long_only: 0.5 * (SH + BH)
+        benchmark: (SL + SM + SH + BL + BM + BH) / 6
+        reading: >
+          THE PRIMARY. The value tilt held at the same 50/50 size weighting as
+          its own benchmark, so the difference is book-to-market and nothing
+          else.
+      - id: value_halves_vs_market
+        long_only: 0.5 * (SH + BH)
+        benchmark: Mkt-RF + RF
+        reading: >
+          What a retail investor holding this instead of a total-market fund
+          would have received. Contains a large size tilt as well as a value
+          tilt, and that is exactly why it is in the family rather than
+          replacing the primary.
+      - id: big_value_vs_market
+        long_only: BH
+        benchmark: Mkt-RF + RF
+        reading: >
+          The closest public analogue of a large-capitalisation value fund held
+          instead of a total-market fund. The most implementable member of the
+          family.
+      - id: big_value_vs_big_third
+        long_only: BH
+        benchmark: (BL + BM + BH) / 3
+        reading: The value tilt inside the large-capitalisation universe alone.
+      - id: small_value_vs_market
+        long_only: SH
+        benchmark: Mkt-RF + RF
+        reading: >
+          The small-value corner in its 2x3 form, held instead of a
+          total-market fund. Expected to be the least implementable member and
+          is reported as such regardless of what it measures.
+    reported_but_outside_the_family:
+      - id: partial_tilt_50_vs_market
+        what: 0.5 * (Mkt-RF + RF) + 0.5 * 0.5 * (SH + BH), against the market
+        why_excluded: >
+          It is exactly half of value_halves_vs_market by construction, so
+          including it would widen the spread by arithmetic rather than by
+          evidence. It is reported because real funds are not 100% tilted and a
+          reader needs to see that the capture scales linearly with the tilt.
+      - id: growth_halves_short_leg_vs_size_neutral
+        what: ((SL + SM + SH + BL + BM + BH) / 6 - 0.5 * (SL + BL)) / HML
+        why_excluded: >
+          It is the SHORT leg's share, not a long-only tilt. It is reported
+          because it must sum with the primary to 1 by construction, which is a
+          second integration test of the arithmetic and of the claim that the
+          primary is near one half for structural rather than empirical
+          reasons.
+      - id: corner_5x5_value_halves_vs_market
+        what: 0.5 * (ME1 BM5 + ME5 BM5) from the 5x5 file, against the market
+      - id: corner_5x5_value_halves_vs_equal_weighted_25
+        what: the same, against the equal-weighted average of all 25 cells
+      - id: small_value_cell_5x5_vs_market
+        what: SMALL HiBM from the 5x5 file, against the market
+      - id: corner_5x5_ex_smallest_quintile
+        what: >
+          the same corner computation with the ME1 size quintile DROPPED
+          entirely, using ME2 as the small leg
+        why: >
+          The direct test of whether the small-value result depends on the
+          smallest quintile. It is predeclared so that it cannot be run only if
+          the headline figure needs defending.
+      - id: momentum_winner_halves_vs_size_neutral
+        what: 0.5 * (SHiPRIOR + BHiPRIOR) against the equal-weighted six
+      - id: momentum_winner_halves_vs_market
+        what: the same, against the market
+      - id: size_long_only_definitions
+        what: >
+          the small-capitalisation quintile and decile of
+          Portfolios_Formed_on_ME against the market, and the long-short size
+          spread they imply, which is the premium test the design map records
+          as never having been run
+      - id: regional_value_halves
+        what: >
+          value_halves_vs_size_neutral and value_halves_vs_market computed on
+          the developed-ex-US and emerging 2x3 files against their own regional
+          market and their own regional HML
+
+  microcap_investability:
+    why: >
+      Hou, Xue and Zhang (2020) put microcaps at 3.2% of market capitalisation
+      and 60.7% of the stock count, and attribute much of the anomaly
+      literature to them. If the small-value corner lives in cells that hold a
+      fifth of the listed companies and a fraction of a percent of the money,
+      then the corner is not a thing a retail investor can hold in size,
+      whatever its measured premium.
+    measured_from: >
+      The 5x5 file's own "Number of Firms in Portfolios" and "Average Market
+      Cap" tables. The share of capitalisation in a cell is
+      (firms * average cap) / sum over cells of the same product. That ratio is
+      INVARIANT to the average-cap table's scale, which the file never states
+      and which data/french.py therefore records as unknown. No absolute
+      capitalisation figure is reported, because none can be.
+    reported:
+      - firm count and capitalisation share of every 5x5 cell, at the last
+        month of the primary era and averaged over it
+      - the same for the whole ME1 size quintile
+      - the corner recomputed with ME1 dropped, and the difference
+    verdict_required: >
+      The output must state plainly whether the small-value corner is
+      implementable at retail given what those shares turn out to be. A number
+      without that sentence is not an answer to the question that was asked.
+
+  annualisation:
+    mean: multiply the monthly arithmetic mean by 12
+    volatility: multiply the monthly standard deviation by sqrt(12)
+    ratio: >
+      A capture fraction is a ratio of two monthly means and is therefore
+      already annualisation-invariant: multiplying both by 12 leaves it
+      unchanged. It is computed from monthly means and the invariance is
+      asserted in a test rather than assumed.
+    note: >
+      sqrt(12) assumes serial independence, which monthly returns violate. The
+      HAC standard error is reported precisely because that assumption is
+      wrong, and the two are always shown side by side.
+
+  risk_free_treatment: >
+    The six portfolios are TOTAL returns, not excess returns, so the market
+    comparator must also be a total return: Mkt-RF + RF from the same file and
+    vintage. Subtracting a market factor that is already net of the bill from a
+    long-only total return would understate the long-only leg by the entire
+    Treasury bill rate, which over 1963-07..2025-12 is several percentage
+    points a year and would flatter every capture fraction in this experiment.
+    The size-neutral benchmark is a total return already, so no bill enters it
+    and none is subtracted. For the regional files RF is the US one-month bill
+    in every region, exactly as Ken French defines it; the regional markets are
+    USD and unhedged.
+
+  missing_data_policy: >
+    A month missing from any series entering a statistic is dropped from that
+    statistic, and the dropped count is reported. Series are never
+    forward-filled. The -99.99 and -999 sentinels are converted to missing by
+    the parser before any arithmetic, and the validation report is checked for
+    sentinel leakage before any statistic is computed.
+
+  source_pin:
+    policy: >
+      Every file is pinned by the sha256 of its raw bytes AND by the sha256 of
+      the derived table, and a mismatch ABORTS rather than producing a graded
+      result. Ken French rebuilds the entire history from the current source
+      vintage on every rebuild, so a changed hash is a new vintage, not a
+      corrupt download.
+    series:
+      - id: us_6_portfolios_2x3
+        dataset_id: french_us_6_portfolios_2x3
+        table_id: average_value_weighted_returns_monthly
+        manifest_dataset_id: french_us_6_portfolios_2x3_value_weighted_monthly
+        committed_manifest: data-manifests/french_us_6_portfolios_2x3_value_weighted_monthly.json
+        expected_sha256_raw: 06108313811fe1fd230600f59da30eae279f043b4b1edeee658c18e3be0cd326
+        expected_columns: ["SMALL LoBM", "ME1 BM2", "SMALL HiBM", "BIG LoBM", "ME2 BM2", "BIG HiBM"]
+        expected_first_observation: "1926-07"
+      - id: us_25_portfolios_5x5
+        dataset_id: french_us_25_portfolios_5x5
+        table_id: average_value_weighted_returns_monthly
+        manifest_dataset_id: french_us_25_portfolios_5x5_value_weighted_monthly
+        committed_manifest: data-manifests/french_us_25_portfolios_5x5_value_weighted_monthly.json
+        expected_sha256_raw: 43cfc360fca14e7d50766e8432fb8b6151c47078512efe74bd0f5d3804789a2a
+        expected_first_observation: "1926-07"
+      - id: us_6_portfolios_me_prior_12_2
+        dataset_id: french_us_6_portfolios_me_prior_12_2
+        table_id: average_value_weighted_returns_monthly
+        manifest_dataset_id: french_us_6_portfolios_me_prior_12_2_value_weighted_monthly
+        committed_manifest: data-manifests/french_us_6_portfolios_me_prior_12_2_value_weighted_monthly.json
+        expected_sha256_raw: 8c3ae277bb2c598d01d94c3b4902e8370e833ff70a89851e30fb8f90d063d67b
+        expected_columns: ["SMALL LoPRIOR", "ME1 PRIOR2", "SMALL HiPRIOR", "BIG LoPRIOR", "ME2 PRIOR2", "BIG HiPRIOR"]
+        expected_first_observation: "1927-01"
+      - id: us_portfolios_formed_on_me
+        dataset_id: french_us_portfolios_formed_on_me
+        table_id: average_value_weight_returns_monthly
+        manifest_dataset_id: french_us_portfolios_formed_on_me_value_weighted_monthly
+        committed_manifest: data-manifests/french_us_portfolios_formed_on_me_value_weighted_monthly.json
+        expected_sha256_raw: d731dea95b67098490892788225d8b5ac38218a90d8442ac32c35407fc285364
+        expected_first_observation: "1926-07"
+      - id: us_ff3
+        dataset_id: french_us_ff3
+        table_id: monthly
+        manifest_dataset_id: french_us_ff3_monthly
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RF"]
+        expected_first_observation: "1926-07"
+      - id: us_ff5
+        dataset_id: french_us_ff5
+        table_id: monthly
+        manifest_dataset_id: french_us_ff5_monthly
+        committed_manifest: data-manifests/french_us_ff5_monthly.json
+        expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_first_observation: "1963-07"
+      - id: us_momentum
+        dataset_id: french_us_momentum
+        table_id: monthly
+        manifest_dataset_id: french_us_momentum_monthly
+        committed_manifest: data-manifests/french_us_momentum_monthly.json
+        expected_sha256_raw: f405ee2d47a5c75ce05025f789733d0599879361e9836a553504240b89159871
+        expected_columns: ["Mom"]
+        expected_first_observation: "1927-01"
+      - id: developed_ex_us_6_portfolios_2x3
+        dataset_id: french_developed_ex_us_6_portfolios_2x3
+        table_id: average_value_weighted_returns_monthly
+        manifest_dataset_id: french_developed_ex_us_6_portfolios_2x3_value_weighted_monthly
+        committed_manifest: data-manifests/french_developed_ex_us_6_portfolios_2x3_value_weighted_monthly.json
+        expected_sha256_raw: 2b79a26326eb699bdd5946ffdd90f5674494b8cd684bd5977459325a91153faa
+        expected_columns: ["SMALL LoBM", "ME1 BM2", "SMALL HiBM", "BIG LoBM", "ME2 BM2", "BIG HiBM"]
+        expected_first_observation: "1990-07"
+      - id: developed_ex_us_ff5
+        dataset_id: french_developed_ex_us_ff5
+        table_id: monthly
+        manifest_dataset_id: french_developed_ex_us_ff5_monthly
+        committed_manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+        expected_sha256_raw: 54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_first_observation: "1990-07"
+      - id: emerging_6_portfolios_2x3
+        dataset_id: french_emerging_6_portfolios_2x3
+        table_id: average_value_weighted_returns_monthly
+        manifest_dataset_id: french_emerging_6_portfolios_2x3_value_weighted_monthly
+        committed_manifest: data-manifests/french_emerging_6_portfolios_2x3_value_weighted_monthly.json
+        expected_sha256_raw: 2b5fa424fd368430bec353a6fef35bd5a989551aac3004b781d814f12bc2aedb
+        expected_columns: ["SMALL LoBM", "ME1 BM2", "SMALL HiBM", "BIG LoBM", "ME2 BM2", "BIG HiBM"]
+        expected_first_observation: "1989-07"
+      - id: emerging_ff5
+        dataset_id: french_emerging_ff5
+        table_id: monthly
+        manifest_dataset_id: french_emerging_ff5_monthly
+        committed_manifest: data-manifests/french_emerging_ff5_monthly.json
+        expected_sha256_raw: ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8
+        expected_columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_first_observation: "1989-07"
+
+  power:
+    definition: >
+      MDE_80 = 12 * (z_0.95 + z_0.80) * standard_error_of_the_monthly_mean,
+      identical to exp_001 and exp_005, so the figures are directly comparable
+      to their grids. Reported from the conventional standard error and from
+      the HAC standard error, side by side.
+    alpha_one_sided: 0.05
+    reported_for_every_spread: true
+    note: >
+      Power is reported for the SPREADS, in percentage points per year. It is
+      not reported for the capture fractions, because the null there is 0.40
+      rather than zero and a minimum detectable effect against a non-zero null
+      of a ratio with a shared denominator would be a misleading statistic. The
+      interval is the honest summary for the ratios and it is what the
+      falsifier reads.
+
+data_sources:
+  - id: french_us_6_portfolios_2x3_value_weighted_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_2x3_CSV.zip
+    manifest: data-manifests/french_us_6_portfolios_2x3_value_weighted_monthly.json
+  - id: french_us_25_portfolios_5x5_value_weighted_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/25_Portfolios_5x5_CSV.zip
+    manifest: data-manifests/french_us_25_portfolios_5x5_value_weighted_monthly.json
+  - id: french_us_6_portfolios_me_prior_12_2_value_weighted_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_ME_Prior_12_2_CSV.zip
+    manifest: data-manifests/french_us_6_portfolios_me_prior_12_2_value_weighted_monthly.json
+  - id: french_us_portfolios_formed_on_me_value_weighted_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_ME_CSV.zip
+    manifest: data-manifests/french_us_portfolios_formed_on_me_value_weighted_monthly.json
+  - id: french_us_ff3_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: french_developed_ex_us_6_portfolios_2x3_value_weighted_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_6_Portfolios_ME_BE-ME_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_6_portfolios_2x3_value_weighted_monthly.json
+  - id: french_developed_ex_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+  - id: french_emerging_6_portfolios_2x3_value_weighted_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_Markets_6_Portfolios_ME_BE-ME_CSV.zip
+    manifest: data-manifests/french_emerging_6_portfolios_2x3_value_weighted_monthly.json
+  - id: french_emerging_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+
+hostile_tests:
+  - Reconstruct HML from the six portfolios and report the residual against the
+    published column. A failure here voids the whole experiment and is clause
+    (0) of the rejection rule, not a tolerance to widen.
+  - Reconstruct SMB from the same six and check it against the THREE-factor
+    file, and separately against the FIVE-factor file, and report that the
+    latter does not reconcile and why. A reader who assumed one SMB would draw
+    a false conclusion.
+  - Reconstruct the momentum spread from the prior-return sorts and report that
+    residual too, so that the value result is not the only one whose arithmetic
+    was checked.
+  - Check that the long-leg capture and the short-leg share sum to one against
+    the size-neutral benchmark. They must, by construction; if they do not, the
+    benchmark is not what this specification says it is.
+  - Compute the capture fraction under all five predeclared definitions and
+    report the spread. The spread is the falsifier's clause (1) and must be
+    reported even when it is small.
+  - Recompute the 5x5 corner with the smallest size quintile dropped entirely.
+  - Report the firm-count and capitalisation shares of the cells the corner
+    lives in, and state whether it is implementable at retail.
+  - Run the identical procedure on developed-ex-US and emerging files, which
+    share no security with the US file.
+  - Run the identical procedure on the momentum sorts, whose reconstitution is
+    monthly rather than annual.
+  - Run the identical ratio machinery on a zero-mean Gaussian pair with the
+    matched covariance of the real numerator and denominator, to show what this
+    machinery produces from noise and how unstable the ratio becomes when the
+    denominator has no signal.
+  - Re-run on the 6 and 24 month bootstrap block lengths without retuning, and
+    report the corrected Politis-White automatic length.
+  - Report the capture fraction in the `recent` era, where Experiment 001
+    measured US HML at -0.44 pp/yr, so that a reader can see directly what a
+    near-zero denominator does to a ratio.
+
+reporting_requirements:
+  - Source file URL, SHA-256 and retrieval time for every file.
+  - The HML, SMB and momentum reconstruction residuals, in decimal per month,
+    against the printed precision of the source files.
+  - THE CAPTURE FRACTION, with its interval, under every definition computed,
+    in the conclusion and not in a footnote. It is the deliverable of this
+    experiment and burying it is a reporting failure.
+  - The definitional spread, and an explicit statement of whether clause (1)
+    fired.
+  - The capture fraction over the primary full sample and over the full
+    post-publication era separately, never averaged.
+  - The count of bootstrap resamples in which the denominator was near zero or
+    changed sign, for every ratio, and the UNSTABLE mark where it exceeded 1%.
+  - The small-value corner's premium over the market, annualised volatility,
+    maximum drawdown, time under water, and its HAC loadings on Mkt-RF, SMB and
+    HML with standard errors.
+  - The firm-count and capitalisation shares of the 5x5 cells, and a plain
+    statement of whether the corner is implementable at retail.
+  - Whether the small-value result depends on the smallest size quintile,
+    answered by the recomputation that drops it.
+  - The regional ex-US and emerging figures, with an explicit statement that
+    the Developed file was not used because it includes the United States.
+  - The cost column, separately from the gross column, with each component
+    marked measured or assumed.
+  - What this implies for `premium x delivered loading - cost`, with the
+    capture fraction inserted as the middle term and the arithmetic shown.
+  - An explicit statement that these portfolios are research portfolios and not
+    products, and that every figure is gross.
+  - A closed status from the result taxonomy, and for `unresolved` an explicit
+    statement of exactly what would fire.
+
+notes: >
+  The question this experiment answers has been open in this repository since
+  the edge decomposition first budgeted a factor line. That budget multiplies a
+  gross long-short premium by an ASSUMED 0.40 long-only capture, and the
+  framework page records four separate times that no source read there
+  establishes the number. It is computable from data this repository already
+  had: French publishes the long-only portfolios the factor is a difference of,
+  and the 25-portfolio file has been parsed and fixtured here since Phase 1.
+  What was missing was not data but the observation that the long leg of a
+  published spread is itself a published series.
+  The honest expectation, stated before the run, is that the answer will be a
+  range rather than a number, and that the range will be wide enough that the
+  question "what is the capture fraction" turns out to be less well posed than
+  the question "capture of what, against what". If so, the finding is about the
+  edge budget's use of a scalar, and it is a finding that makes the budget
+  harder to defend rather than easier.

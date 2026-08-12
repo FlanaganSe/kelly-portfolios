@@ -446,11 +446,31 @@ parameters:
     source_run_id: 21a1517f295a44fd9ac213b502c1752a
     source_spec_hash: e9e564f39ebd335808482db79558ddd9fd7f955e1ae3ce4267e9184f8d4a7473
     source_artifact: artifacts/21a1517f295a44fd9ac213b502c1752a/result.json
-    expected_sleeve_marginal_percentage_points_per_year: 1.3423954939676425
+    expected_sleeve_marginal_percentage_points_per_year: 1.341825315439782
     expected_replica_marginal_percentage_points_per_year: 0.5862468980901259
     expected_residual_marginal_percentage_points_per_year: -0.4429267811245863
     materiality_threshold_annual_percent: 0.30
     verification_tolerance: 1.0e-06
+    correction_log:
+      - date: "2026-08-12"
+        change: >
+          expected_sleeve_marginal_percentage_points_per_year corrected from
+          1.3423954939676425 to 1.341825315439782.
+        reason: >
+          The first frozen value carried invented digits. The write-up of Experiment
+          004 prints +1.342 to three decimals and the remaining digits were supplied
+          from nothing rather than read from the artifact. The verification guard
+          described in `policy` refused the run at a drift of 0.00057 pp/yr, which is
+          exactly what it exists to do, and the ledgered `failed` entry for run
+          b718e47b014049eebc80a296ffe9f4b5 records the refusal. The corrected value is
+          read from Experiment 004's artifact.
+        made_before_any_result_was_examined: true
+        evidence: >
+          The refused run aborted inside the clause (d) block, before any result object
+          was constructed, before any artifact was written and before any
+          `results_viewed` entry existed. No number from Experiment 008 had been seen
+          when this correction was made. Neither the replica nor the residual value
+          moved, and no threshold, criterion or clause was touched.
     policy: >
       The three quantities above are quoted from Experiment 004's ledgered artifact
       so that this decision is reproducible from Git alone, because artifacts are
