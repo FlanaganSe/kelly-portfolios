@@ -229,7 +229,11 @@ export const decidingComparison: readonly {
 }[] = [
   {
     id: "contractual",
-    label: "Cost, placement, lot discipline, not trading",
+    // "not trading" was in this label and is deliberately out of it. The ledger behind
+    // 109 bp is 49 + 30 + 10 + 23 + 5 − 3.4 − 4.4 and contains no behaviour line; the gap
+    // that would justify one is measured against the average investor, not against this
+    // benchmark. See expected-edge-decomposition.md §2.4.
+    label: "Fund cost, wrapper, lot method and placement",
     edgeBp: 109,
     trackingErrorBp: 46,
     ninetyNinePercentAt: "about twelve months",

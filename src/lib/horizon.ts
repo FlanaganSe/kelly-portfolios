@@ -24,6 +24,9 @@
 
 import { normalCdf, normalPpf } from "~/lib/normal";
 
+/** One basis point, as the Python module defines it. Divide by it; never multiply by 1e4. */
+const BASIS_POINT = 1e-4;
+
 /** Whether a line item is an accounting identity or a bet. */
 export type Certainty =
   /**
@@ -215,4 +218,36 @@ function assertConfidence(confidence: number): void {
   if (!(confidence >= 0.5 && confidence < 1)) {
     throw new RangeError(`confidence must lie in [0.5, 1), got ${confidence}`);
   }
+}
+
+/**
+ * `exp(e T)`: terminal wealth with the edge, over terminal wealth without it.
+ *
+ * The one figure here that needs **no forecast of any market**. Both paths are the same
+ * portfolio exposed to the same returns, and the edge is an addition to the log growth
+ * rate, so the market term cancels out of the ratio exactly. What survives depends only
+ * on the edge and the horizon.
+ *
+ * That is what makes a contractual edge worth quoting to a reader and a risk premium not.
+ * Applied to a probabilistic line this would quote a median as though it were a promise,
+ * so pair it with {@link probabilityOfOutperformance} and never show it alone for a line
+ * whose certainty is `"probabilistic"`.
+ *
+ * `edgeBp` is a **log** growth rate in basis points a year, matching `EdgeComponent` and
+ * the tax figures. Compounding `(1 + e)**T` instead would understate it slightly and mix
+ * simple with log conventions inside one budget.
+ *
+ * Ported from `studies/outperformance_horizon.terminal_wealth_ratio`.
+ */
+export function terminalWealthRatio({
+  edgeBp,
+  horizonYears,
+}: {
+  readonly edgeBp: number;
+  readonly horizonYears: number;
+}): number {
+  if (horizonYears < 0) {
+    throw new RangeError(`horizonYears cannot be negative, got ${horizonYears}`);
+  }
+  return Math.exp(edgeBp * BASIS_POINT * horizonYears);
 }

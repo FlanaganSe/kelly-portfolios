@@ -199,8 +199,14 @@ table,
   border-radius: 2px;
 }
 
-:where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) {
-  margin: 0;
+/* Layered on purpose. Unlayered rules beat every layered one whatever their
+   specificity, and Tailwind emits `@utility` into `@layer utilities` — so leaving this
+   reset unlayered silently killed `.prose > * + *` site-wide and set every paragraph
+   flush against the last. Specificity was never the problem; layer order was. */
+@layer base {
+  :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) {
+    margin: 0;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

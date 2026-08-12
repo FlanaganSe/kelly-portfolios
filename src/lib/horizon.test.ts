@@ -6,6 +6,7 @@ import {
   type EdgeComponent,
   horizonForConfidence,
   probabilityOfOutperformance,
+  terminalWealthRatio,
 } from "~/lib/horizon";
 
 /** Relative agreement required against a value the research workspace computed. */
@@ -198,5 +199,37 @@ describe("aggregate", () => {
       /require low <= central <= high/
     );
     expect(() => aggregate([component({ trackingErrorBp: -1 })])).toThrow(/tracking error cannot be negative/);
+  });
+});
+
+describe("terminalWealthRatio", () => {
+  const cases = fixtures.terminalWealthRatio as readonly {
+    edgeBp: number;
+    horizonYears: number;
+    expected: number;
+  }[];
+
+  it("matches every fixture the research workspace emitted", () => {
+    expect(cases.length).toBeGreaterThan(0);
+    for (const c of cases) {
+      const got = terminalWealthRatio({ edgeBp: c.edgeBp, horizonYears: c.horizonYears });
+      expect(got).toBeCloseTo(c.expected, 12);
+    }
+  });
+
+  it("needs no market return, because the market term cancels", () => {
+    // The property the front page states. If the ratio moved with the market it would be
+    // a forecast rather than an identity.
+    const edge = 0.0109;
+    for (const marketLogGrowth of [-0.02, 0, 0.07, 0.15]) {
+      const ratio = Math.exp((marketLogGrowth + edge) * 30) / Math.exp(marketLogGrowth * 30);
+      expect(ratio).toBeCloseTo(terminalWealthRatio({ edgeBp: 109, horizonYears: 30 }), 12);
+    }
+  });
+
+  it("is 1 at a zero edge, below 1 for a negative one, and rejects a negative horizon", () => {
+    expect(terminalWealthRatio({ edgeBp: 0, horizonYears: 30 })).toBe(1);
+    expect(terminalWealthRatio({ edgeBp: -7.8, horizonYears: 30 })).toBeLessThan(1);
+    expect(() => terminalWealthRatio({ edgeBp: 109, horizonYears: -1 })).toThrow(RangeError);
   });
 });
