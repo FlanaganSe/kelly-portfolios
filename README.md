@@ -86,6 +86,26 @@ change will break a client test. That is the intended behaviour.
 No optimiser ships. Anything that searches a weight space belongs in `research/`,
 with a frozen specification and a ledger entry.
 
+Eight pages. Four read, three compute, one explains how anything here earns a
+status:
+
+| Route | Answers |
+| --- | --- |
+| `/` | Which benchmark you mean, and why the two do not add |
+| `/portfolio` | What to hold, and the longest section is what is deliberately absent |
+| `/edge-budget` | Your budget against your own counterfactual, grouped so the groups cannot be summed |
+| `/placement` | Which account each holding belongs in, computed from your bracket rather than asserted |
+| `/confidence` | How long an edge takes to become visible, and why tracking error decides that |
+| `/evidence` | Every experiment and where it landed, rejections given equal weight |
+| `/concepts` | The vocabulary the rest of it assumes |
+| `/method` | The status vocabulary, the frozen specification, the ledger, and where the machinery is currently broken |
+
+The three computing pages read one shared investor policy — bracket, horizon,
+accounts, cash flows — held in `src/state/investorPolicy.ts`. It is `localStorage`
+and nothing else: no account, no network, no analytics. An empty policy is a valid
+complete state that falls back to the repository's stated reference investor and
+says so.
+
 ## Start locally
 
 Requirements: Node.js 22 and pnpm 10.
