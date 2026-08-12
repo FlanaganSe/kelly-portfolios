@@ -121,15 +121,19 @@ export const withdrawalFailureLadder = {
  */
 export const growthPenalty = {
   headline:
-    "Undershooting the growth-optimal equity share by half costs a quarter of the peak excess growth. Overshooting by double costs all of it.",
+    "Holding half the growth-optimal equity exposure costs a quarter of the peak excess growth. Holding double it costs all of it.",
   detail:
-    "So the cost of being wrong is not symmetric in the direction that matters, and erring low is cheap. Which is fortunate, because the growth-optimal share cannot be estimated from any sample a human has: the standard error on it is about 2.05 at ten years of data, and still 0.65 at a hundred.",
+    "The asymmetry is multiplicative rather than additive, so erring low is cheap and erring high is not. In this portfolio you cannot err high anyway: with leverage fixed at zero the growth-optimal weight sits above 1 — about 2.28 at the sample premium — so every reachable equity share is on the left branch of the curve, and the only question is how far left you sit.",
   retainedAtHalf: 0.75,
   retainedAtDouble: 0.0,
-  standardErrorTenYears: 2.05,
-  standardErrorHundredYears: 0.65,
+  unconstrainedOptimalWeight: 2.28,
+  cornerSolution:
+    "Growth-optimal sizing carries no risk-aversion parameter, so with leverage at zero the objective on its own returns a corner solution of 100% equity for any equity-over-bond arithmetic premium above about 2.06 to 2.68%/yr. Every bond in the mixed and short-horizon variants comes from the drawdown constraint, not from the objective. Read the other way: choosing 60/40 asserts a premium forecast of about 1.18 to 1.30%/yr.",
+  estimationCost:
+    "The growth cost of estimating the optimum rather than knowing it is 1/(2T), free of every parameter — 2.50%/yr on twenty years of data and 0.80%/yr on sixty-two. Optimal shrinkage at the sample Sharpe over that longer record is 0.931, not the half-Kelly rule of thumb; half-Kelly would be claiming those sixty-two years are worth 4.66.",
   consequence:
-    "That is why this page ends on a drawdown you would have to sit through rather than on a number an optimiser produced.",
+    "Which is why the answer here ends on a drawdown you would have to sit through rather than on a number an optimiser produced.",
+  status: "exploratory",
   source: equityShare,
 } as const;
 
