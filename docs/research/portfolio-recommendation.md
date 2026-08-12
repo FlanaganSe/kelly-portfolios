@@ -411,7 +411,7 @@ no fallback.
 
 | | Edge | TE | 99% confident in |
 | --- | ---: | ---: | --- |
-| Cost, placement, lot discipline, not trading | **109 bp** | 46 bp | **~12 months** |
+| Cost, placement, fund structure, lot discipline | **109 bp** | 46 bp | **~12 months** |
 | Best case for a 20% small-value tilt | 15.2 bp | 140 bp | ~460 years |
 | Best case for a 15% trend sleeve in a shelter | 90 bp | 251 bp | ~42 years |
 

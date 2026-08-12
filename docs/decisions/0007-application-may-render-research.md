@@ -23,11 +23,15 @@ It is now the wrong call, for three reasons.
   evidence guarantees that whatever fills the space is worse than the evidence would
   have been.
 - **The largest measured result is the one an application is best placed to deliver.**
-  The ~109 bp/yr contractual budget is bought by fund choice, account placement, lot
-  method and not trading ([structural and tax-aware edges](../research/structural-and-tax-edges.md)).
-  Three of those four are *arithmetic on the reader's own inputs* — a bracket, an
-  account mix, a horizon. A Markdown page can state the general result. Only software
-  can compute the reader's.
+  The ~109 bp/yr contractual budget is bought by fund choice, fund wrapper, account
+  placement and lot method
+  ([structural and tax-aware edges](../research/structural-and-tax-edges.md)). All four
+  are *arithmetic on the reader's own inputs* — a bracket, an account mix, a horizon. A
+  Markdown page can state the general result. Only software can compute the reader's.
+  **Not trading is not one of them**, and constraint 3 below is what stops it becoming
+  one: the behaviour gap is measured against the average investor, so it may be
+  displayed but never added to this figure
+  ([edge decomposition §2.4](../research/expected-edge-decomposition.md#24-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line)).
 - **The asset-location ranking is the worked example.** The recommendation page already
   requires that it "must be computed, not asserted", because the familiar rule is right
   for bonds by a factor of four and wrong for emerging-market equity at two of the four

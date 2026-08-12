@@ -18,16 +18,25 @@ or an implementation supports it.
 
 - `sst.config.ts` imports `./infra/*` and deploys handlers from `functions/`.
   Neither directory is in Git. Do not "repair" the build by deleting those imports.
-- `src/services/api.ts` describes an intended backend contract. Nothing in this
-  repository implements it, so it cannot be exercised locally.
-- `src/utils/calculateOptimizedPortfolio.ts` is named for Kelly but maximizes a
-  mean-variance utility, and no route imports it. `scripts/mean-variance.py` is a
-  second unwired reference implementation. Neither is a shipped code path.
+- `scripts/mean-variance.py` is an unwired reference implementation, not a shipped
+  code path. Its client-side twin, `src/utils/calculateOptimizedPortfolio.ts`, was
+  named for Kelly, maximised a mean-variance utility, was imported by no route, and
+  has been deleted along with the intended-backend contract in `src/services/api.ts`.
 - `scripts/seed-database.ts` emits an unseeded random walk. Its output is synthetic
   and not reproducible; never describe it as market data.
-- Shipped UI copy claims real-time data, optimality, and professional validation
-  that nothing here supports. Do not extend those claims. Correcting them is a
-  product decision: raise it rather than rewriting copy unasked.
+- The client may now show a research finding, but only with its status, `as of`
+  date, interval and source attached, and only from `src/content/`
+  ([decision 0007](docs/decisions/0007-application-may-render-research.md)). A
+  number hardcoded in a route or a component is a defect. The old copy claiming
+  real-time data, optimality and professional validation has been deleted; do not
+  reintroduce that register.
+- **Never add lines measured against different benchmarks.** A cheap index, the
+  average investor, and the reader's own counterfactual are three different
+  claims. `aggregate()` in `studies/outperformance_horizon.py` raises rather than
+  summing them, and the interface has to enforce the same rule. This is the error
+  the repository has actually made: *not trading* was described as part of the
+  ~109 bp budget in four places and was never in its ledger
+  ([edge decomposition §2.4](docs/research/expected-edge-decomposition.md)).
 - `research/` is a separate Python workspace with its own toolchain and its own
   `README.md`. It is not deployed and the client does not import it. No result it
   has produced yet supports a shipped claim: every candidate return source tested
@@ -70,7 +79,13 @@ the research workspace at all. If a check cannot run, or a failure predates your
 change, say so precisely instead of reporting a clean run.
 
 Optimization math belongs in `research/`, which has a test runner, closed-form
-fixtures, and an experiment ledger. Do not add financial math to the client.
+fixtures, and an experiment ledger. **No optimiser ships**: anything that searches
+a weight space goes there, with a frozen specification and a ledger entry.
+
+The client may carry closed-form arithmetic `research/` has already run, as a port
+in `src/lib/` tested against fixtures that workspace generates. Regenerate them
+with `uv run python -m portfolio_edge.reporting.client_fixtures`. If a port
+disagrees with a fixture, the port is wrong — never loosen the tolerance.
 
 ## Boundaries
 
@@ -81,8 +96,10 @@ fixtures, and an experiment ledger. Do not add financial math to the client.
   the task are all pre-approved. Choose sensibly, act, and report what you did.
   The only exceptions are the denials in `.claude/settings.json` and anything that
   would destroy unrecoverable data or touch personal or financial accounts.
-- Secrets belong in `.env.local`. Update `.env.example` when the public variable
-  contract changes, and never commit real values.
+- The client has no environment variables and needs none. It calls no API and
+  stores no keys. If that ever changes, secrets go in `.env.local`, a
+  `.env.example` comes back to record the public contract, and real values are
+  never committed.
 
 ## Engineering
 

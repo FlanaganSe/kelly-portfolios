@@ -1,89 +1,369 @@
 @import "tailwindcss";
 
-html {
+/* ---------------------------------------------------------------------------
+   Palette.
+
+   The complete light palette is defined on bare `:root`. The dark blocks below
+   redefine only the tokens that change. No colour's sole definition lives
+   inside a media query, so a browser that ignores `prefers-color-scheme` still
+   gets a working page.
+   --------------------------------------------------------------------------- */
+
+:root {
   color-scheme: light;
-  scroll-behavior: smooth;
+
+  /* Surfaces: warm off-white paper. */
+  --paper: #faf9f6;
+  --paper-raised: #ffffff;
+  --paper-sunken: #f1efe9;
+
+  /* Ink. */
+  --ink: #1a1917;
+  --ink-muted: #57544d;
+  --ink-faint: #6e6b62;
+
+  /* Hairlines. */
+  --rule: #e2dfd6;
+  --rule-strong: #c9c5b9;
+
+  /* The one accent. Links, focus, interactive affordances. Nothing else. */
+  --accent: #12507f;
+  --accent-hover: #0c3a5c;
+  --accent-soft: #e7eff6;
+
+  /* Tones. Never the only carrier of meaning — always paired with a mark. */
+  --tone-positive: #1e6b41;
+  --tone-caution: #8a5a08;
+  --tone-negative: #9b2c2c;
+  --tone-neutral: #57544d;
+
+  --selection: #d8e6f2;
 }
 
-*, *::before, *::after {
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --paper: #141311;
+    --paper-raised: #1d1b18;
+    --paper-sunken: #0f0e0c;
+
+    --ink: #edeae3;
+    --ink-muted: #aaa69c;
+    --ink-faint: #858177;
+
+    --rule: #2e2c27;
+    --rule-strong: #46433c;
+
+    --accent: #8fbce4;
+    --accent-hover: #b4d4f0;
+    --accent-soft: #1b2a38;
+
+    --tone-positive: #74c08e;
+    --tone-caution: #d9ac5e;
+    --tone-negative: #e88e8e;
+    --tone-neutral: #aaa69c;
+
+    --selection: #2a3d4d;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #141311;
+  --paper-raised: #1d1b18;
+  --paper-sunken: #0f0e0c;
+
+  --ink: #edeae3;
+  --ink-muted: #aaa69c;
+  --ink-faint: #858177;
+
+  --rule: #2e2c27;
+  --rule-strong: #46433c;
+
+  --accent: #8fbce4;
+  --accent-hover: #b4d4f0;
+  --accent-soft: #1b2a38;
+
+  --tone-positive: #74c08e;
+  --tone-caution: #d9ac5e;
+  --tone-negative: #e88e8e;
+  --tone-neutral: #aaa69c;
+
+  --selection: #2a3d4d;
+}
+
+/* ---------------------------------------------------------------------------
+   Theme. `inline` so utilities emit `var(--paper)` directly and pick up the
+   swap above rather than freezing the light value.
+   --------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-raised: var(--paper-raised);
+  --color-sunken: var(--paper-sunken);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-positive: var(--tone-positive);
+  --color-caution: var(--tone-caution);
+  --color-negative: var(--tone-negative);
+  --color-neutral: var(--tone-neutral);
+}
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Type scale. Tight leading climbs with size. */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1.45;
+  --text-2xs--letter-spacing: 0.07em;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.7;
+  --text-xl: 1.3125rem;
+  --text-xl--line-height: 1.5;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.32;
+  --text-3xl: 2.0625rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.625rem;
+  --text-4xl--line-height: 1.12;
+
+  /* Measure for long-form prose, and the outer page rail. */
+  --container-measure: 70ch;
+  --container-page: 78rem;
+
+  /* Interaction only. No entrance animation anywhere. */
+  --default-transition-duration: 150ms;
+}
+
+/* ---------------------------------------------------------------------------
+   Base.
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  accent-color: var(--accent);
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  line-height: 1.6;
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.glass {
-  @apply bg-white/95 backdrop-blur-xl border border-slate-200/60 shadow-lg shadow-slate-900/5;
+::selection {
+  background-color: var(--selection);
 }
 
-.card {
-  @apply bg-white border border-slate-200/80 shadow-lg shadow-slate-900/5 rounded-2xl;
+/* Every number in a column lines up. */
+table,
+[data-numeric] {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.card-hover {
-  @apply transition-all duration-300 ease-out hover:shadow-xl hover:shadow-slate-900/10 hover:border-slate-300 hover:-translate-y-1;
+/* Zero specificity so a component can still override it. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
-.gradient-text {
-  @apply bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent;
+:where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) {
+  margin: 0;
 }
 
-.gradient-primary {
-  @apply bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700;
-}
-
-.gradient-accent {
-  @apply bg-gradient-to-r from-emerald-600 to-cyan-600;
-}
-
-.btn-primary {
-  @apply cursor-pointer bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-blue-900/25 hover:shadow-xl hover:shadow-blue-900/40 transition-all duration-300 ease-out transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg;
-}
-
-.btn-secondary {
-  @apply cursor-pointer bg-white hover:bg-slate-50 text-slate-700 font-semibold px-8 py-4 rounded-xl border border-slate-200 shadow-lg shadow-slate-900/5 hover:shadow-xl hover:shadow-slate-900/10 transition-all duration-300 ease-out transform hover:-translate-y-0.5;
-}
-
-.input-field {
-  @apply w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200;
-}
-
-.hero-gradient {
-  @apply bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/50;
-}
-
-.text-balance {
-  text-wrap: balance;
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s ease-out forwards;
-}
-
-.animate-fade-up-delay {
-  animation: fadeUp 0.6s ease-out 0.2s forwards;
-  opacity: 0;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
   }
 }
 
-.metric-card {
-  @apply bg-gradient-to-br from-white to-slate-50/50 border border-slate-200/80 rounded-2xl p-6 shadow-lg shadow-slate-900/5;
+/* ---------------------------------------------------------------------------
+   The four component classes. Everything else is a utility in markup.
+   --------------------------------------------------------------------------- */
+
+/* Inline link. Underline offset far enough to clear descenders. */
+@utility link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+
+  &:hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentcolor;
+  }
 }
 
-.icon-gradient {
-  @apply bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/25;
+/* Small uppercase label. Used by PageHeader, Callout, Figure, StatusChip. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+/* Shared shell for text inputs and number fields. */
+@utility control {
+  background-color: var(--paper-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums lining-nums;
+  transition: border-color 150ms ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--ink-faint);
+  }
+
+  &:disabled {
+    color: var(--ink-faint);
+    background-color: var(--paper-sunken);
+    cursor: not-allowed;
+  }
+}
+
+/* Long-form text. Applied by <Prose>; content agents write plain HTML inside. */
+@utility prose {
+  max-width: var(--container-measure);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.72;
+  color: var(--ink);
+
+  & > * + * {
+    margin-top: 1.1em;
+  }
+
+  & h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2.2em;
+    margin-bottom: -0.4em;
+  }
+
+  & h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin-top: 1.9em;
+    margin-bottom: -0.5em;
+  }
+
+  & a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    transition: color 150ms ease, text-decoration-color 150ms ease;
+  }
+
+  & a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentcolor;
+  }
+
+  & strong {
+    font-weight: 600;
+  }
+
+  & em {
+    font-style: italic;
+  }
+
+  & ul,
+  & ol {
+    padding-left: 1.35em;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+
+  & ol {
+    list-style: decimal;
+  }
+
+  & li::marker {
+    color: var(--ink-faint);
+  }
+
+  & li + li {
+    margin-top: 0.4em;
+  }
+
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background-color: var(--paper-sunken);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.1em 0.32em;
+  }
+
+  & blockquote {
+    border-left: 2px solid var(--rule-strong);
+    padding-left: 1.1em;
+    color: var(--ink-muted);
+  }
+
+  & hr {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin-block: 2.2em;
+  }
+
+  /* Numbers inside prose still line up. */
+  & [data-numeric] {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
 }

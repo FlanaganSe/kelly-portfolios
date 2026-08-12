@@ -1,20 +1,23 @@
 # Kelly Portfolios
 
-An early-stage portfolio research application for exploring position sizing and
-asset allocation with the Kelly criterion and mean-variance optimization.
+Two halves. A Python research workspace that measures where portfolio
+outperformance can actually come from, and a static SolidJS client that reads what
+it found.
 
-The SolidJS client can assemble an ETF portfolio and call an intended AWS API for
-asset search, volatility, correlation, and allocation results. The repository is
-not production-ready: the client is present, but the infrastructure and Lambda
-modules referenced by `sst.config.ts` are not currently in version control. Seed
-data is simulated, and the financial methodology still needs validation before
-results should inform real decisions.
+The research is in [`research/`](research/README.md): the deterministic numerical
+core, the data-provenance layer, the statistical inference used to make
+overfitting visible, and an append-only ledger that records failed and abandoned
+runs alongside successful ones. Its purpose is stated negatively on purpose —
+**make false confidence expensive**. Results carry a status from a closed
+vocabulary and never "works".
 
-Validating that methodology happens in [`research/`](research/README.md), a
-contained Python workspace that is independent of the client and is not deployed.
-It holds the deterministic numerical core, the data-provenance layer, the
-statistical inference used to make overfitting visible, and an append-only
-experiment ledger. Nothing the client renders is yet backed by it.
+The client is a reading of that, not a product built on top of it. It computes
+nothing the research workspace has not already computed and tested.
+
+The repository is not production-ready in the deployment sense: the infrastructure
+and Lambda modules referenced by `sst.config.ts` are not in version control, and
+`scripts/seed-database.ts` emits an unseeded random walk that is synthetic and
+must never be described as market data.
 
 ## Where the research has got to
 
@@ -56,8 +59,32 @@ argument and design map are in the
 non-promotion and its conditions are
 [decision 0004](docs/decisions/0004-no-sleeve-promoted.md).
 
-**No number from `research/` backs anything the client shows, and none may be
-presented as a finding in the application.**
+The client now reads from that research rather than around it, under the four
+constraints in [decision 0007](docs/decisions/0007-application-may-render-research.md).
+It states the 24 bp figure in the same place as the 109 bp one, never apart from
+it, and it displays `exploratory` as `exploratory`.
+
+## The client
+
+A static reading of that research: what was tested, what survived, and what each
+line is worth in confidence terms rather than in expected return. It calls no API,
+holds no keys and ships no price data. What the reader types stays in their
+browser.
+
+[Decision 0007](docs/decisions/0007-application-may-render-research.md) is what
+permits it to show a research number at all, and it attaches four conditions:
+every fact lives in one typed content layer under `src/content/`; status, `as of`
+date, interval and source travel with every figure; the certainty class governs
+the wording and the benchmark governs what may be added to what; and the
+arithmetic in `src/lib/` is a port of a study module tested against fixtures that
+module generates.
+
+That last one is a real coupling. `research/src/portfolio_edge/reporting/client_fixtures.py`
+emits `src/lib/fixtures/research-ground-truth.json`, and a study whose numbers
+change will break a client test. That is the intended behaviour.
+
+No optimiser ships. Anything that searches a weight space belongs in `research/`,
+with a frozen specification and a ledger entry.
 
 ## Start locally
 
@@ -68,9 +95,7 @@ pnpm install --frozen-lockfile
 pnpm dev
 ```
 
-The calculator's data-backed features require `VITE_API_URL`; copy `.env.example`
-to `.env.local` and supply a working API URL. Without one, the informational pages
-still run, but asset search and server-side optimization do not.
+No environment variables are required. There is nothing to configure.
 
 ## Checks
 
@@ -79,24 +104,35 @@ Two independent toolchains; run the checks for the half you touched.
 ```sh
 pnpm biome check      # client
 pnpm typecheck
+pnpm test
 pnpm build
 
 cd research && uv run pytest && uv run mypy && uv run ruff check
 ```
 
 `pnpm install` also installs the pre-push hook, which runs the first two client
-checks. CI runs the client's three on Node 22 and does not yet run the research
+checks. CI runs the client's on Node 22 and does not yet run the research
 workspace at all.
+
+To regenerate the client's test fixtures after changing a study module:
+
+```sh
+cd research && uv run python -m portfolio_edge.reporting.client_fixtures \
+  > ../src/lib/fixtures/research-ground-truth.json
+```
 
 ## Repository map
 
-- `src/routes/` contains the SolidJS pages.
-- `src/components/` contains reusable UI and chart components.
-- `src/services/api.ts` defines the intended backend contract.
-- `src/utils/` contains client-side validation and an experimental optimizer that
-  no route currently imports.
+- `src/content/` is the only place a research fact may live. Typed, sourced,
+  dated. A number hardcoded in a route is a defect.
+- `src/lib/` holds the ported arithmetic and its tests, plus the generated
+  fixtures it is checked against.
+- `src/routes/` and `src/components/` are the pages and the shared primitives.
+- `sst.config.ts` describes the intended SST/AWS entry point. It imports
+  `./infra/*` and deploys from `functions/`, neither of which is in version
+  control; do not "repair" it by deleting those imports.
 - `scripts/seed-database.ts` creates synthetic ETF metadata and price histories.
-- `sst.config.ts` describes the intended SST/AWS entry point.
+  Its output is an unseeded random walk and is not market data.
 - [`research/`](research/README.md) is the Python research workspace: primitives,
   data provenance, inference, frozen experiment specifications, and the ledger.
   It has its own toolchain (`uv`, `pytest`, `mypy`, `ruff`) and its own README.

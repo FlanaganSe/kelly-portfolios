@@ -361,7 +361,9 @@ verified, report *"equity fund investor timing decisions reduce fund investor av
 returns by 1.56% annually"* over 1991–2004, **but** that is an equal-weighted mean across
 7,125 share classes, and their own index-fund subsample shows a gap of only 0.05%/month —
 0.60%/yr. The budget therefore books **5–60 bp with a central 15 bp**, not the 120–150 bp
-that circulates.
+that circulates. That line is booked against the *average investor* and **does not join
+the contractual budget**; §2.4 settles why, and why the gap is identically zero for an
+investor who does not trade.
 
 **DALBAR must not be cited.** Its own methodology document defines investor return as
 *"the change in assets, after excluding sales, redemptions, and exchanges"* and annualises
@@ -560,6 +562,9 @@ income in a taxable account, and SPY, QQQ, MDY and DIA are unit investment trust
 
 - **Fees and timing do not overlap.** Morningstar's investor return is already net of
   fund expenses, so the fee saving and the timing saving measure different dollars.
+- **The behaviour gap and the contractual budget cannot be added at all**, being measured
+  against different benchmarks. §2.4 gives the argument and corrects four pages that
+  described *not trading* as part of the 109 bp.
 - **Trading-cost avoidance and the behaviour gap would overlap**, because Barber–Odean's
   penalty *is* transaction costs. Only one is booked, and it is the smaller one.
 - **Implementation efficiency and the cost line would overlap.** A tighter spread or a
@@ -577,6 +582,83 @@ income in a taxable account, and SPY, QQQ, MDY and DIA are unit investment trust
   beta and its crises, so combining their tracking errors in quadrature assumes an
   **independence that is optimistic**. The stated-index total's 401 bp is therefore a
   lower bound on its own dispersion.
+
+### 2.4 The behaviour gap is a different benchmark, not a missing line
+
+**Question.** The gap between the return a fund earns and the return its investors earn
+is the most direct measurement of "beat the portfolio you would otherwise have owned",
+which is this page's central claim. It is booked at 15 bp above and it is absent from the
+[~109 bp contractual budget](structural-and-tax-edges.md#the-ledger). Should it join
+that budget, and may the application present *not trading* as a quantified edge?
+
+**No, and no. It cannot join, for a reason that is structural rather than empirical.**
+The gap is measured against **the average investor in the same fund**; the 109 bp budget
+is measured against **the same investor's own plausible alternative product and account
+choice**. Those are two of the three benchmarks in
+[`studies/outperformance_horizon.py`](../../research/src/portfolio_edge/studies/outperformance_horizon.py),
+and `aggregate()` **raises** rather than summing across them, verbatim: *"Raises if the
+components do not share a benchmark, because summing across benchmarks is the
+double-counting error this module is built to prevent."* The `Benchmark` enum says the
+same thing at the point of definition — *"These never aggregate across classes."* So the
+answer is already enforced in code, and the only thing missing was saying it in prose.
+
+**A dollar-weighted gap is undefined for the investor this repository describes.** The
+gap is the difference between a fund's time-weighted return and the internal rate of
+return on its investors' dated cash flows. With no cash flows there is no difference:
+for a lump sum held throughout, the IRR **is** the geometric return, so the gap is
+exactly zero — not small, not noisy, identically zero. An investor who buys a broad
+index fund and does not trade has nothing left to collect here, because the quantity
+being measured does not exist for them. **"Not trading" cannot be a line in a budget
+whose own arithmetic sets it to zero.**
+
+**And for a saver who does have cash flows, the sign is set by the market, not by the
+saver.** Take an investor making level contributions with no timing intent whatsoever.
+On a two-year path of `+50%, −20%` the time-weighted return is 9.5445%/yr and the
+dollar-weighted return is 0.0000%/yr — a gap of **−9.54 pp/yr**. Reverse the two
+returns, leaving the time-weighted return identical, and the same investor posts
+**+12.21 pp/yr**. Across all 24 orderings of a four-year path with a fixed time-weighted
+return, the gap spans **−8.66 to +9.86 pp** and is negative 45.8% of the time. Under
+20,000 simulated ten-year paths with level monthly contributions and iid lognormal
+returns at 8%/15%, the gap has **mean +0.15 pp, standard deviation 2.60 pp**, and is
+below −1.2 pp about **30%** of the time.
+
+Two consequences, and the second is the one that matters.
+
+- **The mechanical component is mean-zero and enormous.** It does not create a
+  systematic drag, so a persistently negative population gap needs a cause the mechanics
+  alone do not supply. §2.1 has the two candidates already sourced, and neither is
+  restraint: Fulkerson et al. put fund-investor timing at **0.10%/yr**, and Hayley
+  decomposes Dichev's 1.3 pp gap into **−0.21 pp of timing and −0.95 pp of bias**.
+- **A single measured gap carries 2.6 pp of mechanical noise, so it cannot identify an
+  individual.** No investor can be told from this statistic whether they personally
+  mistimed. The 15 bp line is therefore a **population** claim about the average
+  investor, and it stays exactly where it is: probabilistic, 150 bp of tracking error,
+  `AVERAGE_INVESTOR`, never added to the 109 bp.
+
+**What is genuinely controllable is product selection, not restraint.** The gap is a
+property of the fund's volatility and the flows it attracts, and the actions that reduce
+it — hold broad, low-volatility, low-tracking-error funds — are the actions the
+[recommended portfolio](portfolio-recommendation.md) already takes. An investor who
+follows that construction has **already spent** this edge. Booking it again on top of
+the 109 bp would be the same dollars counted twice, which is precisely what §2.3 exists
+to prevent.
+
+**Correction this makes to material already in the repository.** Four places describe
+*not trading* as part of the ~109 bp contractual budget: the
+[framework](portfolio-edge-research-framework.md) §1 and its design-map row, the
+[recommendation page](portfolio-recommendation.md) §5.4, and
+[decisions 0006](../decisions/0006-reference-portfolio-without-promotion.md) and
+[0007](../decisions/0007-application-may-render-research.md). The ledger that produces
+109 bp is `49 + 30 + 10 + 23 + 5 − 3.4 − 4.4` and contains no behaviour line at all. The
+client's `src/content/edgeBudget.ts` already gets this right and carries no such line;
+the prose had drifted from the ledger. All four are corrected in this change.
+`as of 2026-08-12`.
+
+**Status: `exploratory`, and the ceiling is low by construction.** This is a literature
+and benchmark-consistency synthesis, not an experiment. The arithmetic above is a
+closed-form and Monte Carlo demonstration on synthetic paths with no market data; it
+bounds what the statistic *can* mean, and it cannot measure what any real population of
+investors did.
 
 ---
 
@@ -657,11 +739,30 @@ measured advantage.
    the budget assumes it; a factor tilt and a rebalancing policy on the same equity
    portfolio plainly are not. Correlated components would widen the stated-index
    dispersion and lower the 0.631.
+6. **The behaviour gap's dispersion by category, which is the actionable part and was
+   not retrieved.** §2.4 argues that what an investor controls is *which funds they own*
+   rather than *whether they trade*, and the evidence that would size that is
+   Morningstar's own breakdown of the gap by category group and by fund volatility. The
+   1.2 pp headline and the two verbatim caveats in §2.1 are the only figures taken from
+   *Mind the Gap 2026*; **no per-category or per-volatility figure from it has been read
+   in this repository**, so the claim that the gap concentrates in narrow and volatile
+   products is currently reasoning from mechanism, not a measurement. Retrieving that
+   table is the cheapest next step, and it would either size the 5–60 bp range properly
+   or refute the product-selection reading outright.
 
 **Reproducibility.** All figures regenerate from
 `research/src/portfolio_edge/studies/` with `uv run pytest tests/unit/test_studies_*.py`.
 Simulations use `numpy.random.default_rng` with the committed seed `20260812`; closed forms
 use no randomness at all. Retrieval date for every source above: **2026-08-12**.
+
+**One exception, stated so it is not mistaken for a pinned figure.** The dollar-weighted
+arithmetic in §2.4 is **not yet in the `studies` package and not pinned by a test**. It
+is reproducible from its stated parameters — level contributions at the start of each
+period; IRR as the largest positive real root of `sum_t cf_t x**(n−t) = 0` with
+`x = 1 + i`; for the Monte Carlo, 20,000 paths of 120 monthly iid lognormal returns at
+`mu = 8%/yr`, `sigma = 15%/yr`, `numpy.random.default_rng(20260812)` — but until it has
+a module and a test it is weaker evidence than everything else on this page, and it
+should acquire both before any feature leans on it.
 
 **Sources that could not be retrieved**, named so nobody re-spends the budget.
 
@@ -696,7 +797,8 @@ describes Chambers and Zdanowicz's 1.874%/1.867% as expected log wealth; they ar
 annualised compound rates, and the expected-log figures are 1.2346%/1.2201%. The framework
 also cites Petajisto's index-turnover cost without noting that the underlying index effect
 has since gone to approximately zero. Both should be fixed in place when that page is next
-touched.
+touched. Separately, §2.4 corrects four pages that described *not trading* as part of the
+~109 bp contractual budget; those corrections are applied rather than deferred.
 
 ---
 

@@ -36,6 +36,8 @@ SPEC_NAMES = (
     "exp_006_regional_momentum",
     "exp_007_longonly_capture",
     "exp_008_managed_futures_products",
+    "exp_009_exus_factor_products",
+    "exp_010_marginal_sleeve_value",
     "phase1_ff_reproduction",
 )
 

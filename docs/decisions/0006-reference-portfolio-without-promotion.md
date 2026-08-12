@@ -21,8 +21,8 @@ literal one is now visible:
 - The largest measured result in the repository — a contractual **~109 bp/yr** against
   the investor's own counterfactual, 99% confident in about twelve months
   ([structural and tax-aware edges](../research/structural-and-tax-edges.md)) — is
-  bought entirely by decisions a design map cannot express: which fund, which account,
-  which lot, and not trading. **Withholding the construction withholds the only
+  bought entirely by decisions a design map cannot express: which fund, which wrapper,
+  which account, which lot. **Withholding the construction withholds the only
   near-certain edge the repository has found.**
 - The absence has already caused a specific error. Experiment 004's index verdict was
   repeated to the project owner as though it applied to KMLM, DBMF and CTA, which were

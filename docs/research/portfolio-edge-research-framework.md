@@ -108,9 +108,13 @@ and [Sharpe (1991)](https://web.stanford.edu/~wfsharpe/art/active/active.htm) ma
 the fee half an accounting identity — *"they depend only on the laws of addition,
 subtraction, multiplication and division."*
 
-**Cost, tax location, and not trading. That is the whole of the near-definite part,**
-and none of it requires a view on any market. It is also the part that is *already
-spent* once taken: an index fund cannot beat its own index by cutting its fee again.
+**Fund cost, fund structure, tax location and lot method. That is the whole of the
+near-definite part,** and none of it requires a view on any market. It is also the part
+that is *already spent* once taken: an index fund cannot beat its own index by cutting
+its fee again. **Not trading is deliberately not in that list.** The behaviour gap is
+booked separately at 15 bp against the *average investor*, and the two benchmarks may
+never be added
+([edge decomposition](expected-edge-decomposition.md#24-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line)).
 
 ### No — against a cheap index, at any horizon a human has
 
@@ -1188,7 +1192,7 @@ Statuses are the closed vocabulary — `exploratory`, `source-reproduced`,
 | **Size (SMB)** | cheap broad market | IJH, IJR, VB, SPMD, SPSM, EZM | Compensation for illiquidity/distress, disputed | **tested and not signable** ([Exp 007](long-only-capture.md)): +1.91 pp/yr `[−1.90, +6.00]` full sample against a 4.73 threshold, +0.41 post-publication; 3 of 8 products `rejected` on cost |
 | **Diversified trend** | 60/40 equity/cash | **DBMF** — the whole listed shelf that delivers the exposure; CTA, FMF, KMLM and WTMF `rejected` on it | Slow behavioural adjustment; crisis convexity | Index **`rejected`** on its frozen falsifier under the absolute reading of clause (d), **`unresolved`** under the relative reading [Exp 008 judges better justified](trend-marginal-value.md#clause-d-re-read-under-both-readings); DBMF `exploratory` as a proxy only ([Exp 008](trend-marginal-value.md#experiment-008--the-products)) |
 | **Rebalancing as policy** | any multi-sleeve portfolio | the portfolio itself | `gamma_star` excess growth; short relative-performance continuation | **`rejected`** as return ([Exp 003](rebalancing-policy.md)); retained as risk control |
-| **Cost / tax / behaviour** | your own counterfactual | fund selection, account type, fund *structure*, lot selection, direct indexing, not trading | Contractual, not statistical | **deterministic**, **≈109 bp** ([structural and tax-aware edges](structural-and-tax-edges.md), revising the 89 bp in the [edge decomposition](expected-edge-decomposition.md)). The construction it implies is [the recommended portfolio](portfolio-recommendation.md) |
+| **Cost / tax / structure** | your own counterfactual | fund selection, account type, fund *structure*, lot selection, direct indexing | Contractual, not statistical | **deterministic**, **≈109 bp** ([structural and tax-aware edges](structural-and-tax-edges.md), revising the 89 bp in the [edge decomposition](expected-edge-decomposition.md)). The construction it implies is [the recommended portfolio](portfolio-recommendation.md). **Not trading is not in this row** — the behaviour gap is 15 bp against the *average investor* and the benchmarks never aggregate ([§2.4](expected-edge-decomposition.md#24-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line)) |
 
 ### Map B — the evidence on each side, and how good the data is
 
