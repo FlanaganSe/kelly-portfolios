@@ -1,0 +1,297 @@
+# Frozen before any result is examined. Editing any field changes the
+# specification hash and therefore creates a new hypothesis in the ledger.
+experiment_family: exp_001_factor_decay
+title: Factor persistence and decay across frozen eras
+entry_point: exp_001_factor_decay
+run_kind: exploratory
+evidence_class: public-series-evaluation
+consumes_final_holdout: false
+seed: 20260811
+
+hypothesis: >
+  Each of HML, UMD, RMW and CMA, as distributed in the Ken French data library,
+  retains a positive arithmetic premium in its post-publication era that is
+  economically meaningful gross of costs, and stable enough across the frozen
+  eras to justify building and testing an investable implementation. This is a
+  hypothesis about the published long-short research series only. It is not a
+  hypothesis that any of these factors is investable, and no result from this
+  experiment can establish that.
+
+mechanism: >
+  Two competing mechanisms are both consistent with a positive pre-publication
+  premium, and this experiment cannot separate them. (1) Compensated risk or a
+  persistent behavioural friction, which should survive publication roughly
+  intact. (2) In-sample selection plus subsequent arbitrage, which McLean and
+  Pontiff (2016) find lowers returns out of sample and again after publication,
+  with the largest decay in liquid, large-capitalisation, low-idiosyncratic-risk
+  stocks. Harvey, Liu and Zhu (2016) put the mean return of a genuinely true
+  factor at about 0.55% per month in-sample and gross, so decay is expected even
+  under mechanism (1) and a smaller post-publication premium is not by itself
+  evidence for mechanism (2).
+
+falsifier: >
+  The hypothesis is rejected for a factor when ANY of the following holds in the
+  frozen eras. (a) The point estimate of the annualised premium over the full
+  post-publication era is less than or equal to zero. (b) The upper end of the
+  two-sided 90% block-bootstrap interval for the full post-publication annualised
+  premium lies below the materiality threshold of 2.0 percentage points per year,
+  i.e. the factor is economically negligible even under a favourable draw.
+  (c) The full post-publication point estimate is below 25% of the original-sample
+  point estimate AND the recent-era point estimate is less than or equal to zero,
+  i.e. decay is both large and continuing. A one-sided 95% test failing to
+  exclude a zero mean is explicitly NOT a falsifier: long-lived modest premia
+  lack that power over the available sample, and treating the test as a survival
+  criterion would reject economically useful premia for want of data. That case
+  is recorded as `unresolved`.
+
+universe:
+  description: >
+    Published long-short factor return series from the Ken French data library,
+    US research portfolios, monthly frequency, as distributed at the vintage
+    recorded in the data manifest. No individual securities, no funds.
+  factors: [HML, UMD, RMW, CMA]
+  reference_series: [Mkt-RF, SMB, RF]
+  region: US
+  frequency: monthly
+  units_in_source: percent
+  excluded:
+    - Developed and Emerging factor files, which have shorter and differently
+      constructed histories and are not combined with the US files here.
+    - Any investable fund. Exposure and implementation are exp_002.
+
+sample_policy:
+  start: "1963-07"
+  end: "2025-12"
+  held_out: >
+    Observations after 2025-12 are not read by this experiment under any
+    circumstance. They are reserved as a genuinely post-specification window for
+    a later confirmatory test of whatever this exploration proposes. This
+    experiment is exploratory and does not consume the final holdout.
+  embargo: >
+    None required: eras are non-overlapping calendar windows and no forecast is
+    made across an era boundary.
+  eras:
+    - name: hml_original_sample
+      start: "1963-07"
+      end: "1991-12"
+      rationale: >
+        Fama and French (1993) sample. The currently distributed file may apply
+        modern methodology retroactively to this window, so this is not the
+        authors' original series and a difference from their table is expected.
+    - name: hml_first_post_publication
+      start: "1994-01"
+      end: "2003-12"
+      rationale: >
+        First decade genuinely after the 1993 publication. Predecessor evidence
+        on book-to-market dates to at least Rosenberg, Reid and Lanstein (1985),
+        so 1993 is a convention, not a clean discovery date.
+    - name: hml_full_post_publication
+      start: "1994-01"
+      end: "2025-12"
+      rationale: Full available post-publication window for HML.
+    - name: umd_original_sample
+      start: "1965-01"
+      end: "1989-12"
+      rationale: >
+        Jegadeesh and Titman (1993) sample. French's UMD series starts in 1927
+        and is a different construction from theirs; the window is theirs, the
+        data are not.
+    - name: umd_first_post_publication
+      start: "1994-01"
+      end: "2003-12"
+      rationale: >
+        Momentum has two candidate publication dates, Jegadeesh and Titman (1993)
+        and Carhart (1997), which is exactly the ambiguity the plan warns about.
+        1993 is used and the 1997 alternative is a predeclared robustness era.
+    - name: umd_full_post_publication
+      start: "1994-01"
+      end: "2025-12"
+      rationale: Full available post-publication window for UMD.
+    - name: umd_post_carhart_alternative
+      start: "1998-01"
+      end: "2025-12"
+      rationale: >
+        Predeclared alternative publication date. Reported alongside, never
+        substituted for the primary era after seeing which looks better.
+    - name: rmw_cma_original_sample
+      start: "1963-07"
+      end: "2013-12"
+      rationale: >
+        Fama and French (2015) sample. Novy-Marx (2013) is predecessor evidence
+        for profitability, so RMW's effective discovery date is earlier and
+        disputed.
+    - name: rmw_cma_first_post_publication
+      start: "2014-01"
+      end: "2019-12"
+      rationale: >
+        Six years is a short window with low power. It is frozen anyway so that
+        the recent era cannot be silently widened until a result appears.
+    - name: rmw_cma_full_post_publication
+      start: "2014-01"
+      end: "2025-12"
+      rationale: Full available post-publication window for RMW and CMA.
+    - name: recent
+      start: "2016-01"
+      end: "2025-12"
+      rationale: >
+        A common recent decade for all four factors, spanning the post-2018 value
+        drawdown and its partial reversal.
+    - name: common_period
+      start: "2014-01"
+      end: "2025-12"
+      rationale: >
+        The only window in which all four factors are simultaneously
+        post-publication. Cross-factor correlations and any joint statement must
+        be computed here and nowhere else.
+
+benchmark:
+  null_hypothesis: zero arithmetic premium in the era
+  reference_factor: Mkt-RF from the same file and vintage
+  note: >
+    A long-short factor series has no investable benchmark. Comparisons against
+    the market factor are descriptive; the market factor is not a portfolio this
+    experiment claims to hold.
+
+primary_metric:
+  name: annualised arithmetic mean premium, per factor per era
+  definition: 12 * mean(monthly long-short return in decimal)
+  units: percentage points per year
+  uncertainty: >
+    Two-sided 90% and 95% stationary block-bootstrap intervals, plus a one-sided
+    95% lower bound. All three are reported; none is a survival criterion on its
+    own.
+
+secondary_metrics:
+  - name: geometric contribution
+    units: percentage points per year
+    note: >
+      Reported only where the series is interpretable as a wealth path. A
+      long-short series financed at an unstated rate is not, and this is stated
+      in the output rather than assumed away.
+  - name: annualised volatility
+    units: percentage points per year
+  - name: Sharpe ratio with block-bootstrap interval
+    units: ratio, annualised
+  - name: maximum drawdown of the cumulative series
+    units: percent
+  - name: time under water
+    units: months
+  - name: worst rolling 12, 36 and 120 month returns
+    units: percentage points per period
+  - name: pairwise factor correlations, common period only
+    units: correlation
+  - name: HAC (Newey-West) standard error of the mean
+    units: percentage points per year
+  - name: effective sample size implied by autocorrelation
+    units: months
+
+cost_model:
+  applied: false
+  reason: >
+    The French long-short series are gross of transaction costs, shorting costs,
+    fund fees and taxes, and are not investable. Applying a cost model to them
+    would manufacture a net figure for a portfolio nobody can hold.
+  consequence: >
+    Every number this experiment produces is a GROSS UPPER BOUND of unknown
+    tightness. Novy-Marx and Velikov (2016) find haircuts of 17% for low-turnover
+    and 144% for high-turnover value-weighted long-short strategies, so the
+    ordering of factors can reverse net of costs. No net claim may be made from
+    this experiment; that is exp_002.
+  turnover_reference: >
+    UMD is high-turnover and HML, RMW and CMA are annually rebalanced. The
+    difference is recorded in the output so that a reader cannot compare their
+    gross premia as if they were comparable.
+
+rebalance_rule:
+  source: as embedded in the Ken French construction, not chosen here
+  hml_rmw_cma: annual rebalance at the end of June on prior fiscal-year accounting
+  umd: monthly rebalance on 2-12 month prior returns
+  note: >
+    This experiment does not rebalance anything. The rule is recorded because it
+    determines turnover, and therefore the size of the cost haircut that this
+    experiment cannot apply.
+
+inference:
+  bootstrap: stationary block bootstrap (Politis and Romano)
+  block_length_policy: >
+    Mean block length frozen at 12 months for monthly data, with 6 and 24 months
+    reported as predeclared neighbours. The length is NOT tuned on the statistic
+    being tested; a data-driven automatic length is reported only as a diagnostic.
+  multiple_testing_correction: >
+    Benjamini-Hochberg FDR at 0.10 across the 4 factors x 5 primary eras = 20
+    predeclared tests, reported alongside uncorrected values. The correction
+    treats the 20 tests as if independent, which they are not: the eras nest and
+    the factors share construction and holdings. The corrected values are
+    therefore a lower bound on the true correction, and the ledger's distinct
+    specification count is an upper bound on the number of trials. Neither
+    resolves specification dependence.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Power is expected to be low. The output must report, for each factor and era,
+    the premium detectable at 80% power given the realised volatility and sample
+    length, so that a null result can be read as "cannot tell" rather than "no
+    premium".
+
+rejection_rule: >
+  Per factor: mark `rejected` when any falsifier clause fires. Mark `unresolved`
+  when no clause fires but the two-sided 90% interval for the full
+  post-publication premium contains zero, which is the expected outcome for a
+  modest surviving premium over this sample. Mark `exploratory` when no clause
+  fires and the interval excludes zero; that permits an investable implementation
+  to be TESTED in exp_002 and permits nothing else. No factor may be described as
+  working, validated, or an edge on the basis of this experiment, and a
+  conclusion drawn from the French long-short series alone is out of scope by
+  construction.
+
+parameters:
+  materiality_threshold_annual_percent: 2.0
+  rolling_windows_months: [12, 36, 120]
+  power_target: 0.80
+  annualisation:
+    mean: multiply monthly arithmetic mean by 12
+    volatility: multiply monthly standard deviation by sqrt(12)
+    note: >
+      sqrt(12) scaling assumes serial independence, which monthly factor returns
+      violate. The HAC standard error is reported precisely because this
+      assumption is wrong, and the two must be shown side by side.
+  risk_free_treatment: >
+    Long-short factor returns are already excess returns by construction. RF is
+    NOT subtracted a second time. This is recorded because subtracting it twice
+    is a plausible and invisible error.
+  missing_data_policy: >
+    A month missing from any required series drops that month from every factor
+    in the same statistic, and the count of dropped months is reported. Series
+    are never forward-filled.
+
+data_sources:
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+
+hostile_tests:
+  - Drop the best month in each era and re-report.
+  - Drop the best calendar year in each era and re-report.
+  - Re-run on the 6 and 24 month bootstrap block lengths without retuning.
+  - Re-run UMD on the alternative Carhart 1997 publication date.
+  - Shift every era boundary by plus and minus 24 months.
+  - Recompute with equal-weighted rather than value-weighted source portfolios
+    where the library distributes both, since Hou, Xue and Zhang (2020) show the
+    choice moves replication rates by more than 20 percentage points.
+  - Report the same statistics on a synthetic random walk of matched volatility,
+    to show what the procedure produces from noise.
+
+reporting_requirements:
+  - Source file URL, SHA-256 and retrieval time for every series used.
+  - Number of monthly observations per factor per era.
+  - Both uncorrected and FDR-corrected inference.
+  - The detectable-premium-at-80%-power figure for every cell.
+  - An explicit statement that all figures are gross and not investable.
+
+notes: >
+  A before-and-after comparison across a publication date is descriptive and
+  confounds publication with changing composition, valuation regimes, crowding
+  and chance. This specification does not claim to identify a publication effect.
+  It asks only whether a premium is still there, how large it might be, and how
+  uncertain that answer is.

@@ -1,0 +1,289 @@
+# Frozen before any result is examined. The screening rule below is predeclared;
+# no fund may be added or removed after returns have been looked at.
+experiment_family: exp_002_fund_exposure
+title: Investable factor product exposure and implementation audit
+entry_point: exp_002_fund_exposure
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  Among funds that pass the predeclared screen below, at least one delivers its
+  intended factor exposure with a loading that is materially different from a
+  cheap broad-market fund, stable across subperiods, and at a total cost that
+  leaves the exposure worth buying. This is a hypothesis about EXPOSURE DELIVERY,
+  not about alpha. A fund with zero alpha passes if it delivers the intended
+  exposure cheaply and reliably; a fund with positive estimated alpha over a
+  short history fails if its exposure is absent or unstable.
+
+mechanism: >
+  A factor product is a manufacturing problem, not a forecasting one. The index
+  methodology, rebalance frequency, breakpoint choice, capacity, securities
+  lending policy and fee together determine how much of a published long-short
+  premium reaches a shareholder. Since the published premium is gross and
+  long-short, and the product is net and long-only, the delivered exposure is the
+  only thing that can be audited directly. Any residual return is a small
+  difference between large numbers: Fama and French (2010) estimate the average
+  standard error on a single fund's alpha at about 3.36% per year against a
+  cross-sectional standard deviation of true gross alpha of about 1.25% per year,
+  so the noise is roughly 2.7 times the signal and any observed alpha must be
+  shrunk hard before it is believed.
+
+falsifier: >
+  A fund is rejected as an implementation candidate when ANY of: (a) the
+  point estimate of its loading on its intended factor is below 0.15 over the
+  common period; (b) the intended loading's sign flips between the first and
+  second half of the fund's common-period history; (c) its tracking difference
+  versus a cheap broad-market fund plus the same combination of broad funds that
+  approximates its exposures is worse than its stated expense ratio advantage by
+  more than 0.50 percentage points per year; or (d) its total realised cost of
+  ownership, including expense ratio, tracking difference and realised taxable
+  distributions, exceeds the materiality threshold of 1.0 percentage point per
+  year above the broad-market comparator without a corresponding exposure. A
+  t-statistic on residual alpha below 2 is NOT a falsifier: it usually means the
+  sample cannot identify a small residual return, not that the fund is useless.
+
+universe:
+  screening_rule:
+    description: >
+      Predeclared and mechanical. The screen is applied to the fund list BEFORE
+      any return series is downloaded, and the full screened list including every
+      rejection and its reason is recorded as an artifact. There is no "and
+      peers" clause and no discretionary addition.
+    criteria:
+      - Domiciled in the United States and registered as an open-end fund or ETF.
+      - States a single-factor or explicitly multi-factor equity mandate in its
+        prospectus objective, covering value, momentum, profitability or quality,
+        investment or conservative growth, size, or an explicit combination.
+      - Inception on or before 2016-12-31, giving at least 108 monthly
+        observations to 2025-12.
+      - Net assets of at least 100 million USD at the screen date.
+      - Net expense ratio at or below 0.60% per year.
+      - Publicly available daily NAV history covering the whole period since
+        inception.
+    ordering: >
+      Funds are ranked by inception date ascending; ties broken by ticker
+      alphabetically. Ranking is for presentation only and does not select.
+    exclusions_applied_after_screen:
+      - Leveraged or inverse funds.
+      - Funds whose mandate is sector, thematic, country-single or ESG-primary.
+      - Funds that changed their stated mandate during the sample; recorded with
+        the change date and excluded from the pooled analysis, not silently
+        dropped.
+    recorded_for_every_screened_fund:
+      - ticker, name, inception date, screen outcome and the criterion that
+        failed
+      - net and gross expense ratio, and the date each was read
+      - net assets and the date read
+      - index tracked and index methodology document reference
+      - closure, merger or liquidation status and date
+      - distribution history, split into income and capital gains
+      - securities-lending policy and the shareholder's share of lending revenue
+      - reported turnover where the fund discloses it
+      - data availability start and end, and any gap
+  comparators:
+    broad_market: A cheap total-market index fund, frozen before the audit.
+    synthetic_combination: >
+      A combination of cheap broad funds chosen to approximate the product's
+      estimated exposures, constructed from the SAME estimation window as the
+      exposure regression and reported with the look-ahead that implies stated
+      explicitly.
+
+sample_policy:
+  start: "2017-01"
+  end: "2025-12"
+  held_out: >
+    Observations after 2025-12 are not read. Fund-level data are also withheld
+    for any fund that fails the screen; a failed fund's returns are never
+    downloaded, so a screen cannot be revised after seeing them.
+  embargo: >
+    None; no forecast is made across a boundary. Subperiod splits are calendar
+    halves fixed in advance.
+  eras:
+    - name: common_period
+      start: "2017-01"
+      end: "2025-12"
+      rationale: >
+        The only window in which every screened surviving fund exists. All
+        cross-fund comparison happens here. Comparing funds over incompatible
+        eras is the error this era exists to prevent.
+    - name: first_half
+      start: "2017-01"
+      end: "2021-06"
+      rationale: Fixed calendar split for the stability test, chosen before estimation.
+    - name: second_half
+      start: "2021-07"
+      end: "2025-12"
+      rationale: Second half of the same fixed split.
+    - name: covid_drawdown
+      start: "2020-01"
+      end: "2020-06"
+      rationale: >
+        Conditional exposure check. Reported as a diagnostic, never as an
+        independent observation.
+    - name: value_reversal
+      start: "2022-01"
+      end: "2022-12"
+      rationale: >
+        A period in which value and momentum exposures diverged sharply. Included
+        because it is hostile to the hypothesis, not because it is favourable.
+
+benchmark:
+  primary: cheap total-market index fund, total return, net of its own fee
+  secondary: >
+    A combination of cheap broad funds approximating the product's estimated
+    exposures, so that the question is what the product adds over what is already
+    cheaply available.
+  factor_model: FF5 plus UMD, US, monthly, from the same French vintage as exp_001
+  note: >
+    The benchmark is frozen here because the choice decides the answer. A factor
+    fund compared against the market alone will look like alpha whenever its
+    factor is in favour.
+
+primary_metric:
+  name: intended factor loading over the common period
+  definition: >
+    OLS coefficient on the intended factor in a regression of the fund's monthly
+    excess return on Mkt-RF, SMB, HML, RMW, CMA and UMD, with Newey-West HAC
+    standard errors at 6 lags.
+  units: loading (dimensionless)
+  uncertainty: HAC 95% interval, and a stationary block-bootstrap 95% interval
+
+secondary_metrics:
+  - name: residual (Jensen) alpha
+    units: percentage points per year
+    note: >
+      Reported with its interval and shrunk toward zero using the
+      Fama-French (2010) dispersion. Never reported as a point estimate alone and
+      never used to rank funds.
+  - name: residual volatility
+    units: percentage points per year
+  - name: tracking difference versus each comparator
+    units: percentage points per year
+  - name: total cost of ownership
+    units: percentage points per year
+  - name: maximum drawdown, common period
+    units: percent
+  - name: rolling 36-month loadings on the intended factor
+    units: loading
+  - name: reported portfolio turnover
+    units: percent per year
+  - name: realised taxable distributions, income and capital gain separately
+    units: percentage points of NAV per year
+
+cost_model:
+  applied: true
+  fund_level: >
+    Total return is constructed as actually experienced by a shareholder: NAV
+    total return already net of the published expense ratio, with distributions
+    reinvested at the distribution-date NAV. The expense ratio is not subtracted
+    a second time.
+  trading_level: >
+    Not applicable to a buy-and-hold shareholder of the fund itself. The fund's
+    internal trading cost is unobservable and is NOT estimated; its effect is
+    inside the tracking difference and is reported as such rather than modelled.
+  cash_rate: >
+    One consistently defined cash series for every excess return in this
+    experiment, declared in parameters and never swapped. TB3MS, DGS3MO and DFF
+    are not interchangeable.
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  net_optimistic: >
+    Expense ratio only, assuming the tracking difference is entirely
+    exposure-driven and recoverable.
+  net_pessimistic: >
+    Expense ratio plus the realised tracking difference plus realised taxable
+    distributions at the declared marginal rates. Default reported column.
+
+rebalance_rule:
+  shareholder: buy and hold the fund; no rebalancing within this experiment
+  comparator_combination: >
+    Monthly rebalance to the frozen approximating weights, so the comparator is
+    not flattered by drift. Turnover and cost of that rebalance are reported.
+
+inference:
+  bootstrap: stationary block bootstrap on regression residuals and on returns
+  block_length_policy: >
+    Mean block length frozen at 6 months for monthly fund data, with 3 and 12
+    reported as predeclared neighbours. Not tuned on the statistic tested.
+  multiple_testing_correction: >
+    Benjamini-Hochberg FDR at 0.10 across ALL screened funds and ALL model
+    specifications, not only the funds that survive. The denominator is the full
+    screen, which is why every screened fund is recorded.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Fund histories are short. The regression is the estimand of interest; the
+    alpha is a by-product with a standard error large enough that most funds will
+    be `unresolved` on alpha and decidable only on exposure.
+
+rejection_rule: >
+  Per fund: mark `rejected` when a falsifier clause fires. Mark `unresolved` when
+  no clause fires but the intended loading's 95% interval contains 0.15, which is
+  expected for short histories. Mark `exploratory` when the intended exposure is
+  present, stable across the fixed split, economically material, and delivered at
+  a total cost below the materiality threshold; that permits the fund to be used
+  as an implementation proxy in a later experiment and permits nothing else. No
+  fund is promoted on residual alpha, and no fund is rejected solely because its
+  alpha t-statistic is below two.
+
+parameters:
+  minimum_intended_loading: 0.15
+  materiality_threshold_annual_percent: 1.0
+  hac_lags: 6
+  minimum_monthly_observations: 108
+  cash_series: TB3MS
+  cash_series_rationale: >
+    A monthly average of the 3-month Treasury bill secondary market rate, chosen
+    because fund returns are monthly and the series is not revised. It is frozen
+    here so that it cannot be swapped for whichever series improves a result.
+  tax_rates:
+    qualified_dividend: 0.15
+    ordinary_income: 0.32
+    long_term_capital_gain: 0.15
+    note: >
+      Used ONLY to convert observed distributions into a net-pessimistic cost
+      column for a stated hypothetical account. This is not an after-tax
+      experiment: there are no tax lots, holding periods, harvesting rules or
+      account modelling here, and no constant haircut is applied to returns.
+  price_source_policy: >
+    Fund total-return histories from a source with documented total-return and
+    corporate-action treatment. Any use of a free feed without that contract
+    makes this experiment exploratory and the snapshot must be preserved.
+
+data_sources:
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+  - id: fred_tb3ms
+    url: https://fred.stlouisfed.org/series/TB3MS
+  - id: fund_total_returns
+    url: recorded per fund in the data manifest at retrieval time
+
+hostile_tests:
+  - Re-estimate with CAPM, FF3 and FF5-plus-UMD, and report all three; a loading
+    that only appears in one specification is not an exposure.
+  - Re-estimate on the fixed calendar halves and on rolling 36-month windows.
+  - Re-estimate with the fund's own inception-to-date window and show how much of
+    any alpha comes from the first 24 months.
+  - Double the assumed tracking difference.
+  - Substitute DGS3MO and DFF for TB3MS and show the effect on every excess
+    return, to demonstrate that the choice was not made for the result.
+  - Include every screened-but-excluded fund in the multiple-testing denominator
+    and re-report corrected significance.
+  - Compare each fund against the approximating combination of broad funds, not
+    only against the market.
+
+reporting_requirements:
+  - The complete screened-fund table, including every rejection and its reason.
+  - Common-period results for every cross-fund comparison.
+  - Gross, net-optimistic and net-pessimistic in separate columns.
+  - Statistical alpha and implementation value reported as separate findings.
+  - An explicit statement that a positive alpha over a short inception history is
+    not evidence of future manager skill.
+
+notes: >
+  Promotion requires the intended exposure to be present, stable, economically
+  material and cheap. Residual alpha is not a promotion criterion in either
+  direction.
