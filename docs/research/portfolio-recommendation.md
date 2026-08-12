@@ -251,8 +251,8 @@ Priority per dollar of shelter capacity, in bp/yr:
 | --- | --- | ---: | ---: | ---: | ---: |
 | Taxable investment-grade bonds | yield × 40.8% | 0 | **189.7** | **189.7** | **189.7** |
 | Developed ex-US equity | 2.60% × q | 15.78 | **46.1** | **33.1** | **23.2** |
-| Emerging-market equity | 2.03% × q | 20.00 | **28.3** | 18.2 | 10.4 |
-| US equity | 1.10% × q | 0 | 26.2 | **20.7** | **16.5** |
+| Emerging-market equity | 2.03% × q | 20.00 | **28.3** | 18.2 | 10.45 |
+| US equity | 1.10% × q | 0 | 26.2 | **20.7** | **16.50** |
 
 **One caveat on the bond row, because the table would otherwise be internally
 inconsistent.** 189.7 bp uses the 40.8% top ordinary rate, which belongs with the
@@ -268,7 +268,7 @@ Read down each rate column and fill the shelter in that order.
 | --- | --- | --- |
 | **23.8%** | bonds → developed → emerging → US | Conventional order survives, but emerging's margin over US collapses from 22.1 bp to **2.1 bp**. Treat it as a tie |
 | **18.8%** | bonds → developed → **US** → emerging | **Inverted.** Emerging goes to taxable |
-| **15%** | bonds → developed → **US** → emerging | **Inverted**, by 6.1 bp |
+| **15%** | bonds → developed → **US** → emerging | **Inverted**, by 6.05 bp |
 | **0%** | the credit is worth nothing either way | §904 limits the credit to US tax on foreign-source income, and there is none. The 0% bracket forfeits the withholding in *both* locations |
 
 ### 3.3 The placement, by account

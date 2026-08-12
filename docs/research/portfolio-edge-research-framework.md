@@ -61,7 +61,9 @@ must beat, not a claim that the final answer has already been found
 
 This section is written to be read on its own. Everything in it is derived on the
 pages linked beside it; nothing here is new evidence. `as of 2026-08-12`, after
-sixteen ledgered runs across six frozen experiments.
+23 ledgered runs of 12 distinct specifications across nine experiment families —
+the count [this page verifies against the ledger itself](#the-ledger-counted-rather-than-described),
+not an estimate.
 
 The commissioning premise was: *"The goal is to have information and strategies and
 research to near definitively beat the market. Beating the market is not
@@ -1324,9 +1326,10 @@ citations.
   ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)).
 - **The research loop exists end to end** — frozen specification, hashed input,
   deterministic calculation, adversarial validation, append-only ledger, synthesis —
-  with 1,082 tests passing and a runner that refuses a confirmatory
+  under a test suite in the low thousands and a runner that refuses a confirmatory
   experiment lacking a benchmark, primary metric, cost model, sample policy and
-  rejection rule.
+  rejection rule. Run `uv run pytest` for the current count; it grows with every
+  experiment and no conclusion here rests on its value.
 
 ### Failed — `rejected` against a predeclared falsifier
 
@@ -1717,7 +1720,7 @@ passive and rebalancing policies, volatility scaling applied identically to
 benchmark and sleeve, the factor and trend replications with frozen specifications,
 and walk-forward, block-bootstrap and multiple-testing diagnostics all exist in
 `research/` under a test runner ([decision 0001](../decisions/0001-contained-python-research-workspace.md)),
-with 1,082 tests passing `as of 2026-08-12`, 18 of them network-marked. What
+under a test suite in the low thousands, 18 of them network-marked. What
 remains, in order:
 
 6. portfolio combination and stress testing; and only then
@@ -1738,8 +1741,13 @@ Three standing rules survive from that build order.
 - **Closed-form fixtures come before any data contract.** The primitives were and
   remain testable without market data; they now live in `research/tests/unit/`.
 - **The trial ledger must precede the first backtest**, because the effective number
-  of independent trials cannot be reconstructed afterwards. It did, and the current
-  count is seven distinct specifications across sixteen runs.
+  of independent trials cannot be reconstructed afterwards. It did, and the count is
+  12 distinct specifications across 23 runs `as of 2026-08-12`. **Recount rather than
+  quoting that figure** — the ledger is append-only and has grown since:
+
+  ```sh
+  python3 -c "import json; r=[json.loads(l) for l in open('research/ledger.jsonl') if l.strip()]; print(len(r), 'entries', len({x['run_id'] for x in r}), 'runs', len({x['spec_hash'] for x in r}), 'specs')"
+  ```
 - **Any estimated alpha passes through shrinkage before it reaches a sizing
   function**, using *that estimate's own* standard error. The reference factor of
   0.121 comes from a 3.36%/yr standard error typical of an active fund; on index

@@ -145,8 +145,8 @@ uncontested here too. The contested half moves:
 - **At 23.8%, the credit does not reverse the ranking but it erases the margin.**
   Emerging-market equity's advantage over US equity for shelter space falls from 22.1 bp
   to **2.1 bp** — well inside the uncertainty in either dividend yield. Treat it as a tie.
-- **At 15% or 18.8%, the ranking inverts.** Emerging-market equity drops to 10.5 bp of
-  priority against US equity's 16.5 bp. **A US investor in the 15% bracket should hold
+- **At 15% or 18.8%, the ranking inverts.** Emerging-market equity drops to 10.45 bp of
+  priority against US equity's 16.50 bp. **A US investor in the 15% bracket should hold
   emerging-market equity in the taxable account and US equity in the shelter**, which is
   the opposite of the standard rule.
 - **Developed markets never inverts.** Its break-even qualified-dividend rate is 10.52%,
