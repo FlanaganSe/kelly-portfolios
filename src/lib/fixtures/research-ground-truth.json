@@ -675,6 +675,208 @@
       "expected": 93.27958972486923
     }
   ],
+  "terminalWealthRatio": [
+    {
+      "edgeBp": 109.0,
+      "horizonYears": 1.0,
+      "expected": 1.0109596214276102
+    },
+    {
+      "edgeBp": 109.0,
+      "horizonYears": 10.0,
+      "expected": 1.1151623503414478
+    },
+    {
+      "edgeBp": 109.0,
+      "horizonYears": 20.0,
+      "expected": 1.243587067619062
+    },
+    {
+      "edgeBp": 109.0,
+      "horizonYears": 30.0,
+      "expected": 1.3868014771803021
+    },
+    {
+      "edgeBp": 109.0,
+      "horizonYears": 40.0,
+      "expected": 1.5465087947493774
+    },
+    {
+      "edgeBp": 86.0,
+      "horizonYears": 1.0,
+      "expected": 1.008637086237646
+    },
+    {
+      "edgeBp": 86.0,
+      "horizonYears": 10.0,
+      "expected": 1.0898063283051287
+    },
+    {
+      "edgeBp": 86.0,
+      "horizonYears": 20.0,
+      "expected": 1.187677833213906
+    },
+    {
+      "edgeBp": 86.0,
+      "horizonYears": 30.0,
+      "expected": 1.2943388186242377
+    },
+    {
+      "edgeBp": 86.0,
+      "horizonYears": 40.0,
+      "expected": 1.4105786355076784
+    },
+    {
+      "edgeBp": 24.4,
+      "horizonYears": 1.0,
+      "expected": 1.0024429792226082
+    },
+    {
+      "edgeBp": 24.4,
+      "horizonYears": 10.0,
+      "expected": 1.02470011597193
+    },
+    {
+      "edgeBp": 24.4,
+      "horizonYears": 20.0,
+      "expected": 1.050010327672887
+    },
+    {
+      "edgeBp": 24.4,
+      "horizonYears": 30.0,
+      "expected": 1.0759457045381315
+    },
+    {
+      "edgeBp": 24.4,
+      "horizonYears": 40.0,
+      "expected": 1.1025216882197233
+    },
+    {
+      "edgeBp": 15.2,
+      "horizonYears": 1.0,
+      "expected": 1.001521155785524
+    },
+    {
+      "edgeBp": 15.2,
+      "horizonYears": 10.0,
+      "expected": 1.015316107532257
+    },
+    {
+      "edgeBp": 15.2,
+      "horizonYears": 20.0,
+      "expected": 1.0308667982144537
+    },
+    {
+      "edgeBp": 15.2,
+      "horizonYears": 30.0,
+      "expected": 1.0466556649473395
+    },
+    {
+      "edgeBp": 15.2,
+      "horizonYears": 40.0,
+      "expected": 1.062686355660919
+    },
+    {
+      "edgeBp": 90.0,
+      "horizonYears": 1.0,
+      "expected": 1.0090406217738679
+    },
+    {
+      "edgeBp": 90.0,
+      "horizonYears": 10.0,
+      "expected": 1.0941742837052104
+    },
+    {
+      "edgeBp": 90.0,
+      "horizonYears": 20.0,
+      "expected": 1.1972173631218102
+    },
+    {
+      "edgeBp": 90.0,
+      "horizonYears": 30.0,
+      "expected": 1.3099644507332473
+    },
+    {
+      "edgeBp": 90.0,
+      "horizonYears": 40.0,
+      "expected": 1.4333294145603404
+    },
+    {
+      "edgeBp": 68.0,
+      "horizonYears": 1.0,
+      "expected": 1.0068231724945438
+    },
+    {
+      "edgeBp": 68.0,
+      "horizonYears": 10.0,
+      "expected": 1.0703653084787743
+    },
+    {
+      "edgeBp": 68.0,
+      "horizonYears": 20.0,
+      "expected": 1.1456818935948618
+    },
+    {
+      "edgeBp": 68.0,
+      "horizonYears": 30.0,
+      "expected": 1.2262981534562105
+    },
+    {
+      "edgeBp": 68.0,
+      "horizonYears": 40.0,
+      "expected": 1.3125870013111083
+    },
+    {
+      "edgeBp": -7.8,
+      "horizonYears": 1.0,
+      "expected": 0.9992203041209234
+    },
+    {
+      "edgeBp": -7.8,
+      "horizonYears": 10.0,
+      "expected": 0.9922303410619892
+    },
+    {
+      "edgeBp": -7.8,
+      "horizonYears": 20.0,
+      "expected": 0.9845210497239912
+    },
+    {
+      "edgeBp": -7.8,
+      "horizonYears": 30.0,
+      "expected": 0.9768716569503434
+    },
+    {
+      "edgeBp": -7.8,
+      "horizonYears": 40.0,
+      "expected": 0.9692816973496297
+    },
+    {
+      "edgeBp": 0.0,
+      "horizonYears": 1.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 0.0,
+      "horizonYears": 10.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 0.0,
+      "horizonYears": 20.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 0.0,
+      "horizonYears": 30.0,
+      "expected": 1.0
+    },
+    {
+      "edgeBp": 0.0,
+      "horizonYears": 40.0,
+      "expected": 1.0
+    }
+  ],
   "normalCdf": [
     {
       "x": -4.0,

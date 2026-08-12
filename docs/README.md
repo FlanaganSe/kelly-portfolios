@@ -76,6 +76,14 @@ setup and current status.
   confidence horizon behind every line, the foreign-tax-credit arithmetic that decides
   where an international sleeve belongs, and a sleeve-by-sleeve verdict on the
   portfolio the project owner proposed. Answers what to hold; promotes nothing.
+- [Setting the equity share](research/setting-the-equity-share.md) — the largest
+  decision in the portfolio, separated into the part that is arithmetic and the part
+  that is preference. Holds the parameter-free growth-penalty curve, the premium each
+  equity share is implicitly forecasting, the exact `1/(2T)` cost of estimating the
+  growth-optimal exposure and the shrinkage that answers it, the drawdown and time
+  under water at every rung from 0% to 100%, and the verified statement of sequence
+  risk. Shows that the declared objective plus the zero-leverage rule returns a corner
+  solution, so the bonds come from the constraint and not the objective. Sets no split.
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers

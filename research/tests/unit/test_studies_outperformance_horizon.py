@@ -24,6 +24,7 @@ from portfolio_edge.studies.outperformance_horizon import (
     horizon_for_confidence,
     probability_of_outperformance,
     probability_table,
+    terminal_wealth_ratio,
 )
 
 
@@ -378,3 +379,38 @@ def test_rebalancing_earns_less_than_a_small_cap_round_trip_costs() -> None:
     rebalancing = next(item for item in EDGE_BUDGET if item.name.startswith("Rebalancing"))
     small_cap_one_way_spread_bp = 2.72
     assert rebalancing.central_bp < small_cap_one_way_spread_bp
+
+
+def test_terminal_wealth_ratio_needs_no_market_return() -> None:
+    """The market term cancels, so the ratio depends only on the edge and the horizon.
+
+    Compounded explicitly at four wildly different market growth rates. If the ratio moved
+    with any of them it would be a forecast, and the client states it as something that
+    holds whatever the market does.
+    """
+    edge = 0.0109
+    for market_log_growth in (-0.02, 0.0, 0.07, 0.15):
+        with_edge = math.exp((market_log_growth + edge) * 30.0)
+        without = math.exp(market_log_growth * 30.0)
+        assert with_edge / without == pytest.approx(
+            terminal_wealth_ratio(edge_bp=109.0, horizon_years=30.0), rel=1e-12
+        )
+
+
+def test_terminal_wealth_ratio_separates_the_two_benchmarks() -> None:
+    """109 bp against the investor's own counterfactual, 24.4 bp against a cheap index.
+
+    The pairing is the argument: the larger figure is also the near-certain one, and
+    quoting either without its benchmark is the error decision 0007 constraint 3 exists to
+    prevent.
+    """
+    assert terminal_wealth_ratio(edge_bp=109.0, horizon_years=30.0) == pytest.approx(
+        1.3868, abs=5e-5
+    )
+    assert terminal_wealth_ratio(edge_bp=24.4, horizon_years=30.0) == pytest.approx(
+        1.0759, abs=5e-5
+    )
+    assert terminal_wealth_ratio(edge_bp=0.0, horizon_years=30.0) == 1.0
+    assert terminal_wealth_ratio(edge_bp=-7.8, horizon_years=30.0) < 1.0
+    with pytest.raises(ValueError, match="cannot be negative"):
+        terminal_wealth_ratio(edge_bp=109.0, horizon_years=-1.0)

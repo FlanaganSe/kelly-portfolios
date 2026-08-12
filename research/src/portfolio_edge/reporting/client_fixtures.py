@@ -18,6 +18,7 @@ from portfolio_edge.studies.outperformance_horizon import (
     detectable_edge_bp,
     horizon_for_confidence,
     probability_of_outperformance,
+    terminal_wealth_ratio,
 )
 from portfolio_edge.studies.tax_structure import (
     DEVELOPED_EX_US,
@@ -33,7 +34,25 @@ from portfolio_edge.studies.tax_structure import (
     shelter_priority_bp,
 )
 
-out: dict[str, object] = {}
+out: dict[str, object] = {
+    "_provenance": {
+        "generatedBy": "research/src/portfolio_edge/reporting/client_fixtures.py",
+        "regenerate": (
+            "cd research && uv run python -m portfolio_edge.reporting.client_fixtures "
+            "> ../src/lib/fixtures/research-ground-truth.json"
+        ),
+        "sourceModules": [
+            "portfolio_edge.studies.outperformance_horizon",
+            "portfolio_edge.studies.tax_structure",
+        ],
+        "asOf": "2026-08-12",
+        "purpose": (
+            "Expected values for the TypeScript ports in src/lib/. Computed by the Python "
+            "research workspace, so a passing test checks the port against something "
+            "calculated independently of it. Do not hand-edit; regenerate."
+        ),
+    }
+}
 
 # ---------------------------------------------------------------- horizon arithmetic
 
@@ -94,6 +113,18 @@ for te_bp in (46.0, 140.0, 251.0, 401.0):
                 }
             )
 out["detectableEdgeBp"] = detectable_cases
+
+# exp(e T): what an edge is worth as a multiple of the same portfolio without it.
+# Needs no market forecast, because the market term cancels out of the ratio.
+out["terminalWealthRatio"] = [
+    {
+        "edgeBp": edge_bp,
+        "horizonYears": years,
+        "expected": terminal_wealth_ratio(edge_bp=edge_bp, horizon_years=years),
+    }
+    for edge_bp in (109.0, 86.0, 24.4, 15.2, 90.0, 68.0, -7.8, 0.0)
+    for years in (1.0, 10.0, 20.0, 30.0, 40.0)
+]
 
 # normal cdf / ppf spot values, so the TS special functions are pinned directly
 out["normalCdf"] = [

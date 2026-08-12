@@ -176,6 +176,31 @@ def detectable_edge_bp(
     return float(norm.ppf(confidence)) * tracking_error_bp / math.sqrt(horizon_years)
 
 
+def terminal_wealth_ratio(*, edge_bp: float, horizon_years: float) -> float:
+    """``exp(e T)``: terminal wealth with the edge, over terminal wealth without it.
+
+    The one figure in this module that needs **no forecast of any market**. Both paths
+    are the same portfolio exposed to the same returns; the edge is an addition to the
+    log growth rate, so the market term cancels out of the ratio exactly and what
+    survives depends only on the edge and the horizon.
+
+    That is what makes a contractual edge worth quoting to an investor and a risk premium
+    not. This ratio is realised with the certainty of its own inputs; the same
+    calculation applied to a probabilistic line would be quoting a median as though it
+    were a promise, so pair it with
+    :func:`probability_of_outperformance` and never report it alone for a line whose
+    ``Certainty`` is ``PROBABILISTIC``.
+
+    Convention: ``edge_bp`` is a **log** growth rate in basis points a year, which is how
+    :class:`EdgeComponent` and :mod:`tax_structure` both carry it. Compounding
+    ``(1 + e)**T`` instead would understate this slightly and mix simple with log
+    conventions in the same budget.
+    """
+    if horizon_years < 0.0:
+        raise ValueError(f"horizon_years cannot be negative, got {horizon_years}")
+    return math.exp(edge_bp * BASIS_POINT * horizon_years)
+
+
 def aggregate(components: Iterable[EdgeComponent]) -> AggregateEdge:
     """Sum a set of components sharing one benchmark, combining tracking errors in quadrature.
 

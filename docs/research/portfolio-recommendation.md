@@ -54,32 +54,54 @@ table) is dated and must be re-checked before it is used.
 ### 1.1 The one parameter that changes the answer
 
 Risk capacity — horizon, liabilities, cash flows and the drawdown that would force a
-sale. Three variants, differing **only** in the equity share. No evidence in this
+sale. Four variants, differing **only** in the equity share. No evidence in this
 repository sets it; the repository's declared objective is net geometric growth as a
 *preference* justified by Breiman's theorem, not as a proof
 ([edge decomposition](expected-edge-decomposition.md) §1.3), and the horizon and
 liability model remain unchosen (framework open decision 1).
 
+**[Setting the equity share](setting-the-equity-share.md) is the canonical page for
+everything below.** It works the arithmetic through: the growth-optimal weight and the
+forecast it needs, the parameter-free curve showing that being at half the
+growth-optimal exposure costs only a quarter of the peak excess growth, why the
+zero-leverage rule means the objective alone returns a corner solution of 100% equity,
+what the estimation error is worth, and the drawdown at every equity share. It does not
+set the split either, and it explains what would have to be supplied before anything
+could.
+
 The anchor for the choice is a measured drawdown, not a risk questionnaire: the US
 total market returned **10.80%/yr geometric at 15.40% volatility with a −50.3%
 maximum drawdown and 72 months under water** over 1963-07…2025-12
 ([Exp 007](long-only-capture.md#the-small-value-corner)). Set the equity share at the
-level whose worst case you would hold through, then stop.
+level whose worst case you would hold through, then stop. That page's
+[drawdown ladder](setting-the-equity-share.md#5-the-drawdown-anchor-which-is-the-operational-form-of-the-answer)
+gives the same figure at every rung between 0% and 100%.
 
 | Variant | Applies when | Equity | Bonds |
 | --- | --- | ---: | ---: |
 | **A — long horizon** | 20+ years, no liability inside it, contributions continuing, a −50% equity fall changes no plan | 90–100% | 0–10% |
 | **B — mixed** | 10–20 years, or a known liability inside the horizon | 70–80% | 20–30% |
-| **C — short or drawing** | under 10 years, or withdrawals have begun | 40–60% | 40–60% |
+| **C — short horizon** | under 10 years, whatever the cash flows | 40–60% | 40–60% |
+| **D — drawing down** | withdrawals have begun over a long remaining horizon | **set by the withdrawal rate, not by the horizon** | — |
 
 Sequence risk is a cash-flow interaction, not a premium: without external cash flows,
-permuting returns leaves terminal wealth unchanged. Variant C exists because
+permuting returns leaves terminal wealth unchanged, which
+[is verified rather than asserted](setting-the-equity-share.md#3-sequence-risk-verified-and-given-a-sign)
+across 20,000 reorderings of one fixed return record. Variants C and D exist because
 contributions and withdrawals break that identity, not because equities are riskier
 over short horizons in some deeper sense.
 
+**C and D point opposite ways, and were one row here until they were measured.** A
+short horizon argues for fewer equities. A long retirement at a demanding withdrawal rate
+argues for more: on CPI-deflated US returns over a 30-year draw, a 20%-equity portfolio
+taking 4%/yr real ran out in 6.82% of reorderings against 2.43% at 60% equity, and at a
+5% real draw the failure rate fell all the way to 90% equity
+([setting the equity share](setting-the-equity-share.md#51-withdrawals-invert-part-of-the-table)).
+Above roughly a 4% real draw, holding too few equities is the larger risk.
+
 ### 1.2 The holdings
 
-Equity composition is identical in all three variants. The weights are **the
+Equity composition is identical in every variant. The weights are **the
 repository's own declared research weights**, frozen in
 [Experiment 003](rebalancing-policy.md)'s specification before any result was
 examined — a stated choice, not a measured optimum. No global market-capitalisation
@@ -181,7 +203,7 @@ tested and lost, not because it was shown to be good.
 | **VTI / VOO / ITOT** | equity risk premium at 3 bp, ~1.3 bp round trip, plus 1.01 bp/yr of securities-lending pass-through (VTI, FY2025 N-CSR) | **contractual** on the *cost*; risk premium on the *return* | The cost is certain. The return is not, and no page here forecasts it | It is the control ([decision 0003](../decisions/0003-cheap-broad-market-control.md)). Every candidate was measured against it and none beat it |
 | **VEA / IEFA** | developed ex-US equity; ~2.97 bp/yr (VEA) or ~1.08–1.11 (IEFA) of lending income | same | same | Diversification of the equity claim, not an edge. Its foreign tax credit is worth 15.78 bp/yr **only in taxable** |
 | **VWO / IEMG** | emerging equity; ~4.9–5.2 bp/yr (VWO) or ~9.2–9.7 (IEMG) of lending income | same | same | Same. Its credit is worth 20.00 bp/yr in taxable — and it is the sleeve §3's arithmetic moves |
-| **BND** or Treasuries | term and credit compensation, and a risk brake | **a different benchmark, not an edge** | The bond–stock beta sign flipped positive 1970–2000, negative 2000–2022, and positive again 2023–2025Q2 across the US, UK and Eurozone ([Campbell et al. 2025](https://www.nber.org/papers/w34323)) | Sized by the investor's risk capacity. Booking a term premium as an edge over an equity index is a benchmark switch, not a return source |
+| **BND** or Treasuries | term and credit compensation, and a risk brake | **a different benchmark, not an edge** | US bond–stock comovement was positive from 1974, negative 2000–2022Q3, and positive again 2022Q3–2024Q2 ([Campbell, Pflueger and Viceira 2025](https://www.nber.org/papers/w34323); dates from the [authors' own summary](https://econbrowser.com/archives/2026/02/guest-contribution-understanding-bond-stock-price-comovements), retrieved 2026-08-12, and reproduced on this repository's data in [setting the equity share](setting-the-equity-share.md#6-what-the-bond-side-is-actually-for)) | Sized by the investor's risk capacity. The brake works; its **diversification** does not, in every era. Booking a term premium as an edge over an equity index is a benchmark switch, not a return source |
 | **VBR** (optional) | HML loading **+0.410 `[+0.322, +0.480]`**, delivered and stable, at 5 bp, with a **negative** shortfall (−0.62 pp/yr) against a fitted four-fund combination | **risk premium**, `exploratory` on both terms | **Low.** `premium × loading × capture − cost` is +0.09 to −0.39 pp/yr on the US premium and +0.28 to +0.76 on the pooled one. §5 | It is the only US value product that both delivers its exposure and does not lose to a cheap combination. It is *not* here because the chain is positive |
 | **DBMF** (optional) | loading **+0.671 `[+0.513, +0.829]`** on the AQR TSMOM index, stable across the fixed split and all 19 rolling windows, trailing a cost-free vendor index by 0.48 pp/yr against an 0.85% fee | **risk premium**, `exploratory`; the index itself is `unresolved` | **Low, and lower in taxable.** Crisis correlation −0.59, downside beta −0.67, payoff spread across four structurally different crises — but the post-publication interval includes zero and fails Holm | **Nothing better exists.** Four of five listed managed-futures ETFs fail the 0.50 loading bar. One product, no fallback |
 | **Cash / liquidity reserve** | optionality and the ability not to sell | contractual | — | The framework requires it and no experiment here sizes it. An investor-policy input, still missing |
@@ -472,7 +494,9 @@ Each is measurable and dated. None is a hope.
 ### The investor-policy inputs still missing
 
 Framework open decisions 1 and 4, unchanged. Without these, §1.1's variants are
-ranges rather than an answer, and no page here can narrow them:
+ranges rather than an answer, and no page here can narrow them.
+[Setting the equity share](setting-the-equity-share.md) §7 sets out which of them an
+application can compute on and which it must ask for:
 
 horizon and liability model; drawdown and shortfall tolerance and the loss that would
 force a sale; cash flows in and out, and whether contributions continue; marginal
