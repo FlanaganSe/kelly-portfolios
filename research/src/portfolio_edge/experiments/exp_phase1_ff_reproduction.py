@@ -65,6 +65,12 @@ from portfolio_edge.data.manifest import read_manifest
 from portfolio_edge.data.table import ParsedTable
 from portfolio_edge.data.validation import validate_table
 from portfolio_edge.experiments.ledger import Ledger, Origin
+from portfolio_edge.experiments.periods import (
+    PeriodError,
+    month_count,
+    month_index,
+    shift_period,
+)
 from portfolio_edge.experiments.registry import ExperimentRegistry, RunContext
 from portfolio_edge.experiments.result import (
     CostBasis,
@@ -178,22 +184,17 @@ def _strings(data: Mapping[str, JsonValue], key: str, *, where: str) -> tuple[st
 def _month_index(period: str) -> int:
     """Months since year 0, so differences and shifts are plain integers."""
     try:
-        year, month = period.split("-")
-        return int(year) * 12 + (int(month) - 1)
-    except ValueError as exc:
-        raise ReproductionError(f"not a YYYY-MM period label: {period!r}") from exc
-
-
-def _period_from_index(index: int) -> str:
-    return f"{index // 12:04d}-{index % 12 + 1:02d}"
+        return month_index(period)
+    except PeriodError as exc:
+        raise ReproductionError(str(exc)) from exc
 
 
 def _shift_period(period: str, months: int) -> str:
-    return _period_from_index(_month_index(period) + months)
+    return shift_period(period, months)
 
 
 def _expected_month_count(start: str, end: str) -> int:
-    return _month_index(end) - _month_index(start) + 1
+    return month_count(start, end)
 
 
 # --------------------------------------------------------------------------- #

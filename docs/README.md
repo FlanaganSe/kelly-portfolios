@@ -23,6 +23,12 @@ setup and current status.
   Phase 1 ingestion gate: which published table was reproduced from which data
   vintage, the two cells that do not reproduce, and what a downstream experiment
   may and may not assume about the data path as a result.
+- [Where outperformance can come from](research/expected-edge-decomposition.md) —
+  the size and certainty class of every return source the repository will model,
+  and the benchmark each is measured against. Proves when constant-weight
+  rebalancing beats buy-and-hold, gives the closed-form probability of doing so,
+  and separates what is beatable (your own counterfactual) from what is not (a
+  cheap index).
 - [Numerical engine specification](research/portfolio-engine-specification.md) —
   the algorithms, closed-form test fixtures, and conditioning requirements
   underneath any allocation feature, and where the optimiser should run. Answers

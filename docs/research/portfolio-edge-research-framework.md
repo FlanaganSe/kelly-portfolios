@@ -332,13 +332,26 @@ This does not prove that every calendar, threshold, or multiperiod policy has ze
 conditional profit or utility value. It does prove that a positive variance
 decomposition is insufficient evidence of alpha.
 
-One live objection to this repository's premise sits here and is *not* settled.
+One live objection to this repository's premise sat here and is now **settled** in
+the [expected-edge decomposition](expected-edge-decomposition.md), which supersedes
+this paragraph's framing.
+
 Chambers and Zdanowicz's zero-expected-profit result concerns expected terminal
-*wealth*. In their own example the rebalanced portfolio does have higher expected
-**log** wealth (1.874% vs 1.867% per year), which they dismiss as "an arbitrary
-nonlinear transformation of wealth". That dismissal is a stance, not a theorem, and
-it is precisely the premise a Kelly investor rejects. Settling it is open question 2
-below.
+*wealth*, and it is correct — it even generalises, since with unequal means
+buy-and-hold is strictly ahead on \(E[W_T]\). Two corrections to what this page
+previously said. Their 1.874% and 1.867% are **not** expected log wealth; they are
+\(E[W^{1/T}]-1\), the expected annualised rate. The corresponding expected log
+growth rates are 1.2346% and 1.2201%. And their "arbitrary nonlinear transformation"
+sentence is aimed at that annualised rate, not at log wealth, which they never
+analyse — so it is not the direct attack on log utility this page reported.
+
+Against \(E[\log W]\) the dismissal fails on its own terms, because
+\((1/T)\log W_T\) is a pathwise property containing no preferences, and Breiman's
+almost-sure dominance applies. Their own Exhibit 5 also stops where the effect is
+smallest: extended, the rebalanced portfolio's expected log growth stays constant
+while buy-and-hold's decays to zero, so their 12-period 12 bp gap grows without
+bound. What a log investor actually gains is a mean-preserving contraction —
+identical \(E[V_T]\), variance lower by 29%, median higher.
 
 Rebalancing should therefore be tested as an explicit rule—calendar, threshold,
 or no rebalance—from identical starting weights and cash flows. A variance
@@ -1034,9 +1047,12 @@ Open decisions must be settled before performance code is authoritative:
    liabilities, cash flows, drawdown tolerance, and accessible instruments?
 2. What exact benchmark and objective define “beat the market”: terminal wealth,
    log growth, inflation-adjusted return, expected utility, or downside-constrained
-   return? This is not merely a preference to declare. Chambers and Zdanowicz
-   attack log wealth directly as "an arbitrary nonlinear transformation", and a
-   repository named for Kelly cannot leave that unanswered.
+   return? The Chambers–Zdanowicz half of this question is now answered in the
+   [expected-edge decomposition](expected-edge-decomposition.md): their dismissal
+   targets an annualised rate rather than log wealth, and does not survive against
+   \(E[\log W]\). What remains open is the genuine product choice — terminal
+   wealth, log growth, or a liability/consumption objective — which evidence
+   cannot settle and the investor policy must.
 3. Which point-in-time datasets are licensed, reproducible, and rich enough to
    model delistings, publications, spreads, borrow, futures, and options?
 4. What capital scale, tax model, leverage source, margin rules, and liquidity
