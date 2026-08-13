@@ -477,26 +477,32 @@ export const experiments: readonly Experiment[] = [
     question:
       "Do ex-US factor products deliver their intended exposure against their own region's factor panel, at a cost that leaves it worth buying?",
     kind: "exploratory",
-    runState: "run-not-synthesised",
-    status: null,
+    runState: "synthesised",
+    status: "exploratory",
     statusNote:
-      "The specification is frozen and uncommitted, and runs against it are landing in the working tree's ledger while this is being written. There is no synthesis page under `docs/research/`, so no result of any kind is quoted here. The specification caps itself at `exploratory` under decision 0002 whatever it eventually finds.",
+      "`Exploratory` by decision rather than by outcome. Decision 0002 caps all fund-level work there, and a window beginning in 2019 caps it again. This may not promote a sleeve, and the per-fund statuses below permit these products to be used as implementation proxies in a later experiment and permit nothing else.",
     verdict:
-      "This is the missing half of Experiment 002. That audit's exclusion pattern removed every international, global, emerging, developed and ex-US series — 185, 82 and 51 of them respectively — while Experiments 005 and 007 put nearly all of the value premium's measurable weight outside the United States. So the repository has audited products where the premium is weakest and audited none where it is strongest.",
+      "This is the missing half of Experiment 002, and the exposure is delivered. That audit's exclusion pattern removed every international, global, emerging, developed and ex-US series, while Experiments 005 and 007 put nearly all of the value premium's measurable weight outside the United States — so the repository had audited products where the premium is weakest and none where it is strongest. Of 25 funds with enough filed history, 12 reached `exploratory`, 8 were rejected and 5 are unresolved. Every one of the twelve is developed ex-US; no emerging-market product reached `exploratory` at all.",
     keyNumbers: [
-      { label: "Ex-US factor products audited so far", value: "zero" },
-      { label: "Series Experiment 002's screen removed", value: "185 international, 82 global, 51 emerging" },
+      { label: "Series screened, of which 26 passed and 25 had enough history", value: "537" },
+      { label: "Reaching `exploratory`, all of them developed ex-US", value: "12 of 25" },
       { label: "Value premium by region", value: "US +1.57, developed ex-US +5.07, emerging +7.58", unit: "pp/yr" },
       {
-        label: "Result",
-        value: "not synthesised",
-        note: "Runs exist in an uncommitted ledger. Until a synthesis page states them, no figure from them may be displayed.",
+        label: "Funds below the loading bar on the US panel instead of their own region's",
+        value: "16 of 25",
+        note: "Against 5 on the correct regional panel. A published ex-US loading without its panel named is not a number.",
+      },
+      {
+        label: "Rejections decided by cost rather than by exposure",
+        value: "5 of 8",
+        note: "Clause (c): the fund lost more to an in-sample fitted combination of cheap ex-US funds than its fee premium explains. The replication has look-ahead, so read it as a deliberately hard test rather than as a verdict on the manager.",
       },
     ],
     whyItMatters:
-      "It is the single largest gap between where a premium was measured and where a product was tested, and closing it needs no purchase.",
+      "It is the single largest gap between where a premium was measured and where a product was tested, and closing it needed no purchase. It also shows the regional panel is not a refinement but the thing that decides the verdict.",
     whatWouldChangeIt: [
-      "A synthesis page under `docs/research/`, at which point this entry gains a status, key numbers and its own caveats.",
+      "An emerging-market product with a long enough window: both emerging value funds are unresolved on 44 and 51 months, and their point estimates are positive.",
+      "A method that separates foreign withholding from index-construction differences. This one could not bound the drag at all, because VEA beat its own region's benchmark while VTI trailed the US one — a difference of +0.866 pp/yr in the wrong direction.",
     ],
     source: {
       label: "Frozen specification, exp_009_exus_factor_products.yaml",
@@ -510,28 +516,35 @@ export const experiments: readonly Experiment[] = [
     question:
       "Does adding a small weight to an existing portfolio raise its growth rate once the diversification credit the standalone chain omits is counted?",
     kind: "exploratory",
-    runState: "run-not-synthesised",
-    status: null,
+    runState: "synthesised",
+    status: "rejected",
     statusNote:
-      "The specification is frozen and uncommitted, and runs against it are landing in the working tree's ledger while this is being written. There is no synthesis page under `docs/research/`, so no result of any kind is quoted here. The specification caps itself at `exploratory` whatever it eventually finds: every input is a paper portfolio, a vendor series or a modelled proxy, and the weights are evaluated in sample.",
+      "Two specifications judged the same data and added no trials between them: one on a certainty equivalent at gamma = 3, one on geometric growth. Growth decides, and that is what moved the family from `unresolved` to `rejected`. Every input is a paper portfolio, a vendor series or a modelled proxy, and the weights are evaluated in sample, so the family is capped at `exploratory` whatever it had found.",
     verdict:
-      "Every sleeve except trend has been judged by a standalone chain, which sets the covariance term to zero by construction. The portfolio question is different, and its answer can go either way: a beta above one makes the credit negative, which would make the portfolio view harsher than the standalone one rather than kinder. The specification records the prediction that the credit is too small to change any verdict, before any result exists.",
+      "Every sleeve except trend had been judged by a standalone chain, which sets the covariance term to zero by construction. Judged inside a portfolio instead, no sleeve survives, and the reason is a bound rather than a measurement: the diversification credit has a ceiling set by the base portfolio's own variance, and the ceiling is below the bar. The portfolio view rescues nothing the standalone chain dismissed, and against a 60/40 base it strengthens six of those dismissals instead. The bound and what it means for a trend sleeve are on the portfolio page.",
     keyNumbers: [
-      { label: "Declared family", value: "ten sleeves plus one calibration control" },
+      { label: "Sleeves tested", value: "10 in the Holm family, plus a modelled proxy and a control" },
+      { label: "Sleeves surviving Holm at 0.05", value: "0 of 10" },
       {
-        label: "Result",
-        value: "not synthesised",
-        note: "Runs exist in an uncommitted ledger. Until a synthesis page states them, no figure from them may be displayed.",
+        label: "Sleeves clearing the bar on the certainty equivalent, then failing it on growth",
+        value: "6 of 7",
+      },
+      {
+        label: "Sample",
+        value: "420 months",
+        note: "1991-01 to 2025-12, 35 whole calendar years, one lead month read and never reported",
       },
     ],
     whyItMatters:
-      "If the diversification credit is material, several standalone dismissals would need re-reading. If it is not, they stand and the question is closed rather than open.",
+      "It closes the portfolio-level view as a route to rescuing a dismissed sleeve, and it closes it with a bound rather than a result. The ceiling on the credit, and what it means for a trend or momentum sleeve, is set out on the portfolio page.",
     whatWouldChangeIt: [
-      "A synthesis page under `docs/research/`, at which point this entry gains a status, key numbers and its own caveats.",
+      "A research-grade gold series, the one untested candidate with a plausibly low equity beta. Its absence biases the experiment toward finding no credit anywhere.",
+      "An investable bond total-return history, which would replace the modelled duration proxy that clause (u5) forbids from resolving anything.",
+      "A base portfolio whose volatility is high enough for the ceiling to clear the bar, which is the opposite of what most readers would want to hold.",
     ],
     source: {
-      label: "Frozen specification, exp_010_marginal_sleeve_value.yaml",
-      docPath: "research/experiments/exp_010_marginal_sleeve_value.yaml",
+      label: "What a sleeve is worth inside a portfolio, rather than on its own",
+      docPath: "docs/research/marginal-sleeve-value.md",
     },
   },
 ];
@@ -541,36 +554,39 @@ export const experiments: readonly Experiment[] = [
  * verifies these directly from `research/ledger.jsonl`.
  */
 export const ledgerSummary = {
-  entries: 64,
-  runs: 23,
-  distinctSpecifications: 12,
-  experimentFamilies: 9,
-  runsRecordingResultsViewed: 17,
+  entries: 93,
+  runs: 33,
+  distinctSpecifications: 15,
+  experimentFamilies: 12,
+  runsRecordingResultsViewed: 26,
   runsConsumingTheFinalHoldout: 0,
   terminalOutcomes: [
     {
       status: "unresolved" as const,
-      runs: 3,
-      which: "Phase 1; Experiment 001; Experiment 007's superseded specification",
+      runs: 6,
+      which:
+        "Phase 1; Experiment 001; Experiment 007's superseded specification; Experiment 010, three executions of one specification",
     },
     {
       status: "rejected" as const,
-      runs: 6,
-      which: "Experiment 003; Experiment 004, four executions of one specification; Experiment 007",
+      runs: 9,
+      which:
+        "Experiment 003; Experiment 004, five executions of one specification; Experiment 007; Experiment 010b, two executions",
     },
     {
       status: "exploratory" as const,
-      runs: 8,
+      runs: 11,
       which:
-        "Experiment 002, three executions of one specification; Experiments 005 and 006; Experiment 008, three runs across two specifications",
+        "Experiment 002, three executions of one specification; Experiments 005 and 006; Experiments 008 and 009, three runs each",
     },
   ],
   noTerminalStatus: {
-    runs: 6,
-    which: "2 failed — a parser table-name error and a clause-(d) verification guard refusing a run — and 4 abandoned",
+    runs: 7,
+    which:
+      "3 failed — a parser table-name error, a clause-(d) verification guard refusing a run, and a NaN that is not JSON-compliant — and 4 abandoned",
   },
   asOf: asOf("2026-08-12"),
-  note: "Twelve, not twenty-three, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. These counts are the committed ones. Experiments 009 and 010 have since run and ledgered results in an uncommitted working tree, so the live file is longer; neither has a synthesis page, so no number from either appears anywhere in this content layer.",
+  note: "Fifteen, not thirty-three, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Fifteen is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent and the two are one search of ten sleeves.",
   source: {
     label: "Portfolio edge research framework, the ledger counted rather than described",
     docPath: "docs/research/portfolio-edge-research-framework.md",

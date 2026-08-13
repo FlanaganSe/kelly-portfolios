@@ -1,4 +1,4 @@
-import { type AsOf, asOf, type Citation, type EvidenceStatus } from "~/content/types";
+import { type AsOf, asOf, type Citation, type EvidenceStatus, type KeyNumber } from "~/content/types";
 
 /**
  * Every candidate return source that was tested, including the ones that lost.
@@ -29,6 +29,10 @@ const recommendation: Citation = {
 const structural: Citation = {
   label: "Structural and tax-aware edges",
   docPath: "docs/research/structural-and-tax-edges.md",
+};
+const marginalValue: Citation = {
+  label: "What a sleeve is worth inside a portfolio, rather than on its own",
+  docPath: "docs/research/marginal-sleeve-value.md",
 };
 
 export type SleeveVerdict = "hold" | "optional" | "excluded" | "untested";
@@ -430,6 +434,137 @@ export const sleeves: readonly Sleeve[] = [
 ];
 
 // ---------------------------------------------------------------------------
+// The ceiling on what diversification can be worth
+// ---------------------------------------------------------------------------
+
+/**
+ * A base portfolio and the largest diversification credit anything could earn
+ * against it.
+ *
+ * The ceiling is a fact about the base portfolio's variance and about no sleeve,
+ * which is why it is held per base rather than per candidate.
+ */
+export interface CreditCeiling {
+  readonly id: string;
+  readonly label: string;
+  readonly composition: string;
+  /** Annualised, as the source page printed it. */
+  readonly volatility: string;
+  /** The credit a zero-beta sleeve earns at the reference weight, which is `sigma_p^2`. */
+  readonly ceilingAtReferenceWeight: string;
+}
+
+/** One sleeve's beta to the equity core, and the credit that beta buys. */
+export interface CreditRow {
+  readonly sleeve: string;
+  readonly kind: string;
+  readonly beta: string;
+  readonly perUnitWeight: string;
+  readonly atReferenceWeight: string;
+  readonly note: string;
+}
+
+/**
+ * Why no trend, momentum or managed-futures sleeve is held, stated as the bound it
+ * is rather than as a disappointing measurement.
+ *
+ * Every figure is quoted as the string `docs/research/marginal-sleeve-value.md`
+ * printed it. The family is `rejected` and every input is a paper portfolio, a
+ * vendor series or a model, so nothing here is investable and the copy must not
+ * imply that it is.
+ */
+export const diversificationCredit = {
+  heading: "Why there is no trend, momentum or managed-futures sleeve",
+  headline:
+    "The credit a sleeve earns for not moving with the portfolio has a ceiling, and the ceiling sits below the bar. That is arithmetic, not a disappointing result.",
+  mechanism:
+    "Fund a sleeve pro rata out of the portfolio you already hold, and its diversification credit is the portfolio's variance times one minus the sleeve's beta. Set the beta to zero and the credit is exactly the portfolio's variance. That number belongs to the base portfolio. No sleeve can raise it.",
+  referenceWeight: "10%",
+  materialityThreshold: "0.30 pp/yr",
+  bases: [
+    {
+      id: "global-equity-core",
+      label: "Global equity core",
+      composition: "60% US, 30% developed ex-US, 10% emerging, monthly rebalanced",
+      volatility: "14.73%",
+      ceilingAtReferenceWeight: "+0.217 pp/yr",
+    },
+    {
+      id: "balanced-60-40",
+      label: "Balanced 60/40",
+      composition: "60% of that core plus 40% cash",
+      volatility: "8.85%",
+      ceilingAtReferenceWeight: "+0.078 pp/yr",
+    },
+  ] as const satisfies readonly CreditCeiling[],
+  verdict:
+    "A perfect zero-beta asset, added at a 10% weight, fails on the credit alone. Nothing beats a bound it cannot reach.",
+  corollary:
+    "The direction catches people out. The ceiling falls as the base portfolio calms down, so a portfolio holding bonds or cash gets a smaller credit, not a larger one. The equity-heavy portfolio is the best case for diversification and it still fails.",
+  creditRows: [
+    {
+      sleeve: "Cash, as a control",
+      kind: "Control, built to be worth nothing",
+      beta: "+0.001",
+      perUnitWeight: "+2.168",
+      atReferenceWeight: "+0.217",
+      note: "Zero beta, so it lands exactly on the ceiling. It supplies nothing else.",
+    },
+    {
+      sleeve: "Diversified trend",
+      kind: "Funded long-short, vendor series",
+      beta: "−0.132",
+      perUnitWeight: "+2.457",
+      atReferenceWeight: "+0.246",
+      note: "Nearly the whole of its +0.258 total. Negative beta buys more than the ceiling and pays for it elsewhere.",
+    },
+  ] as const satisfies readonly CreditRow[],
+  ruler:
+    "The experiment carried a control designed to supply nothing: cash added to a 100% equity core, funded pro rata out of it. It sits at a beta of +0.001 and lands on the ceiling, +0.217 pp/yr at a 10% weight. The algebra is confirmed by a sleeve built to be worthless.",
+  aboveTheCeiling:
+    "Five sleeves earn more than the ceiling — the four funded long-short overlays and a modelled Treasury proxy — and every one of them does it with a negative beta rather than a zero one. All five pay for it in the standalone return term instead.",
+  trendReading:
+    "Trend's own beta to the core is −0.132, worth +0.246 pp/yr at a 10% weight against a total marginal growth contribution of +0.258. So essentially all of what trend contributes is credit rather than return it earned standing alone. It misses the 0.30 bar, its interval runs from −0.545 to +1.069, and its Holm-adjusted p is 1.0000. Nothing in the family of ten survives Holm at 0.05; the best adjusted p anywhere is long-only US momentum's 0.1890, and it fails the bar too at +0.269.",
+  fragility:
+    "The sleeves whose value is a credit earned it in one crisis. Every negative-beta sleeve collapses in the second half of the sample and every one loses its best year to 2008. Trend goes from +1.243 pp/yr over 1991–2008 to −0.823 over 2009–2025, and doubling the cost assumption alone takes its full-period figure to −0.009.",
+  deRisking: {
+    headline:
+      "The same control is why growth decides here and a certainty equivalent does not. On a CRRA certainty equivalent at gamma = 3 the cash control scores +0.166 pp/yr, while losing 0.643 pp/yr of geometric growth. The gap between the two is payment for holding less equity. Any investor can have that for free.",
+    figures: [
+      {
+        label: "Certainty equivalent, gamma = 3",
+        value: "+0.166",
+        unit: "pp/yr",
+        note: "What the cash control scored on the metric that used to decide.",
+      },
+      {
+        label: "Geometric growth, gamma = 1",
+        value: "−0.643",
+        unit: "pp/yr",
+        note: "What it scored on the metric that decides now.",
+      },
+      {
+        label: "The de-risking reward",
+        value: "+0.809",
+        unit: "pp/yr",
+        note: "The difference, and 2.7× the 0.30 materiality threshold, for a sleeve that supplies nothing.",
+      },
+    ] as const satisfies readonly KeyNumber[],
+    source: {
+      label: "0008 — Geometric growth decides; the certainty equivalent reports beside it",
+      docPath: "docs/decisions/0008-growth-decides-crra-reports.md",
+    } as const satisfies Citation,
+  },
+  caveat:
+    "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold was never tested, and its absence biases the whole experiment toward finding no credit anywhere.",
+  status: "rejected" as EvidenceStatus,
+  statusNote:
+    "A falsifier written down before the result fired. Two specifications judged the same data, one on a certainty equivalent and one on growth; growth decides, and that is what moved the family from `unresolved` to `rejected`. Every input is a paper portfolio, a vendor series or a model. None of it is investable, and none of it says trend is worthless.",
+  source: marginalValue,
+  asOf: asOf("2026-08-12"),
+} as const;
+
+// ---------------------------------------------------------------------------
 // The premia underneath the products
 // ---------------------------------------------------------------------------
 
@@ -535,8 +670,13 @@ export const factorPremia: readonly FactorPremium[] = [
     status: "unresolved",
     statusNote:
       "`Rejected` under the absolute reading of clause (d) as frozen, `unresolved` under the relative reading that Experiment 008 judges better justified. Unresolved is not a promotion, and a vendor-series evaluation is capped at `exploratory` in any case.",
-    pooledPremium: "+1.342 pp/yr of marginal certainty equivalent at a 15% sleeve weight",
-    pooledInterval: "[+0.759, +1.916] over 432 months; +1.011 [−0.175, +2.165] post-publication",
+    // Decision 0008 constraint 2: growth, the certainty equivalent and the de-risking
+    // component between them are published as three numbers or as none. This record
+    // carried the CE alone until 2026-08-12.
+    pooledPremium:
+      "+1.312 pp/yr of marginal geometric growth at a 15% sleeve weight, against +1.342 of CRRA certainty equivalent, so +0.030 of it is de-risking",
+    pooledInterval:
+      "[+0.759, +1.916] over 432 months, on the certainty equivalent, which is what the frozen specification named as primary and what the risk-matched comparator uniquely entitles it to be. Post-publication +0.883 growth against +1.011 CE, interval [−0.175, +2.165], failing Holm",
     detectionThreshold: null,
     effectiveRegions: null,
     byRegion: null,

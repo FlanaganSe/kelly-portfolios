@@ -460,7 +460,8 @@ export default function EdgeBudget() {
           <p>
             Over thirty years, 109 bp/yr of log growth compounds to{" "}
             <strong data-numeric>
-              {formatNumber(terminalWealthRatio({ edgeBp: edgeBudgetTotal.basisPoints, horizonYears: 30 }), 2)}× the terminal wealth
+              {formatNumber(terminalWealthRatio({ edgeBp: edgeBudgetTotal.basisPoints, horizonYears: 30 }), 2)}× the
+              terminal wealth
             </strong>{" "}
             of the same portfolio without it — <code>exp(0.0109 × 30)</code>. That's a ratio, not a forecast. It holds
             whatever the market does, and it needs no view on any market to collect. That is the whole of what separates

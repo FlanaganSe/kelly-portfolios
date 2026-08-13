@@ -21,7 +21,7 @@ import {
   vxusTradeoff,
   whatThisIsNot,
 } from "~/content/portfolio";
-import { type Sleeve, sleeves } from "~/content/sleeves";
+import { diversificationCredit, type Sleeve, sleeves } from "~/content/sleeves";
 
 /**
  * The construction: what to hold, what each line buys, at what confidence, and —
@@ -462,8 +462,97 @@ export default function Portfolio() {
           or never run at all — and the reasons are not interchangeable.
         </p>
 
+        <div class="mt-10 border-rule border-t pt-6">
+          <h3 class={H3}>{diversificationCredit.heading}</h3>
+
+          <p class="mt-3 max-w-measure font-serif text-lg text-ink">{diversificationCredit.headline}</p>
+
+          <div class="mt-3">
+            <StatusChip status={diversificationCredit.status} />
+          </div>
+
+          <p class="mt-4 max-w-measure text-ink-muted">{diversificationCredit.mechanism}</p>
+
+          <DataTable
+            class={`mt-6 ${TABLE}`}
+            caption={`The largest diversification credit anything could earn, by base portfolio, at a ${diversificationCredit.referenceWeight} sleeve weight`}
+            columns={[
+              { key: "base", header: "Base portfolio", rowHeader: true, cell: (row) => row.label },
+              { key: "built", header: "Built from", cell: (row) => row.composition },
+              { key: "vol", header: "Annualised volatility", numeric: true, cell: (row) => row.volatility },
+              {
+                key: "ceiling",
+                header: "Best possible credit",
+                numeric: true,
+                cell: (row) => row.ceilingAtReferenceWeight,
+              },
+            ]}
+            rows={diversificationCredit.bases}
+            footnote={
+              <>
+                Both ceilings are below the {diversificationCredit.materialityThreshold} bar, which was frozen before
+                anything was measured, along with the {diversificationCredit.referenceWeight} reference weight.{" "}
+                <SourceLink citation={diversificationCredit.source} prefix />
+              </>
+            }
+          />
+
+          <p class="mt-6 max-w-measure font-serif text-lg text-ink">{diversificationCredit.verdict}</p>
+
+          <Callout variant="mechanism" label="It gets worse as the portfolio gets calmer">
+            <p>{diversificationCredit.corollary}</p>
+          </Callout>
+
+          <p class="mt-6 max-w-measure text-ink-muted">{diversificationCredit.ruler}</p>
+
+          <DataTable
+            class={`mt-6 ${TABLE}`}
+            caption={`Beta to the equity core, and the credit it buys, per unit of weight and at ${diversificationCredit.referenceWeight}`}
+            columns={[
+              { key: "sleeve", header: "Sleeve", rowHeader: true, cell: (row) => row.sleeve },
+              { key: "kind", header: "What it is", cell: (row) => row.kind },
+              { key: "beta", header: "Beta to the core", numeric: true, cell: (row) => row.beta },
+              { key: "unit", header: "Credit per unit of weight", numeric: true, cell: (row) => row.perUnitWeight },
+              {
+                key: "reference",
+                header: `Credit at ${diversificationCredit.referenceWeight}`,
+                numeric: true,
+                cell: (row) => row.atReferenceWeight,
+              },
+              { key: "note", header: "Read it as", cell: (row) => row.note },
+            ]}
+            rows={diversificationCredit.creditRows}
+            footnote="Credits are pp/yr. Both rows are funded pro rata out of the equity core, on the pessimistic cost column."
+          />
+
+          <p class="mt-6 max-w-measure text-ink-muted">{diversificationCredit.aboveTheCeiling}</p>
+          <p class="mt-4 max-w-measure text-ink-muted">{diversificationCredit.trendReading}</p>
+          <p class="mt-4 max-w-measure text-ink-muted">{diversificationCredit.fragility}</p>
+
+          <h4 class="mt-8 font-sans text-sm font-semibold text-ink">What the old metric was paying for</h4>
+          <p class="mt-2 max-w-measure text-ink-muted">{diversificationCredit.deRisking.headline}</p>
+
+          <div class="mt-6 grid gap-6 sm:grid-cols-3">
+            <For each={diversificationCredit.deRisking.figures}>
+              {(figure) => <Figure {...figure} source={diversificationCredit.deRisking.source} />}
+            </For>
+          </div>
+
+          <Callout variant="caveat" label="How far this stretches">
+            <p>{diversificationCredit.caveat}</p>
+            <p>{diversificationCredit.statusNote}</p>
+          </Callout>
+
+          <p class="mt-3 flex flex-wrap items-baseline gap-x-4 gap-y-2">
+            <span data-numeric class="text-xs text-ink-faint">
+              as of {diversificationCredit.asOf}
+            </span>
+            <SourceLink citation={diversificationCredit.source} prefix />
+          </p>
+        </div>
+
         <DataTable
-          class={`mt-8 ${TABLE}`}
+          class={`mt-10 ${TABLE}`}
           caption="Candidates that were tested and are not held"
           columns={[
             { key: "label", header: "Candidate", rowHeader: true, cell: (row) => row.label },
