@@ -127,11 +127,15 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "Fifteen products reached the per-fund status `exploratory`, which permits use as an implementation proxy in a later experiment and nothing else. Decision 0002 caps all fund-level work there.",
+      "Superseded as a description of the US shelf by Experiment 013, which re-ran it on a census frame that can see the whole shelf and reproduced every one of these 44 funds to zero difference. Read every count here as `of the 44 products the 2019Q4 filing quarter contained`. Fifteen of them reached the per-fund status `exploratory`, which permits use as an implementation proxy in a later experiment and nothing else.",
     verdict:
-      'Exposure is delivered and alpha is not measurable, and those are two different findings. Thirty-eight of 44 funds reject a zero loading in their mandate\'s own direction, while only five of 132 alpha tests survive a correction valid under dependence, and all five are negative. The comparison that rejected most products is a four-fund combination fitted in sample, so every such rejection reads as "a look-ahead mix of cheap funds beat this over 72 months".',
+      'Exposure is delivered and alpha is not measurable, and those are two different findings. Thirty-eight of 44 funds reject a zero loading in their mandate\'s own direction, while only five of 132 alpha tests survive a correction valid under dependence, and all five are negative. The comparison that rejected most products is a four-fund combination fitted in sample, so every such rejection reads as "a look-ahead mix of cheap funds beat this over 72 months". The 44 were not the shelf: the frame missed two thirds of it, which is what Experiment 013 corrects.',
     keyNumbers: [
-      { label: "Screened to audited", value: "8,563 → 2,105 → 44" },
+      {
+        label: "Screened to audited",
+        value: "8,563 → 2,105 → 44",
+        note: "the 2019Q4 census alone; see Experiment 013",
+      },
       { label: "Statuses", value: "15 exploratory, 24 rejected, 5 unresolved" },
       { label: "Loadings surviving correction", value: "38 of 44", note: "Benjamini-Hochberg at 0.10" },
       { label: "Alpha tests surviving Holm", value: "5 of 132", note: "all negative; five tests are three products" },
@@ -145,11 +149,12 @@ export const experiments: readonly Experiment[] = [
       { label: "2019 factor shelf gone by 2025", value: "20.6%", note: "a lower bound; N-PORT filings begin in 2019" },
     ],
     whyItMatters:
-      "It is the only place a product's delivered exposure has been measured, and it is where the difference between a fee comparison and a cost comparison shows up: 22 of 44 funds lost more to a cheap mix than their fee could explain.",
+      "It is where a product's delivered exposure was first measured, and where the difference between a fee comparison and a cost comparison showed up. It is also the clearest case in this repository of a correct calculation on the wrong frame.",
     whatWouldChangeIt: [
       "A licensed, survivorship-free, point-in-time total-return source covering the listed shelf from at least 2003, so the window is 240 months rather than 72.",
       "A replication whose weights are fitted on a prior window, which would remove the look-ahead from the clause that did most of the rejecting.",
       "Form N-CSR distributions and turnover, so the cost-of-ownership clause could be evaluated with the term it names.",
+      "A census frame that contains the shelf. Done, in Experiment 013.",
     ],
     source: { label: "Investable factor products", docPath: "docs/research/factor-products.md" },
   },
@@ -507,6 +512,74 @@ export const experiments: readonly Experiment[] = [
     source: {
       label: "Frozen specification, exp_009_exus_factor_products.yaml",
       docPath: "research/experiments/exp_009_exus_factor_products.yaml",
+    },
+  },
+  {
+    id: "exp-013-us-products-union-frame",
+    number: "013",
+    title: "The US factor product audit, on a frame that can see the shelf",
+    question:
+      "How much of Experiment 002's conclusion was a property of the one quarterly filing its census frame happened to contain?",
+    kind: "exploratory",
+    runState: "synthesised",
+    status: "exploratory",
+    statusNote:
+      "`Exploratory` by decision rather than by outcome: decision 0002 caps all fund-level work there. Forty-eight products reached the per-fund status `exploratory`, which permits use as an implementation proxy in a later experiment and nothing else. Nothing here is promoted and no residual return is claimed.",
+    verdict:
+      "Most of it. Form N-PORT is filed on each fund's own fiscal calendar and public reporting begins with periods ending 2019-09-30, so the 2019Q4 census carries no fund with an August fiscal year — Schwab's equity range, Vanguard's ETF-only trusts, Invesco's S&P factor range and Avantis among them — and the 2016 inception cutoff then removed every product that launched later. Experiment 002 could see 44 US factor products; the union of the 2019Q4 and 2025Q4 censuses contains 109. Two criteria moved and nothing else, and all 44 of the original funds reproduce to zero difference in loading, alpha, shortfall and status.",
+    keyNumbers: [
+      {
+        label: "Screened to audited",
+        value: "14,742 → 3,169 → 116 → 109",
+        note: "union of the two censuses; Experiment 002 reached 44",
+      },
+      { label: "Statuses", value: "48 exploratory, 48 rejected, 13 unresolved" },
+      {
+        label: "Products the corrected frame adds",
+        value: "65",
+        note: "42 absent from the 2019Q4 census, 23 excluded by a criterion that moved. 33 of them reach `exploratory`",
+      },
+      {
+        label: "Median shortfall to the cheap replication",
+        value: "+0.53 inside the old frame, −0.48 outside it",
+        unit: "pp/yr",
+        note: "Positive means the product lost to an in-sample fitted mix of VTI, VUG, VTV and VB. The comparator has look-ahead, so a negative figure is the stronger evidence: the mix had the whole window to fit itself and still lost",
+      },
+      {
+        label: "Clause (c) rejections",
+        value: "35 of 109",
+        note: "22 of 44 on Experiment 002's frame; 13 of the 65 funds it could not see",
+      },
+      { label: "Loadings surviving correction", value: "96 of 109", note: "Benjamini-Hochberg at 0.10" },
+      {
+        label: "Alpha tests surviving Holm",
+        value: "5 of 327",
+        note: "all negative. Sixteen raw alphas exceed what their own window could detect at 80% power and every one of the sixteen is negative",
+      },
+      {
+        label: "Median minimum detectable alpha",
+        value: "5.01",
+        unit: "pp/yr",
+        note: "against a cross-sectional dispersion of true alpha near 1.25",
+      },
+      {
+        label: "AVUV, the largest product the old frame missed",
+        value: "+0.537",
+        interval: "[+0.43, +0.64]",
+        note: "HML loading over all 72 months, sign-adjusted for its mandate; it beat its in-sample cheap replication by 4.92 pp/yr and its alpha of +0.39 sits far inside a 3.64 detection threshold",
+      },
+    ],
+    whyItMatters:
+      "It is the only place in this repository where a published conclusion was overturned by asking what a data file physically contains rather than by re-reading a result. The shortlist of products a later experiment may test went from fifteen index trackers to forty-eight, and now includes every systematic value and small-value product on the US shelf.",
+    whatWouldChangeIt: [
+      "A replication whose weights are fitted on a prior window. Clause (c) separates the 48 `exploratory` products from the 48 rejected ones and it is still decided with hindsight.",
+      "A comparator basis containing a small-value building block. The frozen basis has none, so a small-value product is scored against a mix that cannot express it.",
+      "A licensed, survivorship-free total-return source from at least 2003. Nothing here makes the alpha column measurable and a longer window is the only thing that would.",
+    ],
+    source: {
+      label: "Investable factor products",
+      docPath: "docs/research/factor-products.md",
+      anchor: "the-us-shelf-on-the-corrected-frame",
     },
   },
   {

@@ -15,7 +15,9 @@ shape, and in three separate places the comparator turned out to decide the answ
   36.5% equity / 63.5% cash portfolio earns the same 2.5%.
 - [Experiment 002](../research/factor-products.md) compared 44 factor ETFs
   against the market *and* against a fitted long-only combination of VTI, VUG, VTV
-  and VB. That comparison is clause (c) of its falsifier, it **fired on 22 of 44** and
+  and VB. That comparison is clause (c) of its falsifier, it **fired on 22 of the 44 its
+  census frame could see and on 35 of the 109 the corrected frame finds**
+  ([Experiment 013](../research/factor-products.md#the-us-shelf-on-the-corrected-frame)), and
   is the single largest cause of the 24 rejections. MTUM is the decisive case: it
   delivers genuine, stable momentum exposure and was still `rejected`, because its
   shortfall to a three-fund combination was 1.22 pp/yr against a fee premium of 0.12.
@@ -62,7 +64,9 @@ search.
 ## Alternatives considered
 
 **The market index alone.** Rejected. It cannot separate exposure delivery from
-implementation value, which is exactly where 22 of 44 products failed.
+implementation value, which is exactly where a third of the products fail. **The count
+that decides how damning that is depends on the census frame**: 22 of 44 on Experiment
+002's, 35 of 109 on the corrected one, and 13 of the 65 funds the correction admits.
 
 **Equal weight, or a minimum-variance baseline.** Rejected as *the* control, retained
 as mandatory comparators in the construction tournament. Both are constructions with

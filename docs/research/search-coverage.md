@@ -7,10 +7,10 @@ finding about markets, or a finding about the search?
 closures should be reopened. This page is an audit of the *design* of the search, not
 of any result in it. Every number here is quoted from an experiment page; none is new.
 
-**Conclusion, stated directly.** **Mostly a finding about the search.** Three specific
+**Conclusion, stated directly.** **Mostly a finding about the search.** Four specific
 design choices — each defensible when it was made, each now measurably load-bearing —
 mean the programme has been looking in places where finding something was close to
-arithmetically impossible. A fourth problem is coverage: entire asset classes, the whole
+arithmetically impossible, and in one case at a shelf two thirds of which was invisible. A fourth problem is coverage: entire asset classes, the whole
 of conditional allocation, and the only test that treats a portfolio as a joint object
 have never been run at all.
 
@@ -23,7 +23,7 @@ programme has produced.
 
 ---
 
-## 1. Three designs that could not have found much
+## 1. Four designs that could not have found much
 
 ### 1.1 A threshold above the arithmetic ceiling of the thing being measured
 
@@ -140,10 +140,77 @@ they look:
   rejected fund.** Exposure delivery and implementation value are different questions and
   the rejection counts answer only the second.
 
-The honest summary of the product work is the asymmetry, not the counts: **38 of 44
-loadings survive correction and 5 of 132 alphas do, all five negative.** Exposure is
+The honest summary of the product work is the asymmetry, not the counts: **96 of 109
+loadings survive correction and 5 of 327 alphas do, all five negative.** Exposure is
 measurable; implementation value over 72 months against a fitted comparator is a
 judgement call applied consistently.
+
+**Update, 2026-08-17. The counts in this subsection were also a property of the census
+frame, and §1.4 is now the larger version of the same problem.** Clause (c) fired on 22 of
+the 44 products Experiment 002's frame could see. On the frame that sees the whole US
+shelf it fires on 35 of 109 — and on only 13 of the 65 funds the correction admits, whose
+median shortfall is **−0.48 pp/yr**. The design criticism above stands in full: the
+comparator is still fitted in sample and the tracking error still dwarfs the threshold.
+What changes is its direction. **It was suppressing a positive answer, not manufacturing
+a negative one**, and the funds it was hardest on were the ones the frame had already
+removed.
+
+### 1.4 A frame that could not see the shelf it was auditing
+
+**This one is not a threshold or a floor. It is a census that does not contain what it
+was assumed to contain, and it is the only entry in this section whose correction has
+already been run and has already changed a published conclusion.**
+
+[Experiment 002](factor-products.md#the-us-shelf-as-experiment-002-framed-it) screened the
+SEC's **2019Q4** Form N-PORT data set — every fund that filed for the quarter — and took
+its frame at the start of the window on the correct general principle that screening
+today's listings selects on survival. Nobody checked what that file contains.
+
+**Form N-PORT is filed on each series' own fiscal calendar, and public reporting begins
+with periods ending 2019-09-30.** The 2019Q4 file therefore carries fiscal quarters ending
+2019-09-30 and 2019-10-31 and nothing else. It contains **zero series with an August
+fiscal quarter-end, against 2,507 in the 2025Q4 file.**
+
+So the frame excluded, by accounting calendar rather than by any screen criterion, the
+whole of Schwab's equity range, Vanguard's ETF-only trusts, Invesco's S&P factor range and
+Avantis. The 2016-12-31 inception cutoff then removed, latently, every product that
+launched or converted later — Dimensional's 2021 and 2022 ETFs among them. **Experiment
+002 audited 44 US factor products. The union of the two censuses contains 109.**
+
+Three things make this the most consequential design flaw on this page.
+
+- **The exclusion is not random and its direction is knowable in advance.** It removes the
+  newest products, which on this shelf means the cheapest systematic ones. Every US
+  systematic value and small-value product — AVUV, AVLV, AVSC, DFAT, DFSV, DFUV, DFLV,
+  DFAS — was outside the frame.
+- **It moved the conclusion, not just the counts.** Clause (c) fired on 22 of the 44
+  products inside the frame and on **13 of the 65 outside it**, whose median shortfall to
+  the cheap replication is **−0.48 pp/yr rather than +0.53**. The page's title claim,
+  *"the exposure is delivered, the value is not"*, was true of the funds a filing calendar
+  let it see.
+- **The repository already knew the fix and applied it to the other shelf.**
+  [Experiment 009](factor-products.md#the-ex-us-shelf) used the union of the two censuses
+  in August 2026 and wrote down exactly why: *"A 2019Q4-only frame would have excluded
+  exactly the products the question is about."* That sentence was about ex-US products and
+  it was equally true of US ones. **The gap was between two experiments in the same
+  repository, a fortnight apart, and nothing flagged it.**
+
+**What this costs and what it does not.**
+[Experiment 013](factor-products.md#the-us-shelf-on-the-corrected-frame) re-ran Experiment
+002 with two criteria moved and nothing else, and reproduced every one of its 44 funds to
+**zero difference** in loading, alpha, shortfall and status. So no arithmetic was wrong
+and no method was wrong. What was wrong was a claim about a shelf, drawn from a census
+that held a third of it.
+
+**The generalisable rule, which is the reason this belongs on this page**: a screen
+applied to a periodic regulatory filing inherits that filing's own calendar. **State which
+periods the file contains before reporting a count from it.**
+
+**Checked, and Experiment 002 is the only page exposed.** The 2025Q4 file carries fiscal
+quarters ending in August, September and October, and every registrant has exactly one
+quarter-end in that span, so a union frame containing it is calendar-complete. Experiments
+008, 009, 012 and 013 all use that union. Experiment 002 is the only census-based screen
+in this repository that used the 2019Q4 file alone, and it was the first one written.
 
 ---
 
@@ -155,13 +222,33 @@ has never touched the following, and each is a place a whole-portfolio effect co
 | Never tested | Why it is absent | What it would need |
 | --- | --- | --- |
 | **Joint portfolio construction** — market weight, equal weight, inverse volatility, constrained minimum variance, linear-shrinkage minimum variance, ERC, compared on identical point-in-time inputs | Designed in the framework with comparators and falsifiers. Blocked by [decision 0004](../decisions/0004-no-sleeve-promoted.md) on the grounds that "step 6 combines sleeves and there are no promoted sleeves" | **Nothing.** The reasoning is circular: a construction tournament compares *weighting methods* on assets that already exist. It does not need a promoted sleeve |
-| **Any asset outside equity and cash** — investable bonds, REITs, TIPS, credit | **Gold is no longer in this row**: it was landed and tested on 2026-08-17 ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)), and commodities were already held via AQR CLR. What remains absent is an investable **bond** total-return history — the leg everywhere is still a modelled `GS10` proxy — plus REITs, TIPS and standalone credit | A documented total-return series. Not necessarily a licensed one. **The gold acquisition shows the row was partly a search failure rather than a data failure**: the instrument was free, documented and reachable the whole time |
+| **Any asset outside equity and cash** — investable bonds, TIPS, credit | **Gold left this row on 2026-08-17** ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)) and commodities were already held via AQR CLR. **REITs left it on 2026-08-17 too**: VNQ, SCHH and USRT are tested from their own Form N-PORT returns, with French's `RlEst` industry portfolio as a 1926-onward proxy and TLT's own filed return as an investable duration leg ([alternative sleeves audit §5](alternative-sleeves-audit.md)). **Bitcoin and the buffer family were never in this row and should have been** — see the note below. What remains absent is an investable **bond** total-return history, the leg everywhere still being a modelled `GS10` proxy, plus TIPS and standalone credit | A documented total-return series. Not necessarily a licensed one. **The gold and REIT acquisitions show the row was a search failure rather than a data failure**: both instruments were free, documented and reachable the whole time |
 | **Any equity market's history but the US at long horizon** | Still untested, but no longer blocked. The instrument was acquired on 2026-08-16: the Jordà–Schularick–Taylor panel gives 16 countries of annual nominal equity, bond, bill and housing returns with consumer prices, 1870–2020 ([evidence base §2](evidence-base.md)). What it already shows is that **−50.3% is nowhere near a bound**: 15 of 16 countries have a worse real annual drawdown than the US even inside the same 1963-onward window | An experiment, not an acquisition |
 | **Any conditional or dynamic allocation** — valuation-conditioned equity share, regime conditioning, trend applied to the portfolio rather than as a sleeve | Never proposed. The Goyal–Welch data built for exactly this had 404'd at the recorded URL — it had **moved, not disappeared**, and was landed on 2026-08-16 along with Shiller's CAPE file | An experiment, not an acquisition |
 | **Concentration** | Every sleeve tested is a diversifier or a tilt. **This row's stated reason was wrong and is corrected**: the equity-share corner and securities concentration are different corners, and the variance penalty for concentration is measured at **0.17 pp/yr at twenty-five names** ([capital efficiency §8](capital-efficiency-and-breadth.md)). The objective is close to *indifferent* above ~25 names; the real argument is return skewness, which `gamma_star` does not contain | A cross-sectional skewness test, which no detection floor here could resolve |
 | **Delivered capture from a fund's holdings** | Named as the next experiment in the framework and not run. Every capture figure here is from research portfolios | N-PORT holdings, already held |
 | **Leverage and financing** | Correctly deferred — it sizes an edge and there is no edge | Contract-level futures data |
 | **After-tax anything** | No experiment holds a tax lot, so none may price a realisation | Lot-level modelling |
+
+### The row that was missing from this table
+
+**Until 2026-08-17 this table listed what the programme had not tested among things it
+had thought of, and the largest gap was in what it had not thought of.** The audit had
+covered 69 factor ETFs, 15 managed-futures ETFs, 8 capital-efficient overlays,
+catastrophe bonds, merger arbitrage, closed-end funds, option-income funds, commodities
+and gold — and had **never once mentioned SCHD**, the most widely recommended ETF in
+retail investing, nor REITs, nor the buffer family, nor spot bitcoin. The universe it
+searched came from `docs/the-plan.md` §F, and **every family §F names is exotic.** All
+four are now audited ([alternative sleeves audit §§4–7](alternative-sleeves-audit.md)),
+none is promoted, and the four fail for four different reasons — which is the evidence
+that the omission was costing information rather than merely looking careless.
+
+**Two of the four needed a source this table would have called absent, and neither was.**
+French's 49-industry file carries a documented real-estate equity total return from
+1926-07 and FRED carries a bitcoin price from 2014-12. **That is the fourth and fifth
+time a source recorded here as unavailable turned out to be published**, after
+Goyal–Welch, Shiller and gold. The rule in §5 item 4 stands and now has five instances
+behind it: before pricing an acquisition, check whether the thing is published.
 
 ---
 
@@ -355,11 +442,18 @@ capture term.
    statement about what has been looked for, and it was wrong about gold for as long as it
    was written down. Any row in §2 blocked on an acquisition must name the source that was
    checked and the date, or it is an assumption wearing a constraint's clothes.
-3. **The rejection counts must always travel with their clause.** "24 of 44 rejected" is
-   not a finding about the funds; 22 of those 24 fired on an in-sample fitted comparator.
+3. **The rejection counts must always travel with their clause and their frame.** "24 of 44
+   rejected" is not a finding about the funds: 22 of those 24 fired on an in-sample fitted
+   comparator, and the 44 were the products one quarterly filing happened to contain. On
+   the corrected frame it is 48 of 109, and 24 of the 65 funds that frame adds.
 4. **A null result from an underpowered instrument is not evidence of absence**, and the
    [resolution table](evidence-base.md#1-the-resolution-table--read-this-before-proposing-an-experiment)
    is how to check before committing.
 5. **The programme's pessimism should be stated with its scope.** What has been shown is
    that a narrow set of gross academic factor spreads and a 72-month unaudited fund window
    cannot support a promotion. That is a long way from a statement about portfolios.
+6. **A screen against a periodic filing states which periods that filing contains.** §1.4
+   is the one design flaw on this page whose correction has been run, and it is the one
+   that changed a published conclusion rather than a caveat. It was found by asking what
+   was in the file, not by re-reading any result. **The cheapest audit in this repository
+   is to ask, of any frame, what it physically cannot contain.**

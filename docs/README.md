@@ -60,10 +60,13 @@ and current status.
   the factor is assembled from. **Five defensible benchmarks disagree by 0.846**, so the
   rejection is of the premise that there is one number. Also the first test of size as a
   premium.
-- [Investable factor products](research/factor-products.md) — Experiments 002 and 009. Which
-  of 69 audited ETFs deliver the exposure they advertise, on both the US and the ex-US
-  shelf, why a 72-month N-PORT window decides nothing about alpha, and why an ex-US loading
-  without its panel named is not a number.
+- [Investable factor products](research/factor-products.md) — Experiments 002, 009 and 013.
+  Which of 134 audited ETFs deliver the exposure they advertise, on both the US and the
+  ex-US shelf, why a 72-month N-PORT window decides nothing about alpha, and why an ex-US
+  loading without its panel named is not a number. **The US half was re-run on a corrected
+  census frame**: the 2019Q4 file carries no fund with an August fiscal year, so it could
+  see 44 of the 109 auditable US products, and on the frame that sees all of them the
+  cost verdict reverses for the funds it had been missing.
 - [Rebalancing](research/rebalancing-policy.md) — the closed-form theory and Experiment 003,
   the first confirmatory run. The excess-growth identity reproduces to a tenth of a basis
   point, its 68.27% win-probability floor does not survive real drift gaps, and every policy
@@ -82,11 +85,15 @@ and current status.
   diversification credit whose ceiling is the base portfolio's own variance. Carries the
   cash control that produced decision 0008 — and the weight-dependence that reopens its own
   headline.
-- [The alternative sleeves audit](research/alternative-sleeves-audit.md) — which of the
-  strategy universe's §F families a retail investor can actually own, at what all-in cost:
-  catastrophe bonds pass at ρ ≈ 0.10 with one sixteen-month-old vehicle, put-writing is
-  rejected on live-only alpha of −0.09 to −0.88%/yr at ρ 0.86–0.95, and the "since 1986"
-  put-write record is a backtest before 2007.
+- [The alternative sleeves audit](research/alternative-sleeves-audit.md) — which families a
+  retail investor can actually own, at what all-in cost, and whether the net result clears
+  admission. The exotic half: catastrophe bonds pass at ρ ≈ 0.10 with one
+  sixteen-month-old vehicle, put-writing is rejected on live-only alpha of −0.09 to
+  −0.88%/yr at ρ 0.86–0.95, and the "since 1986" put-write record is a backtest before
+  2007. The ordinary half, added 2026-08-17: SCHD is a value-and-quality tilt whose record
+  is 87% its loadings, REITs give 112% of the downside for 80% of the upside, buffer funds
+  sell twice as much upside as they buy downside, and spot bitcoin clears the admission
+  threshold on an input that has no defensible estimate.
 - [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) — what the
   funding rule is worth (`a_p - sigma_p**2`, containing nothing about the sleeve), why the
   realised growth optimum on levered equity is unholdable at a -99.3% drawdown, how many

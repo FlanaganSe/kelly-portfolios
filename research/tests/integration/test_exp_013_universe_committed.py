@@ -82,7 +82,11 @@ def test_the_union_frame_still_retains_funds_that_died_inside_the_window() -> No
     in 2019Q4 and gone by 2025Q4 is the property Experiment 002's start-of-window
     frame was protecting, and it survives the correction."""
     universe = load_universe()
-    dead = [fund for fund in universe.funds if fund.in_frame_census and not fund.in_follow_up_census]
+    dead = [
+        fund
+        for fund in universe.funds
+        if fund.in_frame_census and not fund.in_follow_up_census
+    ]
     assert dead, "a frame that carries no dead series has selected on survival"
 
 

@@ -385,7 +385,7 @@ better exists` means the alternatives were tested and lost.
 
 | Excluded | Reason |
 | --- | --- |
-| **MTUM**, and any momentum sleeve | Delivers its exposure (UMD +0.444) and is still `rejected`: a 1.22 pp/yr shortfall to a three-fund combination whose fee premium over it was 0.12. It is the **entire** retail momentum shelf |
+| **MTUM**, and any momentum sleeve | Delivers its exposure (UMD +0.444) and is still `rejected`: a 1.22 pp/yr shortfall to a three-fund combination whose fee premium over it was 0.12. **It is no longer the entire retail momentum shelf** — that was a property of Experiment 002's census frame, and [Experiment 013](factor-products.md#the-us-shelf-on-the-corrected-frame) finds six, four of them `exploratory`. The sleeve stays excluded on the premium and turnover grounds, which are untouched |
 | **VTV**, large-cap value | HML +0.337, but a +2.57 pp/yr shortfall — and its replication is degenerate (VTI + VB), so read that as "value underperformed the market over these 72 months", not as a defect |
 | **VB**, plain small-cap | Largest shortfall on the shelf, +2.89 pp/yr; and **the size premium is not signable**: +1.91 `[−1.90, +6.00]` over 750 months against a 4.73 threshold |
 | **QUAL, SPHQ**, quality | RMW is `rejected` and closed on public data. **An unsigned premium makes the product's own quality irrelevant** |

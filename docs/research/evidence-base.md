@@ -56,10 +56,17 @@ exceeds the bar, a null result carries almost no information.**
 | **Correlation between trend and gold** | 605 joint months | SE ≈ 0.041 on ρ ≈ 0.1 | 0.3 for breadth | **yes** — measured +0.072 to +0.141, so they are distinct engines |
 | **Gold's correlation to equity, unconditional** | 658 months | SE ≈ 0.039 on ρ ≈ 0 | 0.3 for breadth | **yes** — measured −0.03 to +0.03 |
 | **Gold's correlation to equity, inside drawdowns** | 294 crisis months | SE ≈ 0.058 on ρ ≈ 0 | **+0.20**, the falsifier in [capital efficiency](capital-efficiency-and-breadth.md) §5b | **yes** — measured −0.011 to +0.084; the bar sits 3.4 SEs above zero and 2.0 above the worst reading |
+| **Dividend fund against VTI, matched volatility** | N-PORT, 79–81 months | **4.73 to 10.93 pp/yr** | 0.30 pp/yr | **no**, by 16 to 36× — every measured gap is −0.58 to −4.51 |
+| **REIT fund against VTI, matched volatility** | N-PORT, 79–81 months | **9.82 to 11.27 pp/yr** | 0.30 pp/yr | **no** by the floor, **yes narrowly by the interval** — VNQ `[−16.64, −1.16]` and SCHH `[−19.91, −2.14]` exclude zero at less than 80% power |
+| **Buffer fund against VTI, matched volatility** | N-PORT, 63–74 months | **3.73 to 6.64 pp/yr** | 0.30 pp/yr | **no**, by 12 to 22× |
+| **Cap-and-buffer option value** | 1,183 overlapping 12-month price returns, 1926-07 onward | means only; overlap forbids an interval without a block bootstrap | — | **yes on the mean** — the package is worth −2.4 to −4.1 pp/yr, and the funds' realised −4.1 lands inside it from disjoint data |
+| **Real-estate equity FF3 alpha, long proxy** | French `RlEst`, 750 mo | **5.00 pp/yr** | 2.0 pp/yr | **yes** — measured −6.66, *t* = −3.31. **But the proxy tracks VNQ at ρ = 0.797 and a 7.61 pp/yr difference**, so it does not transfer |
+| **Bitcoin's correlation to equity** | 137 months | SE ≈ 0.085 on ρ ≈ 0.34 | **0.5**, the boundary at which equation (4) stops being usable | **yes, narrowly** — +0.342 sits 1.9 SE inside the boundary and the 81-month sub-window reads +0.531, outside it |
+| **Bitcoin against equity, matched volatility** | 81 months | **15.58 pp/yr** | 0.30 pp/yr | **no**, by 52× — the measured gap is +0.10 |
 
 Three entries in that table are the whole shape of the programme's results. **Exposure is
-measurable and alpha is not** — 38 of 44 US funds reject a zero intended loading under
-Benjamini–Hochberg, while 5 of 132 alpha tests survive Holm and all five are negative.
+measurable and alpha is not** — 96 of 109 US funds reject a zero intended loading under
+Benjamini–Hochberg, while 5 of 327 alpha tests survive Holm and all five are negative.
 **The public factor library has a floor above this repository's own materiality
 threshold**, so a premium between zero and about 2.6 pp/yr is invisible in it however
 the regions are pooled. And **a correlation is not a mean**: the same files that cannot
@@ -113,6 +120,7 @@ and makes no point-in-time claim.
 | `F-F_ST_Reversal_Factor` | 1926-02…2026-06 | `dc40286c` | **never gated** |
 | `F-F_LT_Reversal_Factor` | 1931-01…2026-06 | `48d8615e` | **never gated** |
 | `Portfolios_Formed_on_NI` (net share issues) | 1963-07…2026-06 | `f9b9f25b` | — |
+| `49_Industry_Portfolios` | 1926-07…2026-06 | `a0b23457` | — |
 | `Portfolios_Formed_on_AC` (accruals) | 1963-07…2026-06 | `df8ec2d2` | — |
 | `Portfolios_Formed_on_BETA` | 1963-07…2026-06 | `39ee17df` | — |
 
@@ -148,7 +156,7 @@ series above carry no measured band at all, which is weaker than a band of zero.
 
 | Source | What it gives | What it cannot give |
 | --- | --- | --- |
-| **N-PORT structured data sets**, 2019Q4 (8,563 series, `f8e10bce`) and 2025Q4 (12,552, `4ebb169e`) | The fund census, net assets, and Item B.5 **monthly total return per share class**, already net of fees and reinvested distributions | Anything before 2019. Audited figures — these are unaudited and General Instruction G lets each filer use its own methodology. Any independent corroboration: the cross-source check returned an HTTP error for **all 44 US and all 25 ex-US tickers** |
+| **N-PORT structured data sets**, 2019Q4 (8,563 series, `f8e10bce`) and 2025Q4 (12,552, `4ebb169e`) | The fund census, net assets, and Item B.5 **monthly total return per share class**, already net of fees and reinvested distributions | Anything before 2019. Audited figures — these are unaudited and General Instruction G lets each filer use its own methodology. Any independent corroboration: the cross-source check returned an HTTP error for **all 44 US, all 25 ex-US and all 109 corrected-frame tickers** |
 | **N-PORT Item B.6** | nothing usable | Distributions *reinvested in shares*. Identically zero across 321 ETF fund-months, because ETF distributions are paid in cash. **This field cannot measure distributions for an exchange-traded product** |
 | **Form 497K summary prospectus** | Fee tables and SEC-standardised **after-tax returns**, read by hand with the accession committed | Anything at scale — unstructured, read per fund |
 | **Form N-CSR** | Securities-lending income, capital-gain distributions from Financial Highlights, foreign taxes passed through | Anything at scale — unstructured HTML |
@@ -182,6 +190,7 @@ series this repository holds for any strategy.
 | FRED | `TB3MS` (used as cash), `DGS3MO`, `DFF` (registered, not interchangeable) | measured |
 | FRED | `GS10` → a **modelled** rolled par-bond total return | **modelled, `research_grade = False`** |
 | FRED | `CPIAUCSL` | measured; ends two months before the equity series |
+| FRED | `CBBTCUSD` (Coinbase bitcoin), `f48960f9`, 2014-12-01…2026-08-16, 4,277 daily rows | **exploratory.** One venue's 5 p.m. PST print, not the CME CF rate an ETP prices against, and **not redistributable** — Coinbase prohibits reproduction, so bytes stay uncommitted |
 | AQR | `Time-Series-Momentum-Factors-Monthly.xlsx`, sheet `TSMOM Factors`, `33470930`, 1985-01…2026-05 | **vendor series, author-maintained, reconstructed on every update** |
 | AQR | `Betting-Against-Beta-Equity-Factors-Monthly.xlsx`, sheet `BAB Factors`, `b0b1a214`, 1930-12…2026-05 | same flags, **and self-financing**: it borrows to lever the low-beta leg and states no financing rate |
 | AQR | `Quality-Minus-Junk-Factors-Monthly.xlsx`, sheet `QMJ Factors`, `4eedd523`, 1957-07…2026-05 | same flags; **overlaps RMW at ρ = 0.72** and is not a separate engine from it |
@@ -337,7 +346,7 @@ source as gone, and check `Last-Modified` before trusting one that answers.**
 | Dimson–Marsh–Staunton (Global Investment Returns Yearbook) | Not free and not chased. The underlying series are licensed through Morningstar; only summary tables are public |
 | Barro–Ursúa macroeconomic data at `barro.scholars.harvard.edu` | HTTP 403 to every client tried on 2026-08-16. Recorded as blocked, not circumvented ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)). It would have added consumption and GDP disasters, not equity total returns — its return series come from Global Financial Data and are not redistributable |
 | Goyal–Welch zipped-CSV and MATLAB copies | Behind Google Drive's large-file confirmation interstitial. Not needed: the spreadsheet holds the same data and was landed |
-| Cross-source check on every ETF return | HTTP error for 44 of 44 and 25 of 25. **Item B.5 is the sole measurement of every fund return here** |
+| Cross-source check on every ETF return | HTTP error for 44 of 44, 25 of 25 and 109 of 109. **Item B.5 is the sole measurement of every fund return here** |
 | Jensen–Kelly–Pedersen internet appendix | Not publicly reachable. Without it the +20.6pp construction step in their replication decomposition cannot be attributed |
 | A Hou–Xue–Zhang reply to JKP; a rebuttal to Huang et al. on time-series momentum | Searched for and absent, not merely uncited |
 | CME Group; congress.gov; MSRB EMMA; Berkeley CDAR; Parametric | IP-blocked, 403, JS-only, or DNS failure |

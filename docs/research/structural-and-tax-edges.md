@@ -637,9 +637,10 @@ over every fiscal year on file, from N-CEN Item C.6.g over Item C.2.
 | **Aggregate bonds** | SPAB **2.09** · AGG 2.74 · SCHZ 2.93 · **BND 3.00** | | |
 
 **A fee comparison is not a cost comparison, and here is the same finding on the funds
-that hold the money.** [Experiment 009](factor-products.md) established it where 22 of 44
-US factor products lost more than 0.50 pp/yr to a cheap replication against a fee premium
-of at most 0.32. On the core shelf it shows up three times:
+that hold the money.** [Experiment 013](factor-products.md#the-us-shelf-on-the-corrected-frame)
+established it where 35 of 109 US factor products lost more than 0.50 pp/yr to a cheap
+replication against a fee premium of at most 0.57. On the core shelf it shows up three
+times:
 
 - **IEMG charges 9 bp against VWO's 6 and is the cheaper fund to own.** Its lending income
   covers the whole fee and 0.87 bp besides. SPDW's 3 bp fee is covered twice over.

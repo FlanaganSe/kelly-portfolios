@@ -145,9 +145,9 @@ export const sleeves: readonly Sleeve[] = [
     feeBp: 15,
     feeAsOf: asOf("2026-08-12"),
     reason:
-      "Momentum is the largest gross premium in this repository, pooled +7.33 pp/yr, and MTUM delivers the exposure cleanly. It is excluded on three other grounds: turnover, a shelf of one, and three regions that crash together.",
+      "Momentum is the largest gross premium in this repository, pooled +7.33 pp/yr, and MTUM delivers the exposure cleanly. It is excluded on two other grounds: turnover, and three regions that crash together.",
     caveat:
-      "It lost 1.22 pp/yr to a three-fund combination whose fee premium over it was 0.12 — leaving the audit's 1.10 pp/yr shortfall figure, which is the tracking difference net of that fee advantage. Its pooled detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and all lost their worst calendar year in 2009; and the academic construction rebalances monthly at an assumed 3.30–18.67 pp/yr of cost against a 7.33 gross premium. MTUM is the entire retail momentum shelf clearing $1bn and 0.60%.",
+      "It lost 1.22 pp/yr to a three-fund combination whose fee premium over it was 0.12 — leaving the audit's 1.10 pp/yr shortfall figure, which is the tracking difference net of that fee advantage. Its pooled detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and all lost their worst calendar year in 2009; and the academic construction rebalances monthly at an assumed 3.30–18.67 pp/yr of cost against a 7.33 gross premium. The third ground has gone: `MTUM is the entire retail momentum shelf` was true of the census frame Experiment 002 screened, and the corrected frame carries six momentum products of which four reach `exploratory`.",
     source: productAudit,
   },
   {
@@ -181,7 +181,8 @@ export const sleeves: readonly Sleeve[] = [
     feeAsOf: asOf("2026-08-12"),
     reason:
       "Same reason as QUAL, and it does not turn on the product. Its shortfall against the cheap combination is −0.13, so nothing about the fund decides this.",
-    caveat: "QUAL and SPHQ are the entire quality shelf. Any later work needing a quality proxy has two candidates.",
+    caveat:
+      "`QUAL and SPHQ are the entire quality shelf` was true of Experiment 002's census frame. The corrected frame carries nine quality products and NOT ONE reaches `exploratory`: five fire a falsifier clause and four are unresolved with intervals straddling 0.15. A quality proxy is not purchasable on this shelf at this threshold, which is a stronger statement than the old one.",
     source: productAudit,
   },
   {

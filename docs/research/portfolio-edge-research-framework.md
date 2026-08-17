@@ -444,8 +444,11 @@ and results that are now measurements rather than citations.
   because the absolute reading's bar gets *easier* to clear as the sleeve gets better. A
   second experiment then rejected the same sleeve on a different clause against a
   different comparator.
-- **Twenty-four of 44 US and eight of 25 ex-US factor products** — with clause (c),
-  decided against an **in-sample fitted** comparator, firing on 27 of those 32.
+- **Forty-eight of 109 US and eight of 25 ex-US factor products** — with clause (c),
+  decided against an **in-sample fitted** comparator, firing on 40 of those 56. And read
+  the count with its frame: Experiment 002 reported 24 of 44 because the 2019Q4 census
+  carries no fund with an August fiscal year, and on the corrected frame the funds it
+  could not see have a *negative* median shortfall.
 - **Four of five listed managed-futures ETFs.** Read those as "this fund does not deliver
   *this benchmark's* exposure" — KMLM's index holds no equity futures while AQR's holds
   nine — never as "this fund is badly run".

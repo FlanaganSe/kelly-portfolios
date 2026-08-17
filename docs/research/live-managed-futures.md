@@ -236,8 +236,8 @@ by the same functions.
 
 **Assumed.** That Item B.5 means the same thing across 46 filers. It is **unaudited**, and
 Form N-PORT General Instruction G lets each filer use its own internal methodology. The
-repository's cross-source check returned an HTTP error for **all 44 US and all 25 ex-US
-tickers**, so **Item B.5 is the sole measurement of every fund return here** and no
+repository's cross-source check returned an HTTP error for **all 44 US, all 25 ex-US and
+all 109 corrected-frame tickers**, so **Item B.5 is the sole measurement of every fund return here** and no
 independent corroboration exists ([evidence base](evidence-base.md)). Also assumed: that the
 equal-weight mean across a fund's share classes is the right representative, and that
 EDGAR's series-filtered filing feed reaches back to a fund's first N-PORT filing — it does
