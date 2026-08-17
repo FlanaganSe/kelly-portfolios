@@ -1,8 +1,9 @@
 # 0004 — No sleeve is promoted; the portfolio is the control alone
 
-Date: 2026-08-12. Status: accepted. Amended 2026-08-12 after Experiment 005; the
-decision is unchanged and the factor rows are updated. Supersede rather than amend
-when the first sleeve is promoted.
+Date: 2026-08-12. Status: accepted. Amended 2026-08-12 after Experiment 005, which
+updated the factor rows and left the decision unchanged; amended 2026-08-16 to record
+that the block on step 7 is circular for a derived reason. **The non-promotion itself
+has never changed.** Supersede rather than amend when the first sleeve is promoted.
 
 ## Context
 
@@ -47,7 +48,11 @@ deterministic cost, tax-location and do-not-trade discipline that the
 Consequently:
 
 - **Leverage stays at zero.** It was conditioned on an unlevered edge surviving the
-  protocol. None has, so there is nothing to lever.
+  protocol. None has, so there is nothing to lever. **The reasoning is contested and
+  the contest is derived, not rhetorical** — see the consequences below, where the
+  hurdle a sleeve must clear is shown to move by `a_p - sigma_p**2` with the funding
+  rule. The rule stands until a decision supersedes it; what has changed is that its
+  cost is now a measured number rather than an assumption.
 - **Rebalancing is retained as risk control and forbidden as return.** It held
   exposure within 0.6 to 3.1 percentage points of target against buy-and-hold's 14.8,
   for 0.3 to 1.2 bp/yr. Anyone who wants their declared allocation to remain their
@@ -130,5 +135,64 @@ open decision 1 in the research framework.
 Steps 6 and 7 of the framework's build order — portfolio combination, then
 fractional/risk-constrained Kelly and leverage — are blocked, and not on effort.
 Step 6 combines sleeves and there are none; step 7 sizes an edge and there is none.
+
+**Step 6's block is contested and should be lifted.** The reasoning above is circular
+as applied to the *construction tournament*, which compares weighting **methods** —
+market weight, equal weight, inverse volatility, constrained minimum variance,
+linear-shrinkage minimum variance, equal risk contribution — on the three regional
+equity sleeves and the cash leg that already exist. It does not need a promoted sleeve,
+and it is the only designed experiment that treats a portfolio as a joint object rather
+than as a base plus a marginal addition. The argument is in
+[search coverage](../research/search-coverage.md) §5, together with the observation
+that Experiment 010's portfolio-level closure turns on its 10% reference weight rather
+than on evidence.
+
+**Step 7's block is circular in the same way, and this is now derived rather than
+argued.** The block reads *"it sizes an edge, and there is none"*. That is true of
+leverage applied to a sleeve whose value has already been established. It is **false**
+of the prior question, because whether a sleeve has positive marginal value **depends
+on the funding rule**, and the funding rule is what step 7 forbids. From
+[`studies/overlay_growth.py`](../../research/src/portfolio_edge/studies/overlay_growth.py),
+which is closed-form algebra pinned by tests needing no market data:
+
+- Funded **pro rata** — sell the base to buy the sleeve, which is what every marginal
+  experiment here has done — the first sleeve dollar must clear
+  `a_p - sigma_p**2 (1 - beta)`.
+- Funded as a **financed overlay** — sell nothing, finance the notional, which is what
+  a capital-efficient fund does — it must clear `rho sigma_p sigma_d`.
+- The difference is **`a_p - sigma_p**2 = sigma_p**2 (L_p* - 1)`**, in which *every
+  term involving the sleeve cancels*. It is **+2.44 pp/yr** for a 100%-equity base at
+  a 5.0% arithmetic excess and 16% volatility, and **+2.08** for the 60/40 base
+  Experiment 004 used.
+
+So the zero-leverage rule is not a conservative simplification that costs a little
+return. **It raises the hurdle every candidate sleeve in this repository has been
+judged against by more than two percentage points a year** — larger than any premium
+the programme has attempted to measure, and larger than the entire measured edge
+budget. "There is no edge" and "no edge clears the pro-rata bar" have been used
+interchangeably, and they are not the same statement.
+
+**What follows, and what does not.** This is an argument for *asking* the question,
+not for an affirmative answer, and three things stand in its way. Two are recorded
+here rather than left for a later reader to discover:
+
+1. **The cost stack, not the correlation, is what binds.** Financing spread plus fund
+   fee plus distribution tax character is on the order of **1.4 pp/yr in a sheltered
+   account and 3.5 pp/yr in a taxable one** on the placeholders currently available —
+   against a post-publication trend excess return this repository measures at roughly
+   1.8 pp/yr. The overlay bar is near zero; the cost stack is not.
+2. **The honest control is leverage-matched, not unlevered.** At matched volatility
+   the variance terms cancel and the higher Sharpe ratio wins outright, so an overlay
+   that raises growth over *unlevered* equity while lowering the portfolio's Sharpe
+   ratio has bought its gain with beta and must be labelled that way.
+3. **The instrument is weaker than the effect.** A portfolio-level growth difference
+   of the size at stake sits near the detection floor of a 35-year monthly window, so
+   the experiment this unblocks is a **sizing** question with an interval, not a
+   detection question with a verdict. Freezing it as the latter would repeat the
+   error [search coverage](../research/search-coverage.md) §1.2 exists to name.
+
+**Neither block is lifted by this record**, which is a non-promotion decision and not
+the place to authorise leverage. Both are recorded as contested with a derived reason,
+and the decision that lifts them supersedes this one.
 
 This record should be superseded, not amended, when the first sleeve is promoted.
