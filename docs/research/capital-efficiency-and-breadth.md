@@ -718,10 +718,18 @@ bind here.** Measured on the independent series over 1,091 months:
 | **1.00** | 17.51% | 20.23% | **0.741** | −49.4% | 72 | 2.00 |
 | 2.00 | 22.31% | 29.65% | 0.723 | **−52.0%** | 72 | 3.00 |
 
-**Maximum drawdown is flat in `w` across the entire range** — −49% to −52% from 1.0× to
+**Maximum drawdown is close to flat in `w` on this path** — −49% to −52% from 1.0× to
 3.0× gross notional, against **−99.3% for equity levered to 2.2×** in §2. That contrast
-is the whole argument for breadth over leverage, and it is measured rather than argued:
-uncorrelated notional does not deepen the drawdown, correlated notional does.
+is the argument for breadth over leverage: uncorrelated notional barely deepens the
+drawdown, correlated notional ruins it.
+
+**Read "flat" as scoped to this path and to modest weights, because resampling breaks it
+at the top of the range.** An earlier draft of this section said maximum drawdown is flat
+"across the entire range". Under a paired block bootstrap the overlay draws down deeper
+than equity in **6.9%** of histories at `w = 0.30`, **26.9%** at `w = 1.00` and **78.7%**
+at `w = 2.00` — **so the `w = 2.00` row above is a lucky draw from a distribution centred
+on −7.7%**, and the property is a property of small weights rather than of the whole
+ladder. The full attack is in §5b.
 
 **That table was produced by an uncommitted scoping script. It is now reproduced from the
 pinned sources by [`_overlay_stress_tables.py`](../../research/src/portfolio_edge/studies/_overlay_stress_tables.py),
