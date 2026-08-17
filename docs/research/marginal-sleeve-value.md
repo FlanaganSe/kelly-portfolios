@@ -55,8 +55,8 @@ equivalent while **losing 0.643 pp/yr of growth**: a de-risking reward of **+0.8
 calibration that produced decision 0008, and it is the reason the family's status moved
 from `unresolved` to `rejected`.
 
-**Gold has now been tested, the "no credit anywhere" phrasing is falsified, and the
-conclusion survives anyway.** Gold earns a credit of **+0.217 pp/yr at the 10% reference
+**Gold has now been tested under both funding rules, the "no credit anywhere" phrasing is
+falsified, and the conclusion survives anyway.** Gold earns a credit of **+0.217 pp/yr at the 10% reference
 weight against `global_equity_core` — exactly the ceiling**, because its beta to that
 portfolio measures **+0.000**. It is the only asset this repository has found that
 reaches the ceiling while being a real holdable asset rather than the cash control. **And
@@ -65,6 +65,17 @@ unit of weight the credit is **+2.171 pp/yr** and gold's standalone shortfall ag
 equity core is **−2.95**, so **the maximum credit the construction can pay covers 74% of
 the shortfall and no more, at any weight.** **[§ Gold, tested](#gold-tested) is the section; the short version
 is that the ceiling is reachable, is reached, and is not enough.**
+
+**And the pro-rata rule this experiment froze is the wrong test for that conclusion, which
+a red team caught after the first version of this section was written.** Re-run under
+*financed overlay* funding — the rule the one gold overlay wrapper actually imposes — gold's
+marginal contribution **changes sign, from −0.395 to +0.182 pp/yr** against the
+leverage-matched control at the reference weight. **The correction is material and the
+verdict is unchanged**, because +0.182 sits below the 0.30 bar and below its own 0.73
+detection floor, because the matched-volatility control rejects the sleeve outright at the
+weight the wrapper actually runs, and because that wrapper's measured 1.53 pp/yr tax drag
+exceeds every positive cell. **The funding-rule table is the one to quote from now, not the
+pro-rata one.**
 
 **The modelled long-duration Treasury proxy was exp_010's only non-rejected sleeve, and
 growth rejects it.** On the certainty equivalent it read +0.492 and reached `unresolved`
@@ -311,24 +322,28 @@ Before 1971-08-15 the US dollar gold price was an administered peg. A "return" a
 records a policy decision: the par value was reset to $38 by PL 92-268 (1972-03-31, 86
 Stat. 116) and to $42.22 by PL 93-110 (1973-09-21, 87 Stat. 352), and **regulations on
 private US gold ownership were not eliminated until 1974-12-31** (PL 93-373, 88 Stat. 445).
-The pegged window is reported and excluded; **1971-09 is the headline start** and
-**1975-01 is the first month the asset was legal for the investor this repository models.**
+The pegged window is reported and excluded, and **1975-01 — the first month the asset was
+legal for the investor this repository models — is the window every verdict below is
+quoted on.** 1971-09 is reported beside it as context and is never the number to take away.
 
-**The distinction between those two starts is the largest single fact on this page.**
+**The distinction between those two starts is the largest single fact on this page, and
+this section previously led with the wrong one.**
 
 | Window, net of GLDM's 0.10% | n | gold geometric | gold Sharpe | equity Sharpe |
 | --- | ---: | ---: | ---: | ---: |
-| pegged, **excluded** | 139 / 40 | 1.69% / 1.07% | −0.368 / −0.388 | — |
-| **1971-09…1974-12, the repricing** | **40** | **54.5% / 57.8%** | **1.559 / 1.440** | **−0.816** |
+| **1975-01…end — THE WINDOW TO QUOTE** | **618** | **6.17% / 6.04%** | **0.187 / 0.181** | 0.586 |
 | 1975-01…1984-12 | 120 | 5.58% / 5.05% | **0.007 / 0.007** | 0.501 |
-| **1971-09…end, headline** | **658** | 8.62% / 8.63% | **0.313 / 0.298** | 0.485 |
-| **1975-01…end, holdable** | **618** | 6.17% / 6.04% | **0.187 / 0.181** | 0.586 |
 | 1985-01…2025-05, §3's window | 485 | 5.84% / 5.92% | 0.268 / 0.247 | 0.584 |
+| *1971-09…end, context only* | *658* | *8.62% / 8.63%* | *0.313 / 0.298* | *0.485* |
+| *1971-09…1974-12, the repricing* | *40* | *54.5% / 57.8%* | *1.559 / 1.440* | *−0.816* |
+| *pegged, excluded* | *139 / 40* | *1.69% / 1.07%* | *−0.368 / −0.388* | — |
 
 Pink Sheet first, LBMA second, in every cell. **Forty months in which a US person could
-not legally own the asset carry roughly 40% of its full-sample Sharpe ratio**: gold earned
+not legally own the asset carry roughly 40% of the full-sample Sharpe ratio**: gold earned
 54.5%/yr while equity lost 9.8%/yr, and dropping those forty months takes the Sharpe from
-0.31 to 0.19. **The holdable window is the honest one and it is the weaker one.**
+0.31 to **0.18**. The artefact is the same *kind* as the pre-1971 peg — a window whose
+returns record something an investor could not participate in — and it is handled the same
+way. **Every headline figure below is the 1975-01 one, with 1971-09 in italics beside it.**
 
 ### Admission: gold clears the overlay bar comfortably, at every exposure
 
@@ -340,8 +355,8 @@ than leaving it to a reader.
 
 | Window | `S_d` net | `rho` | `sigma_p` | threshold at `L = 1` | margin | verdict |
 | --- | ---: | ---: | ---: | ---: | ---: | --- |
-| 1971-09…end | 0.313 / 0.298 | −0.031 / +0.019 | 15.79% | −0.0050 / **+0.0030** | +0.318 / **+0.295** | **admitted** |
 | **1975-01…end** | 0.187 / **0.181** | −0.024 / +0.034 | 15.56% | −0.0038 / **+0.0052** | +0.191 / **+0.176** | **admitted** |
+| *1971-09…end* | *0.313 / 0.298* | *−0.031 / +0.019* | *15.79%* | *−0.0050 / +0.0030* | *+0.318 / +0.295* | *admitted* |
 
 It clears at `L = 1`, at `L = 1.5`, and at the base's own growth-optimal `L_p*` of 3.08 and
 3.76. **The bar is essentially zero because the correlation is essentially zero, and gold's
@@ -406,7 +421,11 @@ repricing decade and are not repeatable, and the three shortest windows carry th
 five observations, where a within-window correlation of +0.998 is arithmetic rather than
 evidence.
 
-### Marginal value: gold reaches the credit ceiling and still fails
+### Marginal value under PRO-RATA funding: gold reaches the credit ceiling and still fails
+
+**This subsection uses Experiment 010's frozen funding rule, which is the rule a physical
+gold ETF imposes and the wrong rule for a financed wrapper.** Read it with the funding-rule
+subsection that follows, never alone.
 
 Experiment 010's construction, pro-rata funding, at its frozen 10% reference weight and
 20% cap.
@@ -470,6 +489,145 @@ block bootstrap, mean block 12 months, 10,000 resamples, seed 20260817. **A null
 statement about resolution before it is a statement about gold** — which is the check
 [the evidence base](evidence-base.md) exists to force.
 
+### The funding rule reverses the sign, and it does not reverse the verdict
+
+**The section above tests gold under pro-rata funding, which is Experiment 010's rule and
+the wrong test for the conclusion a reader will draw from it.**
+[Capital efficiency §1](capital-efficiency-and-breadth.md) is this repository's own result
+that pro rata costs `a_p − sigma_p**2` — **+6.69 pp/yr on this window**, an amount
+containing nothing about the sleeve — and §6a is its own result that the funding rule is a
+property of the *ticker*. A verdict quoted from the pro-rata table alone is a verdict about
+GLDM. **This subsection was added after a red team pointed that out, and it changes the
+sign of the answer.**
+
+Three bars, per unit of gold notional, 1975-01…2026-06, 618 months. Gross gold excess of
+cash is 3.14% / 3.48%; charge **40 bp** of gold-futures financing
+([structural and tax-aware edges](structural-and-tax-edges.md), an upper bound transferred
+from published research on the contracts and **not** read from any fund filing) and
+**23.9 bp** of fee — GDE's 0.20% on capital converted to notional at its measured
+`d = 0.8363` — to give `a_net` of **2.50% / 2.84%**.
+
+| Funding rule | per unit notional | at `w = 0.10` | at GDE's own `w = 0.8363` |
+| --- | ---: | ---: | ---: |
+| **pure overlay**, equation (1) | +2.563 / **+2.740** | +0.256 / +0.274 | +2.144 / +2.292 |
+| **GDE as measured**, equation (7) | +1.347 / **+1.525** | +0.135 / +0.152 | +1.127 / +1.275 |
+| **pro rata**, equation (2) | −4.126 / **−3.949** | −0.413 / −0.395 | −3.450 / −3.302 |
+
+**GDE is not a pure overlay and equation (7) is why.** §6a.2 measures its legs from its own
+Form N-PORT at 2026-02-28: **84.80% equity and 83.63% gold-futures notional**, so
+`delta = (1 − b)/d = 0.182` and **it forfeits 18.2% of the funding-rule gap** — it sells
+fifteen cents of equity to buy eighty-four cents of gold. That costs 1.22 pp/yr per unit of
+notional, which is larger than gold's entire net excess return over cash.
+
+**So the sign reverses: −0.41 pp/yr becomes +0.14 to +0.27 at the reference weight.** That
+is the finding, and it is stated plainly because this repository has made the opposite
+error — leaving a sleeve condemned by a hurdle it should never have faced.
+
+**And now the realised path, because a first-order bar at `w = 0` is not a result.**
+Equation (5) decides: at matched volatility the variance terms cancel and the higher Sharpe
+ratio wins outright, so every row is reported against the base levered to the same
+volatility as well as against the unlevered base.
+
+| Portfolio, 1975-01…2026-06 | geometric | volatility | Sharpe | **vs leverage-matched** | MDE₈₀ |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| equity only, 1.00× | 12.78% | 15.56% | **0.586** | — | — |
+| **pure overlay, `w = 0.10`** | 13.06 / 13.07% | 15.60 / 15.73% | 0.600 / 0.597 | **+0.224 / +0.182** | **0.63 / 0.73** |
+| pure overlay, `w = 0.8363` | 14.22 / 14.00% | 20.40 / 22.38% | 0.549 / 0.513 | **−0.743 / −1.620** | 5.67 / 6.55 |
+| **GDE as measured** | 13.04 / 12.85% | 18.70 / 20.75% | **0.525 / 0.487** | **−1.133 / −2.048** | 5.77 / 6.67 |
+
+**Three readings, and the second and third are why the verdict survives its own
+correction.**
+
+- **At a small weight the sign is positive and the magnitude is not resolvable.** +0.224 /
+  +0.182 pp/yr against the leverage-matched control, below the frozen **0.30** bar and
+  below its own **0.63–0.73** minimum detectable effect. It is a positive number that this
+  instrument cannot distinguish from zero.
+- **At the weight the only gold overlay wrapper actually runs, the matched-volatility
+  control rejects it outright.** GDE's implied portfolio carries a Sharpe ratio of
+  **0.525 / 0.487 against equity's 0.586** — it is *worse* on the quantity equation (5)
+  says is the only one that matters. Gold's own Sharpe of 0.13–0.19 is roughly a third of
+  equity's, so past a small weight the overlay buys growth with volatility rather than with
+  diversification, and the control catches exactly that. **The closed-form bar is a
+  derivative at `w = 0` and says nothing about `w = 0.84`**; the difference is the
+  `w**2 sigma_d**2 / 2` term, worth about 0.9 pp/yr at GDE's weight.
+- **In a taxable account the measured tax number exceeds every positive cell.** §6a.4
+  computes GDE's SEC-standardised after-tax drag at **1.53 pp/yr on capital** since its
+  2022-03-17 inception — 18.63% before tax against 17.10% after. Gold futures are §1256
+  contracts marked to market every 31 December, so there is nothing to defer. **1.53
+  exceeds +0.22, and it exceeds the +1.13 to +1.28 the closed form gives at GDE's own
+  weight.** Held in a shelter the drag is zero and the sleeve competes with the trend
+  overlay for the same scarce capacity.
+
+**The pro-rata framing was the wrong test and the correction is material. The conclusion is
+unchanged and is now much better supported.**
+
+### Does gold add to trend, or substitute for it?
+
+The standing question is whether *several* diversifying engines can be combined, and
+[capital efficiency §3](capital-efficiency-and-breadth.md) answers it pessimistically:
+effective breadth of 4.06 exists on paper across trend, BAB, short-term reversal and
+accruals, and **six of those seven engines cannot be bought.** Gold is the first candidate
+to arrive with both a measurable series and a cheap financed wrapper, so the pairing is
+worth measuring rather than assuming.
+
+The trend leg is the one **this repository builds itself** — no vendor series — from
+[`time_series_momentum`](../../research/src/portfolio_edge/studies/time_series_momentum.py)
+on four instruments, imported from the module that produces §7's published ladder so the
+two cannot diverge. 605 joint months, 1975-01…2025-05, gold charged the same 40 bp
+financing and 23.9 bp fee, trend charged 95 bp.
+
+| Leg | excess | volatility | Sharpe | `rho` to equity | **`rho` to equity in drawdowns** |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| equity | 8.87% | 15.62% | 0.568 | 1.000 | — |
+| trend | 5.35% | 12.18% | **0.440** | −0.006 | **−0.239** |
+| gold | 2.12% / 2.52% | 16.15 / 18.46% | **0.131 / 0.136** | −0.026 / +0.027 | **−0.042 / +0.084** |
+
+**The correlation between trend and gold is +0.141 / +0.072.** They are not the same
+engine, and that is the whole question:
+
+| Set | k | **effective breadth `k / (1 + (k−1) rho_dd)`** |
+| --- | ---: | ---: |
+| trend alone | 1 | 1.00 |
+| **trend + gold** | 2 | **1.75 / 1.87** |
+| trend + BAB + STR + accruals (§3) | 4 | 4.06 — **and three of the four cannot be bought** |
+
+**Gold is the first addition to trend that raises effective breadth using an engine anyone
+can actually hold.** 1.75 is not 4.06, and it is the only one of the two that exists.
+
+Realised, against the leverage-matched control, same 605 months, 60 bp borrow charged on
+gross notional above 1.0:
+
+| Portfolio | geometric | volatility | Sharpe | **vs leverage-matched** | MDE₈₀ | max drawdown |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| equity only | 12.51% | 15.62% | 0.568 | — | — | −50.3% |
+| **+ 30% trend** (the recommendation) | 14.04% | 16.02% | 0.643 | **+1.198** | 1.45 | −44.8% |
+| + 10% gold alone | 12.68 / 12.70% | 15.66 / 15.77% | 0.576 / 0.574 | +0.129 / +0.102 | 0.64 / 0.73 | −49.2 / −49.3% |
+| **+ 30% trend + 10% gold** | 14.20 / 14.23% | 16.11 / 16.20% | **0.649 / 0.647** | **+1.298 / +1.285** | 1.67 / 1.68 | **−43.5 / −43.7%** |
+| + 30% trend + 30% gold | 14.43 / 14.48% | 16.76 / 17.17% | 0.641 / 0.633 | +1.230 / +1.118 | 2.60 / 2.76 | **−41.0 / −41.6%** |
+
+**Gold adds rather than substitutes, and the increment is smaller than the instrument can
+see.** Adding 10% gold notional to the recommended 30% trend overlay moves the
+matched-volatility gap from **+1.198 to +1.298 / +1.285** — an increment of **+0.09 to
++0.10 pp/yr against an MDE₈₀ of 1.67.** The unshrunk growth-optimal vector puts trend at
+3.53 and gold at 0.47 / 0.55, which is a plug-in optimum from forecasts and a statement
+about the covariance estimate rather than a recommendation.
+
+**The drawdown moves further than the return does, and that is the same pattern trend
+shows.** −44.8% to −43.5% at a 10% gold overlay and to **−41.0%** at 30% — a 3.8 pp
+improvement on the deepest episode in the window, while the growth gap *falls* from +1.298
+to +1.230. **The best return weight and the best drawdown weight are different weights**,
+and neither difference clears its own resolution floor.
+
+**The one comparison that is not marginal.** [Capital efficiency §5b](capital-efficiency-and-breadth.md)
+makes the whole recommendation conditional on the overlay's correlation to equity *inside
+equity drawdowns* staying below **+0.20**, and §9.3 shows a +0.30 crisis correlation costs
+3.6 pp of drawdown at the recommended weight. **Gold's crisis-conditional correlation is
+−0.042 / +0.084 and trend's is −0.239 on the same 217 crisis months.** A second overlay
+whose crisis correlation is also near zero *and* which is near-uncorrelated with the first
+is worth more than its standalone Sharpe ratio suggests — which is the breadth identity's
+entire content. **Gold's standalone Sharpe of 0.13 is what disqualifies it, not its
+correlation, and it is the one input that a longer window could change.**
+
 ### The vehicle, and the one place gold beats the recommended sleeve
 
 **A physical-gold ETF is a pro-rata vehicle**, so the bar it faces is the one gold fails.
@@ -507,30 +665,74 @@ verified from the statute and from four sponsors' own filings:
 | Equity long-term gain, for comparison | 20% + 3.8% | same table |
 | Inside an IRA | **not the 28% rate** | GLD and IAU both hold IRS private letter rulings that purchase by an IRA "will not be treated as the acquisition of a collectible". Distributions are then **ordinary income** (Pub. 590-B), which at the top bracket is worse than 28%; in a Roth, untaxed. **The PLR numbers are not disclosed in any fund document read, and a PLR binds only its requester** |
 
-**The futures route gets §1256's 60/40 treatment and has no plain vehicle.** 26 U.S.C.
-§1256(a)(3) splits gain 60% long-term / 40% short-term. But **Invesco DB Gold (DGL)
-liquidated in March 2023** (Form 8-K 2023-01-23; the shares "cease trading… after market
-close on March 3, 2023"), and the surviving geared fund UGL is 2× leveraged, costs 1.19%
-all-in, issues **K-1s**, and its own prospectus warns that "swap agreements and non-currency
-forward contracts are generally not Section 1256 Contracts". **GDE's tax character was not
-verified here** — it is a registered investment company holding futures through a Cayman
-subsidiary rather than a bullion grantor trust, so the 28% collectibles finding above does
-**not** transfer to it, and this page records that as unverified rather than guessing.
+**The overlay wrapper is a structurally different after-tax asset, and it is not the better
+one.** A reader would expect a RIC holding §1256 gold futures to deliver 60/40 treatment.
+**It does not.** GDE holds its gold through a **Cayman Islands subsidiary** capped at 25% of
+total assets — the §851(b)(2) qualifying-income structure — and WisdomTree's own SAI states
+that *"Subpart F income and GILTI are treated as **ordinary income, regardless of the
+character of the CFC's underlying income**"*, with subsidiary losses neither flowing through
+nor carrying forward. **Every dollar GDE has distributed in all three fiscal years since its
+2022 inception was ordinary income**, only **28.9%** of it at qualified-dividend rates, and
+its measured drag is **1.53 pp/yr**. The collectibles rate does *not* reach it: "collectibles"
+appears **zero times in every filing WisdomTree Trust has ever made**, against 76 hits for
+SPDR Gold Trust.
+
+| | Annual drag | Rate on the distribution | Rate on selling the shares | Deferrable? |
+| --- | ---: | --- | --- | --- |
+| **GLDM** and the other bullion trusts | ~0 | n/a — they distribute nothing | **28% + 3.8%** | **yes, indefinitely** |
+| **GDE** | **1.53 pp/yr** | **ordinary**, 28.9% at QDI rates | 20% + 3.8% | **no** |
+
+**Neither route dominates and the physical one is the tax-favoured one for a long holder.**
+The bullion trust pays a higher rate on a gain it can defer for decades; the overlay pays an
+ordinary rate every year on income it cannot defer. Against
+[structural and tax-aware edges](structural-and-tax-edges.md) §4, where deferral is the
+largest single number, that ordering is the reverse of what the fee comparison suggests.
+
+**And there is still no plain futures vehicle.** **Invesco DB Gold (DGL) liquidated in March
+2023** (Form 8-K 2023-01-23; the shares "cease trading… after market close on March 3,
+2023"), and the surviving geared fund UGL is 2× leveraged, costs 1.19% all-in, issues
+**K-1s**, and its own prospectus warns that "swap agreements and non-currency forward
+contracts are **generally not** Section 1256 Contracts".
 
 ### The verdict
 
-**Gold passes admission and fails the marginal test, and those are not in tension — they
-are two funding rules.** The gap between them is `a_p − sigma_p**2`, which
-[capital efficiency §1](capital-efficiency-and-breadth.md) shows contains nothing about the
-sleeve at all: **5.17 pp/yr** on the headline window, **6.69** on the holdable one. Gold is
-the fifth candidate to clear the overlay bar and fail the pro-rata bar, after trend,
-duration-hedged credit, long/short commodities and catastrophe bonds — **and the second,
-after trend, with a financed retail wrapper that actually exists.**
+**Gold is dominated, and the reason is its standalone Sharpe ratio rather than its
+correlation, its cost, its data or its vehicle.** All four of those are better than any
+candidate this repository has tested. On the 1975-01 window it earns **0.18** of Sharpe
+against equity's **0.59**, and everything else follows from that one number.
+
+Stated against each of the four tests, on the holdable window and the pessimistic
+instrument:
+
+| Test | Result |
+| --- | --- |
+| **Admission**, equation (4) | **passes**, by +0.176 at every exposure, at a correlation an order of magnitude inside the equation's own validity range |
+| **Marginal value, pro rata** — the rule GLDM imposes | **fails**, −0.395 pp/yr at the reference weight against a 0.30 bar |
+| **Marginal value, overlay** — the rule GDE imposes | **sign reverses to positive**, +0.182 pp/yr against the leverage-matched control at the reference weight — **and that is below the 0.30 bar and below its own 0.73 detection floor**. At GDE's own 0.84 notional the matched-volatility control rejects it outright, because the portfolio's Sharpe falls to 0.487 against equity's 0.586 |
+| **Breadth beside trend** | **adds rather than substitutes** — correlation +0.072, effective breadth 1.00 → 1.87, matched gap +1.198 → +1.285, drawdown −44.8% → −43.7%. The increment is +0.09 pp/yr against an MDE₈₀ of 1.68 |
+| **After tax** | **the physical route defers and the overlay route cannot.** GLDM pays 28% + 3.8% on a gain it can hold for decades; GDE distributes 100% ordinary income annually, 28.9% of it at QDI rates, measured at **1.53 pp/yr** — larger than every positive cell above |
+
+**What survives is a risk statement, not a return statement**, which is the same shape as
+every trend result on
+[capital efficiency](capital-efficiency-and-breadth.md): the drawdown improvements are
+monotone and consistent across weights while the return gap is not resolvable anywhere.
+
+**Three things would have to be true for this verdict to be wrong**, and they are worth
+naming because none of them is a data problem:
+
+1. gold's forward Sharpe ratio is materially above the 0.18 measured over 618 months —
+   the estimate whose interval is widest here;
+2. the overlay is held in a shelter, so GDE's measured **1.53 pp/yr** distribution drag is
+   zero — the drag is **ordinary Subpart F income from its Cayman blocker**, not §1256
+   60/40, and the shelter it needs is the same one the trend overlay already competes for;
+3. it is held at a weight small enough for the matched-volatility control to accept, which
+   is far below the weight the only gold overlay wrapper actually runs at.
 
 **Nothing is promoted.** [Decision 0004](../decisions/0004-no-sleeve-promoted.md) stands.
-This is exploratory work on an unlicensed benchmark with an assumed carry cost, its effect
-sits below its own detection floor, and its most favourable window is forty months in which
-the asset was illegal to own.
+This is exploratory work on a licence-restricted benchmark with an assumed carry cost and
+an assumed financing spread, no specification was frozen before the numbers were seen, its
+effect sits below its own detection floor under every funding rule, and its most favourable
+window is forty months in which the asset was illegal to own.
 
 **Reproduce with**
 `cd research && uv run python -m portfolio_edge.studies.gold_sleeve`. Manifests:

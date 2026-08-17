@@ -61,6 +61,7 @@ from typing import Final, Literal
 
 import numpy as np
 
+from portfolio_edge.core.drawdown import drawdown_summary
 from portfolio_edge.data import french, lbma, worldbank
 from portfolio_edge.data.cache import RawCache
 from portfolio_edge.inference.bootstrap import bootstrap_confidence_interval
@@ -74,7 +75,17 @@ from portfolio_edge.studies.gold_sleeve import (
     sleeve_moments,
     total_returns_from_levels,
 )
-from portfolio_edge.studies.overlay_growth import OverlayInputs, funding_rule_gap
+from portfolio_edge.studies.overlay_growth import (
+    FundingRule,
+    MultiOverlay,
+    OverlayInputs,
+    effective_breadth,
+    funding_rule_gap,
+    growth_optimal_overlay_vector,
+    marginal_growth,
+    multi_overlay_growth_gain,
+)
+from portfolio_edge.studies.overlay_stress import matched_volatility_gap
 
 FloatArray = np.typing.NDArray[np.float64]
 
@@ -655,6 +666,319 @@ def _exp_010_arm(source: Source) -> None:
     )
 
 
+# --------------------------------------------------------------------------------
+# The funding rule, which is the question the pro-rata tables above do not answer
+# --------------------------------------------------------------------------------
+
+#: GDE's structure, measured from its own Form N-PORT for 2026-02-28 and recorded in
+#: ``docs/research/capital-efficiency-and-breadth.md`` §6a.2: 84.80% of net assets in
+#: equity and 83.63% in gold-futures notional.
+GDE_BASE_LEG: Final = 0.8480
+GDE_OVERLAY_LEG: Final = 0.8363
+
+#: Equation (7) of §6a.1: ``delta = (1 - b) / d`` is the base sold per unit of
+#: diversifier notional obtained, and the wrapper's structure enters the hurdle exactly
+#: once, as a multiplier on §1's funding-rule gap. **GDE is not a pure overlay**: it
+#: forfeits 18.2% of the gap because its equity leg is 84.8% rather than 100%.
+GDE_DELTA: Final = (1.0 - GDE_BASE_LEG) / GDE_OVERLAY_LEG
+
+#: GDE's total expense ratio from its own SEC-filed fee table, on **capital**. The hurdle
+#: is stated per unit of **notional**, so the conversion is ``fee / d``.
+GDE_FEE_ON_CAPITAL: Final = 0.0020
+GDE_FEE_PER_NOTIONAL: Final = GDE_FEE_ON_CAPITAL / GDE_OVERLAY_LEG
+
+#: The financing embedded in a long gold-futures position, from
+#: ``docs/research/structural-and-tax-edges.md`` §3: <=40 bp over the Treasury curve, and
+#: an **upper bound** — the same 40 bp appears in SPX option boxes over the same window,
+#: so it is the Treasury convenience yield rather than anything gold-specific. **It is a
+#: transfer from published research on the contracts, not a reading of any GDE filing.**
+GOLD_FUTURES_BASIS: Final = 0.0040
+
+#: GDE's SEC-standardised after-tax return drag at the highest individual federal rates,
+#: since inception 2022-03-17, from §6a.4: 18.63% before tax against 17.10% after tax on
+#: distributions. **On capital, not on notional.** Gold futures are Section 1256 contracts
+#: marked to market every 31 December, so there is nothing to defer.
+GDE_TAX_DRAG_ON_CAPITAL: Final = 0.0153
+
+
+def _overlay_funding(source: Source, label: str, first: str) -> None:
+    """What gold is worth when the sleeve is financed rather than funded by a sale.
+
+    Every table above uses **pro-rata** funding, which is Experiment 010's rule and the
+    rule a physical gold ETF imposes. It is also the rule
+    ``docs/research/capital-efficiency-and-breadth.md`` §1 shows costs
+    ``a_p - sigma_p**2`` — an amount containing nothing about the sleeve — and §6a shows
+    is a property of the ticker rather than of the analysis. **A verdict quoted from the
+    pro-rata tables alone is a verdict about GLDM, not about gold.**
+
+    Three bars are reported and they are not interchangeable:
+
+    * **pure overlay**, equation (1): ``a_net - L rho sigma_p sigma_d``;
+    * **GDE as measured**, equation (7): the overlay bar less ``delta`` times the
+      funding-rule gap, because GDE's equity leg is 84.8% rather than 100%;
+    * **pro rata**, equation (2), repeated so the three sit in one place.
+    """
+    periods, columns = _panel(source, CARRY_TIERS[0])  # gross: futures pay no storage
+    window, sliced = _slice(periods, columns, first=first, last=None)
+    moments = sleeve_moments(sliced["gold_excess"], sliced["equity_excess"])
+
+    inputs = OverlayInputs(
+        base_excess_return=moments.base_arithmetic_excess,
+        base_volatility=moments.base_volatility,
+        diversifier_excess_return=moments.arithmetic_excess,
+        diversifier_volatility=moments.volatility,
+        correlation=moments.correlation,
+        financing_spread=GOLD_FUTURES_BASIS,
+        fee=GDE_FEE_PER_NOTIONAL,
+    )
+    gap = funding_rule_gap(
+        base_excess_return=moments.base_arithmetic_excess,
+        base_volatility=moments.base_volatility,
+    )
+    overlay = marginal_growth(inputs, rule=FundingRule.OVERLAY)
+    wrapper = overlay - GDE_DELTA * gap
+    pro_rata = marginal_growth(inputs, rule=FundingRule.PRO_RATA)
+
+    _rule(f"Funding rule: the three bars, per unit of gold notional [{source}, {label}]")
+    print(f"  months {moments.months} ({window[0]}…{window[-1]})")
+    print(
+        f"  gross a_d {100 * moments.arithmetic_excess:.2f}%, less {100 * GOLD_FUTURES_BASIS:.2f}% "
+        f"financing and {100 * GDE_FEE_PER_NOTIONAL:.3f}% fee = a_net "
+        f"{100 * inputs.net_excess_return:.2f}%"
+    )
+    print(f"  funding-rule gap a_p - sigma_p**2 = {100 * gap:+.2f} pp/yr")
+    print(f"  GDE delta = {GDE_DELTA:.4f}, so it keeps {100 * (1 - GDE_DELTA):.1f}% of that gap")
+    print(f"  {'rule':28s} {'dg/dw per unit notional':>24s}")
+    for name, value in (
+        ("pure overlay (1)", overlay),
+        ("GDE as measured (7)", wrapper),
+        ("pro rata (2)", pro_rata),
+    ):
+        print(f"  {name:28s} {100 * value:+23.3f}")
+    print(f"  {'weight w':>10s} {'pure overlay':>14s} {'GDE (7)':>10s} {'pro rata':>10s}")
+    for weight in (REFERENCE_WEIGHT, GDE_OVERLAY_LEG):
+        print(
+            f"  {weight:10.4f} {100 * weight * overlay:+14.3f} "
+            f"{100 * weight * wrapper:+10.3f} {100 * weight * pro_rata:+10.3f}"
+        )
+    print(f"  frozen bar {MATERIALITY_BAR:.2f} pp/yr")
+
+
+def _gde_realised(source: Source, label: str, first: str) -> None:
+    """The GDE-implied portfolio path, against the two controls that decide.
+
+    ``r = b r_eq + (1 - b) r_cash + d (r_gold - r_cash - s) - fee``, monthly, with ``b``
+    and ``d`` GDE's measured legs. This is not a backtest of GDE — the fund began in
+    2022-03 and this window starts decades earlier — it is **what GDE's structure would
+    have delivered on this history**, which is the only thing a 658-month panel can say.
+
+    Equation (5) decides: at matched volatility the higher Sharpe ratio wins and nothing
+    else matters, so the leverage-matched control is reported beside the unlevered one and
+    the unlevered comparison is never quoted alone.
+    """
+    periods, columns = _panel(source, CARRY_TIERS[0])
+    window, sliced = _slice(periods, columns, first=first, last=None)
+    equity = sliced["equity_total"]
+    cash = sliced["cash"]
+    gold_excess = sliced["gold_total"] - cash
+
+    gde = (
+        GDE_BASE_LEG * equity
+        + (1.0 - GDE_BASE_LEG) * cash
+        + GDE_OVERLAY_LEG * (gold_excess - GOLD_FUTURES_BASIS / MONTHS_PER_YEAR)
+        - GDE_FEE_ON_CAPITAL / MONTHS_PER_YEAR
+    )
+    pure = equity + GDE_OVERLAY_LEG * (
+        gold_excess - (GOLD_FUTURES_BASIS + GDE_FEE_PER_NOTIONAL) / MONTHS_PER_YEAR
+    )
+    small = equity + REFERENCE_WEIGHT * (
+        gold_excess - (GOLD_FUTURES_BASIS + GDE_FEE_PER_NOTIONAL) / MONTHS_PER_YEAR
+    )
+
+    _rule(f"The GDE-implied path against its controls [{source}, {label}]")
+    print(f"  {len(window)} months {window[0]}…{window[-1]}")
+    print(
+        f"  {'portfolio':34s} {'geometric':>10s} {'vol':>8s} {'Sharpe':>8s} "
+        f"{'vs unlev':>9s} {'vs matched':>11s} {'MDE':>7s}"
+    )
+    base_sharpe = float(np.mean(equity - cash)) / float(np.std(equity - cash, ddof=1))
+    for name, path in (
+        ("equity only, 1.00x", equity),
+        (f"pure overlay, w={REFERENCE_WEIGHT:.2f}", small),
+        (f"pure overlay, w={GDE_OVERLAY_LEG:.4f}", pure),
+        ("GDE as measured", gde),
+    ):
+        excess = path - cash
+        volatility = float(np.std(excess, ddof=1)) * math.sqrt(MONTHS_PER_YEAR)
+        sharpe = float(np.mean(excess)) / float(np.std(excess, ddof=1))
+        levered = volatility / (
+            float(np.std(equity - cash, ddof=1)) * math.sqrt(MONTHS_PER_YEAR)
+        )
+        control = levered * (equity - cash)
+        gap, mde = matched_volatility_gap(excess, control, scaling="unlevered")
+        unlevered_gap = geometric_growth(path) - geometric_growth(equity)
+        print(
+            f"  {name:34s} {100 * geometric_growth(path):9.2f}% "
+            f"{100 * volatility:7.2f}% {sharpe * math.sqrt(MONTHS_PER_YEAR):8.3f} "
+            f"{100 * unlevered_gap:+8.3f} {100 * gap:+10.3f} {100 * mde:6.2f}"
+        )
+    print(
+        f"  base Sharpe {base_sharpe * math.sqrt(MONTHS_PER_YEAR):.3f}; equation (5) says "
+        "the matched column decides and the unlevered one does not"
+    )
+    print(
+        f"  in a TAXABLE account subtract GDE's measured {100 * GDE_TAX_DRAG_ON_CAPITAL:.2f} "
+        "pp/yr distribution drag from the GDE row: Section 1256 marks to market annually"
+    )
+
+
+# --------------------------------------------------------------------------------
+# Breadth: does gold ADD to trend, or substitute for it?
+# --------------------------------------------------------------------------------
+
+#: The trend overlay weight ``docs/research/portfolio-recommendation.md`` recommends.
+RECOMMENDED_TREND_WEIGHT: Final = 0.30
+
+#: Trend's all-in cost on notional and the borrow spread, both as
+#: ``_overlay_stress_tables`` charges them, so the joint arm is priced the same way §7's
+#: ladder is rather than on a fresh set of assumptions.
+TREND_FEE: Final = 0.0095
+BORROW_SPREAD: Final = 0.0060
+
+
+def _trend_and_gold(source: Source) -> None:
+    """Gold beside the trend leg this repository builds itself, never a vendor series.
+
+    The trend leg is :mod:`portfolio_edge.studies._overlay_stress_tables`'s **published**
+    arm — the same Moskowitz-Ooi-Pedersen construction on four instruments, 12-month
+    signal, 36-month volatility window, scaled to a 12% target on a trailing 60-month
+    window — imported rather than rebuilt so this section cannot silently diverge from
+    the ladder §7 publishes. It reads the cache through that module and downloads
+    nothing.
+
+    **One inconsistency is inherited and stated rather than fixed here.** That panel's
+    cash leg is Goyal-Welch ``Rfree`` while every other table in this module uses Ken
+    French's ``RF``. They are close and they are not the same series, and reconciling
+    them would change §7's published figures, so this section uses the trend panel's own
+    cash throughout and the correlation it reports is between two excess series measured
+    against the same rate.
+    """
+    from portfolio_edge.studies._overlay_stress_tables import _panel as stress_panel
+    from portfolio_edge.studies._overlay_stress_tables import _trend_legs
+
+    stress_periods, stress_columns = stress_panel()
+    targeted, _raw = _trend_legs(stress_columns)
+    gold = _gold_returns(source, CARRY_TIERS[0])
+
+    keep = [
+        i
+        for i, period in enumerate(stress_periods)
+        if np.isfinite(targeted[i]) and period in gold and period >= FIRST_LEGAL_MONTH
+    ]
+    if len(keep) < 60:
+        raise RuntimeError(f"only {len(keep)} joint months; the panel did not align")
+    index = np.array(keep)
+    months = [stress_periods[i] for i in keep]
+    equity = stress_columns["equity"][index]
+    cash = stress_columns["cash"][index]
+    trend = targeted[index] - TREND_FEE / MONTHS_PER_YEAR
+    gold_excess = np.array([gold[m] for m in months]) - cash - (
+        (GOLD_FUTURES_BASIS + GDE_FEE_PER_NOTIONAL) / MONTHS_PER_YEAR
+    )
+
+    def annual_mean(x: FloatArray) -> float:
+        return float(np.mean(x)) * MONTHS_PER_YEAR
+
+    def annual_vol(x: FloatArray) -> float:
+        return float(np.std(x, ddof=1)) * math.sqrt(MONTHS_PER_YEAR)
+
+    _rule(f"Gold beside the trend leg built here, holdable window [{source}]")
+    print(f"  {len(months)} joint months {months[0]}…{months[-1]}")
+    print(f"  {'leg':10s} {'excess':>8s} {'vol':>8s} {'Sharpe':>8s} {'rho to equity':>14s}")
+    for name, leg in (("equity", equity), ("trend", trend), ("gold", gold_excess)):
+        print(
+            f"  {name:10s} {100 * annual_mean(leg):7.2f}% {100 * annual_vol(leg):7.2f}% "
+            f"{annual_mean(leg) / annual_vol(leg):8.3f} "
+            f"{float(np.corrcoef(leg, equity)[0, 1]):+14.3f}"
+        )
+    mutual = float(np.corrcoef(trend, gold_excess)[0, 1])
+    print(f"  **correlation between trend and gold: {mutual:+.4f}**")
+    alone = effective_breadth(count=1, mutual_correlation=0.0)
+    pair = effective_breadth(count=2, mutual_correlation=mutual)
+    print(
+        f"  effective breadth: trend alone {alone:.2f}; trend + gold {pair:.2f}; "
+        "trend + BAB + STR + accruals (page §3) 4.06"
+    )
+
+    overlays = MultiOverlay(
+        net_excess_returns=(annual_mean(trend), annual_mean(gold_excess)),
+        covariance_with_base=(
+            float(np.cov(trend, equity, ddof=1)[0, 1]) * MONTHS_PER_YEAR,
+            float(np.cov(gold_excess, equity, ddof=1)[0, 1]) * MONTHS_PER_YEAR,
+        ),
+        covariance=tuple(
+            tuple(float(v) * MONTHS_PER_YEAR for v in row)
+            for row in np.cov(np.vstack([trend, gold_excess]), ddof=1)
+        ),
+    )
+    star = growth_optimal_overlay_vector(overlays)
+    print(
+        f"  unshrunk growth-optimal notional: trend {star[0]:.3f}, gold {star[1]:.3f} "
+        "— a plug-in optimum from forecasts, never a recommendation"
+    )
+    print(
+        f"  {'weights (trend, gold)':>26s} {'joint gain pp/yr':>17s}"
+    )
+    for weights in (
+        (RECOMMENDED_TREND_WEIGHT, 0.0),
+        (0.0, REFERENCE_WEIGHT),
+        (RECOMMENDED_TREND_WEIGHT, REFERENCE_WEIGHT),
+        (RECOMMENDED_TREND_WEIGHT, RECOMMENDED_TREND_WEIGHT),
+    ):
+        gain = multi_overlay_growth_gain(overlays, weights=weights)
+        print(f"  {weights!s:>26s} {100 * gain:+16.3f}")
+
+    _rule(f"The joint overlay, realised, against the control that decides [{source}]")
+    print(
+        f"  {'portfolio':32s} {'geometric':>10s} {'vol':>8s} {'Sharpe':>8s} "
+        f"{'vs matched':>11s} {'MDE':>7s} {'max DD':>8s}"
+    )
+    for name, trend_w, gold_w in (
+        ("equity only", 0.0, 0.0),
+        ("+ 30% trend", RECOMMENDED_TREND_WEIGHT, 0.0),
+        ("+ 10% gold", 0.0, REFERENCE_WEIGHT),
+        ("+ 30% trend + 10% gold", RECOMMENDED_TREND_WEIGHT, REFERENCE_WEIGHT),
+        ("+ 30% trend + 30% gold", RECOMMENDED_TREND_WEIGHT, RECOMMENDED_TREND_WEIGHT),
+    ):
+        gross_above_one = max(0.0, trend_w + gold_w)
+        excess = (
+            equity
+            + trend_w * trend
+            + gold_w * gold_excess
+            - BORROW_SPREAD * gross_above_one / MONTHS_PER_YEAR
+        )
+        volatility = annual_vol(excess)
+        levered = volatility / annual_vol(equity)
+        gap, mde = matched_volatility_gap(
+            excess, levered * equity, scaling="unlevered"
+        )
+        curve = np.cumprod(1.0 + excess + cash)
+        print(
+            f"  {name:32s} "
+            f"{100 * geometric_growth(excess + cash):9.2f}% "
+            f"{100 * volatility:7.2f}% {annual_mean(excess) / volatility:8.3f} "
+            f"{100 * gap:+10.3f} {100 * mde:6.2f} "
+            f"{100 * drawdown_summary(curve).max_drawdown:7.1f}%"
+        )
+    crisis = conditional_correlation(equity, gold_excess, threshold=0.10)
+    crisis_trend = conditional_correlation(equity, trend, threshold=0.10)
+    print(
+        f"  crisis-conditional rho to equity at 10% depth, {crisis.months_in} months: "
+        f"gold {crisis.correlation_in:+.3f}, trend {crisis_trend.correlation_in:+.3f}; "
+        "the falsifier is +0.20"
+    )
+
+
 def main() -> None:
     _provenance()
     _source_comparison()
@@ -671,6 +995,14 @@ def main() -> None:
     for label, first in DECISION_WINDOWS:
         for source in SOURCES:
             _marginal(source, label, first)
+    for label, first in DECISION_WINDOWS:
+        for source in SOURCES:
+            _overlay_funding(source, label, first)
+    for label, first in DECISION_WINDOWS:
+        for source in SOURCES:
+            _gde_realised(source, label, first)
+    for source in SOURCES:
+        _trend_and_gold(source)
     for source in SOURCES:
         _weight_ladder(source)
     for source in SOURCES:

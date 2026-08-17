@@ -25,6 +25,12 @@ from portfolio_edge.studies.gold_sleeve import (
     sleeve_moments,
     total_returns_from_levels,
 )
+from portfolio_edge.studies.overlay_growth import (
+    FundingRule,
+    OverlayInputs,
+    funding_rule_gap,
+    marginal_growth,
+)
 
 #: A carry tier whose annual cost divides exactly by 12, so the expectations below are
 #: exact decimals rather than floating-point artefacts.
@@ -258,3 +264,49 @@ def test_a_conditioning_set_too_small_to_correlate_raises() -> None:
 def test_a_negative_drawdown_threshold_raises_because_it_is_a_depth() -> None:
     with pytest.raises(ValueError, match="depth"):
         drawdown_mask([0.01, -0.02, 0.03], threshold=-0.10)
+
+
+# --------------------------------------------------------------------------------
+# The funding rule, which is what decides the gold verdict
+# --------------------------------------------------------------------------------
+
+
+def test_the_wrapper_bar_interpolates_between_the_two_funding_rules() -> None:
+    """``overlay - delta * (a_p - sigma_p**2)`` is pro rata at ``delta = 1``.
+
+    ``_gold_sleeve_tables`` composes the wrapper bar from two committed functions rather
+    than importing a third module, so the composition is pinned here. The identity is
+    equation (3) of :mod:`overlay_growth` rearranged and is derived independently of both
+    functions: subtracting (1) from (2) leaves ``a_p - sigma_p**2``, so adding it back to
+    (1) must reproduce (2) exactly.
+    """
+    inputs = OverlayInputs(
+        base_excess_return=0.0911,
+        base_volatility=0.1556,
+        diversifier_excess_return=0.0314,
+        diversifier_volatility=0.1615,
+        correlation=-0.024,
+        financing_spread=0.0040,
+        fee=0.0024,
+    )
+    gap = funding_rule_gap(
+        base_excess_return=inputs.base_excess_return,
+        base_volatility=inputs.base_volatility,
+    )
+    overlay = marginal_growth(inputs, rule=FundingRule.OVERLAY)
+    pro_rata = marginal_growth(inputs, rule=FundingRule.PRO_RATA)
+
+    # Independently: (2) - (1) = a_p - sigma_p**2, with no term from the diversifier.
+    assert pro_rata - overlay == pytest.approx(-gap, rel=1e-12)
+    assert overlay - 0.0 * gap == pytest.approx(overlay)
+    assert overlay - 1.0 * gap == pytest.approx(pro_rata, rel=1e-12)
+
+
+def test_gdes_measured_delta_forfeits_the_share_its_legs_imply() -> None:
+    """``delta = (1 - b) / d`` on the legs measured from GDE's own Form N-PORT."""
+    base_leg, overlay_leg = 0.8480, 0.8363
+    # By hand: 0.1520 / 0.8363 = 0.18175...
+    assert (1.0 - base_leg) / overlay_leg == pytest.approx(0.181753, abs=1e-6)
+    # A wrapper holding a full base leg forfeits nothing; one holding none forfeits all.
+    assert (1.0 - 1.0) / overlay_leg == pytest.approx(0.0)
+    assert pytest.approx(1.0) == (1.0 - 0.0) / 1.0

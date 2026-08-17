@@ -582,4 +582,3 @@ no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
    verified *structure* and filed *costs*. **Its loading on the trend benchmark has never
    been measured**, and neither has that of the ten new listed managed-futures ETFs. The
    shelf tripled; the evidence did not move.
-</content>

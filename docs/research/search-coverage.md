@@ -74,7 +74,7 @@ part-cash portfolio raises its risk and the credit charges for that correctly. *
 real result, and it is not what the closure sentence claims.**
 
 **Update, 2026-08-17: this subsection's own question has been answered empirically, and the
-answer is that the weight was the wrong thing to blame.** Gold was run through the same
+answer is that the weight was the wrong thing to blame — the *funding rule* was.** Gold was run through the same
 construction. Its beta to `global_equity_core` measures **+0.000**, so it takes the entire
 `sigma_p**2 w` credit — **+0.217 at 10% and +0.434 at the 20% cap, the exact ceiling in
 both cells, and the second is above the 0.30 bar.** Its marginal growth at the cap is
@@ -251,14 +251,19 @@ ceiling-derived bar with an interval excluding zero after Holm.
 low-beta asset" clause is now satisfied and has already been exercised* — gold lands at
 `beta = +0.000` and fails anyway, so the successor gains nothing by adding it again as a
 headline sleeve; it should be a **calibration row beside `cash_control`**, marking where a
-real asset sits on the ceiling. *Second, the funding rule matters more than the leg.* This
-item previously proposed named-leg funding as the primary arm. **Make it the financed
-overlay instead.** Gold clears the overlay bar by +0.18 of Sharpe on its worst reading and
-fails pro rata on every reading, and [capital efficiency §1](capital-efficiency-and-breadth.md)
-prices the gap at 5.17–6.69 pp/yr with nothing about the sleeve in it. Pro rata and
-named-leg differ by which covariance enters; overlay versus pro rata differs by more than
-any premium this repository has measured. **Overlay primary, pro rata as the robustness
-arm, named-leg as a diagnostic.**
+real asset sits on the ceiling. *Second, the funding rule matters more than the leg, and this
+is now measured rather than argued.* This item previously proposed named-leg funding as the
+primary arm. **Make it the financed overlay instead.** Re-running gold under overlay
+funding **changes the sign of its marginal contribution, from −0.395 to +0.182 pp/yr**
+against the leverage-matched control at the same reference weight — a swing of 0.58 pp/yr
+from the funding rule alone, on a bar of 0.30. [Capital efficiency
+§1](capital-efficiency-and-breadth.md) prices the gap at 5.17–6.69 pp/yr with nothing about
+the sleeve in it, and §6a shows it is a property of the ticker. **Pro rata and named-leg
+differ by which covariance enters; overlay versus pro rata differs by more than any premium
+this repository has measured, and it decides signs.** Overlay primary, pro rata as the
+robustness arm, named-leg as a diagnostic — **and every arm reported against a
+leverage-matched control**, because that control is what rejects gold at the weight its
+own wrapper runs even where the first-order bar accepts it.
 
 Reopens: the closure in Experiment 010's consequence 1.
 

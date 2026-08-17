@@ -50,7 +50,10 @@ exceeds the bar, a null result carries almost no information.**
 | Same, **post-1991 publication** | 426 mo | 4.39 pp/yr | 2.0 pp/yr | **no** — +1.71, well inside the floor |
 | Accruals / net issuance, post-publication | 354 and 210 mo | 5.36 and 9.00 pp/yr | 2.0 pp/yr | **no**, by 2.7–4.5× |
 | **Correlation among candidate engines** | 497 aligned months | SE ≈ 0.045 on ρ ≈ 0 | 0.3 for breadth | **yes** — this is the resolvable question |
-| **Marginal gold sleeve at 10% weight** | 618–658 months | **0.94–1.04 pp/yr** | 0.30 pp/yr | **no**, by ~3× — the measured effect is +0.04 to −0.42 |
+| **Marginal gold sleeve at 10% weight, pro rata** | 618–658 months | **0.94–1.04 pp/yr** | 0.30 pp/yr | **no**, by ~3× — the measured effect is +0.04 to −0.42 |
+| Same, **financed overlay** — the rule that matters | 618 months | **0.63–0.73 pp/yr** | 0.30 pp/yr | **no**, by ~2× — the measured effect is +0.18 to +0.22 and **the funding rule flips its sign** |
+| **Gold added to a 30% trend overlay** | 605 joint months | **1.67–1.68 pp/yr** | 0.30 pp/yr | **no**, by ~5× — the measured increment is +0.09 to +0.10 |
+| **Correlation between trend and gold** | 605 joint months | SE ≈ 0.041 on ρ ≈ 0.1 | 0.3 for breadth | **yes** — measured +0.072 to +0.141, so they are distinct engines |
 | **Gold's correlation to equity, unconditional** | 658 months | SE ≈ 0.039 on ρ ≈ 0 | 0.3 for breadth | **yes** — measured −0.03 to +0.03 |
 | **Gold's correlation to equity, inside drawdowns** | 294 crisis months | SE ≈ 0.058 on ρ ≈ 0 | **+0.20**, the falsifier in [capital efficiency](capital-efficiency-and-breadth.md) §5b | **yes** — measured −0.011 to +0.084; the bar sits 3.4 SEs above zero and 2.0 above the worst reading |
 
