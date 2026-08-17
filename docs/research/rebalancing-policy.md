@@ -40,6 +40,13 @@ rejection clauses, all firing.
 **This is not an underpowered null.** The effect is large, negative, and its mechanism is
 measured — which distinguishes it from most of the other rejections in this repository.
 
+**And the verdict is scoped to this window and this universe.** The mechanism §3 identifies
+is the drift gap, which ran **35 to 1 against** rebalancing here. On 1963-2020 US against an
+equal-weight ex-US basket the same ratio is **0.3 to 1 in favour**, and rebalancing wins by
+12-18 bp/yr (**§6**, scoping only). The rule generalises; this verdict does not. Quoting
+"rebalancing is rejected" without its window is the error
+[docs/AGENTS.md](../AGENTS.md) names.
+
 **Three findings that matter more than the verdict.**
 
 1. **The closed form for `gamma_star` is confirmed to a tenth of a basis point.** Predicted
@@ -452,13 +459,61 @@ seed 20260813. Every figure is PRETAX.
 
 ---
 
+## 6. The sign reverses on a longer window, exactly where the theory says it should
+
+`as of 2026-08-16`. **Scoping only** — annual, real, local-currency, gross of cost and tax,
+run after the experiment above and not under a frozen specification.
+
+The [16-country long-horizon data](evidence-base.md) landed after this experiment and
+permits the same question over 149 years instead of 35. Against **US versus an equal-weight
+ex-US basket, held 60/40**, deflated by each country's own CPI:
+
+| Window | US geo | ex-US geo | **drift gap** | corr | **`gamma_star`** | gap ÷ `gamma_star` | rebalanced − drifting |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1871–2020 | 6.82% | 5.80% | +1.02 pp | +0.59 | 25.7 bp | 4.0× | **+12.2 bp/yr** |
+| **1963–2020** | 6.28% | 6.22% | **+0.05 pp** | +0.75 | **17.2 bp** | **0.3×** | **+17.9 bp/yr** |
+| 1991–2020 | 7.67% | 7.25% | +0.42 pp | +0.82 | 15.5 bp | 2.7× | — |
+
+**This is not a contradiction of §3; it is §3's own diagnostic, evaluated where it comes out
+the other way.** The experiment above measured a drift gap of **4.34 pp/yr against a
+`gamma_star` of 12.5 bp — 35 to 1** over 1991–2025 on US against developed ex-US, and
+predicted the loss to within 8 bp. From 1963 the same comparison against an equal-weight
+ex-US basket gives **0.3 to 1**, the break-even condition `drift gap < gamma_star` is
+satisfied, and rebalancing wins. The rejection is a finding about **a 35-year window in
+which one region ran away**, not a law.
+
+The 1871 row wins while its ratio is 4.0×, which looks wrong and is not. The asymptotic
+condition is `g_p > max_i g_i`, and here `g_p = 6.68%` against the US's 6.82%, so
+buy-and-hold *should* win **eventually**. It has not won yet at 149 years, because
+convergence is `M(T) + O(1)` and therefore slow — which is §1's "horizon is first-order"
+statement showing up as a measurement.
+
+**Three limits before anyone quotes this.** It is 58 annual observations in the decisive
+row, against 420 monthly ones above. It is **gross** — the experiment above charges costs
+inside the simulation and this does not, though at 0.3 to 1.2 bp/yr costs cannot flip a
+12–18 bp result, and tax could if it were run in a taxable account. And the near-equal
+drift from 1963 is **known only in retrospect**; nobody could have asserted it in 1963.
+
+**What actually matters here is not the 12 to 18 basis points.** It is that the drifting
+60/40 ended the century at **86.3% US**. Buy-and-hold does not hold a global portfolio; it
+holds whichever market won, at the moment the [country ladder](setting-the-equity-share.md)
+says concentration is the thing to avoid. Consequence 2 below was already the right
+conclusion, and this strengthens it: **rebalance to keep the promise, and expect the return
+contribution to be a rounding error of either sign.**
+
+---
+
 ## Consequence for this repository
 
-1. **Rebalancing is `rejected` as a source of return, and the rejection is stronger than
-   the [edge budget](expected-edge-decomposition.md) assumed.** That page books +2.4 bp/yr
+1. **Rebalancing is `rejected` as a source of return *for this experiment's window and
+   universe*, and the rejection is stronger than the
+   [edge budget](expected-edge-decomposition.md) assumed.** That page books +2.4 bp/yr
    against the stated index; the measured figure over 35 years is **−38.7 bp/yr** on the
    portfolio and **−62.9** on the US/developed-ex-US pair. **The budget line is an
-   equal-drift upper bound that a real drift gap removes.**
+   equal-drift upper bound that a real drift gap removes.** §6 finds **+12 to +18 bp/yr**
+   over 1871-2020 and 1963-2020 on a different universe and basis, which is the same
+   theory evaluated where the drift gap is small. **Neither sign is worth building on: the
+   effect is a rounding error in both directions.**
 2. **Rebalancing is retained as a risk-control policy, which is what it demonstrably is.**
    It held exposure within 0.6 to 3.1 percentage points of target against buy-and-hold's
    14.8, for 0.3 to 1.2 bp/yr. **That is a statement about keeping a promise, not about
@@ -468,7 +523,10 @@ seed 20260813. Every figure is PRETAX.
    interval reaching −1.9, and a worse maximum drawdown.**
 4. **The drift gap, not the excess growth rate, is the quantity that decides.** Any future
    code reasoning about constant-weight portfolios must carry `drift gap versus
-   gamma_star` as an explicit, reported comparison. **On this data it was 35 to 1 against.**
+   gamma_star` as an explicit, reported comparison. **On this data it was 35 to 1 against;
+   on 1963-2020 US against equal-weight ex-US it is 0.3 to 1 in favour** (§6). The rule
+   travels, the verdict does not, and quoting the verdict without its window is the error
+   this line exists to prevent.
 5. **`gamma_star` is safe to compute and display; the probability attached to it is not.**
    Displaying the 68.27% floor without the drift gap beside it would be the most misleading
    thing this repository could ship on the subject.

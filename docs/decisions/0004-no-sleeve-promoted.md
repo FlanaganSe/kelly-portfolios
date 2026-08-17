@@ -83,7 +83,7 @@ unsigned**, which is why every product row below points back at a factor row.
 | Investment (CMA) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Re-entry requires a new frozen specification on a genuinely post-2026 window. The current rejection stands |
 | Size | A premium test that has never been run, plus the same product protocol |
 | Trend | A multi-asset attribution leaving a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |
-| Rebalancing as return | A real, investable, low-correlation pair whose drift gap is genuinely below its `gamma_star`. None was found; every pair tested correlated 0.72–0.79 in logs |
+| Rebalancing as return | A real, investable, low-correlation pair whose drift gap is genuinely below its `gamma_star`. **Half-met, and the half that is met does not promote anything.** Over 1963-2020 US against an equal-weight ex-US basket had a drift gap of 0.05 pp/yr against a `gamma_star` of 17.2 bp — the condition holds — but the correlation is **+0.75, not low**, the near-equal drift is known only in retrospect, and the measured prize is **12-18 bp/yr gross** ([rebalancing §6](../research/rebalancing-policy.md)). A rounding error is not a sleeve |
 | Anything fund-level | A licensed, survivorship-free, point-in-time total-return source covering the listed shelf from at least 2003, so the window is 240 months rather than 72. Required contents are specified in the research framework under "The next experiment" |
 
 **Experiment 005 has run and did both things at once.** Value advanced; profitability
