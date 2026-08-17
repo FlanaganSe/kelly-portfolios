@@ -1,0 +1,502 @@
+# FREEZE NOTE — READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# THIS SPECIFICATION IS NOT CONFIRMATORY AND CANNOT BE MADE CONFIRMATORY LATER.
+# It was written after Experiment 011 returned `unresolved` and after that verdict
+# was traced to its trend leg being an AQR vendor series with no stated cost basis.
+# The index construction, the fund-level screen and the window were all chosen with
+# that knowledge. `run_kind: exploratory` is a statement of fact about the order
+# events happened in, not a conservative label.
+#
+# WHAT IS DIFFERENT FROM EXPERIMENT 011, AND IT IS THE WHOLE POINT.
+# Experiment 011's trend leg states no fee, transaction-cost, slippage, roll-cost
+# or financing basis anywhere, is reconstructed in full on every vendor update, and
+# is published by a firm that sells the strategy. This one is the equal-weight
+# average of Form N-PORT Item B.5 monthly total returns filed by real managed-futures
+# funds. Those figures are net of each fund's own ongoing fees, its trading costs,
+# its slippage and its roll, with distributions reinvested, on signed filings the
+# SEC archives permanently. Nothing is backfilled and a fund that died inside the
+# window contributes until it died.
+#
+# WHAT IS WORSE, AND IT DECIDES THE OUTCOME.
+# Public N-PORT filings begin in 2019. The window is about 78 months against the 485
+# Experiment 011 had. The binding constraint has moved from the SERIES to the
+# WINDOW, and the minimum detectable effect reported beside every gap is the
+# measurement of that.
+experiment_family: exp_012_live_trend
+title: >
+  The trend leg rebuilt from live, net, fund-reported returns: what did managed-futures
+  investors actually earn, and how much did the vendor index overstate it?
+entry_point: exp_012_live_trend
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260816
+
+hypothesis: >
+  Two claims, tested on the same months and reported separately because they are
+  different questions.
+  (1) THE OVERLAY CLAIM. Financing a 50% notional overlay of live managed-futures
+  fund returns on top of one unit of US equity raises net geometric growth over
+  levering the equity position to the same volatility. This is Experiment 011's
+  headline claim with its vendor leg replaced by what investors received.
+  (2) THE VENDOR CLAIM. AQR's published TSMOM series overstates what a managed-
+  futures investor could have earned, by an amount this repository has been bounding
+  at 7.7 pp/yr on survivorship, backfill and unpriced trading costs. Measured as the
+  intercept of the vendor series regressed on the live index, so the two are compared
+  at matched exposure rather than at whatever volatility each happens to run.
+
+mechanism: >
+  Equation (1) of `portfolio_edge.studies.overlay_growth`: an overlay of weight w on
+  a base held at exposure L adds `w (a_net - L rho sigma_p sigma_d) - w^2 sigma_d^2/2`
+  to growth. Equation (5) says that at matched volatility the variance terms cancel
+  and only the Sharpe ratio decides, which is why the leverage-matched control is the
+  primary benchmark. Nothing about that algebra changes when the trend leg changes
+  source; what changes is `a_net`. For the vendor series `a_net` is a gross number
+  from which a modelled fee was subtracted, and the vendor's own trading costs were
+  never in it. For a fund's Item B.5 return `a_net` IS the net number, so the modelled
+  fee is zero and the code refuses to run with a non-zero one.
+  For claim (2) the mechanism is McLean and Pontiff (2016) plus the three distortions
+  a fund cannot have: a backfilled index can start a track record after it is known
+  to have worked, a survivorship-filtered index can drop the programmes that failed,
+  and a costless index need not pay to trade. A fund's filed return has none of those
+  degrees of freedom, so the difference between the two series is an upper bound on
+  what those three distortions are worth over these months.
+
+falsifier: >
+  THE OVERLAY CLAIM is rejected when ANY of: (a) the matched-volatility gap
+  `sigma_p (S_portfolio - S_benchmark)` for `equity_plus_trend_50` against the
+  leverage-matched control is at or below zero on the live window, net of the declared
+  costs charged inside the simulation; (b) a leverage-matched control attains a Sharpe
+  ratio at or above the overlay portfolio's, in which case the gain is leveraged beta.
+  It is `unresolved` when (i) the gap's bootstrap interval includes zero, or (ii) the
+  gap is smaller than the minimum detectable effect reported beside it. On a window of
+  roughly 78 months `unresolved` is the EXPECTED outcome and is not a failure of the
+  experiment: it is the measurement that the window, and no longer the series, is the
+  binding constraint.
+  THE VENDOR CLAIM has no falsifier clause and deliberately produces no status of its
+  own, because it is an estimate rather than a test. It is reported as a point estimate
+  with a Newey-West interval, and the repository's 7.7 pp/yr bound is compared with
+  that interval rather than with the point estimate. Under no outcome may this
+  specification produce a status above `exploratory`.
+
+universe:
+  description: >
+    Every fund series that filed a Form NPORT-P in either the 2019Q4 or the 2025Q4 SEC
+    N-PORT structured data set and whose SERIES NAME matches a diversified managed-
+    futures mandate. Screened on names only; no Item B.5 return is read while screening.
+  frame_policy: >
+    The frame is the UNION of the first and the most recent public census, as in
+    Experiment 008. Unlike Experiment 008 it applies NO exchange-listing test, NO asset
+    floor, NO expense-ratio cap and NO inception cutoff. Experiment 008 audited a shelf
+    an investor could buy today; this experiment measures what the mandate delivered, so
+    screening it down to the survivors of a size test would reintroduce exactly the
+    selection the exercise exists to remove. Mutual funds, dead funds and tiny funds are
+    all in.
+  screen_policy: >
+    The mandate and exclusion patterns are Experiment 008's, reused VERBATIM because
+    they were frozen before any fund return was downloaded and rewriting them here would
+    launder that provenance. Judgement enters in exactly one place --
+    `parameters.screen.not_a_futures_programme` -- which names each series it removes and
+    states why, because the pattern matches the word "trend", which a 1958 US large-cap
+    growth mutual fund also carries. Every entry there is a statement about a fund's
+    stated mandate. None of them was made after looking at a return.
+  index_policy: >
+    Equal weight across the funds that filed a return for that month. A fund that died
+    contributes until it died; a fund that launched contributes from launch; nothing is
+    backfilled and no fund is dropped for dying. That is what distinguishes this from a
+    CTA peer-group index, whose survivorship and backfill distortion is of the order of
+    the entire gross premium. It is a fund-average and NOT a dollar-average: N-PORT
+    gives net assets at two dates only, which cannot support a monthly asset weighting.
+  share_class_policy: >
+    A fund's return is the equal-weight mean across the share classes reporting that
+    month. Classes of one fund hold the same portfolio and differ essentially only by
+    fee, so the mean is the fund at the average of the fee levels it offers. Taking the
+    best class would be selection on an outcome and taking the first would be selection
+    on an alphabetical accident. The cross-class spread is measured and reported so the
+    size of the choice is visible.
+  excluded:
+    - Any claim that a residual return measured here is alpha, in either direction.
+    - >
+      Any hedge-fund CTA index or peer-group average, and any use of one as a comparator.
+      Their survivorship and backfill distortion is of the order of the entire gross
+      premium and their 2-and-20 fee load does not transfer to a registered fund.
+    - >
+      Any weight search. The four weight vectors in parameters.portfolios are enumerated
+      constants and nothing is fitted to the panel.
+    - >
+      Any statement that this index is survivorship-free. It is survivorship-BOUNDED.
+
+sample_policy:
+  start: "2019-07"
+  end: "2025-12"
+  held_out: >
+    Nothing after 2025-12 is read. A filing that can only cover months after the window
+    is not downloaded at all, so the holdout is a property of the code rather than a
+    promise. 2019-07 is the first month Item B.5 reports publicly -- the quarter ending
+    2019-09-30 covers July, August and September 2019 -- so no earlier start exists in
+    this source. Both boundaries are properties of the source and neither was chosen to
+    make a number better. Later months exist in the filings and in both comparator
+    files; they are clipped before any statistic is computed.
+  embargo: >
+    Each monthly return became public when its filing was accepted, 30 to 60 days after
+    the reporting period ended. No observation is treated as available on the last day of
+    the month it describes. Both comparator files are pinned by raw sha256 and a new
+    vintage aborts the run.
+  eras:
+    - name: full_window
+      start: "2019-07"
+      end: "2025-12"
+      rationale: >
+        The whole live window. It is not split into sub-periods: 78 months cannot
+        support a sub-period comparison, and computing one would invite reading a
+        difference that the whole window cannot resolve.
+
+benchmark:
+  primary:
+    id: equity_levered_150
+    definition: 1.50 units of US equity, financed at cash plus the declared borrow spread
+    rationale: >
+      The leverage-matched control is the one that decides. Comparing an overlay
+      portfolio with unlevered equity flatters it by exactly what the extra risk earns.
+  secondary:
+    id: equity_only
+    definition: 1.00 unit of US equity
+    rationale: >
+      What an investor who will not borrow gives up. A different question, reported
+      beside the primary and never combined with it.
+  aggregation_rule: >
+    THE TWO CONTROLS MAY NEVER BE ADDED, AVERAGED OR PRESENTED AS ONE LINE. The
+    implementation carries the guard: `require_one_benchmark` raises rather than pooling
+    comparisons whose benchmarks differ.
+
+primary_metric:
+  name: matched-volatility growth gap
+  definition: >
+    `sigma_p (S_portfolio - S_benchmark)`, equation (5) of `overlay_growth`, computed on
+    excess returns net of every declared cost, with the excess-return volatility in both
+    the numerator and the multiplier so the identity holds exactly.
+  units: percentage points per year
+  uncertainty: >
+    Stationary block bootstrap on the paired monthly series, 10000 resamples, mean block
+    length 12 months, 95% percentile interval. A minimum detectable effect at 80% power
+    is reported beside every gap and is expected to exceed it on this window.
+
+secondary_metrics:
+  - name: vendor alpha against the live funds
+    units: percentage points per year
+    note: >
+      The intercept of AQR TSMOM regressed on the live net index, Newey-West standard
+      errors. THE HEADLINE OF THIS EXPERIMENT. Positive would be the survivorship,
+      backfill and unpriced-cost gap; the repository's standing bound is 7.7 pp/yr and
+      must be compared with the INTERVAL, not with the point estimate.
+  - name: vendor less live at matched volatility
+    units: percentage points per year
+    note: >
+      The same difference with the exposure gap removed, because the funds run at a
+      lower volatility than the vendor series does and a raw difference conflates the
+      two.
+  - name: live index excess return, volatility, Sharpe ratio and correlation with equity
+    units: percent per year and ratio
+  - name: net geometric return of the funded portfolio
+    units: percent per year
+    note: the metric decision 0008 makes deciding
+  - name: maximum drawdown and longest run below the running peak
+    units: percent and months
+  - name: break-even haircut on the live trend leg
+    units: percentage points per year
+  - name: attrition of the opening cohort
+    units: count and percent
+    note: A LOWER BOUND, twice over. See parameters.survivorship.
+
+cost_model:
+  applied: fully, inside the simulation, on held notional, every month
+  charged_on: >
+    A management fee on the absolute notional of each sleeve, plus a borrow spread on
+    gross notional above 1.0, both divided by twelve and subtracted from the monthly
+    excess return before any statistic is computed.
+  sleeve_fee_annual_percent:
+    equity: 0.0
+    trend: 0.0
+  sleeve_fee_basis: >
+    THE TREND FEE IS ZERO AND THAT IS ARITHMETIC, NOT OPTIMISM. Form N-PORT Item B.5 is
+    the fund's own total return, already net of its ongoing fees, its trading costs, its
+    slippage and its roll. Experiment 011 charged 1.45%/yr to a vendor series that had
+    never paid one; charging the same here would deduct a fee twice. The implementation
+    raises rather than running with a non-zero trend fee. The equity leg's zero fee IS
+    optimism, in the direction most favourable to the hypothesis.
+  borrow_spread_annual_percent: 0.59
+  borrow_spread_basis: >
+    58.70 bp, the Fleckenstein-Longstaff funding basis averaged over 28 years, recorded
+    in `docs/research/structural-and-tax-edges.md` section 3. It is charged to the
+    leverage-matched controls on exactly the same terms as to the overlay portfolios.
+  not_charged:
+    - >
+      Tax. The simulation holds no tax lots, so it cannot know a basis, so it may not
+      price a realisation. Managed futures are the worst case for that omission: the
+      prospectus after-tax tables read in Experiment 008 show a distribution tax drag
+      this experiment cannot see.
+    - >
+      Portfolio-level rebalancing costs. Weights are constant and the simulation
+      rebalances to them monthly at no charge.
+    - >
+      The bid-ask spread and brokerage an investor pays to buy the funds themselves.
+
+rebalance_rule:
+  frequency: monthly, back to the frozen constant weights
+  execution: >
+    Weights are constants and returns are monthly, so there is no signal, no lag and no
+    execution convention to choose. The overlay legs are financed rather than funded by
+    sale: the equity weight stays at 1.0 and the sleeve notional is added on top.
+  no_optimiser: >
+    Nothing searches a weight space. The four vectors in parameters.portfolios are
+    enumerated constants, and they are Experiment 011's so that the two results are
+    comparable line for line.
+
+inference:
+  bootstrap: stationary block bootstrap on the paired monthly series
+  block_length_policy: >
+    Mean block length frozen at 12 months, matching Experiment 011 so the two intervals
+    are produced the same way.
+  multiple_testing_correction: >
+    None is needed: one candidate portfolio is compared against each of two benchmarks,
+    and the two benchmarks are two families rather than one.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval that includes zero is reported as `unresolved` and never narrowed by
+    changing the estimator. The minimum detectable effect at 80% power is reported beside
+    every gap, and on this window it is expected to exceed the gap.
+
+rejection_rule: >
+  Mark `rejected` when a falsifier clause fires. Mark `unresolved` when the matched-
+  volatility gap against the leverage-matched benchmark is positive but its 95% interval
+  includes zero, or when it is smaller than the minimum detectable effect. `unresolved`
+  is the expected outcome on 78 months and is a measurement of the window rather than a
+  failure. Under no outcome may this specification produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_vendor_series_evaluation: false
+    is_independent_replication: false
+    is_confirmatory: false
+    statement: >
+      The trend leg here is not a vendor series and not a replication. It is a census of
+      what registered funds reported to their regulator. That removes the fee, cost,
+      backfill and death-of-a-fund objections to Experiment 011's leg and replaces them
+      with a much shorter window and an unaudited, self-reported figure.
+    order_of_operations: >
+      Experiment 011's result was known when this file was written, and its unresolved
+      verdict is the reason this file exists. That is recorded here, in run_kind, and in
+      the freeze note.
+  survivorship:
+    statement: >
+      BOUNDED, NOT REMOVED, AND EVERY ATTRITION FIGURE IS A LOWER BOUND. Two holes, and
+      the second is specific to this design and worse than the first.
+    hole_one: >
+      Public N-PORT filings begin in 2019, so a managed-futures fund that closed before
+      2019Q4 is invisible to both censuses. The managers alive in 2019 are the ones who
+      survived to 2019.
+    hole_two: >
+      A fund that BOTH launched after 2019Q4 AND closed before 2025Q4 appears in NEITHER
+      census, so it is missing from this index entirely. Unlike hole one, this one
+      removes funds from inside the window. Closing it requires the intermediate
+      quarterly censuses, which this experiment does not read; that is the single
+      cheapest improvement available to a successor.
+    direction: >
+      Both holes delete funds that failed, so both flatter every return reported here.
+      A live index that is too high makes the vendor-less-live difference too LOW, which
+      is the direction that would hide the gap this experiment is looking for.
+  measurement_limits:
+    item_b5_is_unaudited: >
+      Fund-reported and unaudited. Form N-PORT General Instruction G lets each filer use
+      its own internal methodology, so two funds' returns are not guaranteed to be
+      computed identically.
+    no_corroboration_exists: >
+      The repository's cross-source check returned an HTTP error for all 44 US and all 25
+      ex-US tickers, so Item B.5 is the SOLE measurement of every fund return here. That
+      limitation is recorded in `docs/research/evidence-base.md` and travels with these
+      numbers.
+    name_screen_is_incomplete: >
+      A diversified futures programme whose series name carries none of the mandate
+      tokens is not in this census at all. The count of funds is therefore a lower bound
+      on the shelf, as well as the attrition being a lower bound on the deaths.
+    edgar_series_feed_can_be_short: >
+      EDGAR's series-filtered filing feed does not always reach back to a fund's first
+      N-PORT filing: DBMF launched in 2019-05 and its feed begins 2021-07. Where that
+      happens the fund simply enters the index later, which loses observations and
+      cannot bias a month's cross-section.
+  materiality_threshold_annual_percent: 0.30
+  minimum_funds_per_month: 10
+  minimum_funds_rationale: >
+    The first and last months of an N-PORT window are thin because filers' fiscal
+    quarters differ, and an index month resting on three funds is a different statistic
+    from one resting on thirty. Ten truncates the ends rather than filtering the middle,
+    and the code refuses to splice around a hole.
+  robustness_arms:
+    largest_funds_minimum_net_assets_usd: 250000000
+    definition: >
+      Three subsets, each defined by something in the committed census or by a fund's own
+      filing coverage, never by a return. The first is the one that matters: AQR authors
+      the comparator series AND runs several of the funds in the index, so the comparison
+      is not independent while they are in it. The other two -- the balanced panel and
+      the largest funds -- are SURVIVORSHIP SCREENS, reported only to show how much the
+      entry and exit of funds moves the index, and never as the headline.
+  repository_bias_bound_percent_per_year: 7.7
+  repository_bias_bound_source: >
+    The CTA survivorship-plus-backfill bound used throughout
+    `docs/research/capital-efficiency-and-breadth.md`. It is the quantity the vendor
+    alpha measured here is compared against, and it must be compared against the
+    INTERVAL rather than the point estimate.
+  screen:
+    mandate_pattern: '\b(managed\s+futures|trend|cta|systematic\s+macro|time[-\s]series\s+momentum|mlm\s+index)\b'
+    exclusion_pattern: '\b(equit\w*|stock\w*|bond\w*|fixed[-\s]income|income|dividend|credit|yield|municipal|treasur\w*|commodit\w*|currenc\w*|gold|silver|energy|utilit\w*|technolog\w*|health\w*|financ\w*|industrial\w*|staples|consumer|real\s+estate|sector|large[-\s]?cap|mid[-\s]?cap|small[-\s]?cap|allocation|balanced|target|buffer|option|covered\s+call|leverag\w*|inverse|ultra|[23]x|emerging|international|developed)\b'
+    pattern_provenance: >
+      Both patterns are Experiment 008's, reused verbatim. They have one known defect,
+      recorded rather than fixed: the exclusion pattern removes the Credit Suisse Managed
+      Futures Strategy Fund because the SPONSOR's name contains "credit". Editing the
+      pattern after seeing which funds it caught would destroy the provenance that makes
+      it worth reusing, so the fund is excluded and the defect is written down.
+    not_a_futures_programme:
+      S000007496: >
+        Fidelity Trend Fund is a US large-cap growth mutual fund launched in 1958.
+        "Trend" is its name, not its mandate.
+      S000054127: >
+        VanEck Long/Flat Trend ETF rotates between US equity and cash. One asset class,
+        not a diversified futures programme.
+      S000082111: >
+        Global X Bitcoin Trend Strategy ETF trades one asset.
+      S000085612: >
+        SMI 3Fourteen Full-Cycle Trend ETF is a multi-asset allocation fund rather than a
+        futures programme.
+      S000094703: >
+        Smart Trend 25 ETF is a single-asset-class equity trend rotation.
+  portfolios:
+    - name: equity_only
+      weights: [1.0, 0.0]
+      role: unlevered control
+    - name: equity_plus_trend_50
+      weights: [1.0, 0.50]
+      role: headline candidate
+    - name: equity_levered_135
+      weights: [1.35, 0.0]
+      role: leverage-matched control
+    - name: equity_levered_150
+      weights: [1.50, 0.0]
+      role: leverage-matched control, primary benchmark
+  portfolio_note: >
+    The weights are Experiment 011's, unchanged, so the two results can be read line for
+    line. They were chosen there after that panel's moments were seen, and reusing them
+    inherits that; it does not launder it.
+  haircut_sweep:
+    applies_to: trend
+    start_percent_per_year: 0.0
+    stop_percent_per_year: 12.0
+    step_percent_per_year: 1.0
+    portfolio: equity_plus_trend_50
+    rationale: >
+      The same sweep Experiment 011 ran, so the two break-evens are comparable. The shift
+      is applied inside the simulation, so it moves the mean and nothing else and the
+      sweep is exactly linear.
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch ABORTS before any statistic is computed. Ken French rebuilds
+      from each CRSP vintage and AQR reconstructs its full history on every update, so an
+      unrecognised hash is a NEW VINTAGE rather than a corrupted download. The N-PORT
+      data sets are pinned in the committed census instead, because they are read while
+      building it rather than while running.
+    french:
+      dataset_id: french_us_ff3
+      table_id: monthly
+      columns: ["Mkt-RF", "RF"]
+      expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+      role: >
+        `Mkt-RF` is the equity leg, used as published. `RF` is the cash rate, and it is
+        French's own rather than the Goyal-Welch `Rfree` Experiment 011 used, because the
+        Goyal-Welch file ends before this window does and because taking both from one
+        file leaves no cross-source date alignment to get wrong.
+    aqr:
+      dataset_id: aqr_tsmom_factors
+      table_id: monthly
+      columns: ["TSMOM"]
+      expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+      role: >
+        The vendor series under test. It appears in NO portfolio here: its only job is to
+        be the dependent variable of the regression that measures what it overstates.
+
+data_sources:
+  - id: nport_structured_data_sets
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2019q4_nport.zip
+    construction: >
+      The union census of 2019Q4 and 2025Q4, screened on series names and committed to
+      `data-manifests/exp_012/live_trend_census.json` before any return was read.
+  - id: nport_item_b5_monthly_total_returns
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=NPORT-P&output=atom
+    construction: >
+      Every NPORT-P filing EDGAR lists for each admitted series, parsed for Item B.5
+      monthly total return per share class, converted from filed percent to decimal.
+      Fund-reported and UNAUDITED.
+  - id: french_us_market_excess_return
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    construction: >
+      Sheet `TSMOM Factors`, column `TSMOM`, excess of cash per the workbook's own header
+      row. The comparator, never a portfolio leg.
+
+hostile_tests:
+  - >
+    Charge the borrow spread to the leverage-matched controls on exactly the same terms
+    as to the overlay portfolios. Not charging it is the error this test exists to catch,
+    and it changes the sign of the comparison.
+  - >
+    REFUSE TO RUN with a non-zero fee on the trend leg. Item B.5 has already deducted
+    one, and the double deduction would be invisible in the output. The implementation
+    raises rather than warning.
+  - >
+    Report the AQR vendor series' own moments over the SAME 78 months, so that a reader
+    can see whether the live funds underperformed the index or whether the index simply
+    had a poor window. These are different findings and only the second is true here.
+  - >
+    Report the number of funds behind every month of the index, and refuse to splice
+    around a month that falls below the declared floor.
+  - >
+    Report the attrition of the opening cohort with both survivorship holes named, and
+    state the direction each one biases the result in.
+  - >
+    Report the cross-share-class return dispersion per fund, so the size of the
+    share-class averaging choice is visible rather than assumed small.
+  - >
+    Sweep a 0 to 12 pp/yr haircut on the live trend leg and report where the overlay
+    stops paying against each benchmark separately. The break-even is expected to be far
+    thinner than Experiment 011's 9.57 pp/yr, and the reason is the window rather than
+    the leg.
+  - >
+    Report the minimum detectable effect beside every gap and mark any gap below it
+    `unresolved` rather than positive.
+
+reporting_requirements:
+  - >
+    Every attrition figure is stated as a LOWER BOUND, with both survivorship holes
+    named. A figure quoted without them is a misquotation.
+  - >
+    The minimum detectable effect is stated beside every gap. A positive point estimate
+    below it is not evidence of an effect.
+  - >
+    The vendor alpha is quoted with its interval and compared with the 7.7 pp/yr bound
+    through that interval, never through the point estimate.
+  - >
+    No figure here is described as survivorship-free, as audited, or as independently
+    corroborated. Item B.5 is the sole measurement.
+
+notes: >
+  This experiment answers the question Experiment 011 could not, and creates a new one.
+  It removes the vendor's unpriced costs, its backfill and its reconstruction from the
+  trend leg. It cannot remove the fact that Form N-PORT starts in 2019, and on 78 months
+  the portfolio comparison is expected to be unresolved whatever the truth is. The result
+  that survives a short window is the vendor comparison, because two highly correlated
+  series differenced against each other have a far smaller residual than either has a
+  mean.

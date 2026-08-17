@@ -40,6 +40,7 @@ SPEC_NAMES = (
     "exp_010_marginal_sleeve_value",
     "exp_010b_growth_basis",
     "exp_011_overlay_stack",
+    "exp_012_live_trend",
     "phase1_ff_reproduction",
 )
 

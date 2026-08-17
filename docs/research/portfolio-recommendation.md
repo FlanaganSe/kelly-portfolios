@@ -130,7 +130,7 @@ total allocation rather than added to it.
 | Sleeve | Fund | ER | Size | Where | Verdict |
 | --- | --- | ---: | --- | --- | --- |
 | Small-cap value | **VBR** | 0.05% | 0–20% of US equity | treat as US equity in §3 | `exploratory` product, `exploratory` premium, **chain negative on the defensible reading**, and its marginal credit against an equity core is **−0.181 pp/yr per unit weight** |
-| Managed futures | **DBMF** | 0.85% | 0–10% of total | **tax-deferred only** | `exploratory` product, index `unresolved`; **single-product risk** |
+| Managed futures | **DBMF** | 0.85% | 0–10% of total | **tax-deferred only** | `exploratory` product, index `unresolved`; **single-product risk**. **And it is the pro-rata vehicle — see below** |
 
 Two sizing notes, because both weights are judgements and neither is measured. **VBR's
 yield is higher than the market's, which raises its shelter priority above plain US equity
@@ -153,6 +153,16 @@ equity** contributes **ΔSharpe +0.050** at the repository's full 7.7 pp/yr CTA 
 haircut — **identical on a US and on a global base to three decimals** — while the same
 base levered to the identical volatility contributes **+0.001**. That is the test that
 separates breadth from beta, and it passes.
+
+**The vehicle decides which bar applies, and this table names the wrong one.** Holding
+DBMF beside equity means *selling equity to buy it* — the pro-rata rule, bar about
++2.44 pp/yr, which trend does not clear. A return-stacked ETF delivers a dollar of
+equity *and* a dollar of managed futures per dollar held, so nothing is sold — the
+overlay rule, bar near zero. **Same strategy, same evidence, opposite verdict, decided
+by the ticker.** Thirteen such funds now file with the SEC, none of which existed in
+the 2019Q4 census; the largest managed-futures one held **$292.8m** at 2025Q4. That the
+shelf is real is a point in favour; that **none of it is six years old** is a closure
+and methodology-change risk a longer-lived product would not carry.
 
 **It is still not promoted, for three reasons that are not about the arithmetic.** The
 trend leg rests on a vendor series stating no cost basis anywhere, against a bias bound

@@ -24,11 +24,14 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
 2. **Leverage on equity alone is not the answer.** The realised growth optimum on 100 years
    of US data is about **2.2×, at a −99.3% maximum drawdown and 296 months under water.**
    The drawdown constraint sets exposure; the growth objective never does.
-3. **Breadth is one engine that matters, not four.** Every alternative risk premium tested
-   passes the *correlation* test and almost all fail the *cost* test — post-publication
-   gross returns of 0.3–1.0%/yr at 2–5% volatility do not survive a retail fee. Commodities
-   pass admission but at a fifth of trend's margin, and credit is treasuries under another
-   name at +0.835.
+3. **Breadth is limited by the vehicle shelf, not by markets.** This page previously said
+   "breadth is one engine". **A red team falsified that framing.** At least four engines
+   clear the *overlay* bar and fail the *pro-rata* bar — trend, duration-hedged credit,
+   long/short commodities and catastrophe bonds — and **only trend has a financed retail
+   wrapper.** The binding constraint is which strategies happen to have a futures market
+   deep enough to build a return-stacked fund on, which is a fact about the fund industry
+   rather than about return premia. Separately, the alternative risk premia do fail on
+   cost: 0.3–1.0%/yr gross post-2019 at 2–5% volatility against a ~1.5% retail wrapper.
 4. **Trend is the one engine that survives, and it survives as risk reduction rather than
    as return.** Its left-tail contribution is positive at every haircut tested, including
    one that turns its median contribution negative.
@@ -355,6 +358,45 @@ that bet.
 That is a **statement about the distribution of outcomes, not a prediction of returns**, and
 it should never be quoted as evidence that global diversification raises expected return. On
 the evidence available it does not.
+
+### The vehicle decides the sign, and this repository has been naming the wrong one
+
+**This is the practical payoff of §1 and it took a red team to notice it.** The funding
+rule is not a modelling choice a reader makes; it is a property of the *fund they buy*.
+
+- **A standalone managed-futures ETF is a pro-rata vehicle.** Holding DBMF beside equity
+  means selling equity to buy it. That is expression (2), and the bar is `a_p -
+  sigma_p**2 (1 - beta)` — about **+2.44 pp/yr** at a 5% forward equity premium. Trend
+  does not clear it.
+- **A return-stacked ETF is an overlay vehicle.** One dollar of RSST delivers roughly a
+  dollar of equity *and* a dollar of managed futures, so nothing is sold. That is
+  expression (1), and the bar is `rho sigma_p sigma_d` — near zero, and **negative** at
+  trend's measured correlation.
+
+**Same strategy, same evidence, opposite verdict, decided entirely by the ticker.**
+[The recommendation](portfolio-recommendation.md) names **DBMF**, which is the vehicle
+that gets the worse bar.
+
+**The shelf exists and is measurable, which the audit had assumed it was not.** From the
+SEC N-PORT census, 2025Q4, net assets as filed:
+
+| Series | Net assets | In the 2019Q4 census? |
+| --- | ---: | --- |
+| WisdomTree U.S. Efficient Core (NTSX) | $1,262.6m | **no** |
+| Return Stacked Global Stocks & Bonds | $381.8m | **no** |
+| **Return Stacked U.S. Stocks & Managed Futures** | **$292.8m** | **no** |
+| Return Stacked U.S. Stocks & Futures Yield | $116.2m | **no** |
+| Return Stacked Bonds & Managed Futures | $86.9m | **no** |
+| eight more | $24m–$434m | **no** |
+
+**Thirteen capital-efficient series exist and not one of them appears in the 2019Q4
+census.** None is marked as a final filing, so none is winding down. Two consequences
+pull in opposite directions and both are real: the overlay **is** implementable by a
+retail investor in an ordinary IRA, and **the entire shelf is younger than six years**,
+so every one of these funds carries genuine closure and methodology-change risk that a
+longer-lived product would not.
+
+---
 
 ### Can valuation settle it? No — measured, not assumed
 

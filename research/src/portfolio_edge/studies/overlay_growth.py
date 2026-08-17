@@ -80,6 +80,27 @@ times the incumbent's. **At negative correlation the threshold is negative**, so
 diversifier with a small negative expected excess return can still raise growth. That
 is not a loophole; it is the same statement as (3) seen from the other side.
 
+**Two ways to misuse this module, both found in review rather than in theory.**
+
+*First, (4) silently mis-scores a high-correlation sleeve.* Applied mechanically to a
+covered-call or put-writing index at ``rho = 0.86``, the bar is about 0.20 and the
+sleeve's standalone Sharpe of 0.55 clears it — yet its measured CAPM alpha is
+**-0.09%/yr** and its Sharpe is *below the market's* over the same window. The
+threshold is a **first-order** condition at ``w = 0``: at high correlation almost all
+of the marginal contribution is alpha, the first-order term is a small difference of
+large numbers, and the estimate is swamped. **Do not read (4) as an admission test
+above roughly ``|rho| = 0.5``**; there, compute the alpha and its standard error
+instead. The condition is exact for the model and useless as a decision rule where the
+sleeve is mostly the base in disguise.
+
+*Second, (3) is a forecast and it changes sign.* The gap ``a_p - sigma_p**2`` is zero
+at ``a_p = sigma_p**2`` — **2.56%/yr at a 16% volatility** — and **negative below it**,
+where selling the base to fund a sleeve is *better* than financing it. It is stated
+above as "+2.44 pp/yr" using ``a_p = 5.0%``, which is an assumed forward equity
+premium and not a measurement. A CAPE-implied forward premium sits below 2.56%, so the
+sign of this module's central result is live rather than settled. **Anything quoting
+the gap must quote the ``a_p`` that produced it.**
+
 **The honest control, and it is unforgiving.** None of the above establishes that an
 overlay beats simply levering the base to the same risk. At matched volatility
 ``sigma_total``, the levered base grows at
