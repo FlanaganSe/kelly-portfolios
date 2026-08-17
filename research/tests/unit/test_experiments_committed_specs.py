@@ -41,6 +41,7 @@ SPEC_NAMES = (
     "exp_010b_growth_basis",
     "exp_011_overlay_stack",
     "exp_012_live_trend",
+    "exp_013_us_products_union_frame",
     "phase1_ff_reproduction",
 )
 
