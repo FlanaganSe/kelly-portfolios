@@ -19,6 +19,10 @@ randomness the generator seed is an explicit argument with a committed default.
 * :mod:`time_series_momentum` — the trend strategy built here rather than bought from
   a vendor, so Experiment 011's `unresolved` verdict can be tested against a series
   whose provenance this repository controls. Reads no market data.
+* :mod:`overlay_stress` — the same overlay attacked rather than priced: a joint stress
+  surface over four correlated axes, a resampled test of the flat-drawdown result the
+  recommendation rests on, and the failure modes ``docs/the-plan.md`` names. Reads no
+  market data; ``_overlay_stress_tables`` is the companion that touches the cache.
 * :mod:`tax_structure` — the contractual, tax-code half of that budget: foreign tax
   credit forfeiture, fund-structure capital gains, §1256, the value of deferral, the
   decay of loss harvesting, and the arithmetic of capital efficiency. Rates are a dated,

@@ -91,7 +91,10 @@ and current status.
   distinct return engines actually exist once cost is charged (one), the candidate frontier
   against a leverage-matched control, and why the global-versus-US question is unresolved:
   the century of local-currency data and the only USD series available disagree in opposite
-  directions.
+  directions. Also carries the joint stress surface that replaces the univariate table, and
+  the destruction test of the flat-drawdown result the overlay weight rests on — it
+  survives resampling at 30% notional, fails at 200%, is worse in four of nine crisis
+  windows, and breaks on a correlation that turns positive inside equity drawdowns only.
 - [Numerical engine specification](research/portfolio-engine-specification.md) — the
   algorithms, closed-form fixtures and conditioning requirements underneath any allocation
   feature, and where the optimiser should run.

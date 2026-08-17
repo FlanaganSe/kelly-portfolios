@@ -59,6 +59,30 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
    USD evidence here it does not — but that the US is the survivor and its record cannot be
    bought in advance. **An earlier draft of this page claimed global was the largest certain
    improvement available; building the frontier falsified that and the claim is withdrawn.**
+6. **The flat drawdown is real at the recommended weight, and three things about it were
+   never stated.** Resampled 4,000 times, the overlay's drawdown is the deeper one in
+   **6.9%** of histories at 30% notional — and in **78.7%** at 200%, so §7's `w = 2.00`
+   row is a lucky path. The result is measured on a window **starting 1934-07**, from
+   which 1929-32 is excluded by the trend leg's burn-in; rebuilt to cover it, the baseline
+   drawdown is **−83.65%**, not −50.3%, and the overlay still shallows it monotonically.
+   And it is **not** flat inside every crisis: the overlay makes 1987, 2022 and the
+   late-1970s **worse**, by 1.4 to 7.7 pp at 1.0× notional. **§9.**
+7. **The recommendation breaks on one condition and it is precisely monitorable.** Forcing
+   trend's correlation to equity to **+0.30 inside equity drawdowns only** — a full-sample
+   correlation of just +0.29 — turns the flat drawdown into a **3.6 pp deeper** one at 30%
+   notional and an **11 pp deeper** one at 100%, while barely touching growth. **§5a stresses
+   the unconditional correlation and finds the overlay survives to +0.50; the conditional
+   correlation is the one that matters and it was never varied.** §5b's boundary adds the
+   return condition: at a forward trend excess return of 2.0% the overlay dies at a
+   correlation of +0.20 or above, and at 0.0% it is behind at any correlation.
+8. **Fund closure is the modal outcome, not a tail.** Thirteen of the twenty-five
+   managed-futures funds filing at 2019-07 had stopped by 2025-12 — a **10.7%/yr** hazard,
+   giving **43%** over five years and **90%** over twenty. Methodology change cannot be
+   estimated at all and the page says so rather than guessing. **§9.4.**
+9. **A five-year review cannot see this edge.** Its minimum detectable effect at five
+   years is **3.84 pp/yr** against a measured gap of **+1.50**, and a bad five-year review
+   is followed by a *positive* next five years. The investor's stated intent to reassess at
+   five years is, on this evidence, a plan to sell after bad luck.
 
 ---
 
@@ -798,17 +822,250 @@ never tested and which its detection floors could not resolve if it tried.
 
 ---
 
+## 9. The flat drawdown attacked, and the failure modes priced
+
+All of this is `exploratory`. The panel is Experiment 011's, minus its vendor trend leg,
+with the leg rebuilt by [`time_series_momentum`](../../research/src/portfolio_edge/studies/time_series_momentum.py);
+the specification was written after §7's numbers were known, and no re-run converts that.
+Regenerate with `uv run python -m portfolio_edge.studies.overlay_stress`.
+
+### 9.1 The drawdown, resampled
+
+Circular block bootstrap, 24-month blocks, 4,000 **paired** resamples, seed 20260816,
+60 bp financing charged. The statistic is `mdd(w) − mdd(0)`: **positive means the overlay
+drew down less** than unlevered equity on the same resampled history.
+
+| `w` | observed | mean | 95% interval | **`P`(overlay deeper)** |
+| ---: | ---: | ---: | --- | ---: |
+| 0.25 | +0.91% | +3.62% | `[−0.98%, +9.95%]` | **6.5%** |
+| **0.30** | **+0.92%** | +4.18% | `[−1.18%, +11.60%]` | **6.9%** |
+| 0.50 | +0.88% | +5.83% | `[−2.37%, +17.80%]` | 9.6% |
+| 1.00 | +0.56% | +5.69% | `[−7.65%, +22.98%]` | 26.9% |
+| 2.00 | **−2.05%** | −7.69% | `[−28.01%, +12.55%]` | **78.7%** |
+
+**The flat-drawdown property is not an artefact of one path at the recommended weight, and
+it is at 3.0× gross.** At `w = 0.30` there is a 6.9% chance the overlay's drawdown is the
+deeper one, and the interval barely crosses zero. At `w = 2.00` it is 78.7% and the
+observed −2.05% is the *good* end of a distribution centred on −7.69%. §7's `w = 2.00` row
+is therefore a lucky path, and the one place the published ladder should not be quoted.
+
+**No minimum detectable effect is quoted here and none exists.** Maximum drawdown is an
+order statistic of a path, not a mean, so the MDE machinery does not apply; the interval
+width is the resolution statement and it is enormous — ±10 pp at the recommended weight.
+**Anyone reading the −49.3% and −50.3% cells as a 1.0 pp difference is reading noise.**
+
+### 9.2 The crisis windows, which are not flat
+
+Peak-to-trough inside each episode `docs/the-plan.md` names, 60 bp financing charged.
+
+| Window | n | `w = 0.00` | `w = 0.30` | `w = 1.00` |
+| --- | ---: | ---: | ---: | ---: |
+| 1937-38 | 13 | −49.33% | −48.69% | −47.64% |
+| **1973-74** | 24 | −44.95% | **−33.49%** | **−16.49%** |
+| **late-1970s inflation** | 39 | −11.99% | **−13.19%** | **−16.69%** |
+| **1987** | 5 | −29.85% | **−31.84%** | **−37.57%** |
+| 1998 | 4 | −15.62% | −15.77% | −16.10% |
+| 2000-02 dotcom | 30 | −44.99% | −40.15% | −33.05% |
+| 2008-09 GFC | 16 | −47.99% | −41.91% | −26.43% |
+| 2020 Q1 covid | 3 | −20.22% | −18.36% | −13.95% |
+| **2022 inflation** | 12 | −20.49% | **−20.70%** | **−22.17%** |
+| **1929-32 great crash** | 34 | *not in the panel* | | |
+
+**The overlay makes the drawdown worse in four of nine episodes**, and the pattern is the
+mechanism §4 describes rather than noise: it loses in the *sharp* ones (1987, five months)
+and in the ones where its own positions were caught wrong-footed by a reversal (2022,
+late-1970s), and wins by large margins in the sustained ones (1973-74, dotcom, GFC).
+**"Maximum drawdown is flat in `w`" is a statement about the full path's single worst
+episode and is false conditional on the episode.** An investor who meets 1987 first sees
+the overlay add two points of loss.
+
+**The 1929-32 arm required rebuilding the trend leg.** Dropping the outer volatility target
+moves its start to 1929-07 and gives 1,151 months; the raw leg carries 6.27% volatility
+against the published leg's 12.46%, so weights are multiplied by 1.99 to match the risk
+contribution. That factor is a single full-sample constant, look-ahead **in level only** —
+it changes no sign and no date and cannot manufacture a drawdown result, but the growth
+figures below are not out-of-sample.
+
+| `w` | geometric | max drawdown | under water | 1929-32 peak-to-trough |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 9.62% | **−83.65%** | 184 mo | −82.77% |
+| 0.30 | 11.46% | −82.01% | 164 mo | −80.87% |
+| 1.00 | 15.22% | −78.08% | 77 mo | −76.17% |
+| 2.00 | 19.20% | −72.70% | 74 mo | −69.37% |
+
+**The flat-drawdown claim survives its hardest test and the baseline does not.** Over the
+window that contains 1929-32, adding overlay notional *monotonically reduces* maximum
+drawdown, from −83.65% to −72.70% at 3.0× gross. **But the level is −83.65%, not −50.3%**,
+so the recommendation's own drawdown budget is set by a number this page states in §2 and
+§7 does not use.
+
+### 9.3 The assumption §5a never varied
+
+`stress_crisis_correlation` forces trend's correlation to equity to a target **inside equity
+drawdowns only** — months where equity sits ≥10% below its running peak, 469 of 1,091 — by
+a rotation that preserves the crisis-window mean and volatility of the trend leg exactly.
+So only co-movement changes.
+
+| crisis `rho` | full-sample `rho` | `w = 0.30` max DD | `w = 1.00` max DD | `w = 0.30` geometric |
+| ---: | ---: | ---: | ---: | ---: |
+| −0.20 (measured region) | +0.018 | −49.48% | −50.02% | 12.99% |
+| 0.00 | +0.127 | −50.87% | −54.39% | 12.91% |
+| **+0.30** | +0.292 | **−52.86%** | **−60.31%** | 12.80% |
+| +0.60 | +0.457 | −54.76% | −65.54% | 12.69% |
+| +0.90 | +0.621 | −56.53% | −70.12% | 12.58% |
+
+And with the trend leg additionally earning **zero** inside those months — the plan's
+"simultaneous loss in both sides of a return stack", against an unlevered base at 11.13%:
+
+| crisis `rho` | `w = 0.30` max DD | `w = 1.00` max DD | `w = 0.30` geometric |
+| ---: | ---: | ---: | ---: |
+| 0.00 | −51.55% | −57.51% | 11.97% |
+| **+0.30** | **−53.53%** | −62.37% | 11.86% |
+| +0.90 | −57.15% | −71.58% | 11.64% |
+
+**This is the condition under which the recommendation is wrong, and it is the only one
+that breaks the drawdown argument cleanly.** A crisis-conditional correlation of +0.30 —
+which is a *full-sample* correlation of only +0.29, well inside what §5a treats as
+survivable — turns the flat drawdown into a 3.6 pp deeper one at the recommended weight
+and an 11 pp deeper one at 1.0×. **At +0.30 crisis correlation and a zero crisis return
+the overlay still adds 0.73 pp/yr of growth and costs 3.2 pp of drawdown.** That is a
+different trade from the one §7 describes, and a reader who accepted §7 because the
+drawdown was flat has not agreed to it.
+
+**Note what did not break it.** Correlation stress alone never turns the growth gap
+negative at 30% notional — the geometric return falls only from 12.99% to 12.58% across
+the entire range. §5a's ordering holds: correlation is a drawdown risk, not a return risk.
+
+### 9.4 The named failure modes, with a probability or a reason there is none
+
+**Forced deleveraging inside the stacked fund.** A drawdown-control mandate that cuts the
+overlay to zero when the fund's own NAV falls `trigger` below its peak and restores it only
+at a new high. The state variable is the stacked fund's own path, so the constraint is
+endogenous.
+
+| trigger | restore at | months cut | geometric | max DD | growth cost | drawdown change |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| −15% | prior peak | 350 of 1,091 | 12.46% | −52.26% | **−0.53 pp/yr** | **−2.86 pp** |
+| −20% | prior peak | 282 | 12.59% | −52.26% | −0.41 | −2.86 |
+| −20% | 90% of peak | 225 | 12.70% | −52.26% | −0.29 | −2.86 |
+| −30% | prior peak | 174 | 12.80% | −51.33% | −0.19 | −1.93 |
+
+**Risk control applied to the stack makes both the return and the drawdown worse.** It cuts
+the diversifier after the loss and restores it after the recovery, which is exactly
+backwards, and it costs 0.19–0.53 pp/yr *and* 1.9–2.9 pp of drawdown. **Probability: this
+is a property of the fund's stated mandate, not a random event.** It is a due-diligence
+question — does the wrapper carry a drawdown-triggered de-risking rule — with a yes/no
+answer, and it should be asked before the fund is bought.
+
+**Simultaneous loss in both legs**, measured over 1,091 months:
+
+| | |
+| --- | ---: |
+| `P`(equity loses) | 0.389 |
+| `P`(trend loses) | 0.405 |
+| **`P`(both lose in the same month)** | **0.192** |
+| independence benchmark | 0.157 |
+| Gaussian-copula benchmark at the measured correlation | 0.159 |
+| **lift over independence** | **1.22×** |
+| `P`(trend loses \| equity in its worst decile) | 0.427 |
+| worst single month, both legs summed | −34.66% |
+
+**Both legs lose together in one month in five, 22% more often than independence and 21%
+more often than a Gaussian copula at the measured correlation predicts.** That excess is
+tail dependence the correlation does not carry, and it is the number to hold in mind rather
+than the −0.07: **a correlation of −0.07 does not mean the legs rarely lose together.**
+
+**Fund closure.** The only cohort this repository has measured is
+[Experiment 012](live-managed-futures.md)'s: **13 of the 25 managed-futures funds filing at
+2019-07 had stopped filing by 2025-12.** Under a constant hazard with a Clopper-Pearson
+interval on the cohort proportion:
+
+| | |
+| --- | ---: |
+| annual hazard | **10.7%** `[5.6%, 17.9%]` |
+| `P`(the fund held closes within 5 years) | **43.1%** `[25.1%, 62.6%]` |
+| `P`(within 10 years) | 67.7% `[43.9%, 86.0%]` |
+| `P`(within 20 years) | **89.5%** `[68.5%, 98.1%]` |
+
+Two things weaken it in opposite directions and both are stated rather than netted. Fund
+mortality is front-loaded, so a constant rate **understates** the first years and overstates
+the later ones. And Experiment 012's own attrition figure is a **lower bound** twice over,
+because a fund that both launched and died inside the window appears in neither census.
+**Consequence: closure is not a tail risk. It is the modal outcome over a twenty-year
+hold**, and the recommendation must name a successor or accept a forced transition.
+
+**Methodology change: not estimated, and here is why.** N-PORT records returns and net
+assets, not prospectus amendments, so a fund that stays open and changes its leverage
+target, its trend model or its sub-adviser produces **no observable event in any census
+this repository holds**. The thirteen capital-efficient series are all younger than six
+years, so there is no cohort to measure a rate on at all. The probability is not small and
+it is not estimable here. **That is a reason to prefer a monitorable rule to a point
+estimate**, and §5b's boundary table is that rule.
+
+**Five-year manager underperformance, against the investor's stated five-year review.**
+Circular block bootstrap of paired 60-month windows.
+
+| horizon | vs **leverage-matched** | vs unlevered |
+| --- | ---: | ---: |
+| 3 years | `P`(gap < 0) **32.8%**, worst −7.63 | 19.9%, worst −4.88 |
+| **5 years** | `P`(gap < 0) **23.8%**, worst −4.48 | 12.9%, worst −2.89 |
+| 10 years | 13.2%, worst −2.64 | 5.1%, worst −1.65 |
+
+**The MDE at five years is 3.84 pp/yr against a full-sample gap of +1.50.** So a five-year
+review cannot distinguish this overlay from nothing even when it is working: the instrument
+the investor plans to use has a resolution floor two and a half times the effect it is
+looking for. **The two columns are two claims and are never added.** The leverage-matched
+gap is invariant to rescaling the benchmark, so "versus equity" and "versus equity levered
+1.30×" are the *same number*, not two observations — a defect this work found in its own
+first draft and pinned with a test.
+
+**And the review does not predict.** Over 972 overlapping windows, 25.8% of five-year
+reviews show the overlay behind; the next five years after a bad review average **+0.44
+pp/yr** and after a good review **+1.24 pp/yr**, both against an MDE of 1.11 on the full
+monthly difference. The windows overlap heavily so the difference has no interval, but the
+sign is the wrong way for the reviewer: **a bad five-year review is followed by a positive
+gap, so acting on it is selling after bad luck.**
+
+### 9.5 Removing the strongest episodes
+
+The plan's "test removing" clause, on the leverage-matched gap. Full sample **+1.50 pp/yr**.
+
+| removed | n | gap | change |
+| --- | ---: | ---: | ---: |
+| the 1970s | 120 | +1.21 | **−0.29** |
+| the 2000s | 120 | +1.27 | −0.23 |
+| 1973-74 | 24 | +1.29 | −0.21 |
+| 2008-09 GFC | 16 | +1.34 | −0.16 |
+| 2000-02 dotcom | 30 | +1.38 | −0.12 |
+| the 2010s | 120 | +1.73 | +0.23 |
+
+**No single episode carries the result.** The most damaging removal is the entire 1970s and
+it costs 0.29 pp/yr; the strongest single crisis costs 0.21. The gap stays above +1.2 pp/yr
+under every removal tested, which is the one attack in this section the overlay passes
+outright.
+
+---
+
 ## Verified, assumed, open
 
 **Verified.** The funding-rule identity and its 12% share of the two trend results, both
 derived and tested. The levered ladder against this repository's own published figures at
 `L = 1.0`. Credit and treasury as one engine at +0.83. Treasury's Sharpe of 0.08 before
-1985. Trend's positive contribution in four structurally different drawdowns.
+1985. Trend's positive contribution in four structurally different drawdowns. **§7's
+ladder, reproduced from the pinned sources** on geometric return, maximum drawdown and time
+under water at every rung; its volatilities and Sharpe ratios reproduce only to 0.3%
+relative and 0.002 respectively, and the residual is unexplained because the script that
+produced them is not in Git.
 
 **Assumed.** A 1.45%/yr all-in cost on trend notional and a 60 bp borrow spread, neither
 verified against a filing on this page. The 25% and 50% overlay weights, and the 1985 start,
 were chosen **after** the data was seen — this page is `exploratory` throughout and no
-specification was frozen before its numbers were examined.
+specification was frozen before its numbers were examined. **§5b's prior**: every centre is
+one of this page's own figures but every *scale* and every copula entry was chosen, which
+is why every number computed from it is reported beside the same number under an
+independence copula. **§9's constant closure hazard**, on a cohort of 25 whose attrition is
+a lower bound twice over. **§9.2's 1929 arm**, whose trend leg is rescaled by a single
+full-sample constant.
 
 **Open, and each of these could reverse a conclusion.**
 
@@ -824,13 +1081,23 @@ specification was frozen before its numbers were examined.
    which is not modelled here, and equal-weight ex-US is not directly investable.
 3. **1985–2025 is the most favourable forty years available** for both equities and bonds.
 4. **No experiment here holds a tax lot**, so no figure prices a realisation.
+5. **The crisis-conditional correlation is unmeasured going forward and is the one input
+   that decides §7.** §9.3 shows what a +0.30 crisis correlation costs; nothing here
+   estimates how likely it is, and the mechanism that would produce it — crowding into the
+   same trend positions through the same wrappers — is precisely the mechanism a
+   1,091-month backtest of an independently constructed series cannot observe.
+6. **Methodology change inside a live fund is not estimable from anything held here**, and
+   §9.4 says so rather than substituting the closure hazard for it.
 
 **Reproducibility.** Every source is cached, sha256-pinned and manifested under
 `research/data-manifests/`. The closed forms regenerate from
-`portfolio_edge.studies.overlay_growth` and `portfolio_edge.studies.equity_share` and are
-pinned by tests needing no market data. **The panel computations in §§3–6 were run as
-scoping scripts and are not yet an experiment** — that is the gap a frozen specification
-must close before any of it informs a decision.
+`portfolio_edge.studies.overlay_growth`, `portfolio_edge.studies.overlay_stress` and
+`portfolio_edge.studies.equity_share` and are pinned by tests needing no market data.
+§§5b and 9 regenerate with `uv run python -m portfolio_edge.studies.overlay_stress`, seed
+20260816 throughout: 40,000 prior draws, 4,000 block-bootstrap resamples at 24-month
+blocks. **The panel computations in §§3–6 and §9 were run as scoping scripts and are not
+yet an experiment** — that is the gap a frozen specification must close before any of it
+informs a decision.
 
 ---
 
@@ -859,3 +1126,16 @@ must close before any of it informs a decision.
    the same engine), and **the alternative risk premia are rejected on cost**.
    **Commodities are not rejected — they pass admission and are dominated**, at roughly a
    fifth of trend's margin and with unpriced roll costs in the only series held.
+6. **A univariate stress table may not be quoted as a worst case again.** §5b measures what
+   it costs: the failure rate is almost unchanged and the fifth percentile is 30% worse.
+   Any future stress must vary its axes jointly and state the copula.
+7. **Maximum drawdown must be reported with a resampled interval or not at all.** The
+   ±10 pp interval in §9.1 is wider than every difference §7's ladder invites a reader to
+   compare. The same rule the resolution table already imposes on means now applies to the
+   one order statistic this repository's recommendation rests on.
+8. **The recommendation stands, with three monitorable falsifiers rather than one.** Hold
+   it while **(a)** the forward trend excess return stays above ~2%/yr gross, **(b)** the
+   correlation to equity *inside equity drawdowns* stays below about +0.20, and **(c)** the
+   wrapper carries no drawdown-triggered de-risking rule. **The review interval must not be
+   five years**: §9.4 shows five years cannot resolve the effect and that a bad five-year
+   review predicts a good next five. Review on (a)–(c), not on realised performance.
