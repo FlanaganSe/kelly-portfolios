@@ -1,4 +1,4 @@
-"""The eight foundation tests named in ``docs/the-plan.md``.
+"""The eight foundation tests named in the commissioning brief.
 
     - Simple returns compound to the expected terminal wealth.
     - Log returns aggregate consistently with wealth when wealth remains positive.

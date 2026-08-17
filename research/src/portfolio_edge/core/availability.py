@@ -10,8 +10,9 @@ This module makes the gap a type error rather than a convention. Values are only
 reachable through :meth:`Observation.read`, which requires the caller to state the
 ``as_of`` date it is standing on.
 
-See ``docs/the-plan.md`` ("No observation may be used before its availability
-timestamp") and the point-in-time data requirement in
+The rule — "no observation may be used before its availability timestamp" — comes
+from the commissioning brief, which is not in version control. Its canonical home is
+the research protocol in
 ``docs/research/portfolio-edge-research-framework.md``.
 """
 

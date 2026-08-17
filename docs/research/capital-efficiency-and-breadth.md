@@ -24,9 +24,11 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
 2. **Leverage on equity alone is not the answer.** The realised growth optimum on 100 years
    of US data is about **2.2×, at a −99.3% maximum drawdown and 296 months under water.**
    The drawdown constraint sets exposure; the growth objective never does.
-3. **Breadth is one engine, not four.** Every alternative risk premium tested passes the
-   *correlation* test and almost all fail the *cost* test. Post-publication gross returns
-   of 0.3–1.0%/yr at 2–5% volatility do not survive a retail fee.
+3. **Breadth is one engine that matters, not four.** Every alternative risk premium tested
+   passes the *correlation* test and almost all fail the *cost* test — post-publication
+   gross returns of 0.3–1.0%/yr at 2–5% volatility do not survive a retail fee. Commodities
+   pass admission but at a fifth of trend's margin, and credit is treasuries under another
+   name at +0.835.
 4. **Trend is the one engine that survives, and it survives as risk reduction rather than
    as return.** Its left-tail contribution is positive at every haircut tested, including
    one that turns its median contribution negative.
@@ -127,8 +129,17 @@ separately is the fake breadth `docs/the-plan.md` forbids.
 | equity/commodity correlation | +0.30 | +0.30 | +0.29 |
 
 **The bond overlay's entire case is the post-1985 disinflation**, in both its return and its
-correlation. Commodities are the stable one — and stably *correlated* at +0.30, which is
-what disqualifies them once cost is charged.
+correlation. Commodities are the stable one, in Sharpe and in correlation alike.
+
+**Correction, 2026-08-16.** An earlier version of this page said commodities' stable +0.30
+correlation "disqualifies them once cost is charged". **That was wrong, and the error was
+comparing their Sharpe ratio against the correlation instead of against the threshold.**
+Equation (4)'s bar is `L rho sigma_p`, which at `L = 1.5` is `1.5 × 0.286 × 0.1559 =
+0.067`, not 0.286. Commodities' net Sharpe is **0.174 even at a 1.2% fee**, so they clear
+it by +0.107 and **pass at every exposure and fee tested**. What is true is weaker and
+different: their margin is roughly **five times smaller than trend's**, and the AQR series
+is excess-of-cash with **unpriced roll costs**, which is what would actually sink them.
+They are not rejected here; they are dominated.
 
 ### Alternative risk premia: they pass the correlation test and fail the cost test
 
@@ -202,6 +213,28 @@ time under water falls from 72 months to 58.
 reduction survives assumptions that destroy the return gain, and it is
 [Experiment 004](trend-marginal-value.md)'s "almost all of what survives is the correlation,
 not the mean", reproduced at portfolio level against a leverage-matched control.
+
+**These figures are now superseded by a frozen experiment, and it corrects them.**
+[Experiment 011](../../research/experiments/exp_011_overlay_stack.yaml) reproduces the panel
+exactly and reports, on the full window, a matched-volatility gap for a 50% trend overlay of
+**+4.79 pp/yr against levered equity** `[+2.72, +6.73]` and **+4.58 against unlevered**
+`[+2.53, +6.48]`, at an **MDE₈₀ of 2.82 pp/yr**. Two of the scoping numbers on this page are
+wrong and are corrected here rather than quietly edited:
+
+- **The break-even haircut is 9.57 pp/yr against the levered control and 9.16 against the
+  unlevered, not the 9.9 quoted above.** The sweep is exactly linear at −0.5 pp of gap per
+  pp of haircut, so the interpolation is exact.
+- **The scoping script charged the borrow spread in its geometric returns but not in its
+  Sharpe ratios**, so every matched-volatility gap in §§5–5a is overstated by the financing
+  cost of the overlay notional — 0.295 pp/yr at a 50% overlay. The post-2012 gap is
+  **+1.25 against unlevered equity, not +1.55.**
+
+**And the experiment's own status is `unresolved`, on a clause frozen before it ran.**
+Trend's measured pre- to post-publication decay is **12.11 pp/yr**, which **exceeds the
+9.57 pp/yr haircut at which the overlay stops paying.** The full-window figure describes
+1985–2025; it does not forecast. Post-2012, on a trend Sharpe of 0.296, the gap is still
++1.44 against levered equity and +1.25 against unlevered — **both true, and the tension
+between them is the finding.**
 
 ### Against the control that decides
 
@@ -450,5 +483,7 @@ must close before any of it informs a decision.
    page that states it must carry the USD counter-evidence in the same breath.
 4. **A trend sleeve is a risk-reduction claim, not a return claim**, and must be judged on
    mechanism rather than on relative performance.
-5. **Commodities, credit as a separate engine, and the alternative risk premia are
-   rejected** — on stable +0.30 correlation, on duplication, and on cost respectively.
+5. **Credit is rejected as a separate engine** (it correlates +0.835 with treasuries and is
+   the same engine), and **the alternative risk premia are rejected on cost**.
+   **Commodities are not rejected — they pass admission and are dominated**, at roughly a
+   fifth of trend's margin and with unpriced roll costs in the only series held.

@@ -15,7 +15,7 @@ from portfolio_edge.data.manifest import (
 )
 from portfolio_edge.data.table import ParsedTable
 
-#: Exactly the fields fixed in docs/the-plan.md, plus the four documented
+#: Exactly the fields fixed in the commissioning brief, plus the four documented
 #: additions. A change here is a schema change and must be deliberate.
 PLAN_FIELDS = (
     "dataset_id",

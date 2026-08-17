@@ -19,8 +19,9 @@ vintage of a revised series; neither publishes an archive this code can read. So
 ``revision_policy`` states whether earlier rows can still change. Those two
 fields, not the digests, are what a look-ahead check must consult.
 
-The schema is the one fixed in ``docs/the-plan.md`` plus four additions, each
-recording something the plan requires but the listed fields cannot hold:
+The schema is the one fixed in the commissioning brief (not in version control)
+plus four additions, each recording something the brief requires but the listed
+fields cannot hold:
 
 ``sha256_normalized``
     The plan requires hashing both the raw and the normalised representation.

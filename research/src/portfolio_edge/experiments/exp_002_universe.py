@@ -2,7 +2,7 @@
 
 The order matters more than the code
 ------------------------------------
-``docs/the-plan.md`` puts "build the product-universe manifest for Experiment 002"
+The commissioning brief put "build the product-universe manifest for Experiment 002"
 *before* "execute the exposure audit" for one reason: a universe chosen after
 seeing performance is not a universe, it is a result. So this module runs first,
 writes its output to a committed file, and the experiment then reads that file
