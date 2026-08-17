@@ -570,6 +570,52 @@ parabola where being wrong is cheap.
 
 ---
 
+## 8. Concentration: the variance argument is weak and the skewness argument is the real one
+
+[Search coverage](search-coverage.md) §2 records that "the objective wants concentration
+and the programme has only tested dilution", on the grounds that growth-optimal sizing
+returns a corner solution. **That conflates two different corners**, and the concentration
+one is now measured rather than asserted.
+
+For `N` equicorrelated names at single-stock volatility `sigma` and pairwise correlation
+`rho`, equal-weighted, the excess growth rate is exactly
+
+    gamma_star = 0.5 sigma**2 (1 - rho) (1 - 1/N)
+
+so the growth **given up** by holding `N` names instead of the whole market is
+`0.5 sigma**2 (1 - rho) / N`. At `sigma = 35%` and `rho = 0.25`:
+
+| Names held | 1 | 5 | 10 | 25 | 50 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Growth given up vs the market | **4.58 pp/yr** | 0.91 | 0.45 | **0.17** | 0.08 |
+| Extra alpha needed to break even | 4.58 pp/yr | 0.91 | 0.45 | **0.17** | 0.08 |
+
+**Two readings, and the second is the one that matters.**
+
+**Concentrating into a single stock costs 3.4–8.6 pp/yr of growth** across plausible
+parameters — an enormous, and entirely mechanical, penalty. But **the penalty collapses
+as `1/N`**: at twenty-five names it is **0.17 pp/yr**, smaller than the fee difference
+between two ordinary funds. **So the variance channel gives almost no reason to hold five
+hundred stocks rather than twenty-five**, and any argument against a
+twenty-five-name portfolio that rests on the diversification return is arguing about
+seventeen basis points.
+
+**The real argument against concentration is skewness, and this model does not contain
+it.** The expression above assumes every name has the same expected return. Individual
+stock returns are severely right-skewed — the median stock underperforms Treasury bills
+over its life and the market's entire return comes from a small minority — so a
+concentrated book has a high probability of badly trailing the market even when its
+*expected* return matches. That is a statement about the cross-sectional distribution of
+outcomes, not about variance drag, and **it cannot be read off `gamma_star`.**
+
+**Consequence.** The objective is close to indifferent to concentration above roughly
+twenty-five names, so "the objective wants concentration" is not supported by the
+variance arithmetic that was cited for it. Whether to concentrate turns on whether the
+holder has genuine selection skill, which is a different question this repository has
+never tested and which its detection floors could not resolve if it tried.
+
+---
+
 ## Verified, assumed, open
 
 **Verified.** The funding-rule identity and its 12% share of the two trend results, both
