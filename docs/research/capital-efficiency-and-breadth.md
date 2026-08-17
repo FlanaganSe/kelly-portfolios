@@ -506,6 +506,70 @@ catch. The overlay result is what survives; the base result is a window.
 
 ---
 
+## 7. The weight is a corner solution, and the constraint is the account
+
+The recommended 15–25% was chosen by judgement. A red team asked what the model itself
+says, and the answer is that **the sizing question has no interior solution.**
+
+**The shrunk growth-optimal overlay notional**, from
+[`overlay_growth.py`](../../research/src/portfolio_edge/studies/overlay_growth.py), at
+`a_p = 5.0%`, `sigma_p = 15.5%`, `sigma_d = 12%`, `rho = −0.10`, shrunk by
+`f* = S**2 T / (S**2 T + 1)` on `T` years of *stationary* information:
+
+| Evidence | net `a_d` | unshrunk `w*` | T=10 | **T=20** | T=40 |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Live funds, net (S=0.33) | 3.96% | 2.88 | 1.57 | **2.03** | 2.38 |
+| Built here (S=0.52) | 6.24% | 4.46 | 3.31 | **3.80** | 4.10 |
+| **Pessimistic (S=0.20)** | 2.40% | 1.80 | 0.57 | **0.86** | 1.17 |
+| Post-2012 drought (S=0.00) | 0.00% | 0.13 | 0.00 | **0.00** | 0.00 |
+
+**Even the pessimistic row puts the optimum at 86% of notional**, four times the
+recommended weight. Only a forward Sharpe of exactly zero brings it to zero.
+
+**And the drawdown constraint — the one that made leveraged equity unholdable — does not
+bind here.** Measured on the independent series over 1,091 months:
+
+| overlay `w` | geometric | volatility | Sharpe | **max drawdown** | under water | gross |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.00 | 11.13% | 15.81% | 0.540 | **−50.3%** | 74 mo | 1.00 |
+| 0.25 | 12.86% | 16.15% | 0.629 | −49.3% | 74 | 1.25 |
+| 0.50 | 14.50% | 17.06% | 0.690 | −49.3% | 72 | 1.50 |
+| **1.00** | 17.51% | 20.23% | **0.741** | −49.4% | 72 | 2.00 |
+| 2.00 | 22.31% | 29.65% | 0.723 | **−52.0%** | 72 | 3.00 |
+
+**Maximum drawdown is flat in `w` across the entire range** — −49% to −52% from 1.0× to
+3.0× gross notional, against **−99.3% for equity levered to 2.2×** in §2. That contrast
+is the whole argument for breadth over leverage, and it is measured rather than argued:
+uncorrelated notional does not deepen the drawdown, correlated notional does.
+
+**So the weight is set by the account, not by the estimate or the risk.** The binding
+constraints, in order:
+
+1. **Tax shelter capacity.** Managed-futures distributions are ordinary income at
+   2.09 pp/yr in a taxable account and zero in a shelter, and a 100/100 return-stacked
+   fund delivers one dollar of overlay notional per dollar held. **The overlay cannot
+   exceed the shelter that will hold it.**
+2. **Fund closure and methodology change**, on a shelf where no fund is six years old.
+3. **Model risk the shrinkage does not cover** — `sigma_d` and `rho` are treated as
+   known, and the post-2012 drought is real on all three instruments.
+
+**What the constraint costs is exact**, from the parameter-free retention curve
+`1 − (1 − f)**2` with `f = w / w*`:
+
+| `w` | share of the optimum | growth retained | gain |
+| ---: | ---: | ---: | ---: |
+| 15% | 0.07 | **14.2%** | +0.61 pp/yr |
+| 25% | 0.12 | 23.1% | +0.99 pp/yr |
+| **30%** | 0.15 | **27.4%** | **+1.18 pp/yr** |
+| 100% | 0.49 | 74.3% | +3.43 pp/yr |
+
+**Consequence: hold as much as the shelter allows, and stop there.** There is no
+interior optimum to search for, the drawdown that would justify holding less does not
+appear, and every weight under discussion sits on the gentle left branch of the growth
+parabola where being wrong is cheap.
+
+---
+
 ## Verified, assumed, open
 
 **Verified.** The funding-rule identity and its 12% share of the two trend results, both
