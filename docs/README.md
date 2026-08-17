@@ -75,6 +75,12 @@ and current status.
   diversification credit whose ceiling is the base portfolio's own variance. Carries the
   cash control that produced decision 0008 — and the weight-dependence that reopens its own
   headline.
+- [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) — what the
+  funding rule is worth (`a_p - sigma_p**2`, containing nothing about the sleeve), why the
+  realised growth optimum on levered equity is unholdable at a -99.3% drawdown, how many
+  distinct return engines actually exist once cost is charged (one), and the finding that
+  outranks every overlay on certainty: global equity beat US-only by 4.6-5.9 pp of drawdown
+  for about 5 basis points.
 - [Numerical engine specification](research/portfolio-engine-specification.md) — the
   algorithms, closed-form fixtures and conditioning requirements underneath any allocation
   feature, and where the optimiser should run.
