@@ -13,7 +13,7 @@ import { type AsOf, asOf, type Citation, type EvidenceStatus, type KeyNumber } f
 
 const productAudit: Citation = {
   label: "Investable factor products",
-  docPath: "docs/research/factor-product-audit.md",
+  docPath: "docs/research/factor-products.md",
 };
 const trend: Citation = {
   label: "Trend: the index, the products, and an ambiguous clause",
@@ -197,7 +197,7 @@ export const sleeves: readonly Sleeve[] = [
       "It delivers a real HML loading at 3 bp and still carries a +2.57 pp/yr shortfall against the fitted cheap combination.",
     caveat:
       'That shortfall is not a defect in the fund. VTV is itself one of the four funds the replication is built from, and a fund is never in its own basis, so its replication degenerates to 0.784 VTI + 0.216 VB at 7.48 pp/yr of tracking error. Read the rejection as "value underperformed the market over these 72 months" — a return finding the audit is not entitled to make.',
-    source: { ...productAudit, anchor: "7-shrinkage-the-annualisation-trap-and-the-look-ahead-replication" },
+    source: { ...productAudit, anchor: "the-comparator-shrinkage-and-two-traps" },
   },
   {
     id: "vb-small-cap",

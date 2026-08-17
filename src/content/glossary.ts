@@ -25,7 +25,7 @@ const structural: Citation = {
 const persistence: Citation = { label: "Factor persistence and decay", docPath: "docs/research/factor-persistence.md" };
 const productAudit: Citation = {
   label: "Investable factor products",
-  docPath: "docs/research/factor-product-audit.md",
+  docPath: "docs/research/factor-products.md",
 };
 const framework: Citation = {
   label: "Portfolio edge research framework",

@@ -10,6 +10,7 @@ import { CertaintyChip, StatusChip } from "~/components/StatusChip";
 import { openQuestions } from "~/content/openQuestions";
 import {
   constructionSummary,
+  drawdownAcrossCountries,
   drawdownAnchor,
   equityBondSplit,
   equitySleeveWeights,
@@ -206,6 +207,11 @@ export default function Portfolio() {
             asOf={drawdownAnchor.asOf}
           />
         </div>
+
+        <Callout variant="caveat" label={drawdownAcrossCountries.headline}>
+          <p>{drawdownAcrossCountries.detail}</p>
+          <p class="mt-3 text-ink-muted">{drawdownAcrossCountries.caveat}</p>
+        </Callout>
 
         <p class="mt-8 max-w-measure font-serif text-xl text-ink">{equityBondSplit.anchor}</p>
 

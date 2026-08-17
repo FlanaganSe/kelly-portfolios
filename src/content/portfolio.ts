@@ -164,6 +164,33 @@ export const drawdownAnchor = {
   asOf: asOf("2026-08-12"),
 } as const;
 
+/**
+ * The figure above is one country, and it is close to the best one. Sixteen countries
+ * of annual real total returns rank the United States 15th of 16 on the full sample and
+ * 16th of 16 from 1963. Rendering -50.3% without this reads as a worst case when it is
+ * nearly a best case.
+ */
+export const drawdownAcrossCountries = {
+  headline: "That is one country, and it is close to the luckiest one.",
+  detail:
+    "Across sixteen countries of annual real total returns, the median market lost about three quarters of its real value at some point. In the same window this anchor is drawn from, every one of the other fifteen did worse than the United States, and fourteen of fifteen did worse than -50%. France fell 97.7% from its 1942 peak and had not regained it 78 years later.",
+  countries: 16,
+  usRankFullSample: 15,
+  usRankFrom1963: 16,
+  medianDrawdownPercent: -74.4,
+  worstDrawdownPercent: -98.4,
+  worstCountry: "Portugal",
+  caveat:
+    "Annual and real against this anchor's monthly and nominal, so the like-for-like US figure is -47.2%. Portugal's worst years are source-flagged interpolations; without them it is -80.1% and the cleanest fully-measured near-total loss is France's.",
+  status: "exploratory",
+  source: {
+    label: "Setting the equity share",
+    docPath: "docs/research/setting-the-equity-share.md",
+    anchor: "5-the-drawdown-anchor-which-is-the-operational-form-of-the-answer",
+  },
+  asOf: asOf("2026-08-16"),
+} as const;
+
 // ---------------------------------------------------------------------------
 // The equity sleeve weights
 // ---------------------------------------------------------------------------

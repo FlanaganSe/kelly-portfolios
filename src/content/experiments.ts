@@ -151,7 +151,7 @@ export const experiments: readonly Experiment[] = [
       "A replication whose weights are fitted on a prior window, which would remove the look-ahead from the clause that did most of the rejecting.",
       "Form N-CSR distributions and turnover, so the cost-of-ownership clause could be evaluated with the term it names.",
     ],
-    source: { label: "Investable factor products", docPath: "docs/research/factor-product-audit.md" },
+    source: { label: "Investable factor products", docPath: "docs/research/factor-products.md" },
   },
   {
     id: "exp-003-rebalancing",
