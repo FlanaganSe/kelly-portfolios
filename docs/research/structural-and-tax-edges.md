@@ -43,7 +43,8 @@ randomness, no forecast.
 4. **Capital efficiency is the most substantive structural candidate and the only one
    whose sign this repository cannot check.** A 90/60 return-stacked fund needs
    **92 bp/yr** of Treasury excess return over cash before its overlay contributes
-   anything, against a measured futures funding basis of 58.70 bp/yr. Both inputs are
+   anything, against a futures funding basis this page **previously mis-benchmarked at
+   58.70 bp/yr and now puts at 12–33 bp**, which roughly halves the hurdle. Both inputs are
    forecasts, so it is probabilistic by construction.
 5. **The largest additive line is decaying while being measured.** 94 SEC orders let
    mutual funds add ETF share classes. **Recheck before any decision leans on the 23 bp.**
@@ -215,20 +216,63 @@ arithmetic of whether it helps is entirely in one expression:
 net contribution = bond notional × (bond excess return over cash − implied financing spread) − fee
 ```
 
-**The financing spread has been measured and it is large.** Fleckenstein and Longstaff,
-on 6,943 daily observations of CME 5-year Treasury note futures 1991–2018: *"The average
-funding basis is **58.70 basis points**"* — 58.79 before the crisis, 58.56 after, and
-**positive in all 28 years**. A stable cost, not a crisis artefact. **At that spread and
-NTSX's 20 bp fee, a 90/60 fund needs 92.0 bp/yr of Treasury excess return over cash
-before the overlay contributes anything.**
+**The financing spread was measured here against the wrong benchmark, and the correction
+roughly halves the hurdle.** `as of 2026-08-16`.
+
+This page previously read: *Fleckenstein and Longstaff, on 6,943 daily observations of CME
+5-year Treasury note futures 1991–2018, "the average funding basis is 58.70 basis points"
+— positive in all 28 years, so a 90/60 fund needs 92.0 bp/yr of Treasury excess return
+before the overlay contributes.* **The 58.70 bp is real and it is not the number a fund
+pays.** Fleckenstein and Longstaff define the funding basis against the **term bilateral
+*special-collateral* repo rate on on-the-run 5-year notes**, and say why at p. 5062:
+*"5-year Treasury notes often can be financed at special repo rates that are substantially
+below general collateral repo rates."* That is a dealer's spread over its own cheapest
+specific funding. **A fund posting T-bill collateral never faces that rate.** Their own
+NBER working-paper draft published **81 bp** for the same quantity, so the figure moved
+22 bp between drafts and should never have carried two decimal places here.
+
+Against the benchmarks a fund actually finances at:
+
+| Overlay | Benchmark | Spread |
+| --- | --- | ---: |
+| US Treasury futures | maturity-matched OIS | **12–18 bp** (Siriwardane, Sunderam and Wallen; 2y/5y/10y/20y/30y = 13/12/18/17/11, Jan 2010–Feb 2020) |
+| US Treasury futures | T-bills | 21–33 bp (Barth and Kahn, OFR WP 21-01, 2015–20) |
+| Gold futures | Treasury curve | ≤40 bp, and an **upper bound** — the identical 40 bp appears in SPX option boxes over the same window, so it is the Treasury convenience yield rather than anything gold-specific |
+| Equity index futures | 3-month Term SOFR | **+62 bp**, ten rolls Dec-2022→Mar-2025. A genuine post-2022 regime change |
+| **Diversified long/short trend book** | local interbank | **signed mean ≈ 0** |
+
+**The NTSX hurdle, re-based:**
+
+| Financing input | 90/60 break-even |
+| --- | ---: |
+| 58.70 bp, as this page previously stated | 92.0 bp/yr |
+| **15 bp (OIS, the right benchmark)** | **48.3 bp/yr** |
+| 33 bp (against bills) | 66.3 bp/yr |
+
+**The last row of the spread table is the one that matters for a trend overlay, and it is
+a sign question rather than a size question.** Hazelkorn, Moskowitz and Vasudevan
+(*Journal of Finance* 78(1), 2023) measure the *signed* basis across 18 equity index
+futures at **−0.83 bp on average, 2000–2017** — −8.15 before 2007, +3.52 after — against a
+mean *absolute* basis of 52–64 bp. Their mechanism is that *"the basis tends to be positive
+when dealers face long futures demand… and negative when dealers face short futures
+demand"*, and Russell 2000 runs **−76 bp**, meaning a long position is *paid*. **A trend
+book takes both sides by construction, so a systematic per-contract financing drag is not
+supported.** The trap to pin: Siriwardane et al.'s widely quoted 42 bp for SPX is a **mean
+absolute deviation** — they say *"we work with absolute values of spreads since the sign…
+depends on whether arbitrageurs are net long or short"* — and it must never be applied as
+a drag.
 
 **Both inputs are forecasts**, which is why nothing here enters a contractual budget.
 And the evidence that the whole advantage lives in the financing assumption is
 quantitative, from both sides. The pro-risk-parity study's **own Appendix B** shows the
 advantage over the market falling from 4.15% (t = 2.95) financing at T-bills to 1.81%
 (t = 1.29) at LIBOR's 62.3 bp spread; its one-sentence defence is *"leverage can be
-achieved by using futures contracts at an implicit cost that is lower than LIBOR"*, and
-**the measured 58.70 bp is almost exactly that LIBOR spread**. The independent critique
+achieved by using futures contracts at an implicit cost that is lower than LIBOR"*.
+**This page used to answer that the measured 58.70 bp is almost exactly the LIBOR spread.
+That answer was wrong in kind** — Fleckenstein and Longstaff measure against special repo,
+not LIBOR — **and at the 12–18 bp OIS benchmark the defence is largely correct.** What
+survives of the critique is that the advantage is still sensitive to the financing
+assumption, not that a 60 bp spread is the right one. The independent critique
 reaches the same place: levered risk parity beats 60/40 by *"210 basis points… (P = 0.03)"*
 at the risk-free rate and by *"only 29 basis points… (P = 0.40)"* once borrowing costs are
 priced. **A ~60 bp financing spread removes 86% of the claimed edge over eighty-five

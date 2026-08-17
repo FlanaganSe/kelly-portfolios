@@ -187,7 +187,7 @@ better exists` means the alternatives were tested and lost.
 | **VB**, plain small-cap | Largest shortfall on the shelf, +2.89 pp/yr; and **the size premium is not signable**: +1.91 `[−1.90, +6.00]` over 750 months against a 4.73 threshold |
 | **QUAL, SPHQ**, quality | RMW is `rejected` and closed on public data. **An unsigned premium makes the product's own quality irrelevant** |
 | **CTA, FMF, KMLM, WTMF** | Loadings 0.475, 0.303, 0.245, 0.099 against a 0.50 bar. Read KMLM as "not *this* index" — its own index holds no equity futures while AQR's holds nine |
-| **NTSX and any 90/60 return-stacked fund** | Needs **92.0 bp/yr** of Treasury excess return over cash before the overlay contributes, against a measured futures funding basis of 58.70 bp/yr. **Both inputs are forecasts** |
+| **NTSX and any 90/60 return-stacked fund** | Needs **48.3 bp/yr** of Treasury excess return over cash before the overlay contributes, at the 15 bp OIS financing benchmark. **This row previously said 92.0 bp against a 58.70 bp basis; that basis was measured against special-collateral repo, which is not a rate a fund pays** ([structural and tax-aware edges](structural-and-tax-edges.md#3-section-1256-and-capital-efficiency-handled-honestly)). Both inputs remain forecasts |
 | **Leverage of any kind** | Zero, and it stays zero. Conditioned on an unlevered edge surviving the protocol; none has |
 | **Rebalancing as a source of return** | `rejected`: **−38.7 bp/yr** over 420 months, drift gap ~35× `gamma_star`, and relative regional performance **trends** rather than reverts |
 | **The academic small-value corner** | ME1 × BM5 held 21.24% of listed firms and **0.236% of market capitalisation**. Not implementable at retail in size |
