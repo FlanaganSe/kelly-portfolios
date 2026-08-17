@@ -15,6 +15,7 @@ import pytest
 
 from portfolio_edge.core.kelly import growth_rate_vertex, kelly_leverage, peak_growth_rate
 from portfolio_edge.studies.equity_share import (
+    LeverageWipeoutError,
     break_even_excess_return,
     constant_mix_ladder,
     constant_mix_returns,
@@ -24,6 +25,8 @@ from portfolio_edge.studies.equity_share import (
     implied_effective_years,
     inverse_variance_bias_factor,
     kelly_estimator_standard_error,
+    levered_ladder,
+    levered_mix_returns,
     optimal_kelly_shrinkage,
     permuted_terminal_wealth,
     plug_in_growth_cost,
@@ -361,3 +364,98 @@ def test_ladder_is_monotone_in_volatility() -> None:
     rungs = constant_mix_ladder(equity, safe, [0.2, 0.4, 0.6, 0.8, 1.0])
     volatilities = [rung.volatility for rung in rungs]
     assert volatilities == sorted(volatilities)
+
+
+# --------------------------------------------------------------------------------
+# The ladder past 1.0
+# --------------------------------------------------------------------------------
+
+
+class TestLeveredLadder:
+    """Leverage on realised returns, checked against longhand arithmetic."""
+
+    EQUITY = np.array([0.05, -0.03, 0.02, 0.07, -0.10, 0.04])
+    FINANCING = np.array([0.004, 0.003, 0.003, 0.002, 0.002, 0.001])
+
+    def test_unit_leverage_is_the_equity_series_itself(self) -> None:
+        levered = levered_mix_returns(self.EQUITY, self.FINANCING, 1.0)
+        np.testing.assert_allclose(levered, self.EQUITY)
+
+    def test_zero_leverage_is_the_financing_series_itself(self) -> None:
+        levered = levered_mix_returns(self.EQUITY, self.FINANCING, 0.0)
+        np.testing.assert_allclose(levered, self.FINANCING)
+
+    def test_two_times_leverage_is_twice_equity_less_one_financing(self) -> None:
+        levered = levered_mix_returns(self.EQUITY, self.FINANCING, 2.0)
+        np.testing.assert_allclose(levered, 2.0 * self.EQUITY - self.FINANCING)
+
+    def test_the_spread_is_charged_only_on_the_borrowed_portion(self) -> None:
+        spread = 0.001
+        below = levered_mix_returns(
+            self.EQUITY, self.FINANCING, 0.5, borrow_spread_per_period=spread
+        )
+        np.testing.assert_allclose(
+            below, levered_mix_returns(self.EQUITY, self.FINANCING, 0.5)
+        )
+        above = levered_mix_returns(
+            self.EQUITY, self.FINANCING, 2.5, borrow_spread_per_period=spread
+        )
+        np.testing.assert_allclose(
+            above,
+            levered_mix_returns(self.EQUITY, self.FINANCING, 2.5) - 1.5 * spread,
+        )
+
+    def test_a_wipeout_raises_and_names_the_period(self) -> None:
+        equity = np.array([0.01, -0.55, 0.01])
+        financing = np.zeros(3)
+        levered_mix_returns(equity, financing, 1.5)  # -82.5%, survives
+        with pytest.raises(LeverageWipeoutError, match="period index 1"):
+            levered_mix_returns(equity, financing, 2.0)
+
+    def test_a_wiped_rung_is_reported_rather_than_dropped(self) -> None:
+        equity = np.array([0.01, -0.55, 0.01])
+        rungs = levered_ladder(equity, np.zeros(3), np.array([1.0, 2.0]))
+        assert len(rungs) == 2
+        assert rungs[0].wiped_out is False
+        assert rungs[1].wiped_out is True
+        assert math.isnan(rungs[1].geometric_return)
+
+    def test_ladder_geometric_return_matches_a_longhand_compound(self) -> None:
+        rungs = levered_ladder(
+            self.EQUITY, self.FINANCING, np.array([1.0, 1.5]), periods_per_year=12
+        )
+        for rung in rungs:
+            levered = levered_mix_returns(
+                self.EQUITY, self.FINANCING, rung.leverage
+            )
+            wealth = 1.0
+            for r in levered:
+                wealth *= 1.0 + r
+            expected = wealth ** (12.0 / len(levered)) - 1.0
+            assert rung.geometric_return == pytest.approx(expected)
+
+    def test_volatility_scales_linearly_with_leverage(self) -> None:
+        """Financing is near-constant, so the levered volatility is L times equity's."""
+        rungs = levered_ladder(
+            self.EQUITY, np.full(6, 0.003), np.array([1.0, 2.0, 3.0])
+        )
+        base = rungs[0].volatility
+        assert rungs[1].volatility == pytest.approx(2.0 * base)
+        assert rungs[2].volatility == pytest.approx(3.0 * base)
+
+    @pytest.mark.parametrize(
+        ("kwargs", "match"),
+        [
+            ({"leverage": -0.5}, "cannot be negative"),
+            ({"leverage": 1.0, "borrow_spread_per_period": -0.1}, "cannot be negative"),
+        ],
+    )
+    def test_invalid_arguments_raise(
+        self, kwargs: dict[str, float], match: str
+    ) -> None:
+        with pytest.raises(ValueError, match=match):
+            levered_mix_returns(self.EQUITY, self.FINANCING, **kwargs)
+
+    def test_mismatched_lengths_raise(self) -> None:
+        with pytest.raises(ValueError, match="same length"):
+            levered_mix_returns(self.EQUITY, self.FINANCING[:3], 1.0)

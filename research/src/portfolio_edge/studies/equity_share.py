@@ -83,6 +83,8 @@ from portfolio_edge.core.wealth import equity_curve
 
 __all__ = [
     "ConstantMixSummary",
+    "LeverageWipeoutError",
+    "LeveredRung",
     "PermutedWealth",
     "break_even_excess_return",
     "constant_mix_ladder",
@@ -93,6 +95,8 @@ __all__ = [
     "implied_effective_years",
     "inverse_variance_bias_factor",
     "kelly_estimator_standard_error",
+    "levered_ladder",
+    "levered_mix_returns",
     "optimal_kelly_shrinkage",
     "permuted_terminal_wealth",
     "plug_in_growth_cost",
@@ -482,3 +486,150 @@ if __name__ == "__main__":  # pragma: no cover - regenerates the published table
     from portfolio_edge.studies._equity_share_tables import main
 
     main()
+
+
+# --------------------------------------------------------------------------------
+# 8. The ladder continued past 1.0, which the zero-leverage rule stops it reaching
+# --------------------------------------------------------------------------------
+#
+# `constant_mix_ladder` clips its weight to [0, 1] by construction, so it cannot see
+# the exposure the growth objective actually points at. Section 1 records that under
+# the zero-leverage rule the objective returns a corner solution at 100% equity, and
+# `docs/decisions/0004-no-sleeve-promoted.md` records that the rule itself is what
+# makes the corner. These two functions continue the same ladder past the corner on
+# realised returns, so the question can be answered with a measurement rather than
+# with the lognormal model that produced `L*`.
+#
+# Nothing here recommends leverage. The model's `L*` is computed from a Gaussian with
+# constant parameters; realised equity has fat tails, volatility clustering and a
+# financing rate that rises exactly when it hurts, all of which move the realised
+# optimum down and none of which the closed form contains. Measuring how far down is
+# the point.
+
+
+class LeverageWipeoutError(ValueError):
+    """A period return at or below -100%: the levered position was wiped out.
+
+    Raised rather than clamped. A wealth path that touches zero has no geometric
+    return, and silently flooring it at zero would report a number for a portfolio
+    that stopped existing. The message carries the period index so the caller can
+    name the month.
+    """
+
+
+def levered_mix_returns(
+    equity_returns: FloatVector,
+    financing_returns: FloatVector,
+    leverage: float,
+    *,
+    borrow_spread_per_period: float = 0.0,
+) -> FloatArray:
+    """``L r_e - (L - 1)(r_f + s)``: constant leverage, rebalanced every period.
+
+    The exposure is the policy, so the portfolio must actually hold it, exactly as in
+    :func:`constant_mix_returns`. Below ``L = 1`` the borrowed portion is negative and
+    the spread is not charged — lending and borrowing are not the same rate, and
+    :func:`portfolio_edge.core.kelly.kinked_growth_rate` is the model form of the same
+    kink.
+
+    Raises :class:`LeverageWipeoutError` if any period return reaches -100%.
+    """
+    equity = as_float_array(equity_returns, name="equity_returns")
+    financing = as_float_array(financing_returns, name="financing_returns")
+    if equity.shape != financing.shape:
+        raise ValueError(
+            "equity_returns and financing_returns must be the same length; "
+            f"got {equity.size} and {financing.size}"
+        )
+    if leverage < 0.0:
+        raise ValueError(f"leverage cannot be negative, got {leverage}")
+    if borrow_spread_per_period < 0.0:
+        raise ValueError(
+            f"borrow_spread_per_period cannot be negative, got {borrow_spread_per_period}"
+        )
+    borrowed = max(leverage - 1.0, 0.0)
+    returns = (
+        leverage * equity
+        - (leverage - 1.0) * financing
+        - borrowed * borrow_spread_per_period
+    )
+    wiped = np.flatnonzero(returns <= -1.0)
+    if wiped.size:
+        raise LeverageWipeoutError(
+            f"leverage {leverage} is wiped out at period index {int(wiped[0])}, "
+            f"where the position return is {float(returns[wiped[0]]):.4f}"
+        )
+    return np.asarray(returns, dtype=np.float64)
+
+
+@dataclass(frozen=True)
+class LeveredRung:
+    """One rung of the levered ladder, or the leverage at which it stopped existing."""
+
+    leverage: float
+    observations: int
+    geometric_return: float
+    volatility: float
+    max_drawdown: float
+    max_time_under_water: int
+    wiped_out: bool
+
+
+def levered_ladder(
+    equity_returns: FloatVector,
+    financing_returns: FloatVector,
+    leverages: FloatVector,
+    *,
+    borrow_spread_per_period: float = 0.0,
+    periods_per_year: int = MONTHS_PER_YEAR,
+) -> tuple[LeveredRung, ...]:
+    """:func:`constant_mix_ladder`'s shape, for exposures that may exceed 1.
+
+    A wiped-out rung is returned with ``wiped_out=True`` and every statistic at
+    ``nan`` rather than omitted, because the leverage at which a real series destroys
+    a monthly-rebalanced investor is the most decision-relevant number on the ladder
+    and dropping the row would hide it.
+    """
+    equity = as_float_array(equity_returns, name="equity_returns")
+    grid = as_float_array(leverages, name="leverages")
+    if periods_per_year <= 0:
+        raise ValueError(f"periods_per_year must be positive, got {periods_per_year}")
+    rungs = []
+    for leverage in grid:
+        try:
+            levered = levered_mix_returns(
+                equity,
+                financing_returns,
+                float(leverage),
+                borrow_spread_per_period=borrow_spread_per_period,
+            )
+        except LeverageWipeoutError:
+            rungs.append(
+                LeveredRung(
+                    leverage=float(leverage),
+                    observations=int(equity.size),
+                    geometric_return=math.nan,
+                    volatility=math.nan,
+                    max_drawdown=math.nan,
+                    max_time_under_water=-1,
+                    wiped_out=True,
+                )
+            )
+            continue
+        summary = drawdown_summary(equity_curve(levered))
+        growth = float(np.prod(1.0 + levered)) ** (
+            periods_per_year / levered.size
+        ) - 1.0
+        rungs.append(
+            LeveredRung(
+                leverage=float(leverage),
+                observations=int(levered.size),
+                geometric_return=growth,
+                volatility=float(np.std(levered, ddof=1))
+                * math.sqrt(periods_per_year),
+                max_drawdown=summary.max_drawdown,
+                max_time_under_water=summary.max_time_under_water,
+                wiped_out=False,
+            )
+        )
+    return tuple(rungs)
