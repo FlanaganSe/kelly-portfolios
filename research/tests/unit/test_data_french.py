@@ -273,3 +273,47 @@ def test_manifests_are_built_per_table(
 def test_unknown_dataset_id_lists_the_known_ones() -> None:
     with pytest.raises(KeyError, match="french_us_ff5"):
         french.get_dataset("french_us_ff6")
+
+
+@pytest.mark.parametrize(
+    ("dataset_id", "filename", "units"),
+    [
+        ("french_us_st_reversal", "F-F_ST_Reversal_Factor_CSV.zip", "percent"),
+        ("french_us_lt_reversal", "F-F_LT_Reversal_Factor_CSV.zip", "percent"),
+        ("french_us_portfolios_formed_on_ni", "Portfolios_Formed_on_NI_CSV.zip", None),
+        ("french_us_portfolios_formed_on_ac", "Portfolios_Formed_on_AC_CSV.zip", None),
+        (
+            "french_us_portfolios_formed_on_beta",
+            "Portfolios_Formed_on_BETA_CSV.zip",
+            None,
+        ),
+    ],
+)
+def test_the_untested_factor_families_are_registered_with_their_units_declared(
+    dataset_id: str, filename: str, units: str | None
+) -> None:
+    """The two reversal FACTOR files declare percent; the sorted-portfolio files do not.
+
+    A sorted-portfolio file mixes returns with firm counts and average firm size, so
+    it declares nothing and every table in it is classified from its own banner. The
+    factor files contain nothing but returns, so percent is defensible for an
+    unlabelled table in them. Getting this backwards divides a firm count by 100.
+    """
+    dataset = french.get_dataset(dataset_id)
+    assert dataset.filename == filename
+    assert dataset.default_source_units == units
+    assert dataset.url.endswith(filename)
+
+
+def test_the_accruals_and_issuance_spreads_are_marked_as_built_here() -> None:
+    """No long-short factor file exists for NI, AC or BETA and the registry says so."""
+    for dataset_id in (
+        "french_us_portfolios_formed_on_ni",
+        "french_us_portfolios_formed_on_ac",
+    ):
+        description = french.get_dataset(dataset_id).description
+        assert "no NI long-short FACTOR file" in description or (
+            "publishes no accruals FACTOR file" in description
+        )
+    beta = french.get_dataset("french_us_portfolios_formed_on_beta").description
+    assert "UNLEVERED" in beta, "a decile spread is not BAB and must not be read as one"

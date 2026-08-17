@@ -331,6 +331,98 @@ DATASETS: Final[dict[str, FrenchDataset]] = {
             availability_policy=_AVAILABILITY_MONTHLY,
             revision_policy=_REVISION_POLICY_INTERNATIONAL,
         ),
+        FrenchDataset(
+            dataset_id="french_us_st_reversal",
+            filename="F-F_ST_Reversal_Factor_CSV.zip",
+            description=(
+                "Short-term reversal (ST_Rev), US, from 1926-02: the average of "
+                "two low-prior-month-return portfolios minus the average of two "
+                "high ones, formed on independent size and prior-1-month sorts. "
+                "The library's ONLY factor rebalanced on a one-month signal, and "
+                "that is the whole caveat: the sort is re-formed every month on "
+                "last month's return, so turnover is near total, the spread is "
+                "concentrated in the smallest and least liquid names, and the "
+                "file states no fee, spread, borrow or capacity assumption. A "
+                "gross premium here is the least investable number in the "
+                "library, not the most attractive one."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_us_lt_reversal",
+            filename="F-F_LT_Reversal_Factor_CSV.zip",
+            description=(
+                "Long-term reversal (LT_Rev), US, from 1931-01: low minus high "
+                "prior return measured from month -60 to -13, so it is the "
+                "complement of momentum's -12 to -2 window and overlaps neither "
+                "it nor short-term reversal. Two traps. The portfolios are "
+                "re-formed MONTHLY despite the five-year signal, so this is not "
+                "a low-turnover series. And the file's own preamble says 'It "
+                "contains a momentum factor' — Ken French reused the momentum "
+                "file's header text and never corrected it; the construction "
+                "sentences below that line are correct and the first line is "
+                "not."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_us_portfolios_formed_on_ni",
+            filename="Portfolios_Formed_on_NI_CSV.zip",
+            description=(
+                "Portfolios formed on net share issues (NI), US, from 1963-07: "
+                "the change in log split-adjusted shares outstanding from fiscal "
+                "year-end t-2 to t-1, sorted at the end of June. This is the net "
+                "issuance and buyback family. **The library publishes no NI "
+                "long-short FACTOR file**, so any spread is built here from the "
+                "sorted legs and is this repository's construction, not Ken "
+                "French's. Two columns exist that no other sort file has: '< 0' "
+                "(net repurchasers) and 'ZERO' (neither issued nor repurchased), "
+                "and they sit OUTSIDE the quintile and decile splits — 'Lo 20' "
+                "is the lowest quintile of the non-negative issuers, not the "
+                "buyback bucket. Reading 'Lo 20' as 'the buyback portfolio' is "
+                "the error this description exists to prevent."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+        ),
+        FrenchDataset(
+            dataset_id="french_us_portfolios_formed_on_ac",
+            filename="Portfolios_Formed_on_AC_CSV.zip",
+            description=(
+                "Portfolios formed on accruals (AC/B), US, from 1963-07: the "
+                "change in operating working capital per split-adjusted share "
+                "from t-2 to t-1 divided by book equity per share at t-1, sorted "
+                "at the end of June. The accrual anomaly of Sloan (1996) pays "
+                "LOW accruals, so its spread is 'Lo 10' minus 'Hi 10' — the "
+                "opposite sign convention to a value or profitability sort, "
+                "where the high leg is the long one. As with NI, the library "
+                "publishes no accruals FACTOR file and any spread is built here."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+        ),
+        FrenchDataset(
+            dataset_id="french_us_portfolios_formed_on_beta",
+            filename="Portfolios_Formed_on_BETA_CSV.zip",
+            description=(
+                "Portfolios formed on prior market beta, US, from 1963-07: "
+                "Scholes-Williams betas from 60 monthly returns, sorted at the "
+                "end of June. Registered as the independent check on AQR's BAB, "
+                "and it is NOT the same strategy. A low-minus-high decile spread "
+                "built here is UNLEVERED and therefore carries a large negative "
+                "market beta; Frazzini and Pedersen's BAB levers the low-beta "
+                "leg and de-levers the high-beta leg so that each side has a "
+                "beta of one and the spread is market-neutral by construction. "
+                "The two series answer different questions and their premia are "
+                "not comparable without stating that difference."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+        ),
     )
 }
 

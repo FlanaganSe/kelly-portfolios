@@ -314,3 +314,91 @@ def test_the_manifest_pins_the_sheet_and_the_revision_policy(
 def test_unknown_dataset_id_lists_the_known_ones() -> None:
     with pytest.raises(KeyError, match="aqr_tsmom_factors"):
         aqr.get_dataset("aqr_value_factors")
+
+
+@pytest.fixture
+def bab_dataset() -> aqr.AqrDataset:
+    return aqr.get_dataset("aqr_bab_equity_factors")
+
+
+def _text_dated_workbook(sheet_title: str, column: str, dates: list[str]) -> bytes:
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = sheet_title
+    sheet.append(["AQR Capital Management, LLC — self-financing excess returns"])
+    sheet.append([None])
+    sheet.append(["DATE", column])
+    for index, date in enumerate(dates):
+        sheet.append([date, 0.001 * (index + 1)])
+    payload = io.BytesIO()
+    workbook.save(payload)
+    return payload.getvalue()
+
+
+def test_text_month_end_dates_are_read_as_month_day_year(
+    tmp_path: Path, bab_dataset: aqr.AqrDataset
+) -> None:
+    """The BAB, QMJ and VME workbooks key their rows on ``MM/DD/YYYY`` **text**.
+
+    The three workbooks landed before them use Excel serials. A parser that accepts
+    only the serials rejects these outright, which is what ``aqr/1.0.0`` did.
+    """
+    dates = [f"{month:02d}/28/1931" for month in range(1, 13)]
+    cache = RawCache(tmp_path)
+    entry = cache.store(
+        bab_dataset.url + "#text-dates",
+        _text_dated_workbook("BAB Factors", "USA", dates),
+    )
+    table = aqr.parse(cache, entry, dataset=bab_dataset).table
+
+    assert table.periods[0] == "1931-01"
+    assert table.periods[-1] == "1931-12"
+    assert table.frequency == "monthly"
+    assert table.columns == ("USA",)
+
+
+def test_a_day_first_text_date_is_refused_rather_than_reordered(
+    tmp_path: Path, bab_dataset: aqr.AqrDataset
+) -> None:
+    """``31/12/1930`` has no valid reading as month/day and must not be swapped.
+
+    Silently accepting day-first ordering would relabel every observation in the
+    file by up to eleven months without changing anything a reader sees.
+    """
+    dates = [f"28/{month:02d}/1931" for month in range(1, 13)]
+    cache = RawCache(tmp_path)
+    entry = cache.store(
+        bab_dataset.url + "#day-first",
+        _text_dated_workbook("BAB Factors", "USA", dates),
+    )
+    with pytest.raises(aqr.AqrParseError, match="no rows whose first cell is a date"):
+        aqr.parse(cache, entry, dataset=bab_dataset)
+
+
+@pytest.mark.parametrize(
+    ("dataset_id", "sheet", "filename"),
+    [
+        (
+            "aqr_bab_equity_factors",
+            "BAB Factors",
+            "Betting-Against-Beta-Equity-Factors-Monthly.xlsx",
+        ),
+        ("aqr_qmj_factors", "QMJ Factors", "Quality-Minus-Junk-Factors-Monthly.xlsx"),
+        (
+            "aqr_vme_factors",
+            "VME Factors",
+            "Value-and-Momentum-Everywhere-Factors-Monthly.xlsx",
+        ),
+    ],
+)
+def test_the_new_workbooks_pin_a_sheet_and_declare_a_gross_return_basis(
+    dataset_id: str, sheet: str, filename: str
+) -> None:
+    dataset = aqr.get_dataset(dataset_id)
+    assert dataset.data_sheet == sheet
+    assert dataset.filename == filename
+    assert dataset.url.endswith(filename)
+    assert dataset.declared_units == "decimal"
+    assert dataset.declared_unit_transform == "identity"
+    assert "gross" in dataset.declared_return_basis
+    assert "reconstructs the full history" in dataset.revision_policy

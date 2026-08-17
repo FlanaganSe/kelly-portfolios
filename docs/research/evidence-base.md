@@ -44,13 +44,21 @@ exceeds the bar, a null result carries almost no information.**
 | Financed 50% trend overlay, vendor leg | 485 months | 2.82 pp/yr | 0.30 pp/yr | gap +4.79, but the leg's decay exceeds its break-even |
 | Same, **live fund leg** | N-PORT, 78 months | **4.76** pp/yr | 0.30 pp/yr | **no** — the window, not the series, now binds |
 | **Vendor index against live funds** | 78 paired months, ρ = 0.72 | interval half-width ≈ 8.3 pp/yr | the 7.7 pp/yr bias bound | **yes, narrowly** — 7.7 is outside the interval |
+| **BAB full-sample premium** | AQR US leg, 1,146 mo | 3.45 pp/yr | 2.0 pp/yr | **yes** — measured +7.77, `[+5.05, +10.48]` |
+| Same, **post-2015 publication** | 137 mo | **5.86** pp/yr | 2.0 pp/yr | **no**, by ~2.9× |
+| Short-term reversal, full sample | French, 1,205 mo | 3.20 pp/yr | 2.0 pp/yr | **yes** — +7.46 |
+| Same, **post-1991 publication** | 426 mo | 4.39 pp/yr | 2.0 pp/yr | **no** — +1.71, well inside the floor |
+| Accruals / net issuance, post-publication | 354 and 210 mo | 5.36 and 9.00 pp/yr | 2.0 pp/yr | **no**, by 2.7–4.5× |
+| **Correlation among candidate engines** | 497 aligned months | SE ≈ 0.045 on ρ ≈ 0 | 0.3 for breadth | **yes** — this is the resolvable question |
 
-Two entries in that table are the whole shape of the programme's results. **Exposure is
+Three entries in that table are the whole shape of the programme's results. **Exposure is
 measurable and alpha is not** — 38 of 44 US funds reject a zero intended loading under
 Benjamini–Hochberg, while 5 of 132 alpha tests survive Holm and all five are negative.
-And **the public factor library has a floor above this repository's own materiality
+**The public factor library has a floor above this repository's own materiality
 threshold**, so a premium between zero and about 2.6 pp/yr is invisible in it however
-the regions are pooled.
+the regions are pooled. And **a correlation is not a mean**: the same files that cannot
+sign a post-publication premium resolve a correlation to two decimal places, which is
+why the breadth question is answerable here and the return question is not.
 
 ### The model-misfit pedestals
 
@@ -96,6 +104,19 @@ and makes no point-in-time claim.
 | `Portfolios_Formed_on_ME` | 1926-07…2026-06 | `d731dea9` | — |
 | `Developed_ex_US_6_Portfolios_ME_BE-ME` | 1990-07…2026-06 | `2b79a263` | — |
 | `Emerging_Markets_6_Portfolios_ME_BE-ME` | 1989-07…2026-06 | `2b5fa424` | — |
+| `F-F_ST_Reversal_Factor` | 1926-02…2026-06 | `dc40286c` | **never gated** |
+| `F-F_LT_Reversal_Factor` | 1931-01…2026-06 | `48d8615e` | **never gated** |
+| `Portfolios_Formed_on_NI` (net share issues) | 1963-07…2026-06 | `f9b9f25b` | — |
+| `Portfolios_Formed_on_AC` (accruals) | 1963-07…2026-06 | `df8ec2d2` | — |
+| `Portfolios_Formed_on_BETA` | 1963-07…2026-06 | `39ee17df` | — |
+
+**The library publishes no long-short factor file for net issuance, accruals or prior
+beta.** Only sorted legs exist, so any spread built from them is *this repository's*
+construction and inherits no external replication. Two further traps in the new files:
+`Portfolios_Formed_on_NI` carries `< 0` (net repurchasers) and `ZERO` buckets that sit
+**outside** its quintile and decile splits, so `Lo 10` is not the buyback portfolio;
+and the `F-F_LT_Reversal_Factor` preamble says "It contains a momentum factor" — Ken
+French reused the momentum file's header text and the first line is simply wrong.
 
 Three traps this library has already set here, each caught and each cheap to reset:
 
@@ -155,6 +176,9 @@ series this repository holds for any strategy.
 | FRED | `GS10` → a **modelled** rolled par-bond total return | **modelled, `research_grade = False`** |
 | FRED | `CPIAUCSL` | measured; ends two months before the equity series |
 | AQR | `Time-Series-Momentum-Factors-Monthly.xlsx`, sheet `TSMOM Factors`, `33470930`, 1985-01…2026-05 | **vendor series, author-maintained, reconstructed on every update** |
+| AQR | `Betting-Against-Beta-Equity-Factors-Monthly.xlsx`, sheet `BAB Factors`, `b0b1a214`, 1930-12…2026-05 | same flags, **and self-financing**: it borrows to lever the low-beta leg and states no financing rate |
+| AQR | `Quality-Minus-Junk-Factors-Monthly.xlsx`, sheet `QMJ Factors`, `4eedd523`, 1957-07…2026-05 | same flags; **overlaps RMW at ρ = 0.72** and is not a separate engine from it |
+| AQR | `Value-and-Momentum-Everywhere-Factors-Monthly.xlsx`, sheet `VME Factors`, `a2351d03`, 1972-01…2026-05 | same flags. **The asset-allocation legs stop at 2025-01, sixteen months before the file's last row, and their volatility falls from 13.1% to 4.2% after 2014** — a construction change, so nothing may be quoted from them |
 
 Two warnings that have already cost time. **AQR ships its methodology as embedded
 pictures** — the Definitions, Data Sources and Disclosures sheets carry 2, 1 and 0

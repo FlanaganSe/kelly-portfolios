@@ -73,7 +73,16 @@ __all__ = [
 
 #: Bump on any change to parsing behaviour: block detection, sheet selection,
 #: period labelling, unit handling, or drawing-text recovery.
-PARSER_VERSION: Final = "aqr/1.0.0"
+#:
+#: ``aqr/1.1.0`` added ``MM/DD/YYYY`` text dates. The three workbooks landed
+#: first — time-series momentum, commodities, credit — key their rows on Excel
+#: serial dates that openpyxl hands back as ``datetime``. The betting-against-
+#: beta, quality-minus-junk and value-and-momentum workbooks key theirs on
+#: ``'12/31/1930'`` **as text**, which the 1.0.0 parser rejected outright with
+#: "contains no rows whose first cell is a date". The manifests already
+#: committed under ``aqr/1.0.0`` are left recording that version, because they
+#: were built by it and the field exists to say so.
+PARSER_VERSION: Final = "aqr/1.1.0"
 
 LICENSE_OR_TERMS_URL: Final = "https://www.aqr.com/Insights/Datasets"
 
@@ -92,6 +101,14 @@ _ANNUAL_GAP_DAYS: Final = (350, 380)
 _DAILY_MAX_GAP_DAYS: Final = 5
 
 _ISO_DATE = re.compile(r"^(\d{4})-(\d{2})(?:-(\d{2}))?$")
+
+#: ``MM/DD/YYYY``, the text date key of the BAB, QMJ and VME workbooks. It is
+#: read as month/day/year and never as day/month/year: AQR is a US firm, the
+#: workbooks are month-end series, and :func:`_as_date` rejects the string
+#: outright rather than swapping the fields when the first group exceeds 12, so
+#: a European-ordered revision fails loudly instead of silently relabelling
+#: every observation.
+_US_SLASH_DATE = re.compile(r"^(\d{1,2})/(\d{1,2})/(\d{4})$")
 
 _AVAILABILITY_MONTHLY: Final = (
     "Posted by the vendor without a published release timestamp or an as-of date "
@@ -267,6 +284,126 @@ DATASETS: Final[dict[str, AqrDataset]] = {
                 "2015, and no earlier vintage is published."
             ),
             expected_columns=("CORP_XS", "GOVT_XS", "SP500_XS"),
+        ),
+        AqrDataset(
+            dataset_id="aqr_bab_equity_factors",
+            filename="Betting-Against-Beta-Equity-Factors-Monthly.xlsx",
+            data_sheet="BAB Factors",
+            description=(
+                "Monthly self-financing returns of the betting-against-beta "
+                "equity factor for the United States, 23 other national markets "
+                "and five aggregates, from 1930-12 for the US leg. An updated "
+                "and extended version of Frazzini and Pedersen (2014), 'Betting "
+                "Against Beta', JFE 111, 1-25, with construction differences the "
+                "workbook does not enumerate. BAB is long low-beta securities "
+                "LEVERED to a beta of one and short high-beta securities "
+                "DE-LEVERED to a beta of one, so it is not a decile spread and "
+                "cannot be reproduced from Ken French's Portfolios_Formed_on_BETA "
+                "without that leverage step."
+            ),
+            declared_source_units="decimal",
+            declared_units="decimal",
+            declared_unit_transform="identity",
+            declared_return_basis=(
+                "monthly SELF-FINANCING excess return, per the workbook's own "
+                "header row. The self-financing claim is the point of the "
+                "strategy and also its largest unpriced assumption: BAB borrows "
+                "to lever the low-beta leg, and the workbook states no financing "
+                "rate, fee, transaction-cost, slippage, short-borrow or capacity "
+                "basis anywhere. The premium is therefore gross of exactly the "
+                "cost the strategy exists to incur, and must be treated as gross "
+                "of all of them until the vendor states otherwise. The leverage "
+                "also makes the series unreachable by a long-only investor: no "
+                "decile portfolio in any free library reproduces it."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_RECONSTRUCTED,
+            expected_columns=(
+                "AUS", "AUT", "BEL", "CAN", "CHE", "DEU", "DNK", "ESP", "FIN",
+                "FRA", "GBR", "GRC", "HKG", "IRL", "ISR", "ITA", "JPN", "NLD",
+                "NOR", "NZL", "PRT", "SGP", "SWE", "USA",
+                "Global", "Global Ex USA", "Europe", "North America", "Pacific",
+            ),
+        ),
+        AqrDataset(
+            dataset_id="aqr_qmj_factors",
+            filename="Quality-Minus-Junk-Factors-Monthly.xlsx",
+            data_sheet="QMJ Factors",
+            description=(
+                "Monthly self-financing returns of the quality-minus-junk factor "
+                "for the United States, 23 other national markets and five "
+                "aggregates, from 1957-07 for the US leg. An updated and extended "
+                "version of Asness, Frazzini and Pedersen (2019), 'Quality Minus "
+                "Junk', Review of Accounting Studies 24, 34-112. Quality is a "
+                "composite of profitability, growth and safety, so QMJ OVERLAPS "
+                "Ken French's RMW rather than being independent of it, and the "
+                "two must never be counted as separate engines without measuring "
+                "their correlation first."
+            ),
+            declared_source_units="decimal",
+            declared_units="decimal",
+            declared_unit_transform="identity",
+            declared_return_basis=(
+                "monthly SELF-FINANCING excess return, per the workbook's own "
+                "header row. No fee, transaction-cost, slippage, short-borrow or "
+                "financing basis is stated anywhere in the workbook, so the "
+                "series must be treated as gross of all of them. The factor is "
+                "beta-neutralised within size groups by construction, which is "
+                "what makes its correlation to equity small and is a property of "
+                "the construction rather than a discovered fact."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_RECONSTRUCTED,
+            expected_columns=(
+                "AUS", "AUT", "BEL", "CAN", "CHE", "DEU", "DNK", "ESP", "FIN",
+                "FRA", "GBR", "GRC", "HKG", "IRL", "ISR", "ITA", "JPN", "NLD",
+                "NOR", "NZL", "PRT", "SGP", "SWE", "USA",
+                "Global", "Global Ex USA", "Europe", "North America", "Pacific",
+            ),
+        ),
+        AqrDataset(
+            dataset_id="aqr_vme_factors",
+            filename="Value-and-Momentum-Everywhere-Factors-Monthly.xlsx",
+            data_sheet="VME Factors",
+            description=(
+                "Monthly excess returns of rank-weighted value (VAL) and momentum "
+                "(MOM) factors in eight asset classes and three global averages, "
+                "from 1972-01, behind Asness, Moskowitz and Pedersen (2013), "
+                "'Value and Momentum Everywhere', Journal of Finance 68, 929-985. "
+                "Registered for the four ASSET-ALLOCATION legs — equity indices, "
+                "currencies, fixed income, commodities — which are the only "
+                "return sources here that are neither stock selection nor trend. "
+                "The four stock-selection legs (US, UK, Europe, Japan) are value "
+                "and momentum by another construction and overlap HML and UMD; "
+                "counting them as new engines would be the fake breadth this "
+                "repository forbids."
+            ),
+            declared_source_units="decimal",
+            declared_units="decimal",
+            declared_unit_transform="identity",
+            declared_return_basis=(
+                "monthly EXCESS return of a long/short rank-weighted portfolio, "
+                "per the workbook's own header row. No fee, transaction-cost, "
+                "slippage, short-borrow or financing basis is stated anywhere, so "
+                "the series is gross of all of them. "
+                "Rank weighting spreads the book across the whole cross-section "
+                "rather than the extreme deciles, which lowers turnover relative "
+                "to a decile spread and makes the series NOT comparable with the "
+                "Ken French factors on either gross return or cost."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_RECONSTRUCTED,
+            expected_columns=(
+                "VAL", "MOM", "VAL^SS", "MOM^SS", "VAL^AA", "MOM^AA",
+                "VALLS_VME_US90", "MOMLS_VME_US90",
+                "VALLS_VME_UK90", "MOMLS_VME_UK90",
+                "VALLS_VME_ROE90", "MOMLS_VME_ROE90",
+                "VALLS_VME_JP90", "MOMLS_VME_JP90",
+                "VALLS_VME_EQ", "MOMLS_VME_EQ",
+                "VALLS_VME_FX", "MOMLS_VME_FX",
+                "VALLS_VME_FI", "MOMLS_VME_FI",
+                "VALLS_VME_COM", "MOMLS_VME_COM",
+            ),
         ),
     )
 }
@@ -487,24 +624,33 @@ def build_manifests(
 def _as_date(value: object) -> dt.date | None:
     """Return the calendar date a cell denotes, or ``None`` if it denotes none.
 
-    Accepts what openpyxl produces for a date-formatted cell and the ISO text a
-    revision might ship instead. A bare number is *not* accepted: an unformatted
-    Excel serial is indistinguishable from a return, and guessing which one it is
-    would silently invent an index.
+    Accepts what openpyxl produces for a date-formatted cell, the ISO text a
+    revision might ship instead, and the ``MM/DD/YYYY`` text AQR actually ships in
+    the BAB, QMJ and VME workbooks. A bare number is *not* accepted: an
+    unformatted Excel serial is indistinguishable from a return, and guessing
+    which one it is would silently invent an index.
     """
     if isinstance(value, dt.datetime):
         return value.date()
     if isinstance(value, dt.date):
         return value
     if isinstance(value, str):
-        match = _ISO_DATE.match(value.strip())
-        if match is None:
-            return None
-        year, month, day = match.group(1), match.group(2), match.group(3)
-        try:
-            return dt.date(int(year), int(month), int(day or 1))
-        except ValueError:
-            return None
+        text = value.strip()
+        iso = _ISO_DATE.match(text)
+        if iso is not None:
+            try:
+                return dt.date(int(iso.group(1)), int(iso.group(2)), int(iso.group(3) or 1))
+            except ValueError:
+                return None
+        slashed = _US_SLASH_DATE.match(text)
+        if slashed is not None:
+            try:
+                return dt.date(
+                    int(slashed.group(3)), int(slashed.group(1)), int(slashed.group(2))
+                )
+            except ValueError:
+                return None
+        return None
     return None
 
 
