@@ -30,10 +30,13 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
 4. **Trend is the one engine that survives, and it survives as risk reduction rather than
    as return.** Its left-tail contribution is positive at every haircut tested, including
    one that turns its median contribution negative.
-5. **The largest certain improvement is not an overlay at all.** Holding global rather than
-   US equity cut the maximum drawdown by 4.6–5.9 pp and three years of time under water,
-   for about 5 bp — roughly twice the drawdown benefit of a 25% trend overlay at about a
-   thirtieth of the cost. **The programme spent most of its effort on the third-order term.**
+5. **Global versus US is unresolved, and the two datasets disagree in opposite
+   directions.** In local currency over 150 years, global 60/40 beat US-only on drawdown
+   and on return per unit of risk. **In USD over 1990–2025 it lost 1.57 pp/yr and drew down
+   deeper.** The case for global equity is not that it raises expected return — on the only
+   USD evidence here it does not — but that the US is the survivor and its record cannot be
+   bought in advance. **An earlier draft of this page claimed global was the largest certain
+   improvement available; building the frontier falsified that and the claim is withdrawn.**
 
 ---
 
@@ -266,30 +269,83 @@ above 3.5%.** The analytic central case of +0.63 pp/yr also agrees with the empi
 
 ---
 
-## 6. The thing that beat all of it, and cost 5 basis points
+## 6. Global versus US: the two datasets disagree, and the disagreement is the finding
 
-[JST R6](evidence-base.md), annual real total return, US against an equal-weight ex-US
-basket held 60/40 — roughly a cap-weighted global fund's split today.
+**This section previously claimed global diversification was the largest certain
+improvement available. Building the candidate frontier falsified that, and the claim is
+withdrawn.** What follows is what the evidence actually supports.
 
-| From 1871, n=149 | geometric | volatility | geo/vol | max DD | under water |
+### What the century of local-currency data says
+
+[JST R6](evidence-base.md), annual **real, local currency**, US against an equal-weight
+ex-US basket held 60/40:
+
+| | geometric | volatility | geo/vol | max DD | under water |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| USA alone | 6.82% | 18.23% | 0.37 | −51.9% | 13 yr |
-| **60% US / 40% ex-US** | 6.68% | 14.68% | **0.46** | **−46.0%** | **10 yr** |
+| USA alone, 1871–2020 | 6.82% | 18.23% | 0.37 | −51.9% | 13 yr |
+| 60/40 global, 1871–2020 | 6.68% | 14.68% | **0.46** | **−46.0%** | **10 yr** |
+| USA alone, 1963–2020 | 6.28% | 15.64% | 0.40 | −47.2% | 13 yr |
+| 60/40 global, 1963–2020 | **6.44%** | 15.20% | **0.42** | **−42.6%** | **10 yr** |
 
-| From 1963, n=58 | geometric | volatility | geo/vol | max DD | under water |
+### What the USD data says, and it says the opposite
+
+Ken French regional market factors, **monthly nominal USD**, 426 months 1990-07…2025-12 —
+the only multi-region series here that a US investor could actually have earned:
+
+| | geometric | volatility | Sharpe | max DD | under water |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| USA alone | 6.28% | 15.64% | 0.40 | −47.2% | 13 yr |
-| **60% US / 40% ex-US** | **6.44%** | 15.20% | **0.42** | **−42.6%** | **10 yr** |
+| 100% US | **10.98%** | 15.16% | **0.594** | **−50.3%** | 72 mo |
+| global 60/30/10 | 9.41% | 14.84% | 0.507 | **−53.1%** | 63 mo |
 
-Essentially unchanged geometric return, materially lower volatility, a shallower drawdown
-and **three fewer years under water**, in both windows. It cost 14 bp/yr over the century —
-which is the US having won — and *gained* 16 bp from 1963.
+**Global lost 1.57 pp/yr *and* drew down deeper.** Both halves contradict the table above.
 
-**Ranked against the overlay: 4.6–5.9 pp of drawdown improvement against 2.3 pp, at roughly
-a thirtieth of the cost, with no manager, no fee beyond a few basis points, no tax drag, no
-closure risk and no abandonment risk.** This confirms the existing 60/30/10 recommendation
-rather than overturning it — but supplies the century-scale, sixteen-country evidence that
-recommendation never had.
+### Why they disagree, and which one to believe
+
+Two differences, both material and neither dismissible.
+
+- **Currency.** JST returns are **local currency**; the French regional factors are
+  **USD**, so they carry the exchange-rate exposure a US investor actually bears. The JST
+  result is what a local investor in each market earned, not what an American earned.
+- **Window.** 1990–2025 is precisely the period in which the US ran away — the drift gap
+  measured in [Experiment 003](rebalancing-policy.md) is **4.34 pp/yr against a
+  `gamma_star` of 12.5 bp**. The JST windows are 150 and 58 years.
+
+**Neither is the answer, and the honest conclusion is narrower than either.** The case for
+holding global equity is **not** that it has historically outperformed — in the only USD
+series available it did not, by a wide margin. The case is that **the United States is the
+survivor, and its record cannot be bought in advance.** Sixteen countries produced a median
+real drawdown near −74%; the US produced −51.9% and ranks 15th of 16 on the full sample and
+**16th of 16 from 1963** ([the ladder](setting-the-equity-share.md)). Concentrating in the
+market that happened to win is a bet on that outcome repeating, and nothing here supports
+that bet.
+
+That is a **statement about the distribution of outcomes, not a prediction of returns**, and
+it should never be quoted as evidence that global diversification raises expected return. On
+the evidence available it does not.
+
+### The candidate frontier
+
+Same 426-month USD window. Trend is haircut by the repository's full **7.7 pp/yr** CTA bias
+bound, so these are the pessimistic rows. `B2` levers the *global* base to each candidate's
+volatility — the control the plan makes mandatory.
+
+| | Candidate | geometric | volatility | Sharpe | max DD | under water | notional |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| **B0** | 100% US | 10.98% | 15.16% | 0.594 | −50.3% | 72 mo | 1.00 |
+| **B1/C1** | global 60/30/10 | 9.41% | 14.84% | 0.507 | −53.1% | 63 mo | 1.00 |
+| **C2** | global + 15% trend | 9.76% | 14.61% | 0.535 | −51.8% | 62 mo | 1.15 |
+| **C3** | global + 25% trend | 9.98% | 14.60% | **0.549** | −51.0% | 64 mo | 1.25 |
+| **C4** | global + 50% trend | 10.44% | 15.02% | 0.566 | **−48.9%** | 65 mo | 1.50 |
+| **B2** | global levered to C3's volatility | 9.32% | 14.60% | 0.508 | −52.4% | 63 mo | 0.98 |
+
+**C3 beats its leverage-matched control on Sharpe by 0.041 at identical volatility**, which
+is the test that separates breadth from beta, and it passes. The overlay contributes
+**+0.57 pp/yr and 2.1 pp of drawdown** at the full bias haircut.
+
+**And every candidate trails B0 on this window.** A reader who takes B0 as the benchmark
+should conclude that nothing here beat 100% US equity over 1990–2025. That is true, it is
+the window in which the US won, and it is exactly why B0 is not the only benchmark the plan
+requires.
 
 ---
 
@@ -333,8 +389,8 @@ must close before any of it informs a decision.
    is circular for that reason. **Neither block is lifted here.**
 2. **Any future marginal-sleeve experiment must state its funding rule**, because the rule
    is worth more than the sleeve.
-3. **Global diversification outranks every overlay on certainty per unit of benefit**, and
-   the recommendation's ordering should say so.
+3. **Global diversification is a distributional argument, not a return argument**, and any
+   page that states it must carry the USD counter-evidence in the same breath.
 4. **A trend sleeve is a risk-reduction claim, not a return claim**, and must be judged on
    mechanism rather than on relative performance.
 5. **Commodities, credit as a separate engine, and the alternative risk premia are

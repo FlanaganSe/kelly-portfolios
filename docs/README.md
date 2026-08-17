@@ -78,9 +78,10 @@ and current status.
 - [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) — what the
   funding rule is worth (`a_p - sigma_p**2`, containing nothing about the sleeve), why the
   realised growth optimum on levered equity is unholdable at a -99.3% drawdown, how many
-  distinct return engines actually exist once cost is charged (one), and the finding that
-  outranks every overlay on certainty: global equity beat US-only by 4.6-5.9 pp of drawdown
-  for about 5 basis points.
+  distinct return engines actually exist once cost is charged (one), the candidate frontier
+  against a leverage-matched control, and why the global-versus-US question is unresolved:
+  the century of local-currency data and the only USD series available disagree in opposite
+  directions.
 - [Numerical engine specification](research/portfolio-engine-specification.md) — the
   algorithms, closed-form fixtures and conditioning requirements underneath any allocation
   feature, and where the optimiser should run.
