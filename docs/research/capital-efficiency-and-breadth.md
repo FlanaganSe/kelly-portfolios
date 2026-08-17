@@ -323,6 +323,49 @@ That is a **statement about the distribution of outcomes, not a prediction of re
 it should never be quoted as evidence that global diversification raises expected return. On
 the evidence available it does not.
 
+### Can valuation settle it? No — measured, not assumed
+
+Valuation conditioning has never been tested in this repository, and the Shiller and
+Goyal–Welch data landed in the same round as everything else here, so it can be. If CAPE
+predicted subsequent returns well enough, it would resolve US versus global directly.
+
+Regressing subsequent **10-year annualised real total return** on `log(CAPE)`, built from
+Shiller's real total-return index rather than taken from his forward-return column,
+1881-01…2016-08:
+
+| Test | Result |
+| --- | --- |
+| In-sample slope, full period | **−0.0658**, R² **0.258** |
+| In-sample, post-1950 | −0.0724, R² 0.286 |
+| In-sample, post-1985 | **−0.1292**, R² **0.680** |
+| Out-of-sample R² vs prevailing mean, **no embargo** | +0.232 — **contaminated** |
+| Out-of-sample R², **120-month embargo** | **+0.174** |
+
+**The embargo matters and is easy to omit.** An expanding-window forecast that trains on
+10-year forward returns which have not yet finished is using data from after the forecast
+date. Purging the training set to labels fully realised beforehand cuts the out-of-sample
+R² from +0.232 to +0.174 — the difference is look-ahead, and it is the reason
+`docs/the-plan.md` requires purging and embargo where labels overlap.
+
+**And +0.174 still cannot size a decision, because of what n is.** There are 1,040
+overlapping monthly observations and about **eight independent ten-year windows**. The
+post-1985 R² of 0.680 is one long swing of rising valuations and falling subsequent
+returns, not 380 observations. A relationship measured on eight effective points cannot
+distinguish +0.17 from zero.
+
+At the current CAPE of 41.2 the in-sample line forecasts roughly **+0.3%/yr real over ten
+years, against a residual standard deviation of 4.43 pp — a 95% band of about ±8.7 pp
+before any correction for overlap.** The point estimate is unusually low and the band
+swamps it.
+
+**Consequence: valuation conditioning is `unresolved` and cannot arbitrate US versus
+global.** The relationship is real and the instrument's resolution sits far below the
+decision's requirement — which is precisely the check
+[the evidence base](evidence-base.md) exists to force before an experiment is commissioned.
+This closes round-two item 5 with a measured reason rather than leaving it open.
+
+---
+
 ### The candidate frontier, with the two decisions separated
 
 The frontier above conflated two independent choices. Separating them is the whole point,

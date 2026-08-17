@@ -39,6 +39,7 @@ SPEC_NAMES = (
     "exp_009_exus_factor_products",
     "exp_010_marginal_sleeve_value",
     "exp_010b_growth_basis",
+    "exp_011_overlay_stack",
     "phase1_ff_reproduction",
 )
 
@@ -896,3 +897,86 @@ def test_exp_010b_restates_every_falsifier_clause_on_the_growth_basis() -> None:
     # The only surviving mention of the certainty equivalent is the one that says
     # the clause used to read it.
     assert "certainty-equivalent gain" not in falsifier
+
+
+def test_exp_011_records_that_it_cannot_be_made_confirmatory_later() -> None:
+    """The freeze note is the load-bearing fact and it lives in the file, not in prose."""
+    spec = load("exp_011_overlay_stack")
+    assert spec.run_kind is RunKind.EXPLORATORY
+    assert spec.evidence_class is EvidenceClass.VENDOR_SERIES_EVALUATION
+    disclosure = as_mapping(as_mapping(spec.parameters)["evaluation_disclosure"])
+    assert disclosure["is_confirmatory"] is False
+    assert disclosure["is_independent_replication"] is False
+    assert "before this file was written" in str(disclosure["order_of_operations"])
+    text = (SPEC_DIR / "exp_011_overlay_stack.yaml").read_text(encoding="utf-8")
+    assert "NOT CONFIRMATORY AND CANNOT BE MADE CONFIRMATORY LATER" in text
+
+
+def test_exp_011_names_the_leverage_matched_control_as_the_primary_benchmark() -> None:
+    """Comparing an overlay with unlevered equity flatters it by what the risk earns."""
+    benchmark = as_mapping(load("exp_011_overlay_stack").benchmark)
+    assert as_mapping(benchmark["primary"])["id"] == "equity_levered_150"
+    assert as_mapping(benchmark["secondary"])["id"] == "equity_only"
+    assert "MAY NEVER BE ADDED" in str(benchmark["aggregation_rule"])
+
+
+def test_exp_011_charges_financing_to_the_control_it_is_compared_against() -> None:
+    cost_model = as_mapping(load("exp_011_overlay_stack").cost_model)
+    assert "LEVERAGE-MATCHED CONTROLS ON THE SAME TERMS" in str(cost_model["charged_uniformly"])
+    fees = as_mapping(cost_model["sleeve_fee_annual_percent"])
+    assert fees["trend"] == 1.45
+    assert fees["commodity"] == 0.0
+    assert cost_model["borrow_spread_annual_percent"] == 0.59
+
+
+def test_exp_011_pins_four_source_vintages_and_aborts_on_a_hash_change() -> None:
+    pin = as_mapping(as_mapping(load("exp_011_overlay_stack").parameters)["source_pin"])
+    assert pin["abort_on_hash_change"] is True
+    series = [as_mapping(item) for item in as_sequence(pin["series"])]
+    assert {str(item["name"]) for item in series} == {
+        "equity",
+        "treasury",
+        "credit",
+        "commodity",
+        "trend",
+        "cash",
+    }
+    assert {str(item["dataset_id"]) for item in series} == {
+        "french_us_ff3",
+        "goyal_welch_predictors",
+        "aqr_commodities_long_run",
+        "aqr_tsmom_factors",
+    }
+    for item in series:
+        assert len(str(item["expected_sha256_raw"])) == 64
+        assert len(str(item["expected_sha256_normalized"])) == 64
+
+
+def test_exp_011_keeps_the_commodity_leg_excess_of_cash() -> None:
+    """Adding a cash rate to it would invent a collateralised total return."""
+    universe = as_mapping(load("exp_011_overlay_stack").universe)
+    entry = next(
+        as_mapping(item)
+        for item in as_sequence(universe["series"])
+        if as_mapping(item)["id"] == "commodity"
+    )
+    assert "NOT a collateralised total return" in str(entry["basis"])
+
+
+def test_exp_011_carries_a_sleeve_that_is_expected_to_fail_the_admission_bar() -> None:
+    """A stack that only reports the sleeves it kept is not a test."""
+    parameters = as_mapping(load("exp_011_overlay_stack").parameters)
+    weights = {
+        str(as_mapping(item)["name"]): as_sequence(as_mapping(item)["weights"])
+        for item in as_sequence(parameters["portfolios"])
+    }
+    assert set(weights) == {
+        "equity_only",
+        "equity_plus_trend_50",
+        "equity_plus_treasury_trend",
+        "equity_plus_all_three",
+        "equity_levered_135",
+        "equity_levered_150",
+    }
+    assert "commodity" in as_sequence(parameters["sleeves"])
+    assert "commodity" not in as_sequence(parameters["portfolio_sleeve_order"])
