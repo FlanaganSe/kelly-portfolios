@@ -24,8 +24,12 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
 2. **Leverage on equity alone is not the answer.** The realised growth optimum on 100 years
    of US data is about **2.2×, at a −99.3% maximum drawdown and 296 months under water.**
    The drawdown constraint sets exposure; the growth objective never does.
-3. **Breadth is limited by the vehicle shelf, not by markets.** This page previously said
-   "breadth is one engine". **A red team falsified that framing.** At least four engines
+3. **Breadth is limited by the vehicle shelf, not by markets — and the gap is now
+   measured.** Effective breadth of **4.06** is available on paper from trend, BAB,
+   short-term reversal and accruals, worth about four times trend alone. **Exactly one of
+   those four can be bought**, and three of the seven newly tested families have no
+   registered vehicle of any kind. This page previously said "breadth is one engine";
+   a red team falsified that framing. At least four engines
    clear the *overlay* bar and fail the *pro-rata* bar — trend, duration-hedged credit,
    long/short commodities and catastrophe bonds — and **only trend has a financed retail
    wrapper.** The binding constraint is which strategies happen to have a futures market
@@ -156,6 +160,73 @@ it by +0.107 and **pass at every exposure and fee tested**. What is true is weak
 different: their margin is roughly **five times smaller than trend's**, and the AQR series
 is excess-of-cash with **unpriced roll costs**, which is what would actually sink them.
 They are not rejected here; they are dominated.
+
+### The seven families this repository had never opened
+
+`docs/the-plan.md` §A lists about eighteen equity factor families. Five had been tested
+(HML, RMW, CMA, UMD, SMB), and [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)
+closed factor work "on public data" on the strength of those five. **That was
+over-general, and the remaining families are now measured on the same free library.**
+
+**Premia, gross, pp/yr, with each window's own measured detection floor beside it:**
+
+| Family | Full sample | 95% CI | MDE₈₀ | **Post-publication** | 95% CI | **MDE₈₀** |
+| --- | ---: | --- | ---: | ---: | --- | ---: |
+| **BAB** | **+7.77** | [5.05, 10.48] | 3.45 | +3.70 | [−0.92, 8.31] | **5.86** |
+| Short-term reversal | **+7.46** | [4.93, 9.98] | 3.20 | +1.71 | [−1.75, 5.17] | **4.39** |
+| Buybacks | **+6.63** | [3.53, 9.73] | 3.93 | +3.88 | [−2.02, 9.79] | **7.49** |
+| Net issuance | +4.50 | [1.14, 7.85] | 4.26 | +3.37 | [−3.73, 10.5] | **9.00** |
+| QMJ | +3.75 | [1.62, 5.89] | 2.71 | **−1.78** | [−11.6, 8.1] | **12.50** |
+| Accruals | +3.53 | [1.02, 6.05] | 3.19 | +1.94 | [−2.29, 6.16] | **5.36** |
+| Long-term reversal | +3.44 | [0.65, 6.23] | 3.54 | +1.62 | [−1.76, 5.00] | **4.29** |
+| Low-beta decile, unlevered | −2.18 | [−8.45, 4.09] | 7.96 | −1.74 | [−8.57, 5.09] | 8.66 |
+
+**Six of seven survive Holm and Benjamini–Hochberg across the family on the full sample.
+Zero of seven survive either post-publication** — and **every post-publication estimate
+sits below its own detection floor**, by 1.6× (BAB) to 7× (QMJ). These are unresolved
+nulls, not measured zeros, and the distinction is decision 0005's whole lesson.
+
+**And here is the part that matters, because it is the one thing this data can resolve.**
+Breadth. Correlations over 497 months: **nothing correlates above +0.18 with trend.**
+
+| Set | k | **Effective breadth `1' R⁻¹ 1`** |
+| --- | ---: | ---: |
+| trend alone | 1 | **1.00** |
+| trend + BAB | 2 | **1.69** |
+| trend + BAB + short-term reversal | 3 | **3.18** |
+| **trend + BAB + STR + accruals** | 4 | **4.06** |
+| trend + all seven | 8 | 6.67 |
+
+**Effective breadth of four is genuinely available**, and by the multiplier in §1 that
+would be worth roughly four times the peak gain of trend alone — more than any single
+tilt this repository has ever priced.
+
+**It is not available to anyone.** From the SEC N-PORT 2025Q4 census:
+
+| Engine | Registered long/short vehicle |
+| --- | --- |
+| BAB / low beta | **one** — AGF U.S. Market Neutral Anti-Beta, $362m |
+| QMJ, net issuance, buybacks | **none** |
+| Short-term reversal, long-term reversal, accruals | **none** |
+| Trend | 33 managed-futures and return-stacked series |
+
+A long-only minimum-volatility fund is not BAB: no short leg, no leverage, and a
+correlation to equity near one. **Three of the seven have no vehicle of any kind.**
+
+**So the answer to "combine several strategies" is now precise, and it is not a hedge.**
+*In principle* the breadth is real — four effectively independent engines, worth about
+4× one. *In practice* it is unreachable, because six of the seven cannot be bought and
+the seventh is a $362m fund whose post-publication premium sits 1.6× below its own
+detection floor, built by a firm that sells the strategy and states no financing cost —
+**on a strategy whose entire mechanism is borrowing.**
+
+**This is the third independent confirmation of the same structural fact**, after the
+alternative risk premia below and the [§F families](alternative-sleeves-audit.md): **the
+fund shelf binds before the evidence does.**
+
+Two side findings that must travel. **QMJ correlates 0.72 with RMW and may never be
+counted as a separate engine.** **PEAD is published by neither French nor AQR in any
+form** and is recorded as unobtainable rather than tested.
 
 ### Alternative risk premia: they pass the correlation test and fail the cost test
 
@@ -314,6 +385,11 @@ except at `rho = +0.50`, which is the evidence that this construction is **not d
 leveraged beta** — at 25% notional and near-zero correlation it adds little volatility to
 match. And the taxable row confirms the placement constraint: +0.63 becomes +0.10.
 
+**This table is univariate and that is a defect, not a simplification.** §5b replaces it as
+the thing to quote. Its one modestly-joint cell is already the worst row here, and the joint
+object shows why: moving one axis at a time understates the *tail* by about a factor of
+two while barely moving the failure rate.
+
 The break-even the sleeve must clear, by correlation, shows the same thing from the other
 side — and shows how much the funding rule is carrying:
 
@@ -327,6 +403,87 @@ side — and shows how much the funding rule is carrying:
 **Even at a correlation of +0.50 the overlay bar is below 1%, while the pro-rata bar is
 above 3.5%.** The analytic central case of +0.63 pp/yr also agrees with the empirical
 +0.68 pp/yr measured at the 7.7 pp haircut in §5, by two routes that share no arithmetic.
+
+---
+
+## 5b. The joint surface: dependence moves the tail, not the failure rate
+
+§5a moves one parameter at a time, which assumes without saying so that the adverse moves
+are independent. They are not: a return drought arrives with a correlation that has risen
+and financing that has widened. `stress_surface` in
+[`studies/overlay_stress.py`](../../research/src/portfolio_edge/studies/overlay_stress.py)
+varies all four axes together under a stated copula, at the recommended **30% overlay**,
+40,000 draws, seed 20260816.
+
+**The prior, stated because every number in it was chosen rather than measured.** The
+centres are the page's own figures — `a_d ~ N(4.0%, 4.0%)`, `rho ~ N(−0.08, 0.20)`,
+`sigma_d ~ 12.6% · exp(0.25 z)`, `s ~ 59 bp · exp(0.80 z)` — and the scales are wider than
+estimation error alone would justify, because the forward uncertainty that matters is
+regime rather than sampling. The 4.0 pp scale on the mean puts about 16% of mass below
+zero, which is roughly what the post-2012 drought looks like on all three instruments.
+The `ADVERSE_COPULA` sets `corr(a_d, rho) = −0.50`, `corr(a_d, s) = −0.40`,
+`corr(rho, sigma_d) = +0.40` and `corr(s, sigma_d) = +0.30` on the latent normals.
+
+| Copula | `P(gap < 0)` vs **leverage-matched** | `P(gap < 0)` vs unlevered | mean gap | p05 gap | mean gap when negative |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **independent** — what §5a assumes | **30.3%** | 29.1% | +0.65 | −1.41 | −0.80 |
+| half adverse | 31.7% | 30.0% | +0.63 | −1.61 | −0.90 |
+| **adverse** | **32.6%** | 30.7% | +0.62 | **−1.83** | **−1.01** |
+
+**The finding is the shape of that change, and it is not what the red team predicted.**
+Dependence moves the failure *rate* by 2.3 pp — a rounding error. It moves the fifth
+percentile by **0.42 pp/yr, a 30% widening of the loss**, and the expected loss given a
+loss by 0.21. **Correlated adversity does not make failure more likely; it makes failure
+worse.** A univariate table cannot show that at all, because the quantity it understates
+is a joint tail rather than a marginal probability.
+
+**How badly the univariate table understates it, in its own units.** The worst cell
+obtainable by moving one axis to its own 1st percentile is **−2.08 pp/yr**, and
+**3.6% of the joint prior sits below it** under the adverse copula against 1.5% under
+independence. §5a's own worst printed cell is **−1.26 pp/yr**, and **10.0%** of the joint
+prior sits below *that*, against 6.4% under independence.
+
+**The mean is what fails.** Among the failing draws, 99.2% have a below-median trend
+excess return; 80.1% have an above-median correlation, 74.5% an above-median financing
+spread, 68.4% an above-median volatility. **The overlay does not break on correlation. It
+breaks on the mean, and correlation decides how much it hurts** — which is §5a's ordering
+confirmed on a joint object rather than a list.
+
+**Failure probability barely moves with weight, and the tail moves a great deal**, which
+is the same statement again and is the reason weight is not a risk control here:
+
+| overlay `w` | `P(gap < 0)` | mean gap | p05 gap |
+| ---: | ---: | ---: | ---: |
+| 0.15 | 30.6% | +0.35 | −0.86 |
+| **0.30** | **32.6%** | **+0.62** | **−1.83** |
+| 0.50 | 35.1% | +0.87 | −3.25 |
+| 1.00 | 40.7% | +1.03 | −7.26 |
+
+### The boundary, without any prior at all
+
+`tolerable_financing_spread` gives the region's edge in closed form: the financing spread a
+30% overlay can absorb before it loses to the leverage-matched control, in pp/yr. **Negative
+means the overlay is already behind at zero financing cost, so no funding market rescues
+it.**
+
+| gross `a_d` \ `rho` | −0.20 | −0.08 | 0.00 | +0.20 | +0.30 | +0.50 |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **0.0%** | −0.54 | −1.03 | −1.35 | −2.12 | −2.49 | −3.22 |
+| **2.0%** | +1.46 | +0.97 | +0.65 | −0.12 | −0.49 | −1.22 |
+| **4.0%** | +3.46 | +2.97 | +2.65 | +1.88 | +1.51 | +0.78 |
+| 8.0% | +7.46 | +6.97 | +6.65 | +5.88 | +5.51 | +4.78 |
+
+**Two cells are the whole monitoring rule.** At a zero forward trend excess return the
+overlay is behind at any correlation and any financing cost. At 2.0% — half §5a's
+already-haircut central case — it survives at trend's measured correlation with 97 bp of
+financing headroom, and **dies at a correlation of +0.20 or above**. That pair, `a_d ≥ 2%`
+and `rho ≤ +0.20`, is the condition to monitor.
+
+**And the bar that decides is not the one §5a leads with.** The overlay bar
+`rho sigma_p sigma_d` is *negative* at negative correlation. The **leverage-matched** bar
+is `a_p (sigma_total / sigma_p − 1) / w`, which is **positive at every correlation**,
+because a portfolio held at higher volatility must earn more merely to keep the base's
+Sharpe ratio. At the recommended weight it is about **+0.16%/yr**, not zero.
 
 ---
 
@@ -541,6 +698,31 @@ bind here.** Measured on the independent series over 1,091 months:
 3.0× gross notional, against **−99.3% for equity levered to 2.2×** in §2. That contrast
 is the whole argument for breadth over leverage, and it is measured rather than argued:
 uncorrelated notional does not deepen the drawdown, correlated notional does.
+
+**That table was produced by an uncommitted scoping script. It is now reproduced from the
+pinned sources by [`_overlay_stress_tables.py`](../../research/src/portfolio_edge/studies/_overlay_stress_tables.py),
+and it survives — with three corrections that must travel with it.**
+
+- **Every geometric return, maximum drawdown and time under water above reproduces
+  exactly.** The volatilities and Sharpe ratios do not: each volatility here is about
+  0.3% *relative* higher (15.86% against 15.81% at `w = 0`, at the same ratio on every
+  rung), moving each Sharpe by roughly 0.002. The quantities the argument rests on agree;
+  the residual is recorded rather than reconciled because the script that produced the
+  published figures no longer exists.
+- **The ladder charges no borrow spread.** It finances 2.00× gross notional free. At this
+  repository's own 60 bp the `w = 1.00` rung is 16.82% rather than 17.51% and the `w = 2.00`
+  rung is 20.87% rather than 22.31%. Drawdown is almost unmoved.
+- **The window starts 1934-07, and 1929-32 is excluded by construction.** The trend leg's
+  36-month signal burn-in plus its 60-month volatility-target window consume the first 96
+  months of a panel that begins 1926-07. So the **−50.3%** this table anchors on is not US
+  equity's worst drawdown — §2 of this page puts that at **−83.7%** on the same series —
+  and the flat-drawdown claim was never tested against the deepest episode in the record.
+
+**The flat-drawdown property survives all three attacks at the recommended weight and
+fails at high weight.** §9 has the numbers; the short version is that it is a real
+property of a diversifying overlay and not an artefact of one path, that it is *not*
+flat in every crisis, and that it depends entirely on an assumption the stress table
+never varied.
 
 **So the weight is set by the account, not by the estimate or the risk.** The binding
 constraints, in order:
