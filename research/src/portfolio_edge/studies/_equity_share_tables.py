@@ -14,8 +14,13 @@ and window that produced the ``10.80% / 15.40% / -50.3% / 72 months`` line in
 reproduces all four to the printed precision, which is the check that the pipeline is
 the same one.
 
-**The bond series is modelled, not measured.** No total-return bond series exists in
-this repository — ``fred.SERIES`` carries yields and policy rates only — so a
+**The bond series is modelled, not measured.** A measured total-return bond series
+now exists in this repository — ``goyal_welch`` carries monthly long-term US
+government and corporate bond total returns from 1926 — but this study has not been
+re-run on it, and the two are not interchangeable: ``ltr`` is a roughly twenty-year
+long-bond exposure, not the ten-year point modelled here. Until it is re-run, the
+figures below remain modelled. ``fred.SERIES`` itself still carries no usable bond
+total return: its ICE BofA index levels are capped at a trailing three years. So a
 ten-year par-bond total return is constructed from ``GS10``: buy a par bond at last
 month's constant-maturity yield, accrue one month of coupon, and reprice the
 remaining 9 years 11 months at this month's yield. It is a standard approximation and

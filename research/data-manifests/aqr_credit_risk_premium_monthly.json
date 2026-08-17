@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "dataset_id": "aqr_credit_risk_premium_monthly",
+  "source_url": "https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Credit-Risk-Premium-Preliminary-Paper-Data.xlsx",
+  "retrieved_utc": "2026-08-17T03:40:23Z",
+  "sha256_raw": "9653fa3315feb92b7d4bbe276c049543d8b97dabea9c54b6cd9a499c95d93f2d",
+  "sha256_normalized": "7ad068b14f4c2f2458a311bdf0e63ecf129d11b967bc8825e7799cdbe03de004",
+  "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "source_last_modified": "Wed, 20 Feb 2019 13:44:43 GMT",
+  "source_etag": null,
+  "parser_version": "aqr/1.0.0",
+  "frequency": "monthly",
+  "units": "decimal",
+  "source_units": "decimal",
+  "unit_transform": "identity",
+  "first_observation": "1926-01",
+  "last_observation": "2014-12",
+  "rows": 1068,
+  "availability_policy": "Posted by the vendor without a published release timestamp or an as-of date on any row. The HTTP Last-Modified header of the workbook is the only upper bound this code can observe on when a row became available, and it bounds the whole file rather than any individual row. The row for month M was certainly not available during month M. Treat every observation as unavailable until at least the month after its period.",
+  "revision_policy": "Frozen, not updated: this is the preliminary-paper vintage and the last observation is December 2014. That makes it unusually reproducible for an AQR file and unusable for anything concerning the last decade. It is still not point-in-time: the history was reconstructed once, from the vintages current in 2015, and no earlier vintage is published.",
+  "license_or_terms_url": "https://www.aqr.com/Insights/Datasets",
+  "warnings": [
+    "the header cell above the date column is 'Date', not blank; the vendor has started naming it, which may mean the layout changed.",
+    "units are DECLARED by this repository as 'decimal' with transform 'identity'; the workbook itself declares no units anywhere in machine-readable form. Observed median |value| is 0.0111 and the largest is 0.4246 across 3 columns.",
+    "the sheet preamble states these are EXCESS returns. They are not total returns and adding a cash rate is required before they can be compared with a funded portfolio.",
+    "SHEET PINNED: 'Credit Risk Premium', of sheets ['Credit Risk Premium', 'Series Information', 'Disclosures']. AQR changes workbook names, sheet names and revisions, so this pin is part of the data's identity and a manifest without it is not reproducible.",
+    "return basis claimed by this repository: monthly EXCESS returns, but NOT all against the same benchmark, which is the trap in this file. GOVT_XS and SP500_XS are excess of the risk-free rate, so adding a cash return recovers a total return. CORP_XS is NOT: the paper defines it as the corporate bond total return less a DURATION-MATCHED government bond return, estimated by rolling empirical-duration regressions. It is a duration-hedged credit spread return, and adding cash to it does not produce a corporate bond total return. Three lines measured against two different benchmarks must never be summed or plotted as one ledger.",
+    "source file preamble (verbatim, the only place the sheet describes itself): 'AQR Capital Management, LLC \u2014 Credit Risk Premium: Preliminary Paper Data\\nThis file contains the credit excess return data used in Asvanunt and Richardson, 2015, \u201cThe Credit Risk Premium,\" working paper.\\nPaper: | http://papers.ssrn.com/sol3/papers.cfm?abstract_id=2563482\\nCopyright \u00a92015 Attakrit Asvanunt and Scott Richardson\\nWe report the monthly excess returns of corporate bonds (CORP_XS), government bonds (GOVT_XS), and the S&P 500 (SP500_SX) from 1926\u20132014.\\nPlease see disclosures on the Disclosures tab.'",
+    "the non-data sheets of this workbook carry almost no readable cell text: {'Series Information': 0, 'Disclosures': 0} (sheet name -> substantive text cells). 0 embedded drawings were found instead, so the vendor's construction, data sources and disclosures are NOT machine-readable here. No drawing text could be recovered, so the vendor's methodology and disclosures are unavailable from the archived bytes."
+  ]
+}

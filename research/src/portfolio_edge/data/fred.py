@@ -262,6 +262,80 @@ SERIES: Final[dict[str, FredSeries]] = {
             revision_behavior="Rarely revised; corrections are possible.",
         ),
         FredSeries(
+            series_id="BAMLCC0A0CMTRIV",
+            title="ICE BofA US Corporate Index Total Return Index Value",
+            definition=(
+                "TRUNCATED TO THREE YEARS AND THEREFORE USELESS FOR RESEARCH — "
+                "registered so that this is not rediscovered. A genuine "
+                "total-return index level for US dollar investment-grade "
+                "corporate debt, coupons reinvested, minimum $250m outstanding, "
+                "over one year to maturity. Measured on 2026-08-16: the CSV "
+                "endpoint returns exactly 795 daily observations, 2023-08-15 to "
+                "2026-08-13. The series notes state 'Starting in April 2026, "
+                "this series will only include 3 years of observations. For more "
+                "data, go to the source.' Thirty-six monthly returns cannot "
+                "answer a diversification or rebalancing question. The notes "
+                "also state 'Reproduction of this data in any form is prohibited "
+                "except with the prior written permission of ICE Data Indices', "
+                "so the bytes stay in the uncommitted cache and only hashes are "
+                "manifested. Every sibling in the BAML family is capped "
+                "identically: BAMLCC1A013YTRIV, BAMLCC2A035YTRIV, "
+                "BAMLCC3A057YTRIV, BAMLCC4A0710YTRIV, BAMLCC7A01015YTRIV, "
+                "BAMLCC8A015PYTRIV, BAMLHYH0A1BBTRIV, BAMLHYH0A2BTRIV, "
+                "BAMLHYH0A3CMTRIV and BAMLEMCBPITRIV were each measured at 795 "
+                "rows over the same dates. For long corporate-bond history use "
+                "portfolio_edge.data.goyal_welch instead."
+            ),
+            frequency="daily",
+            source_units="index_level",
+            units="index_level",
+            unit_transform="identity",
+            transformation="none (index level, as published)",
+            maturity_months=None,
+            construction="index_level",
+            day_count="not applicable (an index level, not a rate)",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing=(
+                "Next business day. Month-end levels jump on accrued-interest "
+                "adjustments, which the source's own notes call out."
+            ),
+            revision_behavior=(
+                "Rarely revised, but the observation WINDOW moves: the trailing "
+                "three-year cap means observations silently leave the series as "
+                "time passes. A download taken a year from now will not contain "
+                "the rows this one does, and no archive of the dropped rows is "
+                "published anywhere this code can read."
+            ),
+        ),
+        FredSeries(
+            series_id="BAMLHYH0A0HYM2TRIV",
+            title="ICE BofA US High Yield Index Total Return Index Value",
+            definition=(
+                "TRUNCATED TO THREE YEARS AND THEREFORE USELESS FOR RESEARCH — "
+                "see BAMLCC0A0CMTRIV for the full measurement and the licence "
+                "note; both were taken on 2026-08-16 and both returned exactly "
+                "795 daily rows, 2023-08-15 to 2026-08-13. A genuine total-return "
+                "index level for US dollar below-investment-grade corporate "
+                "debt. This repository holds NO usable high-yield total-return "
+                "history: goyal_welch covers long-term INVESTMENT GRADE "
+                "corporates only, and high yield is not a substitute for it."
+            ),
+            frequency="daily",
+            source_units="index_level",
+            units="index_level",
+            unit_transform="identity",
+            transformation="none (index level, as published)",
+            maturity_months=None,
+            construction="index_level",
+            day_count="not applicable (an index level, not a rate)",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing="Next business day.",
+            revision_behavior=(
+                "Rarely revised, but the observation WINDOW moves; see "
+                "BAMLCC0A0CMTRIV."
+            ),
+        ),
+        FredSeries(
             series_id="CPIAUCSL",
             title="Consumer Price Index for All Urban Consumers: All Items (SA)",
             definition=(

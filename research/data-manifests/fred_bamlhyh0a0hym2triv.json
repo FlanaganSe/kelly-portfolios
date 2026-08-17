@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_bamlhyh0a0hym2triv",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=BAMLHYH0A0HYM2TRIV",
+  "retrieved_utc": "2026-08-17T03:40:25Z",
+  "sha256_raw": "179a25b4b6b02b26b5755f842efe1c8b434a4ed1a17020f4a962b70ed4712a2e",
+  "sha256_normalized": "cedc43da6286f4fe1dad356e28471ea6e9751573107486676b2e6c7ef8cb321d",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "daily",
+  "units": "index_level",
+  "source_units": "index_level",
+  "unit_transform": "identity",
+  "first_observation": "2023-08-15",
+  "last_observation": "2026-08-13",
+  "rows": 795,
+  "availability_policy": "Next business day. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "Rarely revised, but the observation WINDOW moves; see BAMLCC0A0CMTRIV. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "8 observations were the FRED missing token '.' and became missing values, not zeros: ['2023-12-25', '2024-01-01', '2024-03-29', '2024-12-25', '2025-01-01', '2025-04-18']",
+    "series definition: TRUNCATED TO THREE YEARS AND THEREFORE USELESS FOR RESEARCH \u2014 see BAMLCC0A0CMTRIV for the full measurement and the licence note; both were taken on 2026-08-16 and both returned exactly 795 daily rows, 2023-08-15 to 2026-08-13. A genuine total-return index level for US dollar below-investment-grade corporate debt. This repository holds NO usable high-yield total-return history: goyal_welch covers long-term INVESTMENT GRADE corporates only, and high yield is not a substitute for it.",
+    "release timing: Next business day.",
+    "revision behaviour: Rarely revised, but the observation WINDOW moves; see BAMLCC0A0CMTRIV.",
+    "transformation applied by the source: none (index level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: None months (construction: index_level). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable."
+  ]
+}

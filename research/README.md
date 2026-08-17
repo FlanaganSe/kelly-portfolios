@@ -13,6 +13,15 @@ governs whether a return source is real;
 [`docs/research/portfolio-engine-specification.md`](../docs/research/portfolio-engine-specification.md)
 governs how it is computed.
 
+**Before freezing a new specification, read
+[`docs/research/evidence-base.md`](../docs/research/evidence-base.md).** It carries every
+source held, what each is pinned to, and — in its resolution table — the smallest effect
+each instrument could detect at 80% power against the effect size that would matter.
+**Where the floor exceeds the bar, a null result carries almost no information**, and that
+has already happened here more than once.
+[`docs/research/search-coverage.md`](../docs/research/search-coverage.md) is the standing
+audit of which existing conclusions that qualifies.
+
 ## Run it
 
 Requires [uv](https://docs.astral.sh/uv/). Python 3.12 is pinned in
@@ -65,8 +74,8 @@ uv run ruff check
 | Source | Use | Do not |
 | --- | --- | --- |
 | Ken French data library | Factor returns, research portfolios | Treat as investable, or assume the current file matches the vintage a paper used |
-| FRED | Cash rates, macro series | Treat as point-in-time; it is revised. `TB3MS`, `DGS3MO`, `DFF` are not interchangeable |
-| AQR public datasets | Author-maintained replication targets | Call an evaluation of a vendor series an independent replication |
+| FRED | Cash rates, macro series | Treat as point-in-time; it is revised. `TB3MS`, `DGS3MO`, `DFF` are not interchangeable. Reach for its ICE BofA total-return indices: since April 2026 they serve a trailing **three years** and nothing more |
+| AQR public datasets | Author-maintained replication targets, and the only broad-commodity and credit series held here | Call an evaluation of a vendor series an independent replication. Treat `Commodities for the Long Run` as a total return — it is excess of cash — or add `CORP_XS` to a cash rate, because it is excess of duration-matched governments, not of cash |
 | Goyal–Welch | Return-predictability tests | Describe an annually updated full-sample file as point-in-time |
 | Shiller | Long-horizon sensitivity | Use for modern execution backtests |
 | Stooq / free price feeds | Exploratory only | Use in a confirmatory experiment; there is no documented total-return or corporate-action contract |

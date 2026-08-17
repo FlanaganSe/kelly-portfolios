@@ -185,6 +185,89 @@ DATASETS: Final[dict[str, AqrDataset]] = {
             revision_policy=_REVISION_POLICY_RECONSTRUCTED,
             expected_columns=("TSMOM", "TSMOM^CM", "TSMOM^EQ", "TSMOM^FI", "TSMOM^FX"),
         ),
+        AqrDataset(
+            dataset_id="aqr_commodities_long_run",
+            filename="Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx",
+            data_sheet="Commodities for the Long Run",
+            description=(
+                "Monthly index-level data behind Levine, Ooi, Richardson and "
+                "Sasseville, 'Commodities for the Long Run' (FAJ, 2018). The "
+                "first column is the EXCESS return over cash of an equal-weight "
+                "commodity futures portfolio, decomposed by the workbook into an "
+                "excess spot return and an interest-rate-adjusted carry. The "
+                "repository's only broad-commodity return series of any kind, "
+                "and it starts in 1877."
+            ),
+            declared_source_units="decimal",
+            declared_units="decimal",
+            declared_unit_transform="identity",
+            declared_return_basis=(
+                "monthly EXCESS return over cash, NOT a total return. A fully "
+                "collateralised commodity total return is this series plus a "
+                "cash return, and the cash series used to re-add is a choice "
+                "that must be declared in the experiment specification rather "
+                "than made here: the workbook does not state which cash rate it "
+                "subtracted. The final two columns are backwardation and "
+                "inflation STATE LABELS, not returns, and the last three columns "
+                "are excluded from expected_columns for that reason. No fee, "
+                "transaction-cost, slippage, roll-cost or financing basis is "
+                "stated anywhere in the workbook, so the series is gross of all "
+                "of them, which matters more for commodities than for anything "
+                "else here: rolling futures is where the costs live."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_RECONSTRUCTED,
+            expected_columns=(
+                "Excess return of equal-weight commodities portfolio",
+                "Excess spot return of equal-weight commodities portfolio",
+                "Interest rate adjusted carry of equal-weight commodities portfolio",
+                "Spot return of equal-weight commodities portfolio",
+                "Carry of equal-weight commodities portfolio",
+                "Excess return of long/short commodities portfolio",
+                "Excess spot return of long/short commodities portfolio",
+                "Interest rate adjusted carry of long/short commodities portfolio",
+                "Aggregate backwardation/contango",
+                "State of backwardation/contango",
+                "State of inflation",
+            ),
+        ),
+        AqrDataset(
+            dataset_id="aqr_credit_risk_premium",
+            filename="Credit-Risk-Premium-Preliminary-Paper-Data.xlsx",
+            data_sheet="Credit Risk Premium",
+            description=(
+                "Monthly excess returns behind Asvanunt and Richardson (2015), "
+                "'The Credit Risk Premium'. Sourced from Ibbotson's long-term "
+                "corporate and long-term government bond total-return series. "
+                "A frozen paper vintage: it ends in December 2014 and AQR has "
+                "not extended it."
+            ),
+            declared_source_units="decimal",
+            declared_units="decimal",
+            declared_unit_transform="identity",
+            declared_return_basis=(
+                "monthly EXCESS returns, but NOT all against the same benchmark, "
+                "which is the trap in this file. GOVT_XS and SP500_XS are excess "
+                "of the risk-free rate, so adding a cash return recovers a total "
+                "return. CORP_XS is NOT: the paper defines it as the corporate "
+                "bond total return less a DURATION-MATCHED government bond "
+                "return, estimated by rolling empirical-duration regressions. It "
+                "is a duration-hedged credit spread return, and adding cash to it "
+                "does not produce a corporate bond total return. Three lines "
+                "measured against two different benchmarks must never be summed "
+                "or plotted as one ledger."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=(
+                "Frozen, not updated: this is the preliminary-paper vintage and "
+                "the last observation is December 2014. That makes it unusually "
+                "reproducible for an AQR file and unusable for anything "
+                "concerning the last decade. It is still not point-in-time: the "
+                "history was reconstructed once, from the vintages current in "
+                "2015, and no earlier vintage is published."
+            ),
+            expected_columns=("CORP_XS", "GOVT_XS", "SP500_XS"),
+        ),
     )
 }
 
