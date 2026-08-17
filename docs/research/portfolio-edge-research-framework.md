@@ -370,7 +370,7 @@ records publication date and performance either side of it.
 ### The ledger, counted rather than described
 
 Verified directly from [`research/ledger.jsonl`](../../research/ledger.jsonl):
-**93 entries, 33 runs, 15 distinct specification hashes, 12 experiment families.**
+**102 entries, 36 runs, 18 distinct specification hashes, 14 experiment families.**
 Recount rather than quoting; the ledger is append-only:
 
 ```sh
@@ -379,14 +379,15 @@ python3 -c "import json; r=[json.loads(l) for l in open('research/ledger.jsonl')
 
 | Terminal outcome | Runs | Which |
 | --- | ---: | --- |
-| `unresolved` | 6 | Phase 1; Exp 001; Exp 007's superseded specification; Exp 010 (3 executions of one specification) |
+| `unresolved` | 9 | Phase 1; Exp 001; Exp 007's superseded specification; Exp 010 (3 executions of one specification); Exp 011 (1); Exp 012 (2 executions of one question) |
 | `rejected` | 9 | Exp 003 (1); Exp 004 (5 executions of one specification); Exp 007 (1); Exp 010b (2) |
 | `exploratory` | 11 | Exp 002 (3); Exp 005 (1); Exp 006 (1); Exp 008 (3); Exp 009 (3) |
 | no terminal status | 7 | 3 `failed`, 4 `abandoned` |
 
-**Fifteen, not thirty-three, is the number a deflated-Sharpe trial count starts from —
+**Eighteen, not thirty-six, is the number a deflated-Sharpe trial count starts from —
 and it is an upper bound**, because `exp_010b` re-judges data `exp_010` had already spent
-and the two are one search. No run consumed the final holdout. The ledger also contains a
+and the two are one search, and because `exp_012` re-asks `exp_011`'s question with a
+different instrument on a shorter window. No run consumed the final holdout. The ledger also contains a
 correction to itself: one `abandoned` entry was appended prematurely and for the wrong
 run's reason, and a superseding entry says so rather than repairing it in place.
 

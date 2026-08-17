@@ -166,7 +166,10 @@ and methodology-change risk a longer-lived product would not carry.
 
 **It is still not promoted, for three reasons that are not about the arithmetic.** The
 trend leg rests on a vendor series stating no cost basis anywhere, against a bias bound
-of 7.7 pp/yr and a break-even near 9.9. The overlay's *return* contribution spans zero
+of 7.7 pp/yr and a break-even near 9.9 — a bound that has since been measured against 46
+real funds' net returns and found to point the *other* way over 2019–2025, at −2.62 pp/yr
+`[−10.91, +5.68]` ([live managed futures](live-managed-futures.md)), which changes the size
+of the uncertainty without removing it. The overlay's *return* contribution spans zero
 across the haircut range while only its *risk* contribution is robust — so it is a
 risk-reduction claim, and must be judged on mechanism rather than on relative performance.
 And [decision 0004](../decisions/0004-no-sleeve-promoted.md) still holds leverage at zero;
@@ -378,7 +381,9 @@ volatilities and correlation.
 **The account, not the product, is the largest controllable term** — 31 bp/yr of portfolio
 return, larger than the whole fee. Against those probabilities: the index's standalone Sharpe
 fell 1.34 → 0.18, the vendor states **no cost basis anywhere**, comparable CTA survivorship
-distortion is 7.7 pp/yr, and one product delivers the exposure with no fallback.
+distortion is bounded at 7.7 pp/yr — a bound the only live measurement available contradicts
+in sign ([live managed futures](live-managed-futures.md)) — and one product delivers the
+exposure with no fallback.
 
 **The comparison that decides the page.** A conditional 109 bp settled in about twelve months
 is worth more than any tilt's gross premium, and it is available first. **That is not a

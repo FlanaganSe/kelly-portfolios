@@ -232,6 +232,18 @@ wrong and are corrected here rather than quietly edited:
   cost of the overlay notional — 0.295 pp/yr at a 50% overlay. The post-2012 gap is
   **+1.25 against unlevered equity, not +1.55.**
 
+**The 7.7 pp/yr haircut used in the table above has now been measured against live funds,
+and it is the wrong size and possibly the wrong sign.** [Experiment
+012](live-managed-futures.md) rebuilds the trend leg from 46 real managed-futures funds'
+Form N-PORT Item B.5 returns — net of their own fees, backfill-free, retaining the funds
+that died. Over the 78 months both series exist, the **vendor series earned −2.62 pp/yr
+*less* than the funds at matched volatility**, 95% interval `[−10.91, +5.68]`. **+7.7 sits
+above that interval.** Two qualifications carry equal weight: the measurable window is
+2019–2025, and the haircut is applied to a mean that lives in 1985–2011 where no fund return
+exists; and the 7.7 figure bounds *hedge-fund CTA databases*, not this vendor's index
+against registered funds. Every row on this page haircut by 7.7 pp/yr is therefore a
+**scenario, not a bias estimate**, and must be read as one.
+
 **And the experiment's own status is `unresolved`, on a clause frozen before it ran.**
 Trend's measured pre- to post-publication decay is **12.11 pp/yr**, which **exceeds the
 9.57 pp/yr haircut at which the overlay stops paying.** The full-window figure describes
@@ -497,9 +509,12 @@ specification was frozen before its numbers were examined.
 
 1. **The trend evidence rests on an AQR vendor series that states no fee,
    transaction-cost, slippage or financing basis anywhere** and is reconstructed on every
-   update. This repository bounds survivorship and backfill distortion on comparable CTA
-   data at **7.7 pp/yr**, against a measured break-even near 9.9. That single uncertainty
-   spans the entire result.
+   update. **Partly closed, and in the unexpected direction.**
+   [Experiment 012](live-managed-futures.md) rebuilds the leg from 46 live funds' net
+   N-PORT returns and finds the vendor series **−2.62 pp/yr behind them** at matched
+   volatility over 2019–2025, `[−10.91, +5.68]`. What remains open is the period that
+   matters: the vendor series earned +16.09%/yr over 1985–2011, and no fund return exists
+   before 2019 to price that.
 2. **JST returns are local currency.** A USD investor holding ex-US equity also bears FX,
    which is not modelled here, and equal-weight ex-US is not directly investable.
 3. **1985–2025 is the most favourable forty years available** for both equities and bonds.

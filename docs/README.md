@@ -70,6 +70,11 @@ and current status.
   — Experiments 004 and 008. What a trend sleeve adds against a risk-matched comparator, why
   a static-plus-volatility replica fires the falsifier, and the audit of the five listed
   managed-futures ETFs of which one delivers the exposure.
+- [Live managed futures](research/live-managed-futures.md) — Experiment 012. The trend leg
+  rebuilt from 46 real funds' net Form N-PORT returns instead of a vendor index: what
+  managed-futures investors actually earned, 52% attrition in the opening cohort, and the
+  measurement that the vendor series **understated** rather than overstated the funds over
+  the only window where both exist.
 - [Marginal sleeve value](research/marginal-sleeve-value.md) — Experiments 010 and 010b.
   What a sleeve is worth *inside* a portfolio, split into a standalone term and a
   diversification credit whose ceiling is the base portfolio's own variance. Carries the

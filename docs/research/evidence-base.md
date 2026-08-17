@@ -41,6 +41,9 @@ exceeds the bar, a null result carries almost no information.**
 | Rebalancing policy difference | 420 months, 3 sleeves | — | 0.25 pp/yr | **yes** — the effect is large and negative |
 | Marginal sleeve growth at 10% weight | 420 months | ≈0.58 pp/yr typical | 0.30 pp/yr | **no** — see [search coverage](search-coverage.md) |
 | Crisis-conditional trend benefit | 53 crisis months | ≈4.4 effective observations | — | **no** |
+| Financed 50% trend overlay, vendor leg | 485 months | 2.82 pp/yr | 0.30 pp/yr | gap +4.79, but the leg's decay exceeds its break-even |
+| Same, **live fund leg** | N-PORT, 78 months | **4.76** pp/yr | 0.30 pp/yr | **no** — the window, not the series, now binds |
+| **Vendor index against live funds** | 78 paired months, ρ = 0.72 | interval half-width ≈ 8.3 pp/yr | the 7.7 pp/yr bias bound | **yes, narrowly** — 7.7 is outside the interval |
 
 Two entries in that table are the whole shape of the programme's results. **Exposure is
 measurable and alpha is not** — 38 of 44 US funds reject a zero intended loading under
@@ -130,6 +133,19 @@ attrition figure here is a **lower bound**. Measured, separating a death from a 
 **312 of 1,513 US mandate-qualifying series (20.6%, $138.7bn)** and **88 of 322 ex-US
 (27.3%, $19.5bn)** vanished between the censuses, against naive rates of 23.7% and 32.3%
 that count renames as deaths.
+
+**A second hole, found while building [Experiment 012](live-managed-futures.md) and worse
+than the first for anything that follows funds through time: a fund that both launched
+after 2019Q4 and closed before 2025Q4 appears in *neither* census, so a union frame drops
+it entirely.** It removes funds from *inside* the window rather than before it. Closing it
+needs the intermediate quarterly data sets, which no experiment reads yet, and it is the
+cheapest single improvement available to this source.
+
+**Item B.5 is more than an audit input: it is a usable live return series.** Experiment 012
+assembles 46 managed-futures funds' monthly net total returns into an equal-weight index
+over 78 months and finds **52% of the opening cohort stopped filing** inside the window —
+again a lower bound. That is the only survivorship-bounded, net-of-fee, backfill-free return
+series this repository holds for any strategy.
 
 ### FRED, AQR, and modelled series
 
