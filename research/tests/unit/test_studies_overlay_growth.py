@@ -17,11 +17,15 @@ import pytest
 from portfolio_edge.studies.equity_share import plug_in_growth_cost
 from portfolio_edge.studies.overlay_growth import (
     FundingRule,
+    MultiOverlay,
     OverlayInputs,
+    effective_breadth,
     funding_rule_gap,
+    growth_optimal_overlay_vector,
     growth_optimal_overlay_weight,
     marginal_growth,
     matched_volatility_verdict,
+    multi_overlay_growth_gain,
     overlay_growth_gain,
     required_net_excess_return,
     sharpe_admission_threshold,
@@ -387,3 +391,138 @@ def test_unknown_funding_rule_raises() -> None:
         marginal_growth(BASE, rule="margin_account")
     with pytest.raises(ValueError, match="unknown funding rule"):
         required_net_excess_return(BASE, rule="margin_account")
+
+
+# --------------------------------------------------------------------------------
+# 8. Many overlays: breadth checked against brute force, not against the formula
+# --------------------------------------------------------------------------------
+
+
+def _equicorrelated(
+    *, count: int, edge: float, volatility: float, mutual_correlation: float
+) -> MultiOverlay:
+    covariance = tuple(
+        tuple(
+            volatility**2 * (1.0 if i == j else mutual_correlation)
+            for j in range(count)
+        )
+        for i in range(count)
+    )
+    # covariance_with_base is folded into the edge here, so the marginal edge is the
+    # edge itself and the breadth arithmetic is isolated from the base entirely.
+    return MultiOverlay(
+        net_excess_returns=tuple([edge] * count),
+        covariance_with_base=tuple([0.0] * count),
+        covariance=covariance,
+    )
+
+
+def test_single_overlay_case_agrees_with_the_scalar_formula() -> None:
+    edge = BASE.net_excess_return - BASE.covariance
+    single = MultiOverlay(
+        net_excess_returns=(BASE.net_excess_return,),
+        covariance_with_base=(BASE.covariance,),
+        covariance=((BASE.diversifier_volatility**2,),),
+    )
+    assert single.marginal_edges[0] == pytest.approx(edge)
+    assert growth_optimal_overlay_vector(single)[0] == pytest.approx(
+        growth_optimal_overlay_weight(BASE)
+    )
+    for weight in (0.0, 0.25, 0.8):
+        assert multi_overlay_growth_gain(single, weights=(weight,)) == pytest.approx(
+            overlay_growth_gain(BASE, weight=weight)
+        )
+
+
+def test_optimal_vector_is_the_argmax_of_the_quadratic_by_random_search() -> None:
+    """No matrix algebra in the check: perturb the claimed optimum and lose."""
+    overlays = MultiOverlay(
+        net_excess_returns=(0.030, 0.018, 0.006),
+        covariance_with_base=(0.0, -0.0016, 0.0008),
+        covariance=(
+            (0.0100, 0.0012, -0.0005),
+            (0.0012, 0.0225, 0.0009),
+            (-0.0005, 0.0009, 0.0064),
+        ),
+    )
+    optimum = growth_optimal_overlay_vector(overlays)
+    best = multi_overlay_growth_gain(overlays, weights=optimum)
+    rng = np.random.default_rng(20260816)
+    for _ in range(5_000):
+        perturbed = tuple(
+            float(w + d) for w, d in zip(optimum, rng.normal(0.0, 0.05, size=3), strict=True)
+        )
+        assert multi_overlay_growth_gain(overlays, weights=perturbed) <= best + 1e-12
+
+
+def test_peak_gain_scales_with_effective_breadth_not_with_count() -> None:
+    """The claim in the docstring, checked by solving each case from scratch."""
+    edge, volatility = 0.02, 0.10
+    single = _equicorrelated(
+        count=1, edge=edge, volatility=volatility, mutual_correlation=0.0
+    )
+    single_peak = multi_overlay_growth_gain(
+        single, weights=growth_optimal_overlay_vector(single)
+    )
+    assert single_peak == pytest.approx(edge**2 / (2.0 * volatility**2))
+
+    for count in (2, 5, 10):
+        for correlation in (0.0, 0.3, 0.6, 1.0 - 1e-9):
+            overlays = _equicorrelated(
+                count=count,
+                edge=edge,
+                volatility=volatility,
+                mutual_correlation=correlation,
+            )
+            peak = multi_overlay_growth_gain(
+                overlays, weights=growth_optimal_overlay_vector(overlays)
+            )
+            breadth = effective_breadth(
+                count=count, mutual_correlation=correlation
+            )
+            assert peak == pytest.approx(single_peak * breadth, rel=1e-6)
+
+
+def test_uncorrelated_sleeves_multiply_the_gain_and_identical_ones_do_not() -> None:
+    assert effective_breadth(count=10, mutual_correlation=0.0) == pytest.approx(10.0)
+    assert effective_breadth(count=10, mutual_correlation=1.0) == pytest.approx(1.0)
+    # The number the docstring quotes, computed here rather than copied.
+    assert effective_breadth(count=10, mutual_correlation=0.3) == pytest.approx(
+        10.0 / 3.7, rel=1e-9
+    )
+
+
+def test_effective_breadth_refuses_an_indefinite_correlation_matrix() -> None:
+    with pytest.raises(ValueError, match="positive semi-definite"):
+        effective_breadth(count=3, mutual_correlation=-0.5)
+    with pytest.raises(ValueError, match="at least 1"):
+        effective_breadth(count=0, mutual_correlation=0.0)
+    with pytest.raises(ValueError, match=r"\[-1, 1\]"):
+        effective_breadth(count=3, mutual_correlation=1.5)
+
+
+def test_multi_overlay_rejects_malformed_inputs() -> None:
+    with pytest.raises(ValueError, match="at least one overlay"):
+        MultiOverlay(
+            net_excess_returns=(), covariance_with_base=(), covariance=()
+        )
+    with pytest.raises(ValueError, match="must match"):
+        MultiOverlay(
+            net_excess_returns=(0.01, 0.02),
+            covariance_with_base=(0.0,),
+            covariance=((0.01, 0.0), (0.0, 0.01)),
+        )
+    with pytest.raises(ValueError, match="symmetric"):
+        MultiOverlay(
+            net_excess_returns=(0.01, 0.02),
+            covariance_with_base=(0.0, 0.0),
+            covariance=((0.01, 0.002), (0.003, 0.01)),
+        )
+    with pytest.raises(ValueError, match="singular"):
+        growth_optimal_overlay_vector(
+            MultiOverlay(
+                net_excess_returns=(0.01, 0.01),
+                covariance_with_base=(0.0, 0.0),
+                covariance=((0.01, 0.01), (0.01, 0.01)),
+            )
+        )

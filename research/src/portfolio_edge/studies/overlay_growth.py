@@ -114,12 +114,16 @@ from portfolio_edge.studies.equity_share import optimal_kelly_shrinkage
 
 __all__ = [
     "FundingRule",
+    "MultiOverlay",
     "OverlayInputs",
     "OverlaySizing",
+    "effective_breadth",
     "funding_rule_gap",
+    "growth_optimal_overlay_vector",
     "growth_optimal_overlay_weight",
     "marginal_growth",
     "matched_volatility_verdict",
+    "multi_overlay_growth_gain",
     "overlay_growth_gain",
     "required_net_excess_return",
     "sharpe_admission_threshold",
@@ -382,7 +386,7 @@ def shrunk_overlay_weight(inputs: OverlayInputs, *, years: float) -> float:
     :func:`portfolio_edge.studies.equity_share.plug_in_growth_cost` for it.
 
     **The Sharpe ratio that governs the shrinkage is the marginal one**,
-    ``(a_net - rho sigma_e sigma_d) / sigma_d``, not the diversifier's standalone
+    ``(a_net - rho sigma_p sigma_d) / sigma_d``, not the diversifier's standalone
     Sharpe. For a negatively correlated sleeve the marginal Sharpe is the larger, so
     a diversifier is shrunk *less* than its own record would justify — which is the
     correct answer and an uncomfortable one, because it means the position size is
@@ -394,3 +398,148 @@ def shrunk_overlay_weight(inputs: OverlayInputs, *, years: float) -> float:
     ) / inputs.diversifier_volatility
     shrinkage = optimal_kelly_shrinkage(sharpe_ratio=marginal_sharpe, years=years)
     return shrinkage * growth_optimal_overlay_weight(inputs)
+
+
+# --------------------------------------------------------------------------------
+# 5. Many overlays at once, which is where breadth is actually earned
+# --------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True)
+class MultiOverlay:
+    """``k`` financed overlays on one base, with a full covariance matrix.
+
+    The single-sleeve results above generalise exactly. Write ``e`` for the vector of
+    marginal edges ``a_net_i - cov(d_i, base)`` and ``Sigma`` for the overlays'
+    covariance matrix among themselves. Growth added by a notional vector ``w`` is
+
+        g(w) - g(0)  =  w'e - w' Sigma w / 2,
+
+    maximised at ``w* = Sigma^-1 e`` with peak value ``e' Sigma^-1 e / 2``. Both are
+    the one-sleeve formulas with the scalar division replaced by a solve.
+
+    **Why breadth pays, stated exactly.** Take ``k`` overlays with identical edge
+    ``e``, identical volatility ``sigma_d`` and mutual correlation ``rho_dd``. Then
+    ``Sigma = sigma_d**2 [(1 - rho_dd) I + rho_dd J]`` and the peak gain is
+
+        k e**2 / (2 sigma_d**2 (1 + (k - 1) rho_dd)).
+
+    At ``rho_dd = 0`` this is **``k`` times the single-sleeve peak**: the optimal
+    total notional grows with ``k``, and so does the growth it buys, because the
+    variance penalty per unit of total notional falls as ``1/k``. At ``rho_dd = 1``
+    the bracket is ``k``, the expression collapses to the single-sleeve value, and
+    ``k`` copies of one strategy are one strategy.
+
+    The denominator's ``1 + (k - 1) rho_dd`` is why ``docs/the-plan.md`` insists on
+    *effective* breadth rather than a count of tickers, and it is unforgiving: at
+    ``rho_dd = 0.3``, ten sleeves buy ``10 / 3.7 = 2.7`` times one sleeve, not ten.
+    **Correlation among the diversifiers, not their number, is what is being
+    bought**, and it is the input estimated worst.
+
+    Nothing here weakens the honest control. ``Sigma`` and ``e`` are forecasts, the
+    solve amplifies error in ``Sigma`` without limit as it approaches singularity,
+    and the matched-volatility comparison of equation (5) still decides.
+    """
+
+    net_excess_returns: tuple[float, ...]
+    covariance_with_base: tuple[float, ...]
+    covariance: tuple[tuple[float, ...], ...]
+
+    def __post_init__(self) -> None:
+        size = len(self.net_excess_returns)
+        if size == 0:
+            raise ValueError("need at least one overlay")
+        if len(self.covariance_with_base) != size:
+            raise ValueError("covariance_with_base must match net_excess_returns")
+        if len(self.covariance) != size or any(
+            len(row) != size for row in self.covariance
+        ):
+            raise ValueError(f"covariance must be {size} by {size}")
+        for i in range(size):
+            for j in range(size):
+                if self.covariance[i][j] != self.covariance[j][i]:
+                    raise ValueError("covariance must be symmetric")
+
+    @property
+    def marginal_edges(self) -> tuple[float, ...]:
+        """``e_i = a_net_i - cov(d_i, base)``: equation (1), one entry per overlay."""
+        return tuple(
+            net - cov
+            for net, cov in zip(
+                self.net_excess_returns, self.covariance_with_base, strict=True
+            )
+        )
+
+
+def _solve(
+    matrix: tuple[tuple[float, ...], ...], vector: tuple[float, ...]
+) -> list[float]:
+    """Gauss-Jordan with partial pivoting, kept explicit and dependency-free."""
+    size = len(vector)
+    augmented = [
+        [*row, value] for row, value in zip(matrix, vector, strict=True)
+    ]
+    for column in range(size):
+        pivot = max(range(column, size), key=lambda r: abs(augmented[r][column]))
+        if abs(augmented[pivot][column]) < 1e-14:
+            raise ValueError("covariance matrix is singular to working precision")
+        augmented[column], augmented[pivot] = augmented[pivot], augmented[column]
+        for row in range(size):
+            if row == column:
+                continue
+            factor = augmented[row][column] / augmented[column][column]
+            for k in range(column, size + 1):
+                augmented[row][k] -= factor * augmented[column][k]
+    return [augmented[i][size] / augmented[i][i] for i in range(size)]
+
+
+def growth_optimal_overlay_vector(overlays: MultiOverlay) -> tuple[float, ...]:
+    """``w* = Sigma^-1 e``, the unshrunk growth-optimal notional in each overlay.
+
+    A plug-in optimum built from forecasts, and the matrix solve makes it more
+    fragile than its scalar counterpart rather than less. Read a large entry as a
+    statement about the covariance estimate, not about the strategy.
+    """
+    return tuple(_solve(overlays.covariance, overlays.marginal_edges))
+
+
+def multi_overlay_growth_gain(
+    overlays: MultiOverlay, *, weights: tuple[float, ...]
+) -> float:
+    """``w'e - w' Sigma w / 2``, exactly."""
+    edges = overlays.marginal_edges
+    if len(weights) != len(edges):
+        raise ValueError("weights must match the number of overlays")
+    linear = sum(w * e for w, e in zip(weights, edges, strict=True))
+    quadratic = sum(
+        weights[i] * overlays.covariance[i][j] * weights[j]
+        for i in range(len(weights))
+        for j in range(len(weights))
+    )
+    return linear - 0.5 * quadratic
+
+
+def effective_breadth(*, count: int, mutual_correlation: float) -> float:
+    """``k / (1 + (k - 1) rho_dd)``: how many independent sleeves ``k`` sleeves are.
+
+    The multiplier on the single-sleeve peak growth gain when every overlay has the
+    same edge, volatility and mutual correlation. It equals ``k`` at zero correlation
+    and 1 at perfect correlation, and it is the quantity ``docs/the-plan.md`` means
+    by effective breadth.
+
+    It has no upper bound as ``rho_dd`` goes negative, which is a property of the
+    equicorrelated model rather than of markets: ``rho_dd`` cannot fall below
+    ``-1/(k-1)`` without the correlation matrix ceasing to be positive semi-definite,
+    and the expression diverges exactly at that boundary. The function raises there
+    rather than returning a number a reader could quote.
+    """
+    if count < 1:
+        raise ValueError(f"count must be at least 1, got {count}")
+    if not -1.0 <= mutual_correlation <= 1.0:
+        raise ValueError(f"correlation must lie in [-1, 1], got {mutual_correlation}")
+    if count > 1 and mutual_correlation <= -1.0 / (count - 1):
+        raise ValueError(
+            f"mutual correlation {mutual_correlation} is at or below -1/(k-1) for "
+            f"k={count}, where the correlation matrix is not positive semi-definite"
+        )
+    return count / (1.0 + (count - 1) * mutual_correlation)
