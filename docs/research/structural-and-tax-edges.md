@@ -249,9 +249,19 @@ TCW, Hotchkis & Wiley, Thornburg, Fidelity, Nuveen, Calamos and Guinness Atkinso
 index sponsors already have ETFs, and the funds converting are precisely the
 counterfactual the 23 bp is measured against. Vanguard remains the proof of concept —
 VFIAX and VTSAX show zero capital gains for a decade because they share a portfolio with
-VOO and VTI. **So the 23 bp is a decaying quantity with a measured, accelerating mechanism
-of decay.** The opposite risk also exists — a 2021 Senate Finance discussion draft proposed
-to repeal the RIC exception outright; never enacted, no successor found.
+VOO and VTI.
+
+**A filing is not a launch, though, and on launches the count is much smaller: nine funds
+from six managers.** Dimensional listed the first on 2026-03-20 and the first S&P 500 one —
+**DLCU**, the ETF class of its $14.09bn U.S. Large Company Portfolio at 0.06% net — on
+**2026-08-05**, twelve days before this was read. **Schwab, BlackRock, JPMorgan, T. Rowe
+Price, Goldman, Morgan Stanley and Fidelity's index range all hold orders and have filed
+nothing**; Fidelity's amended Rule 18f-3 plan of 2026-05-14 lists an ETF class for two
+fixed-income funds and for no index fund. **So the 23 bp is decaying with a measured
+mechanism and a short fuse rather than a fast one — but the fuse is lit, and if FXAIX or
+SWPPX sprouts a class the line moves quickly.** The opposite risk also exists — a 2021
+Senate Finance discussion draft proposed to repeal the RIC exception outright; never
+enacted, no successor found.
 
 ---
 
@@ -831,8 +841,12 @@ size and, for DFUS, fee, and are **not index funds**: DFUS's own prospectus says
 actively managed exchange-traded fund and does not seek to replicate the performance of a
 specific index*". **VT** ($89.9bn, 0.06%) qualifies on every numeric test and sits in a
 seventh category, total world, that this frame does not contain. Nothing at or below 0.10%
-exists outside the audited funds in **S&P 500, emerging markets or total international** —
-the next cheapest emerging fund is EMXC at 0.25%.
+exists outside the audited funds in **emerging markets or total international** — the next
+cheapest emerging fund is EMXC at 0.25%. **S&P 500 was complete until 2026-08-05**, when
+DLCU began trading at 0.06% net — dearer than SPLG's 0.02% and VOO's and IVV's 0.03%, so it
+changes the category's shape rather than its winner. Sweeping every Form 8-A12B filed by
+the plausible low-cost issuers over 2024-01-01…2026-08-17 turns up **no new launch above
+$2bn at or below 0.10%** in any of the six categories.
 
 ---
 

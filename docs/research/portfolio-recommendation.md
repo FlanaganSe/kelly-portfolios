@@ -784,7 +784,9 @@ no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
 3. **The asset-location ranking must be computed, not asserted**, and must state the bracket
    it assumed.
 4. **Five review triggers**: the fund-structure line (94 SEC orders, and 89 Form 497K
-   documents now naming an "ETF Class" against 2 before the first order); every fund-specific
+   documents now naming an "ETF Class" against 2 before the first order, but only nine funds
+   actually listed — **and Schwab, BlackRock, JPMorgan and Fidelity's index range hold
+   orders and have filed nothing**); every fund-specific
    fact in §1.2, whose fee tables and lending figures are dated 2026-08-17 and whose waiver
    expiries run **2026-10-31 (State Street), 2027-01-31 (State Street ex-US), 2026-11-30
    (IXUS), 2027-02-01 (SPY), 2027-06-30 (AGG) and 2030-12-31 (IEMG)**; **fund and index
