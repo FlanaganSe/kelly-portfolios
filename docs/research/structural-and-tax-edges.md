@@ -207,6 +207,63 @@ carryforwards absorb the long-term half; and §1256(f)(2) cannot rescue income t
 ordinary by another route. **NTSX is the structural exception** — Treasury futures
 generate qualifying income directly, so it needs no blocker.
 
+### Gold is the one asset class whose wrapper carries a *worse* rate than ordinary equity
+
+`as of 2026-08-17`, and it decides account placement rather than whether to hold anything.
+
+A physical-gold ETF is a grantor trust holding bullion, so the shareholder is treated as
+owning the metal, and metal is a **collectible**. IRS Publication 550 defines collectibles
+gain as gain from "a work of art, rug, antique, **metal (such as gold, silver, and platinum
+bullion)**, gem, stamp, coin, or alcoholic beverage held more than 1 year", and its
+Table 4-4 gives the maximum rate as **28%**. The statutory route is
+[26 U.S.C. §1(h)(5)](https://www.law.cornell.edu/uscode/text/26/1), which cross-references
+§408(m) **"without regard to paragraph (3) thereof"** — so the bullion carve-out that
+exists for IRA *eligibility* does not rescue bullion from the rate.
+
+**The funds say it themselves**, which is what makes this a verified fact rather than an
+inference. All four bullion trusts checked on 2026-08-17 carry near-identical language;
+GLD's Form 10-K for the year ended 2025-09-30: *"gains recognized by individuals from the
+sale of 'collectibles,' including gold bullion, held for more than one year are taxed at a
+maximum rate of 28%, rather than the 20% rate applicable to most other long-term capital
+gains."* Its prospectus adds the look-through — a gain on shares in a trust holding
+collectibles is itself collectibles gain — and confirms the **3.8% NIIT sits on top**:
+*"This tax is in addition to any capital gains taxes due on such investment income."*
+
+| | Top federal rate on a long-term gain |
+| --- | ---: |
+| Equity, for comparison | 20% + 3.8% = **23.8%** |
+| **Bullion ETF (GLD, IAU, GLDM, SGOL)** | **28% + 3.8% = 31.8%** |
+| §1256 futures blend, 60/40 | 30.6% — the rate §3 already books |
+
+**Placement, and the qualification that matters.** Both GLD and IAU disclose **IRS private
+letter rulings** that purchase by an IRA or a §401(a) participant-directed account "will
+not be treated as the acquisition of a collectible", so the 28% rate does not apply inside
+a shelter. Three limits travel with that: **neither fund discloses the ruling number, and a
+PLR binds only its requester**; traditional-IRA distributions are **ordinary income**
+(Publication 590-B, "you can't use… capital gain treatment"), which at the top bracket is
+worse than 28%; and an in-kind redemption into bullion re-triggers §408(m). **So the
+shelter removes a penalty rather than conferring an advantage, and the gold sleeve would
+compete for the same scarce shelter as the managed-futures overlay** — which
+[the recommendation](portfolio-recommendation.md) already identifies as the binding
+constraint on that overlay's weight.
+
+**There is no plain futures vehicle to arbitrage the difference with.** §1256's 60/40 split
+would give 30.6% rather than 31.8%, but **Invesco DB Gold (DGL) liquidated in March 2023**
+(Form 8-K filed 2023-01-23; shares "cease trading on the NYSE Arca, Inc. after market close
+on March 3, 2023"), and the surviving ProShares UGL is **2× geared**, costs **1.19%**
+all-in, issues **K-1s**, and warns in its own prospectus that "swap agreements and
+non-currency forward contracts are **generally not** Section 1256 Contracts". A 120 bp rate
+saving is not worth 119 bp of fee, leverage and a K-1. **WisdomTree's GDE holds gold futures
+through a Cayman subsidiary inside a RIC rather than a bullion grantor trust, so neither the
+28% finding nor the 60/40 finding transfers to it, and its tax character was not verified
+here** — recorded as unverified rather than guessed.
+
+**Consequence.** Gold's tax treatment is a reason to place it, never a reason to hold it.
+It does not change the verdict, which is on return:
+[marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested).
+
+---
+
 **Capital efficiency: the mechanism, the cost, and why it is not booked.** A
 "return-stacked" fund at 90% equity plus 60% Treasury-futures notional obtains 150% of
 exposure per dollar. WisdomTree's NTSX is the reference case at 0.20% total expenses. The
@@ -237,7 +294,7 @@ Against the benchmarks a fund actually finances at:
 | --- | --- | ---: |
 | US Treasury futures | maturity-matched OIS | **12–18 bp** (Siriwardane, Sunderam and Wallen; 2y/5y/10y/20y/30y = 13/12/18/17/11, Jan 2010–Feb 2020) |
 | US Treasury futures | T-bills | 21–33 bp (Barth and Kahn, OFR WP 21-01, 2015–20) |
-| Gold futures | Treasury curve | ≤40 bp, and an **upper bound** — the identical 40 bp appears in SPX option boxes over the same window, so it is the Treasury convenience yield rather than anything gold-specific |
+| Gold futures | Treasury curve | ≤40 bp, and an **upper bound** — the identical 40 bp appears in SPX option boxes over the same window, so it is the Treasury convenience yield rather than anything gold-specific. **This is now a live number rather than a hypothetical**: WisdomTree's GDE stacks gold-futures notional on US equity for a 0.20% fee, so the all-in overlay cost is about 0.60%/yr ([capital efficiency §3a](capital-efficiency-and-breadth.md)) |
 | Equity index futures | 3-month Term SOFR | **+62 bp**, ten rolls Dec-2022→Mar-2025. A genuine post-2022 regime change |
 | **Diversified long/short trend book** | local interbank | **signed mean ≈ 0** |
 
@@ -549,4 +606,3 @@ resisted retrieval are registered in [the evidence base](evidence-base.md) §3.
    §3's four conditions are what would reopen it.
 6. **Recheck the fund-structure line before it is used.** A page whose largest new line has
    a visible mechanism of decay carries a review trigger, and this is it.
-</content>

@@ -13,7 +13,7 @@ repeating.
 ([framework](portfolio-edge-research-framework.md)); what to hold
 ([recommendation](portfolio-recommendation.md)).
 
-`as of 2026-08-12`. Every hash below is pinned in a committed manifest under
+`as of 2026-08-17`. Every hash below is pinned in a committed manifest under
 `research/data-manifests/`, and every experiment aborts rather than reporting numbers
 if a hash moves.
 
@@ -50,6 +50,9 @@ exceeds the bar, a null result carries almost no information.**
 | Same, **post-1991 publication** | 426 mo | 4.39 pp/yr | 2.0 pp/yr | **no** — +1.71, well inside the floor |
 | Accruals / net issuance, post-publication | 354 and 210 mo | 5.36 and 9.00 pp/yr | 2.0 pp/yr | **no**, by 2.7–4.5× |
 | **Correlation among candidate engines** | 497 aligned months | SE ≈ 0.045 on ρ ≈ 0 | 0.3 for breadth | **yes** — this is the resolvable question |
+| **Marginal gold sleeve at 10% weight** | 618–658 months | **0.94–1.04 pp/yr** | 0.30 pp/yr | **no**, by ~3× — the measured effect is +0.04 to −0.42 |
+| **Gold's correlation to equity, unconditional** | 658 months | SE ≈ 0.039 on ρ ≈ 0 | 0.3 for breadth | **yes** — measured −0.03 to +0.03 |
+| **Gold's correlation to equity, inside drawdowns** | 294 crisis months | SE ≈ 0.058 on ρ ≈ 0 | **+0.20**, the falsifier in [capital efficiency](capital-efficiency-and-breadth.md) §5b | **yes** — measured −0.011 to +0.084; the bar sits 3.4 SEs above zero and 2.0 above the worst reading |
 
 Three entries in that table are the whole shape of the programme's results. **Exposure is
 measurable and alpha is not** — 38 of 44 US funds reject a zero intended loading under
@@ -193,6 +196,51 @@ reproducible.
 proxy stands in for one everywhere a bond appears, and every bond figure inherits its
 absence of on-the-run premium, bid/ask, tax and index roll rules.
 
+### Gold — acquired 2026-08-17, and the first asset held outside equity and cash
+
+Two samplings of one regulated benchmark. Adapters, unit tests and manifests are in
+`research/src/portfolio_edge/data/{worldbank,lbma}.py`.
+
+| Source | Coverage | sha256 (prefix) | Licence | What it is |
+| --- | --- | --- | --- | --- |
+| **World Bank Pink Sheet**, `Gold` ([landing page](https://www.worldbank.org/en/research/commodity-markets)) | monthly, 1960-01…2026-07, 799 rows | `7902a775` | **CC BY 4.0** | USD per troy ounce. The source's own definition: *"spot average of daily rates, from June 2025; previously (UK), 99.5% fine, **London afternoon fixing, average of daily rates**"* |
+| **LBMA Gold Price PM** | daily, 1968-04-01…2026-08-14, 14,662 rows | `fa986c0a` | **licence required from IBA** | The month-end auction fix, USD/GBP/EUR. Administered by ICE Benchmark Administration, FCA-regulated under the UK Benchmarks Regulation |
+| **LBMA Gold Price AM** | daily, 1968-01-02…2026-08-14, 14,814 rows | `a26883fb` | same | The 10:30 auction. **Never spliced with the PM series** |
+
+**Why this is not a violation of [decision 0002](../decisions/0002-no-research-grade-free-price-source.md), and why it is still `exploratory`.** That decision's two named
+failure modes are a silently dropped distribution and a mishandled corporate action.
+Bullion has neither, so `total return = price return − carry cost` is *exact* and the only
+free parameter is a carry cost the caller must state. What keeps it exploratory is
+different and weaker: no vintage archive, an auction price that is not a retail execution,
+and an assumed rather than measured carry. **The distinction matters because it is the
+first time a price series has been admitted here at all**, and it was admitted on a
+property of the asset rather than on a relaxed standard.
+
+Four properties decide what may be quoted:
+
+- **The Pink Sheet is a monthly AVERAGE of daily rates, not a month-end level** — the same
+  trap Shiller's `P` carries. Averaging induces positive autocorrelation and understates
+  volatility, so **a Sharpe ratio from it is biased upward**. Measured: AC(1) is **+0.274**
+  on the average against **+0.053** on the month-end fix, and the two monthly return series
+  correlate only **+0.673**. Every gold figure in this repository reports both and quotes
+  the less favourable.
+- **The LBMA data are licence-restricted and the restriction is enforced.** LBMA: *"A
+  licence from IBA is required in order to obtain, use or redistribute real-time or
+  historical benchmark data."* IBA: *"None of IBA's benchmark and other information may be
+  used without a written licence from IBA."* In March 2025 IBA had the World Gold Council
+  remove its historical LBMA series. **The bytes stay in the uncommitted cache and only
+  hashes are manifested**, which is the treatment `fred.BAMLCC0A0CMTRIV` already gets from
+  the same administrator. The Pink Sheet is primary precisely because it is redistributable.
+- **There is no market price before 1971-08-15.** The dollar price was an administered peg;
+  the par value was reset by PL 92-268 (86 Stat. 116) and PL 93-110 (87 Stat. 352), and
+  **private US gold ownership was illegal until 1974-12-31** (PL 93-373, 88 Stat. 445).
+  `lbma.BRETTON_WOODS_END` exists so a study cannot pick the cut-off by eye.
+- **The Pink Sheet's URL is release-specific and a stale one serves a stale vintage with
+  HTTP 200.** The path this repository first fetched was stamped January 2025 and is no
+  longer linked from the landing page. The parser therefore compares the sheet's own
+  `"Updated on ..."` stamp against the registry verbatim, and a network test fails on a
+  mismatch. **This is the only source here where a wrong URL is silent rather than a 404.**
+
 ### Long-horizon and multi-country — acquired 2026-08-16
 
 Three sources this page previously listed as *failed acquisitions*. None of them was
@@ -262,6 +310,13 @@ treatment, delisting coverage or revision history, which is what a product audit
 The adapters are kept rather than deleted because the refusal is the finding: the Stooq
 adapter detects the interstitial and raises rather than parsing HTML into prices.
 
+**That decision is scoped to its own reasoning, and gold falls outside it.** Its two named
+failure modes are a dropped distribution and a mishandled corporate action; bullion has
+neither, so a gold price plus a stated carry cost *is* a total return. See the gold section
+above. **This is not a general licence to admit price feeds** — it turns on a property of
+the asset that no fund, index or equity shares.
+
+
 **A 404 is not evidence of absence.** Goyal–Welch and Shiller `ie_data` were both recorded
 here as failed acquisitions on the strength of an HTTP 404. Neither dataset had gone
 anywhere: Goyal–Welch moved to Google Drive and Shiller moved to `shillerdata.com`, and
@@ -310,16 +365,13 @@ way to learn nothing.
 **Three cheaper acquisitions would each open a question that is currently closed by
 absence rather than by evidence**, and none of them is a price feed:
 
-| Acquisition | Opens |
-| --- | --- |
-| A documented total-return series for bonds, gold, commodities and REITs | Every diversification question. Gold's absence biases the marginal-sleeve experiment toward finding no credit anywhere, and that direction is stated rather than left for a reader to notice |
-**Two of the three cheaper acquisitions named here have since been made** — see the
-long-horizon section above. What they open is now an experiment backlog rather than a
-budget question:
+**All three of the cheaper acquisitions named here have since been made or partly made** —
+see the two acquisition sections above. What they open is now an experiment backlog rather
+than a budget question:
 
 | Acquisition | Status | Opens |
 | --- | --- | --- |
-| A documented total-return series for bonds, gold, commodities and REITs | **still absent** | Every diversification question. Gold's absence biases the marginal-sleeve experiment toward finding no credit anywhere, and that direction is stated rather than left for a reader to notice |
+| A documented total-return series for bonds, gold, commodities and REITs | **gold landed 2026-08-17**; commodities were already held via AQR CLR; **bonds and REITs still absent** | Gold is tested and the result is in [marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested). **The stated bias was real and the sentence it defended is falsified in form and confirmed in substance**: gold reaches the credit ceiling exactly, and the ceiling was never the binding term. What is still blocked is an investable **bond** sleeve, where the `GS10` proxy still stands in |
 | Long-horizon non-US equity histories | **landed 2026-08-16** (JST R6) | The drawdown ladder underneath the equity-share decision was **one country**. It is now sixteen, and −50.3% is measurably not a bound |
 | Goyal–Welch at its current URL, and an inflation series | **landed 2026-08-16** (Goyal–Welch, Shiller, and JST's 18-country CPI) | Any conditional or valuation-dependent allocation, none of which has ever been tested here |
 
@@ -344,5 +396,3 @@ repository's null result is partly a property of where it has looked.
    did not.
 5. **Nothing here is point-in-time.** A sha256 proves which file was used, never what was
    available at an earlier date.
-</content>
-</invoke>

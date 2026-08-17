@@ -224,7 +224,8 @@ better exists` means the alternatives were tested and lost.
 | **Leverage of any kind** | Zero, and it stays zero. Conditioned on an unlevered edge surviving the protocol; none has |
 | **Rebalancing as a source of return** | `rejected`: **−38.7 bp/yr** over 420 months, drift gap ~35× `gamma_star`, and relative regional performance **trends** rather than reverts |
 | **The academic small-value corner** | ME1 × BM5 held 21.24% of listed firms and **0.236% of market capitalisation**. Not implementable at retail in size |
-| **Gold, tail hedges, private credit, cat bonds, merger arb** | **Untested here.** Gold is an average hedge and a short-lived safe haven in some samples, not a universal negative-correlation asset; a protective put must be benchmarked against a **return-matched** equity/cash mix |
+| **Gold** | **Tested 2026-08-17 and excluded on return, not on absence.** The claim that it is "not a universal negative-correlation asset" is **confirmed**: its correlation to US equity measures −0.03 to +0.03 unconditionally and −0.01 to +0.08 inside equity drawdowns — **zero, not negative**. It *passes* the overlay admission test and its crisis correlation is well under the +0.20 that breaks the trend recommendation. It fails the rule a physical gold ETF actually imposes: **pro-rata marginal growth of +0.04 to −0.42 pp/yr** against a 0.30 bar, on a window whose most favourable forty months were ones in which US private gold ownership was illegal. A bullion ETF is also taxed at the **28% collectibles rate plus 3.8% NIIT** against 20% + 3.8% for equity, so it would compete with the trend overlay for the same scarce shelter ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)) |
+| **Tail hedges, private credit, cat bonds, merger arb** | **Untested here.** A protective put must be benchmarked against a **return-matched** equity/cash mix |
 
 ---
 

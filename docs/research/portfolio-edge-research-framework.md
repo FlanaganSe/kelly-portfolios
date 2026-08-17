@@ -250,7 +250,16 @@ statistic.**
 markets ([Longin and Solnik 2001](https://doi.org/10.1111/0022-1082.00340)), so
 unconditional covariance understates joint left-tail risk. Gold has been an average
 hedge and a short-lived safe haven in some countries and samples, not a universally
-negative-correlation asset. The nominal bond–stock beta was positive circa 1970–2000,
+negative-correlation asset. **Measured here on 2026-08-17 and confirmed**: over 658 months
+from 1971-09, gold's correlation to US equity is **−0.031 / +0.019** unconditionally and
+**−0.011 / +0.072** inside equity drawdowns of 10% or more (World Bank Pink Sheet / LBMA
+month-end fix). **Zero, not negative, on both.** What the claim understated is the other
+half: gold's crisis correlation does *not* rise the way this paragraph's opening sentence
+warns international correlations do — the conditional-minus-unconditional gap is +0.02 to
++0.11 — and its mean return inside those months is **+0.85 to +0.95%/month** against
+equity's −0.26%. **A zero-correlation asset that pays inside drawdowns is not a hedge and
+is exactly what the diversification credit rewards**; it still fails the marginal test on
+return ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)). The nominal bond–stock beta was positive circa 1970–2000,
 negative circa 2000–2022Q3, and positive again to 2024Q2
 ([Campbell et al. 2025](https://www.nber.org/papers/w34323), NBER working paper) — so a
 covariance matrix estimated over a long full sample averages opposite regimes and

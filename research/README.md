@@ -63,6 +63,11 @@ uv run ruff check
   a primary metric, a cost model, a sample policy, and a rejection rule.
 - **No observation may be used before its availability timestamp.**
 - **Costs alter the trading rule**, never appear as a constant haircut afterwards.
+- **Check whether a source exists before recording it as absent.** Goyal-Welch, Shiller and
+  gold were each written down here as unavailable and each was published the whole time.
+  Check the *reasoning* of any decision that appears to forbid a source, too: decision 0002
+  bans free price feeds because they drop distributions and mishandle corporate actions,
+  and neither failure mode exists for an asset that pays nothing.
 - **Results carry a status**, never "works": `exploratory`, `source-reproduced`,
   `independently-reproduced`, `walk-forward-tested`, `shadow-live`,
   `production-eligible`, `rejected`, `unresolved`.
@@ -80,4 +85,6 @@ uv run ruff check
 | Shiller | Long-horizon sensitivity | Use for modern execution backtests, or treat `P` as a month-end price; it is a monthly average of daily closes |
 | Jordà–Schularick–Taylor Macrohistory (R6) | The only multi-country long-horizon returns held: 16 countries, 1870–2020, annual | Read it as 18 countries (Canada and Ireland carry no returns), compare its annual drawdowns with a monthly one, forget it is nominal and local-currency, or quote Portugal 1975–77, Spain 1937–40 or Germany 1922–23 without saying what they are |
 | Stooq / free price feeds | Exploratory only | Use in a confirmatory experiment; there is no documented total-return or corporate-action contract |
+| World Bank Pink Sheet | The **primary gold series**, monthly USD/troy oz from 1960, CC BY 4.0 and redistributable | Read it as a month-end level — it is a monthly **average** of daily rates, which biases a Sharpe ratio upward. Or trust the URL: it is release-specific and a superseded path answers 200 with an older vintage |
+| LBMA Gold Price | A month-end **cross-check** on that average, daily from 1968 | Redistribute it, or let a published figure rest on it alone. IBA requires a written licence to obtain, use or redistribute; bytes stay uncommitted and only hashes are manifested. Splice the AM and PM auctions, or read anything before 1971-09 as a market price |
 | SEC Form N-PORT | Fund-reported monthly total returns, net assets and the fund census, from the filings themselves | Treat as long, audited, or complete. Public filings begin 2019, figures are unaudited, and General Instruction G lets each filer use its own methodology |

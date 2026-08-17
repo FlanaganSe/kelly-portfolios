@@ -536,9 +536,9 @@ export const experiments: readonly Experiment[] = [
       },
     ],
     whyItMatters:
-      "It closes the portfolio-level view as a route to rescuing a dismissed sleeve, and it closes it with a bound rather than a result. The ceiling on the credit, and what it means for a trend or momentum sleeve, is set out on the portfolio page.",
+      "It bounds what the portfolio-level view can rescue, and a later test of gold shows the bound is reachable and still not enough. A zero-beta asset takes the entire credit and remains 0.10 pp/yr behind: the credit is 2.17 pp/yr per unit of weight against a standalone shortfall of 2.95, and both scale with the weight, so holding more cannot close the gap. The ceiling on the credit, and what it means for a trend or momentum sleeve, is set out on the portfolio page.",
     whatWouldChangeIt: [
-      "A research-grade gold series, the one untested candidate with a plausibly low equity beta. Its absence biases the experiment toward finding no credit anywhere.",
+      "A funding rule that finances the sleeve instead of selling the base. Gold was landed and tested on 2026-08-17, it lands exactly on the credit ceiling with a beta of zero, and it still fails — so the ceiling was never the binding term. It passes the financed-overlay bar and fails the pro-rata one, and the gap between those two rules is worth more than any premium measured here.",
       "An investable bond total-return history, which would replace the modelled duration proxy that clause (u5) forbids from resolving anything.",
       "A base portfolio whose volatility is high enough for the ceiling to clear the bar, which is the opposite of what most readers would want to hold.",
     ],

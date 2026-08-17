@@ -27,9 +27,11 @@ from portfolio_edge.data import (
     fred,
     french,
     goyal_welch,
+    lbma,
     macrohistory,
     prices,
     shiller,
+    worldbank,
 )
 from portfolio_edge.data.cache import RawCache
 from portfolio_edge.data.validation import validate_table
@@ -445,3 +447,108 @@ def test_the_quarterly_sheet_really_is_quarter_end(cache: RawCache) -> None:
             quarterly.columns.index("Index")
         ]
         assert month == pytest.approx(quarter), period
+
+
+# --------------------------------------------------------------------------------
+# Gold
+# --------------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("dataset_id", sorted(lbma.DATASETS))
+def test_the_lbma_gold_price_downloads_and_parses(cache: RawCache, dataset_id: str) -> None:
+    """Shape and provenance only.
+
+    The endpoint is an undocumented chart backend and the data are licence-restricted,
+    so this asserts that it answers and that the licence restriction is recorded — never
+    a price. If it stops answering, the correct response is to record the refusal, not
+    to defeat it.
+    """
+    dataset = lbma.get_dataset(dataset_id)
+    entry = lbma.download(cache, dataset)
+
+    assert entry.http_status == 200
+    assert len(entry.sha256) == 64
+    table = lbma.parse(cache, entry, dataset=dataset)
+    assert table.columns == ("USD", "GBP", "EUR")
+    assert table.frequency == "daily"
+    assert table.rows > 14_000
+    assert table.first_observation is not None
+    assert table.first_observation.startswith("1968")
+
+    manifest = lbma.build_manifest(dataset, entry, table)
+    assert manifest.sha256_raw == entry.sha256
+    assert "not point-in-time" in manifest.revision_policy.lower()
+    assert any("LICENCE-RESTRICTED" in warning for warning in manifest.warnings)
+
+
+def test_the_lbma_usd_column_has_no_gaps_and_the_months_are_contiguous(
+    cache: RawCache,
+) -> None:
+    """The month-end rule depends on both, so both are checked against the live file."""
+    dataset = lbma.get_dataset("lbma_gold_pm")
+    entry = lbma.download(cache, dataset)
+    table = lbma.parse(cache, entry, dataset=dataset)
+
+    assert all(value is not None for value in table.column("USD"))
+
+    months = [month for month, _ in lbma.month_end_usd(table)]
+    assert months == sorted(months)
+    ordinals = [int(m[:4]) * 12 + int(m[5:]) for m in months]
+    assert ordinals == list(range(ordinals[0], ordinals[0] + len(ordinals))), (
+        "a missing month would silently become a two-month return"
+    )
+
+
+def test_the_pink_sheet_downloads_and_the_release_stamp_matches_the_registry(
+    cache: RawCache,
+) -> None:
+    """The URL is release-specific and a stale one serves a stale vintage silently.
+
+    So the check that matters is not the status code but whether the release stamp
+    inside the sheet still matches what the registry declares. A mismatch here means
+    the registered URL needs updating, and it is exactly the failure a 200 hides.
+    """
+    dataset = worldbank.get_dataset("worldbank_pinksheet_gold_monthly")
+    entry = worldbank.download(cache, dataset)
+
+    assert entry.http_status == 200
+    table = worldbank.parse(cache, entry, dataset=dataset)
+    assert table.columns == ("Gold",)
+    assert table.frequency == "monthly"
+    assert table.first_observation == "1960-01"
+    assert not any("RELEASE MISMATCH" in warning for warning in table.warnings), (
+        "the registered Pink Sheet URL is serving a different release than declared"
+    )
+
+    manifest = worldbank.build_manifest(dataset, entry, table)
+    assert manifest.sha256_raw == entry.sha256
+    assert "not point-in-time" in manifest.revision_policy.lower()
+    assert manifest.license_or_terms_url.startswith("https://")
+
+
+def test_the_two_gold_instruments_agree_on_the_level_before_the_2025_break(
+    cache: RawCache,
+) -> None:
+    """A monthly average and a month-end fix of the same benchmark cannot diverge much.
+
+    They are not equal — that is the whole reason both are held — but a month-average of
+    daily fixes must sit within a few percent of the month-end fix, and this is the check
+    that would catch a units error, a currency error or a wrong column in either reader.
+    Scoped to before the Pink Sheet's June 2025 switch from the PM fix to spot.
+    """
+    pink = worldbank.get_dataset("worldbank_pinksheet_gold_monthly")
+    pink_table = worldbank.parse(cache, worldbank.download(cache, pink), dataset=pink)
+    pink_levels = dict(worldbank.monthly_series(pink_table, "Gold"))
+
+    gold_pm = lbma.get_dataset("lbma_gold_pm")
+    fix_table = lbma.parse(cache, lbma.download(cache, gold_pm), dataset=gold_pm)
+    fix_levels = dict(lbma.month_end_usd(fix_table))
+
+    shared = [m for m in sorted(set(pink_levels) & set(fix_levels)) if m <= "2025-05"]
+    assert len(shared) > 600
+    ratios = [pink_levels[m] / fix_levels[m] for m in shared]
+    # The largest single-month gap on this pair is 1983-02, where the average sits 20.2%
+    # above the month-end fix because gold fell hard inside the month. The bound is set
+    # above that rather than at it, and the mean is what actually pins the units.
+    assert max(abs(r - 1.0) for r in ratios) < 0.25
+    assert abs(sum(ratios) / len(ratios) - 1.0) < 0.01

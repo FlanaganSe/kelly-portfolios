@@ -23,6 +23,11 @@ randomness the generator seed is an explicit argument with a committed default.
   surface over four correlated axes, a resampled test of the flat-drawdown result the
   recommendation rests on, and the failure modes ``docs/the-plan.md`` names. Reads no
   market data; ``_overlay_stress_tables`` is the companion that touches the cache.
+* :mod:`gold_sleeve` — the arithmetic for the one candidate asset outside equity and
+  cash this repository can reach: total return from a price level plus a stated carry,
+  moments, the admission threshold, the correlation *inside* equity drawdowns, and
+  Experiment 010's credit decomposition. Reads no market data; ``_gold_sleeve_tables``
+  is the companion that touches the cache.
 * :mod:`tax_structure` — the contractual, tax-code half of that budget: foreign tax
   credit forfeiture, fund-structure capital gains, §1256, the value of deferral, the
   decay of loss harvesting, and the arithmetic of capital efficiency. Rates are a dated,

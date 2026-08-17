@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "dataset_id": "worldbank_pinksheet_gold_monthly",
+  "source_url": "https://thedocs.worldbank.org/en/doc/74e8be41ceb20fa0da750cda2f6b9e4e-0050012026/related/CMO-Historical-Data-Monthly.xlsx",
+  "retrieved_utc": "2026-08-17T13:14:01Z",
+  "sha256_raw": "7902a77505ebdc5d202ce65f666c2ee1b04b626f042d7738ed3e6f7d112c8433",
+  "sha256_normalized": "bdea64be5f8c548a6be0b4756b0aea4248eac4ae8c32d9bb6e3b827ba0d93634",
+  "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "source_last_modified": "Tue, 04 Aug 2026 19:23:23 GMT",
+  "source_etag": null,
+  "parser_version": "worldbank_pinksheet/1.0.0",
+  "frequency": "monthly",
+  "units": "nominal_usd_per_stated_unit",
+  "source_units": "nominal_usd_per_stated_unit",
+  "unit_transform": "identity",
+  "first_observation": "1960-01",
+  "last_observation": "2026-07",
+  "rows": 799,
+  "availability_policy": "The Pink Sheet is published early in the month following the last observation; the release stamp parsed from the sheet is the only publication date the file itself carries. A monthly average for month M is not available during month M. The retrieval timestamp in this manifest bounds availability for the last observation only.",
+  "revision_policy": "Not point-in-time. The World Bank republishes the full history in each monthly release and publishes no vintage archive this code can read, so a revised month overwrites in place. The release URL itself changes each month and an older path keeps answering with an older vintage, so a stale URL fails by serving stale data rather than by erroring. The sha256 here identifies the file downloaded; it cannot establish what any earlier row read on any earlier date.",
+  "license_or_terms_url": "https://datacatalog.worldbank.org/public-licenses",
+  "warnings": [
+    "source definition of 'Gold': Gold, spot average of daily rates, from June 2025; previously (UK), 99.5% fine, London afternoon fixing, average of daily rates. Sources named by the World Bank: Bloomberg Finance L.P.; Kitco.com; International Monetary Fund, International Financial Statistics; London Bullion Market; Metals Week; Platts Metals Week; Shearson Lehman Brothers, Metal Market Weekly Review; Thomson Reuters Datastream; World Bank.",
+    "source units of 'Gold': '($/troy oz)'",
+    "THESE ARE MONTHLY AVERAGES OF DAILY RATES, NOT MONTH-END LEVELS. Differencing period averages induces positive first-order autocorrelation and understates volatility, so a Sharpe ratio built from this file is biased upward. Check it against a month-end series before quoting it.",
+    "CC BY 4.0 attribution required: World Bank Commodity Price Data (The Pink Sheet), https://www.worldbank.org/en/research/commodity-markets, CC BY 4.0. Changes made: the 'Monthly Prices' sheet was reshaped into one column per commodity with YYYY-MM period labels; no value was altered.",
+    "RELEASE PINNED: Updated on August 04, 2026. The workbook URL is release-specific and changes monthly; landing page https://www.worldbank.org/en/research/commodity-markets.",
+    "licence: CC BY 4.0, which permits redistribution with attribution. This is the reason this file rather than the LBMA benchmark it is built from is the primary gold instrument here; see portfolio_edge.data.lbma.",
+    "methodology break: the gold series switches from the London afternoon fixing to spot in June 2025, per the source's own definition."
+  ]
+}

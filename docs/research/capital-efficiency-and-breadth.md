@@ -31,8 +31,13 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
    registered vehicle of any kind. This page previously said "breadth is one engine";
    a red team falsified that framing. At least four engines
    clear the *overlay* bar and fail the *pro-rata* bar — trend, duration-hedged credit,
-   long/short commodities and catastrophe bonds — and **only trend has a financed retail
-   wrapper.** The binding constraint is which strategies happen to have a futures market
+   long/short commodities and catastrophe bonds — **and gold, added 2026-08-17, makes
+   five.** **This page previously said only trend has a financed retail wrapper; that is
+   now false.** WisdomTree's GDE stacks roughly a dollar of gold-futures notional on a
+   dollar of US equity for **0.20%/yr**, a seventh of trend's assumed fee, on $595m of
+   assets since 2022. **Gold is the one candidate whose vehicle shelf does not bind — and
+   it fails on return instead, which is a cleaner refusal than any this page has made.**
+   §3a. The binding constraint is which strategies happen to have a futures market
    deep enough to build a return-stacked fund on, which is a fact about the fund industry
    rather than about return premia. Separately, the alternative risk premia do fail on
    cost: 0.3–1.0%/yr gross post-2019 at 2–5% volatility against a ~1.5% retail wrapper.
@@ -158,10 +163,21 @@ TSMOM), cash (`Rfree`). Excess of cash, 1985-01…2025-05, n = 485.
 | treasury | 4.73% | 10.07% | 0.47 | −0.04 |
 | credit | 4.89% | 8.87% | 0.55 | +0.19 |
 | commodity | 3.46% | 13.01% | 0.27 | +0.29 |
+| **gold** | **3.28%** | **12.22%** | **0.27** | **−0.09** |
 | trend | 12.07% | 12.58% | 0.96 | −0.08 |
 
 **Credit and treasury correlate +0.83 — they are one engine, not two.** Counting them
 separately is the fake breadth `docs/the-plan.md` forbids.
+
+**The gold row was added on 2026-08-17 and is measured on this section's exact window**,
+1985-01…2025-05, 485 months, net of GLDM's published 0.10% fee, from the World Bank Pink
+Sheet — with the LBMA month-end fix as a cross-check giving 3.76% / 15.27% / **0.25** /
+**−0.04**. **Where the two disagree the less favourable is quoted**, because the Pink Sheet
+is a monthly *average* and averaging biases a Sharpe ratio upward. Read it beside
+commodities and not beside trend: **the same Sharpe ratio as commodities, at a correlation
+of −0.09 instead of +0.29.** Full construction, provenance, licence position and the 1971
+handling are in [marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested);
+the two numbers that decide anything are repeated in §3a below.
 
 ### The window flatters, and by how much is measurable
 
@@ -171,9 +187,20 @@ separately is the fake breadth `docs/the-plan.md` forbids.
 | equity/treasury correlation | +0.08 | **+0.17** | −0.04 |
 | Commodity Sharpe | 0.31 | 0.34 | 0.27 |
 | equity/commodity correlation | +0.30 | +0.30 | +0.29 |
+| **Gold Sharpe** | *no market price* | **0.39** | **0.27** |
+| **equity/gold correlation** | *no market price* | **+0.04** | **−0.09** |
 
 **The bond overlay's entire case is the post-1985 disinflation**, in both its return and its
 correlation. Commodities are the stable one, in Sharpe and in correlation alike.
+
+**Gold's two cells are not comparable with the others' and the table says so rather than
+lining them up.** There is no market price for gold before 1971-08-15 — the dollar price
+was an administered peg and the two devaluations that ended it were acts of Congress — so
+its "pre-1985" column is **1971-09…1984-12, 160 months**, not sixty years. It is also the
+column that flatters gold most: **the first forty of those months, when private US gold
+ownership was still illegal, carry a Sharpe of 1.56 and the remaining 120 carry 0.007.**
+The 1985-2025 cell is the one to read, and there gold looks like commodities on return and
+much better on correlation. LBMA cross-check: 0.39 / +0.10 and 0.25 / −0.04.
 
 **Correction, 2026-08-16.** An earlier version of this page said commodities' stable +0.30
 correlation "disqualifies them once cost is charged". **That was wrong, and the error was
@@ -184,6 +211,77 @@ it by +0.107 and **pass at every exposure and fee tested**. What is true is weak
 different: their margin is roughly **five times smaller than trend's**, and the AQR series
 is excess-of-cash with **unpriced roll costs**, which is what would actually sink them.
 They are not rejected here; they are dominated.
+
+### 3a. Gold: it passes admission, it is dominated on return, and its shelf does not bind
+
+Two facts belong here rather than only on the marginal-sleeve page, because this section's
+argument is about *engines* and *vehicles* and gold changes both.
+
+**It passes equation (4) at every exposure, and the margin is not carried by the cost
+assumption.** On the longest defensible window, 1971-09…2026-06, 658 months:
+
+| | net Sharpe | `rho` | threshold at `L = 1` | margin |
+| --- | ---: | ---: | ---: | ---: |
+| gold, 1971-09…end | 0.313 / 0.298 | −0.031 / +0.019 | −0.0050 / +0.0030 | +0.318 / **+0.295** |
+| **gold, 1975-01…end** — the only window a US person could legally hold it | 0.187 / **0.181** | −0.024 / +0.034 | −0.0038 / +0.0052 | +0.191 / **+0.176** |
+
+**Forty months in which private US gold ownership was illegal carry about 40% of the
+full-sample Sharpe ratio** — gold earned 54.5%/yr over 1971-09…1974-12 while equity lost
+9.8%/yr. **Use the second row.** Equation (4)'s documented misuse does not apply here:
+`|rho|` is under 0.04, far inside the `|rho| <= 0.5` range where the first-order condition
+is a usable test.
+
+**Its crisis-conditional correlation is the one number that clears §7's own falsifier.**
+Conclusion 7 above makes the recommendation conditional on trend's correlation to equity
+*inside equity drawdowns* staying below **+0.20**, and §9.3 shows what +0.30 costs.
+Measured on the identical definition — equity at least 10% below its running peak, 294 of
+658 months — **gold's crisis correlation is −0.011 / +0.072, and +0.084 on the holdable
+window.** Its mean return inside those months is **+0.85 to +0.95%/month** against equity's
+−0.26%. **On the axis this page identifies as the top-ranked threat to its own
+recommendation, gold is measurably safer than the sleeve the recommendation names.**
+
+**And gold is the counter-example to this section's structural claim.** §3 concludes that
+"the fund shelf binds before the evidence does": three of the seven factor families have no
+vehicle of any kind and the one BAB fund is $362m. **For gold it does not bind, in either
+direction.**
+
+| Route | Vehicle | Fee | Size / inception | Funding rule |
+| --- | --- | ---: | --- | --- |
+| Physical | GLD / IAU / GLDM / SGOL | 0.40 / 0.25 / **0.10** / 0.17% | decades old, tens of $bn | **pro rata** — GLD's 10-K: *"The Trust does not hold or employ any derivative securities"* |
+| **Stacked on equity** | **WisdomTree GDE** | **0.20%** | **$595.1m**, inception 2022-03-17 | **overlay** — *"approximately equal exposure to U.S.-listed gold futures contracts and U.S. equity securities"*; its 2026-05-31 N-PORT measures 85.7% equity + 88.1% gold notional |
+| Stacked on stocks and bonds | First Trust ESBG | 0.95% | **$2.2m**, inception 2025-11-18 | overlay, ~210% notional in three sleeves. A sub-$3m fund; treat closure as likely |
+| Stacked, gold + bitcoin | Return Stacked RSSX | 0.67% | $66.3m, inception 2025-05-29 | overlay, but the stacked dollar is a **risk-parity blend of gold and bitcoin** and cannot be dialled to pure gold |
+
+All figures retrieved 2026-08-17 from the funds' own SEC filings. **GDE is the second
+financed retail wrapper this repository has found for any candidate engine, after trend —
+and at 0.20% it is a seventh of trend's assumed 1.45% fee.** With this page's own ≤40 bp
+gold-futures financing bound from [structural and tax-aware
+edges](structural-and-tax-edges.md), the all-in overlay cost is about **0.60%/yr against
+trend's 2.05%.**
+
+**None of that promotes gold, and the reason is on the return side, not the vehicle side.**
+Under pro-rata funding — the rule a physical gold ETF actually imposes — gold's marginal
+growth at a 10% weight is **+0.007 to +0.043 pp/yr** on the headline window and **−0.41 to
+−0.42** on the holdable one, against a 0.30 pp/yr bar and an MDE₈₀ of about 1.0. It is
+**dominated exactly as commodities are** — same Sharpe, better correlation, no measurable
+edge — and it joins trend, duration-hedged credit, long/short commodities and catastrophe
+bonds in the set that clears the overlay bar and fails the pro-rata one.
+
+**One thing gold changes that commodities do not.** The AQR commodity series is
+excess-of-cash with **unpriced roll costs**, which is what §3 says would actually sink it.
+Gold has no roll cost in the physical wrapper, its carry is a published fee, and its total
+return is *exactly* price return minus that fee because bullion pays no distribution and
+has no corporate action. **It is the one candidate here whose cost side is measured rather
+than assumed** — and it still does not clear the bar that matters.
+
+**The tax side is worse than equity's and decides placement.** A bullion ETF is taxed as a
+collectible: **28% plus 3.8% NIIT** against 20% plus 3.8% for equity, verified from IRS
+Pub. 550 and from GLD's, IAU's, GLDM's and SGOL's own 10-Ks, each of which states it
+directly. Inside an IRA the collectibles rate does not apply — both GLD and IAU hold IRS
+private letter rulings to that effect — but traditional-IRA distributions are ordinary
+income, so the shelter helps and does not make gold tax-favoured. **The physical route
+competes with trend for the same scarce shelter that §7 already identifies as the binding
+constraint on the overlay weight.**
 
 ### The seven families this repository had never opened
 
@@ -569,38 +667,253 @@ the evidence available it does not.
 
 **This is the practical payoff of §1 and it took a red team to notice it.** The funding
 rule is not a modelling choice a reader makes; it is a property of the *fund they buy*.
+A standalone managed-futures ETF is a pro-rata vehicle: holding DBMF beside equity means
+selling equity to buy it, expression (2), a bar of about **+2.44 pp/yr**. A return-stacked
+ETF is an overlay vehicle: nothing is sold, expression (1), a bar near zero and **negative**
+at trend's measured correlation. **Same strategy, same evidence, opposite verdict, decided
+entirely by the ticker** — and [the recommendation](portfolio-recommendation.md) named the
+vehicle that gets the worse bar. §6a audits the shelf that follows from this.
 
-- **A standalone managed-futures ETF is a pro-rata vehicle.** Holding DBMF beside equity
-  means selling equity to buy it. That is expression (2), and the bar is `a_p -
-  sigma_p**2 (1 - beta)` — about **+2.44 pp/yr** at a 5% forward equity premium. Trend
-  does not clear it.
-- **A return-stacked ETF is an overlay vehicle.** One dollar of RSST delivers roughly a
-  dollar of equity *and* a dollar of managed futures, so nothing is sold. That is
-  expression (1), and the bar is `rho sigma_p sigma_d` — near zero, and **negative** at
-  trend's measured correlation.
+---
 
-**Same strategy, same evidence, opposite verdict, decided entirely by the ticker.**
-[The recommendation](portfolio-recommendation.md) names **DBMF**, which is the vehicle
-that gets the worse bar.
+## 6a. The wrapper shelf, audited from the filings
 
-**The shelf exists and is measurable, which the audit had assumed it was not.** From the
-SEC N-PORT census, 2025Q4, net assets as filed:
+**The question §6 raises and does not answer.** The entire recommendation now rests on a
+financed retail wrapper existing, and exactly one product had ever been examined for the
+role. This section enumerates the shelf, prices it, and asks the only two questions that
+decide: **is the wrapper an overlay or a pro-rata vehicle, and what happens when it
+closes.** `as of 2026-08-17`, from SEC filings and each issuer's own documents.
 
-| Series | Net assets | In the 2019Q4 census? |
-| --- | ---: | --- |
-| WisdomTree U.S. Efficient Core (NTSX) | $1,262.6m | **no** |
-| Return Stacked Global Stocks & Bonds | $381.8m | **no** |
-| **Return Stacked U.S. Stocks & Managed Futures** | **$292.8m** | **no** |
-| Return Stacked U.S. Stocks & Futures Yield | $116.2m | **no** |
-| Return Stacked Bonds & Managed Futures | $86.9m | **no** |
-| eight more | $24m–$434m | **no** |
+### 6a.1 A dichotomy was the wrong shape, and one number replaces it
 
-**Thirteen capital-efficient series exist and not one of them appears in the 2019Q4
-census.** None is marked as a final filing, so none is winding down. Two consequences
-pull in opposite directions and both are real: the overlay **is** implementable by a
-retail investor in an ordinary IRA, and **the entire shelf is younger than six years**,
-so every one of these funds carries genuine closure and methodology-change risk that a
-longer-lived product would not.
+§1 states the funding rule as two rules. **Real wrappers are a continuum, and reading them
+as a dichotomy gets NTSX wrong.** A 90/60 efficient-core fund sells ten cents of equity to
+buy sixty cents of Treasury notional: neither rule describes it. From
+[`studies/wrapper_economics.py`](../../research/src/portfolio_edge/studies/wrapper_economics.py),
+for a wrapper delivering `b` of base and `d` of diversifier notional per dollar of capital,
+
+    dg/dw at w=0  =  (a_net - rho sigma_p sigma_d)  -  delta (a_p - sigma_p**2),
+    delta = (1 - b) / d,                                                          (7)
+
+so **the wrapper's structure enters exactly once, as a multiplier on §1's gap.** `delta` is
+the base sold per unit of diversifier notional obtained; `1 - delta` is the share of the
+funding-rule benefit the wrapper keeps. Equation (7) reduces to (1) at `delta = 0` and to (2)
+at `delta = 1`, and both reductions are pinned by tests that differentiate an independently
+written growth function rather than asserting the module's own output.
+
+**Two consequences that are not obvious and both bite on the real shelf.**
+
+- **Gross notional per dollar decides nothing.** A 50/50 equity-and-trend fund and a
+  standalone trend fund both show 1.0× and both pay §1's gap in full; a 90/60 fund shows
+  1.5× and pays a seventh of it. **A wrapper at 40% equity and 30% trend has `delta = 2.0`
+  and is worse than selling equity outright** — a category with no name in the marketing
+  vocabulary and which the gross-notional figure cannot distinguish from the good case.
+- **An expense ratio is quoted in the wrong units.** The hurdle is stated per unit of
+  *notional*; a fee is charged on *capital*. The conversion is `fee / d`. NTSX's 0.20% buys
+  0.635 of Treasury notional and is therefore **0.315% per unit of notional**, and a wrapper
+  charging 20 bp for 0.10 of notional is dearer than one charging 100 bp for 1.00.
+
+### 6a.2 Structure, from the holdings rather than the fact sheet
+
+Every figure below is computed from the fund's own **Form N-PORT** holdings and derivative
+notionals in the SEC's 2026Q2 structured data set, not from marketing copy. Provenance,
+hashes and retrieval dates are in
+[`data-manifests/wrapper_shelf/shelf_census.json`](../../research/data-manifests/wrapper_shelf/shelf_census.json).
+
+| Wrapper | Report date | Base leg, % NAV | Overlay leg, % NAV | Gross | `delta` | **Funding capture** |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| **RSSB** global stocks & bonds | 2026-04-30 | 100.07 equity | 100.33 Treasury futures | 2.004 | **−0.00** | **100%** |
+| **RSST** US stocks & managed futures | 2026-04-30 | ≥100 equity (see below) | ~100 trend, per prospectus | ~2.0 | **≤0.00** | **100%** |
+| **NTSX** US efficient core | 2026-03-31 | 90.83 equity | 63.50 Treasury futures | 1.543 | 0.144 | 85.6% |
+| **NTSE** emerging efficient core | 2026-03-31 | 90.33 equity | 63.71 Treasury futures | 1.540 | 0.152 | 84.8% |
+| **NTSI** developed ex-US efficient core | 2026-03-31 | 89.89 equity | 61.03 Treasury futures | 1.509 | 0.166 | 83.4% |
+| **GDE** efficient gold plus equity | 2026-02-28 | 84.80 equity | 83.63 gold futures | 1.684 | 0.182 | 81.8% |
+| **GDMN** efficient gold plus miners | 2026-02-28 | 86.70 **gold miners** | 80.70 gold futures | 1.674 | 0.165 | *base not substitutable* |
+| **DBMF, CTA, KMLM, FMF, WTMF** | 2026-02…04 | **0 equity** | 100 trend | 1.000 | **1.000** | **0%** |
+| a hypothetical 50/50 blend | — | 50 equity | 50 trend | 1.000 | 1.000 | 0% |
+
+At `a_p = 5.0%` and `sigma_p = 16%`, `delta` converts to a hurdle: **0.00 pp/yr for RSSB and
+RSST, 0.35 for NTSX, 0.40 for NTSI, and the full 2.44 for every standalone managed-futures
+fund.** The last row is the one to keep: **a 50/50 blend is marketed as capital efficient and
+is, at the margin, arithmetically identical to selling equity to buy a standalone product.**
+
+**RSSB is the clean read and it verifies the marketing exactly.** Two equity ETFs at 90.53%
+of net assets plus one long equity-index future at 9.54% is **100.07% equity**; four long
+Treasury-note and bond futures total **100.33% of net assets**. The two legs use different
+N-PORT asset categories, so nothing is commingled and `delta = −0.0007`.
+
+**RSST cannot be read the same way, and the limitation is stated rather than filled in.**
+It holds the SPDR Portfolio S&P 500 ETF at **74.09%** of net assets, a government money fund
+at **16.04%** as futures collateral, and a diversified futures book at **2.96× net assets of
+gross futures notional**. Its equity-index futures serve *both* the base top-up and the trend
+book's own equity positions, and **N-PORT does not label which is which**, so the 100/100
+split cannot be verified from the filing. What can be established bounds the answer usefully:
+equity-index futures are **70.21% of net assets and every one of them is long**, so total
+equity exposure is 144.30% and `b ≥ 1.0` is not in doubt. The prospectus states the target
+directly — *"The Fund will target a 100% exposure to each of its U.S. Equity strategy and its
+Managed Futures strategy"* ([497K, 2026-04-27](https://www.sec.gov/Archives/edgar/data/1924868/000199937126009152/rsst-497k_042726.htm),
+retrieved 2026-08-17). **RSST forfeits none of the funding-rule benefit; the exact split is
+`not found` from the holdings.**
+
+**A consequence nobody markets.** RSST's realised equity exposure is 100% *by contract* plus
+whatever the trend book is doing in equity indices, which on 2026-04-30 was a further 44
+points long. The wrapper's equity beta is therefore **time-varying around 1.0**, and a reader
+who models it as a constant dollar of equity is modelling a tracking error away.
+
+**RSBT, RSBA, RSBY stack on a bond base, not an equity one**, and equation (7) does not apply
+to them for an equity-based investor: they change the base composition *and* add an overlay,
+and no single `delta` separates those two decisions. `base_substitution_note` refuses to score
+them rather than returning a number, which is the correct behaviour and is pinned by a test.
+
+### 6a.3 Cost, in the units the hurdle is stated in
+
+From each fund's own SEC-filed fee table, retrieved 2026-08-17. **Not one Return Stacked or
+WisdomTree fund carries a fee waiver**, so there is no cap to expire and no recoupment clause
+— a materially better structure than the contractual-cap-plus-recoupment funds
+[the alternative-sleeves audit](alternative-sleeves-audit.md) found elsewhere.
+
+| Wrapper | Mgmt | AFFE | **Total ER** | Waiver | `d` | **Cost per unit of overlay notional** |
+| --- | ---: | ---: | ---: | --- | ---: | ---: |
+| **NTSX** | 0.20 | — | **0.20%** | none | 0.635 | **0.315%** |
+| **GDE** | 0.20 | — | 0.20% | none | 0.836 | **0.239%** |
+| **RSSB** | 0.35 | 0.04 | **0.39%** | none | 1.003 | **0.39%** |
+| **NTSI** | 0.26 | — | 0.26% | none | 0.610 | 0.426% |
+| **NTSE** | 0.32 | — | 0.32% | none | 0.637 | 0.502% |
+| **RSSX** stocks & gold/bitcoin | 0.65 | 0.02 | 0.67% | none | ~1.0 | ~0.67% |
+| **RSST** | 0.95 | 0.04 | **0.99%** | none | ~1.0 | **~0.99%** |
+| **RSSY** stocks & futures yield | 0.95 | 0.04 | 0.99% | none | ~1.0 | ~0.99% |
+| RSBT / RSBY / RSBA | 0.95 | 0.05–0.06 | 1.01% | none | ~1.0 | ~1.01% |
+| *DBMF, for comparison* | — | — | *0.85%* | *none* | *1.000* | *0.85%* |
+
+**The fee is not the whole cost, and the prospectus says so.** Tidal's unitary fee explicitly
+excludes *"interest charges on any borrowings made for investment purposes"*, and the strategy
+description states that the managed-futures return is stacked *"minus the cost of
+financing"*. **So the embedded financing cost sits outside the 0.99% and is borne by the
+shareholder, undisclosed in size.** That is the input §5b's boundary table prices, and the
+boundary is not tight: at a 2.0% forward trend excess return and trend's measured
+correlation, a 30% overlay tolerates **97 bp** of financing spread.
+
+**Where that spread lands is a structural question this repository has already answered from
+the other side.** [Structural and tax-aware edges §3](structural-and-tax-edges.md#3-section-1256-and-capital-efficiency-handled-honestly)
+measures Treasury-futures financing at **12–18 bp against OIS**, equity-index futures at
+**+62 bp against three-month Term SOFR** post-2022, and a **diversified long/short trend book
+at a signed mean of about zero** because it takes both sides by construction. Applied to the
+structures above, and labelled as inference from those measurements rather than as a
+measurement of these funds:
+
+- **NTSX pays its financing on the leg the evidence prices best.** 63.5% of Treasury futures
+  at 12–18 bp is **8–11 bp/yr on capital**, against a break-even the same page puts at
+  **48.3 bp/yr of Treasury excess return over cash**.
+- **RSST's overlay leg is close to unfinanced in the signed sense**, and the +62 bp
+  equity-futures basis falls on the roughly 26% of the *base* leg delivered by futures rather
+  than on the trend notional — about **16 bp/yr on capital**, which is a cost of holding the
+  equity through this wrapper rather than a cost of the overlay.
+- **No fund discloses its realised financing cost anywhere.** Every figure in this bullet
+  list is a transfer from published research on the contracts, not a reading of a filing, and
+  it is `not found` as a fund-specific fact.
+
+### 6a.4 The tax finding, which changes the account rule
+
+Each fund computes an SEC-standardised after-tax return at the **highest individual federal
+rates**, and this repository already uses that instrument. The method reproduces the three
+figures [the trend audit](trend-marginal-value.md#cost-and-tax) published — DBMF 2.09, KMLM
+1.81, FMF 0.76 — which is what licenses reading the new rows the same way.
+
+| Fund | Period | Before tax | After tax on distributions | **Drag pp/yr** |
+| --- | --- | ---: | ---: | ---: |
+| **RSST** | since 2023-09-05 | 17.17% | 16.85% | **0.32** |
+| **NTSX** | since 2018-08-02 | 11.58% | 11.25% | **0.33** |
+| NTSI | since 2021-05-20 | −0.77% | −1.24% | 0.47 |
+| RSSY | since 2024-05-28 | −0.88% | −1.38% | 0.50 |
+| NTSE | since 2021-05-20 | −5.90% | −6.52% | 0.62 |
+| RSBT | since 2023-02-07 | −1.81% | −2.55% | 0.74 |
+| RSSB | since 2023-12-04 | 20.71% | 19.92% | 0.79 |
+| RSBY | since 2024-08-20 | −14.65% | −15.73% | 1.08 |
+| RSBA | since 2024-12-17 | 7.68% | 6.38% | 1.30 |
+| **GDE** | since 2022-03-17 | 18.63% | 17.10% | **1.53** |
+| *KMLM* | *since 2020-12-01* | *5.77%* | *3.96%* | *1.81* |
+| **DBMF** | since 2019-05-07 | 8.28% | 6.19% | **2.09** |
+
+**The low drag is a property of the overlay's asset, not of the wrapper.** NTSX and GDE are
+the same issuer, the same structure and the same 0.20% fee, and their drags differ by a factor
+of 4.6. Treasury futures throw off compensation a bond holder would have been taxed on anyway;
+**gold futures are §1256 contracts marked to market every 31 December with nothing to defer**,
+so GDE converts an asset a long-only holder could have held untaxed for decades into an annual
+realisation. Any reader tempted to read "efficient core is tax-efficient" as a structural fact
+should read these two rows instead.
+
+**A dollar of managed-futures notional costs 0.32 pp/yr of distribution tax through RSST and
+2.09 through DBMF.** [The recommendation](portfolio-recommendation.md) calls managed futures
+*"the one sleeve whose account decides its sign"* on the strength of the 2.09. **That is true
+of the pro-rata vehicle and is not true of the overlay one**, and §7's shelter constraint —
+the thing that sets the weight — is correspondingly weaker.
+
+**Three reasons not to bank the whole 1.77 pp difference.** RSST's window is **28 months**
+against DBMF's 80, and every one of those months is a rising market in which a growing ETF
+can defer realisation; DBMF's window contains 2022, a year of very large realised trend
+gains, so the two are not like-for-like. And a fund's after-tax table is a **backward-looking
+disclosure, not a contract**: RSST runs the same Cayman-subsidiary structure that makes
+DBMF's income ordinary, and nothing prevents its drag rising. **The direction is solid; the
+magnitude is one short window.**
+
+### 6a.5 Survival, and the shelf-age claim this page had wrong
+
+**The claim that "the entire shelf is younger than six years" is false and is withdrawn.** It
+came from a name screen that missed both long-lived families. From the 2019Q4 census:
+**NTSX filed at $39.0m in 2019Q4** — inception **2018-08-02**, now eight years old and
+$1,203.6m — and the **entire PIMCO StocksPLUS family was already there**, five of its funds
+above $1bn, on a strategy PIMCO has run since the 1980s. Capital efficiency is not a
+post-2020 fashion; the *retail ETF* expression of it is.
+
+Filed net assets, 2025Q4 → 2026Q2, from the same two censuses:
+
+| Wrapper | 2025Q4 | 2026Q2 | Change | In 2019Q4? |
+| --- | ---: | ---: | ---: | --- |
+| **NTSX** | $1,262.6m | $1,203.6m | **−4.7%** | **yes, at $39.0m** |
+| **RSSB** | $381.8m | $476.6m | +24.8% | no |
+| NTSI | $433.8m | $456.6m | +5.3% | no |
+| **RSST** | $292.8m | **$415.0m** | **+41.7%** | no |
+| RSBT | $86.9m | $127.0m | +46.1% | no |
+| RSSY | $116.2m | $107.2m | −7.7% | no |
+| RSBY | $96.9m | $77.9m | **−19.6%** | no |
+| RSSX | $37.3m | $65.1m | +74.5% | no |
+| RSBA | $24.2m | $52.6m | +117.6% | no |
+| NTSE | $34.4m | $45.9m | +33.4% | no |
+| *PIMCO StocksPLUS, eight funds* | *$9.40bn* | *$8.93bn* | *−5.0%* | ***yes, all eight*** |
+
+**RSST is the fastest-growing wrapper on the shelf and reached $508.7m by 2026-08-14**
+(issuer's own page, retrieved 2026-08-17). **Not one of the 23 capital-efficient series in
+either census is marked as a final filing and none is absent from the later one**, so the
+measured closure count over these two quarters is **zero**. Two quarters is far too short to
+update §9.4's 10.7%/yr hazard and it is not used to: it is reported as the observation it is.
+
+**The Return Stacked family is now seven ETFs, not five**, and this page had listed five. The
+two it missed are **RSBY** (bonds and futures yield, −14.65%/yr since inception and shrinking
+19.6% in two quarters — the one fund here whose numbers point at closure) and **RSSX** (stocks
+and gold/bitcoin, the fastest-growing after RSBA).
+
+### 6a.6 What this does to §3's breadth finding
+
+§3 concludes that four effectively independent engines exist on paper and **only trend has a
+financed retail wrapper**. That is no longer the whole picture, and the correction runs in the
+repository's favour on count and against it on quality:
+
+| Engine | Financed overlay wrapper | Base it stacks on |
+| --- | --- | --- |
+| Trend | **RSST** | US equity — substitutable |
+| Term premium | **NTSX / NTSI / NTSE, RSSB** | equity — substitutable |
+| Merger arbitrage | **RSBA** | **bonds — not substitutable for an equity base** |
+| Carry / "futures yield" | RSSY | US equity — substitutable |
+| Gold and bitcoin | RSSX | US equity — substitutable |
+| BAB, QMJ, reversals, accruals, issuance, buybacks | **none** | — |
+
+**So the count of financed wrappers rose from one to five and the count of *engines §3 found
+worth having* rose from one to one.** BAB, short-term reversal and accruals — the three that
+produce the effective breadth of 4.06 — still have no vehicle of any kind, and merger
+arbitrage arrives only stacked on a base an equity investor does not hold. **§3's conclusion
+that the fund shelf binds before the evidence does survives this audit intact**; what changed
+is that the binding is now demonstrably about *which* strategies have a deep enough futures
+market, since the industry has proved willing to wrap five different ones in two years.
 
 ---
 
@@ -1134,6 +1447,13 @@ informs a decision.
    the same engine), and **the alternative risk premia are rejected on cost**.
    **Commodities are not rejected — they pass admission and are dominated**, at roughly a
    fifth of trend's margin and with unpriced roll costs in the only series held.
+   **Gold is in the same position and for a better-measured reason**: identical Sharpe to
+   commodities on the 1985-2025 window at a correlation of −0.09 rather than +0.29, a
+   crisis-conditional correlation of at worst **+0.084** against the **+0.20** that breaks
+   conclusion 7, a cost side that is a published fee rather than an unpriced roll, a
+   **0.20%** overlay wrapper — and a marginal growth under pro-rata funding of **+0.04 to
+   −0.42 pp/yr** against a 0.30 bar. **It passes admission, it is dominated, and it is not
+   promoted.** §3a.
 6. **A univariate stress table may not be quoted as a worst case again.** §5b measures what
    it costs: the failure rate is almost unchanged and the fifth percentile is 30% worse.
    Any future stress must vary its axes jointly and state the copula.

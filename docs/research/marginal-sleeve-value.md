@@ -55,6 +55,17 @@ equivalent while **losing 0.643 pp/yr of growth**: a de-risking reward of **+0.8
 calibration that produced decision 0008, and it is the reason the family's status moved
 from `unresolved` to `rejected`.
 
+**Gold has now been tested, the "no credit anywhere" phrasing is falsified, and the
+conclusion survives anyway.** Gold earns a credit of **+0.217 pp/yr at the 10% reference
+weight against `global_equity_core` — exactly the ceiling**, because its beta to that
+portfolio measures **+0.000**. It is the only asset this repository has found that
+reaches the ceiling while being a real holdable asset rather than the cash control. **And
+its marginal growth is −0.100 pp/yr**, because the credit was never the binding term: per
+unit of weight the credit is **+2.171 pp/yr** and gold's standalone shortfall against the
+equity core is **−2.95**, so **the maximum credit the construction can pay covers 74% of
+the shortfall and no more, at any weight.** **[§ Gold, tested](#gold-tested) is the section; the short version
+is that the ceiling is reachable, is reached, and is not enough.**
+
 **The modelled long-duration Treasury proxy was exp_010's only non-rejected sleeve, and
 growth rejects it.** On the certainty equivalent it read +0.492 and reached `unresolved`
 only because no clause fired; on growth it reads **−0.385** and clause (a) fires. It is a
@@ -188,6 +199,7 @@ ordered exactly as `beta` is, because under pro-rata funding it *is* `sigma_p**2
 | `trend_aqr` | funded long-short, vendor | −0.132 | +2.457 | +0.246 |
 | `long_duration_treasury_proxy` | **modelled proxy** | −0.018 | +2.208 | +0.221 |
 | **`cash_control`** | **control** | **+0.001** | **+2.168** | **+0.217 = the ceiling** |
+| **`gold`** — added later, **exploratory** | benchmark price + assumed carry | **+0.000** | **+2.171** | **+0.217 = the ceiling** |
 | `dev_ex_us_small_value` | long-only | 0.809 | **+0.413** | +0.041 |
 | `us_momentum_long_only` | long-only | 0.932 | +0.147 | +0.015 |
 | `dev_ex_us_equity` | long-only | 0.981 | +0.041 | +0.004 |
@@ -196,7 +208,10 @@ ordered exactly as `beta` is, because under pro-rata funding it *is* `sigma_p**2
 | `emerging_equity` | long-only | **1.125** | **−0.271** | −0.027 |
 
 **Read the `cash_control` row as the ruler.** It sits at `beta ≈ 0` and therefore at the
-ceiling, supplying no alpha at all. Any sleeve with a larger credit has a *negative* beta —
+ceiling, supplying no alpha at all. **The `gold` row is the same place occupied by a real
+asset** — added after the fact and outside the Holm family, so it scores nothing, but it is
+the evidence that the ceiling is reachable rather than merely bounding
+([§ Gold, tested](#gold-tested)). Any sleeve with a larger credit has a *negative* beta —
 the four funded long-short overlays and the proxy — **and every one of those pays for it in
 the alpha term instead.**
 
@@ -218,6 +233,309 @@ one.**
 sleeve carries `beta > 1` there and every credit is negative. The marginal *growth* figures
 against that base are larger because the sleeves are funded partly out of cash; that is a
 statement about the base portfolio's equity share, not about the sleeves.
+
+---
+
+## Gold, tested
+
+This page previously recorded gold as untested and said its absence "biases the experiment
+toward finding no credit anywhere". **The bias was real, the direction was right, and the
+sentence it was defending is now falsified in its literal form and confirmed in its
+substance.** `as of 2026-08-17`, and **`exploratory` throughout** — no specification was
+frozen before these numbers were seen, so nothing here may be read as a twelfth entry in
+the Holm family.
+
+### Why gold escapes decision 0002, stated before any number
+
+[Decision 0002](../decisions/0002-no-research-grade-free-price-source.md) bans free price
+feeds from confirmatory work. Its *reasoning* names two failure modes: **a silently
+dropped distribution** and **a mishandled corporate action**. Bullion has neither. It pays
+no dividend, no coupon and no distribution of any kind; it splits nothing, merges with
+nothing, and is issued by no entity that can restate or delist. So for an unlevered holder
+
+```
+total return  =  price return  −  carry cost
+```
+
+is exact, with no unobserved cash flow anywhere in it. The carry cost is the *only* free
+parameter, and it is an assumption a caller has to state rather than a number a parser can
+lose. **That is a different situation from an ETF price whose adjusted close is recomputed
+on every request, and decision 0002 does not reach it.**
+
+Three weaker objections do reach it, and they are why the ceiling is `exploratory` rather
+than higher: there is **no vintage archive**, so a corrected fix overwrites in place
+exactly as a revised FRED series does; **a wholesale auction price is not a retail
+execution**; and **the carry cost is assumed, not measured**. None of the three is
+decision 0002's objection, and the distinction is the point — 0002 says a free price feed
+*cannot become* a total return, while these three say a gold series *can*, subject to a
+stated assumption and without point-in-time resolution.
+
+### The instruments, and why there are two
+
+| | Primary | Cross-check |
+| --- | --- | --- |
+| Series | **World Bank Pink Sheet**, `Gold`, `($/troy oz)` | **LBMA Gold Price PM**, USD month-end fix |
+| Coverage | monthly, **1960-01…2026-07**, 799 rows | daily, **1968-04-01…2026-08-14**, 14,662 rows |
+| Sampling | **monthly average of daily rates** | **month-end**, the last published fix |
+| Licence | **CC BY 4.0**, redistributable with attribution | **licence required from IBA to obtain, use or redistribute** |
+| sha256 (raw) | `7902a775…` | `fa986c0a…` |
+
+Both are the same benchmark. The Pink Sheet's own definition says so: *"Gold, spot average
+of daily rates, from June 2025; previously (UK), 99.5% fine, **London afternoon fixing,
+average of daily rates**"* — so before June 2025 it **is** the LBMA PM auction, averaged.
+The auction itself is administered by ICE Benchmark Administration, which its methodology
+states is *"authorised and regulated by the U.K. Financial Conduct Authority… for the
+regulated activity of administering a benchmark under the U.K. Benchmarks Regulation"*;
+LBMA gives 2015-03-20 as the date the London Gold Fix ceased. **This is a regulated
+benchmark, not a scraped quote**, which is the whole reason the decision-0002 question was
+worth asking rather than assumed.
+
+**The licence is the constraint, and it is why the Pink Sheet is primary.** LBMA states
+*"a licence from IBA is required in order to obtain, use or redistribute real-time or
+historical benchmark data"*; IBA's own disclaimer says *"none of IBA's benchmark and other
+information may be used without a written licence from IBA"*; and in March 2025 IBA had the
+World Gold Council remove its historical LBMA series. No research exemption was found. The
+raw bytes therefore stay in the uncommitted cache and only hashes are manifested — the
+treatment this repository already gives the ICE BofA indices, for the same administrator.
+
+**Two samplings of one benchmark is not redundancy, it is the measurement.** Differencing
+monthly *averages* is the Working problem: it induces positive first-order autocorrelation
+and understates volatility, so **the Pink Sheet's Sharpe ratio is biased upward**. Measured
+here: AC(1) is **+0.274** on the average and **+0.053** on the month-end fix, and the two
+monthly return series correlate only **+0.673**. **Where they disagree, the less favourable
+figure is the one quoted below.**
+
+### The 1971 break, handled explicitly
+
+Before 1971-08-15 the US dollar gold price was an administered peg. A "return" across it
+records a policy decision: the par value was reset to $38 by PL 92-268 (1972-03-31, 86
+Stat. 116) and to $42.22 by PL 93-110 (1973-09-21, 87 Stat. 352), and **regulations on
+private US gold ownership were not eliminated until 1974-12-31** (PL 93-373, 88 Stat. 445).
+The pegged window is reported and excluded; **1971-09 is the headline start** and
+**1975-01 is the first month the asset was legal for the investor this repository models.**
+
+**The distinction between those two starts is the largest single fact on this page.**
+
+| Window, net of GLDM's 0.10% | n | gold geometric | gold Sharpe | equity Sharpe |
+| --- | ---: | ---: | ---: | ---: |
+| pegged, **excluded** | 139 / 40 | 1.69% / 1.07% | −0.368 / −0.388 | — |
+| **1971-09…1974-12, the repricing** | **40** | **54.5% / 57.8%** | **1.559 / 1.440** | **−0.816** |
+| 1975-01…1984-12 | 120 | 5.58% / 5.05% | **0.007 / 0.007** | 0.501 |
+| **1971-09…end, headline** | **658** | 8.62% / 8.63% | **0.313 / 0.298** | 0.485 |
+| **1975-01…end, holdable** | **618** | 6.17% / 6.04% | **0.187 / 0.181** | 0.586 |
+| 1985-01…2025-05, §3's window | 485 | 5.84% / 5.92% | 0.268 / 0.247 | 0.584 |
+
+Pink Sheet first, LBMA second, in every cell. **Forty months in which a US person could
+not legally own the asset carry roughly 40% of its full-sample Sharpe ratio**: gold earned
+54.5%/yr while equity lost 9.8%/yr, and dropping those forty months takes the Sharpe from
+0.31 to 0.19. **The holdable window is the honest one and it is the weaker one.**
+
+### Admission: gold clears the overlay bar comfortably, at every exposure
+
+Equation (4) of [`overlay_growth.py`](../../research/src/portfolio_edge/studies/overlay_growth.py),
+`S_d > L·rho·sigma_p`. **Its documented misuse — that it mis-scores any sleeve above
+roughly `|rho| = 0.5` — does not apply**: gold's correlation is 0.019 to 0.034 in absolute
+value, an order of magnitude inside the valid range, and the code reports that check rather
+than leaving it to a reader.
+
+| Window | `S_d` net | `rho` | `sigma_p` | threshold at `L = 1` | margin | verdict |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| 1971-09…end | 0.313 / 0.298 | −0.031 / +0.019 | 15.79% | −0.0050 / **+0.0030** | +0.318 / **+0.295** | **admitted** |
+| **1975-01…end** | 0.187 / **0.181** | −0.024 / +0.034 | 15.56% | −0.0038 / **+0.0052** | +0.191 / **+0.176** | **admitted** |
+
+It clears at `L = 1`, at `L = 1.5`, and at the base's own growth-optimal `L_p*` of 3.08 and
+3.76. **The bar is essentially zero because the correlation is essentially zero, and gold's
+net Sharpe is not zero.** On the pessimistic reading it clears by **+0.176**.
+
+**The carry assumption is not what decides this.** Across every tier verified from a
+sponsor's own SEC filing — GLDM 0.10%, SGOL 0.17%, IAU 0.25%, GLD 0.40% — the Sharpe moves
+from 0.313 to 0.295 on the primary instrument. Even the 1.19% all-in of a geared futures
+wrapper leaves 0.249. **A cost assumption that moves the answer by 0.06 of Sharpe cannot be
+the thing carrying a verdict of +0.18.**
+
+### Crisis-conditional correlation: the axis that breaks trend does not break gold
+
+[Capital efficiency §9.3](capital-efficiency-and-breadth.md) shows that a diversifier's
+correlation **inside equity drawdowns** is what sets the portfolio's drawdown, and that
+the recommendation there fails at a crisis correlation of **+0.20**. Measured for gold on
+the identical definition — months where equity sits at least the stated depth below its
+running peak:
+
+| Depth | months in / out | `rho` inside | `rho` outside | gap | gold %/mo inside | equity %/mo inside |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 5% | 372 / 286 | +0.005 / +0.056 | −0.055 / −0.031 | +0.061 / +0.086 | +0.86 / +0.83 | −0.31 |
+| **10%** | **294 / 364** | **−0.011 / +0.072** | −0.034 / −0.035 | +0.023 / **+0.107** | **+0.85 / +0.95** | **−0.26** |
+| 20% | 181 / 477 | +0.011 / +0.071 | −0.045 / −0.007 | +0.057 / +0.078 | +0.83 / +0.76 | −0.62 |
+
+On the holdable 1975-01 window the same figures at 10% depth are **−0.042 / +0.084**.
+
+**Three readings, and the third is the one that matters.**
+
+- **The repository's existing claim is confirmed, not overturned.** [The
+  framework](portfolio-edge-research-framework.md) says gold "has been an average hedge…
+  not a universally negative-correlation asset" and [the
+  recommendation](portfolio-recommendation.md) repeats it. **Correct.** Gold's correlation
+  to equity is **zero, not negative** — −0.031 to +0.034 unconditionally, −0.042 to +0.084
+  inside drawdowns. Anyone holding it as a negative-beta hedge is holding something else.
+- **A zero-correlation asset is not a hedge, and it is exactly what the credit term
+  rewards.** `sigma_p**2 (1 − beta)` is maximised at `beta = 0`, not at `beta < 0`. Gold is
+  the first candidate here to sit on that point.
+- **The crisis correlation does not rise to anything like the level that breaks the trend
+  recommendation.** The worst reading is **+0.084 at 10% depth on the holdable window**,
+  against the **+0.20** at which §5b's boundary kills the trend overlay. And gold's mean
+  return *inside* equity drawdowns is **+0.85 to +0.95%/month** while equity averages
+  −0.26%/month. **This is the one axis on which gold is unambiguously stronger than the
+  sleeve this repository currently recommends.**
+
+Compounded inside each episode `docs/the-plan.md` names, Pink Sheet then LBMA:
+
+| Episode | n | equity | gold | within-window `rho` |
+| --- | ---: | ---: | ---: | ---: |
+| 1973-74 | 24 | −41.7% | **+186.9% / +186.8%** | +0.164 / +0.112 |
+| late-1970s inflation | 39 | +21.1% | +312.1% / +266.5% | +0.146 / +0.171 |
+| 1987 | 5 | −21.8% | +7.7% / +4.6% | +0.567 / −0.604 |
+| 1998 | 4 | −5.4% | +1.3% / **−1.4%** | +0.993 / +0.761 |
+| 2000-02 dotcom | 30 | −44.9% | +11.3% / +16.7% | −0.157 / −0.017 |
+| 2008-09 GFC | 16 | −50.3% | +24.7% / +20.4% | −0.172 / +0.021 |
+| 2020 Q1 covid | 3 | −20.2% | +7.6% / +6.2% | +0.998 / +0.999 |
+| 2022 inflation | 12 | −19.9% | +0.3% / +0.3% | −0.076 / +0.056 |
+
+**Positive in seven of eight, and the eighth is −1.4% on one instrument and +1.3% on the
+other.** Two qualifications that must travel: the 1973-74 and late-1970s figures are the
+repricing decade and are not repeatable, and the three shortest windows carry three to
+five observations, where a within-window correlation of +0.998 is arithmetic rather than
+evidence.
+
+### Marginal value: gold reaches the credit ceiling and still fails
+
+Experiment 010's construction, pro-rata funding, at its frozen 10% reference weight and
+20% cap.
+
+**On this experiment's own bases and its own 420-month sample, 1991-01…2025-12:**
+
+| Base | `w` | marginal growth | `beta` | standalone alpha | credit at `w` | **ceiling at `w`** |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `global_equity_core` | 0.10 | **−0.100 / −0.084** | **+0.000 / +0.102** | **−2.95 / −2.55** | +0.217 / +0.195 | **+0.217** |
+| `global_equity_core` | **0.20** | **−0.241 / −0.214** | +0.000 / +0.102 | −2.95 / −2.55 | **+0.434 / +0.390** | **+0.434** |
+| `balanced_60_40` | 0.10 | +0.100 / +0.125 | +0.000 / +0.171 | +0.26 / +0.66 | +0.078 / +0.065 | +0.078 |
+| `balanced_60_40` | 0.20 | +0.175 / +0.219 | +0.000 / +0.171 | +0.26 / +0.66 | +0.156 / +0.130 | +0.156 |
+
+**The `balanced_60_40` rows are positive and they are not a finding about gold.** That base
+is 40% cash, so a sleeve funded pro rata out of it is partly funded out of cash, and gold's
+standalone alpha against it is *positive* (+0.26 / +0.66) purely because cash returned less
+than gold. This page already records the same effect for the equity sleeves: it is a
+statement about the base portfolio's equity share, not about the sleeve. **Both cells are
+also below the 0.30 bar.**
+
+**Read the first row against [the credit-ceiling table](#what-is-not-established-and-the-page-previously-overstated).**
+The ceiling at `beta = 0` is `sigma_p**2 · w`, and on the primary instrument gold's credit
+**is the ceiling, to three decimals**. This page's `cash_control` sat there too — but the
+control supplies nothing by construction, and gold is an asset someone can buy. **The
+ceiling is not a theoretical bound that no real asset approaches. A real asset sits on
+it.**
+
+**And that settles the open question [search coverage](search-coverage.md) §1.1 raised.**
+That page records that the portfolio-level closure "does not survive its own experiment's
+weight cap", because at 20% the ceiling of **+0.434** exceeds the frozen **0.30** bar. It
+does exceed it — and **the sleeve that reaches the ceiling still fails, by −0.241 pp/yr.**
+
+**The credit was never the binding term, and the arithmetic is weight-free.** Per unit of
+weight the credit is `sigma_p**2 (1 − beta)` = **+2.171 pp/yr** at `beta = 0`, and gold's
+standalone shortfall against the equity core is **−2.95 pp/yr** (LBMA: +1.949 against
+−2.55). **The credit covers 74% of the shortfall and the ratio does not depend on the
+weight at all** — both terms are linear in it, so the net first-order marginal is −0.078 at
+10% and −0.156 at 20%, and raising the weight makes the loss larger rather than smaller.
+**The closure sentence was wrong about *why*, and right about *what*.**
+
+**Against a 100% US equity base over the longer window**, which is where the two starting
+dates matter most:
+
+| Window | `w` | marginal growth | standalone alpha | credit at `w` | ceiling |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1971-09…end | 0.10 | +0.007 / +0.043 | −2.27 / −1.77 | +0.258 / +0.243 | 0.249 |
+| 1971-09…end | 0.20 | −0.049 / +0.015 | −2.27 / −1.77 | +0.516 / +0.487 | 0.498 |
+| **1975-01…end** | 0.10 | **−0.423 / −0.407** | **−6.07 / −5.73** | +0.248 / +0.232 | 0.242 |
+| **1975-01…end** | 0.20 | **−0.902 / −0.877** | −6.07 / −5.73 | +0.497 / +0.465 | 0.484 |
+
+**Every reading fails clause (a)'s 0.30 pp/yr bar, and the holdable window fails it by more
+than a percentage point.** The realised growth surface is flat then falling — 11.26% at
+zero weight, 11.27–11.30% at 10%, 11.21–11.28% at 20%, 10.68–10.78% at 50% — while
+volatility falls monotonically from 15.74% to 11.43%. **Gold buys risk reduction and pays
+for it in growth**, which is the same shape as everything else in this experiment.
+
+**And the effect is far below the instrument's floor.** The bootstrapped interval on the
+arithmetic marginal at 10% weight is `[−1.035, +0.598]` against an **MDE₈₀ of 1.039 pp/yr**
+over 658 months, and `[−1.314, +0.145]` against **0.939** over the holdable 618. Stationary
+block bootstrap, mean block 12 months, 10,000 resamples, seed 20260817. **A null here is a
+statement about resolution before it is a statement about gold** — which is the check
+[the evidence base](evidence-base.md) exists to force.
+
+### The vehicle, and the one place gold beats the recommended sleeve
+
+**A physical-gold ETF is a pro-rata vehicle**, so the bar it faces is the one gold fails.
+SPDR Gold Trust's own 10-K (FY ended 2025-09-30, filed 2025-11-25): *"The Trust does not
+hold or employ any derivative securities… Each Share represents a proportional interest…
+in the gold and any cash held by the Trust."* A dollar of GLD is a dollar not invested
+elsewhere.
+
+**An overlay vehicle for gold exists, is cheap, and is not a fund the funding-rule
+argument had to assume.** WisdomTree Efficient Gold Plus Equity Strategy Fund (**GDE**),
+inception 2022-03-17, **0.20% expense ratio**, $595.1m net assets at 2026-05-31: *"Under
+normal circumstances, the Fund will have approximately equal exposure to U.S.-listed gold
+futures contracts and U.S. equity securities."* Its own N-PORT for 2026-05-31 measures
+85.7% of NAV in equity and 88.1% in gold-futures notional — **~174% total notional per
+dollar held.** Two others exist and are worse fits: First Trust **ESBG** (0.95%, $2.2m,
+inception 2025-11-18 — a sub-$3m fund with real liquidation risk) and Return Stacked
+**RSSX** (0.67%, $66.3m), whose stacked dollar is a *risk-parity blend of gold and
+bitcoin* that cannot be dialled to pure gold.
+
+**This matters for [capital efficiency §3](capital-efficiency-and-breadth.md)'s central
+structural claim.** That page's finding is that "the fund shelf binds before the evidence
+does" — three of seven factor families have no vehicle of any kind, and the one BAB fund is
+$362m. **For gold the shelf does not bind.** The overlay wrapper costs 0.20% against
+trend's assumed 1.45%, and this repository has already measured gold-futures financing at
+**≤40 bp** ([structural and tax-aware edges](structural-and-tax-edges.md)), so the all-in
+overlay cost is on the order of **0.60%/yr against trend's 2.05%.**
+
+**The tax answer is worse than equity's and it decides placement.** For the bullion trusts,
+verified from the statute and from four sponsors' own filings:
+
+| | Rate | Source |
+| --- | ---: | --- |
+| Gold ETF long-term gain, US individual | **28% + 3.8% NIIT** | IRS Pub. 550: *"collectibles gain… metal (such as gold, silver, and platinum bullion)"*, Table 4-4 rate 28%. 26 U.S.C. §1(h)(5) cross-references §408(m) **without §408(m)(3)**, so the bullion carve-out does not rescue it |
+| The funds say so themselves | 28% | GLD, IAU, GLDM and SGOL 10-Ks each carry *"gains recognized by individuals from the sale of 'collectibles,' including gold bullion, held for more than one year are taxed at a maximum rate of 28%, rather than the 20% rate"* |
+| Equity long-term gain, for comparison | 20% + 3.8% | same table |
+| Inside an IRA | **not the 28% rate** | GLD and IAU both hold IRS private letter rulings that purchase by an IRA "will not be treated as the acquisition of a collectible". Distributions are then **ordinary income** (Pub. 590-B), which at the top bracket is worse than 28%; in a Roth, untaxed. **The PLR numbers are not disclosed in any fund document read, and a PLR binds only its requester** |
+
+**The futures route gets §1256's 60/40 treatment and has no plain vehicle.** 26 U.S.C.
+§1256(a)(3) splits gain 60% long-term / 40% short-term. But **Invesco DB Gold (DGL)
+liquidated in March 2023** (Form 8-K 2023-01-23; the shares "cease trading… after market
+close on March 3, 2023"), and the surviving geared fund UGL is 2× leveraged, costs 1.19%
+all-in, issues **K-1s**, and its own prospectus warns that "swap agreements and non-currency
+forward contracts are generally not Section 1256 Contracts". **GDE's tax character was not
+verified here** — it is a registered investment company holding futures through a Cayman
+subsidiary rather than a bullion grantor trust, so the 28% collectibles finding above does
+**not** transfer to it, and this page records that as unverified rather than guessing.
+
+### The verdict
+
+**Gold passes admission and fails the marginal test, and those are not in tension — they
+are two funding rules.** The gap between them is `a_p − sigma_p**2`, which
+[capital efficiency §1](capital-efficiency-and-breadth.md) shows contains nothing about the
+sleeve at all: **5.17 pp/yr** on the headline window, **6.69** on the holdable one. Gold is
+the fifth candidate to clear the overlay bar and fail the pro-rata bar, after trend,
+duration-hedged credit, long/short commodities and catastrophe bonds — **and the second,
+after trend, with a financed retail wrapper that actually exists.**
+
+**Nothing is promoted.** [Decision 0004](../decisions/0004-no-sleeve-promoted.md) stands.
+This is exploratory work on an unlicensed benchmark with an assumed carry cost, its effect
+sits below its own detection floor, and its most favourable window is forty months in which
+the asset was illegal to own.
+
+**Reproduce with**
+`cd research && uv run python -m portfolio_edge.studies.gold_sleeve`. Manifests:
+`research/data-manifests/worldbank_pinksheet_gold_monthly.json`, `lbma_gold_pm.json`,
+`lbma_gold_am.json`. Retrieval date **2026-08-17**.
 
 ---
 
@@ -317,10 +635,11 @@ history at all.
 1. **The reference weight and funding rule are load-bearing and were not varied in the
    headline.** The credit ceiling at the 20% cap exceeds the bar. This is round two's first
    item.
-2. **Gold was not tested, and its absence biases the experiment toward finding no credit
-   anywhere.** It is one of only two candidate assets with a plausibly low equity beta, and
-   no research-grade series is reachable. **That direction is stated rather than left for a
-   reader to notice.**
+2. **Gold is no longer the open question and is now [a section](#gold-tested).** What
+   remains open from it is narrower: whether a *joint* weighting of gold, trend and equity
+   does anything the one-sleeve-at-a-time design cannot see, and whether the overlay
+   funding rule — which gold clears and pro rata does not — should be the primary arm of
+   the successor specification rather than its robustness arm.
 3. **An investable bond sleeve was not tested either.** The `GS10` duration proxy stands in
    its place, and clause (u5) is what keeps it from resolving anything.
 4. **The credit is a difference of two covariances from 420 months.** A credit that moves
@@ -349,11 +668,22 @@ seed 20260909.
    is not the portfolio view; and pro-rata funding is the least favourable rule for a
    diversifier. [Search coverage](search-coverage.md) §5 sets out what the successor must
    freeze.
-3. **Every future specification names `decision_gamma`.** Omitting it silently inherits the
+3. **The ceiling is reachable and reaching it is not enough, and that is now measured
+   rather than argued.** Gold sits at `beta = +0.000` against the equity core and takes the
+   whole `sigma_p**2 w` credit — **+0.434 pp/yr at the 20% cap, above the 0.30 bar** — and
+   its marginal growth there is **−0.241 pp/yr**. **Per unit weight the credit is +2.171
+   and the standalone shortfall is −2.95, so the credit covers 74% of it and the ratio is
+   weight-free**: raising the weight scales both terms and makes the loss larger. **The successor specification must therefore stop treating the credit ceiling
+   as the binding constraint.** Setting the bar from the ceiling, as search coverage §5
+   proposes, makes the bar reachable; it does not make the alpha term go away.
+4. **The funding rule, not the weight, is the choice worth re-specifying.** Gold clears
+   the overlay bar by +0.18 of Sharpe on the worst reading and fails the pro-rata bar on
+   every reading. The gap between them is 5.17–6.69 pp/yr and contains nothing about gold.
+   **The successor should make overlay funding the primary arm.**
+5. **Every future specification names `decision_gamma`.** Omitting it silently inherits the
    pre-0008 meaning.
-4. **A control with no value by construction is now the pattern**, not an optional extra.
+6. **A control with no value by construction is now the pattern**, not an optional extra.
    It cost one cell of compute, it cannot promote anything because it is outside the Holm
    family, and **it is the only reason this error was found rather than published.**
-5. **Nothing is promoted.** [Decision 0004](../decisions/0004-no-sleeve-promoted.md) stands
+7. **Nothing is promoted.** [Decision 0004](../decisions/0004-no-sleeve-promoted.md) stands
    in full.
-</content>

@@ -19,7 +19,7 @@ And it does not touch the results that are robust for reasons no amount of furth
 searching can overturn — those are in §4, and they are the most valuable things the
 programme has produced.
 
-`as of 2026-08-12`.
+`as of 2026-08-17`.
 
 ---
 
@@ -72,6 +72,19 @@ clause and the closure sentence that inherit the weight dependence.
 long-only equity sleeve added to a 60/40 base has `beta > 1`. Adding equity to a
 part-cash portfolio raises its risk and the credit charges for that correctly. **That is a
 real result, and it is not what the closure sentence claims.**
+
+**Update, 2026-08-17: this subsection's own question has been answered empirically, and the
+answer is that the weight was the wrong thing to blame.** Gold was run through the same
+construction. Its beta to `global_equity_core` measures **+0.000**, so it takes the entire
+`sigma_p**2 w` credit — **+0.217 at 10% and +0.434 at the 20% cap, the exact ceiling in
+both cells, and the second is above the 0.30 bar.** Its marginal growth at the cap is
+**−0.241 pp/yr.** So the cap does make the ceiling reachable, a real asset does reach it,
+and **the sleeve fails anyway.** Per unit of weight the credit is **+2.171 pp/yr** and
+gold's standalone shortfall against that base is **−2.95**, so the credit covers 74% of the
+shortfall — **and because both terms are linear in the weight, that ratio does not move
+when the weight does.** Raising the weight scales the loss rather than closing it. **The
+design flaw this subsection names is real and it is not what was producing the nulls.** Round two's item 1 should be re-scoped accordingly: raising the
+weight and deriving the bar from the ceiling are both correct and neither is sufficient.
 
 ### 1.2 A detection floor above the effect size that matters
 
@@ -142,7 +155,7 @@ has never touched the following, and each is a place a whole-portfolio effect co
 | Never tested | Why it is absent | What it would need |
 | --- | --- | --- |
 | **Joint portfolio construction** — market weight, equal weight, inverse volatility, constrained minimum variance, linear-shrinkage minimum variance, ERC, compared on identical point-in-time inputs | Designed in the framework with comparators and falsifiers. Blocked by [decision 0004](../decisions/0004-no-sleeve-promoted.md) on the grounds that "step 6 combines sleeves and there are no promoted sleeves" | **Nothing.** The reasoning is circular: a construction tournament compares *weighting methods* on assets that already exist. It does not need a promoted sleeve |
-| **Any asset outside equity and cash** — investable bonds, gold, commodities, REITs, TIPS, credit | No research-grade total-return series is held; the bond leg everywhere is a modelled `GS10` proxy. Experiment 010 states that gold's absence biases it toward finding no credit anywhere | A documented total-return series. Not necessarily a licensed one |
+| **Any asset outside equity and cash** — investable bonds, REITs, TIPS, credit | **Gold is no longer in this row**: it was landed and tested on 2026-08-17 ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)), and commodities were already held via AQR CLR. What remains absent is an investable **bond** total-return history — the leg everywhere is still a modelled `GS10` proxy — plus REITs, TIPS and standalone credit | A documented total-return series. Not necessarily a licensed one. **The gold acquisition shows the row was partly a search failure rather than a data failure**: the instrument was free, documented and reachable the whole time |
 | **Any equity market's history but the US at long horizon** | Still untested, but no longer blocked. The instrument was acquired on 2026-08-16: the Jordà–Schularick–Taylor panel gives 16 countries of annual nominal equity, bond, bill and housing returns with consumer prices, 1870–2020 ([evidence base §2](evidence-base.md)). What it already shows is that **−50.3% is nowhere near a bound**: 15 of 16 countries have a worse real annual drawdown than the US even inside the same 1963-onward window | An experiment, not an acquisition |
 | **Any conditional or dynamic allocation** — valuation-conditioned equity share, regime conditioning, trend applied to the portfolio rather than as a sleeve | Never proposed. The Goyal–Welch data built for exactly this had 404'd at the recorded URL — it had **moved, not disappeared**, and was landed on 2026-08-16 along with Shiller's CAPE file | An experiment, not an acquisition |
 | **Concentration** | Every sleeve tested is a diversifier or a tilt. **This row's stated reason was wrong and is corrected**: the equity-share corner and securities concentration are different corners, and the variance penalty for concentration is measured at **0.17 pp/yr at twenty-five names** ([capital efficiency §8](capital-efficiency-and-breadth.md)). The objective is close to *indifferent* above ~25 names; the real argument is return skewness, which `gamma_star` does not contain | A cross-sectional skewness test, which no detection floor here could resolve |
@@ -228,12 +241,24 @@ Ordered by information per unit of cost. The first three need no acquisition.
 **Free.** Directly answers the objection in §3 and repairs §1.1.
 
 Freeze a new specification that: evaluates the growth surface across the whole weight
-grid up to the 20% cap rather than reporting a 10% reference point; uses named-leg
-funding out of the highest-beta leg as primary with pro rata as the robustness arm; sets
-the materiality threshold from the credit ceiling `sigma_p**2 w` rather than at a fixed
-0.30 pp/yr, so the bar is reachable by construction; and includes at least one genuinely
-low-beta asset. **Pass condition:** any sleeve whose net-pessimistic marginal growth
-clears a ceiling-derived bar with an interval excluding zero after Holm.
+grid up to the 20% cap rather than reporting a 10% reference point; sets the materiality
+threshold from the credit ceiling `sigma_p**2 w` rather than at a fixed 0.30 pp/yr, so the
+bar is reachable by construction; and includes at least one genuinely low-beta asset.
+**Pass condition:** any sleeve whose net-pessimistic marginal growth clears a
+ceiling-derived bar with an interval excluding zero after Holm.
+
+**Two amendments, both from the gold result of 2026-08-17.** *First, the "genuinely
+low-beta asset" clause is now satisfied and has already been exercised* — gold lands at
+`beta = +0.000` and fails anyway, so the successor gains nothing by adding it again as a
+headline sleeve; it should be a **calibration row beside `cash_control`**, marking where a
+real asset sits on the ceiling. *Second, the funding rule matters more than the leg.* This
+item previously proposed named-leg funding as the primary arm. **Make it the financed
+overlay instead.** Gold clears the overlay bar by +0.18 of Sharpe on its worst reading and
+fails pro rata on every reading, and [capital efficiency §1](capital-efficiency-and-breadth.md)
+prices the gap at 5.17–6.69 pp/yr with nothing about the sleeve in it. Pro rata and
+named-leg differ by which covariance enters; overlay versus pro rata differs by more than
+any premium this repository has measured. **Overlay primary, pro rata as the robustness
+arm, named-leg as a diagnostic.**
 
 Reopens: the closure in Experiment 010's consequence 1.
 
@@ -265,15 +290,25 @@ carries position-level holdings and no experiment has read them.
 Pass condition: a delivered capture with a named benchmark and an interval, for at least
 one `exploratory` product on each of the US and developed-ex-US shelves.
 
-### 4. Buy breadth before buying depth
+### 4. Buy breadth before buying depth — **and check whether it needs buying first**
 
-**Money, but the cheap kind.** A documented total-return series for investable bonds,
-gold, commodities and REITs, plus one long-horizon non-US equity history.
+**Mostly free, as it turned out.** This item asked for a documented total-return series for
+bonds, gold, commodities and REITs. **Gold cost nothing**: the World Bank Pink Sheet has
+published a documented monthly gold price under CC BY 4.0 back to 1960 the whole time, and
+the LBMA benchmark it is built from is reachable as a cross-check. Landed and tested
+2026-08-17. Commodities were already held via AQR CLR.
 
-This is a smaller purchase than the licensed fund database and it unblocks more: every
-diversification question, the whole of §2's asset-class row, and the one-country
-limitation under the equity-share decision. It also removes the stated bias in Experiment
-010 toward finding no credit anywhere.
+**The lesson is the same one [§3 of the evidence base](evidence-base.md) draws about
+Goyal–Welch and Shiller, and it has now happened three times.** A source recorded as
+absent was not absent. **Before pricing an acquisition, check whether the thing is
+published** — and check the *reasoning* of any decision that appears to forbid it, because
+decision 0002's two failure modes do not reach an asset that pays no distribution.
+
+**What is still genuinely absent is the bond leg**, and it is the one that matters most:
+`GS10` is a modelled proxy standing in for an investable bond total return in every
+experiment here, and clause (u5) is what stops it resolving anything. REITs and standalone
+credit are absent too. **One long-horizon non-US equity history was the other half of this
+item and it landed on 2026-08-16.**
 
 ### 5. Test conditional allocation for the first time
 
@@ -308,12 +343,18 @@ capture term.
 1. **Two closures should be reopened as re-specifications rather than as new questions.**
    Experiment 010's portfolio-level closure is weight-dependent, and decision 0004's block
    on the construction tournament is circular. Both are recorded on their own pages.
-2. **The rejection counts must always travel with their clause.** "24 of 44 rejected" is
+   **The weight half is now measured rather than argued**: a real asset reaches the credit
+   ceiling at the cap and still fails, so the re-specification should target the funding
+   rule rather than the weight. §1.1 and §5.
+2. **"No research-grade series is held" needs the same treatment as "closed".** It is a
+   statement about what has been looked for, and it was wrong about gold for as long as it
+   was written down. Any row in §2 blocked on an acquisition must name the source that was
+   checked and the date, or it is an assumption wearing a constraint's clothes.
+3. **The rejection counts must always travel with their clause.** "24 of 44 rejected" is
    not a finding about the funds; 22 of those 24 fired on an in-sample fitted comparator.
-3. **A null result from an underpowered instrument is not evidence of absence**, and the
+4. **A null result from an underpowered instrument is not evidence of absence**, and the
    [resolution table](evidence-base.md#1-the-resolution-table--read-this-before-proposing-an-experiment)
    is how to check before committing.
-4. **The programme's pessimism should be stated with its scope.** What has been shown is
+5. **The programme's pessimism should be stated with its scope.** What has been shown is
    that a narrow set of gross academic factor spreads and a 72-month unaudited fund window
    cannot support a promotion. That is a long way from a statement about portfolios.
-</content>

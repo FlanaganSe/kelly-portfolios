@@ -356,17 +356,21 @@ export const sleeves: readonly Sleeve[] = [
   {
     id: "gold",
     label: "Gold",
-    ticker: null,
-    verdict: "untested",
-    status: null,
+    ticker: "GLDM",
+    verdict: "excluded",
+    status: "exploratory",
+    statusNote:
+      "The gold price is a documented, FCA-regulated benchmark rather than a free price feed, and bullion pays no distribution, so price return minus a stated carry cost is exactly total return. What keeps it exploratory is narrower: no vintage archive, an auction price that is not a retail execution, and a carry cost that is assumed.",
     loading: null,
-    feeBp: null,
-    feeAsOf: null,
+    feeBp: 10,
+    feeAsOf: asOf("2026-08-17"),
     reason:
-      "No experiment here has run on it. The prior from the literature is that it is an average hedge and a short-lived safe haven in some countries and samples, not a universal negative-correlation asset.",
+      "Tested 2026-08-17 over 658 months from 1971-09. It passes the overlay admission test and fails the rule a physical gold ETF actually imposes: marginal growth of +0.04 to −0.42 pp/yr against a 0.30 bar when funded by selling equity. Its correlation to equity is zero rather than negative — −0.03 to +0.03, and −0.01 to +0.08 inside equity drawdowns — which confirms the prior that it is an average hedge, not a universal negative-correlation asset.",
+    caveat:
+      "The forty months from 1971-09 to 1974-12 carry about 40% of the full-sample Sharpe ratio, and private US gold ownership was illegal throughout them. On the window an investor could actually have held, the Sharpe ratio is 0.18 rather than 0.31 and the marginal figure is −0.41 pp/yr. A bullion ETF is also taxed at 28% as a collectible plus 3.8% NIIT, against 20% plus 3.8% for equity.",
     source: {
-      label: "Portfolio edge research framework",
-      docPath: "docs/research/portfolio-edge-research-framework.md",
+      label: "What a sleeve is worth inside a portfolio, rather than on its own",
+      docPath: "docs/research/marginal-sleeve-value.md",
     },
   },
   {
@@ -556,7 +560,7 @@ export const diversificationCredit = {
     } as const satisfies Citation,
   },
   caveat:
-    "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold was never tested, and its absence biases the whole experiment toward finding no credit anywhere.",
+    "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold has since been tested and it lands exactly on the ceiling: its beta to the equity core measures zero, so it takes the whole credit and still loses 0.10 pp/yr. Per unit of weight the credit is 2.17 pp/yr against a standalone shortfall of 2.95, so the most the credit can ever pay is 74% of the gap — and because both scale with the weight, holding more does not close it.",
   status: "rejected" as EvidenceStatus,
   statusNote:
     "A falsifier written down before the result fired. Two specifications judged the same data, one on a certainty equivalent and one on growth; growth decides, and that is what moved the family from `unresolved` to `rejected`. Every input is a paper portfolio, a vendor series or a model. None of it is investable, and none of it says trend is worthless.",
