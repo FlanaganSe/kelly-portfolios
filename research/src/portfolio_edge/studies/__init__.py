@@ -16,6 +16,9 @@ randomness the generator seed is an explicit argument with a committed default.
 * :mod:`overlay_growth` — what a diversifying sleeve is worth under a financed
   overlay rather than pro-rata funding, and the exact size of the gap between them:
   ``a_e - sigma_e**2``, which involves no property of the diversifier at all.
+* :mod:`time_series_momentum` — the trend strategy built here rather than bought from
+  a vendor, so Experiment 011's `unresolved` verdict can be tested against a series
+  whose provenance this repository controls. Reads no market data.
 * :mod:`tax_structure` — the contractual, tax-code half of that budget: foreign tax
   credit forfeiture, fund-structure capital gains, §1256, the value of deferral, the
   decay of loss harvesting, and the arithmetic of capital efficiency. Rates are a dated,
