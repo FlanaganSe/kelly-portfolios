@@ -32,9 +32,22 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
    deep enough to build a return-stacked fund on, which is a fact about the fund industry
    rather than about return premia. Separately, the alternative risk premia do fail on
    cost: 0.3–1.0%/yr gross post-2019 at 2–5% volatility against a ~1.5% retail wrapper.
-4. **Trend is the one engine that survives, and it survives as risk reduction rather than
-   as return.** Its left-tail contribution is positive at every haircut tested, including
-   one that turns its median contribution negative.
+4. **Trend survives on three independent instruments, and no single one of them resolves
+   it.** The sign is robust; the magnitude is bracketed; the power is not there.
+
+   | Instrument | Window | Trend Sharpe | ρ to equity | Overlay gap vs leverage-matched |
+   | --- | --- | ---: | ---: | ---: |
+   | **Built here**, 4 series, none a trend product | 1,091 mo | **+0.52** | −0.07 | **+1.44 pp/yr** |
+   | **Live funds**, 46 of them, net of fees, SEC Item B.5 | 78 mo | **+0.33** | −0.11 | **+1.27 pp/yr** |
+   | AQR vendor series, gross | 485 mo | +0.96 | −0.08 | +1.14 pp/yr |
+
+   **The vendor series was the reason Experiment 011 said `unresolved`, and it is no
+   longer load-bearing.** An independent construction reproduces the correlation to
+   within 0.01 and earns roughly half the Sharpe; live funds net of every real fee earn a
+   third of it. **All three agree on the sign of every quantity that matters.**
+   Its left-tail contribution is positive at every haircut tested, including one that
+   turns its median contribution negative — so it is a risk-reduction claim before it is
+   a return claim.
 5. **Global versus US is unresolved, and the two datasets disagree in opposite
    directions.** In local currency over 150 years, global 60/40 beat US-only on drawdown
    and on return per unit of risk. **In USD over 1990–2025 it lost 1.57 pp/yr and drew down
@@ -531,6 +544,16 @@ must close before any of it informs a decision.
 
 ## Consequence for this repository
 
+0. **The 7.7 pp/yr survivorship-and-backfill haircut this page applies to the vendor
+   series is not supported over the only window where it can be measured — and the sign
+   is the other way.** Regressing the vendor series on 46 live funds over the same 78
+   months gives the vendor an alpha of **−1.36 pp/yr** (*t* = −0.39) and a
+   volatility-matched difference of **−2.62 pp/yr, 95% CI [−10.91, +5.68]**. **+7.7 sits
+   above that interval.** Three things this does not license, and they are the reason the
+   haircut is retained rather than dropped: the measurable window is 2019–2025 while the
+   haircut is applied to a mean living in 1985–2011, where no fund return exists; the
+   7.7 bound was measured on hedge-fund CTA *databases*, not on registered funds; and the
+   vendor's 12.11 pp/yr post-publication decay is untouched by any of it.
 1. **The zero-leverage rule's cost is now a number, not an assumption**, and
    [decision 0004](../decisions/0004-no-sleeve-promoted.md) records that its block on step 7
    is circular for that reason. **Neither block is lifted here.**
