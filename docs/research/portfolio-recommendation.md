@@ -139,9 +139,29 @@ yield is higher than the market's, which raises its shelter priority above plain
 and there is no fallback, not because 10% was measured to be better.
 
 Everything else tested is out: momentum (MTUM), quality (QUAL, SPHQ), large-cap value
-(VTV), plain small-cap (VB), the other four managed-futures ETFs, leverage and
-return-stacking, rebalancing as a source of return, and the small-value corner as the
-literature defines it.
+(VTV), plain small-cap (VB), the other four managed-futures ETFs, rebalancing as a source
+of return, and the small-value corner as the literature defines it.
+
+**"Leverage and return-stacking" left that list on 2026-08-16, and has not joined the
+table above.** [Capital efficiency and breadth](capital-efficiency-and-breadth.md) shows
+that the funding rule alone moves a sleeve's hurdle by `a_p − sigma_p**2` — **2.44 pp/yr**
+for a 100% equity base, containing nothing about the sleeve — and that this repository's
+financing input was measured against a rate no fund pays
+([above](structural-and-tax-edges.md#3-section-1256-and-capital-efficiency-handled-honestly)).
+Measured on 426 months, a **25% trend overlay funded as notional rather than by selling
+equity** contributes **ΔSharpe +0.050** at the repository's full 7.7 pp/yr CTA bias
+haircut — **identical on a US and on a global base to three decimals** — while the same
+base levered to the identical volatility contributes **+0.001**. That is the test that
+separates breadth from beta, and it passes.
+
+**It is still not promoted, for three reasons that are not about the arithmetic.** The
+trend leg rests on a vendor series stating no cost basis anywhere, against a bias bound
+of 7.7 pp/yr and a break-even near 9.9. The overlay's *return* contribution spans zero
+across the haircut range while only its *risk* contribution is robust — so it is a
+risk-reduction claim, and must be judged on mechanism rather than on relative performance.
+And [decision 0004](../decisions/0004-no-sleeve-promoted.md) still holds leverage at zero;
+what changed is that the cost of that rule is now a measured number rather than an
+assumption, and its block on step 7 is recorded as circular.
 
 ### 1.4 The disciplines, which are worth more than the sleeves
 
