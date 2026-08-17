@@ -240,7 +240,12 @@ export interface Fund {
   readonly expenseRatioBp: number | null;
   readonly expenseRatioAsOf: AsOf | null;
   readonly expenseRatioNote?: string;
-  /** 30-day median bid/ask spread, basis points. */
+  /**
+   * 30-day median bid/ask spread, basis points, from the issuer's own Rule 6c-11(c)(1)
+   * disclosure as of 2026-08-14. **A one-time cost at purchase, not a recurring one**, so
+   * it must never be allowed to outrank the expense ratio for a long holder — SPY has the
+   * tightest spread on the shelf and the highest cost of ownership on it.
+   */
   readonly spreadBp: number | null;
   /**
    * Net securities-lending income over average net assets, basis points a year: the
@@ -273,7 +278,7 @@ export const funds: readonly Fund[] = [
   {
     id: "vti",
     ticker: "VTI",
-    name: "Vanguard Total Stock Market ETF",
+    name: "Vanguard Morningstar Total Stock Market ETF",
     sleeve: "US total market",
     role: "core",
     expenseRatioBp: 3,
@@ -309,7 +314,7 @@ export const funds: readonly Fund[] = [
     role: "core",
     expenseRatioBp: 3,
     expenseRatioAsOf: FEE_TABLES_READ,
-    spreadBp: null,
+    spreadBp: 1.41,
     securitiesLendingBp: "3.30",
     netCostBp: -0.3,
     alternates: [
@@ -340,7 +345,7 @@ export const funds: readonly Fund[] = [
     role: "core",
     expenseRatioBp: 6,
     expenseRatioAsOf: FEE_TABLES_READ,
-    spreadBp: null,
+    spreadBp: 1.7,
     securitiesLendingBp: "4.33",
     netCostBp: 1.67,
     alternates: [
@@ -365,7 +370,7 @@ export const funds: readonly Fund[] = [
     role: "core",
     expenseRatioBp: 3,
     expenseRatioAsOf: FEE_TABLES_READ,
-    spreadBp: null,
+    spreadBp: 1.38,
     securitiesLendingBp: "0.00 — does not lend",
     netCostBp: 3.0,
     alternates: [
@@ -414,7 +419,7 @@ export const funds: readonly Fund[] = [
   {
     id: "vbr",
     ticker: "VBR",
-    name: "Vanguard Small-Cap Value ETF",
+    name: "Vanguard Morningstar Small-Cap Value ETF",
     sleeve: "Small-cap value tilt",
     role: "optional-sleeve",
     expenseRatioBp: 5,
@@ -452,7 +457,7 @@ export const funds: readonly Fund[] = [
   {
     id: "vb",
     ticker: "VB",
-    name: "Vanguard Small-Cap ETF",
+    name: "Vanguard Morningstar Small-Cap ETF",
     sleeve: "Plain small-cap",
     role: "priced-but-not-held",
     expenseRatioBp: 3,

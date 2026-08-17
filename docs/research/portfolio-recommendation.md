@@ -183,6 +183,25 @@ seven fee tables carry no waiver, no expense-limitation and no acquired-fund-fee
 all**; every iShares table states that what BFA pays "exclude[s] acquired fund fees and
 expenses, if any".
 
+**Three names on this page changed under it, and one alternate was in the wrong category.**
+Morningstar acquired CRSP, so from **2026-07-29** Vanguard renamed the fund and its index:
+VTI is now the **Vanguard Morningstar Total Stock Market ETF** tracking the **Morningstar US
+Total Market Index**, and VBR is the **Vanguard Morningstar Small-Cap Value ETF** — "*Each
+Fund's investment objective, strategies, and polices remain unchanged*", so this is a rename
+and not a methodology change (Form 497, accession `0000036405-26-000386`). **SPLG now trades
+as `SPYM`** after State Street's 2025-10-21 rebrand. And **SPTM is not a total-market fund**
+— it tracks the S&P Composite 1500, so State Street has no counterpart to VTI at all.
+
+**Six qualifying funds were not audited**, from a sweep of the SEC's 2026Q2 N-PORT data set:
+IUSB, VONE, BBUS at **0.02%**, BBIN, VTHR, and **BKLC and BKAG at 0.00%** — BKAG tracking the
+*same* Bloomberg US Aggregate as AGG, SCHZ and SPAB at no fee, which is the one that could
+move the bond row. Their lending income and waiver terms were not read
+([§6.7](structural-and-tax-edges.md#67-what-the-shelf-is-missing-and-one-fund-that-is-in-the-wrong-category)).
+**Bid-ask spreads are published and deliberately not in the ranking**: VTI 0.55 bp, VOO
+0.56, VXUS 1.18, VEA 1.41, VWO 1.70, BND 1.38, at 2026-08-14, with Schwab's four returning
+HTTP 403. A spread is paid once and a fee for thirty years — and **SPY has the tightest
+spread on the shelf, at zero, and the highest cost of ownership on it.**
+
 ### Use VEA + VWO rather than VXUS, and not only for the reason this page used to give
 
 **The split is cheaper before any placement argument.** VXUS costs **0.05%** — not the
@@ -741,11 +760,10 @@ returns**. Whether the emerging inversion survives harvesting value — **it sur
 capital-gain distributions, which are now measured at zero for every fund on the shelf.**
 **What the true effective foreign withholding rate is**: eleven funds file 9.12–14.23% for
 emerging against the 9.853% §3 uses, and reconciling the filings' "foreign source income"
-to Form 1099-DIV Box 1a would settle whether the inversion covers 23.8% too. **What a
-core fund's bid-ask spread and premium/discount cost a thirty-year holder** — both are
-one-time at purchase, both are issuer-published rather than filed, and iShares' own
-premium/discount tables carry no as-of date at all. What a liquidity reserve should be,
-unsized. **What any of the ten untested listed
+to Form 1099-DIV Box 1a would settle whether the inversion covers 23.8% too. **Whether BKAG,
+a zero-fee tracker of the same Bloomberg US Aggregate as three audited funds, beats BND** —
+its lending income and waiver terms were not read. **And Schwab's four funds' spreads**,
+behind a site-wide HTTP 403. What a liquidity reserve should be, unsized. **What any of the ten untested listed
 managed-futures ETFs, or RSST's own trend leg, load on the benchmark** — the shelf tripled
 and the evidence did not move. **What any wrapper actually pays to finance its overlay** —
 no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
@@ -769,8 +787,9 @@ no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
    documents now naming an "ETF Class" against 2 before the first order); every fund-specific
    fact in §1.2, whose fee tables and lending figures are dated 2026-08-17 and whose waiver
    expiries run **2026-10-31 (State Street), 2027-01-31 (State Street ex-US), 2026-11-30
-   (IXUS), 2027-02-01 (SPY), 2027-06-30 (AGG) and 2030-12-31 (IEMG)**; **SPLG's rebranding**,
-   which now files under the ticker `SPYM`; **JPFP's commencement**, which would reorder the
+   (IXUS), 2027-02-01 (SPY), 2027-06-30 (AGG) and 2030-12-31 (IEMG)**; **fund and index
+   renamings** — SPLG now trades as `SPYM`, and Morningstar's acquisition of CRSP renamed
+   VTI and VBR and their target indices on 2026-07-29; **JPFP's commencement**, which would reorder the
    wrapper cost ranking at 0.59% against RSST's 0.99%; and **KMLM's shareholder vote around
    2026-11-20**, the fund having operated under interim advisory agreements since a change of
    control on 2026-06-23.

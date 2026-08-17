@@ -619,7 +619,7 @@ over every fiscal year on file, from N-CEN Item C.6.g over Item C.2.
 
 | Category | Cheapest to own → dearest, bp/yr net | | |
 | --- | --- | --- | --- |
-| **US total market** | ITOT **1.04** · VTI 1.16 · SCHB 1.96 · SPTM 2.63 | | |
+| **US total market** | ITOT **1.04** · VTI 1.16 · SCHB 1.96 · SPTM 2.63 — but **SPTM tracks the S&P Composite 1500, not a total-market index** ([§6.7](#67-what-the-shelf-is-missing-and-one-fund-that-is-in-the-wrong-category)) | | |
 | **S&P 500** | SPLG **1.82** · IVV 2.75 · VOO 2.94 · **SPY 9.45** | | |
 | **Developed ex-US** | SPDW **−1.63** · VEA −0.30 · SCHF 1.84 · IDEV 2.11 · IEFA 4.65 | | |
 | **Emerging** | IEMG **−0.87** · VWO 1.67 · SPEM 2.01 · SCHE 4.84 · AVEM 25.99 · **EEM 67.34** | | |
@@ -659,12 +659,13 @@ index's return", before and after fund fees. It is the number a fee is usually m
 for, and this repository can use almost none of it, for three reasons that are worth more
 than the number.
 
-1. **Every fund's difference is against its own index, and the indices differ** — CRSP,
-   S&P Total Market, S&P Composite 1500, Dow Jones US Broad, FTSE, MSCI. Ranking funds
-   across those is adding lines measured against different benchmarks. **The only group on
-   this shelf that shares an index is VOO, IVV and SPLG**, and once compared they are
-   indistinguishable: derived ETF-class differences of −1 to −4 bp, inside the 0.01
-   percentage point the filings round to.
+1. **Every fund's difference is against its own index, and the indices differ** —
+   Morningstar US Total Market (**renamed from CRSP on 2026-07-29**), S&P Total Market,
+   S&P Composite 1500, Dow Jones US Broad, FTSE, MSCI. Ranking funds across those is adding
+   lines measured against different benchmarks. **The only group on this shelf that shares
+   an index is VOO, IVV and SPLG**, and once compared they are indistinguishable: derived
+   ETF-class differences of −1 to −4 bp, inside the 0.01 percentage point the filings round
+   to.
 2. **The item does not say which share class a multi-class fund answers for.** For every
    Vanguard series here the gap between the before- and after-expense figures is 9.5 to
    35.3 bp against an ETF-class fee of 3 to 6, so **the filed after-expense figure is not
@@ -758,6 +759,80 @@ the 1.5 bp the six-fund table corrected it to. Fund selection alone moves it bet
 **0.45 and 2.60 bp/yr** across the cheap shelf. The ledger line becomes **+0.83 bp**, and
 it is still a rounding error on a 109 bp budget — which is the finding, not a
 disappointment.
+
+### 6.6 Spread and premium/discount, weighted as the one-time costs they are
+
+`as of 2026-08-14`, from each issuer's own Rule 6c-11(c)(1) disclosure. **22 of 26 tickers
+returned data; Schwab's site returns HTTP 403 to every path including `robots.txt`, so
+SCHB, SCHF, SCHE and SCHZ are "not found" and were not worked around.**
+
+| | 30-day median bid-ask spread |
+| --- | --- |
+| **US equity** | VTI 0.55 bp · VOO 0.56 bp · ITOT, IVV, SPLG, SPTM 1 bp · **SPY 0.00 bp** |
+| **International equity** | VXUS 1.18 · VEU 1.21 · VEA 1.41 · VWO 1.70 · IEFA, IEMG, IXUS, IDEV 1 bp · EEM 2 · SPDW, SPEM 2 · AVEM 3 |
+| **Bonds** | AGG 1 bp · BND 1.38 · SPAB 4 |
+
+**A spread is paid once and a fee is paid for thirty years, so this table must not be
+allowed to reorder §6.1.** VTI's 0.55 bp round trip is under half of one year's net cost;
+over a thirty-year hold it is worth about 0.02 bp/yr. **SPY is the case that proves the
+point**: it has the tightest spread on the shelf, at zero, and the highest cost of
+ownership on it, at 9.45 bp/yr. A spread is what a *trader* pays. **Choosing SPY for its
+spread is buying a one-time saving of under a basis point with a recurring cost of seven.**
+
+Two dating properties of the source, which matter because they are easy to get wrong.
+**iShares' premium/discount tables carry no as-of date at all** — the backing field is
+`formattedAsOfDate: null` — while the spread and net-asset figures on the same page do
+carry 2026-08-14. Do not borrow that date for them; each column carries its own period end,
+identical across every fund checked, and the latest completed one is **2026-06-30**. And
+**no published column and no sum of columns is a trailing twelve months**: Rule 6c-11
+requires a calendar year plus year-to-date quarters, so 2025 + Q1 + Q2 spans twenty months
+and the current quarter renders as "–" because it is not yet published. Any trailing-12m
+figure is derived, not published.
+
+One artifact worth stating so it is not read as a finding. **Both Vanguard and iShares
+round the daily premium/discount to two decimals, so anything under 0.005% lands in
+neither bucket** — 54 days for VTI, 46 for ITOT, 36 for VOO, 28 for IVV. Premium plus
+discount does not sum to the trading year, and "days at discount" is not one minus days at
+premium.
+
+### 6.7 What the shelf is missing, and one fund that is in the wrong category
+
+The 25 audited funds are not the whole shelf. Sweeping the SEC's own 2026Q2 N-PORT data set
+— 12,945 ETF-like series — for plain-beta index funds in these six categories above $2bn
+and at or below 0.10%, **six qualify and none was audited**:
+
+| Fund | Category | Net assets | ER | Index |
+| --- | --- | ---: | ---: | --- |
+| **IUSB** | US broad bond | $36.5bn @2026-04-30 | 0.06% | Bloomberg US **Universal** — a superset of the Aggregate, so a different exposure rather than a cheaper tracker |
+| **VONE** | US large blend | $11.3bn @2026-05-31 | 0.06% | Russell 1000 |
+| **BBUS** | US large/mid | $7.8bn @2026-04-30 | **0.02%** | Morningstar US Target Market Exposure — the cheapest broad US equity ETF in the census |
+| **BBIN** | Developed ex-US | $6.3bn @2026-04-30 | 0.07% | Morningstar Developed Markets ex-North America |
+| **VTHR** | US total market | $6.1bn @2026-05-31 | 0.06% | Russell 3000 |
+| **BKLC** / **BKAG** | US large blend / US aggregate | $5.3bn / $2.1bn @2026-04-30 | **0.00%** | Solactive GBS US 500 / **Bloomberg US Aggregate** — the same index as AGG, SCHZ and SPAB, at no fee |
+
+**BKAG is the one that could move §6.1**, because it tracks the same index as three audited
+bond funds at a zero expense ratio, and BND — the recommended holding — is the dearest of
+those three at 3.00 bp. **Its lending income, its waiver terms and whether a 0.00% fee is
+contractual or an absorbed cost were not read**, so it is recorded as a candidate and not
+as a result. Both BNY Mellon funds sit at or near the $2bn floor and are five years old.
+
+**Two facts about the audited shelf itself were wrong.** **SPTM is not a total-market
+fund**: its SEC series name is "State Street SPDR Portfolio **S&P 1500 Composite** Stock
+Market ETF" and has been since at least the 2021-06-30 N-PORT, so treating it as State
+Street's answer to VTI is a category error — State Street has no total-market fund. And
+**SPLG no longer trades under that ticker**: SPDR Series Trust's Form 497 of 2025-10-21
+(accession `0001193125-25-245123`) states that "*Current Ticker Symbol SPLG / New Ticker
+Symbol SPYM*", alongside a "State Street SPDR" rebrand of the whole line. The N-CEN series
+identity is unchanged, so every figure above still applies; only the ticker moved.
+
+**Excluded on their own terms, and worth naming so nobody re-tests them.** Dimensional's
+and Avantis's broad funds — DFUS ($19.9bn, 0.09%), DFAI, DFAX, DFAE, AVUS, AVDE — clear
+size and, for DFUS, fee, and are **not index funds**: DFUS's own prospectus says it "*is an
+actively managed exchange-traded fund and does not seek to replicate the performance of a
+specific index*". **VT** ($89.9bn, 0.06%) qualifies on every numeric test and sits in a
+seventh category, total world, that this frame does not contain. Nothing at or below 0.10%
+exists outside the audited funds in **S&P 500, emerging markets or total international** —
+the next cheapest emerging fund is EMXC at 0.25%.
 
 ---
 
@@ -874,12 +949,10 @@ measured advantage, except constant rates, which cuts both ways.
    break-even exceeds 23.8%. **The largest open input on this page.**
 5. **The value of lot-selection discipline for a retail buy-and-hold investor.** The only
    measurement is a simulation on a turning-over separate account.
-6. **What a fund's bid-ask spread and premium/discount cost a thirty-year holder.** Both
-   are one-time costs at purchase and both are issuer-published rather than filed, so
-   neither is in §6. iShares' own premium/discount tables carry **no as-of date at all**
-   (`formattedAsOfDate: null`) while the spread and net-asset figures beside them do, and
-   the columns are a calendar year plus year-to-date quarters — so no published column and
-   no sum of them is a trailing twelve months.
+6. **Schwab's four funds' spreads and premium/discount**, and **BKAG's lending, waiver
+   terms and whether its 0.00% fee is contractual** — the one unaudited candidate that
+   could move §6.1's bond row (§6.6, §6.7). Schwab's site returns HTTP 403 site-wide,
+   including `robots.txt`, and was not worked around.
 7. **Non-US tax.** A jurisdiction with no foreign tax credit turns §1 into a pure cost; one
    taxing gains on accrual removes §4 entirely; one with no step-up removes half of it.
 8. **State tax.** Excluded and additive.
