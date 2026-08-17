@@ -11,7 +11,8 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
 **Out of scope.** Which funds to buy and in what account — that is
 [the recommendation](portfolio-recommendation.md). Nothing here promotes a sleeve.
 
-`as of 2026-08-16`.
+`as of 2026-08-17`. Tax rates in §7.2 are `as of 2026-08-12`, from
+[`studies/tax_structure.py`](../../research/src/portfolio_edge/studies/tax_structure.py).
 
 ---
 
@@ -97,10 +98,27 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
     since the 1980s. **"Managed futures is the sleeve whose account decides its sign" is a
     fact about DBMF, not about the exposure**: RSST's own SEC-standardised distribution tax
     drag is **0.32 pp/yr against DBMF's 2.09** for the same dollar of trend notional, which
-    unbinds the constraint §7 says sets the weight. Against that, the two costs the shelf
+    **unbinds the constraint that used to set the weight — §7 is re-derived without it and
+    the weight does not move.** Against that, the two costs the shelf
     does *not* disclose are real: **no fund quantifies its financing cost anywhere**, and the
     one rate that is disclosed — RSBA's merger-arb swap at **OBFR + 6.64%** — sits seven
     times above §5b's 97 bp tolerance.
+11. **The 30% weight was right for the wrong reason, and the right reason is drawdown.**
+    §7 set it as a corner against tax-shelter capacity. Worked at a real investor's own
+    rates — 24%/15% federal plus **California's 9.3% on capital gain at no preferential
+    rate** — the overlay's incremental tax cost over the VTI it displaces is **4.5 bp per
+    dollar of RSST, or 1.3 bp of portfolio return at `w = 0.30`**. That constraint is
+    withdrawn. **The growth optimum is 3.04 units of notional, 2.14 after twenty years of
+    shrinkage, and it is refused** on the same grounds as §2's 2.2× levered equity. What
+    binds is the resampled drawdown, which **doubles from 10.8% to 18.9% between `w = 0.58`
+    and `w = 0.60`** — a ceiling near **0.55** — and, for the stated investor, the embedded
+    gain that stops the taxable account being converted. **§7.**
+12. **A bond overlay does not inherit trend's flat drawdown, and RSSB is rejected.** The
+    same paired bootstrap that gives trend **6.9%** at 30% notional gives a Treasury overlay
+    **49.7%** — a coin flip — and **70.0%** at 100%. At matched 1.6× gross, 60% trend beats
+    30% trend plus 30% bonds by **+1.40 pp/yr** and on Sharpe. **Bonds have breadth in the
+    era where they have no return and return in the era where they have no breadth**:
+    their correlation to trend is −0.256 pre-1985 and **+0.371 after**. **§7a.**
 
 ---
 
@@ -349,9 +367,17 @@ collectible: **28% plus 3.8% NIIT** against 20% plus 3.8% for equity, verified f
 Pub. 550 and from GLD's, IAU's, GLDM's and SGOL's own 10-Ks, each of which states it
 directly. Inside an IRA the collectibles rate does not apply — both GLD and IAU hold IRS
 private letter rulings to that effect — but traditional-IRA distributions are ordinary
-income, so the shelter helps and does not make gold tax-favoured. **The physical route
-competes with trend for the same scarce shelter that §7 already identifies as the binding
-constraint on the overlay weight.**
+income, so the shelter helps and does not make gold tax-favoured.
+
+**An earlier version of this paragraph added that "the physical route competes with trend
+for the same scarce shelter that §7 identifies as the binding constraint on the overlay
+weight". Both halves are now wrong and it is withdrawn.** §7 no longer identifies shelter as
+the binding constraint at all. And a bullion trust *distributes nothing*: the only recurring
+realisation is the gain on the gold it sells to pay its own 0.10% fee, so its shelter
+priority on §7.2's rule is a few basis points at most — the exact figure is `not found`,
+since no 10-K quantifies the gain component. **The physical route needs no shelter, which is
+the opposite of what this page said, and it is why GDE at a measured 1.31 pp/yr drag for the
+same investor and GLDM at near zero are not the same decision.**
 
 ### The seven families this repository had never opened
 
@@ -476,8 +502,11 @@ quoted without its conditioning set.**
 
 ## 5. What the overlay is worth at a weight anyone can hold
 
-25% trend notional, held sheltered so the measured 2.09 pp/yr distribution drag is zero,
-net of 1.45%/yr on notional. Haircuts are applied to trend's mean.
+25% trend notional, net of 1.45%/yr on notional, with distribution tax at zero. Haircuts are
+applied to trend's mean. **This row was written as "held sheltered so the measured 2.09 pp/yr
+drag is zero" and that is DBMF's number** (§6a.4): through RSST the drag is 0.32 pp/yr gross
+and **4.5 bp per dollar net of the equity fund the wrapper displaces** (§7.2), so a zero here
+now costs a rounding error rather than requiring a tax-deferred account.
 
 | Window | no haircut | −4 pp | **−7.7 pp** (the repository's CTA bias bound) |
 | --- | ---: | ---: | ---: |
@@ -1069,7 +1098,11 @@ comparison with the physical wrapper, which defers what GDE cannot.
 2.09 through DBMF.** [The recommendation](portfolio-recommendation.md) calls managed futures
 *"the one sleeve whose account decides its sign"* on the strength of the 2.09. **That is true
 of the pro-rata vehicle and is not true of the overlay one**, and §7's shelter constraint —
-the thing that sets the weight — is correspondingly weaker.
+the thing that used to set the weight — **is withdrawn rather than weakened.** §7.2 restates
+both figures at one real investor's own rates and subtracts the plain equity fund the
+wrapper displaces: **the incremental cost of holding the overlay in a taxable account is
+4.5 bp per dollar of RSST and 1.3 bp of portfolio return at the recommended weight**, against
+143.9 and 43.2 for DBMF. **The account decides DBMF's sign and does not decide RSST's.**
 
 **The mechanism is visible in the tax-character tables and it is not a wrapper effect.** From
 Tidal Trust II's N-CSR Note 7 for the year ended 2026-01-31, RSST distributed **$2.65m of
@@ -1264,28 +1297,173 @@ market, since the industry has proved willing to wrap five different ones in two
 
 ---
 
-## 7. The weight is a corner solution, and the constraint is the account
+## 7. The weight, re-derived after the constraint that set it was withdrawn
 
-The recommended 15–25% was chosen by judgement. A red team asked what the model itself
-says, and the answer is that **the sizing question has no interior solution.**
+**What this section used to say, and why it no longer holds.** The recommended 15–25% was
+chosen by judgement; a red team asked what the model says, found the sizing question has
+**no interior solution**, and concluded that the weight was set by the account. The chain
+was: the sleeve's distribution tax drag is **2.09 pp/yr**, so it must live in a shelter; the
+shelter holds roughly 30% of the portfolio; so the overlay is capped at what the shelter can
+carry. **§6a.4 withdrew the 2.09.** It is a fact about DBMF, not about the exposure — the
+same dollar of trend notional through RSST carries **0.32 pp/yr** on each fund's own
+SEC-standardised table. **The constraint that set the weight is gone, and everything below
+is the re-derivation without it.**
 
-**The shrunk growth-optimal overlay notional**, from
-[`overlay_growth.py`](../../research/src/portfolio_edge/studies/overlay_growth.py), at
-`a_p = 5.0%`, `sigma_p = 15.5%`, `sigma_d = 12%`, `rho = −0.10`, shrunk by
-`f* = S**2 T / (S**2 T + 1)` on `T` years of *stationary* information:
+**The conclusion first, because three of the four numbers move and the recommendation does
+not.** The growth optimum is **2.1 to 3.0 units of notional** and is refused. The tax
+constraint **does not bind at any weight under discussion**: worked at a real investor's own
+rates it is **1.3 bp/yr of portfolio return at `w = 0.30`**, not the 31 bp the account rule
+implied. What binds is **drawdown, and it binds at about `w = 0.50`** on the resampling this
+page's own destruction test uses. Beneath that sits a constraint the old reasoning never
+named and which happens to bind at the same place: **the taxable account's embedded gains.**
+**30% is retained, and the reason this page gave for it has been wrong since it was
+written.**
 
-| Evidence | net `a_d` | unshrunk `w*` | T=10 | **T=20** | T=40 |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| Live funds, net (S=0.33) | 3.96% | 2.88 | 1.57 | **2.03** | 2.38 |
-| Built here (S=0.52) | 6.24% | 4.46 | 3.31 | **3.80** | 4.10 |
-| **Pessimistic (S=0.20)** | 2.40% | 1.80 | 0.57 | **0.86** | 1.17 |
-| Post-2012 drought (S=0.00) | 0.00% | 0.13 | 0.00 | **0.00** | 0.00 |
+### 7.1 The growth optimum, through the wrapper rather than through an idealisation
 
-**Even the pessimistic row puts the optimum at 86% of notional**, four times the
-recommended weight. Only a forward Sharpe of exactly zero brings it to zero.
+§6a.1's equation (7) is the derivative at `w = 0`. Carrying the same wrapper
+`B(w) = 1 − w delta` through the whole growth function rather than only its first
+derivative — `g(w) = B a_p + w a_net − V(w)/2` with
+`V = B**2 sigma_p**2 + 2 B w rho sigma_p sigma_d + w**2 sigma_d**2` — leaves a quadratic
+with a closed-form vertex:
+
+    w* = [a_net − rho sigma_p sigma_d − delta (a_p − sigma_p**2)]
+         / [sigma_d**2 − 2 delta rho sigma_p sigma_d + delta**2 sigma_p**2]       (8)
+
+which collapses to `growth_optimal_overlay_weight`'s
+`(a_net − rho sigma_p sigma_d) / sigma_d**2` at `delta = 0`. **The growth-optimal weight and
+the weight at which marginal growth reaches zero are the same number**, because `g` is
+quadratic in `w`: there is no second, larger weight at which the sleeve stops paying, and
+the two questions have one answer.
+
+At this section's own parameters — `a_p = 5.0%`, `sigma_p = 15.5%`, `sigma_d = 12%`,
+`rho = −0.10` — and **RSST's measured `delta` of −0.072 rather than an idealised zero**,
+shrunk by `f* = S**2 T / (S**2 T + 1)` on `T` years of *stationary* information:
+
+| Evidence | net `a_d` | `w*` at `delta = 0` | **`w*` at RSST's `delta`** | T=10 | **T=20** | T=40 |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| Live funds, net (S=0.33) | 3.96% | 2.88 | **3.04** | 1.65 | **2.14** | 2.51 |
+| Built here (S=0.52) | 6.24% | 4.46 | **4.63** | 3.44 | 3.95 | 4.26 |
+| **Pessimistic (S=0.20)** | 2.40% | 1.80 | **1.94** | 0.62 | **0.93** | 1.26 |
+| Post-2012 drought (S=0.00) | 0.00% | 0.13 | 0.26 | 0.00 | **0.00** | 0.00 |
+
+**The wrapper moves the optimum by about 5% and its fee moves it not at all**, because these
+`net a_d` figures already carry a fee within four basis points of RSST's filed 0.99% — the
+live-fund row is net of those funds' own fees and the built-here leg is charged 95 bp. That
+`delta` is *negative* is not a rounding artefact: RSST delivers 107.2% of base equity per
+dollar of capital, so the funding rule runs slightly **in the holder's favour**. **None of
+that rescues the sizing question.** The optimum was already far above any holdable weight
+and is now marginally further above it.
+
+**Financing is the input that would move it, and no fund on this shelf discloses one.** §6a.3
+found every Return Stacked fund files 0.00% of interest expense because futures financing
+sits in the contract price. Charged on notional, with everything else held at the live-fund
+row:
+
+| financing spread | `a_net` | `w*` | `dg/dw` at `w = 0.30` |
+| --- | ---: | ---: | ---: |
+| **0 bp** — what the table above assumes, and a stated absence rather than a measurement | 3.96% | **3.04** | +3.90 pp/yr |
+| 59 bp — the measured Fleckenstein–Longstaff basis | 3.37% | 2.62 | +3.31 |
+| **97 bp** — §5b's own tolerance boundary | 2.99% | **2.36** | +2.93 |
+| 300 bp | 0.96% | 0.93 | +0.90 |
+| **664 bp** — RSBA's disclosed swap rate, the family's only quantified one | −3.00% | **none** | **−3.04** |
+
+**Even at the spread past which §5b says the overlay stops paying, the growth optimum is
+2.36 units of notional.** The recommended weight is eight times below it. **The sizing
+problem has the same shape it had before the tax finding, and undisclosed financing is a
+risk to state rather than a zero to assume** — one disclosed rate on this shelf moved from
+OBFR + 3.00% to OBFR + 6.64% in a single quarter, and the bottom row is what that rate would
+do to a trend overlay if the futures book paid it.
+
+### 7.2 The tax constraint, worked at one real investor's rates instead of assumed
+
+**A named investor, because a placement conclusion computed at the wrong rates is worse than
+none.** Roughly 28 years old, ~$400k invested, ~$160k taxable carrying material unrealised
+gain the holder will not sell, ~$120k IRA/Roth, ~$120k 401(k); ~$180k of income; California;
+multi-decade horizon, no liability inside it. That puts them in
+`tax_structure.UPPER_MIDDLE_BRACKET` — **24% ordinary, 15% qualified and long-term, and no
+§1411 surtax**, since MAGI stays under the $200k single threshold. **California levies no
+preferential rate on capital gains**, so its 9.3% marginal rate lands on every line
+identically: **33.3% ordinary and 24.3% qualified/long-term.** Every figure in this section
+is a function of those two numbers and a different investor must restate them.
+
+**A fund's SEC after-tax table is computed at the highest federal rates, so it must be
+restated before it can be used.** Each fund's filed tax-character table gives the
+composition; §6a.4's drag divided by the top-rate effective rate gives the distribution
+yield; that yield times the investor's effective rate gives the drag they would actually
+pay:
+
+| Fund | SEC drag | Composition, from the filings | Implied dist. yield | Effective rate, top | Effective rate, investor | **Investor's drag** |
+| --- | ---: | --- | ---: | ---: | ---: | ---: |
+| **RSST** | 0.32 | $2.65m LTCG, $0.92m ordinary of which 44.14% qualified | 1.22% | 26.2% | 25.6% | **0.31** |
+| **NTSX** | 0.33 | 100% ordinary, 84.9% qualified | 1.25% | 26.4% | 25.7% | **0.32** |
+| **GDE** | 1.53 | 100% ordinary, 28.9% qualified | 4.26% | 35.9% | 30.7% | **1.31** |
+| **DBMF** | 2.09 | **not found** — bounded as 100% non-qualified ordinary | 5.12% | 40.8% | 33.3% | **1.71** |
+
+**California's 9.3% almost exactly cancels the lower federal bracket, and that is the
+non-obvious result.** RSST's drag moves from 0.32 to 0.31 and NTSX's from 0.33 to 0.32: the
+investor pays 9.3 points *more* on the long-term and qualified portion that dominates these
+funds' distributions and 7.5 points *less* on the ordinary portion. **A reader who assumed a
+lower bracket meant a lower drag would have been wrong in the direction that matters.** The
+funds whose distributions are mostly ordinary — GDE, DBMF — do fall, by 14% and 18%, because
+for them the federal saving dominates.
+
+**And the drag was being compared with the wrong counterfactual all along.** A return-stacked
+fund is bought *instead of the base fund it contains*, not instead of cash. VTI's own
+distribution drag at this investor's rates is `1.10% × 24.3% = 26.7 bp/yr`, which the
+[recommendation](portfolio-recommendation.md)'s priority table already carries:
+
+| | per dollar of the fund | at `w = 0.30` | at `w = 0.50` |
+| --- | ---: | ---: | ---: |
+| **RSST's drag** | 31.2 bp | — | — |
+| **less the VTI it displaces** | 26.7 bp | — | — |
+| **Incremental cost of the overlay in a taxable account** | **4.5 bp** | **1.3 bp of portfolio return** | **2.2 bp** |
+| Same for DBMF, which displaces nothing and is bought pro rata | 143.9 bp | 43.2 bp | 71.9 bp |
+
+**1.3 basis points is not a constraint on anything.** It sits against a marginal
+contribution this page measures at **+1.50 pp/yr** at the same weight — a ratio of about one
+to a hundred, and two orders of magnitude below the ±10 pp resolution §9.1 puts on the
+drawdown claim. **The tax-shelter constraint on the overlay weight is withdrawn.** At the
+SEC's own top federal rates the same subtraction gives 5.8 bp for RSST against 182.8 for
+DBMF, so this is not an artefact of the investor's bracket.
+
+**Three things travel with that and none of them restores the constraint.** RSST's after-tax
+table covers **28 months**, all of them in a rising market where a growing ETF defers
+realisation, and it is a disclosure rather than a promise (§6a.4). The mechanism is that a
+tax-favoured equity sleeve shares the capital, so **the drag would rise if the equity sleeve
+stopped generating long-term gain while the Cayman subsidiary kept generating ordinary
+income** — the failure mode is a flat-equity, strong-trend year, which is exactly the year
+the sleeve exists for. And the arithmetic prices *distributions* only: it says nothing about
+the tax cost of ever selling the position.
+
+### 7.3 The constraint that actually binds first, and it is not tax either
+
+**The taxable account cannot be converted into the wrapper without paying for the
+conversion.** The stated investor's $160k of taxable holdings carry material unrealised gain
+they will not realise, so the accounts that can hold an arbitrary ETF at zero cost are the
+**IRA and Roth, $120k, exactly 30% of the portfolio**. The 401(k) is assumed to be
+menu-constrained to broad index funds — **stated as an assumption, not verified**, because
+no plan menu was supplied — so it can hold the highest-priority asset there is (bonds) and
+none of the wrappers.
+
+A `d = 1.0` wrapper needs `w / d` of the portfolio's capital to deliver `w` of notional, so
+**`w = 0.30` needs exactly the $120k the IRA and Roth hold.** That the two numbers coincide
+is an accident of this investor's balances and not a result; **what is general is that the
+binding quantity is capital that can be reallocated without a realisation, not shelter that
+avoids a distribution tax.** Above `w = 0.30` the marginal dollar must come from new
+contributions or from realising gain, and realising gain to buy a diversifier runs into the
+**84 bp/yr deferral hurdle** the [structural page](structural-and-tax-edges.md) prices —
+which is 60 times the 1.3 bp the distribution drag costs.
+
+**The contribution rate is the input that decides how fast that constraint lifts, and it was
+not supplied: `not found`.** It belongs on the
+[recommendation](portfolio-recommendation.md)'s list of missing investor-policy inputs, and
+it is now the single input that decides this weight.
+
+### 7.4 The drawdown constraint, which is what binds once the account does not
 
 **And the drawdown constraint — the one that made leveraged equity unholdable — does not
-bind here.** Measured on the independent series over 1,091 months:
+bind at the recommended weight.** Measured on the independent series over 1,091 months:
 
 | overlay `w` | geometric | volatility | Sharpe | **max drawdown** | under water | gross |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -1333,38 +1511,226 @@ property of a diversifying overlay and not an artefact of one path, that it is *
 flat in every crisis, and that it depends entirely on an assumption the stress table
 never varied.
 
-**So the weight is set by the account, not by the estimate or the risk.** The binding
-constraints, in order:
+**So the observed ladder permits any weight under discussion, and the resampled one does
+not.** §9.1's paired block bootstrap is the destruction test the flat-drawdown claim has to
+survive, and it is extended here to the weights this re-derivation puts in play. Same
+method throughout — circular block bootstrap, 24-month blocks, 4,000 paired resamples, seed
+20260817, 60 bp financing, 95 bp on notional. **The statistic is `mdd(w) − mdd(0)` and
+positive means the overlay drew down less.** The last two columns are the matched-volatility
+gap against the **leverage-matched** control on the same 1,091 months and its own 80%
+detection floor, in pp/yr. **§9.1's five published rows reproduce exactly**, which is what
+licenses the four new ones:
 
-1. **Tax shelter capacity — and §6a.4 has made this constraint much weaker than it was.**
-   The 2.09 pp/yr of ordinary-income drag that motivated this ranking is **DBMF's**, the
-   pro-rata vehicle. **RSST's own SEC-standardised drag is 0.32 pp/yr** for the same dollar
-   of overlay notional, because a tax-favoured equity sleeve shares the capital. At 0.32 the
-   shelter is no longer the first-order constraint on the weight, and this list is reordered
-   accordingly. **It has not become irrelevant**: RSST's window is 28 months, its trend
-   sleeve still runs through a Cayman subsidiary, and the number is a disclosure rather than
-   a promise.
-2. **Fund closure and methodology change.** The claim that "no fund is six years old" was
+| `w` | observed | mean | 95% interval | **`P`(overlay deeper)** | matched-vol gap | its MDE₈₀ |
+| ---: | ---: | ---: | --- | ---: | ---: | ---: |
+| 0.25 | +0.91% | +3.62% | `[−0.98%, +9.95%]` | **6.5%** | +1.28 | 0.92 |
+| **0.30** | **+0.92%** | +4.18% | `[−1.18%, +11.60%]` | **6.9%** | **+1.50** | 1.11 |
+| **0.40** | +0.91% | +5.13% | `[−1.76%, +14.80%]` | **8.2%** | +1.90 | 1.48 |
+| **0.50** | +0.88% | +5.83% | `[−2.37%, +17.80%]` | **9.6%** | +2.26 | 1.86 |
+| 0.55 | +0.87% | — | — | **10.2%** | +2.42 | 2.06 |
+| 0.58 | +0.85% | — | — | **10.8%** | — | — |
+| **0.60** | +0.85% | +6.28% | `[−3.11%, +19.53%]` | **18.9%** | +2.57 | 2.25 |
+| 0.75 | +0.76% | +6.48% | `[−4.68%, +21.51%]` | 21.2% | +2.97 | 2.85 |
+| 1.00 | +0.56% | +5.69% | `[−7.65%, +22.98%]` | 26.9% | +3.48 | **3.87 — fails** |
+| 2.00 | **−2.05%** | −7.69% | `[−28.01%, +12.55%]` | **78.7%** | +4.26 | 8.33 |
+
+**There is a knee between 0.58 and 0.60 and it is not gradual.** The probability climbs
+0.4 points per five points of weight from 0.25 to 0.58, then jumps 8.1 points in the two
+weights between 0.58 and 0.60. That is a different resampled episode taking over as the
+maximum in a large block of histories, not an estimation artefact — the observed path
+moves by 0.00 pp across the same step. **The flat-drawdown property is a property of
+weights at or below about 0.55, and this is the first time it has been resampled anywhere
+between 0.30 and 1.00.**
+
+**A second and independent ceiling arrives at almost the same place.** The matched-volatility
+gap grows sub-linearly in `w` while its own 80% detection floor grows faster, and the two
+cross between `w = 0.75` and `w = 1.00`. **Above roughly `w = 0.8` the overlay's advantage
+over the leverage-matched control is no longer measurable on 1,091 months**, which is a
+statement about what this repository could ever demonstrate rather than about what is true.
+
+**The binding constraints, reordered, and the first item is no longer the one that was
+there.**
+
+1. **Drawdown and holdability, at about `w = 0.50`.** The resampled probability that the
+   overlay is the deeper drawdown doubles between 0.55 and 0.60. Nothing above 0.55 has been
+   resampled favourably, and this page does not propose a weight whose drawdown behaviour it
+   has not resampled.
+2. **Capital that can be moved without realising a gain**, §7.3. For the stated investor
+   that is $120k of $400k and it caps `w` at 0.30 today. It lifts with contributions, which
+   are `not found`.
+3. **Fund closure and methodology change.** The claim that "no fund is six years old" was
    wrong and is withdrawn — **NTSX is eight and PIMCO's StocksPLUS family predates the
    ETF** (§6a.5). What survives is narrower and still binding: **RSST itself is under three
    years old**, and two governance events landed on this shelf inside one audit (§6a.6).
-3. **Model risk the shrinkage does not cover** — `sigma_d` and `rho` are treated as
+4. **Undisclosed financing.** §7.1's bottom row, and §5b's 97 bp boundary against a family
+   whose one disclosed rate is 664 bp and doubled in a quarter.
+5. **Model risk the shrinkage does not cover** — `sigma_d` and `rho` are treated as
    known, and the post-2012 drought is real on all three instruments.
+6. **Tax shelter capacity**, which is last rather than first and is worth **1.3 bp/yr**
+   at the recommended weight (§7.2).
 
-**What the constraint costs is exact**, from the parameter-free retention curve
-`1 − (1 − f)**2` with `f = w / w*`:
+### 7.5 Refusing the growth optimum, and the price of the refusal
 
-| `w` | share of the optimum | growth retained | gain |
-| ---: | ---: | ---: | ---: |
-| 15% | 0.07 | **14.2%** | +0.61 pp/yr |
-| 25% | 0.12 | 23.1% | +0.99 pp/yr |
-| **30%** | 0.15 | **27.4%** | **+1.18 pp/yr** |
-| 100% | 0.49 | 74.3% | +3.43 pp/yr |
+**The growth objective wants 2.14 units of notional after shrinkage on twenty years of
+stationary information, and 0.93 on the pessimistic row. All of it is refused.** This
+repository has already measured what happens to a portfolio held at its growth optimum:
+§2 puts levered equity's optimum at **2.2×, a −99.3% maximum drawdown and 296 months under
+water**. The overlay is a far better-behaved object than levered equity — that is the whole
+finding of §5 — but the refusal is the same refusal, and it is made on the same grounds:
+**growth decides which direction is better and drawdown decides what can be held, and an
+unheld portfolio returns nothing.**
 
-**Consequence: hold as much as the shelter allows, and stop there.** There is no
-interior optimum to search for, the drawdown that would justify holding less does not
-appear, and every weight under discussion sits on the gentle left branch of the growth
-parabola where being wrong is cheap.
+The refusal has a price and it is exact, from the parameter-free retention curve
+`1 − (1 − f)**2` with `f = w / w*`, against the `w* = 3.04` of §7.1's live-fund row:
+
+| `w` | share of the optimum | growth retained | gain | `P`(overlay deeper) |
+| ---: | ---: | ---: | ---: | ---: |
+| 15% | 0.05 | **9.6%** | +0.63 pp/yr | ~6% |
+| 25% | 0.08 | 15.8% | +1.04 pp/yr | 6.5% |
+| **30%** | 0.10 | **18.8%** | **+1.23 pp/yr** | **6.9%** |
+| 50% | 0.16 | 30.2% | +1.99 pp/yr | 9.6% |
+| **55% — the drawdown ceiling** | 0.18 | **33.0%** | **+2.17 pp/yr** | **10.2%** |
+| 100% | 0.33 | 55.0% | +3.62 pp/yr | 26.9% |
+
+The peak this is a share of is **+6.57 pp/yr at `w* = 3.04`**, and it is a modelled quantity
+from §7.1's forecasts, not a measurement — read it beside the **+1.50 pp/yr** the same
+weight earns against the leverage-matched control on 1,091 months of realised data, which is
+the number with an error bar on it.
+
+**Moving from 30% to the drawdown ceiling at 55% buys +0.94 pp/yr of modelled growth and
+costs 3.3 points of resampled probability that the drawdown is the deeper one.** That is a
+real trade and this page does not make it, for the reason §9.3 gives: the whole drawdown
+argument rests on a crisis-conditional correlation of −0.24, and at +0.30 — a *full-sample*
+correlation of only +0.29 — the drawdown at `w = 1.00` is 11 pp deeper. **The higher the
+weight, the more of the recommendation rides on the one parameter the stress table never
+varied.**
+
+**Consequence: 30% stands, and every reason this page previously gave for it is
+withdrawn.** It is not "as much as the shelter allows" — the shelter allows far more and
+costs almost nothing. It is the largest weight this investor can reach without realising
+gain, it sits comfortably inside a drawdown ceiling of about 0.55, and it retains 18.7% of a
+growth optimum nobody should hold. **If a reader's taxable account has no embedded gain, the
+weight they may hold is 0.50, not 0.30, and not 2.14.**
+
+### 7a. RSSB as a second overlay: bonds pass the algebra and fail on the evidence
+
+**The question.** RSSB is the cheapest genuine 2× stack on the shelf — **0.39% all-in,
+2.004× gross, `delta` −0.0007, a true overlay** (§§6a.2–6a.3) — and it stacks *global equity
+plus bonds*. [Setting the equity share](setting-the-equity-share.md) §1.2 shows the growth
+objective plus a zero-leverage rule returns a **corner solution at 100% equity**, so **the
+bonds in variants B and C come from the constraint rather than from the objective.** If the
+constraint is what put them there, an overlay wrapper that removes the constraint should be
+where bonds finally earn their place. **It is the right question and the answer is no.**
+
+**Bonds pass the overlay bar comfortably.** On this section's own panel over 1,091 months
+Treasury excess return is 2.20%/yr at 8.68% volatility, a Sharpe of 0.253, correlated
++0.077 to equity and **+0.065 to the trend leg**. `effective_breadth(k=2, rho=+0.065)` is
+**1.88** — indistinguishable from trend-and-gold's 1.87 (§3a), and the algebra duly wants a
+lot of it: the unshrunk two-overlay optimum `Sigma^-1 e` is **2.79 of trend and 2.02 of
+bonds** on the full-window mean, and **2.67 and 3.95** on the post-1985 one.
+
+**Then the era table destroys it, and the mechanism is that the two eras trade off
+exactly.**
+
+| Window | n | Treasury Sharpe | `rho` to equity | **`rho` to trend** | effective breadth with trend |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| pre-1985 | 606 | **+0.024** | +0.203 | **−0.256** | 2.69 |
+| 1985 onward | 485 | **+0.469** | −0.041 | **+0.371** | **1.46** |
+| full | 1091 | +0.253 | +0.077 | +0.065 | 1.88 |
+
+**Bonds have breadth in the era where they have no return, and return in the era where they
+have no breadth.** The full-window +0.065 correlation that produces the flattering 1.88 is
+the average of −0.256 and +0.371 and describes neither half. §3 already records that "the
+bond overlay's entire case is the post-1985 disinflation"; this adds that its *breadth* case
+belongs to the other era.
+
+**At matched gross notional, more trend beats trend plus bonds, and it is not close.**
+1,091 months, 95 bp on trend notional and 39 bp on bond notional, 60 bp borrow on gross
+above 1.0:
+
+| Portfolio | gross | geometric | volatility | Sharpe | max drawdown |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| equity only | 1.00 | 11.13% | 15.86% | 0.538 | −50.31% |
+| + 30% trend | 1.30 | 12.99% | 16.33% | 0.630 | −49.40% |
+| **+ 30% trend + 30% bonds** | **1.60** | 13.32% | 16.77% | 0.636 | **−49.58%** |
+| **+ 60% trend** | **1.60** | **14.72%** | 17.61% | **0.684** | **−49.47%** |
+| + 100% bonds — RSSB at full weight | 2.00 | 11.94% | 18.65% | **0.523** | **−57.59%** |
+
+**The 100%-bond row is the one to sit with. RSSB held at its own notional lowers the
+portfolio's Sharpe ratio below the unlevered base's and deepens the maximum drawdown by
+7.3 points.** Equation (5) rejects it outright, exactly as it rejects GDE at GDE's own
+notional (§3a). Same structure, second instance.
+
+**And the flat-drawdown property does not transfer to a bond overlay at all.** The same
+paired block bootstrap, same seed and blocks:
+
+| Overlay leg | `w` | observed | mean | **`P`(overlay deeper)** |
+| --- | ---: | ---: | ---: | ---: |
+| **trend** | 0.30 | +0.92% | +4.18% | **6.9%** |
+| **bonds** | 0.30 | +0.53% | **−0.04%** | **49.7%** |
+| **bonds** | 0.50 | −1.75% | −0.58% | **55.6%** |
+| **bonds** | 1.00 | −7.28% | −3.45% | **70.0%** |
+
+**A bond overlay's effect on drawdown is a coin flip at 30% notional and adverse above it.**
+The flat drawdown that carries the whole recommendation is a property of *trend*, not of
+financed notional in general — which is the sharpest available answer to anyone who reads
+§5's tables as a case for capital efficiency as such.
+
+**Verdict: RSSB is rejected as a second overlay and rejected as a replacement.** It is the
+best-built wrapper on the shelf — cheapest, cleanest legs, a `delta` of −0.0007 verified
+from N-PORT — and none of that is the question. Three further limits, any one sufficient:
+its base leg is **global** equity where the incumbent is US, so `base_substitution_note`
+refuses to score it at all and the wrapper bundles a regional decision §6 says this
+repository cannot make with an overlay decision it can; the bond leg's excess return is the
+one input §3's window table shows is almost entirely a single disinflation; and its measured
+distribution drag of **0.79 pp/yr** is more than twice RSST's, which matters not at all for
+the weight and does place it above RSST in any shelter queue. **The one thing it is good
+for is the thing it is sold for — replacing a plain global equity holding with the same
+equity plus bond notional at 39 bp — and this page has no evidence that is worth doing.**
+
+### 7b. Gold as the second overlay: the drawdown case, resampled and dominated
+
+§3a rejects gold on return — its increment beside a 30% trend overlay is **+0.09 pp/yr
+against an MDE₈₀ of 1.68** — and records the honest counterargument, which is that the
+drawdown moves further than the return does: **−44.8% for trend alone against −41.0% at 30%
+trend plus 30% gold.** For a thirty-year holder a four-point reduction in the worst case,
+delivered by a crisis correlation of +0.084 rather than by a fitted parameter, is worth
+taking seriously even when the return increment is unmeasurable. **This section takes it
+seriously by running the same destruction test on it, which had never been done.**
+
+Same paired block bootstrap, 605 months 1975-01…2025-05, seed 20260817, World Bank series
+with LBMA in brackets where it differs:
+
+| Portfolio | gross | max drawdown | observed `mdd(w)−mdd(0)` | **`P`(overlay deeper)** |
+| --- | ---: | ---: | ---: | ---: |
+| + 30% trend | 1.30 | −44.80% | +5.51% | **10.5%** |
+| + 30% trend + 10% gold | 1.40 | −43.51% *(−43.71)* | +6.80% | 12.2% *(11.6)* |
+| **+ 30% trend + 30% gold** | **1.60** | **−40.96%** *(−41.64)* | +9.36% | **21.9%** *(20.7)* |
+| **+ 50% trend** | **1.50** | **−40.99%** | +9.32% | **14.2%** |
+| + 10% gold alone | 1.10 | −49.16% | +1.15% | 29.5% *(23.1)* |
+| + 30% gold alone | 1.30 | −46.88% | +3.43% | 38.6% *(35.5)* |
+
+**The counterargument is dominated, and by the sleeve already in the portfolio.** Holding
+50% trend and no gold reaches the *same* maximum drawdown — −40.99% against −40.96% — at
+**less gross notional**, at a **resampled probability of 14.2% rather than 21.9%**, and with
+a matched-volatility gap that clears its own detection floor where gold's increment does
+not. **Every part of the drawdown case for gold is available more cheaply by moving one
+weight this page already recommends moving.**
+
+**And gold alone has no flat-drawdown property to speak of**: at 10% notional the
+probability that it is the deeper drawdown is 29.5%, against trend's 6.9% at three times the
+weight. That is the second confirmation, after §7a's bond leg, that **the flat drawdown is a
+property of trend and not of financed notional.** Three overlays have now been resampled on
+this test and only one passes it.
+
+**Verdict: no shelter capacity for gold, and none needed.** §3a's tax paragraph gives the
+placement answer directly — the physical wrapper distributes nothing and defers
+indefinitely, so it needs no shelter, while GDE distributes **1.31 pp/yr** at the stated
+investor's rates and would rank third in the shelter queue behind bonds and DBMF (§7.2). **A
+sleeve whose return increment is below its own detection floor and whose drawdown increment
+is dominated by an existing sleeve does not get scarce capacity of any kind.** If gold is
+held anyway, on grounds this page cannot supply, it is held physically in the taxable
+account — which is the one gold conclusion that costs nothing to act on.
 
 ---
 
@@ -1653,6 +2019,15 @@ tables, N-CSR Note 7 tax-character tables, and N-CEN's recoupment flags. Equatio
 two boundary reductions are derived and pinned against numerical differentiation of an
 independently written growth function.
 
+**Assumed, in §§7.2–7.3 and nowhere else on this page.** A **named investor** — ~$400k
+across ~$160k taxable with unrealised gain that will not be realised, ~$120k IRA/Roth and
+~$120k 401(k); ~$180k of income; California; multi-decade horizon. Their federal rates
+follow from that; **their 401(k) is assumed menu-constrained to broad index funds and no
+plan menu was supplied**; their contribution rate is `not found` and is the input that
+decides how fast §7.3's constraint lifts. **DBMF's distribution composition is `not found`**
+and is bounded as 100% non-qualified ordinary, which makes its restated drag an upper bound.
+Every figure in §7.2 is a function of two rates a different investor must restate.
+
 **Assumed.** A 1.45%/yr all-in cost on trend notional and a 60 bp borrow spread, neither
 verified against a filing on this page — **and §6a.3 now supplies the fee half from filings
 (0.99% for RSST) while leaving the financing half unmeasured, so the 1.45% remains a
@@ -1782,3 +2157,15 @@ informs a decision.
     global futures book is a category error, and it is invisible because the result looks
     like a plausible number. Only a book verified as single-currency may be totalled from
     the structured data set.
+12. **A tax drag may not be compared with zero. It is compared with the fund it displaces,
+    at the holder's own rates.** §7.2 shows both halves matter: subtracting the plain equity
+    fund inside the wrapper turns RSST's 0.32 pp/yr into **4.5 bp**, and California's lack of
+    a preferential capital-gain rate almost exactly cancels a lower federal bracket rather
+    than compounding it. **The 2.09 pp/yr that set the overlay weight failed both tests
+    simultaneously**, and it stood in four places on two pages for as long as it did because
+    no page ever asked what the alternative holding paid.
+13. **A weight above 0.30 needs its own resampled drawdown probability before it may be
+    proposed.** §7.4 supplies six new rungs and finds a knee between 0.58 and 0.60 that no
+    published table could have shown. **The flat drawdown is a property of trend at weights
+    below ~0.55** — a bond overlay is a coin flip at 0.30 (§7a) and a gold overlay is worse
+    than that at 0.10 (§7b). **Financed notional does not confer it; the diversifier does.**

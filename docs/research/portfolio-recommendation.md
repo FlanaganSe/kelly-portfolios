@@ -14,7 +14,8 @@ sleeve. **Nothing here reached `production-eligible`, and nothing here is claime
 an index.** Every fund-specific fact below is dated and must be re-checked before use.
 
 `as of 2026-08-17` for the wrapper and managed-futures product facts, `2026-08-12` for
-everything else. US federal individual investor, state tax excluded and additive.
+everything else. US federal individual investor, state tax excluded and additive **except in
+§3.1, which is worked for one named California investor and says so.**
 
 ---
 
@@ -43,14 +44,27 @@ everything else. US federal individual investor, state tax excluded and additive
 5. **One account-placement result is not the textbook one:** at a 15% or 18.8% qualified
    rate, **emerging-market equity belongs in the taxable account and US equity in the
    shelter**. The break-even is 21.51%, between two live US rates.
-6. **Managed futures was called the one sleeve whose account decides its sign. That is a
-   fact about DBMF, not about the exposure.** 2.09 pp/yr of distribution tax drag against an
-   0.85% fee, and zero in a shelter — **but a dollar of the same trend notional obtained
-   through the return-stacked wrapper RSST carries 0.32 pp/yr**, on each fund's own
-   SEC-standardised after-tax table
-   ([capital efficiency §6a.4](capital-efficiency-and-breadth.md)). The account still
-   decides more than the product; it decides a great deal less than this page said.
-7. **The wrapper was a single point of failure and is no longer one.** The equity-plus-trend
+6. **"Managed futures is the one sleeve whose account decides its sign" is withdrawn. It
+   was a fact about DBMF, not about the exposure, and it is smaller than it looked even
+   there.** 2.09 pp/yr of distribution tax drag against an 0.85% fee, and zero in a shelter
+   — **but a dollar of the same trend notional obtained through the return-stacked wrapper
+   RSST carries 0.32 pp/yr**, on each fund's own SEC-standardised after-tax table
+   ([capital efficiency §6a.4](capital-efficiency-and-breadth.md)). **And 0.32 is still the
+   wrong comparison**: RSST is bought *instead of* the plain equity fund it contains, which
+   pays 26.7 bp of its own, so **the incremental cost of holding the overlay in a taxable
+   account is 4.5 bp per dollar — 1.3 bp of portfolio return at a 30% overlay**
+   ([§7.2](capital-efficiency-and-breadth.md)). **The account decides DBMF's sign. It does
+   not decide RSST's, and no weight or placement on this page may be justified by that
+   claim again.**
+7. **The overlay weight was a corner solution against that constraint, and it survives its
+   removal for a different reason.** Re-derived without it, the growth optimum is **3.04
+   units of notional, 2.14 after twenty years of shrinkage** — and is refused, on the same
+   grounds as this repository's 2.2× levered-equity optimum. What binds is the **resampled
+   drawdown, which doubles between `w = 0.58` and `w = 0.60`**, giving a ceiling near
+   **0.55**; and, for an investor whose taxable account carries unrealised gain they will
+   not realise, the capital that can be moved at all. **The recommended weight does not
+   move. Every reason previously given for it does.**
+8. **The wrapper was a single point of failure and is no longer one.** The equity-plus-trend
    overlay shelf is four live funds and a JPMorgan entrant at 0.59%, and the listed
    managed-futures shelf has gone from five products to fifteen with BlackRock, Fidelity,
    Invesco and Man Group among the entrants. **None of the newcomers has been tested against
@@ -140,13 +154,26 @@ total allocation rather than added to it.
 | Sleeve | Fund | ER | Size | Where | Verdict |
 | --- | --- | ---: | --- | --- | --- |
 | Small-cap value | **VBR** | 0.05% | 0–20% of US equity | treat as US equity in §3 | `exploratory` product, `exploratory` premium, **chain negative on the defensible reading**, and its marginal credit against an equity core is **−0.181 pp/yr per unit weight** |
-| Managed futures | **DBMF** pro rata, or **RSST** as the overlay | 0.85% / 0.99% | 0–10% of total | DBMF **tax-deferred only**; RSST's drag is 0.32 pp/yr, so the shelter is no longer decisive for it | `exploratory` product, index `unresolved`. **DBMF is the pro-rata vehicle and gets the +2.44 pp/yr bar; RSST is the overlay and gets a bar near zero — see below.** Single-product risk has eased: the overlay shelf is four live funds and the listed managed-futures shelf is fifteen |
+| Managed futures | **DBMF** pro rata | 0.85% | **0–10% of total capital** | **tax-deferred only.** 2.09 pp/yr of drag, 143.9 bp of it incremental over the equity it is sold to buy | `exploratory` product, index `unresolved`. **DBMF is the pro-rata vehicle and gets the +2.44 pp/yr bar** |
+| Managed futures | **RSST** as the overlay | 0.99% | **0–30% of *notional*, which is 0–30% of capital at `d ≈ 1.0`** | **either account.** 4.5 bp per dollar incremental in taxable ([§7.2](capital-efficiency-and-breadth.md)); place it wherever it does not force a realisation | Same status. **RSST is the overlay and gets a bar near zero.** Single-product risk has eased: the overlay shelf is four live funds and the listed managed-futures shelf is fifteen |
 
-Two sizing notes, because both weights are judgements and neither is measured. **VBR's
-yield is higher than the market's, which raises its shelter priority above plain US equity
-— by how much is not measured here.** And **Experiment 004 priced a 15% trend sleeve, not a
-10% one**: the cap is set below the tested weight because one product delivers the exposure
-and there is no fallback, not because 10% was measured to be better.
+**The two rows are two different weights and must never be added or compared directly.**
+DBMF's 10% is a share of *capital*, sold out of equity; RSST's 30% is a share of *notional*,
+financed and selling nothing. Ten per cent of capital in DBMF buys 10% of trend notional at
+the cost of 10% of the equity position; thirty per cent of capital in RSST buys 30% of trend
+notional and **more** base equity than it displaced, because the wrapper delivers 107.2%
+([capital efficiency §6a.2](capital-efficiency-and-breadth.md)).
+
+Three sizing notes, because these weights are judgements before they are measurements.
+**VBR's yield is higher than the market's, which raises its shelter priority above plain US
+equity — by how much is not measured here.** **Experiment 004 priced a 15% trend sleeve, not
+a 10% one**: the pro-rata cap is set below the tested weight because one product's loading
+has been measured and there is no fallback, not because 10% was measured to be better. And
+**the 30% overlay is not a growth optimum**: the growth optimum is 3.04 units of notional
+and is refused, the drawdown ceiling that replaces it is about 0.55, and 30% is where an
+investor holding appreciated taxable lots can get to without realising gain
+([§7](capital-efficiency-and-breadth.md)). **A reader with no embedded gain may hold 0.50.
+Nobody should hold the optimum.**
 
 Everything else tested is out: momentum (MTUM), quality (QUAL, SPHQ), large-cap value
 (VTV), plain small-cap (VB), the other four managed-futures ETFs, rebalancing as a source
@@ -179,11 +206,14 @@ belong here because they move what a reader should hold.
   trend sleeve at 2026-04-30; **0.99% all-in including 0.04% of acquired fund fees, with no
   waiver and — from Form N-CEN — no recoupment clause**; $508.7m at 2026-08-14 and growing
   faster than any other wrapper on the shelf.
-- **The tax gap between the two vehicles is 1.77 pp/yr and runs the other way from this
-  page's framing.** RSST 0.32 pp/yr of distribution tax drag, DBMF 2.09, each from its own
-  SEC-standardised after-tax table. The mechanism is that a tax-favoured equity sleeve shares
-  RSST's capital, **not** that its trend sleeve is taxed better — RSBT and RSBY, whose base
-  leg is bonds, distribute 100% ordinary income like DBMF.
+- **The tax gap between the two vehicles is 1.77 pp/yr gross and 1.39 pp/yr net of the
+  equity each displaces, and it runs the other way from this page's framing.** RSST 0.32 pp/yr
+  of distribution tax drag, DBMF 2.09, each from its own SEC-standardised after-tax table;
+  subtract the 26.7 bp the plain equity fund pays anyway and the figures are **4.5 bp and
+  143.9 bp per dollar held** ([§7.2](capital-efficiency-and-breadth.md)). The mechanism is
+  that a tax-favoured equity sleeve shares RSST's capital, **not** that its trend sleeve is
+  taxed better — RSBT and RSBY, whose base leg is bonds, distribute 100% ordinary income like
+  DBMF.
 - **The successor is named.** **CTAP** (Simplify U.S. Equity PLUS Managed Futures, $123.4m)
   is the only live alternative above $100m; it obtains its trend leg through a **total return
   swap** rather than futures, and its swap financing rate was not established. **JPFP**
@@ -245,7 +275,8 @@ better exists` means the alternatives were tested and lost.
 | **BND** or Treasuries | term and credit compensation, and a risk brake | **a different benchmark, not an edge** | Sized by risk capacity. **The brake works; its diversification does not, in every era** — the bond–stock beta was positive to 1999, negative to 2022Q3, positive again to 2024Q2, and negative on the 18 months since, on this repository's own data |
 | **VBR** (optional) | HML loading **+0.410 `[+0.322, +0.480]`**, delivered and stable, at 5 bp, with a **negative** shortfall against a fitted four-fund combination | **risk premium**, `exploratory` on both terms | **Low confidence.** The chain is +0.09 to −0.39 pp/yr on the US premium and +0.28 to +0.76 on the pooled one. It is here because it is the only US value product that both delivers its exposure and does not lose to a cheap combination — **not because the chain is positive** |
 | **DBMF** (optional) | loading **+0.671 `[+0.513, +0.829]`** on the AQR index, stable across the split and all 19 rolling windows, trailing a cost-free index by 0.48 pp/yr against an 0.85% fee | **risk premium**, `exploratory`; the index itself `unresolved` | **Nothing better has been measured**, which is not the same as nothing better existing: four of the five tested funds fail the 0.50 bar and **ten more listed funds have never been tested**. Crisis correlation −0.59 and payoff spread across four crises — but the post-publication interval includes zero and fails Holm |
-| **RSST** (optional, in place of DBMF) | the same trend exposure as an **overlay** rather than pro rata, so the sleeve's hurdle falls by about 2.44 pp/yr; 0.99% all-in, no waiver, no recoupment; 0.32 pp/yr of distribution tax drag | **risk premium**, `exploratory` on the product and `unresolved` on the index — **the wrapper changes the hurdle, not the evidence** | **Its loading on the benchmark has never been measured.** It is named because its structure is verified from N-PORT and its costs from filings, not because anything here says its trend leg delivers |
+| **RSST** (optional, in place of DBMF) | the same trend exposure as an **overlay** rather than pro rata, so the sleeve's hurdle falls by about 2.44 pp/yr; 0.99% all-in, no waiver, no recoupment; 0.32 pp/yr of distribution tax drag, **4.5 bp of it incremental over the equity fund inside it** | **risk premium**, `exploratory` on the product and `unresolved` on the index — **the wrapper changes the hurdle, not the evidence** | **Its loading on the benchmark has never been measured.** It is named because its structure is verified from N-PORT and its costs from filings, not because anything here says its trend leg delivers |
+| **RSSB** | **rejected as a second overlay and as a replacement.** Global equity plus 100% Treasury notional at 0.39%, `delta` −0.0007 — the best-built wrapper on the shelf | — | **A bond overlay does not inherit trend's flat drawdown**: resampled, it is the deeper drawdown in **49.7%** of histories at 30% notional and **70.0%** at 100%, against trend's 6.9%. At matched 1.6× gross, **60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr** and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single `delta` scores it ([§7a](capital-efficiency-and-breadth.md)) |
 | **Cash reserve** | optionality and the ability not to sell | contractual | The framework requires it and **no experiment here sizes it** |
 
 ### What is deliberately absent
@@ -306,9 +337,10 @@ more than four to one**, which is why the ranking does not move.
 | Account | Holds, in this order | Why |
 | --- | --- | --- |
 | **HSA** (if a high-deductible plan applies) | equity, highest-growth sleeve | The only US account untaxed at all three points. **A dollar limit, not a rate**: $4,400 self-only / $8,750 family for 2026. **California breaks the deduction and taxes internal earnings annually**; New Jersey is widely reported to do the same and no primary source was found |
-| **Traditional 401(k)/IRA** | bonds first, then developed ex-US, then per the table. **DBMF here if held at all** | Bonds dominate by four to one. DBMF's 2.09 pp/yr distribution tax drag is zero here. **A trend overlay held through RSST does not need this shelter nearly as much** — 0.32 pp/yr of drag, so a 15% sleeve forfeits about **5 bp of portfolio return** by sitting in taxable rather than the **31 bp** DBMF forfeits, and the shelter it would have consumed is better spent on bonds |
+| **Traditional 401(k)/IRA** | bonds first, then developed ex-US, then per the table. **DBMF here or not at all** | Bonds dominate by four to one. DBMF's 2.09 pp/yr distribution tax drag is zero here, and 143.9 bp of it is incremental over the equity it displaces. **A trend overlay held through RSST does not need this shelter at all** — 4.5 bp per dollar in taxable, so a 30% overlay forfeits **1.3 bp of portfolio return** by sitting outside a shelter, against the **43 bp** a 30% DBMF sleeve forfeits ([§7.2](capital-efficiency-and-breadth.md)) |
 | **Roth** | the highest-expected-growth sleeve that fits after bonds | Identical to traditional on foreign withholding — both forfeit it. **The traditional-vs-Roth choice itself is a rate forecast, not a structure** |
-| **Taxable** | US total market; emerging-market equity at 15% or 18.8%; whatever does not fit above | ETFs, specific-ID lots as a standing instruction, no turnover |
+| **Taxable** | US total market; emerging-market equity at 15% or 18.8%; **a trend overlay through RSST, if buying it in a sheltered account would mean realising gain to make room**; whatever does not fit above | ETFs, specific-ID lots as a standing instruction, no turnover. **The 1.3 bp the overlay costs here is 60 times smaller than the 84 bp/yr deferral hurdle that realising gain to relocate it would trigger** |
+| **Physical gold, if held at all** | **taxable, and nowhere else** | A bullion trust distributes nothing, so it consumes no shelter and defers indefinitely; the capital-efficient wrapper GDE distributes **100% ordinary income at a measured 1.53 pp/yr** and cannot defer. **This page holds neither** ([§3a](capital-efficiency-and-breadth.md)) |
 
 Three conditions that decide more than the ranking. **A tax-deferred balance is not the
 investor's money** — at a 24% withdrawal rate $100,000 of traditional IRA is $76,000 of
@@ -325,6 +357,41 @@ also shelters capital-gain distributions and rebalancing turnover, which emergin
 generate more of; and a taxable international position is a better loss-harvesting
 candidate. **Either could close a 6 bp gap.**
 
+### 3.1 The queue, with the sleeves in it, at one worked bracket
+
+The table above is federal-only and covers the plain sleeves. The wrappers belong in the
+same queue, and putting them there is what shows that **sorting the shelter by tax drag
+alone fills it with the sleeve that contributes least.** Worked for a California investor at
+**24%/15% federal with no §1411 surtax and 9.3% state on every line** — 33.3% ordinary and
+24.3% qualified/long-term, the machinery and the restatement in
+[capital efficiency §7.2](capital-efficiency-and-breadth.md):
+
+| Rank | Asset | Priority per sheltered dollar | Its measured marginal contribution |
+| ---: | --- | ---: | --- |
+| 1 | **DBMF**, pro-rata trend | **170.6 bp** | +2.44 pp/yr of hurdle it must clear first, and it does not |
+| 2 | **Taxable IG bonds** | **154.8 bp** | risk control, not a return claim |
+| 3 | **GDE**, equity + gold | 130.9 bp | **+0.09 pp/yr against an MDE₈₀ of 1.68 — unmeasurable** |
+| 4 | **RSSB**, global equity + bonds | ~70 bp | rejected; a bond overlay deepens the drawdown in 70% of resampled histories at its own notional |
+| 5 | Developed ex-US equity | 47.4 bp | the control |
+| 6 | **RSST**, equity + trend | **31.2 bp**, of which **4.5 bp is incremental** over the equity fund inside it | **+1.50 pp/yr** at 30% notional, leverage-matched, MDE₈₀ 1.11 |
+| 7 | Emerging-market equity | 29.3 bp | the control |
+| 8 | US equity (VTI) | 26.7 bp | the control |
+| 9 | **GLDM**, physical gold | **~0 bp** — a bullion trust distributes nothing | needs no shelter at any weight |
+
+**Read rows 1, 3 and 6 together.** The naive rule — shelter the highest drag — puts DBMF and
+GDE at the front and RSST near the back, and it is exactly backwards: **RSST is the only one
+of the three with a marginal contribution that clears its own detection floor, and it is the
+one that needs the shelter least.** Priority ranks what a sheltered dollar *saves*; it says
+nothing about whether the asset should be held at all, and **a queue is only ever run over
+sleeves already decided on other grounds.**
+
+**The operative constraint for the stated investor is not capacity but fungibility.** A
+menu-constrained 401(k) can hold the top of this queue (bonds, broad index) and none of the
+wrappers; a taxable account carrying unrealised gain can hold anything but cannot be
+*converted* into anything; so the IRA and Roth are the only accounts that can take an
+arbitrary ETF at zero cost. **That is what caps an overlay, and it caps it in units of
+capital rather than of tax.**
+
 ---
 
 ## 4. Verdict on the proposed portfolio
@@ -339,7 +406,7 @@ sleeve absorbs the five points.
 | **"Other" 25%** | **Underspecified. Split it** | If bonds, they go in the shelter first by a factor of four. If managed futures at anything like 25%, far too large for a sleeve whose index is `unresolved` and whose only delivering product is one fund |
 | **Small-cap value** | **Reduce, and know what you are buying.** 0–20% of US equity, via VBR | On the size-neutral capture (0.520) and the US-only premium (+1.57) the chain is **+0.09 to −0.39 pp/yr — negative on the defensible reading of both terms.** It is positive only on the pooled premium *and* the market-relative capture, and the gap between those captures is **a size premium wearing a value label** — which the size test then failed to sign. Judged marginally it gets worse: US small value's beta to an equity core is 1.083, so its credit is −0.181 pp/yr per unit weight |
 | **Momentum** | **Drop** | **Not because the premium is weak** — it is the largest gross factor measured here, pooled **+7.33 pp/yr**. Because its detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and **crash together**; the academic construction rebalances **monthly** with an assumed cost of 3.30–18.67 pp/yr against that 7.33; and the entire retail shelf is MTUM, `rejected` on cost |
-| **Managed futures** | **Keep, smaller. The account rule applies to DBMF and much less to RSST** | **Only DBMF's loading has been measured against the benchmark**, on three independent measurements, and the other fourteen listed funds are untested rather than rejected. DBMF's tax drag is 2.09 pp/yr — 2.5× its own fee, zero in a shelter; **RSST's is 0.32**, and RSST is also the vehicle that keeps the funding-rule benefit |
+| **Managed futures** | **Keep. The account rule applies to DBMF and does not apply to RSST** | **Only DBMF's loading has been measured against the benchmark**, on three independent measurements, and the other fourteen listed funds are untested rather than rejected. DBMF's tax drag is 2.09 pp/yr — 2.5× its own fee, zero in a shelter, and 143.9 bp of it incremental over the equity it is sold to buy; **RSST's incremental drag is 4.5 bp and its account does not decide its sign.** RSST is also the vehicle that keeps the funding-rule benefit. **25% of capital is far too large for DBMF and is inside the range for RSST notional**, which is the distinction §1.3 insists on |
 
 ### What changed since the earlier answer to the owner
 
@@ -413,16 +480,24 @@ volatilities and correlation.
 | Case | **Net edge, growth** | TE | **P(30 yr)** | 90% at |
 | --- | ---: | ---: | ---: | ---: |
 | Post-publication, **tax-deferred** | **+59 bp** | 251 bp | 0.902 | 30 yr |
-| Post-publication, **taxable through DBMF** (less `0.15 × 2.09`) | **+28 bp** | 251 bp | 0.729 | 133 yr |
-| Post-publication, **taxable through RSST** (less `0.15 × 0.32`) | **+54 bp** | 251 bp | **0.883** | **35 yr** |
+| Post-publication, **taxable through DBMF** (less `0.15 × 1.439`) | **+37 bp** | 251 bp | 0.790 | 76 yr |
+| Post-publication, **taxable through RSST** (less `0.15 × 0.045`) | **+58 bp** | 251 bp | **0.897** | **31 yr** |
 | Full-period, tax-deferred | +88 bp | 251 bp | 0.973 | 13 yr |
 
-**The account was the largest controllable term and the wrapper has displaced it.** Choosing
-the shelter over taxable is worth **31 bp/yr** through DBMF; choosing RSST over DBMF is worth
-**26 bp/yr in taxable and nothing at all in a shelter**, and it also removes the 2.44 pp/yr
-funding-rule hurdle that the shelter does nothing about. **Both are larger than the whole
-fee, and the wrapper decision comes first because it changes which bar the sleeve is judged
-against.**
+**The two taxable rows are charged on the *incremental* drag over the equity each sleeve
+displaces, and they used to be charged on the gross drag.** `0.15 × 2.09` and `0.15 × 0.32`
+gave +28 and +54 bp; both overstated the cost, because a sleeve sold out of a taxable equity
+position removes 26.7 bp of that position's own distribution tax as it goes
+([capital efficiency §7.2](capital-efficiency-and-breadth.md)).
+
+**The account was the largest controllable term, the wrapper has displaced it, and on the
+corrected arithmetic the account is barely a term at all.** Choosing the shelter over taxable
+is worth **21.6 bp/yr** through DBMF and **0.7 bp/yr** through RSST — the second number is
+the whole finding, and it is 60 times smaller than the deferral hurdle a reader would trigger
+by selling appreciated lots to make shelter room. Choosing RSST over DBMF is worth **21 bp/yr
+in taxable and nothing at all in a shelter**, and it also removes the 2.44 pp/yr funding-rule
+hurdle that no account does anything about. **The wrapper decision comes first because it
+changes which bar the sleeve is judged against; the account decision now comes last.**
 
 Against those probabilities: the index's standalone Sharpe fell 1.34 → 0.18, the vendor
 states **no cost basis anywhere**, comparable CTA survivorship distortion is bounded at
@@ -455,6 +530,8 @@ Each is measurable and dated. None is a hope.
 | **A measured implied financing spread, a signed term premium, a defined investor policy, and a modelled forced-liquidation path** — all four | Reopens capital efficiency and the zero-leverage rule |
 | **A further decade of RMW/CMA data, or a non-French construction** | Nothing else reopens them. Pooled MDE₈₀ scales as `1/sqrt(T)`: reaching 2.0 from 2.62 needs ~245 months, about 2035 |
 | **A re-specified portfolio-level test** at the weight cap, with named-leg funding and a ceiling-derived bar | Reopens whether a diversifying sleeve can pay inside a portfolio. **The current closure is weight-dependent** ([search coverage](search-coverage.md) §1.1) |
+| **A taxable account with no embedded gain, or contributions large enough to build one** | Lifts the constraint that caps the overlay at 30% of notional. The next constraint is the resampled drawdown at about **0.55**, not the growth optimum at 3.04 ([capital efficiency §7](capital-efficiency-and-breadth.md)) |
+| **RSST's next after-tax table, covering a flat-equity year** | Its 0.32 pp/yr drag comes from a 28-month window in which a growing ETF deferred realisation and a tax-favoured equity sleeve shared the capital. **A year in which the equity leg makes no long-term gain while the Cayman subsidiary makes ordinary income is the one that would move it** — and that is the year the sleeve exists for |
 
 ---
 
@@ -493,6 +570,14 @@ stock in a qualified plan; currency and home-country bias; capital scale; permit
 instruments; liquidity reserve in days; and the objective — **net geometric growth is
 declared as a preference here, and a consumption or shortfall objective would change the
 answer.**
+
+**Three of those have been promoted from "would refine the answer" to "set it".** The
+annual contribution rate, the embedded gain in each taxable lot, and **whether the 401(k)
+menu can hold anything but a broad index** now jointly decide the overlay weight, because
+the constraint that used to decide it — tax-shelter capacity — is withdrawn
+([capital efficiency §7.3](capital-efficiency-and-breadth.md)). None of the three was ever
+asked for by any page here, and without them **an overlay weight is a guess about an account
+rather than a judgement about a strategy.**
 
 ---
 
@@ -537,6 +622,13 @@ holdings, 497K fee tables, N-CSR tax-character tables and N-CEN recoupment flags
    at DBMF's values. **RSST's loading on the benchmark has never been measured**, its
    after-tax table covers 28 months, and nothing licenses assuming the two funds deliver the
    same exposure. The row prices a tax difference, not a product.
+7. **§3.1's worked bracket is one investor and its 401(k) menu is assumed, not verified.**
+   California at 24%/15% federal with no §1411 surtax and 9.3% state; a menu-constrained
+   401(k) able to hold a broad index and nothing exotic; a taxable account whose embedded
+   gain will not be realised. **A reader in a state with a preferential capital-gains rate,
+   or with a brokerage-window 401(k), gets a different queue and possibly a different
+   weight.** DBMF's distribution composition is `not found` and is bounded as 100%
+   non-qualified ordinary, which makes its restated 170.6 bp an upper bound.
 
 **Open.** Which benchmark a factor line may book its capture against — the answer moves the
 line by a factor of two and a half. What a real fund's delivered capture is; every figure
@@ -582,3 +674,13 @@ no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
    verified *structure* and filed *costs*. **Its loading on the trend benchmark has never
    been measured**, and neither has that of the ten new listed managed-futures ETFs. The
    shelf tripled; the evidence did not move.
+8. **A tax drag is compared with the fund it displaces, at the holder's own rates, or it is
+   not quoted.** Both halves cost this page a wrong conclusion: the wrapper's 0.32 pp/yr is
+   4.5 bp once the equity fund inside it is subtracted, and California's flat treatment of
+   capital gain almost exactly cancels a lower federal bracket rather than compounding it
+   ([capital efficiency §7.2](capital-efficiency-and-breadth.md)).
+9. **A weight is stated in its own units and never compared across funding rules.** DBMF's
+   0–10% is capital; RSST's 0–30% is notional; adding or comparing them is the error §1.3
+   exists to prevent. **And an account cap is not a risk limit**: this page capped the
+   overlay at what a shelter could carry and called it sizing, when the quantity that
+   actually limits it is the resampled drawdown.

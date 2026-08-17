@@ -288,8 +288,9 @@ export const accountOrder: readonly AccountPlacement[] = [
   {
     id: "traditional",
     account: "Traditional 401(k) or IRA",
-    holds: "Bonds first, then developed ex-US, then by the ranking above. Managed futures here if held at all",
-    why: "Bonds dominate by a factor of four. A managed-futures fund's 2.09 pp/yr distribution tax drag is zero here.",
+    holds:
+      "Bonds first, then developed ex-US, then by the ranking above. A pro-rata managed-futures fund here or not at all",
+    why: "Bonds dominate by a factor of four. DBMF's 2.09 pp/yr distribution tax drag is zero here, and 1.44 pp/yr of it is incremental over the equity it is sold to buy. A trend overlay held through the return-stacked wrapper RSST does not need this shelter: 4.5 bp per dollar in a taxable account, because the wrapper contains the equity fund it displaces.",
   },
   {
     id: "roth",

@@ -423,7 +423,7 @@ export const experiments: readonly Experiment[] = [
     statusNote:
       "DBMF reached `exploratory`; CTA, FMF, KMLM and WTMF are `rejected` against the frozen 0.50 loading bar. Decision 0002 caps the whole audit at `exploratory`.",
     verdict:
-      "One product on the listed shelf delivers the exposure, and it is the one that sells replication. DBMF loads +0.671 with an interval clear of the bar, holds it across every split the window supports, and trailed a cost-free vendor index by less than it charges. The tax the funds distribute is two to three times their fee, and it is zero inside a shelter — so the account decides more than the product does.",
+      "One product on the listed shelf delivers the exposure, and it is the one that sells replication. DBMF loads +0.671 with an interval clear of the bar, holds it across every split the window supports, and trailed a cost-free vendor index by less than it charges. The tax the funds distribute is two to three times their fee, and it is zero inside a shelter — but that is a fact about a pro-rata fund, not about the exposure: the same trend notional through a return-stacked wrapper carries 0.32 pp/yr, of which 4.5 bp is incremental over the equity fund inside it. The wrapper decides more than the account does.",
     keyNumbers: [
       {
         label: "DBMF loading on the AQR index",

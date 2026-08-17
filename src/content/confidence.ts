@@ -173,7 +173,7 @@ export const smallValueReading = {
   source: recommendation,
 } as const;
 
-/** A 15%-of-portfolio managed-futures sleeve via DBMF. The account is the largest controllable term. */
+/** A 15%-of-portfolio managed-futures sleeve via DBMF. The wrapper is the largest controllable term. */
 export const managedFuturesCases: readonly {
   readonly id: string;
   readonly label: string;
@@ -192,11 +192,11 @@ export const managedFuturesCases: readonly {
   },
   {
     id: "post-pub-taxable",
-    label: "Post-publication, taxable (less 0.15 × 2.09)",
-    netEdgeBp: 37,
+    label: "Post-publication, taxable (less 0.15 × 1.439)",
+    netEdgeBp: 46,
     trackingErrorBp: 251,
-    probability30yr: 0.79,
-    ninetyPercentAt: "76 years",
+    probability30yr: 0.842,
+    ninetyPercentAt: "49 years",
   },
   {
     id: "full-period-deferred",
@@ -209,9 +209,9 @@ export const managedFuturesCases: readonly {
 ];
 
 export const managedFuturesReading = {
-  headline: "The account, not the product, is the largest controllable term.",
+  headline: "The wrapper, not the account, is the largest controllable term.",
   detail:
-    "Moving the sleeve into a shelter is worth 31 bp/yr of portfolio return, larger than the whole fee. Set that against the rest of the record: the index's standalone Sharpe fell 1.34 to 0.18 and its geometric return 19.4% to 3.1% after publication, the vendor states no cost basis anywhere in the archived workbook, comparable CTA survivorship and backfill distortion is 7.7 pp/yr — larger than the strategy's entire gross premium — and one product delivers the exposure with no fallback.",
+    "Moving DBMF into a shelter is worth 21.6 bp/yr of portfolio return once you subtract the distribution tax the equity it displaced was paying anyway. This row previously charged the full 2.09 pp/yr and said the account decides the sleeve's sign; that is a fact about DBMF and not about the exposure. The same trend notional through the return-stacked wrapper RSST carries 0.32 pp/yr gross and 4.5 bp incremental, so its account decides almost nothing — while the funding rule the wrapper sets moves the sleeve's hurdle by 2.44 pp/yr. Set that against the rest of the record: the index's standalone Sharpe fell 1.34 to 0.18 and its geometric return 19.4% to 3.1% after publication, the vendor states no cost basis anywhere in the archived workbook, comparable CTA survivorship and backfill distortion is 7.7 pp/yr — larger than the strategy's entire gross premium — and one product's loading has been measured, on a shelf of fifteen.",
   assumptions: [
     "That a trend sleeve's marginal certainty equivalent scales linearly in the product's loading on the index. 0.671 × 1.011 is an approximation; the experiment measured the index at a 15% weight, not DBMF at any weight. The product audit's own marginal-contribution arm is labelled invalid for every fund on warm-up grounds, so no direct measurement exists.",
     "A derived 2.52 pp/yr tracking error, computed from the published volatilities and correlation against the fully invested passive benchmark rather than the risk-matched comparator the experiment used as primary: sqrt(7.65² + 9.12² − 2 × 0.97 × 7.65 × 9.12).",
