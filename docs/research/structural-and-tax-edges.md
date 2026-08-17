@@ -199,13 +199,37 @@ sign, and nothing about the statute settles it.
 
 **And the 60/40 split did not reach shareholders of any fund checked.** From N-CSR
 tax-character tables: **DBMF distributed 100% ordinary income in 2024 and 2025; KMLM 100%
-in FY2026; CTA 100% in FY2025; NTSX reports a single "Ordinary Income" column.** Three
+in FY2026; CTA 100% in FY2025; NTSX reports a single "Ordinary Income" column.**
+**One of those does not generalise: CTA's FY2024 distribution was about 59.9% ordinary and
+40.1% long-term capital gain**, so the split did reach shareholders of one fund in one year
+(`as of 2026-08-17`). The mechanism below is unaffected; its universality is not. Three
 mechanisms stack: a Cayman subsidiary converts commodity gains to ordinary income
 **asymmetrically** (DBMF's prospectus: *"any annual net loss of the Subsidiary will not be
 recognized and will not carry forward"*), forced by §851(b)(2); capital-loss
 carryforwards absorb the long-term half; and §1256(f)(2) cannot rescue income that is
-ordinary by another route. **NTSX is the structural exception** — Treasury futures
-generate qualifying income directly, so it needs no blocker.
+ordinary by another route. **NTSX needs no Cayman blocker** — Treasury futures generate
+qualifying income directly.
+
+**But calling NTSX "the structural exception" attributed its clean record to the wrong
+mechanism, and the filings say otherwise. `as of 2026-08-17`.** Its zero-capital-gain record
+is produced by the *same* loss-absorption machinery this paragraph attributes to DBMF and
+KMLM, plus the ETF wrapper: **capital loss carryforwards of $170.7m at 2024-06-30 and $163.5m
+at 2025-06-30 — about 13.6% of net assets** — and permanent book/tax reclassifications
+*"primarily due to redemptions-in-kind"* of **$15.4m (FY2024) and $30.4m (FY2025)**. A fund
+with a loss bank that size and in-kind redemption relief would show no capital gain whatever
+its futures were.
+
+**And "a single Ordinary Income column" understates NTSX in the other direction.** Ordinary
+income is the RIC *distribution category*, not the rate. NTSX designates **100.0% of its
+FY2023 distribution, 98.7% of FY2024 and 84.9% of FY2025 as qualified dividend income**, so
+nearly all of it is taxed at long-term rates. Its filed after-tax return since inception to
+2024-12-31 is **11.58% before tax against 11.25% after taxes on distributions — a 33 bp/yr
+drag**. Two further corrections of record: the two-column presentation exists in the FY2023
+N-CSR, so the single column is a FY2025 presentation change rather than a permanent feature;
+and **FY2021 did carry a $0.02/share capital-gain distribution**, so the "no capital-gains
+distributions" claim must keep its 2022 start date. Every figure here is from
+WisdomTree Trust's own N-CSR filings; the wrapper audit is in
+[capital efficiency §6a](capital-efficiency-and-breadth.md).
 
 ### Gold is the one asset class whose wrapper carries a *worse* rate than ordinary equity
 
@@ -247,16 +271,61 @@ compete for the same scarce shelter as the managed-futures overlay** — which
 [the recommendation](portfolio-recommendation.md) already identifies as the binding
 constraint on that overlay's weight.
 
-**There is no plain futures vehicle to arbitrage the difference with.** §1256's 60/40 split
-would give 30.6% rather than 31.8%, but **Invesco DB Gold (DGL) liquidated in March 2023**
+**The futures route does NOT get the 60/40 treatment, and this was checked rather than
+reasoned.** A reader — and this repository's own first draft — would expect a RIC holding
+§1256 gold futures to deliver 60% long-term / 40% short-term under
+[§1256(a)(3)](https://www.law.cornell.edu/uscode/text/26/1256). **It does not**, and the
+reason is the same §851(b)(2) qualifying-income mechanism §3 already documents for DBMF,
+KMLM and CTA.
+
+WisdomTree's GDE holds its gold exposure through a **Cayman Islands subsidiary** capped at
+**25% of total assets at each fiscal quarter-end**, disclosed in its own summary prospectus
+dated 2026-01-01: *"The Fund seeks to gain exposure to the commodity market for gold… through
+investments in a subsidiary organized in the Cayman Islands… intended to provide the Fund
+with exposure to the investment returns of gold while enabling the Fund to satisfy
+source-of-income requirements that apply to RICs under the Code."* The audited FY2025
+N-CSR names it **WisdomTree Efficient Gold Plus Equity Strategy Portfolio I**.
+
+The trust's own SAI states what that does to the character, and states the asymmetry:
+
+> "Subpart F income and GILTI are treated as **ordinary income, regardless of the character
+> of the CFC's underlying income**. Net losses incurred by a CFC during a tax year **do not
+> flow through** to a Fund… In addition, the net losses incurred during a taxable year by a
+> WisdomTree Subsidiary **cannot be carried forward**."
+
+And the audited distribution tables say what actually happened. **Every dollar GDE has
+distributed in all three fiscal years since its March 2022 inception was ordinary income:
+$29,464, $307,865 and $3,699,370, against zero long-term capital gain and zero return of
+capital.** Only **28.9%** of the FY2025 figure was qualified dividend income; the
+dividends-received deduction was **5.44%**. NTSX, which needs no blocker because Treasury
+futures generate qualifying income directly, shows **84.9% QDI and an 84.19% DRD** on the
+same trust's filings. **The SAI's own 60/40 discussion is confined to non-equity options the
+funds write directly and says nothing about the Subsidiary's futures.**
+
+| | Annual drag | Rate on the distribution | Rate on selling the shares | Deferrable? |
+| --- | ---: | --- | --- | --- |
+| **GLDM / GLD / IAU / SGOL** | ~0 | n/a — bullion trusts distribute nothing | **28% + 3.8% collectibles** | **yes, indefinitely** |
+| **GDE** | **1.53 pp/yr**, measured | **ordinary**, only 28.9% at QDI rates | 20% + 3.8%, ordinary capital gain | **no** |
+
+**So the two routes trade one tax against the other and neither dominates.** The physical
+wrapper pays a *higher rate* on a gain it can defer for decades; the overlay wrapper pays
+an *ordinary rate annually* on income it cannot defer, and its losses are trapped inside
+the CFC. Against §4's finding that deferral is the largest number on this page, **the
+physical route is the tax-favoured one for a long holder and the overlay route is not** —
+which is the reverse of what the fee comparison alone suggests.
+
+**One thing the collectibles rate does not do is reach GDE.** The word "collectibles"
+appears **zero times in every filing WisdomTree Trust has ever made**, against 76 hits for
+SPDR Gold Trust on the same full-text search. Its SAI treats a share sale as ordinary
+capital gain with no carve-out. **GDE is a structurally different after-tax asset from a
+bullion trust, and the 28% finding above does not transfer to it.**
+
+**And there is still no plain futures vehicle.** **Invesco DB Gold (DGL) liquidated in March 2023**
 (Form 8-K filed 2023-01-23; shares "cease trading on the NYSE Arca, Inc. after market close
 on March 3, 2023"), and the surviving ProShares UGL is **2× geared**, costs **1.19%**
 all-in, issues **K-1s**, and warns in its own prospectus that "swap agreements and
 non-currency forward contracts are **generally not** Section 1256 Contracts". A 120 bp rate
-saving is not worth 119 bp of fee, leverage and a K-1. **WisdomTree's GDE holds gold futures
-through a Cayman subsidiary inside a RIC rather than a bullion grantor trust, so neither the
-28% finding nor the 60/40 finding transfers to it, and its tax character was not verified
-here** — recorded as unverified rather than guessed.
+saving is not worth 119 bp of fee, leverage and a K-1. 
 
 **Consequence.** Gold's tax treatment is a reason to place it, never a reason to hold it.
 It does not change the verdict, which is on return:
@@ -335,13 +404,24 @@ at the risk-free rate and by *"only 29 basis points… (P = 0.40)"* once borrowi
 priced. **A ~60 bp financing spread removes 86% of the claimed edge over eighty-five
 years of data.**
 
-**NTSX's own record does not settle it either way.** Since inception it returned
-11.38%/yr against 8.81% for 60/40 and 13.35% for the S&P 500 alone. The 60/40 comparison
+**NTSX's own record does not settle it either way.** From its own filed prospectus, for
+periods ending **2024-12-31**, since inception 2018-08-02: **11.58%/yr against 8.86% for the
+60/40 composite and 13.99% for the S&P 500 alone.** (This page previously gave 11.38 / 8.81 /
+13.35 with no date; the filed figures are above, `as of 2026-08-17`.) The 60/40 comparison
 is **not risk-matched**, and outperforming a lower-risk portfolio in an equity bull market
 is precisely the trap
-[decision 0003](../decisions/0003-cheap-broad-market-control.md) exists to catch. It had
-no capital-gains distributions in any year 2022–2026, which is a real and separate point
-in the structure's favour.
+[decision 0003](../decisions/0003-cheap-broad-market-control.md) exists to catch. It made
+no capital-gains distributions in any fiscal year 2022–2025 nor in the six months to
+2025-12-31 — which spans the December date an ETF's annual capital gain would fall on —
+and that is a real and separate point in the structure's favour. **January–June 2026 is not
+yet reported.**
+
+**The two sibling funds are the counter-evidence and they are not a footnote.** NTSI
+returned **−0.77%/yr against MSCI EAFE's +2.26%** and NTSE **−5.90%/yr against MSCI EM's
+−3.18%** since their common 2021-05-20 inception, on the same filed basis — **each losing to
+its own equity leg's index by roughly 3 pp/yr** while the Treasury overlay ran through the
+2022 rate rise. Neither is given a blended 90/60 benchmark in its own prospectus, so no
+risk-matched comparison is published for either.
 
 **What [decision 0004](../decisions/0004-no-sleeve-promoted.md) forbids, precisely.** It
 forbids **levering an edge**. Capital efficiency is not that — it is obtaining a

@@ -13,7 +13,8 @@ best-supported construction given the evidence**, and nothing more.
 sleeve. **Nothing here reached `production-eligible`, and nothing here is claimed to beat
 an index.** Every fund-specific fact below is dated and must be re-checked before use.
 
-`as of 2026-08-12`, US federal individual investor, state tax excluded and additive.
+`as of 2026-08-17` for the wrapper and managed-futures product facts, `2026-08-12` for
+everything else. US federal individual investor, state tax excluded and additive.
 
 ---
 
@@ -42,9 +43,18 @@ an index.** Every fund-specific fact below is dated and must be re-checked befor
 5. **One account-placement result is not the textbook one:** at a 15% or 18.8% qualified
    rate, **emerging-market equity belongs in the taxable account and US equity in the
    shelter**. The break-even is 21.51%, between two live US rates.
-6. **Managed futures is the one sleeve whose account decides its sign.** 2.09 pp/yr of
-   distribution tax drag on the only product that delivers the exposure, against an 0.85%
-   fee — and **zero in a tax-deferred account.**
+6. **Managed futures was called the one sleeve whose account decides its sign. That is a
+   fact about DBMF, not about the exposure.** 2.09 pp/yr of distribution tax drag against an
+   0.85% fee, and zero in a shelter — **but a dollar of the same trend notional obtained
+   through the return-stacked wrapper RSST carries 0.32 pp/yr**, on each fund's own
+   SEC-standardised after-tax table
+   ([capital efficiency §6a.4](capital-efficiency-and-breadth.md)). The account still
+   decides more than the product; it decides a great deal less than this page said.
+7. **The wrapper was a single point of failure and is no longer one.** The equity-plus-trend
+   overlay shelf is four live funds and a JPMorgan entrant at 0.59%, and the listed
+   managed-futures shelf has gone from five products to fifteen with BlackRock, Fidelity,
+   Invesco and Man Group among the entrants. **None of the newcomers has been tested against
+   the benchmark**, so this removes a survival risk and adds no evidence.
 
 ---
 
@@ -130,7 +140,7 @@ total allocation rather than added to it.
 | Sleeve | Fund | ER | Size | Where | Verdict |
 | --- | --- | ---: | --- | --- | --- |
 | Small-cap value | **VBR** | 0.05% | 0–20% of US equity | treat as US equity in §3 | `exploratory` product, `exploratory` premium, **chain negative on the defensible reading**, and its marginal credit against an equity core is **−0.181 pp/yr per unit weight** |
-| Managed futures | **DBMF** | 0.85% | 0–10% of total | **tax-deferred only** | `exploratory` product, index `unresolved`; **single-product risk**. **And it is the pro-rata vehicle — see below** |
+| Managed futures | **DBMF** pro rata, or **RSST** as the overlay | 0.85% / 0.99% | 0–10% of total | DBMF **tax-deferred only**; RSST's drag is 0.32 pp/yr, so the shelter is no longer decisive for it | `exploratory` product, index `unresolved`. **DBMF is the pro-rata vehicle and gets the +2.44 pp/yr bar; RSST is the overlay and gets a bar near zero — see below.** Single-product risk has eased: the overlay shelf is four live funds and the listed managed-futures shelf is fifteen |
 
 Two sizing notes, because both weights are judgements and neither is measured. **VBR's
 yield is higher than the market's, which raises its shelter priority above plain US equity
@@ -159,10 +169,36 @@ DBMF beside equity means *selling equity to buy it* — the pro-rata rule, bar a
 +2.44 pp/yr, which trend does not clear. A return-stacked ETF delivers a dollar of
 equity *and* a dollar of managed futures per dollar held, so nothing is sold — the
 overlay rule, bar near zero. **Same strategy, same evidence, opposite verdict, decided
-by the ticker.** Thirteen such funds now file with the SEC, none of which existed in
-the 2019Q4 census; the largest managed-futures one held **$292.8m** at 2025Q4. That the
-shelf is real is a point in favour; that **none of it is six years old** is a closure
-and methodology-change risk a longer-lived product would not carry.
+by the ticker.**
+
+**The shelf that follows has now been audited from the filings**
+([capital efficiency §6a](capital-efficiency-and-breadth.md)), and four things it found
+belong here because they move what a reader should hold.
+
+- **RSST's overlay claim checks out and its cost is filed.** 107.2% equity plus a ~100%
+  trend sleeve at 2026-04-30; **0.99% all-in including 0.04% of acquired fund fees, with no
+  waiver and — from Form N-CEN — no recoupment clause**; $508.7m at 2026-08-14 and growing
+  faster than any other wrapper on the shelf.
+- **The tax gap between the two vehicles is 1.77 pp/yr and runs the other way from this
+  page's framing.** RSST 0.32 pp/yr of distribution tax drag, DBMF 2.09, each from its own
+  SEC-standardised after-tax table. The mechanism is that a tax-favoured equity sleeve shares
+  RSST's capital, **not** that its trend sleeve is taxed better — RSBT and RSBY, whose base
+  leg is bonds, distribute 100% ordinary income like DBMF.
+- **The successor is named.** **CTAP** (Simplify U.S. Equity PLUS Managed Futures, $123.4m)
+  is the only live alternative above $100m; it obtains its trend leg through a **total return
+  swap** rather than futures, and its swap financing rate was not established. **JPFP**
+  (JPMorgan Managed Futures Plus) offers the same structure at a **0.59% unitary fee** and
+  has not commenced operations, so it has no assets, no holdings and no record.
+- **What is worse than this page assumed is the financing.** No wrapper on the shelf
+  quantifies its financing cost anywhere, and the accounting hides it: every Return Stacked
+  fund reports **0.00% of interest expense** because futures financing is embedded in the
+  contract price. The family's only disclosed rate is RSBA's merger-arbitrage swap at
+  **OBFR + 6.64%**, up from OBFR + 3.00% one quarter earlier.
+
+**And this page's claim that "none of it is six years old" was wrong and is withdrawn.**
+NTSX appears in the 2019Q4 census — as "WisdomTree 90/60 U.S. Balanced Fund" — and is eight
+years old; PIMCO has run StocksPLUS since the 1980s. What survives is narrower: **RSST itself
+is under three years old.**
 
 **It is still not promoted, for three reasons that are not about the arithmetic.** The
 trend leg rests on a vendor series stating no cost basis anywhere, against a bias bound
@@ -208,7 +244,8 @@ better exists` means the alternatives were tested and lost.
 | **VWO / IEMG** | emerging equity; ~4.9 / ~9.2 bp/yr of lending income | same | Same. Its credit is worth 20.00 bp/yr in taxable, and it is the sleeve §3's arithmetic moves |
 | **BND** or Treasuries | term and credit compensation, and a risk brake | **a different benchmark, not an edge** | Sized by risk capacity. **The brake works; its diversification does not, in every era** — the bond–stock beta was positive to 1999, negative to 2022Q3, positive again to 2024Q2, and negative on the 18 months since, on this repository's own data |
 | **VBR** (optional) | HML loading **+0.410 `[+0.322, +0.480]`**, delivered and stable, at 5 bp, with a **negative** shortfall against a fitted four-fund combination | **risk premium**, `exploratory` on both terms | **Low confidence.** The chain is +0.09 to −0.39 pp/yr on the US premium and +0.28 to +0.76 on the pooled one. It is here because it is the only US value product that both delivers its exposure and does not lose to a cheap combination — **not because the chain is positive** |
-| **DBMF** (optional) | loading **+0.671 `[+0.513, +0.829]`** on the AQR index, stable across the split and all 19 rolling windows, trailing a cost-free index by 0.48 pp/yr against an 0.85% fee | **risk premium**, `exploratory`; the index itself `unresolved` | **Nothing better exists.** Four of five listed managed-futures ETFs fail the 0.50 bar. Crisis correlation −0.59 and payoff spread across four crises — but the post-publication interval includes zero and fails Holm |
+| **DBMF** (optional) | loading **+0.671 `[+0.513, +0.829]`** on the AQR index, stable across the split and all 19 rolling windows, trailing a cost-free index by 0.48 pp/yr against an 0.85% fee | **risk premium**, `exploratory`; the index itself `unresolved` | **Nothing better has been measured**, which is not the same as nothing better existing: four of the five tested funds fail the 0.50 bar and **ten more listed funds have never been tested**. Crisis correlation −0.59 and payoff spread across four crises — but the post-publication interval includes zero and fails Holm |
+| **RSST** (optional, in place of DBMF) | the same trend exposure as an **overlay** rather than pro rata, so the sleeve's hurdle falls by about 2.44 pp/yr; 0.99% all-in, no waiver, no recoupment; 0.32 pp/yr of distribution tax drag | **risk premium**, `exploratory` on the product and `unresolved` on the index — **the wrapper changes the hurdle, not the evidence** | **Its loading on the benchmark has never been measured.** It is named because its structure is verified from N-PORT and its costs from filings, not because anything here says its trend leg delivers |
 | **Cash reserve** | optionality and the ability not to sell | contractual | The framework requires it and **no experiment here sizes it** |
 
 ### What is deliberately absent
@@ -224,7 +261,7 @@ better exists` means the alternatives were tested and lost.
 | **Leverage of any kind** | Zero, and it stays zero. Conditioned on an unlevered edge surviving the protocol; none has |
 | **Rebalancing as a source of return** | `rejected`: **−38.7 bp/yr** over 420 months, drift gap ~35× `gamma_star`, and relative regional performance **trends** rather than reverts |
 | **The academic small-value corner** | ME1 × BM5 held 21.24% of listed firms and **0.236% of market capitalisation**. Not implementable at retail in size |
-| **Gold** | **Tested 2026-08-17 and excluded on return, not on absence.** The claim that it is "not a universal negative-correlation asset" is **confirmed**: its correlation to US equity measures −0.03 to +0.03 unconditionally and −0.01 to +0.08 inside equity drawdowns — **zero, not negative**. It *passes* the overlay admission test and its crisis correlation is well under the +0.20 that breaks the trend recommendation. It fails the rule a physical gold ETF actually imposes: **pro-rata marginal growth of +0.04 to −0.42 pp/yr** against a 0.30 bar, on a window whose most favourable forty months were ones in which US private gold ownership was illegal. A bullion ETF is also taxed at the **28% collectibles rate plus 3.8% NIIT** against 20% + 3.8% for equity, so it would compete with the trend overlay for the same scarce shelter ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)) |
+| **Gold** | **Tested 2026-08-17 under both funding rules and excluded on return, not on absence.** The claim that it is "not a universal negative-correlation asset" is **confirmed**: correlation to US equity of −0.02 to +0.03 unconditionally and −0.04 to +0.08 inside equity drawdowns — **zero, not negative**. On the only window a US person could legally own it, 1975-01 onward, its Sharpe ratio is **0.18 against equity's 0.59**, and everything follows from that. It passes admission; funded pro rata (what GLDM imposes) it loses 0.40 pp/yr; funded as an overlay (what GDE imposes) it **gains 0.18 pp/yr against the leverage-matched control — below the 0.30 bar and below its own 0.73 detection floor**, and at GDE's own notional the matched-volatility control rejects it. Beside a 30% trend overlay it **adds** rather than substitutes (correlation +0.07, breadth 1.00 → 1.87, drawdown −44.8% → −43.7%) by +0.09 pp/yr against an MDE₈₀ of 1.68. Tax decides placement and not the verdict: GLDM pays **28% + 3.8%** on a deferrable gain, GDE distributes 100% ordinary income at a measured **1.53 pp/yr** ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)) |
 | **Tail hedges, private credit, cat bonds, merger arb** | **Untested here.** A protective put must be benchmarked against a **return-matched** equity/cash mix |
 
 ---
@@ -269,7 +306,7 @@ more than four to one**, which is why the ranking does not move.
 | Account | Holds, in this order | Why |
 | --- | --- | --- |
 | **HSA** (if a high-deductible plan applies) | equity, highest-growth sleeve | The only US account untaxed at all three points. **A dollar limit, not a rate**: $4,400 self-only / $8,750 family for 2026. **California breaks the deduction and taxes internal earnings annually**; New Jersey is widely reported to do the same and no primary source was found |
-| **Traditional 401(k)/IRA** | bonds first, then developed ex-US, then per the table. **DBMF here if held at all** | Bonds dominate by four to one. DBMF's 2.09 pp/yr distribution tax drag is zero here |
+| **Traditional 401(k)/IRA** | bonds first, then developed ex-US, then per the table. **DBMF here if held at all** | Bonds dominate by four to one. DBMF's 2.09 pp/yr distribution tax drag is zero here. **A trend overlay held through RSST does not need this shelter nearly as much** — 0.32 pp/yr of drag, so a 15% sleeve forfeits about **5 bp of portfolio return** by sitting in taxable rather than the **31 bp** DBMF forfeits, and the shelter it would have consumed is better spent on bonds |
 | **Roth** | the highest-expected-growth sleeve that fits after bonds | Identical to traditional on foreign withholding — both forfeit it. **The traditional-vs-Roth choice itself is a rate forecast, not a structure** |
 | **Taxable** | US total market; emerging-market equity at 15% or 18.8%; whatever does not fit above | ETFs, specific-ID lots as a standing instruction, no turnover |
 
@@ -302,7 +339,7 @@ sleeve absorbs the five points.
 | **"Other" 25%** | **Underspecified. Split it** | If bonds, they go in the shelter first by a factor of four. If managed futures at anything like 25%, far too large for a sleeve whose index is `unresolved` and whose only delivering product is one fund |
 | **Small-cap value** | **Reduce, and know what you are buying.** 0–20% of US equity, via VBR | On the size-neutral capture (0.520) and the US-only premium (+1.57) the chain is **+0.09 to −0.39 pp/yr — negative on the defensible reading of both terms.** It is positive only on the pooled premium *and* the market-relative capture, and the gap between those captures is **a size premium wearing a value label** — which the size test then failed to sign. Judged marginally it gets worse: US small value's beta to an equity core is 1.083, so its credit is −0.181 pp/yr per unit weight |
 | **Momentum** | **Drop** | **Not because the premium is weak** — it is the largest gross factor measured here, pooled **+7.33 pp/yr**. Because its detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and **crash together**; the academic construction rebalances **monthly** with an assumed cost of 3.30–18.67 pp/yr against that 7.33; and the entire retail shelf is MTUM, `rejected` on cost |
-| **Managed futures** | **Keep, smaller, and only in a tax-deferred account.** DBMF only | **Only DBMF delivers the exposure**, on three independent measurements. Tax drag is 2.09 pp/yr — **2.5× its own fee — and zero in a shelter** |
+| **Managed futures** | **Keep, smaller. The account rule applies to DBMF and much less to RSST** | **Only DBMF's loading has been measured against the benchmark**, on three independent measurements, and the other fourteen listed funds are untested rather than rejected. DBMF's tax drag is 2.09 pp/yr — 2.5× its own fee, zero in a shelter; **RSST's is 0.32**, and RSST is also the vehicle that keeps the funding-rule benefit |
 
 ### What changed since the earlier answer to the owner
 
@@ -376,15 +413,24 @@ volatilities and correlation.
 | Case | **Net edge, growth** | TE | **P(30 yr)** | 90% at |
 | --- | ---: | ---: | ---: | ---: |
 | Post-publication, **tax-deferred** | **+59 bp** | 251 bp | 0.902 | 30 yr |
-| Post-publication, **taxable** (less `0.15 × 2.09`) | **+28 bp** | 251 bp | 0.729 | 133 yr |
+| Post-publication, **taxable through DBMF** (less `0.15 × 2.09`) | **+28 bp** | 251 bp | 0.729 | 133 yr |
+| Post-publication, **taxable through RSST** (less `0.15 × 0.32`) | **+54 bp** | 251 bp | **0.883** | **35 yr** |
 | Full-period, tax-deferred | +88 bp | 251 bp | 0.973 | 13 yr |
 
-**The account, not the product, is the largest controllable term** — 31 bp/yr of portfolio
-return, larger than the whole fee. Against those probabilities: the index's standalone Sharpe
-fell 1.34 → 0.18, the vendor states **no cost basis anywhere**, comparable CTA survivorship
-distortion is bounded at 7.7 pp/yr — a bound the only live measurement available contradicts
-in sign ([live managed futures](live-managed-futures.md)) — and one product delivers the
-exposure with no fallback.
+**The account was the largest controllable term and the wrapper has displaced it.** Choosing
+the shelter over taxable is worth **31 bp/yr** through DBMF; choosing RSST over DBMF is worth
+**26 bp/yr in taxable and nothing at all in a shelter**, and it also removes the 2.44 pp/yr
+funding-rule hurdle that the shelter does nothing about. **Both are larger than the whole
+fee, and the wrapper decision comes first because it changes which bar the sleeve is judged
+against.**
+
+Against those probabilities: the index's standalone Sharpe fell 1.34 → 0.18, the vendor
+states **no cost basis anywhere**, comparable CTA survivorship distortion is bounded at
+7.7 pp/yr — a bound the only live measurement available contradicts in sign
+([live managed futures](live-managed-futures.md)) — and **one product's loading has been
+measured, on a shelf of fifteen.** These rows use DBMF's measured loading throughout; **no
+loading has ever been measured for RSST**, so the RSST row prices a tax difference on
+DBMF's evidence and must not be read as a claim about RSST's trend leg.
 
 **The comparison that decides the page.** A conditional 109 bp settled in about twelve months
 is worth more than any tilt's gross premium, and it is available first. **That is not a
@@ -402,8 +448,9 @@ Each is measurable and dated. None is a hope.
 | **§852(b)(6) is repealed.** A 2021 Senate Finance draft proposed exactly that; never enacted | Removes the ETF wrapper advantage outright |
 | **A qualified-dividend rate below 10.52%, or at or above 21.51%** | Below: developed ex-US belongs in taxable too. At or above: emerging returns to the shelter and §3's inversion disappears |
 | **A licensed, survivorship-free, point-in-time total-return source from at least 2003** | Lifts the product audits above `exploratory` for the first time. Without it, VBR and DBMF cannot be promoted **or** properly rejected |
+| **JPFP commences operations and files an N-PORT** | The same 100/100 structure as RSST at a **0.59%** unitary fee from a far larger sponsor. It would reorder the wrapper cost ranking outright. It has no assets, no holdings and no record today |
 | **An audited emerging value product** | **Still the gap, and it is now a gap in the *shelf* rather than in coverage.** The value premium's weight is +7.58 pp/yr in emerging; the whole emerging shelf clearing the screen is four funds, two rejected and two unresolved on 44- and 51-month windows |
-| **A second managed-futures ETF with a loading ≥ 0.50** on a per-fund benchmark from its own stated universe | Removes DBMF's single-product risk and separates "does not deliver trend" from "does not deliver *this* trend" |
+| **A second managed-futures ETF with a loading ≥ 0.50** on a per-fund benchmark from its own stated universe | Removes DBMF's single-product risk and separates "does not deliver trend" from "does not deliver *this* trend". **Half met: the shelf went from five funds to fifteen, so the candidates now exist — none has been tested** |
 | **A measured one-sided monthly turnover below 50% for a long-only momentum fund** | Reopens momentum. **The 27.5–91.5%/month figure belongs to a monthly-rebalanced academic long-short spread and must never be applied to a fund** |
 | **A measured implied financing spread, a signed term premium, a defined investor policy, and a modelled forced-liquidation path** — all four | Reopens capital efficiency and the zero-leverage rule |
 | **A further decade of RMW/CMA data, or a non-French construction** | Nothing else reopens them. Pooled MDE₈₀ scales as `1/sqrt(T)`: reaching 2.0 from 2.62 needs ~245 months, about 2035 |
@@ -461,7 +508,10 @@ every fund loading, fee and status ([Exps 002 and 009](factor-products.md),
 [Exp 008](trend-marginal-value.md#experiment-008--the-products)); the trend marginal growth
 of +1.312 falling to +0.883 ([Exp 004](trend-marginal-value.md)); every sleeve's beta to the
 equity core ([Exp 010](marginal-sleeve-value.md)); and the −38.7 bp rebalancing result
-([Exp 003](rebalancing-policy.md)).
+([Exp 003](rebalancing-policy.md)). **Every wrapper structure, fee, waiver, tax-character
+and net-asset figure** traces to
+[capital efficiency §6a](capital-efficiency-and-breadth.md), which takes them from N-PORT
+holdings, 497K fee tables, N-CSR tax-character tables and N-CEN recoupment flags.
 
 **Assumed on this page, and nowhere else.**
 
@@ -482,12 +532,20 @@ equity core ([Exp 010](marginal-sleeve-value.md)); and the −38.7 bp rebalancin
    A declared research weight, not a measured optimum and not a market weight.
 5. **That VBR's 5 bp fee substitutes for the 15–25 bp assumed in Experiment 007's cost
    table.**
+6. **That RSST's measured tax drag may be substituted into a chain built on DBMF's measured
+   loading.** §5's RSST row changes one term of a four-term chain and leaves the other three
+   at DBMF's values. **RSST's loading on the benchmark has never been measured**, its
+   after-tax table covers 28 months, and nothing licenses assuming the two funds deliver the
+   same exposure. The row prices a tax difference, not a product.
 
 **Open.** Which benchmark a factor line may book its capture against — the answer moves the
 line by a factor of two and a half. What a real fund's delivered capture is; every figure
 here is from research portfolios, and measuring a fund's own **needs holdings rather than
 returns**. Whether the emerging inversion survives capital-gain distributions and harvesting
-value. What a liquidity reserve should be, unsized.
+value. What a liquidity reserve should be, unsized. **What any of the ten untested listed
+managed-futures ETFs, or RSST's own trend leg, load on the benchmark** — the shelf tripled
+and the evidence did not move. **What any wrapper actually pays to finance its overlay** —
+no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
 
 ---
 
@@ -504,10 +562,24 @@ value. What a liquidity reserve should be, unsized.
    hardcoded in a route is a defect.**
 3. **The asset-location ranking must be computed, not asserted**, and must state the bracket
    it assumed.
-4. **Two review triggers**: the fund-structure line (94 SEC orders and rising) and every
-   fund-specific fact in §1.2.
+4. **Four review triggers**: the fund-structure line (94 SEC orders and rising); every
+   fund-specific fact in §1.2; **JPFP's commencement**, which would reorder the wrapper cost
+   ranking at 0.59% against RSST's 0.99%; and **KMLM's shareholder vote around 2026-11-20**,
+   the fund having operated under interim advisory agreements since a change of control on
+   2026-06-23.
 5. **The largest evidence gap this page exposes is a product gap, not a premium gap.** The
    value premium was measured where no product here has been audited, and the momentum
    premium on a construction no product can implement. Both are fixable with the same
    purchase.
+6. **The wrapper is a separate decision from the sleeve, and it is decided first.** Which
+   fund delivers a diversifier changes the hurdle that fund must clear by up to 2.44 pp/yr
+   and its tax drag by up to 1.77, before any question about whether the strategy works. **No
+   sleeve on this page may be named without naming its funding rule**, and
+   [capital efficiency §6a.1](capital-efficiency-and-breadth.md) gives the one number —
+   `delta = (1 − b) / d` — that states it. A gross-notional figure from a fact sheet does
+   not.
+7. **Naming a wrapper is not evidence about the strategy inside it.** RSST is named here on
+   verified *structure* and filed *costs*. **Its loading on the trend benchmark has never
+   been measured**, and neither has that of the ten new listed managed-futures ETFs. The
+   shelf tripled; the evidence did not move.
 </content>

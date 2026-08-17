@@ -438,6 +438,109 @@ is recorded in the frozen specification rather than repaired by inventing a bar.
 
 ---
 
+## The shelf two censuses later: five became fifteen, and the screen is why it did not
+
+`as of 2026-08-17`, from the SEC's 2026Q2 N-PORT structured data set against the 2025Q4 one
+Experiment 008 used, screened with the **same frozen mandate and exclusion patterns**.
+Provenance in
+[`data-manifests/wrapper_shelf/shelf_census.json`](../../research/data-manifests/wrapper_shelf/shelf_census.json).
+
+**Experiment 008's sentence "the listed managed-futures shelf is five products" was true when
+it was written and is no longer true.** Fifteen exchange-listed series now carry a diversified
+managed-futures mandate. The frozen screen still admits exactly five — **and it is the
+inception cutoff doing it, not quality.**
+
+| Ticker | Fund | Net assets 2026Q2 | vs 2025Q4 | In Exp 008? |
+| --- | --- | ---: | ---: | --- |
+| **DBMF** | iMGP DBi Managed Futures Strategy | **$3,297.3m** | **+118%** | yes |
+| **CTA** | Simplify Managed Futures Strategy | $1,491.5m | +27% | yes |
+| **IMF** | Invesco Managed Futures Strategy | $301.1m | +3% | **no — inception 2025** |
+| **KMLM** | KraneShares Mount Lucas MF Index | $272.5m | +50% | yes |
+| **FFUT** | Fidelity Managed Futures | $255.9m | **+103%** | **no — inception 2025** |
+| **FMF** | First Trust Managed Futures Strategy | $252.9m | +37% | yes |
+| **WTMF** | WisdomTree Managed Futures Strategy | $213.5m | +29% | yes |
+| **TFPN** | Blueprint Chesapeake Multi-Asset Trend | $140.0m | +13% | **no — fee was 1.96%, now 1.13%** |
+| ISMF | iShares Managed Futures Active | $56.6m | +165% | no |
+| AHLT | American Beacon AHL Trend | $49.6m | −1% | no |
+| MATE | Man Active Trend Enhanced | $36.3m | new | no — and it is an **overlay** |
+| ASMF | Virtus AlphaSimplex Managed Futures | $31.0m | +8% | no |
+| MFUT | Cambria Chesapeake Pure Trend | $30.5m | +38% | no |
+| HFMF | Unlimited HFMF Managed Futures | $19.4m | +837% | no |
+| SDMF | Simplify DBi CTA Managed Futures Index | $4.4m | new | no |
+
+**Three funds now fail the screen on nothing but a date.** IMF and FFUT clear the $100m floor
+and the 1.50% fee cap and fail only the 2022-12-31 inception cutoff. **TFPN cut its expense
+ratio from 1.96% to 1.13%** effective 2026-07-17 — it was the single fund Experiment 008
+rejected on fee — and at $140m it too now fails on inception alone. **A screen re-frozen today
+would admit eight.**
+
+**That is a statement about the screen and not an invitation to re-run it.** The cutoff was
+frozen before any return was seen; moving it now, with this table visible, would destroy the
+provenance that makes Experiment 008 worth anything. The right response is a **new**
+pre-registered specification, not an amendment to this one.
+
+### What this changes about single-product risk
+
+[The recommendation](portfolio-recommendation.md) records DBMF as carrying "single-product
+risk" with "no fallback", and this page's consequence list says any later work needing an
+investable trend proxy "has one candidate and no fallback". **Both are now overstated.**
+
+- **BlackRock, Fidelity, Invesco and Man Group have all entered since Experiment 008 ran.**
+  Four of the largest asset managers in the world now list a diversified managed-futures ETF.
+  A shelf with those sponsors on it is a different survival proposition from a five-fund one.
+- **DBMF is no longer the fragile case.** It grew from $1,511m to $3,297m across two
+  censuses, monotonically — $2,046m at 2025-12-31 — and is now roughly twice the size of the
+  next fund. The concern that attached to it in 2026 was a concern about a small fund.
+- **What has *not* changed is exposure delivery.** None of the new funds has been tested
+  against the AQR benchmark, and Experiment 008's finding was never that no fallback *exists*
+  — it was that only DBMF's **measured loading** clears the frozen 0.50 bar. **Eleven
+  untested funds are not eleven fallbacks.** They are the population a re-specified experiment
+  would draw from.
+
+### Fund-level facts that changed, and one this page had wrong
+
+- **KMLM is under interim advisory agreements.** Krane Funds Advisors underwent a **change of
+  control on 2026-06-23** — KFA Two Holdings acquired 50.1% from CICC USA — which assigned and
+  terminated the advisory and sub-advisory agreements. The fund operates under **interim**
+  agreements expiring around **2026-11-20** pending a shareholder vote. This is the closest
+  thing to an observable methodology-change precursor that
+  [capital efficiency §9.4](capital-efficiency-and-breadth.md) says is not estimable, and it
+  is live on a fund this page grades.
+- **DBMF's trust was renamed to iM Global Partner Funds on 2026-07-24**, and its Cayman
+  subsidiary is capped at **20% of assets**, not the 25% every other fund on the shelf uses.
+- **FMF changed its fiscal year end from 31 December to 30 September**, effective around
+  2026-07-31, and is the one fund of the five whose distributions include **return of
+  capital**.
+- **CTA's tax character was not 100% ordinary in every year.** This page's cost-and-tax
+  section and [structural and tax-aware edges §3](structural-and-tax-edges.md#3-section-1256-and-capital-efficiency-handled-honestly)
+  both read as though the §1256 60/40 split reached no shareholder. **CTA's FY2024
+  distribution was about 59.9% ordinary income and 40.1% long-term capital gain.** The FY2025
+  figure is right; the generalisation is not.
+- **No fund on this shelf carries a drawdown-triggered de-risking rule.** Checked across all
+  fifteen listed funds and nine managed-futures mutual funds. Several carry continuous
+  **volatility targets** — DBMF 8–10%, American Beacon AHL 10% of NAV, Virtus AlphaSimplex
+  ≤17%, AQR 5–20% — which are a different object and do not condition on drawdown.
+- **Experiment 008's universe rejected the iShares fund for the wrong reason.** It was
+  recorded as failing `exchange_traded` because no share class carried an `ETF=Y` flag; it is
+  **ISMF, listed on Cboe BZX**. The screen's outcome is unaffected — at $56.6m it fails the
+  asset floor either way — but the stated reason is wrong, and the same gap in the SEC's
+  `company_tickers_mf.json` hides CTAP and MATE. **The `exchange_traded` test must not rest on
+  that file alone.**
+
+### Closures: zero measured, and the measurement is lagged
+
+**No series present in the 2025Q4 census is absent from 2026Q2, and none is marked as a final
+filing.** Two quarters is far too short to say anything about
+[the 10.7%/yr hazard](live-managed-futures.md), and it is not used to.
+
+**One reorganisation is under way that no census can see yet.** The Mast Managed Futures
+Strategy Fund closes to purchases on 2026-08-27 and converts into an ETF after the close on
+2026-08-31 (497 filed 2026-08-07). **It will appear in no N-PORT census until 2026Q3.** Every
+closure figure this repository publishes is therefore lagged by at least a quarter *as well as*
+being a lower bound, and the two errors run the same way.
+
+---
+
 ## Clause (d), re-read under both readings
 
 Experiment 004's clause (d), verbatim:
@@ -568,13 +671,26 @@ Both were transfers of a verdict to a population it was never measured on.
   its rebalancing policies all lost. **A market in which relative performance trends is one
   in which a trend-following sleeve should pay and a mean-reverting rebalancing rule should
   not.** Neither promotes anything, but the two failures point the same way.
-- **The listed managed-futures shelf is five products, one of which delivers the benchmark's
-  exposure.** Any later work needing an investable trend proxy has one candidate and no
-  fallback — a thinner shelf than momentum's, which at least had MTUM.
+- **The listed managed-futures shelf was five products when Experiment 008 ran and is
+  fifteen now**, with BlackRock, Fidelity, Invesco and Man Group among the entrants, and
+  DBMF has grown to $3.30bn. **One product still delivers the benchmark's exposure at the
+  frozen bar, because the other fourteen have never been tested.** "One candidate and no
+  fallback" was true of the *tested* set and was repeated as though it were true of the
+  shelf; the correct statement is that a re-specified experiment now has a population to draw
+  from and this one does not.
+- **A screen that admits the same five funds two years later is reporting its own inception
+  cutoff.** Three funds now fail on that date alone, one of them because it cut its fee below
+  the cap that had rejected it. A frozen screen is worth its provenance and it is not worth a
+  claim about the market.
 - **A product's fee is the smaller cost on this shelf.** Fees run 0.66% to 0.98%;
   distribution tax drag runs 0.76 to 2.53 pp/yr and is 2.5× the fee for DBMF, **and zero in
   a tax-deferred account. Where a trend sleeve is held matters more than which product is
-  chosen.**
+  chosen** — **and the wrapper decides how much that matters.** The same dollar of trend
+  notional carries 2.09 pp/yr of drag through DBMF and **0.32 through RSST**, whose equity
+  sleeve shares the capital and is taxed at long-term rates
+  ([capital efficiency §6a.4](capital-efficiency-and-breadth.md)). The control case is
+  RSBT and RSBY: bond-based stacks whose entire overlay sits in a Cayman subsidiary, **100%
+  ordinary income and 0% qualified in every year of their existence.**
 - **A falsifier must name its deciding quantity as an expression, not as prose, and in units
   that do not move with the size of the effect.** Clause (d) is the worked example.
 - **Form N-PORT cannot measure distributions for an exchange-traded fund.** Any later work

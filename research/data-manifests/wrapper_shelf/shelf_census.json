@@ -1,0 +1,530 @@
+{
+  "schema_version": "1",
+  "built_utc": "2026-08-17T13:35:12Z",
+  "purpose": "Provenance for the wrapper-shelf figures in docs/research/capital-efficiency-and-breadth.md and docs/research/trend-marginal-value.md. Series names and filed net assets only; no Item B.5 return was read.",
+  "frame_quarter": "2025q4",
+  "follow_up_quarter": "2026q2",
+  "frame_series_count": 12552,
+  "follow_up_series_count": 12942,
+  "inputs": {
+    "frame_data_set": {
+      "url": "https://www.sec.gov/files/dera/data/form-n-port-data-sets/2025q4_nport.zip",
+      "sha256_raw": "4ebb169e6cc0745b4cc65de4e83ea4916c7ad39146c383007e078b6223af8dea",
+      "retrieved_utc": "2026-08-12T08:09:34Z"
+    },
+    "follow_up_data_set": {
+      "url": "https://www.sec.gov/files/dera/data/form-n-port-data-sets/2026q2_nport.zip",
+      "sha256_raw": "077cc836a978a593b29012219395fbe9c303d5e930f5be3b5f4353c3b02296fc",
+      "retrieved_utc": "2026-08-17T13:17:15Z"
+    },
+    "series_to_ticker": {
+      "url": "https://www.sec.gov/files/company_tickers_mf.json",
+      "sha256_raw": "f3d50ba8b01af142c88d18baa8dbd13e55a64f03bceb04bd4eeaa5443d91c48c",
+      "retrieved_utc": "2026-08-17T13:18:43Z"
+    },
+    "exchange_listing_flags": {
+      "url": "https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt",
+      "sha256_raw": "badd615ab8660e29bc71027a6d2b0fa5b37a7c8526e68a413c0ae37fcc3a4137",
+      "retrieved_utc": "2026-08-17T13:18:44Z"
+    },
+    "capital_efficient_pattern": "(return\\s+stacked|efficient\\s+core|efficient\\s+gold|stocksplus|risk\\s+parity|90/60)",
+    "managed_futures_mandate_pattern": "\\b(managed\\s+futures|trend|cta|systematic\\s+macro|time[-\\s]series\\s+momentum|mlm\\s+index)\\b",
+    "managed_futures_exclusion_pattern": "\\b(equit\\w*|stock\\w*|bond\\w*|fixed[-\\s]income|income|dividend|credit|yield|municipal|treasur\\w*|commodit\\w*|currenc\\w*|gold|silver|energy|utilit\\w*|technolog\\w*|health\\w*|financ\\w*|industrial\\w*|staples|consumer|real\\s+estate|sector|large[-\\s]?cap|mid[-\\s]?cap|small[-\\s]?cap|allocation|balanced|target|buffer|option|covered\\s+call|leverag\\w*|inverse|ultra|[23]x|emerging|international|developed)\\b"
+  },
+  "notes": [
+    "Screened on SERIES NAMES ONLY, and a name screen misses whatever a sponsor did not name. An earlier screen missed NTSX entirely because the fund was called WisdomTree 90/60 U.S. Balanced Fund in the 2019Q4 census and was renamed afterwards, which is how this repository came to publish that the whole shelf was under six years old. A pattern is not a census of the category.",
+    "Deliberately NOT matched: 'capital efficien', which admits Motley Fool Capital Efficiency 100 Index ETF, a long-only equity index fund that stacks nothing.",
+    "The managed-futures patterns are Experiment 008's, reused verbatim so the count is comparable with the five-fund shelf that audit reported.",
+    "'etf_tickers' is the exchange's own ETF flag from the consolidated symbol directory, not a sponsor's description. A series with no listed ETF class is a mutual fund here.",
+    "Net assets are as filed and unaudited; the two quarters' report dates differ by fund, so a growth rate computed across them is not a common-period figure.",
+    "Absence from the follow-up census is not proof of closure: a fund may file late or on a different cycle. 'marked_final_filing' is the only positive closure evidence here."
+  ],
+  "capital_efficient_series": [
+    {
+      "series_id": "S000009687",
+      "series_name": "PIMCO StocksPLUS International Fund (U.S. Dollar-Hedged)",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 3265696457.56,
+      "net_assets_follow_up": 3362836721.05,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000009704",
+      "series_name": "PIMCO StocksPLUS Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 2708606497.37,
+      "net_assets_follow_up": 2447119501.38,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000009705",
+      "series_name": "PIMCO StocksPLUS Absolute Return Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 1723332278.61,
+      "net_assets_follow_up": 1554284860.86,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000061867",
+      "series_name": "WisdomTree U.S. Efficient Core Fund",
+      "etf_tickers": [
+        "NTSX"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 1262579652.28,
+      "net_assets_follow_up": 1203576045.68,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000073567",
+      "series_name": "WisdomTree Efficient Gold Plus Equity Strategy Fund",
+      "etf_tickers": [
+        "GDE"
+      ],
+      "report_date_follow_up": "2026-02-28",
+      "net_assets_frame": 298747818.78,
+      "net_assets_follow_up": 689874827.6,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000010253",
+      "series_name": "PIMCO StocksPLUS Small Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 655806572.07,
+      "net_assets_follow_up": 624720160.5,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000066941",
+      "series_name": "Rpar Risk Parity ETF",
+      "etf_tickers": [
+        "RPAR"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 537902459.74,
+      "net_assets_follow_up": 585252873.84,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000018588",
+      "series_name": "PIMCO StocksPLUS Long Duration Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 572966566.52,
+      "net_assets_follow_up": 501719549.88,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000079703",
+      "series_name": "Return Stacked Global Stocks & Bonds ETF",
+      "etf_tickers": [
+        "RSSB"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 381820900.58,
+      "net_assets_follow_up": 476602381.6,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000071808",
+      "series_name": "WisdomTree International Efficient Core Fund",
+      "etf_tickers": [
+        "NTSI"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 433772722.5,
+      "net_assets_follow_up": 456572214.47,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000081720",
+      "series_name": "Return Stacked U.S. Stocks & Managed Futures ETF",
+      "etf_tickers": [
+        "RSST"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 292772967.17,
+      "net_assets_follow_up": 414986861.86,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000073568",
+      "series_name": "WisdomTree Efficient Gold Plus Gold Miners Strategy Fund",
+      "etf_tickers": [
+        "GDMN"
+      ],
+      "report_date_follow_up": "2026-02-28",
+      "net_assets_frame": 58410803.04,
+      "net_assets_follow_up": 297595530.39,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000028118",
+      "series_name": "PIMCO StocksPLUS Global Portfolio",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 188597816.0,
+      "net_assets_follow_up": 174991458.84,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000014410",
+      "series_name": "PIMCO StocksPLUS International Fund (Unhedged)",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 181717951.01,
+      "net_assets_follow_up": 174339592.83,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000079702",
+      "series_name": "Return Stacked Bonds & Managed Futures ETF",
+      "etf_tickers": [
+        "RSBT"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 86924574.75,
+      "net_assets_follow_up": 127018870.63,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000084639",
+      "series_name": "Return Stacked U.S. Stocks & Futures Yield ETF",
+      "etf_tickers": [
+        "RSSY"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 116199675.36,
+      "net_assets_follow_up": 107201912.64,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000009706",
+      "series_name": "PIMCO StocksPLUS Short Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 100007027.03,
+      "net_assets_follow_up": 92701225.62,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000084638",
+      "series_name": "Return Stacked Bonds & Futures Yield ETF",
+      "etf_tickers": [
+        "RSBY"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 96942816.48,
+      "net_assets_follow_up": 77901020.41,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000079261",
+      "series_name": "PMV Adaptive Risk Parity ETF",
+      "etf_tickers": [
+        "ARP"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 50365134.95,
+      "net_assets_follow_up": 71925332.3,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000074863",
+      "series_name": "Upar Ultra Risk Parity ETF",
+      "etf_tickers": [
+        "UPAR"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 59208860.02,
+      "net_assets_follow_up": 67074201.89,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000091930",
+      "series_name": "Return Stacked U.S. Stocks & Gold/Bitcoin ETF",
+      "etf_tickers": [
+        "RSSX"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 37320594.73,
+      "net_assets_follow_up": 65133397.23,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000089361",
+      "series_name": "Return Stacked Bonds & Merger Arbitrage ETF",
+      "etf_tickers": [
+        "RSBA"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 24156289.54,
+      "net_assets_follow_up": 52555017.67,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000071810",
+      "series_name": "WisdomTree Emerging Markets Efficient Core Fund",
+      "etf_tickers": [
+        "NTSE"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 34412078.31,
+      "net_assets_follow_up": 45899795.66,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000055002",
+      "series_name": "Return Stacked Balanced Allocation & Systematic Macro Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 40987942.76,
+      "net_assets_follow_up": 40495225.38,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000075414",
+      "series_name": "Fidelity Risk Parity Fund",
+      "etf_tickers": [],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 12941405.68,
+      "net_assets_follow_up": 15980114.17,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    }
+  ],
+  "managed_futures_listed_series": [
+    {
+      "series_id": "S000072813",
+      "series_name": "iMGP DBI Managed Futures Strategy ETF",
+      "etf_tickers": [
+        "DBMF"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 1511527674.95,
+      "net_assets_follow_up": 3297328239.27,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000075092",
+      "series_name": "Simplify Managed Futures Strategy ETF",
+      "etf_tickers": [
+        "CTA"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 1178909884.27,
+      "net_assets_follow_up": 1491494928.11,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000090972",
+      "series_name": "Invesco Managed Futures Strategy ETF",
+      "etf_tickers": [
+        "IMF"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 291930089.05,
+      "net_assets_follow_up": 301073687.85,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000070143",
+      "series_name": "KraneShares Mount Lucas Managed Futures Index Strategy ETF",
+      "etf_tickers": [
+        "KMLM"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 182105786.17,
+      "net_assets_follow_up": 272524753.7,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000092140",
+      "series_name": "Fidelity Managed Futures ETF",
+      "etf_tickers": [
+        "FFUT"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 126263388.43,
+      "net_assets_follow_up": 255920725.62,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000037848",
+      "series_name": "First Trust Managed Futures Strategy Fund",
+      "etf_tickers": [
+        "FMF"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 185100688.8,
+      "net_assets_follow_up": 252894443.97,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000026387",
+      "series_name": "WisdomTree Managed Futures Strategy Fund",
+      "etf_tickers": [
+        "WTMF"
+      ],
+      "report_date_follow_up": "2026-02-28",
+      "net_assets_frame": 164941255.65,
+      "net_assets_follow_up": 213521617.25,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000085612",
+      "series_name": "SMI 3Fourteen Full-Cycle Trend ETF",
+      "etf_tickers": [
+        "FCTE"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 312608897.58,
+      "net_assets_follow_up": 212180597.68,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000080730",
+      "series_name": "Blueprint Chesapeake Multi-Asset Trend ETF",
+      "etf_tickers": [
+        "TFPN"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 124038926.4,
+      "net_assets_follow_up": 139974531.29,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000081302",
+      "series_name": "American Beacon AHL Trend ETF",
+      "etf_tickers": [
+        "AHLT"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 50283009.78,
+      "net_assets_follow_up": 49632717.91,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000083995",
+      "series_name": "Virtus AlphaSimplex Managed Futures ETF",
+      "etf_tickers": [
+        "ASMF"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 28646069.14,
+      "net_assets_follow_up": 30967157.39,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000085073",
+      "series_name": "Cambria Chesapeake Pure Trend ETF",
+      "etf_tickers": [
+        "MFUT"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 22129246.69,
+      "net_assets_follow_up": 30474712.63,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000054127",
+      "series_name": "VanEck Long/Flat Trend ETF",
+      "etf_tickers": [
+        "LFEQ"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 27964248.78,
+      "net_assets_follow_up": 25839403.13,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000082857",
+      "series_name": "Unlimited Hfmf Managed Futures ETF",
+      "etf_tickers": [
+        "HFMF"
+      ],
+      "report_date_follow_up": "2026-02-28",
+      "net_assets_frame": 2076065.34,
+      "net_assets_follow_up": 19448156.38,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000094703",
+      "series_name": "Smart Trend 25 ETF",
+      "etf_tickers": [
+        "STRN"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": 4934487.93,
+      "net_assets_follow_up": 11874027.18,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000100872",
+      "series_name": "Simplify DBi CTA Managed Futures Index ETF",
+      "etf_tickers": [
+        "SDMF"
+      ],
+      "report_date_follow_up": "2026-03-31",
+      "net_assets_frame": null,
+      "net_assets_follow_up": 4375637.86,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    },
+    {
+      "series_id": "S000082111",
+      "series_name": "Global X Bitcoin Trend Strategy ETF",
+      "etf_tickers": [
+        "BTRN"
+      ],
+      "report_date_follow_up": "2026-04-30",
+      "net_assets_frame": 5378915.52,
+      "net_assets_follow_up": 1939304.9,
+      "absent_from_follow_up": false,
+      "marked_final_filing": false
+    }
+  ]
+}

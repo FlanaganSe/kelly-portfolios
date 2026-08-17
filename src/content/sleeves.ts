@@ -126,7 +126,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "One product on the listed shelf delivers the index's exposure, and it is the one that sells replication. It trailed a cost-free vendor index by 0.48 pp/yr against an 0.85% fee. Three independent measurements agree it is the index scaled down by about two thirds.",
     caveat:
-      "Fifty-four months, one benchmark, no bid-ask or brokerage, and no fallback if this single fund fails. Its distribution tax drag is 2.09 pp/yr in a taxable account — 2.5× the fee — and zero in a shelter. The index's own post-publication interval includes zero and fails Holm.",
+      "Fifty-four months, one benchmark, no bid-ask or brokerage. Its distribution tax drag is 2.09 pp/yr in a taxable account — 2.5× the fee — and zero in a shelter; the same trend notional held through the return-stacked wrapper RSST carries 0.32 pp/yr. The listed shelf has gone from five funds to fifteen, so the fallback risk has eased, but none of the newcomers has been tested. The index's own post-publication interval includes zero and fails Holm.",
     source: trend,
   },
   {
@@ -296,14 +296,15 @@ export const sleeves: readonly Sleeve[] = [
     ticker: "NTSX",
     verdict: "excluded",
     status: null,
-    statusNote: "No experiment here graded it. It is priced from the arithmetic of what it would have to earn.",
+    statusNote:
+      "No experiment here graded it. It is priced from the arithmetic of what it would have to earn, and its structure is read from its own N-PORT holdings.",
     loading: null,
     feeBp: 20,
-    feeAsOf: asOf("2026-08-12"),
+    feeAsOf: asOf("2026-08-17"),
     reason:
-      "A 90/60 fund needs 92.0 bp/yr of Treasury excess return over cash before the overlay contributes anything, against a measured futures funding basis of 58.70 bp/yr that was positive in all 28 years measured. Both inputs are forecasts.",
+      "A 90/60 fund needs 48.3 bp/yr of Treasury excess return over cash before the overlay contributes anything, at the 12–18 bp OIS benchmark a fund actually finances at. The 92.0 bp this line used to state came from a special-collateral repo basis that is not a rate a fund pays. Both inputs are forecasts.",
     caveat:
-      "Its own record does not settle it either way: +2.57 pp/yr against 60/40 since inception and −1.97 pp/yr against equities, and no 90/60 blended comparator is published. Outperforming a lower-risk portfolio in an equity bull market is exactly the trap a risk-matched comparator exists to catch. It also made no capital-gains distributions in any year 2022–2026, which is a real and separate point in its favour.",
+      "Holdings put it at 90.83% equity plus 63.50% of Treasury futures notional, so 1.54x gross and delta 0.14 — it keeps 85.6% of the funding-rule benefit rather than all of it. Its own record does not settle the overlay either way, and its two siblings are the counter-evidence: NTSI and NTSE have each lost to their own equity leg's index by about 3 pp/yr since 2021. Its zero-capital-gain record comes from $163m of capital loss carryforwards and in-kind redemption relief, not from Treasury futures being elegant.",
     source: { ...structural, anchor: "3-section-1256-and-capital-efficiency-handled-honestly" },
   },
   {
@@ -365,9 +366,9 @@ export const sleeves: readonly Sleeve[] = [
     feeBp: 10,
     feeAsOf: asOf("2026-08-17"),
     reason:
-      "Tested 2026-08-17 over 658 months from 1971-09. It passes the overlay admission test and fails the rule a physical gold ETF actually imposes: marginal growth of +0.04 to −0.42 pp/yr against a 0.30 bar when funded by selling equity. Its correlation to equity is zero rather than negative — −0.03 to +0.03, and −0.01 to +0.08 inside equity drawdowns — which confirms the prior that it is an average hedge, not a universal negative-correlation asset.",
+      "Tested 2026-08-17 under both funding rules, over 618 months from 1975-01 — the first month a US person could legally own it. Its Sharpe ratio is 0.18 against equity's 0.59, and everything follows from that. Funded by selling equity, which is what a physical gold ETF imposes, it loses 0.40 pp/yr against a 0.30 bar. Funded as a financed overlay, which is what a return-stacked wrapper imposes, it gains 0.18 pp/yr — still below the bar and below its own 0.73 detection floor. Its correlation to equity is zero rather than negative, −0.02 to +0.03 and −0.04 to +0.08 inside equity drawdowns, which confirms the prior that it is an average hedge rather than a universal negative-correlation asset.",
     caveat:
-      "The forty months from 1971-09 to 1974-12 carry about 40% of the full-sample Sharpe ratio, and private US gold ownership was illegal throughout them. On the window an investor could actually have held, the Sharpe ratio is 0.18 rather than 0.31 and the marginal figure is −0.41 pp/yr. A bullion ETF is also taxed at 28% as a collectible plus 3.8% NIIT, against 20% plus 3.8% for equity.",
+      "The forty months from 1971-09 to 1974-12 carry about 40% of the full-sample Sharpe ratio, and private US gold ownership was illegal throughout them, so every figure here excludes them. Beside a trend overlay gold adds rather than substitutes — the two correlate +0.07 — but the increment is 0.09 pp/yr against a detection floor of 1.68. Tax decides where to hold it, not whether: a bullion ETF pays 28% as a collectible plus 3.8% on a gain it can defer for decades, while the overlay wrapper distributes ordinary income every year at a measured 1.53 pp/yr.",
     source: {
       label: "What a sleeve is worth inside a portfolio, rather than on its own",
       docPath: "docs/research/marginal-sleeve-value.md",
