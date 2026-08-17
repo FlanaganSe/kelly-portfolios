@@ -323,29 +323,43 @@ That is a **statement about the distribution of outcomes, not a prediction of re
 it should never be quoted as evidence that global diversification raises expected return. On
 the evidence available it does not.
 
-### The candidate frontier
+### The candidate frontier, with the two decisions separated
 
-Same 426-month USD window. Trend is haircut by the repository's full **7.7 pp/yr** CTA bias
-bound, so these are the pessimistic rows. `B2` levers the *global* base to each candidate's
-volatility — the control the plan makes mandatory.
+The frontier above conflated two independent choices. Separating them is the whole point,
+because **one of them is resolved and the other is not.**
 
-| | Candidate | geometric | volatility | Sharpe | max DD | under water | notional |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| **B0** | 100% US | 10.98% | 15.16% | 0.594 | −50.3% | 72 mo | 1.00 |
-| **B1/C1** | global 60/30/10 | 9.41% | 14.84% | 0.507 | −53.1% | 63 mo | 1.00 |
-| **C2** | global + 15% trend | 9.76% | 14.61% | 0.535 | −51.8% | 62 mo | 1.15 |
-| **C3** | global + 25% trend | 9.98% | 14.60% | **0.549** | −51.0% | 64 mo | 1.25 |
-| **C4** | global + 50% trend | 10.44% | 15.02% | 0.566 | **−48.9%** | 65 mo | 1.50 |
-| **B2** | global levered to C3's volatility | 9.32% | 14.60% | 0.508 | −52.4% | 63 mo | 0.98 |
+Same 426-month USD window. `+25% trend` is haircut by the repository's full **7.7 pp/yr**
+CTA bias bound — the pessimistic row. `B2` levers the *same base* to the candidate's own
+volatility, which is the control the plan makes mandatory.
 
-**C3 beats its leverage-matched control on Sharpe by 0.041 at identical volatility**, which
-is the test that separates breadth from beta, and it passes. The overlay contributes
-**+0.57 pp/yr and 2.1 pp of drawdown** at the full bias haircut.
+| Base | Candidate | geometric | volatility | Sharpe | max DD | **ΔSharpe** |
+| --- | --- | ---: | ---: | ---: | ---: | ---: |
+| **US** | no overlay (**B0**) | 10.98% | 15.16% | 0.594 | −50.3% | — |
+| US | + 25% trend, no haircut | 13.71% | 14.93% | 0.765 | −46.6% | +0.171 |
+| US | **+ 25% trend, 7.7 pp haircut** | **11.56%** | 14.93% | **0.636** | **−48.0%** | **+0.042** |
+| US | leverage-matched 0.985× control | 10.88% | 14.93% | 0.595 | −49.7% | **+0.001** |
+| **Global** | no overlay (**B1/C1**) | 9.41% | 14.84% | 0.507 | −53.1% | — |
+| Global | + 25% trend, no haircut | 12.10% | 14.60% | 0.681 | −49.6% | +0.174 |
+| Global | **+ 25% trend, 7.7 pp haircut** | 9.98% | 14.60% | 0.549 | −51.0% | **+0.042** |
+| Global | leverage-matched 0.984× control | 9.32% | 14.60% | 0.508 | −52.4% | **+0.001** |
 
-**And every candidate trails B0 on this window.** A reader who takes B0 as the benchmark
-should conclude that nothing here beat 100% US equity over 1990–2025. That is true, it is
-the window in which the US won, and it is exactly why B0 is not the only benchmark the plan
-requires.
+**The overlay's contribution is identical on both bases to three decimals** — ΔSharpe
+**+0.042** at the full bias haircut, **+0.171** without it — while the leverage-matched
+control contributes **+0.001**. Two things follow, and they are the most useful pair of
+numbers on this page.
+
+1. **The overlay decision is independent of the base decision.** Whatever a reader
+   concludes about US versus global, the overlay answers the same way.
+2. **It is breadth and not beta.** A control levered to the identical volatility from the
+   identical base buys 0.001 of Sharpe. The overlay buys 0.042 at the pessimistic haircut.
+
+**And the US base with an overlay beats B0 outright** — 11.56% against 10.98%, at a 2.3 pp
+shallower drawdown, on the window the US won. That is the one candidate here that clears
+100% US equity on its own favoured sample.
+
+**The base choice remains unresolved and must not be settled by this table.** Preferring the
+US base because it won 1990–2025 is the ex-post selection error this repository exists to
+catch. The overlay result is what survives; the base result is a window.
 
 ---
 
