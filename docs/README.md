@@ -80,6 +80,11 @@ and current status.
   diversification credit whose ceiling is the base portfolio's own variance. Carries the
   cash control that produced decision 0008 — and the weight-dependence that reopens its own
   headline.
+- [The alternative sleeves audit](research/alternative-sleeves-audit.md) — which of the
+  strategy universe's §F families a retail investor can actually own, at what all-in cost:
+  catastrophe bonds pass at ρ ≈ 0.10 with one sixteen-month-old vehicle, put-writing is
+  rejected on live-only alpha of −0.09 to −0.88%/yr at ρ 0.86–0.95, and the "since 1986"
+  put-write record is a backtest before 2007.
 - [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) — what the
   funding rule is worth (`a_p - sigma_p**2`, containing nothing about the sleeve), why the
   realised growth optimum on levered equity is unholdable at a -99.3% drawdown, how many
