@@ -332,6 +332,27 @@ DATASETS: Final[dict[str, FrenchDataset]] = {
             revision_policy=_REVISION_POLICY_INTERNATIONAL,
         ),
         FrenchDataset(
+            dataset_id="french_us_49_industry_portfolios",
+            filename="49_Industry_Portfolios_CSV.zip",
+            description=(
+                "Forty-nine value- and equal-weighted industry portfolios, US, "
+                "monthly from 1926-07. Held here for ONE column, ``RlEst``, which "
+                "is the only free documented long real-estate equity total return "
+                "this repository has found. Read what it is before using it: "
+                "French assigns a stock to ``RlEst`` by its SIC code, 6500-6553 "
+                "and 6590-6599, so it is real-estate OPERATING and holding "
+                "companies. It is NOT a REIT index, it is not the NAREIT or MSCI "
+                "US REIT index any REIT fund tracks, and before the 1990s modern "
+                "equity REITs barely existed, so the early history is a different "
+                "population of firms wearing the same label. Its correlation "
+                "with a REIT fund must be measured on the overlap and stated "
+                "beside any long-window figure taken from it, never assumed."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
             dataset_id="french_us_st_reversal",
             filename="F-F_ST_Reversal_Factor_CSV.zip",
             description=(

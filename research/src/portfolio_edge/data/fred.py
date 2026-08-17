@@ -74,6 +74,7 @@ Construction = Literal[
     "overnight_effective_rate",
     "market_yield_at_constant_maturity",
     "index_level",
+    "exchange_reference_price",
 ]
 
 _REVISION_NOT_POINT_IN_TIME: Final = (
@@ -360,6 +361,67 @@ SERIES: Final[dict[str, FredSeries]] = {
                 "Seasonally adjusted history is revised every year when seasonal "
                 "factors are re-estimated. Values downloaded today differ from "
                 "values downloaded last year for the same months."
+            ),
+        ),
+        FredSeries(
+            series_id="CBBTCUSD",
+            title="Coinbase Bitcoin",
+            definition=(
+                "One venue's US dollar price of one bitcoin, published by "
+                "Coinbase and redistributed by FRED. The only bitcoin price "
+                "series this repository holds. Measured 2026-08-17: 2014-12-01 "
+                "to 2026-08-16, daily including weekends, U.S. Dollars, not "
+                "seasonally adjusted. The series notes state, in full, 'All data "
+                "is as of 5 PM PST.' — so an observation is a snapshot at a "
+                "stated wall-clock time on one exchange, NOT a settled close and "
+                "NOT a multi-venue reference rate. It is therefore not the index "
+                "any US spot bitcoin ETP prices its net asset value against, and "
+                "the two largest do not even use the same one: IBIT's 10-K names "
+                "the CME CF Bitcoin Reference Rate - New York Variant, a 3-4 "
+                "p.m. New York volume-weighted median across eight venues "
+                "administered by CF Benchmarks Ltd., while FBTC's names the "
+                "Fidelity Bitcoin Reference Rate, whose methodology is written "
+                "by an affiliate of its own sponsor. Neither is published here. "
+                "Reaching for this series where an ETP's own index is meant is a "
+                "substitution, and the difference is an unmeasured basis. "
+                "Decision 0002 does not forbid it: that decision bans free PRICE "
+                "feeds because they drop distributions and mishandle corporate "
+                "actions, and bitcoin pays no distribution and has no corporate "
+                "action, which is the identical carve-out the World Bank gold "
+                "series relies on. Everything else decision 0002 says still "
+                "applies, so this is exploratory and may not support a "
+                "confirmatory result."
+            ),
+            frequency="daily",
+            source_units="usd_per_bitcoin",
+            units="usd_per_bitcoin",
+            unit_transform="identity",
+            transformation="none (price level, as published)",
+            maturity_months=None,
+            construction="exchange_reference_price",
+            day_count="not applicable (a price, not a rate)",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing=(
+                "Daily, seven days a week, timestamped 5 p.m. PST on the day it "
+                "describes. A month-end observation is the last calendar day of "
+                "the month rather than the last business day, because the market "
+                "does not close."
+            ),
+            revision_behavior=(
+                "No series-specific revision policy is published. FRED's own "
+                "panel says only 'All data are subject to revision'. Vintages do "
+                "exist: ALFRED serves this series with release dates from "
+                "2018-06-17, checked 2026-08-17, so a corrected print is "
+                "recoverable there even though this module does not read it. "
+                "The file also carries at least one bad print — 2015-01-14 reads "
+                "120.00 between neighbours in the 260s — which month-end "
+                "sampling happens to miss and daily use would not. "
+                "The series carries a redistribution prohibition — "
+                "'Copyright, 2018, Coinbase. Reproduction of Coinbase data in "
+                "any form is prohibited except with the prior written permission "
+                "of Coinbase.' — so its bytes stay in the uncommitted cache and "
+                "only hashes are manifested, the same posture as the ICE BofA "
+                "and LBMA series."
             ),
         ),
     )
