@@ -31,7 +31,7 @@ It is now the wrong call, for three reasons.
   **Not trading is not one of them**, and constraint 3 below is what stops it becoming
   one: the behaviour gap is measured against the average investor, so it may be
   displayed but never added to this figure
-  ([edge decomposition §2.4](../research/expected-edge-decomposition.md#24-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line)).
+  ([edge decomposition §2.4](../research/expected-edge-decomposition.md#2-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line)).
 - **The asset-location ranking is the worked example.** The recommendation page already
   requires that it "must be computed, not asserted", because the familiar rule is right
   for bonds by a factor of four and wrong for emerging-market equity at two of the four

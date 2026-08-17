@@ -55,6 +55,40 @@ Do not store copied articles, search-result dumps, reasoning transcripts, or
 several near-identical summaries. Keep large raw data outside Git and commit a
 small manifest describing its provenance and how to retrieve it.
 
+### Say what a result is scoped to
+
+Two failure modes have already happened here and both survive proofreading, because
+the numbers are correct and only the framing is wrong.
+
+- **A null result from an underpowered instrument is not evidence of absence.** Check
+  [the resolution table](research/evidence-base.md) before proposing an experiment,
+  and state the minimum detectable effect beside any result that did not find one.
+- **A closure is scoped to the design that produced it.** "Closed", "permanently" and
+  "cannot" need the instrument, the window and the parameters that decide them stated
+  in the same sentence. [Search coverage](research/search-coverage.md) is the standing
+  audit of where that has slipped.
+
+## Why the always-on instruction files are short
+
+`AGENTS.md`, `CLAUDE.md` and this file are loaded on every request, so they carry only
+what an agent cannot infer from the repository. The evidence is
+[Gloaguen et al., arXiv:2602.11988](https://arxiv.org/abs/2602.11988) (ETH Zurich SRI
+Lab, February 2026), who evaluated coding agents with and without repository context
+files: *"providing context files does not generally improve task success rates, while
+increasing inference cost by over 20% on average"*, and *"repository overviews,
+although popular and recommended by model providers, are not helpful."* Two
+qualifications carry as much weight as the headline — *"instructions in the context
+files are well followed"*, so what you put there will be obeyed; and the authors
+conclude that context files earn their place *"for specifying non-standard coding
+practices"*.
+
+The consequence is a split rather than a shorter file: non-inferable facts and traps
+go in `AGENTS.md`; this protocol lives here and under `.claude/rules/` with `paths:`
+frontmatter, so it loads only when Markdown is touched; multi-step procedures are
+skills, whose bodies load on use; actions with real consequences are permissions, not
+prose; and formatting is a hook. **Rules that tooling can enforce should not be
+prose.**
+
 ## Maintaining and retiring
 
 - When implementation settles a question, move the durable outcome into code,

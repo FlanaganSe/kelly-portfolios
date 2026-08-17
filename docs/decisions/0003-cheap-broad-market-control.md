@@ -13,7 +13,7 @@ shape, and in three separate places the comparator turned out to decide the answ
   gain was simply de-risking. Israelov's put-protection result is the same trap in
   the literature: 2.5%/yr of protected excess return looks like protection until a
   36.5% equity / 63.5% cash portfolio earns the same 2.5%.
-- [Experiment 002](../research/factor-product-audit.md) compared 44 factor ETFs
+- [Experiment 002](../research/factor-products.md) compared 44 factor ETFs
   against the market *and* against a fitted long-only combination of VTI, VUG, VTV
   and VB. That comparison is clause (c) of its falsifier, it **fired on 22 of 44** and
   is the single largest cause of the 24 rejections. MTUM is the decisive case: it
@@ -22,7 +22,7 @@ shape, and in three separate places the comparator turned out to decide the answ
   The comparator is fitted in sample, so it is a look-ahead best case for the
   combination — which is why the rejection reads as "four cheap funds beat this over
   these 72 months", not "this product is badly run".
-- [Experiment 002](../research/factor-product-audit.md) also measured a **model-misfit
+- [Experiment 002](../research/factor-products.md) also measured a **model-misfit
   pedestal**: VTI, which *is* the market portfolio, prices at −0.55 pp/yr alpha under
   FF5+UMD over 2020–2025. Every fund alpha in that window must be read as a distance
   from −0.55, never from zero.

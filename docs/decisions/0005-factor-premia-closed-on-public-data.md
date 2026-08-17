@@ -146,7 +146,7 @@ share — none of which this record's closure rule addresses.
   *assumes* at 0.40.
 - [Decision 0004](0004-no-sleeve-promoted.md) stands: no sleeve is promoted. A
   factor reaching `exploratory` is not a sleeve, and every value product still has
-  to pass [Experiment 002](../research/factor-product-audit.md)'s frozen promotion
+  to pass [Experiment 002](../research/factor-products.md)'s frozen promotion
   protocol on its own terms.
 - All figures behind this record are gross of transaction costs, shorting costs,
   borrow, fees and taxes, on academic zero-investment long-short research portfolios
