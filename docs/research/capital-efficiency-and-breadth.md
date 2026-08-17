@@ -216,6 +216,56 @@ most flattered number on this page** — see the limits below.
 
 ---
 
+## 5a. Stress: the risk everyone names is not the risk that binds
+
+Analytic, from `overlay_growth.py`. Base a global equity portfolio at `a_p = 5.0%`,
+`sigma_p = 15.5%`; overlay 25% of trend notional at a **gross excess return of 4.0%** —
+already a two-thirds haircut to the measured 12.07% — 12.6% volatility, 59 bp financing and
+86 bp fee. Growth in pp/yr, reported against **both** the unlevered base and the
+leverage-matched control.
+
+| Scenario | `a_net` | vs unlevered | **vs leverage-matched** |
+| --- | ---: | ---: | ---: |
+| central case | +2.55% | +0.63 | **+0.62** |
+| correlation rises to 0.00 | +2.55% | +0.59 | +0.54 |
+| correlation rises to +0.20 | +2.55% | +0.49 | +0.34 |
+| **correlation rises to +0.50** (crowded unwind) | +2.55% | +0.34 | **+0.06** |
+| fee doubles to 1.72% | +1.69% | +0.41 | +0.40 |
+| trend vol doubles to 25% | +2.55% | +0.52 | +0.40 |
+| **held taxable** (2.09 pp drag) | +0.46% | +0.10 | +0.09 |
+| trend excess halved to 2.0% | +0.55% | +0.13 | +0.12 |
+| **financing +300 bp** | −0.45% | **−0.12** | **−0.13** |
+| **trend excess to zero** (a five-year drought) | −1.45% | **−0.37** | **−0.38** |
+| financing +500 bp | −2.45% | −0.62 | −0.63 |
+| trend excess −2% *and* correlation +0.30 | −3.45% | −1.06 | −1.26 |
+
+**Read the ordering, because it is not the intuitive one.** The overlay survives its
+correlation turning from −0.08 all the way to **+0.50** — the crowded-unwind scenario people
+name first — and still contributes. What breaks it is arithmetic on the *mean*: a financing
+spike of 300 bp, or a five-year stretch with no trend return at all. **The second of those
+is not a tail scenario; it is roughly what happened between 2012 and 2019.**
+
+Two further readings. The leverage-matched column tracks the unlevered column almost exactly
+except at `rho = +0.50`, which is the evidence that this construction is **not disguised
+leveraged beta** — at 25% notional and near-zero correlation it adds little volatility to
+match. And the taxable row confirms the placement constraint: +0.63 becomes +0.10.
+
+The break-even the sleeve must clear, by correlation, shows the same thing from the other
+side — and shows how much the funding rule is carrying:
+
+| `rho` | overlay bar | pro-rata bar |
+| ---: | ---: | ---: |
+| −0.20 | −0.39% | +2.21% |
+| −0.08 | −0.16% | +2.44% |
+| 0.00 | 0.00% | +2.60% |
+| +0.50 | +0.98% | +3.57% |
+
+**Even at a correlation of +0.50 the overlay bar is below 1%, while the pro-rata bar is
+above 3.5%.** The analytic central case of +0.63 pp/yr also agrees with the empirical
++0.68 pp/yr measured at the 7.7 pp haircut in §5, by two routes that share no arithmetic.
+
+---
+
 ## 6. The thing that beat all of it, and cost 5 basis points
 
 [JST R6](evidence-base.md), annual real total return, US against an equal-weight ex-US
