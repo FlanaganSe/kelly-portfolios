@@ -1,0 +1,32 @@
+{
+  "schema_version": "1",
+  "dataset_id": "goyal_welch_predictors_quarterly",
+  "source_url": "https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx",
+  "retrieved_utc": "2026-08-17T03:42:41Z",
+  "sha256_raw": "1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91",
+  "sha256_normalized": "3bb7fae85cc5194dd1278c571b7656ef94136105474a5503a2d5d1c75dadf411",
+  "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "goyal_welch/1.0.0",
+  "frequency": "unknown",
+  "units": "Index=index_level|D12=currency_per_index_share_trailing_12m|E12=currency_per_index_share_trailing_12m|b/m=ratio|tbl=decimal_per_year|AAA=decimal_per_year|BAA=decimal_per_year|lty=decimal_per_year|cay=decimal_ratio|ntis=decimal_ratio|Rfree=decimal_per_period|infl=decimal_per_period|ltr=decimal_per_period|corpr=decimal_per_period|svar=decimal_squared_return|csp=decimal_ratio|ik=decimal_ratio|CRSP_SPvw=decimal_per_period|CRSP_SPvwx=decimal_per_period|D3=currency_per_index_share_trailing_3m|E3=currency_per_index_share_trailing_3m",
+  "source_units": "Index=index_level|D12=currency_per_index_share_trailing_12m|E12=currency_per_index_share_trailing_12m|b/m=ratio|tbl=decimal_per_year|AAA=decimal_per_year|BAA=decimal_per_year|lty=decimal_per_year|cay=decimal_ratio|ntis=decimal_ratio|Rfree=decimal_per_period|infl=decimal_per_period|ltr=decimal_per_period|corpr=decimal_per_period|svar=decimal_squared_return|csp=decimal_ratio|ik=decimal_ratio|CRSP_SPvw=decimal_per_period|CRSP_SPvwx=decimal_per_period|D3=currency_per_index_share_trailing_3m|E3=currency_per_index_share_trailing_3m",
+  "unit_transform": "identity",
+  "first_observation": "1871-03",
+  "last_observation": "2025-12",
+  "rows": 620,
+  "availability_policy": "Annual academic release. The Google Drive endpoint returns NO Last-Modified header, so the retrieval timestamp in this manifest is the only observable bound on when any row became available, and it bounds the whole file rather than any row. That is weaker than every other source in this repository. Several columns are also flagged by the source as full-sample estimates written back over history, which no availability timestamp can detect: see the full-sample-predictor warning.",
+  "revision_policy": "Not point-in-time. The full history is rebuilt on each annual update and the source records changes to its own inputs inside the history ('From 2022, data on lty from FRED, data on ltr/corpr from Bloomberg indices'). No vintage archive is published, so an observation downloaded today may not be the number any published paper used, and a sha256 here identifies the file downloaded and nothing more.",
+  "license_or_terms_url": "https://sites.google.com/view/agoyal145",
+  "warnings": [
+    "UNITS ARE PER COLUMN and are in the units string, name=unit, in column order. Nothing was converted; the source publishes decimals, not percentages, for its rate and return columns.",
+    "4010 cells held text rather than a number and became missing values, not zeros. The workbook writes 'NaN' for a value it does not have.",
+    "FULL-SAMPLE PREDICTORS PRESENT: ['cay']. The source marks these 'Needs recomputation every period. Only full-sample version here.' \u2014 they were estimated once on the entire sample and written back over history, so using them in a predictive regression is look-ahead by construction. No hash and no availability timestamp can detect this; the file is honest and the column is not.",
+    "QUARTERLY SHEET. Periods are labelled with the LAST month of each quarter, which was verified against the Monthly sheet rather than assumed: the quarterly Index for 1871Q1 equals the monthly Index for 1871-03. Frequency is declared 'unknown' because ParsedTable has no quarterly member, so no gap check runs over this table.",
+    "VINTAGE PINNED: PredictorData2025.xlsx, data through 2025. SHEET PINNED: 'quarterly', of sheets ['Monthly', 'Quarterly', 'Annual'].",
+    "dataset description: The predictor set of Welch, Ivo and Amit Goyal. 2008. 'A Comprehensive Look at the Empirical Performance of Equity Premium Prediction.' Review of Financial Studies 21(4): 1455-1508, updated annually by the authors. Monthly from 1871-01, quarterly from 1871Q1 and annual from 1871.",
+    "SOURCE URL is the Google Docs export path for the document Amit Goyal links from https://sites.google.com/view/agoyal145. The document id is part of the data's identity; if the page starts linking a different id, that is a new dataset, not a refresh.",
+    "this workbook carries no ReadMe sheet; the columns are documented only in Welch and Goyal (2008)."
+  ]
+}
