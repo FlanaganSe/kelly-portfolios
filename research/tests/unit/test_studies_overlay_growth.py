@@ -32,8 +32,8 @@ from portfolio_edge.studies.overlay_growth import (
 # 16% volatility has L_e* = 2.148, so the zero-leverage constraint binds hard, which
 # is the case the module exists to price.
 BASE = OverlayInputs(
-    equity_excess_return=0.055,
-    equity_volatility=0.16,
+    base_excess_return=0.055,
+    base_volatility=0.16,
     diversifier_excess_return=0.040,
     diversifier_volatility=0.10,
     correlation=-0.17,
@@ -60,14 +60,14 @@ def _growth_excess(
     else:  # pragma: no cover - guarded by the module under test
         raise ValueError(rule)
 
-    arithmetic = equity_weight * inputs.equity_excess_return + weight * net
+    arithmetic = equity_weight * inputs.base_excess_return + weight * net
     variance = (
-        equity_weight**2 * inputs.equity_volatility**2
+        equity_weight**2 * inputs.base_volatility**2
         + 2.0
         * equity_weight
         * weight
         * inputs.correlation
-        * inputs.equity_volatility
+        * inputs.base_volatility
         * inputs.diversifier_volatility
         + weight**2 * inputs.diversifier_volatility**2
     )
@@ -98,8 +98,8 @@ def test_required_net_excess_return_is_the_break_even(rule: str) -> None:
     required = required_net_excess_return(BASE, rule=rule)
     # Rebuild the inputs so that a_net lands exactly on the bar.
     at_bar = OverlayInputs(
-        equity_excess_return=BASE.equity_excess_return,
-        equity_volatility=BASE.equity_volatility,
+        base_excess_return=BASE.base_excess_return,
+        base_volatility=BASE.base_volatility,
         diversifier_excess_return=required + BASE.financing_spread + BASE.fee,
         diversifier_volatility=BASE.diversifier_volatility,
         correlation=BASE.correlation,
@@ -120,8 +120,8 @@ def test_funding_rule_gap_equals_the_difference_of_the_two_bars() -> None:
     ) - required_net_excess_return(BASE, rule=FundingRule.OVERLAY)
     assert gap == pytest.approx(
         funding_rule_gap(
-            equity_excess_return=BASE.equity_excess_return,
-            equity_volatility=BASE.equity_volatility,
+            base_excess_return=BASE.base_excess_return,
+            base_volatility=BASE.base_volatility,
         )
     )
     # Independently: a_e - sigma_e**2 = 5.5% - 2.56% = 2.94 pp/yr.
@@ -139,8 +139,8 @@ def test_gap_is_invariant_to_every_diversifier_property(
 ) -> None:
     """The finding, stated as a property test over the whole diversifier space."""
     inputs = OverlayInputs(
-        equity_excess_return=BASE.equity_excess_return,
-        equity_volatility=BASE.equity_volatility,
+        base_excess_return=BASE.base_excess_return,
+        base_volatility=BASE.base_volatility,
         diversifier_excess_return=diversifier_excess_return,
         diversifier_volatility=diversifier_volatility,
         correlation=correlation,
@@ -156,20 +156,20 @@ def test_gap_is_invariant_to_every_diversifier_property(
 def test_the_two_rules_coincide_exactly_when_leverage_does_not_bind() -> None:
     """``L_e* = 1`` is the whole content of equation (3)."""
     unbinding = OverlayInputs(
-        equity_excess_return=0.16**2,  # a_e = sigma_e**2, so L_e* = 1
-        equity_volatility=0.16,
+        base_excess_return=0.16**2,  # a_e = sigma_e**2, so L_e* = 1
+        base_volatility=0.16,
         diversifier_excess_return=BASE.diversifier_excess_return,
         diversifier_volatility=BASE.diversifier_volatility,
         correlation=BASE.correlation,
     )
-    assert unbinding.equity_kelly_leverage == pytest.approx(1.0)
+    assert unbinding.base_kelly_leverage == pytest.approx(1.0)
     assert marginal_growth(unbinding, rule=FundingRule.OVERLAY) == pytest.approx(
         marginal_growth(unbinding, rule=FundingRule.PRO_RATA)
     )
 
 
 def test_gap_reverses_sign_for_an_over_levered_equity_position() -> None:
-    over_levered = funding_rule_gap(equity_excess_return=0.01, equity_volatility=0.30)
+    over_levered = funding_rule_gap(base_excess_return=0.01, base_volatility=0.30)
     assert over_levered < 0.0
 
 
@@ -178,11 +178,11 @@ def test_gap_reverses_sign_for_an_over_levered_equity_position() -> None:
 # --------------------------------------------------------------------------------
 
 
-def test_admission_threshold_at_equity_kelly_is_rho_times_equity_sharpe() -> None:
+def test_admission_threshold_at_equity_kelly_is_rho_times_base_sharpe() -> None:
     threshold = sharpe_admission_threshold(
-        BASE, equity_exposure=BASE.equity_kelly_leverage
+        BASE, base_exposure=BASE.base_kelly_leverage
     )
-    assert threshold == pytest.approx(BASE.correlation * BASE.equity_sharpe)
+    assert threshold == pytest.approx(BASE.correlation * BASE.base_sharpe)
 
 
 def test_admission_threshold_signs_the_first_dollar() -> None:
@@ -193,8 +193,8 @@ def test_admission_threshold_signs_the_first_dollar() -> None:
 
     # A sleeve whose net Sharpe sits below the threshold, holding rho and sigma_d.
     below = OverlayInputs(
-        equity_excess_return=BASE.equity_excess_return,
-        equity_volatility=BASE.equity_volatility,
+        base_excess_return=BASE.base_excess_return,
+        base_volatility=BASE.base_volatility,
         diversifier_excess_return=(threshold - 0.01) * BASE.diversifier_volatility,
         diversifier_volatility=BASE.diversifier_volatility,
         correlation=BASE.correlation,
@@ -207,8 +207,8 @@ def test_negative_correlation_admits_a_negative_expected_return_sleeve() -> None
     """Uncomfortable but exact: at rho < 0 the bar is below zero."""
     assert required_net_excess_return(BASE, rule=FundingRule.OVERLAY) < 0.0
     losing = OverlayInputs(
-        equity_excess_return=BASE.equity_excess_return,
-        equity_volatility=BASE.equity_volatility,
+        base_excess_return=BASE.base_excess_return,
+        base_volatility=BASE.base_volatility,
         diversifier_excess_return=-0.001,
         diversifier_volatility=BASE.diversifier_volatility,
         correlation=BASE.correlation,
@@ -254,18 +254,18 @@ def test_the_gain_returns_to_zero_at_twice_the_optimal_weight() -> None:
 def test_matched_volatility_gain_is_the_sharpe_difference_times_volatility() -> None:
     verdict = matched_volatility_verdict(BASE, weight=0.30)
     assert verdict.leverage_matched_growth_gain == pytest.approx(
-        verdict.portfolio_volatility * (verdict.portfolio_sharpe - verdict.equity_sharpe)
+        verdict.portfolio_volatility * (verdict.portfolio_sharpe - verdict.base_sharpe)
     )
 
 
-def test_levered_equity_at_the_matched_volatility_grows_by_the_stated_amount() -> None:
-    """Rebuild the levered-equity control longhand and difference it."""
+def test_levered_base_at_the_matched_volatility_grows_by_the_stated_amount() -> None:
+    """Rebuild the levered-base control longhand and difference it."""
     weight = 0.30
     verdict = matched_volatility_verdict(BASE, weight=weight)
-    leverage = verdict.portfolio_volatility / BASE.equity_volatility
+    leverage = verdict.portfolio_volatility / BASE.base_volatility
     levered_growth = (
-        leverage * BASE.equity_excess_return
-        - 0.5 * leverage**2 * BASE.equity_volatility**2
+        leverage * BASE.base_excess_return
+        - 0.5 * leverage**2 * BASE.base_volatility**2
     )
     overlay_growth = _growth_excess(BASE, weight, rule=FundingRule.OVERLAY)
     assert verdict.leverage_matched_growth_gain == pytest.approx(
@@ -273,7 +273,7 @@ def test_levered_equity_at_the_matched_volatility_grows_by_the_stated_amount() -
     )
 
 
-def test_an_overlay_can_raise_growth_and_still_lose_to_levered_equity() -> None:
+def test_an_overlay_can_raise_growth_and_still_lose_to_levered_base() -> None:
     """The trap the plan requires be labelled: growth bought with beta, not breadth.
 
     Growth improves iff ``a_net > beta sigma_e**2`` and Sharpe improves iff
@@ -283,8 +283,8 @@ def test_an_overlay_can_raise_growth_and_still_lose_to_levered_equity() -> None:
     sits between them.
     """
     inputs = OverlayInputs(
-        equity_excess_return=0.055,
-        equity_volatility=0.16,
+        base_excess_return=0.055,
+        base_volatility=0.16,
         diversifier_excess_return=0.012,
         diversifier_volatility=0.10,
         correlation=0.48,
@@ -294,7 +294,7 @@ def test_an_overlay_can_raise_growth_and_still_lose_to_levered_equity() -> None:
 
     verdict = matched_volatility_verdict(inputs, weight=0.20)
     assert verdict.growth_gain > 0.0
-    assert verdict.beats_leverage_matched_equity is False
+    assert verdict.beats_leverage_matched_base is False
     assert verdict.leverage_matched_growth_gain < 0.0
 
 
@@ -336,8 +336,8 @@ def test_plug_in_cost_is_one_over_two_t_for_the_overlay_too() -> None:
 
     for volatility in (0.06, 0.10, 0.30):
         inputs = OverlayInputs(
-            equity_excess_return=truth.equity_excess_return,
-            equity_volatility=truth.equity_volatility,
+            base_excess_return=truth.base_excess_return,
+            base_volatility=truth.base_volatility,
             diversifier_excess_return=truth.diversifier_excess_return,
             diversifier_volatility=volatility,
             correlation=0.0,
@@ -362,8 +362,8 @@ def test_plug_in_cost_is_one_over_two_t_for_the_overlay_too() -> None:
 @pytest.mark.parametrize(
     ("field", "value"),
     [
-        ("equity_volatility", 0.0),
-        ("equity_volatility", -0.1),
+        ("base_volatility", 0.0),
+        ("base_volatility", -0.1),
         ("diversifier_volatility", 0.0),
         ("correlation", 1.5),
         ("correlation", -1.5),
@@ -371,8 +371,8 @@ def test_plug_in_cost_is_one_over_two_t_for_the_overlay_too() -> None:
 )
 def test_inputs_reject_impossible_parameters(field: str, value: float) -> None:
     kwargs = {
-        "equity_excess_return": 0.055,
-        "equity_volatility": 0.16,
+        "base_excess_return": 0.055,
+        "base_volatility": 0.16,
         "diversifier_excess_return": 0.04,
         "diversifier_volatility": 0.10,
         "correlation": -0.17,

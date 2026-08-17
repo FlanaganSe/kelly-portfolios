@@ -1,19 +1,27 @@
 """What a diversifying sleeve is worth depends on what you sell to buy it.
 
-This repository has measured the same sleeve against two funding rules and reported
-two different answers without naming the reason. Experiment 004 added a 15% trend
-sleeve to a 60/40 equity/cash portfolio against a risk-matched cash comparator and
-measured **+1.312 pp/yr** of growth. Experiment 010b added a 10% trend sleeve to a
-fully invested global equity core, funded pro rata, and measured **+0.258 pp/yr**
-against a 0.30 threshold. Both are correct. The gap is not evidence, sample or
-weight: it is the funding rule, and this module derives its exact size.
+Every marginal-sleeve result in this repository was produced by *selling something*
+to fund the sleeve. Experiment 010 sold the base portfolio pro rata. Experiment 004
+sold a 60/40 equity/cash base pro rata. Neither tested the rule a capital-efficient
+fund actually uses, which is to sell nothing and finance the notional. This module
+derives the exact size of that difference, and it is large.
 
-Notation throughout, all arithmetic and all in excess of cash:
+**What this module does not claim.** It does *not* explain why Experiment 004
+measured +1.312 pp/yr for a 15% trend sleeve and Experiment 010b measured +0.258 for
+a 10% one. Checked rather than assumed: the funding-rule term accounts for
+**+0.25 pp/yr of a +2.15 pp/yr per-unit-weight difference, about 12%.** The rest is
+period, base composition, comparator and realised returns. Those two numbers are not
+a worked example of anything here.
+
+Notation throughout, all arithmetic and all in excess of cash. The base is whatever
+portfolio the sleeve is being added to — 100% equity, a 60/40, anything — and every
+result below is stated in its terms rather than equity's, because the funding rule is
+a question about the thing being sold:
 
 ===================  ==========================================================
-``a_e``, ``sigma_e``  equity's arithmetic excess return over cash, and its volatility
+``a_p``, ``sigma_p``  the base portfolio's arithmetic excess return, and its volatility
 ``a_d``, ``sigma_d``  the diversifier's, **gross** of financing and fee
-``rho``               their correlation; ``beta = rho sigma_d / sigma_e``
+``rho``               their correlation; ``beta = rho sigma_d / sigma_p``
 ``s``                 the financing spread paid over cash to obtain notional
 ``phi``               the fee charged on notional
 ``a_net``             ``a_d - s - phi``, what a unit of notional actually earns
@@ -25,64 +33,65 @@ continuous time, and it is the same objective decision 0008 makes deciding.
 
 **The two funding rules.**
 
-*Overlay.* Hold one unit of equity and add ``w`` units of diversifier notional,
-financed. ``A(w) = a_e + w a_net`` and
-``V(w) = sigma_e**2 + 2 w rho sigma_e sigma_d + w**2 sigma_d**2``, so
+*Overlay.* Hold one unit of the base and add ``w`` units of diversifier notional,
+financed. ``A(w) = a_p + w a_net`` and
+``V(w) = sigma_p**2 + 2 w rho sigma_p sigma_d + w**2 sigma_d**2``, so
 
-    dg/dw at w=0  =  a_net - rho sigma_e sigma_d.                            (1)
+    dg/dw at w=0  =  a_net - rho sigma_p sigma_d.                            (1)
 
-*Pro rata.* Hold ``1 - w`` units of equity and ``w`` of diversifier, selling equity
-to fund it. ``A(w) = (1-w) a_e + w a_net`` and
-``V(w) = (1-w)**2 sigma_e**2 + 2 w (1-w) rho sigma_e sigma_d + w**2 sigma_d**2``, so
+*Pro rata.* Hold ``1 - w`` units of the base and ``w`` of diversifier, selling the
+base to fund it. ``A(w) = (1-w) a_p + w a_net`` and
+``V(w) = (1-w)**2 sigma_p**2 + 2 w (1-w) rho sigma_p sigma_d + w**2 sigma_d**2``, so
 
-    dg/dw at w=0  =  (a_net - a_e) + sigma_e**2 (1 - beta).                  (2)
+    dg/dw at w=0  =  (a_net - a_p) + sigma_p**2 (1 - beta).                  (2)
 
 Expression (2) is Experiment 010's diversification credit, re-derived. Subtracting
 (1) from (2), **every term involving the diversifier cancels**:
 
-    pro-rata bar  -  overlay bar  =  a_e - sigma_e**2
-                                  =  sigma_e**2 (L_e* - 1),                  (3)
+    pro-rata bar  -  overlay bar  =  a_p - sigma_p**2
+                                  =  sigma_p**2 (L_p* - 1),                  (3)
 
-where ``L_e* = a_e / sigma_e**2`` is equity's own growth-optimal leverage. This is
-the central result of the module and it is worth stating in words:
+where ``L_p* = a_p / sigma_p**2`` is the base portfolio's own growth-optimal
+leverage. This is the central result of the module and it is worth stating in words:
 
     **The funding rule changes the hurdle a diversifier must clear by an amount
-    that depends on nothing about the diversifier — only on how far equity's own
-    growth-optimal exposure sits above 1. The two rules agree exactly when
-    ``L_e* = 1``, that is, precisely when the zero-leverage constraint does not
-    bind.**
+    that depends on nothing about the diversifier — only on how far the base
+    portfolio's own growth-optimal exposure sits above 1. The two rules agree
+    exactly when ``L_p* = 1``, that is, precisely when the zero-leverage constraint
+    does not bind.**
 
-At ``a_e = 5.5%`` and ``sigma_e = 16%`` the gap is 2.94 pp/yr, and ``L_e* = 2.15``.
-So the repository's zero-leverage rule is not a neutral simplification that lowers
-returns a little. It raises the bar every candidate diversifier has been judged
-against by nearly three percentage points a year, which is larger than any premium
-this repository has ever attempted to measure. The corner solution in
+At ``a_p = 5.0%`` and ``sigma_p = 16%`` the gap is **2.44 pp/yr** and ``L_p* = 1.95``.
+For the 60/40 equity/cash base Experiment 004 used it is **2.08 pp/yr**. So the
+repository's zero-leverage rule is not a neutral simplification that lowers returns a
+little. It raises the bar every candidate diversifier has been judged against by more
+than two percentage points a year, which is larger than any premium this repository
+has attempted to measure. The corner solution in
 ``docs/research/setting-the-equity-share.md`` §1.1 and the null result in Experiment
 010 are two readings of the same constraint.
 
-**The general form.** With equity held at exposure ``L`` rather than 1, (1) becomes
-``a_net - L rho sigma_e sigma_d > 0``, or dividing by ``sigma_d``,
+**The general form.** With the base held at exposure ``L`` rather than 1, (1) becomes
+``a_net - L rho sigma_p sigma_d > 0``, or dividing by ``sigma_d``,
 
-    S_d  >  L rho sigma_e.                                                   (4)
+    S_d  >  L rho sigma_p.                                                   (4)
 
-At ``L = L_e*`` this is the textbook tangency condition ``S_d > rho S_e``: an asset
+At ``L = L_p*`` this is the textbook tangency condition ``S_d > rho S_p``: an asset
 belongs in the growth-optimal portfolio iff its Sharpe ratio exceeds its correlation
 times the incumbent's. **At negative correlation the threshold is negative**, so a
 diversifier with a small negative expected excess return can still raise growth. That
 is not a loophole; it is the same statement as (3) seen from the other side.
 
 **The honest control, and it is unforgiving.** None of the above establishes that an
-overlay beats simply levering equity to the same risk. At matched volatility
-``sigma_p``, levered equity grows at ``r + sigma_p S_e - sigma_p**2 / 2`` and the
-overlay portfolio at ``r + A - sigma_p**2 / 2``. The variance terms are identical by
-construction, so
+overlay beats simply levering the base to the same risk. At matched volatility
+``sigma_total``, the levered base grows at
+``r + sigma_total S_p - sigma_total**2 / 2`` and the overlay portfolio at
+``r + A - sigma_total**2 / 2``. The variance terms are identical by construction, so
 
     **at matched volatility the higher Sharpe ratio wins, and nothing else
     matters.**                                                               (5)
 
 Every figure this module produces must be read through (5). An overlay that raises
-growth over *unlevered* equity while lowering the portfolio's Sharpe ratio has bought
-its gain with leverage, and ``docs/the-plan.md`` requires that be labelled leveraged
+growth over the *unlevered* base while lowering the portfolio's Sharpe ratio has
+bought its gain with leverage, and ``docs/the-plan.md`` requires that be labelled leveraged
 beta rather than alpha.
 
 **What this module is not.** It is algebra about a stated model, in the tradition of
@@ -125,7 +134,7 @@ __all__ = [
 
 @dataclass(frozen=True)
 class OverlayInputs:
-    """One diversifier bolted onto one equity position, all figures annual.
+    """One diversifier bolted onto one base portfolio, all figures annual.
 
     Returns are **arithmetic excesses over cash**, not geometric and not total. The
     financing spread and fee are charged on notional, which is what a return-stacked
@@ -133,8 +142,8 @@ class OverlayInputs:
     different reasons: the spread is a market price and the fee is a contract.
     """
 
-    equity_excess_return: float
-    equity_volatility: float
+    base_excess_return: float
+    base_volatility: float
     diversifier_excess_return: float
     diversifier_volatility: float
     correlation: float
@@ -142,9 +151,9 @@ class OverlayInputs:
     fee: float = 0.0
 
     def __post_init__(self) -> None:
-        if self.equity_volatility <= 0.0:
+        if self.base_volatility <= 0.0:
             raise ValueError(
-                f"equity volatility must be positive, got {self.equity_volatility}"
+                f"base volatility must be positive, got {self.base_volatility}"
             )
         if self.diversifier_volatility <= 0.0:
             raise ValueError(
@@ -166,28 +175,28 @@ class OverlayInputs:
 
     @property
     def beta(self) -> float:
-        """``beta = rho sigma_d / sigma_e``, the diversifier's beta on equity."""
-        return self.correlation * self.diversifier_volatility / self.equity_volatility
+        """``beta = rho sigma_d / sigma_p``, the diversifier's beta on the base."""
+        return self.correlation * self.diversifier_volatility / self.base_volatility
 
     @property
     def covariance(self) -> float:
-        """``rho sigma_e sigma_d``, the term that decides every bar in this module."""
+        """``rho sigma_p sigma_d``, the term that decides every bar in this module."""
         return (
-            self.correlation * self.equity_volatility * self.diversifier_volatility
+            self.correlation * self.base_volatility * self.diversifier_volatility
         )
 
     @property
-    def equity_kelly_leverage(self) -> float:
-        """``L_e* = a_e / sigma_e**2``, equity's own growth-optimal exposure.
+    def base_kelly_leverage(self) -> float:
+        """``L_p* = a_p / sigma_p**2``, the base portfolio's growth-optimal exposure.
 
         The single number that decides whether the funding rule matters at all: by
         (3), the two bars coincide iff this equals 1.
         """
-        return self.equity_excess_return / self.equity_volatility**2
+        return self.base_excess_return / self.base_volatility**2
 
     @property
-    def equity_sharpe(self) -> float:
-        return self.equity_excess_return / self.equity_volatility
+    def base_sharpe(self) -> float:
+        return self.base_excess_return / self.base_volatility
 
     @property
     def diversifier_sharpe(self) -> float:
@@ -207,25 +216,25 @@ class FundingRule:
 # --------------------------------------------------------------------------------
 
 
-def marginal_growth(inputs: OverlayInputs, *, rule: str, equity_exposure: float = 1.0) -> float:
+def marginal_growth(inputs: OverlayInputs, *, rule: str, base_exposure: float = 1.0) -> float:
     """``dg/dw`` at ``w = 0``: growth added per unit of the first sleeve dollar.
 
-    ``rule`` selects (1) or (2) from the module docstring. ``equity_exposure``
-    generalises the overlay rule to equity held at ``L`` rather than 1 and is
-    ignored under pro rata, where the equity weight is what is being traded away.
+    ``rule`` selects (1) or (2) from the module docstring. ``base_exposure``
+    generalises the overlay rule to the base held at ``L`` rather than 1 and is
+    ignored under pro rata, where the base weight is what is being traded away.
 
     Positive means the first dollar of the sleeve raises growth. It says nothing
     about how much of it to hold — that is :func:`growth_optimal_overlay_weight` —
-    and nothing about whether levering equity would have done better, which is
+    and nothing about whether levering the base would have done better, which is
     :func:`matched_volatility_verdict` and is the question that decides.
     """
     if rule == FundingRule.OVERLAY:
-        return inputs.net_excess_return - equity_exposure * inputs.covariance
+        return inputs.net_excess_return - base_exposure * inputs.covariance
     if rule == FundingRule.PRO_RATA:
         return (
             inputs.net_excess_return
-            - inputs.equity_excess_return
-            + inputs.equity_volatility**2 * (1.0 - inputs.beta)
+            - inputs.base_excess_return
+            + inputs.base_volatility**2 * (1.0 - inputs.beta)
         )
     raise ValueError(f"unknown funding rule {rule!r}")
 
@@ -240,41 +249,41 @@ def required_net_excess_return(inputs: OverlayInputs, *, rule: str) -> float:
     if rule == FundingRule.OVERLAY:
         return inputs.covariance
     if rule == FundingRule.PRO_RATA:
-        return inputs.equity_excess_return - inputs.equity_volatility**2 * (
+        return inputs.base_excess_return - inputs.base_volatility**2 * (
             1.0 - inputs.beta
         )
     raise ValueError(f"unknown funding rule {rule!r}")
 
 
-def funding_rule_gap(*, equity_excess_return: float, equity_volatility: float) -> float:
+def funding_rule_gap(*, base_excess_return: float, base_volatility: float) -> float:
     """``a_e - sigma_e**2 = sigma_e**2 (L_e* - 1)``: how much harder pro rata is.
 
     Equation (3). **It takes no diversifier argument, and that is the finding** — the
     penalty the zero-leverage rule imposes on every candidate sleeve is a property of
-    the equity position alone. It is positive iff equity's growth-optimal leverage
-    exceeds 1, zero iff the constraint does not bind, and negative for an equity
-    position already levered past its own optimum, where selling equity to buy
-    anything is an improvement.
+    the base position alone. It is positive iff the base's growth-optimal leverage
+    exceeds 1, zero iff the constraint does not bind, and negative for a base already
+    levered past its own optimum, where selling it to buy anything is an
+    improvement.
     """
-    if equity_volatility <= 0.0:
+    if base_volatility <= 0.0:
         raise ValueError(
-            f"equity volatility must be positive, got {equity_volatility}"
+            f"base volatility must be positive, got {base_volatility}"
         )
-    return equity_excess_return - equity_volatility**2
+    return base_excess_return - base_volatility**2
 
 
 def sharpe_admission_threshold(
-    inputs: OverlayInputs, *, equity_exposure: float = 1.0
+    inputs: OverlayInputs, *, base_exposure: float = 1.0
 ) -> float:
     """``L rho sigma_e``: the Sharpe ratio a diversifier must beat, equation (4).
 
-    At ``equity_exposure = inputs.equity_kelly_leverage`` this returns
+    At ``base_exposure = inputs.base_kelly_leverage`` this returns
     ``rho * S_e``, the textbook tangency condition, and the two statements are the
     same statement. Below negative correlation it is negative, so a sleeve with a
     negative net expected excess return can still raise growth — a fact that should
     make any reader suspicious of the inputs rather than pleased with the result.
     """
-    return equity_exposure * inputs.correlation * inputs.equity_volatility
+    return base_exposure * inputs.correlation * inputs.base_volatility
 
 
 # --------------------------------------------------------------------------------
@@ -315,14 +324,14 @@ class OverlaySizing:
     growth_gain: float
     portfolio_volatility: float
     portfolio_sharpe: float
-    equity_sharpe: float
+    base_sharpe: float
     leverage_matched_growth_gain: float
-    beats_leverage_matched_equity: bool
+    beats_leverage_matched_base: bool
 
 
 def _portfolio_volatility(inputs: OverlayInputs, weight: float) -> float:
     variance = (
-        inputs.equity_volatility**2
+        inputs.base_volatility**2
         + 2.0 * weight * inputs.covariance
         + weight**2 * inputs.diversifier_volatility**2
     )
@@ -332,28 +341,28 @@ def _portfolio_volatility(inputs: OverlayInputs, weight: float) -> float:
 
 
 def matched_volatility_verdict(inputs: OverlayInputs, *, weight: float) -> OverlaySizing:
-    """The overlay against equity levered to the same volatility — equation (5).
+    """The overlay against the base levered to the same volatility — equation (5).
 
     This is the control ``docs/the-plan.md`` makes mandatory: *"A strategy that beats
     VTI only by taking more equity beta must be labelled as leveraged beta, not
     alpha."* Because both portfolios are held at the same variance, the ``-V/2`` term
     is common and the comparison collapses to Sharpe ratios. ``growth_gain`` is
-    measured against **unlevered** equity and ``leverage_matched_growth_gain``
-    against equity levered to ``sigma_p / sigma_e``; the second is the honest one and
-    is the smaller of the two whenever the overlay's own Sharpe is the lower.
+    measured against the **unlevered** base and ``leverage_matched_growth_gain``
+    against the base levered to ``sigma_total / sigma_p``; the second is the honest
+    one and is the smaller of the two whenever the overlay's own Sharpe is lower.
     """
     volatility = _portfolio_volatility(inputs, weight)
-    excess = inputs.equity_excess_return + weight * inputs.net_excess_return
+    excess = inputs.base_excess_return + weight * inputs.net_excess_return
     portfolio_sharpe = excess / volatility
-    levered_excess = volatility * inputs.equity_sharpe
+    levered_excess = volatility * inputs.base_sharpe
     return OverlaySizing(
         weight=weight,
         growth_gain=overlay_growth_gain(inputs, weight=weight),
         portfolio_volatility=volatility,
         portfolio_sharpe=portfolio_sharpe,
-        equity_sharpe=inputs.equity_sharpe,
+        base_sharpe=inputs.base_sharpe,
         leverage_matched_growth_gain=excess - levered_excess,
-        beats_leverage_matched_equity=portfolio_sharpe > inputs.equity_sharpe,
+        beats_leverage_matched_base=portfolio_sharpe > inputs.base_sharpe,
     )
 
 
@@ -369,7 +378,7 @@ def shrunk_overlay_weight(inputs: OverlayInputs, *, years: float) -> float:
     the ``1/(2T)`` plug-in cost: the overlay weight's estimation variance is
     ``1 / (T sigma_d**2)`` and the growth loss is quadratic with curvature
     ``sigma_d**2``, so their product is ``1 / (2T)`` with ``sigma_d`` cancelling
-    exactly as it does for equity. Use
+    exactly as it does for the base. Use
     :func:`portfolio_edge.studies.equity_share.plug_in_growth_cost` for it.
 
     **The Sharpe ratio that governs the shrinkage is the marginal one**,
