@@ -1352,6 +1352,333 @@
       ]
     }
   ],
+  "internationalSplit": [
+    {
+      "regime": "US top marginal bracket",
+      "usWeight": 0.6,
+      "developedWeight": 0.3,
+      "emergingWeight": 0.1,
+      "capacities": [
+        {
+          "capacity": 0.0,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.1,
+          "splitSavingBp": 4.610320000000001,
+          "singleFundSavingBp": 4.16555025,
+          "gainBp": 0.44476975000000074
+        },
+        {
+          "capacity": 0.3,
+          "splitSavingBp": 13.83096,
+          "singleFundSavingBp": 12.496650749999999,
+          "gainBp": 1.3343092500000004
+        },
+        {
+          "capacity": 0.4,
+          "splitSavingBp": 16.662201,
+          "singleFundSavingBp": 16.662201,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.6,
+          "splitSavingBp": 21.898201,
+          "singleFundSavingBp": 21.898201,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 1.0,
+          "splitSavingBp": 32.370200999999994,
+          "singleFundSavingBp": 32.370200999999994,
+          "gainBp": 0.0
+        }
+      ],
+      "bestCaseCapacity": 0.3,
+      "bestCaseGainBp": 1.3343092500000004
+    },
+    {
+      "regime": "US upper-middle bracket",
+      "usWeight": 0.6,
+      "developedWeight": 0.3,
+      "emergingWeight": 0.1,
+      "capacities": [
+        {
+          "capacity": 0.0,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.1,
+          "splitSavingBp": 2.3223199999999995,
+          "singleFundSavingBp": 2.002950250000001,
+          "gainBp": 0.31936974999999856
+        },
+        {
+          "capacity": 0.3,
+          "splitSavingBp": 6.9669599999999985,
+          "singleFundSavingBp": 6.0088507500000015,
+          "gainBp": 0.958109249999997
+        },
+        {
+          "capacity": 0.4,
+          "splitSavingBp": 8.616959999999999,
+          "singleFundSavingBp": 8.011801000000004,
+          "gainBp": 0.6051589999999951
+        },
+        {
+          "capacity": 0.6,
+          "splitSavingBp": 11.916959999999996,
+          "singleFundSavingBp": 11.311801000000003,
+          "gainBp": 0.6051589999999933
+        },
+        {
+          "capacity": 1.0,
+          "splitSavingBp": 17.911800999999993,
+          "singleFundSavingBp": 17.911801,
+          "gainBp": -7.105427357601002e-15
+        }
+      ],
+      "bestCaseCapacity": 0.3,
+      "bestCaseGainBp": 0.958109249999997
+    },
+    {
+      "regime": "US zero long-term-rate bracket",
+      "usWeight": 0.6,
+      "developedWeight": 0.3,
+      "emergingWeight": 0.1,
+      "capacities": [
+        {
+          "capacity": 0.0,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.1,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.3,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.4,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 0.6,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        },
+        {
+          "capacity": 1.0,
+          "splitSavingBp": 0.0,
+          "singleFundSavingBp": 0.0,
+          "gainBp": 0.0
+        }
+      ],
+      "bestCaseCapacity": 0,
+      "bestCaseGainBp": 0.0
+    }
+  ],
+  "shelterFill": [
+    {
+      "sleeves": [
+        {
+          "label": "cheap",
+          "weight": 0.5,
+          "priorityBp": 10.0
+        },
+        {
+          "label": "dear",
+          "weight": 0.5,
+          "priorityBp": 30.0
+        }
+      ],
+      "capacity": 0.0,
+      "savingBp": 0.0
+    },
+    {
+      "sleeves": [
+        {
+          "label": "cheap",
+          "weight": 0.5,
+          "priorityBp": 10.0
+        },
+        {
+          "label": "dear",
+          "weight": 0.5,
+          "priorityBp": 30.0
+        }
+      ],
+      "capacity": 0.25,
+      "savingBp": 7.5
+    },
+    {
+      "sleeves": [
+        {
+          "label": "cheap",
+          "weight": 0.5,
+          "priorityBp": 10.0
+        },
+        {
+          "label": "dear",
+          "weight": 0.5,
+          "priorityBp": 30.0
+        }
+      ],
+      "capacity": 0.5,
+      "savingBp": 15.0
+    },
+    {
+      "sleeves": [
+        {
+          "label": "cheap",
+          "weight": 0.5,
+          "priorityBp": 10.0
+        },
+        {
+          "label": "dear",
+          "weight": 0.5,
+          "priorityBp": 30.0
+        }
+      ],
+      "capacity": 1.0,
+      "savingBp": 20.0
+    },
+    {
+      "sleeves": [
+        {
+          "label": "cheap",
+          "weight": 0.5,
+          "priorityBp": 10.0
+        },
+        {
+          "label": "dear",
+          "weight": 0.5,
+          "priorityBp": 30.0
+        }
+      ],
+      "capacity": 4.0,
+      "savingBp": 20.0
+    },
+    {
+      "sleeves": [
+        {
+          "label": "a",
+          "weight": 0.6,
+          "priorityBp": 26.18
+        },
+        {
+          "label": "b",
+          "weight": 0.3,
+          "priorityBp": 46.1032
+        },
+        {
+          "label": "c",
+          "weight": 0.1,
+          "priorityBp": 28.3124
+        }
+      ],
+      "capacity": 0.0,
+      "savingBp": 0.0
+    },
+    {
+      "sleeves": [
+        {
+          "label": "a",
+          "weight": 0.6,
+          "priorityBp": 26.18
+        },
+        {
+          "label": "b",
+          "weight": 0.3,
+          "priorityBp": 46.1032
+        },
+        {
+          "label": "c",
+          "weight": 0.1,
+          "priorityBp": 28.3124
+        }
+      ],
+      "capacity": 0.25,
+      "savingBp": 11.5258
+    },
+    {
+      "sleeves": [
+        {
+          "label": "a",
+          "weight": 0.6,
+          "priorityBp": 26.18
+        },
+        {
+          "label": "b",
+          "weight": 0.3,
+          "priorityBp": 46.1032
+        },
+        {
+          "label": "c",
+          "weight": 0.1,
+          "priorityBp": 28.3124
+        }
+      ],
+      "capacity": 0.5,
+      "savingBp": 19.2802
+    },
+    {
+      "sleeves": [
+        {
+          "label": "a",
+          "weight": 0.6,
+          "priorityBp": 26.18
+        },
+        {
+          "label": "b",
+          "weight": 0.3,
+          "priorityBp": 46.1032
+        },
+        {
+          "label": "c",
+          "weight": 0.1,
+          "priorityBp": 28.3124
+        }
+      ],
+      "capacity": 1.0,
+      "savingBp": 32.3702
+    },
+    {
+      "sleeves": [
+        {
+          "label": "a",
+          "weight": 0.6,
+          "priorityBp": 26.18
+        },
+        {
+          "label": "b",
+          "weight": 0.3,
+          "priorityBp": 46.1032
+        },
+        {
+          "label": "c",
+          "weight": 0.1,
+          "priorityBp": 28.3124
+        }
+      ],
+      "capacity": 4.0,
+      "savingBp": 32.3702
+    }
+  ],
   "foreignSleeves": [
     {
       "label": "Developed ex-US equity",

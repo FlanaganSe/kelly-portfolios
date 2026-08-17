@@ -63,8 +63,11 @@ from portfolio_edge.studies.tax_structure import (
     after_tax_path,
     capital_gain_distribution_drag_bp,
     deferral_value,
+    fill_shelter_bp,
     form_1116_threshold_assets,
     harvested_loss_value_bp,
+    international_split_best_case_bp,
+    international_split_versus_single_fund,
     location_breakeven_rate,
     location_comparison,
     lot_selection_comparison,
@@ -540,6 +543,91 @@ def test_nothing_is_worth_sheltering_at_a_zero_dividend_rate_except_bonds() -> N
     assert ranking["Taxable investment-grade bonds"] == pytest.approx(0.12 * 0.0465 / 1e-4)
     for label in ("Developed ex-US equity", "Emerging-market equity", "US equity"):
         assert ranking[label] == pytest.approx(0.0, abs=1e-9)
+
+
+def test_a_shelter_that_holds_everything_makes_placement_worth_nothing() -> None:
+    """The fill is greedy, and its two boundaries are the ones a ranking hides.
+
+    At zero capacity nothing is placed and nothing is saved. At full capacity every
+    dollar is sheltered whatever the order, so the total is the weight-average priority
+    and the ordering is irrelevant. Placement is only worth something in between.
+    """
+    sleeves = (("cheap", 0.5, 10.0), ("dear", 0.5, 30.0))
+    assert fill_shelter_bp(sleeves, capacity=0.0) == pytest.approx(0.0)
+    assert fill_shelter_bp(sleeves, capacity=0.5) == pytest.approx(0.5 * 30.0)
+    assert fill_shelter_bp(sleeves, capacity=1.0) == pytest.approx(0.5 * 30.0 + 0.5 * 10.0)
+    # Capacity beyond the sleeves cannot buy more than the sleeves are worth.
+    assert fill_shelter_bp(sleeves, capacity=4.0) == pytest.approx(20.0)
+    with pytest.raises(ValueError, match="capacity"):
+        fill_shelter_bp(sleeves, capacity=-0.1)
+
+
+def test_splitting_the_international_sleeve_is_worth_about_one_basis_point() -> None:
+    """VEA + VWO beats a single VXUS-shaped fund by 1.33 bp/yr of equity at most.
+
+    The recommendation splits developed from emerging *because* splitting is what makes
+    the location result available. That is a quantity, and here it is. Derived from the
+    stated inputs rather than read back from the implementation, at the 60/30/10 equity
+    composition and a shelter that holds 30% of the equity sleeve after bonds:
+
+        developed  (0.238 - 0.06068) x 0.0260 = 46.1032 bp
+        emerging   (0.238 - 0.09853) x 0.0203 = 28.3124 bp
+        US equity   0.238 x 0.0110             = 26.1800 bp
+
+    The single fund's priority is the **weight-average of the two it replaces**, because
+    both the taxable cost and the forfeited withholding are linear in yield at these
+    rates. So at a capacity that exactly holds the developed sleeve, the split banks
+    developed's priority where the blend banks the average, and the gain is the spread
+    between them times the weight placed.
+    """
+    developed, emerging = 46.1032, 28.3124
+    blended = (0.30 * developed + 0.10 * emerging) / 0.40
+    assert blended == pytest.approx(41.6555, abs=5e-5)
+
+    result = international_split_versus_single_fund(regime=TOP_BRACKET, capacity=0.30)
+    assert result.split_saving_bp == pytest.approx(0.30 * developed, abs=5e-4)
+    assert result.single_fund_saving_bp == pytest.approx(0.30 * blended, abs=5e-4)
+    assert result.gain_bp == pytest.approx(0.30 * (developed - blended), abs=5e-4)
+    assert result.gain_bp == pytest.approx(1.3343, abs=5e-5)
+
+    capacity, gain = international_split_best_case_bp(regime=TOP_BRACKET)
+    assert (capacity, gain) == pytest.approx((0.30, 1.3343), abs=5e-5)
+
+    # At 23.8% the split order is developed, emerging, US, so a shelter big enough to
+    # hold the whole international sleeve places the same dollars either way.
+    assert international_split_versus_single_fund(
+        regime=TOP_BRACKET, capacity=0.40
+    ).gain_bp == pytest.approx(0.0, abs=1e-12)
+    # And a shelter big enough for everything is indifferent at every bracket.
+    for regime in (TOP_BRACKET, UPPER_MIDDLE_BRACKET, ZERO_RATE_BRACKET):
+        assert international_split_versus_single_fund(
+            regime=regime, capacity=1.0
+        ).gain_bp == pytest.approx(0.0, abs=1e-12)
+
+
+def test_the_split_is_worth_less_where_the_ranking_inverts_not_more() -> None:
+    """At 15% the inversion is the headline and the split is worth **0.958 bp**, not more.
+
+    The reversal — emerging below US equity — is the striking result, so the natural
+    error is to price the split as though the reversal made it valuable. It does the
+    opposite: at 15% the developed sleeve's priority falls from 46.10 to 23.22 bp, and
+    the gain falls with it. And in the 0% bracket, where no equity sleeve has any
+    priority at all, splitting is worth exactly nothing.
+    """
+    developed = (0.15 - 0.06068) * 0.0260 / 1e-4
+    emerging = (0.15 - 0.09853) * 0.0203 / 1e-4
+    assert (developed, emerging) == pytest.approx((23.2232, 10.4484), abs=5e-5)
+    blended = (0.30 * developed + 0.10 * emerging) / 0.40
+
+    capacity, gain = international_split_best_case_bp(regime=UPPER_MIDDLE_BRACKET)
+    assert capacity == pytest.approx(0.30)
+    assert gain == pytest.approx(0.30 * (developed - blended), abs=5e-4)
+    assert gain == pytest.approx(0.9581, abs=5e-5)
+    assert gain < international_split_best_case_bp(regime=TOP_BRACKET)[1]
+
+    assert international_split_best_case_bp(regime=ZERO_RATE_BRACKET)[1] == pytest.approx(
+        0.0, abs=1e-12
+    )
 
 
 @pytest.mark.parametrize(("limit", "assets"), [(300.0, 190_153.0), (600.0, 380_305.0)])

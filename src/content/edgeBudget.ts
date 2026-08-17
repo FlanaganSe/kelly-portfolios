@@ -202,17 +202,17 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
   },
   {
     id: "securities-lending",
-    label: "Securities-lending pass-through, revised",
-    basisPoints: 0.5,
-    range: [0, 2],
+    label: "Securities-lending pass-through, measured across 25 funds",
+    basisPoints: 0.83,
+    range: [0.45, 2.6],
     role: "reported-not-booked",
     certaintyClass: "different-benchmark",
     decaying: false,
     appliesWhen: "Any fund that lends. Larger for international and emerging funds than for US large-cap ones",
     explanation:
-      "Funds lend their holdings and pass most of the fee back. VTI earns about 1.01 bp a year of it, VOO 0.07, VEA about 2.97 and IEMG about 9.2 to 9.7. A portfolio 20% international earns about 1.5 bp rather than 1.0, so the correction to the existing 1 bp line is +0.5.",
+      "Funds lend their holdings and pass most of the fee back. Median over every fiscal year Form N-CEN has filed: VTI 1.84 bp a year, VOO 0.06, VEA 3.30, VWO 4.33, IEMG 9.87. The recommended holdings earn 1.83 bp rather than the 1.0 originally booked, so the correction is +0.83, and fund choice alone moves it between 0.45 and 2.60.",
     caveat:
-      "This is booked against a stated index rather than the investor's own counterfactual, so it does not enter the 109 bp total. It is also not a size effect: VB, US small-cap, earns 3.0 bp — the same as VEA, large-cap developed. The premium is international and emerging lending demand. SPY, QQQ, MDY and DIA are unit investment trusts and cannot lend at all.",
+      "The fee is contractual and this is not: borrow demand is measured, not promised, and a high lending yield is partly compensation for holding what short sellers want. It is booked against a stated index rather than the investor's own counterfactual, so it does not enter the 109 bp total. It is not a size effect: VB, US small-cap, earns 3.0 bp — the same as VEA, large-cap developed. And two funds lend nothing — BND by choice, SPY because its trust deed forbids it.",
     source: structural,
   },
 ];

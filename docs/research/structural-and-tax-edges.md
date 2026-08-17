@@ -46,8 +46,25 @@ randomness, no forecast.
    anything, against a futures funding basis this page **previously mis-benchmarked at
    58.70 bp/yr and now puts at 12–33 bp**, which roughly halves the hurdle. Both inputs are
    forecasts, so it is probabilistic by construction.
-5. **The largest additive line is decaying while being measured.** 94 SEC orders let
-   mutual funds add ETF share classes. **Recheck before any decision leans on the 23 bp.**
+5. **The largest additive line is decaying while being measured, and the decay is now
+   counted rather than inferred.** 94 SEC orders let mutual funds add ETF share classes,
+   and Form 497K filings naming an "ETF Class" went from **2 documents to 89 across the
+   first order**, every one of the 14 registrants an *active* manager — which is the
+   counterfactual the 23 bp is measured against. **Recheck before any decision leans on
+   it.**
+6. **The core beta shelf is now audited on cost, and the fee ranking is not the cost
+   ranking** (§6). Across 25 funds and 110 N-CEN filings, `fee − securities lending` puts
+   **IEMG at 9 bp of fee below VWO at 6**, makes **BND the dearest aggregate-bond fund on
+   the shelf** because it is the only one that does not lend, and prices **SPY at five
+   times any other S&P 500 tracker**. Capital-gain distributions are **zero for all 25
+   funds in every year filed**, so no fund choice inside this shelf buys any of §2's line.
+   **The whole decision is worth 0.60 bp/yr against the recommended four** — two orders of
+   magnitude below §4's turnover hurdle.
+7. **The waiver risk is real and it was pointed at the wrong fund.** IEMG's `(0.00)%`
+   line is a **0.09% cap running to 2030-12-31 with no recoupment** — the most durable fee
+   commitment on the shelf. The only recoupable waiver anywhere on it is **Schwab's SCHF
+   and SCHE**, disclosed in Form N-CEN Item C.8 since fiscal 2022 and **in no document a
+   shareholder reads**.
 
 **One caution on the whole page.** Every figure is sized for **one stated reference
 investor** — US top bracket, 30-year horizon, liquidation at the end; 60% US equity, 14%
@@ -131,10 +148,52 @@ falls below every positive rate and the emerging one falls *between* two live ra
 
 **Two limits.** Below **$300 of creditable foreign tax ($600 joint)** the credit is
 claimed without Form 1116 and without the §904 limitation — a threshold reached at about
-$190,153 of developed-market holdings, and neither figure is indexed. And two omissions
-cut against the emerging inversion, neither quantified: a shelter also shelters
-capital-gain distributions and rebalancing turnover, which emerging funds generate more
-of; and a taxable international position is a better loss-harvesting candidate.
+$190,153 of developed-market holdings, and neither figure is indexed. And **one of the two
+omissions that used to cut against the emerging inversion is now measured at zero**: a
+shelter also shelters capital-gain distributions, and [§6.3](#63-capital-gain-distributions-zero-everywhere-including-the-unit-trust)
+finds every emerging ETF on the shelf distributed **0.00** of realised gain in each of
+five fiscal years. What remains is that a taxable international position is a better
+loss-harvesting candidate, still unquantified.
+
+### The withholding rate is the input this whole section rests on, and five funds disagree with it
+
+`as of 2026-08-17`, and this is now **the largest open input on the page**. The 6.068% and
+9.853% above come from *one sponsor's shareholder worksheet*, whose denominator is total
+ordinary dividends distributed. **Eleven funds from five sponsors file the underlying pair
+directly** — foreign taxes paid and foreign source income earned, in the N-CSR tax note:
+
+| Sleeve | Fund and fiscal year end | Foreign taxes paid ÷ foreign source income |
+| --- | --- | ---: |
+| **Developed ex-US** | SPDW 2025-09-30 · IDEV 2025-07-31 · IEFA 2025-07-31 · SCHF 2025-08-31 · VEA 2025-12-31 | 5.99% · 6.23% · 6.84% · 7.60% · **7.61%** |
+| **Emerging** | SPEM 2025-09-30 · AVEM 2025-08-31 · VWO 2025-10-31 · IEMG 2025-08-31 · SCHE 2025-08-31 · EEM 2025-08-31 | 9.12% · 12.50% · **12.59%** · 13.33% · 14.22% · 14.23% |
+
+**The developed input is inside the filed range and the emerging one is below all but one
+fund of it.** At VWO's own filed 12.59% the forfeiture rises from 20.00 to
+**25.56 bp/yr** and the break-even from 21.51% to **27.48%** — above every US qualified
+rate, so the inversion would cover **23.8% as well**, and the "treat it as a tie" line
+below would become a third inversion.
+
+**The input is not changed here, and the reason is a denominator that was not settled.**
+Whether a filing's "foreign source income earned" is stated gross of the withheld tax —
+which is what §853 makes the shareholder report — or net of it decides the arithmetic. On
+the conservative net reading VWO's rate is 11.18% and the break-even 24.40%, **still above
+23.8%**. So the direction is the same on both readings and the existing table understates
+the emerging forfeiture; what is not established is by how much. **Nothing in the
+recommendation moves either way**, because a larger forfeiture only strengthens the
+result already recorded. Resolving it needs a Form 1099-DIV or the fund's own tax
+supplement reconciled to Box 1a, and it is a review trigger.
+
+**Splitting the international sleeve is worth 1.33 bp/yr of equity at most.** The
+recommendation holds VEA + VWO rather than one total-international fund *because*
+splitting is what makes this ranking available. That is a quantity, so
+[`international_split_versus_single_fund`](../../research/src/portfolio_edge/studies/tax_structure.py)
+computes it rather than asserting it: at the 60/30/10 equity composition the gain peaks at
+**1.334 bp/yr of the equity sleeve at 23.8%** and **0.958 at 15%**, both at a shelter
+holding 30% of equity after bonds, and it is **exactly zero** when the shelter holds
+everything or when the qualified rate is 0%. A single fund's priority is the *weight
+average* of the two it replaces, because taxable cost and forfeited withholding are both
+linear in yield at these rates. **The fee difference is separate and larger than it looks;
+[the recommendation](portfolio-recommendation.md#12-the-holdings) prices the whole trade.**
 
 **Double count: not additive.** This is a **correction** to the 10 bp location line,
 whose sources do not model foreign withholding at all. Booking it as a new positive line
@@ -177,14 +236,22 @@ either way.
 **Double count: ADDITIVE.** The 49 bp fee line is an expense-ratio gap containing no tax,
 and this is the *fund* realising gains rather than the *investor* realising losses.
 
-**Falsifier, already firing.** The SEC granted its first ETF-share-class order on
-2025-11-17 and its listing shows **94 granted orders as of 2026-08-11**, covering roughly
-ninety fund families, with only two applications still noticed and unordered. Vanguard is
-the proof of concept: VFIAX and VTSAX show zero capital gains for a decade precisely
-because they share a portfolio with VOO and VTI. **So the 23 bp is a decaying quantity
-with a visible mechanism of decay.** The opposite risk also exists — a 2021 Senate Finance
-discussion draft proposed to repeal the RIC exception outright; never enacted, no
-successor found.
+**Falsifier, already firing, and now with adoption measured rather than inferred.** The SEC
+granted its first ETF-share-class order on 2025-11-17 and its listing shows **94 granted
+orders as of 2026-08-11**, covering roughly ninety fund families, with only two
+applications still noticed and unordered. An order is permission, not a share class, so
+the decision-relevant quantity is how many funds have actually added one. Counting Form
+497K documents whose text contains the phrase `"ETF Class"` on EDGAR full-text search,
+`as of 2026-08-17`: **2 documents in the ten and a half months before the first order and
+89 in the nine months after, from 14 registrants** — Dimensional (47 across three),
+TCW, Hotchkis & Wiley, Thornburg, Fidelity, Nuveen, Calamos and Guinness Atkinson.
+**Every one is an active or systematic manager**, which is what makes it bind: the cheap
+index sponsors already have ETFs, and the funds converting are precisely the
+counterfactual the 23 bp is measured against. Vanguard remains the proof of concept —
+VFIAX and VTSAX show zero capital gains for a decade because they share a portfolio with
+VOO and VTI. **So the 23 bp is a decaying quantity with a measured, accelerating mechanism
+of decay.** The opposite risk also exists — a 2021 Senate Finance discussion draft proposed
+to repeal the RIC exception outright; never enacted, no successor found.
 
 ---
 
@@ -526,27 +593,171 @@ the line to **25.6 bp** for a contributing investor, **−4.4 bp**.
 
 ---
 
-## 6. Securities lending, verified by asset class
+## 6. The core beta shelf, audited on cost rather than on fee
 
-Net lending income over average net assets, from N-CSR Statements of Operations for
-fiscal years ending 2025. Dollar figures are read directly; the denominator is inferred
-two ways, which is why several are ranges.
+`as of 2026-08-17`. Twenty-five funds in six categories, every fiscal year Form N-CEN has
+published — **110 filings, eight fiscal years for all but two funds**. Regenerate with
+`cd research && uv run python -m portfolio_edge.studies.core_beta_shelf --build`; every
+figure below is pinned in `tests/unit/test_studies_core_beta_shelf.py` and each filing's
+URL and sha256 is in
+[`data-manifests/core_beta_shelf/ncen_costs.json`](../../research/data-manifests/core_beta_shelf/ncen_costs.json).
 
-| Fund | bp/yr | | Fund | bp/yr |
-| --- | ---: | --- | --- | ---: |
-| IEFA | 1.08–1.11 | | IEMG | ~9.2–9.7 |
-| VEA | ~2.97 | | VSS | ~13.0–13.4 |
-| VB (US small-cap) | ~3.0–3.1 | | VWO | ~4.9–5.2 |
-| VXUS | ~3.4–3.6 | | | |
+**This section replaces a six-fund N-CSR lending table.** Its three findings survive
+verbatim on eight times the data — the 1 bp booked is right for a US total-market fund
+and low for an international one, the premium is *not* a size effect, and the sponsor
+matters more than the asset class. What that table could not say is the thing that
+decides a fund choice.
 
-Three findings, none of which changes the budget materially. **The 1 bp booked is right
-for a US total-market fund and low for an international one** — a portfolio 20%
-international earns about 1.5 bp, a +0.5 bp correction. **It is not a size effect**: VB,
-pure US small-cap, earns the same as VEA, large-cap developed international. The premium
-is in *international and emerging* lending demand, which corrects the edge decomposition's
-framing of the VOO/VTI gap as "the small- and mid-cap tail". And **the sponsor matters
-more than the asset class** — IEFA at ~1.1 bp and VEA at ~3.0 bp hold nearly the same
-universe.
+### 6.1 Net cost, and why it is not the fee ranking
+
+`net cost = expense ratio − net securities-lending income`. Both terms are measured
+against **the fund's own net assets** rather than against an index, so adding them is not
+the benchmark switch [`aggregate()`](../../research/src/portfolio_edge/studies/outperformance_horizon.py)
+refuses. The fee is the current 497K table
+([dated per fund](portfolio-recommendation.md#12-the-holdings)); lending is the **median**
+over every fiscal year on file, from N-CEN Item C.6.g over Item C.2.
+
+| Category | Cheapest to own → dearest, bp/yr net | | |
+| --- | --- | --- | --- |
+| **US total market** | ITOT **1.04** · VTI 1.16 · SCHB 1.96 · SPTM 2.63 | | |
+| **S&P 500** | SPLG **1.82** · IVV 2.75 · VOO 2.94 · **SPY 9.45** | | |
+| **Developed ex-US** | SPDW **−1.63** · VEA −0.30 · SCHF 1.84 · IDEV 2.11 · IEFA 4.65 | | |
+| **Emerging** | IEMG **−0.87** · VWO 1.67 · SPEM 2.01 · SCHE 4.84 · AVEM 25.99 · **EEM 67.34** | | |
+| **Total international** | VXUS **1.43** · VEU 1.61 · IXUS 3.99 | | |
+| **Aggregate bonds** | SPAB **2.09** · AGG 2.74 · SCHZ 2.93 · **BND 3.00** | | |
+
+**A fee comparison is not a cost comparison, and here is the same finding on the funds
+that hold the money.** [Experiment 009](factor-products.md) established it where 22 of 44
+US factor products lost more than 0.50 pp/yr to a cheap replication against a fee premium
+of at most 0.32. On the core shelf it shows up three times:
+
+- **IEMG charges 9 bp against VWO's 6 and is the cheaper fund to own.** Its lending income
+  covers the whole fee and 0.87 bp besides. SPDW's 3 bp fee is covered twice over.
+- **BND is the dearest aggregate-bond fund on this shelf at an identical 3 bp fee**,
+  because it is the only one that does not lend at all: Vanguard answers Item C.6.a "No"
+  for the Total Bond Market Index Fund in **all eight fiscal years**.
+- **SPY costs five times any other S&P 500 fund** — 9.45 bp against 1.82 to 2.94 — and its
+  own prospectus forbids the offset. It "is not authorized to … **lend its portfolio
+  securities or other assets**", holds dividends in "a **non-interest-bearing account**"
+  whose earnings credit accrues to the Trustee rather than to unitholders, pays them "on
+  the last Business Day in the calendar month following each Ex-Dividend Date", and states
+  that "**no dividend reinvestment service is provided by the Trust**". Four separate cash
+  drags, all structural to the unit investment trust, none of them in the 0.0945% fee.
+
+**Two things the lending column is not.** It is **not contractual**: the fee is a filed
+commitment and borrow demand is not, so the sign is certain and the size is a measurement.
+And **a high lending yield is partly compensation for holding what short sellers want** —
+IEMG's 8.30–12.12 bp range over eight years is emerging-market borrow demand, which is a
+property of the holdings and not of the manager. What makes the column usable anyway is
+that its *rank* is stable: VOO has been the lowest-earning fund here in all eight years
+and IEMG among the highest in all eight.
+
+### 6.2 Tracking difference — filed, and mostly unusable across funds
+
+Item C.3.b.ii files "the annualized difference between the Fund's total return … and the
+index's return", before and after fund fees. It is the number a fee is usually mistaken
+for, and this repository can use almost none of it, for three reasons that are worth more
+than the number.
+
+1. **Every fund's difference is against its own index, and the indices differ** — CRSP,
+   S&P Total Market, S&P Composite 1500, Dow Jones US Broad, FTSE, MSCI. Ranking funds
+   across those is adding lines measured against different benchmarks. **The only group on
+   this shelf that shares an index is VOO, IVV and SPLG**, and once compared they are
+   indistinguishable: derived ETF-class differences of −1 to −4 bp, inside the 0.01
+   percentage point the filings round to.
+2. **The item does not say which share class a multi-class fund answers for.** For every
+   Vanguard series here the gap between the before- and after-expense figures is 9.5 to
+   35.3 bp against an ETF-class fee of 3 to 6, so **the filed after-expense figure is not
+   the ETF class's tracking difference.** For a single-class ETF the same gap recovers the
+   expense ratio to the filed rounding, which is what identifies the defect.
+3. **The figures are unaudited and the filings show it.** BlackRock filed the before- and
+   after-expense differences as *the same number* for every iShares fund here in its
+   fiscal-2025 and fiscal-2026 N-CENs, which cannot be true of a fund that charges a fee;
+   IVV and AGG each lose three of eight years to that screen and IDEV two. Vanguard's
+   filings lose none. **A page that ranked funds on the filed figure would be ranking
+   filers.**
+
+What survives is a null worth having. **Before fees, every fund on this shelf tracks its
+own index to within a few basis points a year** — median differences of +0.03 (US),
++0.12 to +0.49 (developed ex-US), −0.24 to +0.23 (emerging), −0.04 to +0.00 (bonds). The
+positive ex-US medians are **not skill**: a net-return index deducts withholding at the
+maximum non-treaty rate, which the funds reclaim under treaty, and iShares says so in its
+own prospectus footnote. Index-construction differences swamp everything else, which is
+the same wall [Experiment 009's withholding bound](factor-products.md#the-drag-that-could-not-be-measured)
+hit from the other side.
+
+The 497K "Average Annual Total Returns" tables agree, on the longest window filed. Fund
+NAV return less its own target index, ten years to 2025-12-31: **VTI 0.00, VEA −0.01,
+VXUS −0.01, VEU −0.02, VOO −0.04, BND −0.05, and VWO +0.04** pp/yr. Six funds at 3–6 bp of
+fee, none trailing its index by more than its fee, and one ahead of it.
+
+### 6.3 Capital-gain distributions: zero, everywhere, including the unit trust
+
+From Financial Highlights, five fiscal years each, all twenty-five funds plus SPY:
+**every ETF distributed 0.00 of realised capital gain in every year shown.** The only
+non-zero figures anywhere on the shelf are BND's ETF class in FY2021 and FY2022, at
+**20.8 bp and 7.0 bp of beginning NAV** — a bond fund, in the rate rise, and still an
+order of magnitude below the 3%-of-NAV counterfactual §2 books against.
+
+**So §2's 23 bp is intact and its comparator is confirmed as the right one.** The wrapper
+advantage is against an *active* fund, never against another ETF, and no fund choice
+inside this shelf buys any of it.
+
+**And the decay §2's falsifier predicted has started, in exactly the direction that
+consumes the 23 bp** — the converting sponsors are the *active* managers, which is the
+counterfactual the line is measured against.
+
+### 6.4 Waivers and recoupment — the risk is real and it is not where it was expected
+
+A waiver line reading `(0.00)%` costs nothing today and can be withdrawn with no fee
+increase announced; a **recoupable** one can be clawed back out of later years. Form N-CEN
+Item C.8 asks all three questions and the answers are structured, so the whole shelf can be
+screened rather than sampled.
+
+| Sponsor | Expense limitation in place | Recoupable, per Item C.8 | What the fee table says |
+| --- | --- | --- | --- |
+| **Vanguard** (7 funds) | **never, in any of eight years** | never | no waiver line exists at all |
+| **BlackRock** | IXUS, AGG, IEMG, IDEV(2018) | **never** | `(0.00)%` on IXUS, AGG, IEMG |
+| **State Street** | SPTM, SPLG, SPAB, SPDW, SPEM | never | no line — the waiver is in the statutory prospectus |
+| **Schwab** | **SCHF and SCHE since FY2022** | **SCHF and SCHE, every year since FY2022** | **no waiver line, and no recoupment language anywhere** |
+| **Avantis** | never | never | no waiver line |
+
+Three findings, and the first two run against what [the recommendation](portfolio-recommendation.md)
+previously assumed.
+
+- **IEMG's `(0.00)%` waiver is the most durable fee commitment on the shelf, not the least
+  stable figure on it.** Its footnote is an expense *cap*: BFA "has contractually agreed to
+  waive a portion of its management fee such that the Fund's total annual fund operating
+  expenses after the fee waiver will not exceed 0.09% **through December 31, 2030**", with
+  no recoupment. IXUS's and AGG's waivers are the ordinary acquired-fund-fee offset,
+  expiring 2026-11-30 and 2027-06-30, also with no recoupment.
+- **Schwab's two international funds are the only place on this shelf where a waiver is
+  marked recoupable, and it appears in no document a shareholder reads.** SCHF and SCHE
+  have answered Item C.8 "expense limitation: Yes / recoupable: Yes" in every N-CEN since
+  fiscal 2022. The registrant's own 485BPOS returns **zero** hits for `recoup` or
+  `recaptur`, its 28 MB fiscal-2025 N-CSR returns zero for `recoup`, `recaptur` and
+  `expense limitation`, and the only `waiv` hits in the annual report are about the code of
+  ethics. **Two of the same registrant's filings disagree, and the one carrying the
+  recoupment flag is the one nobody reads.** Not resolved here: either Schwab is answering
+  Item C.8 loosely, or an arrangement exists that its prospectus does not describe. Either
+  way SCHF's audited expense ratio has been **0.05% (FY2025) and 0.06% (FY2024) against the
+  0.03% in the fee table**, which is labelled "restated to reflect current fees".
+- **State Street's waivers carry the strongest disclaimer and the shortest fuse.** Both
+  trusts state the waiver "**does not provide for the recoupment by the Adviser of any
+  amounts previously waived or reimbursed**" and both expire inside eighteen months —
+  2026-10-31 for SPTM/SPLG/SPAB, 2027-01-31 for SPDW/SPEM. SPY's is weaker still: the
+  Trustee's fee waiver is **voluntary rather than contractual**, runs to 2027-02-01, and
+  the trust states plainly that "there is no guarantee that the Trust's ordinary operating
+  expenses will not exceed 0.0945%".
+
+### 6.5 What the lending line does to the budget
+
+For the reference investor's 60/14/6/20 allocation held in the recommended four, the
+measured lending pass-through is **1.83 bp/yr**, against the 1.0 bp originally booked and
+the 1.5 bp the six-fund table corrected it to. Fund selection alone moves it between
+**0.45 and 2.60 bp/yr** across the cheap shelf. The ledger line becomes **+0.83 bp**, and
+it is still a rounding error on a 109 bp budget — which is the finding, not a
+disappointment.
 
 ---
 
@@ -610,7 +821,7 @@ losing 10.2 bp/yr — because an avoided mistake is not a return source.
 | **Specific identification of tax lots** | **+5.0** | 0 to +44 | **ADDITIVE** (residual only) |
 | Foreign tax credit forfeited inside a shelter | **−3.4** | −6 to 0 | **correction** to the 10 bp location line |
 | Direct-indexing fee, netted against harvesting | **−4.4** | −30 to +6 | **correction** to the 30 bp harvesting line |
-| Securities lending, verified by asset class | +0.5 | 0 to +2 | same 1 bp line, revised |
+| Securities lending, measured across 25 funds and 8 fiscal years (§6) | +0.83 | +0.45 to +2.60 | same 1 bp line, revised |
 | Deferred unrealised gain | 84.1 | 0 to 162 | **No — a hurdle, not a saving** |
 | Municipal bonds | 0.0 | 0 to +222 | inactive; the shelter covers the bonds |
 | §1256 60/40 treatment | 0.0 | 0 to +51 | no futures sleeve; leverage is zero |
@@ -652,19 +863,36 @@ measured advantage, except constant rates, which cuts both ways.
    funds at 6.6–7.0%, but no asset-weighted average was found. **The largest additive line
    rests on it.**
 3. **Whether ETF share classes actually eliminate the distributions.** Ninety-four orders
-   exist; no SEC document quantifies the benefit, and the operative conditions live in each
-   applicant's 40-APP application, which was not read.
-4. **The value of lot-selection discipline for a retail buy-and-hold investor.** The only
+   exist and 89 Form 497K documents now name an "ETF Class", but no SEC document
+   quantifies the benefit and the operative conditions live in each applicant's 40-APP
+   application, which was not read.
+4. **The effective foreign withholding rate, and its denominator.** Eleven funds file a
+   ratio of foreign taxes paid to foreign source income that runs 5.99–7.61% developed and
+   9.12–14.23% emerging, against the 6.068% and 9.853% §1 uses from one sponsor's
+   shareholder worksheet. **Whether "foreign source income earned" is filed gross or net of
+   the withheld tax decides the reconciliation**, and on both readings the emerging
+   break-even exceeds 23.8%. **The largest open input on this page.**
+5. **The value of lot-selection discipline for a retail buy-and-hold investor.** The only
    measurement is a simulation on a turning-over separate account.
-5. **Non-US tax.** A jurisdiction with no foreign tax credit turns §1 into a pure cost; one
+6. **What a fund's bid-ask spread and premium/discount cost a thirty-year holder.** Both
+   are one-time costs at purchase and both are issuer-published rather than filed, so
+   neither is in §6. iShares' own premium/discount tables carry **no as-of date at all**
+   (`formattedAsOfDate: null`) while the spread and net-asset figures beside them do, and
+   the columns are a calendar year plus year-to-date quarters — so no published column and
+   no sum of them is a trailing twelve months.
+7. **Non-US tax.** A jurisdiction with no foreign tax credit turns §1 into a pure cost; one
    taxing gains on accrual removes §4 entirely; one with no step-up removes half of it.
-6. **State tax.** Excluded and additive.
+8. **State tax.** Excluded and additive.
 
 **Reproducibility.** Rates, yields and profiles are arguments rather than constants, all
 committed in `tax_structure.py` with the source beside each. Retrieval date **2026-08-12**
 except: municipal and Treasury curves 2026-07-29, Treasury par cross-check 2026-08-11, BND
-yield 2026-08-10, MSCI yields 2026-07-31, SEC order count 2026-08-11. Sources that
-resisted retrieval are registered in [the evidence base](evidence-base.md) §3.
+yield 2026-08-10, MSCI yields 2026-07-31, SEC order count 2026-08-11, and **everything in
+§6 plus §1's withholding cross-check 2026-08-17**. §6 regenerates from
+`portfolio_edge.studies.core_beta_shelf`; its 110 filings are hashed in
+`data-manifests/core_beta_shelf/ncen_costs.json` and its figures pinned in
+`tests/unit/test_studies_core_beta_shelf.py`. Sources that resisted retrieval are
+registered in [the evidence base](evidence-base.md) §3.
 
 ---
 
@@ -686,3 +914,11 @@ resisted retrieval are registered in [the evidence base](evidence-base.md) §3.
    §3's four conditions are what would reopen it.
 6. **Recheck the fund-structure line before it is used.** A page whose largest new line has
    a visible mechanism of decay carries a review trigger, and this is it.
+7. **A named fund's cost is `fee − lending`, never its fee**, and §6 is where that
+   arithmetic lives for the core shelf. Any page naming a fund quotes both terms, states
+   that the first is contractual and the second measured, and never ranks two funds on a
+   tracking difference measured against two different indices.
+8. **Form N-CEN is now a held source** and it is the only structured one for fund costs:
+   `portfolio_edge.data.ncen` reads Items C.3.b, C.6 and C.8 per series per fiscal year.
+   Item C.8 is the only place a *recoupable* waiver is disclosed in a machine-readable
+   field, and on this shelf it disagrees with the prospectus for two funds.

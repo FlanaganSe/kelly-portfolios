@@ -29,7 +29,10 @@ from portfolio_edge.studies.tax_structure import (
     Account,
     Disposal,
     after_tax_path,
+    fill_shelter_bp,
     form_1116_threshold_assets,
+    international_split_best_case_bp,
+    international_split_versus_single_fund,
     location_breakeven_rate,
     shelter_priority_bp,
 )
@@ -207,6 +210,51 @@ out["shelterPriority"] = [
         ],
     }
     for regime in REGIMES
+]
+
+# ------------------------------------------------- the split the recommendation makes
+
+out["internationalSplit"] = [
+    {
+        "regime": regime.label,
+        "usWeight": 0.60,
+        "developedWeight": 0.30,
+        "emergingWeight": 0.10,
+        "capacities": [
+            {
+                "capacity": capacity,
+                "splitSavingBp": result.split_saving_bp,
+                "singleFundSavingBp": result.single_fund_saving_bp,
+                "gainBp": result.gain_bp,
+            }
+            for capacity, result in (
+                (
+                    capacity,
+                    international_split_versus_single_fund(regime=regime, capacity=capacity),
+                )
+                for capacity in (0.0, 0.10, 0.30, 0.40, 0.60, 1.00)
+            )
+        ],
+        "bestCaseCapacity": international_split_best_case_bp(regime=regime)[0],
+        "bestCaseGainBp": international_split_best_case_bp(regime=regime)[1],
+    }
+    for regime in REGIMES
+]
+
+out["shelterFill"] = [
+    {
+        "sleeves": [
+            {"label": label, "weight": weight, "priorityBp": priority}
+            for label, weight, priority in sleeves
+        ],
+        "capacity": capacity,
+        "savingBp": fill_shelter_bp(sleeves, capacity=capacity),
+    }
+    for sleeves in (
+        (("cheap", 0.5, 10.0), ("dear", 0.5, 30.0)),
+        (("a", 0.6, 26.18), ("b", 0.3, 46.1032), ("c", 0.1, 28.3124)),
+    )
+    for capacity in (0.0, 0.25, 0.5, 1.0, 4.0)
 ]
 
 # ---------------------------------------------------------------- foreign sleeves

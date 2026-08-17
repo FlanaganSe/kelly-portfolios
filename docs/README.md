@@ -38,7 +38,9 @@ and current status.
 - [Structural and tax-aware edges](research/structural-and-tax-edges.md) — what else is
   contractual for a US investor, sized against one stated reference portfolio: fund
   structure, the foreign tax credit that inverts standard placement advice, §1256 and
-  capital efficiency, the deferral hurdle, direct indexing, securities lending.
+  capital efficiency, the deferral hurdle, direct indexing, and **the core beta shelf
+  audited on cost rather than on fee** — 25 funds and 110 Form N-CEN filings, where the fee
+  ranking and the cost ranking turn out to be different rankings.
 - [Setting the equity share](research/setting-the-equity-share.md) — the largest decision in
   the portfolio, split into the part that is arithmetic and the part that is preference.
   Shows that the objective plus the zero-leverage rule returns a corner solution, so the

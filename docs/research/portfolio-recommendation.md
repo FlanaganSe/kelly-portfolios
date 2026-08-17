@@ -13,9 +13,10 @@ best-supported construction given the evidence**, and nothing more.
 sleeve. **Nothing here reached `production-eligible`, and nothing here is claimed to beat
 an index.** Every fund-specific fact below is dated and must be re-checked before use.
 
-`as of 2026-08-17` for the wrapper and managed-futures product facts, `2026-08-12` for
-everything else. US federal individual investor, state tax excluded and additive **except in
-§3.1, which is worked for one named California investor and says so.**
+`as of 2026-08-17` for the wrapper and managed-futures product facts and for **every
+core-fund cost fact in §1.2**, `2026-08-12` for everything else. US federal individual
+investor, state tax excluded and additive **except in §3.1, which is worked for one named
+California investor and says so.**
 
 ---
 
@@ -43,8 +44,19 @@ everything else. US federal individual investor, state tax excluded and additive
    largest single decision in the portfolio and the only one the evidence is silent on.
 5. **One account-placement result is not the textbook one:** at a 15% or 18.8% qualified
    rate, **emerging-market equity belongs in the taxable account and US equity in the
-   shelter**. The break-even is 21.51%, between two live US rates.
-6. **"Managed futures is the one sleeve whose account decides its sign" is withdrawn. It
+   shelter**. The break-even is 21.51%, between two live US rates — and on eleven funds'
+   filed withholding it is more likely **24.4% to 27.5%**, above every US rate, which would
+   widen the inversion rather than close it.
+6. **The four funds holding the whole portfolio were chosen on expense ratio and have now
+   been audited on cost. They survive, by 0.60 bp/yr.** Twenty-five funds and 110 Form
+   N-CEN filings: `fee − securities lending` puts **IEMG below VWO on a 50% higher fee**
+   and makes **BND the dearest bond fund on the shelf** because it is the only one that
+   does not lend. Capital-gain distributions are **zero everywhere**, so no fund choice
+   here buys any of the +23 bp line. **VXUS costs 5 bp, not the 3 this repository had
+   recorded, so splitting the international sleeve is cheaper before any placement
+   argument.** And **VTI against VOO is 1.78 bp/yr of lending and nothing else** — a
+   0.52 probability of being ahead after thirty years.
+7. **"Managed futures is the one sleeve whose account decides its sign" is withdrawn. It
    was a fact about DBMF, not about the exposure, and it is smaller than it looked even
    there.** 2.09 pp/yr of distribution tax drag against an 0.85% fee, and zero in a shelter
    — **but a dollar of the same trend notional obtained through the return-stacked wrapper
@@ -56,7 +68,7 @@ everything else. US federal individual investor, state tax excluded and additive
    ([§7.2](capital-efficiency-and-breadth.md)). **The account decides DBMF's sign. It does
    not decide RSST's, and no weight or placement on this page may be justified by that
    claim again.**
-7. **The overlay weight was a corner solution against that constraint, and it survives its
+8. **The overlay weight was a corner solution against that constraint, and it survives its
    removal for a different reason.** Re-derived without it, the growth optimum is **3.04
    units of notional, 2.14 after twenty years of shrinkage** — and is refused, on the same
    grounds as this repository's 2.2× levered-equity optimum. What binds is the **resampled
@@ -64,7 +76,7 @@ everything else. US federal individual investor, state tax excluded and additive
    **0.55**; and, for an investor whose taxable account carries unrealised gain they will
    not realise, the capital that can be moved at all. **The recommended weight does not
    move. Every reason previously given for it does.**
-8. **The wrapper was a single point of failure and is no longer one.** The equity-plus-trend
+9. **The wrapper was a single point of failure and is no longer one.** The equity-plus-trend
    overlay shelf is four live funds and a JPMorgan entrant at 0.59%, and the listed
    managed-futures shelf has gone from five products to fifteen with BlackRock, Fidelity,
    Invesco and Man Group among the entrants. **None of the newcomers has been tested against
@@ -127,24 +139,95 @@ specification before any result was examined — **a stated choice, not a measur
 No global market-capitalisation series exists here, so no page can tell you the market
 weight.
 
-| Sleeve | Fund | ER | % of equity | Status of what it buys |
-| --- | --- | ---: | ---: | --- |
-| US total market | **VTI** (or ITOT, VOO) | 0.03% | 60 | the control |
-| Developed ex-US | **VEA** (or IEFA at 0.07%) | 0.03% | 30 | the control |
-| Emerging markets | **VWO** (or IEMG at 0.09%) | 0.06% | 10 | the control |
-| Investment-grade bonds | **BND** (or a Treasury fund) | 0.03% | — | risk control, sized by variant |
+| Sleeve | Fund | ER | Lending | **Net cost** | % of equity | Status of what it buys |
+| --- | --- | ---: | ---: | ---: | ---: | --- |
+| US total market | **VTI** (or ITOT) | 0.03% | 1.84 bp | **1.16 bp** | 60 | the control |
+| Developed ex-US | **VEA** (or SPDW) | 0.03% | 3.30 bp | **−0.30 bp** | 30 | the control |
+| Emerging markets | **VWO** (or IEMG) | 0.06% | 4.33 bp | **1.67 bp** | 10 | the control |
+| Investment-grade bonds | **BND** (or SPAB, or a Treasury fund) | 0.03% | **none** | **3.00 bp** | — | risk control, sized by variant |
 
-**Use VXUS instead of VEA + VWO only if you will hold the whole international sleeve in one
-account.** Splitting developed from emerging is what makes §3's placement result available,
-and VXUS forecloses it.
+**These four have now been audited on cost rather than on fee, and they survive by
+0.60 bp/yr.** Twenty-five funds, 110 Form N-CEN filings, eight fiscal years, in
+[structural and tax-aware edges §6](structural-and-tax-edges.md#6-the-core-beta-shelf-audited-on-cost-rather-than-on-fee).
+`Net cost` is `expense ratio − net securities-lending income`, both measured against the
+fund's own net assets; the fee is contractual and filed, the lending is a **median over
+every fiscal year on file** and is a measurement rather than a promise. At the reference
+60/14/6/20 allocation the recommended four cost **1.36 bp/yr**, the cheapest combination
+available anywhere on the shelf — ITOT, SPDW, IEMG, SPAB — costs **0.76**, and the dearest
+plausible one costs **3.12**. **The entire fund-selection decision is 0.60 bp/yr against a
+84 bp/yr turnover hurdle and a 49 bp fee line**, which settles the order in which the
+decisions matter.
 
-Fees are dated lookups, not experiment results: VEA/BND 0.03% (Vanguard's published
-endpoint, `expenseRatioAsOfDate` 2026-04-28), VWO 0.06% (2026-02-27), IEFA 0.07% and IEMG
-0.09% (SEC-filed 497K fee tables, 2025-11-28 and 2025-12-30). Two qualifications: **IEMG's
-fee table carries a waiver line currently at `(0.00)%`**, and a waiver sitting at zero can
-be withdrawn, so IEMG's 0.09% is the least stable figure here; and both iShares tables
-exclude acquired fund fees, so neither is all-in. **Where a figure is absent, look it up; do
-not take a number from this page that this page does not have.**
+Three things the old fee table could not say.
+
+- **IEMG charges 9 bp against VWO's 6 and costs less to own**, because its lending income
+  covers the fee and 0.87 bp besides. Same at State Street: SPDW's 3 bp fee is covered
+  twice over, making it the cheapest developed ex-US fund on the shelf. **VWO and VEA are
+  kept because the gap is 0.15 and 0.19 bp of the portfolio, not because they win.**
+- **BND is the only fund of the four that is beaten by more than a basis point.** It does
+  not lend at all — Vanguard answers Item C.6.a "No" in all eight fiscal years — so at an
+  identical 3 bp fee it is the dearest aggregate-bond fund audited. SPAB costs 2.09.
+- **`(0.00)%` waiver lines were the wrong worry.** This page previously called IEMG's the
+  least stable figure on it. Its footnote is an expense **cap** — BFA "has contractually
+  agreed to waive a portion of its management fee such that the Fund's total annual fund
+  operating expenses after the fee waiver will not exceed 0.09% **through December 31,
+  2030**" — with no recoupment, which makes it the most durable fee commitment here. **The
+  only recoupable waiver on the shelf is Schwab's SCHF and SCHE**, filed in N-CEN Item C.8
+  every year since fiscal 2022 and absent from every document a shareholder reads.
+
+Fees are 497K fee tables read on **2026-08-17**, from prospectuses dated: VTI, VOO, VEA,
+BND 2026-04-28; VWO, VXUS, VEU, SCHB, SCHF 2026-02-27; SPTM, SPLG 2026-02-03; SPDW, SPEM
+2026-01-30; ITOT, IVV 2026-07-31; AGG 2026-06-29; SCHE 2026-06-11; SCHZ 2026-04-28; IEFA,
+IDEV, IXUS 2025-11-28; IEMG, EEM 2025-12-30; AVEM 2025-12-31; SPY 2026-01-26. **Vanguard's
+seven fee tables carry no waiver, no expense-limitation and no acquired-fund-fee line at
+all**; every iShares table states that what BFA pays "exclude[s] acquired fund fees and
+expenses, if any".
+
+### Use VEA + VWO rather than VXUS, and not only for the reason this page used to give
+
+**The split is cheaper before any placement argument.** VXUS costs **0.05%** — not the
+0.03% this repository had recorded — against a 75/25 blend of VEA and VWO at 0.0375%, so
+splitting saves **1.25 bp/yr on the international sleeve, 0.50 bp of equity**, and lending
+is a wash (VXUS 3.57 bp against the blend's 3.56). On net cost the split is **0.19 bp
+against VXUS's 1.43**. The placement gain is separate and smaller than the framing implied:
+**1.33 bp/yr of equity at 23.8%, 0.958 at 15%, and exactly zero** if the shelter holds the
+whole equity sleeve or the qualified rate is 0%
+([computed, not asserted](structural-and-tax-edges.md#1-foreign-tax-credit-forfeiture--the-result-that-changes-an-allocation)).
+
+**So the conditional runs the other way.** A reader holding everything in one account gains
+nothing from placement and still saves 0.50 bp/yr of equity by splitting. VXUS's case is
+one fewer holding, one fewer spread crossing at purchase, and — the part that is not a
+cost — **market weights this repository cannot otherwise supply**, since 75/25 is a
+declared research weight and no global market-capitalisation series exists here. VXUS is
+nonetheless the cheapest total-international fund on the shelf, at 1.43 bp against VEU's
+1.61 and IXUS's 3.99.
+
+### VTI against VOO is not a decision this evidence can make
+
+`as of 2026-08-17`. Same sponsor, **same 0.03% fee**, zero capital-gain distributions in
+every year filed, and each tracking its own index to within 4 bp over ten years. Their
+tracking differences are **not comparable** — CRSP US Total Market against the S&P 500 —
+and the only group on the shelf that shares an index is VOO, IVV and SPLG, which are
+indistinguishable once compared.
+
+**One contractual difference survives and it is securities lending: VTI 1.84 bp/yr against
+VOO 0.06, a gap of 1.78 bp.** It replicates at both other sponsors that run the pair —
+ITOT 1.96 against IVV 0.25, SCHB 1.04 against SPLG 0.18 — so it is a property of the
+completion tail's borrow demand rather than of one manager. **And it is undetectable.** At
+1.78 bp against any plausible tracking error between the two indices, the probability of
+being ahead after thirty years is **0.52 to 0.54**, and 90% confidence arrives in about
+five thousand years at 100 bp of tracking error. **Take the total-market fund on the
+lending margin and stop arguing.** Whether the completion index earns more is a return
+claim, and this repository has no instrument that can sign it — the same reason
+[VB's and VTV's rejections](factor-products.md#the-comparator-shrinkage-and-two-traps) are
+not return findings.
+
+**And avoid SPY, which is the one large cost difference in this category.** 0.0945% against
+0.02–0.03%, and its unit-investment-trust structure forbids the offset: it "is not
+authorized to … lend its portfolio securities or other assets", credits dividends to "a
+non-interest-bearing account" whose earnings accrue to the Trustee, pays them a month after
+a quarterly ex-date, and provides **no dividend reinvestment service**. Net cost **9.45 bp
+against SPLG's 1.82**.
 
 ### 1.3 The two optional sleeves, and nothing else
 
@@ -269,10 +352,10 @@ better exists` means the alternatives were tested and lost.
 
 | Holding | What it buys | Class | Why it is here |
 | --- | --- | --- | --- |
-| **VTI / VOO / ITOT** | equity risk premium at 3 bp, ~1.3 bp round trip, plus 1.01 bp/yr of lending pass-through | **contractual** on the *cost*; risk premium on the *return* | It is the control. Every candidate was measured against it and none beat it |
-| **VEA / IEFA** | developed ex-US equity; ~2.97 / ~1.08 bp/yr of lending income | same | Diversification of the equity claim, not an edge. Its foreign tax credit is worth 15.78 bp/yr **only in taxable** |
-| **VWO / IEMG** | emerging equity; ~4.9 / ~9.2 bp/yr of lending income | same | Same. Its credit is worth 20.00 bp/yr in taxable, and it is the sleeve §3's arithmetic moves |
-| **BND** or Treasuries | term and credit compensation, and a risk brake | **a different benchmark, not an edge** | Sized by risk capacity. **The brake works; its diversification does not, in every era** — the bond–stock beta was positive to 1999, negative to 2022Q3, positive again to 2024Q2, and negative on the 18 months since, on this repository's own data |
+| **VTI** (or ITOT) | equity risk premium at a **1.16 bp net cost** — 3 bp of fee less 1.84 bp of lending — and ~1.3 bp of round trip | **contractual** on the *cost*; risk premium on the *return* | It is the control. Every candidate was measured against it and none beat it. **VOO is the same fee and 1.78 bp less lending**, which is the whole measurable difference between them |
+| **VEA** (or SPDW, IEFA) | developed ex-US equity at a **−0.30 bp net cost**: lending of 3.30 bp more than covers the 3 bp fee | same | Diversification of the equity claim, not an edge. Its foreign tax credit is worth 15.78 bp/yr **only in taxable**. SPDW is cheaper still at −1.63; IEFA is 4.65 |
+| **VWO** (or IEMG) | emerging equity at a **1.67 bp net cost**; IEMG's is **−0.87** on a *higher* 9 bp fee | same | Same. Its credit is worth 20.00 bp/yr in taxable, and it is the sleeve §3's arithmetic moves |
+| **BND** or Treasuries | term and credit compensation, and a risk brake, at a **3.00 bp net cost — the dearest bond fund audited**, because it is the only one that does not lend | **a different benchmark, not an edge** | Sized by risk capacity. **The brake works; its diversification does not, in every era** — the bond–stock beta was positive to 1999, negative to 2022Q3, positive again to 2024Q2, and negative on the 18 months since, on this repository's own data |
 | **VBR** (optional) | HML loading **+0.410 `[+0.322, +0.480]`**, delivered and stable, at 5 bp, with a **negative** shortfall against a fitted four-fund combination | **risk premium**, `exploratory` on both terms | **Low confidence.** The chain is +0.09 to −0.39 pp/yr on the US premium and +0.28 to +0.76 on the pooled one. It is here because it is the only US value product that both delivers its exposure and does not lose to a cheap combination — **not because the chain is positive** |
 | **DBMF** (optional) | loading **+0.671 `[+0.513, +0.829]`** on the AQR index, stable across the split and all 19 rolling windows, trailing a cost-free index by 0.48 pp/yr against an 0.85% fee | **risk premium**, `exploratory`; the index itself `unresolved` | **Nothing better has been measured**, which is not the same as nothing better existing: four of the five tested funds fail the 0.50 bar and **ten more listed funds have never been tested**. Crisis correlation −0.59 and payoff spread across four crises — but the post-publication interval includes zero and fails Holm |
 | **RSST** (optional, in place of DBMF) | the same trend exposure as an **overlay** rather than pro rata, so the sleeve's hurdle falls by about 2.44 pp/yr; 0.99% all-in, no waiver, no recoupment; 0.32 pp/yr of distribution tax drag, **4.5 bp of it incremental over the equity fund inside it** | **risk premium**, `exploratory` on the product and `unresolved` on the index — **the wrapper changes the hurdle, not the evidence** | **Its loading on the benchmark has never been measured.** It is named because its structure is verified from N-PORT and its costs from filings, not because anything here says its trend leg delivers |
@@ -352,10 +435,23 @@ a loss where the replacement is bought in the taxpayer's IRA **and does not incr
 IRA's basis**, destroying the deduction rather than deferring it — 119 bp outright on a
 5%-of-portfolio disallowance.
 
-**Two omissions that cut against the emerging inversion**, neither quantified: a shelter
-also shelters capital-gain distributions and rebalancing turnover, which emerging funds
-generate more of; and a taxable international position is a better loss-harvesting
-candidate. **Either could close a 6 bp gap.**
+**One of the two omissions that cut against the emerging inversion is now measured at
+zero.** A shelter also shelters capital-gain distributions — and **every emerging ETF on
+the audited shelf distributed 0.00 of realised gain in each of five fiscal years**, as did
+every other fund on it
+([structural and tax-aware edges §6.3](structural-and-tax-edges.md#63-capital-gain-distributions-zero-everywhere-including-the-unit-trust)).
+What remains unquantified is that a taxable international position is a better
+loss-harvesting candidate, which could still close a 6 bp gap.
+
+**And the input the whole table rests on is probably understated, in the direction that
+widens the inversion.** Eleven funds from five sponsors file foreign taxes paid over
+foreign source income at **9.12–14.23% for emerging** against the **9.853%** used here;
+at VWO's own filed 12.59% the break-even rises from 21.51% to **27.48%**, and on the
+conservative reading of the filings' denominator to 24.40% — **above 23.8% either way**,
+so the "treat it as a tie" row above would become a third inversion. The input is not
+changed until the denominator is reconciled to Form 1099-DIV Box 1a
+([§1](structural-and-tax-edges.md#the-withholding-rate-is-the-input-this-whole-section-rests-on-and-five-funds-disagree-with-it));
+**no holding on this page moves on either reading.**
 
 ### 3.1 The queue, with the sleeves in it, at one worked bracket
 
@@ -545,9 +641,13 @@ Each is measurable and dated. None is a hope.
   even `independently-reproduced`.**
 - **Not a claim of outperformance against an index.** Against a cheap index the whole honest
   budget is ~24 bp against 401 bp of tracking error.
-- **Not net of everything.** No page here has a full after-tax, after-spread, after-turnover
-  return for any product. Bid-ask, brokerage, realised distributions and portfolio turnover
-  are absent from the product audits entirely.
+- **Not net of everything, though the core four are now closer.** Their fee, securities
+  lending, realised capital-gain distributions and waiver terms are all read from filings
+  ([structural and tax-aware edges §6](structural-and-tax-edges.md#6-the-core-beta-shelf-audited-on-cost-rather-than-on-fee)).
+  **Bid-ask and brokerage are still absent**, and deliberately weighted as one-time costs at
+  purchase rather than recurring ones: a spread is paid once and a 3 bp fee is paid for
+  thirty years. For the *factor and wrapper* audits, realised distributions and turnover
+  remain absent entirely.
 - **Not free of model risk.** FF5+UMD prices **VTI itself** at −0.55 pp/yr with a HAC *t* of
   −3.41. **The standard model does not span the control**, and every alpha here is a distance
   from that pedestal, not from zero.
@@ -596,7 +696,11 @@ equity core ([Exp 010](marginal-sleeve-value.md)); and the −38.7 bp rebalancin
 ([Exp 003](rebalancing-policy.md)). **Every wrapper structure, fee, waiver, tax-character
 and net-asset figure** traces to
 [capital efficiency §6a](capital-efficiency-and-breadth.md), which takes them from N-PORT
-holdings, 497K fee tables, N-CSR tax-character tables and N-CEN recoupment flags.
+holdings, 497K fee tables, N-CSR tax-character tables and N-CEN recoupment flags. **Every
+core-fund cost figure in §1.2 and §2** traces to
+[structural and tax-aware edges §6](structural-and-tax-edges.md#6-the-core-beta-shelf-audited-on-cost-rather-than-on-fee),
+regenerated by `studies/core_beta_shelf.py` from 110 hashed N-CEN filings and pinned in
+`tests/unit/test_studies_core_beta_shelf.py`.
 
 **Assumed on this page, and nowhere else.**
 
@@ -633,8 +737,15 @@ holdings, 497K fee tables, N-CSR tax-character tables and N-CEN recoupment flags
 **Open.** Which benchmark a factor line may book its capture against — the answer moves the
 line by a factor of two and a half. What a real fund's delivered capture is; every figure
 here is from research portfolios, and measuring a fund's own **needs holdings rather than
-returns**. Whether the emerging inversion survives capital-gain distributions and harvesting
-value. What a liquidity reserve should be, unsized. **What any of the ten untested listed
+returns**. Whether the emerging inversion survives harvesting value — **it survives
+capital-gain distributions, which are now measured at zero for every fund on the shelf.**
+**What the true effective foreign withholding rate is**: eleven funds file 9.12–14.23% for
+emerging against the 9.853% §3 uses, and reconciling the filings' "foreign source income"
+to Form 1099-DIV Box 1a would settle whether the inversion covers 23.8% too. **What a
+core fund's bid-ask spread and premium/discount cost a thirty-year holder** — both are
+one-time at purchase, both are issuer-published rather than filed, and iShares' own
+premium/discount tables carry no as-of date at all. What a liquidity reserve should be,
+unsized. **What any of the ten untested listed
 managed-futures ETFs, or RSST's own trend leg, load on the benchmark** — the shelf tripled
 and the evidence did not move. **What any wrapper actually pays to finance its overlay** —
 no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
@@ -654,11 +765,15 @@ no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
    hardcoded in a route is a defect.**
 3. **The asset-location ranking must be computed, not asserted**, and must state the bracket
    it assumed.
-4. **Four review triggers**: the fund-structure line (94 SEC orders and rising); every
-   fund-specific fact in §1.2; **JPFP's commencement**, which would reorder the wrapper cost
-   ranking at 0.59% against RSST's 0.99%; and **KMLM's shareholder vote around 2026-11-20**,
-   the fund having operated under interim advisory agreements since a change of control on
-   2026-06-23.
+4. **Five review triggers**: the fund-structure line (94 SEC orders, and 89 Form 497K
+   documents now naming an "ETF Class" against 2 before the first order); every fund-specific
+   fact in §1.2, whose fee tables and lending figures are dated 2026-08-17 and whose waiver
+   expiries run **2026-10-31 (State Street), 2027-01-31 (State Street ex-US), 2026-11-30
+   (IXUS), 2027-02-01 (SPY), 2027-06-30 (AGG) and 2030-12-31 (IEMG)**; **SPLG's rebranding**,
+   which now files under the ticker `SPYM`; **JPFP's commencement**, which would reorder the
+   wrapper cost ranking at 0.59% against RSST's 0.99%; and **KMLM's shareholder vote around
+   2026-11-20**, the fund having operated under interim advisory agreements since a change of
+   control on 2026-06-23.
 5. **The largest evidence gap this page exposes is a product gap, not a premium gap.** The
    value premium was measured where no product here has been audited, and the momentum
    premium on a construction no product can implement. Both are fixable with the same
@@ -684,3 +799,14 @@ no fund discloses it, and the only rate the shelf does disclose is OBFR + 6.64%.
    exists to prevent. **And an account cap is not a risk limit**: this page capped the
    overlay at what a shelter could carry and called it sizing, when the quantity that
    actually limits it is the resampled drawdown.
+10. **A fund's cost is `fee − securities lending`, and the two rankings are different
+    rankings.** [Experiment 009](factor-products.md) proved that on the funds holding
+    little of the money and it was never applied to the four holding all of it; it is now,
+    and it moves IEMG below VWO on a 50% higher fee and BND to the bottom of the bond
+    shelf. **A page naming a fund states both terms, marks the first contractual and the
+    second measured, and never ranks two funds on a tracking difference taken against two
+    different indices** — only VOO, IVV and SPLG share one.
+11. **The recommendation survived its own doctrine, and the margin is the result.**
+    0.60 bp/yr between the recommended four and the cheapest combination on the shelf,
+    against an 84 bp turnover hurdle. **Fund selection is the smallest decision on this
+    page**, and any future effort spent on it should be spent on §1.1 instead.

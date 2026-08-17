@@ -157,6 +157,50 @@ export function shelterPriorityBp(
   });
 }
 
+/** A sleeve competing for shelter capacity, already priced. */
+export type WeightedSleeve = {
+  readonly label: string;
+  /** Fraction of the base the capacity is also expressed against. */
+  readonly weight: number;
+  readonly priorityBp: number;
+};
+
+/**
+ * Fill a shelter of size `capacity` highest-priority-first, and return the saving.
+ *
+ * Weights and `capacity` are fractions of the same base, so the result is bp/yr **of
+ * that base**. Ties break by label, matching {@link shelterPriorityBp}.
+ *
+ * A ranking is not an answer on its own. Below the first sleeve's weight only the top
+ * line matters; once capacity covers everything, placement is worth nothing at all,
+ * because every dollar is sheltered whatever the order. The interesting range is in
+ * between, and it is the reader's own balances that decide where they sit in it.
+ */
+export function fillShelterBp(sleeves: readonly WeightedSleeve[], { capacity }: { readonly capacity: number }): number {
+  if (!(capacity >= 0)) {
+    throw new RangeError(`capacity must be non-negative, got ${capacity}`);
+  }
+  for (const sleeve of sleeves) {
+    if (!(sleeve.weight >= 0)) {
+      throw new RangeError(`${sleeve.label}: weight must be non-negative, got ${sleeve.weight}`);
+    }
+  }
+  const ordered = [...sleeves].sort((a, b) => {
+    if (a.priorityBp !== b.priorityBp) return b.priorityBp - a.priorityBp;
+    if (a.label === b.label) return 0;
+    return a.label < b.label ? -1 : 1;
+  });
+  let remaining = capacity;
+  let saving = 0;
+  for (const sleeve of ordered) {
+    const placed = Math.min(sleeve.weight, remaining);
+    saving += placed * sleeve.priorityBp;
+    remaining -= placed;
+    if (remaining <= 0) break;
+  }
+  return saving;
+}
+
 /**
  * The marginal qualified-dividend rate at which the two placements of an international
  * and a domestic sleeve tie.

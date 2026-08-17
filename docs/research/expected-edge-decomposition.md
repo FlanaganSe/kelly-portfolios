@@ -129,14 +129,16 @@ filings show. **Blocher and Whaley's much-quoted 23–28 bp is modelled *gross* 
 is 25–100× the realised net figure for a broad large-cap fund.** Two structural notes:
 the income is ordinary income in a taxable account, and SPY, QQQ, MDY and DIA are unit
 investment trusts that **cannot lend at all**.
-[Structural edges §6](structural-and-tax-edges.md) revises this to ~1.5 bp for an
-internationally diversified portfolio and corrects the reason: the premium is an
-international lending-demand effect, not a size effect — VB, US small-cap, earns 3.0 bp,
-the same as large-cap developed international.
+[Structural edges §6](structural-and-tax-edges.md#6-the-core-beta-shelf-audited-on-cost-rather-than-on-fee)
+now measures it across 25 funds and 110 N-CEN filings and puts it at **1.83 bp** for the
+recommended holdings, moving between 0.45 and 2.60 by fund choice alone. It corrects the
+reason too: the premium is an international lending-demand effect, not a size effect — VB,
+US small-cap, earns 3.0 bp, the same as large-cap developed international.
 
 **Implementation and financing efficiency is not a line, and the 2026 numbers show why.**
 As of 2026-08-10 Vanguard's published 30-day median bid/ask spreads are **0.55 bp (VTI),
-0.58 (VOO), 1.18 (VXUS), 2.72 (VB)**; expense ratios are 3 bp; commissions are $0 at all
+0.58 (VOO), 1.18 (VXUS), 2.72 (VB)**; expense ratios are 3 bp on VTI, VOO and VB and
+**5 bp on VXUS** from its 497K fee table dated 2026-02-27; commissions are $0 at all
 six major US retail brokers checked. Total round-trip friction on a broad US index ETF is
 about **1.3 bp**. There is nothing left to harvest, and claiming one would double-count
 the cost line. The decision-relevant fact is that a small-cap or international round trip

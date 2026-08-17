@@ -43,6 +43,7 @@ Nothing here is personalised advice; it is a sizing exercise for a class of edge
 
 from __future__ import annotations
 
+import itertools
 import math
 from collections.abc import Sequence
 from dataclasses import dataclass
@@ -717,6 +718,191 @@ SHELTER_CANDIDATES: tuple[ShelterCandidate, ...] = (
 """The four assets competing for shelter capacity. Deliberately excludes REITs and
 high-yield credit: both belong at the top of the ranking, neither changes the finding,
 and neither is in the repository's cheap broad-market control."""
+
+
+def fill_shelter_bp(
+    sleeves: Sequence[tuple[str, float, float]],
+    *,
+    capacity: float,
+) -> float:
+    """Fill a shelter of size ``capacity`` highest-priority-first, and return the saving.
+
+    ``sleeves`` are ``(label, weight, priority_bp)``. Weights and ``capacity`` are
+    fractions of the same base, so the result is in bp/yr **of that base**. Ties break
+    by label, matching :func:`shelter_priority_bp`.
+
+    A ranking is not an answer on its own: what a placement is worth depends on how much
+    shelter there is. Below the first sleeve's weight the ranking's top line is all that
+    matters; once capacity covers everything, placement is worth nothing at all, because
+    every dollar is sheltered either way.
+    """
+    if capacity < 0.0:
+        raise ValueError("capacity must be non-negative")
+    for label, weight, _ in sleeves:
+        if weight < 0.0:
+            raise ValueError(f"{label}: weight must be non-negative")
+    remaining, saving = capacity, 0.0
+    for _, weight, priority in sorted(sleeves, key=lambda s: (-s[2], s[0])):
+        placed = min(weight, remaining)
+        saving += placed * priority
+        remaining -= placed
+        if remaining <= 0.0:
+            break
+    return saving
+
+
+@dataclass(frozen=True)
+class SplitVersusSingleFund:
+    """Holding developed and emerging separately, against one total-international fund.
+
+    Both figures are in bp/yr of the **equity sleeve**, at a stated shelter capacity
+    also expressed as a fraction of the equity sleeve and taken to be what is left
+    *after* bonds, which outrank every equity line by a factor of four.
+    """
+
+    capacity: float
+    split_saving_bp: float
+    single_fund_saving_bp: float
+
+    @property
+    def gain_bp(self) -> float:
+        """What splitting the international sleeve is worth, in bp/yr of equity.
+
+        Never negative: the split's fill order is available to the blended holder only
+        by coincidence, so the split weakly dominates on placement alone. Every cost of
+        splitting — two fees rather than one, two spreads, a second line to rebalance —
+        sits outside this number and must be subtracted separately.
+        """
+        return self.split_saving_bp - self.single_fund_saving_bp
+
+
+def _blended_international(
+    *,
+    developed: ShelterCandidate,
+    emerging: ShelterCandidate,
+    developed_weight: float,
+    emerging_weight: float,
+) -> ShelterCandidate:
+    """The single total-international fund the two sleeves would collapse into.
+
+    Yield blends by weight and the **withheld tax** blends by weight, so the blended
+    withholding *rate* is a yield-weighted average rather than a weight-weighted one.
+    Taking the plain average of the two rates would misprice the fund, because emerging
+    markets withholds at a higher rate on a lower yield.
+    """
+    total = developed_weight + emerging_weight
+    if total <= 0.0:
+        raise ValueError("the international sleeve must carry positive weight")
+    blended_yield = (
+        developed_weight * developed.dividend_yield
+        + emerging_weight * emerging.dividend_yield
+    ) / total
+    blended_foreign_tax = (
+        developed_weight * developed.dividend_yield * developed.foreign_withholding_rate
+        + emerging_weight * emerging.dividend_yield * emerging.foreign_withholding_rate
+    ) / total
+    return ShelterCandidate(
+        label="Total international equity, one fund",
+        dividend_yield=blended_yield,
+        qualified_fraction=1.0,
+        foreign_withholding_rate=blended_foreign_tax / blended_yield,
+        source=(
+            "Derived from the developed and emerging sleeves at the stated weights. "
+            "Cross-checked against Vanguard's own 2025 foreign tax credit worksheet, "
+            "which gives VXUS 7.11% of ordinary dividends against VEA 6.46% and VWO "
+            "10.93%."
+        ),
+    )
+
+
+def international_split_versus_single_fund(
+    *,
+    regime: TaxRegime,
+    capacity: float,
+    us_weight: float = 0.60,
+    developed_weight: float = 0.30,
+    emerging_weight: float = 0.10,
+    foreign_credit_utilisation: float = 1.0,
+) -> SplitVersusSingleFund:
+    """Price the choice between VEA + VWO and a single VXUS-shaped fund, on placement.
+
+    The recommendation splits developed from emerging *because* splitting is what makes
+    the location result available, and a total-international fund forecloses it. That is
+    a claim about a quantity, so the quantity is computed here rather than asserted.
+
+    Defaults are Experiment 003's declared equity composition, 60/30/10.
+    """
+    candidates = {c.label: c for c in SHELTER_CANDIDATES}
+    developed, emerging, us = (
+        candidates["Developed ex-US equity"],
+        candidates["Emerging-market equity"],
+        candidates["US equity"],
+    )
+    blended = _blended_international(
+        developed=developed,
+        emerging=emerging,
+        developed_weight=developed_weight,
+        emerging_weight=emerging_weight,
+    )
+
+    def priority(candidate: ShelterCandidate) -> float:
+        return (
+            candidate.taxable_cost_bp(
+                regime, foreign_credit_utilisation=foreign_credit_utilisation
+            )
+            - candidate.sheltered_cost_bp()
+        )
+
+    split = (
+        ("US equity", us_weight, priority(us)),
+        ("Developed ex-US equity", developed_weight, priority(developed)),
+        ("Emerging-market equity", emerging_weight, priority(emerging)),
+    )
+    single = (
+        ("US equity", us_weight, priority(us)),
+        (blended.label, developed_weight + emerging_weight, priority(blended)),
+    )
+    return SplitVersusSingleFund(
+        capacity=capacity,
+        split_saving_bp=fill_shelter_bp(split, capacity=capacity),
+        single_fund_saving_bp=fill_shelter_bp(single, capacity=capacity),
+    )
+
+
+def international_split_best_case_bp(
+    *,
+    regime: TaxRegime,
+    us_weight: float = 0.60,
+    developed_weight: float = 0.30,
+    emerging_weight: float = 0.10,
+    foreign_credit_utilisation: float = 1.0,
+) -> tuple[float, float]:
+    """``(capacity, gain_bp)`` at the shelter capacity that most favours splitting.
+
+    ``gain_bp`` is piecewise linear in capacity with kinks only where a sleeve is
+    exhausted, so the maximum is attained at one of those breakpoints and searching them
+    is exact rather than a grid.
+    """
+    weights = (us_weight, developed_weight, emerging_weight)
+    breakpoints = {
+        sum(w for w, take in zip(weights, mask, strict=True) if take)
+        for mask in itertools.product((False, True), repeat=len(weights))
+    }
+    best = max(
+        (
+            international_split_versus_single_fund(
+                regime=regime,
+                capacity=capacity,
+                us_weight=us_weight,
+                developed_weight=developed_weight,
+                emerging_weight=emerging_weight,
+                foreign_credit_utilisation=foreign_credit_utilisation,
+            )
+            for capacity in sorted(breakpoints)
+        ),
+        key=lambda result: (result.gain_bp, -result.capacity),
+    )
+    return best.capacity, best.gain_bp
 
 
 def form_1116_threshold_assets(

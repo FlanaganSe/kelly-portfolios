@@ -3,6 +3,7 @@ import fixtures from "~/lib/fixtures/research-ground-truth.json";
 import {
   derivedRates,
   type ForeignSleeve,
+  fillShelterBp,
   forfeitedBp,
   form1116ThresholdAssets,
   locationBreakevenRate,
@@ -192,6 +193,42 @@ describe("shelterPriorityBp", () => {
     const input = [...allCandidates];
     shelterPriorityBp(input, { regime: regime(TOP_BRACKET) });
     expect(input.map((entry) => entry.label)).toEqual(allCandidates.map((entry) => entry.label));
+  });
+});
+
+describe("fillShelterBp", () => {
+  for (const expected of fixtures.shelterFill) {
+    const sleeves = expected.sleeves.map((entry) => ({
+      label: entry.label,
+      weight: entry.weight,
+      priorityBp: entry.priorityBp,
+    }));
+    it(`matches the research workspace at capacity ${expected.capacity} on ${sleeves.length} sleeves`, () => {
+      expectClose(fillShelterBp(sleeves, { capacity: expected.capacity }), expected.savingBp);
+    });
+  }
+
+  /**
+   * The property a ranking alone cannot express: once the shelter holds everything, the
+   * order stops mattering and placement is worth nothing. A page that quotes a location
+   * gain without the reader's shelter capacity is quoting an upper bound.
+   */
+  it("is indifferent to the order once capacity covers every sleeve", () => {
+    const sleeves = [
+      { label: "cheap", weight: 0.5, priorityBp: 10 },
+      { label: "dear", weight: 0.5, priorityBp: 30 },
+    ];
+    expectClose(fillShelterBp(sleeves, { capacity: 1 }), fillShelterBp([...sleeves].reverse(), { capacity: 1 }));
+    expectClose(fillShelterBp(sleeves, { capacity: 1 }), 20);
+    // Below full capacity the order is the whole of the answer.
+    expectClose(fillShelterBp(sleeves, { capacity: 0.5 }), 15);
+  });
+
+  it("rejects a negative capacity and a negative weight", () => {
+    expect(() => fillShelterBp([], { capacity: -1 })).toThrow(/capacity must be non-negative/);
+    expect(() => fillShelterBp([{ label: "x", weight: -1, priorityBp: 1 }], { capacity: 1 })).toThrow(
+      /weight must be non-negative/
+    );
   });
 });
 

@@ -242,8 +242,18 @@ export interface Fund {
   readonly expenseRatioNote?: string;
   /** 30-day median bid/ask spread, basis points. */
   readonly spreadBp: number | null;
-  /** Net securities-lending income as a fraction of average net assets, as the filing supports it. */
+  /**
+   * Net securities-lending income over average net assets, basis points a year: the
+   * **median** over every fiscal year Form N-CEN has filed. Measured, not promised — the
+   * fee is contractual and borrow demand is not.
+   */
   readonly securitiesLendingBp: string | null;
+  /**
+   * `expense ratio - securities lending`, basis points a year, and the quantity a fee
+   * comparison leaves out. Both terms are measured against the fund's own net assets, so
+   * adding them is not a benchmark switch. Can be negative.
+   */
+  readonly netCostBp: number | null;
   readonly alternates: readonly FundAlternate[];
   /** What the line buys, and its class. A risk premium may never be described as an edge. */
   readonly whatItBuys: string;
@@ -256,6 +266,9 @@ export interface Fund {
 const feeNotRead =
   "Never priced by any experiment in this repository. Look it up; do not take a number from here that this repository does not have.";
 
+/** Every core fee below is a 497K summary-prospectus fee table read on this date. */
+const FEE_TABLES_READ = asOf("2026-08-17");
+
 export const funds: readonly Fund[] = [
   {
     id: "vti",
@@ -264,20 +277,26 @@ export const funds: readonly Fund[] = [
     sleeve: "US total market",
     role: "core",
     expenseRatioBp: 3,
-    expenseRatioAsOf: asOf("2026-08-10"),
+    expenseRatioAsOf: FEE_TABLES_READ,
     spreadBp: 0.55,
-    securitiesLendingBp: "1.01",
+    securitiesLendingBp: "1.84",
+    netCostBp: 1.16,
     alternates: [
-      { ticker: "VOO", name: "Vanguard S&P 500 ETF", expenseRatioBp: 3, note: "spread 0.58 bp; lending 0.07 bp" },
       {
         ticker: "ITOT",
         name: "iShares Core S&P Total US Stock Market ETF",
-        expenseRatioBp: null,
-        note: `${feeNotRead} Lending 1.03 bp.`,
+        expenseRatioBp: 3,
+        note: "lending 1.96 bp, net cost 1.04 bp — marginally cheaper to own.",
+      },
+      {
+        ticker: "VOO",
+        name: "Vanguard S&P 500 ETF",
+        expenseRatioBp: 3,
+        note: "spread 0.58 bp; lending 0.06 bp, net cost 2.94 bp. Same fee, 1.78 bp less lending.",
       },
     ],
     whatItBuys:
-      "The equity risk premium at 3 bp, about 1.3 bp of round-trip friction, plus roughly 1.01 bp/yr of securities-lending pass-through. The cost is certain. The return is not, and no page here forecasts it.",
+      "The equity risk premium at a net cost of 1.16 bp/yr — a 3 bp fee less 1.84 bp of securities lending — plus about 1.3 bp of round-trip friction paid once. The cost is certain. The return is not, and no page here forecasts it.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: recommendation,
@@ -288,21 +307,27 @@ export const funds: readonly Fund[] = [
     name: "Vanguard FTSE Developed Markets ETF",
     sleeve: "Developed ex-US",
     role: "core",
-    expenseRatioBp: null,
-    expenseRatioAsOf: null,
-    expenseRatioNote: feeNotRead,
+    expenseRatioBp: 3,
+    expenseRatioAsOf: FEE_TABLES_READ,
     spreadBp: null,
-    securitiesLendingBp: "~2.97",
+    securitiesLendingBp: "3.30",
+    netCostBp: -0.3,
     alternates: [
+      {
+        ticker: "SPDW",
+        name: "SPDR Portfolio Developed World ex-US ETF",
+        expenseRatioBp: 3,
+        note: "lending 4.63 bp, net cost -1.63 bp — the cheapest developed ex-US fund audited.",
+      },
       {
         ticker: "IEFA",
         name: "iShares Core MSCI EAFE ETF",
-        expenseRatioBp: null,
-        note: `${feeNotRead} Lending 1.08–1.11 bp.`,
+        expenseRatioBp: 7,
+        note: "lending 2.35 bp, net cost 4.65 bp.",
       },
     ],
     whatItBuys:
-      "Diversification of the equity claim, not an edge. Its foreign tax credit is worth 15.78 bp/yr and only in a taxable account.",
+      "Diversification of the equity claim, not an edge, at a net cost of -0.30 bp/yr: 3.30 bp of securities lending more than covers the 3 bp fee. Its foreign tax credit is worth 15.78 bp/yr and only in a taxable account.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: recommendation,
@@ -313,21 +338,21 @@ export const funds: readonly Fund[] = [
     name: "Vanguard FTSE Emerging Markets ETF",
     sleeve: "Emerging markets",
     role: "core",
-    expenseRatioBp: null,
-    expenseRatioAsOf: null,
-    expenseRatioNote: feeNotRead,
+    expenseRatioBp: 6,
+    expenseRatioAsOf: FEE_TABLES_READ,
     spreadBp: null,
-    securitiesLendingBp: "~4.9–5.2",
+    securitiesLendingBp: "4.33",
+    netCostBp: 1.67,
     alternates: [
       {
         ticker: "IEMG",
         name: "iShares Core MSCI Emerging Markets ETF",
-        expenseRatioBp: null,
-        note: `${feeNotRead} Lending 9.2–9.7 bp.`,
+        expenseRatioBp: 9,
+        note: "lending 9.87 bp, net cost -0.87 bp. A 50% higher fee and the cheaper fund to own. Its fee is capped at 0.09% through 2030-12-31, with no recoupment.",
       },
     ],
     whatItBuys:
-      "The same diversification. Its credit is worth 20.00 bp/yr in taxable, and it is the sleeve the placement arithmetic moves.",
+      "The same diversification, at a net cost of 1.67 bp/yr. Its credit is worth 20.00 bp/yr in taxable, and it is the sleeve the placement arithmetic moves.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: recommendation,
@@ -338,14 +363,22 @@ export const funds: readonly Fund[] = [
     name: "Vanguard Total Bond Market ETF",
     sleeve: "Investment-grade bonds",
     role: "core",
-    expenseRatioBp: null,
-    expenseRatioAsOf: null,
-    expenseRatioNote: feeNotRead,
+    expenseRatioBp: 3,
+    expenseRatioAsOf: FEE_TABLES_READ,
     spreadBp: null,
-    securitiesLendingBp: null,
-    alternates: [{ ticker: "—", name: "A Treasury fund", expenseRatioBp: null, note: feeNotRead }],
+    securitiesLendingBp: "0.00 — does not lend",
+    netCostBp: 3.0,
+    alternates: [
+      {
+        ticker: "SPAB",
+        name: "SPDR Portfolio Aggregate Bond ETF",
+        expenseRatioBp: 3,
+        note: "lending 0.91 bp, net cost 2.09 bp.",
+      },
+      { ticker: "—", name: "A Treasury fund", expenseRatioBp: null, note: feeNotRead },
+    ],
     whatItBuys:
-      "Term and credit compensation, and a risk brake. Sized by the investor's risk capacity. Booking a term premium as an edge over an equity index swaps the benchmark rather than adding return.",
+      "Term and credit compensation, and a risk brake, at a net cost of 3.00 bp/yr — the dearest aggregate-bond fund audited, because it is the only one that does not lend securities at all. Sized by the investor's risk capacity. Booking a term premium as an edge over an equity index swaps the benchmark rather than adding return.",
     certaintyClass: "different-benchmark",
     status: null,
     source: recommendation,
@@ -356,13 +389,24 @@ export const funds: readonly Fund[] = [
     name: "Vanguard Total International Stock ETF",
     sleeve: "Whole international sleeve in one fund",
     role: "core-alternative",
-    expenseRatioBp: 3,
-    expenseRatioAsOf: asOf("2026-08-10"),
+    expenseRatioBp: 5,
+    expenseRatioAsOf: FEE_TABLES_READ,
+    expenseRatioNote:
+      "5 bp from the 497K fee table dated 2026-02-27. This repository previously recorded 3 bp, which was wrong.",
     spreadBp: 1.18,
-    securitiesLendingBp: "~3.4–3.6",
-    alternates: [],
+    securitiesLendingBp: "3.57",
+    netCostBp: 1.43,
+    alternates: [
+      { ticker: "VEU", name: "Vanguard FTSE All-World ex-US ETF", expenseRatioBp: 4, note: "net cost 1.61 bp." },
+      {
+        ticker: "IXUS",
+        name: "iShares Core MSCI Total International Stock ETF",
+        expenseRatioBp: 7,
+        note: "net cost 3.99 bp.",
+      },
+    ],
     whatItBuys:
-      "Developed and emerging international equity in one holding, at the cost of the placement result. See `vxusTradeoff`.",
+      "Developed and emerging international equity in one holding, at 1.43 bp net — the cheapest total-international fund audited, and still dearer than holding the two separately. See `vxusTradeoff`.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: decomposition,
@@ -378,6 +422,7 @@ export const funds: readonly Fund[] = [
     expenseRatioNote: "Read from the sponsor's own prospectus or fund page, with the URL and date recorded.",
     spreadBp: null,
     securitiesLendingBp: null,
+    netCostBp: null,
     alternates: [],
     whatItBuys:
       "An HML loading of +0.410 [+0.322, +0.480], delivered and stable, at 5 bp, with a negative shortfall against a fitted four-fund combination. It is the only US value product that both delivers its exposure and does not lose to a cheap mix. It is not here because the chain is positive.",
@@ -396,6 +441,7 @@ export const funds: readonly Fund[] = [
     expenseRatioNote: "Read from the fund's SEC-filed 497K summary prospectus fee table, with its accession number.",
     spreadBp: null,
     securitiesLendingBp: null,
+    netCostBp: null,
     alternates: [],
     whatItBuys:
       "A loading of +0.671 [+0.513, +0.829] on the AQR time-series-momentum index, stable across the fixed split and all 19 rolling windows, trailing a cost-free vendor index by 0.48 pp/yr against an 0.85% fee. Crisis correlation −0.59 and downside beta −0.67 — but the post-publication interval includes zero and fails Holm.",
@@ -413,6 +459,7 @@ export const funds: readonly Fund[] = [
     expenseRatioAsOf: asOf("2026-08-10"),
     spreadBp: 2.72,
     securitiesLendingBp: "~3.0–3.1",
+    netCostBp: null,
     alternates: [],
     whatItBuys:
       "Nothing this construction holds. It is priced here because it is one of the four funds the cheap replication is built from, and because its 2.72 bp round trip is nearly a year of expense ratio — which is the binding constraint on rebalancing frequency, and larger than the 2.4 bp/yr the rebalancing line was ever budgeted.",
@@ -423,18 +470,20 @@ export const funds: readonly Fund[] = [
 ];
 
 export const vxusTradeoff = {
-  headline: "Use VXUS instead of VEA + VWO only if you will hold the whole international sleeve in one account.",
-  why: "Splitting developed from emerging is what makes the placement result available, and VXUS forecloses it. The emerging inversion depends on emerging being separately holdable.",
-  vxusFacts: "Expense ratio 3 bp, 30-day median bid/ask spread 1.18 bp.",
-  asOf: asOf("2026-08-10"),
+  headline: "Hold VEA + VWO rather than VXUS. The split is cheaper before any placement argument.",
+  why: "VXUS costs 5 bp against a 75/25 blend of VEA and VWO at 3.75, and lending is a wash — so splitting saves 1.25 bp/yr on the international sleeve, 0.50 bp of equity, whatever accounts the reader has. The placement result is separate and smaller: 1.33 bp/yr of equity at a 23.8% qualified rate, 0.96 at 15%, and exactly zero once the shelter holds the whole equity sleeve. VXUS buys one fewer holding, one fewer spread crossing, and market weights this repository cannot otherwise supply.",
+  vxusFacts:
+    "Expense ratio 5 bp from the 497K fee table dated 2026-02-27, securities lending 3.57 bp, net cost 1.43 bp, 30-day median bid/ask spread 1.18 bp as of 2026-08-10. This repository previously recorded VXUS at 3 bp, which was wrong.",
+  asOf: asOf("2026-08-17"),
   source: recommendation,
 } as const;
 
 export const feePolicy = {
-  headline: "Fees not read here are not omissions of convenience.",
+  headline: "A fee comparison is not a cost comparison, and every core fee here is now a filed one.",
   detail:
-    "VTI, VOO, VXUS and VB are confirmed at 3 bp as of 2026-08-10. VBR at 5 bp and every other factor fee comes from the sponsor's own prospectus or fund page with its URL and date recorded; every managed-futures fee comes from the fund's SEC-filed 497K summary prospectus fee table with its accession number, both as of 2026-08-12. VEA, VWO, BND, IEFA and IEMG were never priced by any experiment here.",
-  instruction: "Look them up. Do not take a number from this content layer that this repository does not have.",
+    "The four core funds and twenty-one alternates were audited on 2026-08-17 from SEC-filed 497K fee tables and 110 Form N-CEN filings, so net cost — the fee less securities-lending income — is measured rather than looked up. It reorders the shelf: IEMG charges 9 bp against VWO's 6 and costs less to own, and BND is the dearest aggregate-bond fund audited because it is the only one that does not lend at all. The recommended four cost 1.36 bp/yr against 0.76 for the cheapest combination available, so the whole fund-selection decision is 0.60 bp/yr. VBR at 5 bp and every factor fee comes from the sponsor's own prospectus with its URL and date; every managed-futures fee comes from the fund's 497K fee table with its accession number, both as of 2026-08-12.",
+  instruction:
+    "The fee is contractual and the lending income is a measurement over the fiscal years on file. Do not read the second as a promise, and never rank two funds on a tracking difference taken against two different indices.",
   source: recommendation,
 } as const;
 

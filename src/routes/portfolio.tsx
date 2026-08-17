@@ -327,6 +327,19 @@ export default function Portfolio() {
               ),
             },
             {
+              key: "netCost",
+              header: "Net cost",
+              numeric: true,
+              cell: (row) => (
+                <span class="whitespace-nowrap">
+                  {row.netCostBp === null ? "—" : `${row.netCostBp.toFixed(2)} bp`}
+                  <Show when={row.securitiesLendingBp}>
+                    {(lending) => <span class="block text-xs text-ink-faint">lending {lending()}</span>}
+                  </Show>
+                </span>
+              ),
+            },
+            {
               key: "share",
               header: "Share of equity",
               numeric: true,
@@ -339,7 +352,7 @@ export default function Portfolio() {
             },
           ]}
           rows={coreFunds}
-          footnote='"Not read here" means no experiment in this repository priced that fund. It is not a rounding to zero, and it is not an omission of convenience.'
+          footnote="Net cost is the expense ratio less net securities-lending income, both measured against the fund's own net assets. The fee is contractual and filed; the lending figure is the median over every fiscal year Form N-CEN has filed, and is a measurement rather than a promise."
         />
 
         <h3 class="mt-10 mb-4 font-sans text-base font-semibold text-ink">What each line buys</h3>
