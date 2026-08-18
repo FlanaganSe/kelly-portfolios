@@ -19,7 +19,13 @@
 
 import { monthOfYear } from "~/lib/backtest/calendar";
 import { commonRange, coversRange, slice } from "~/lib/backtest/series";
-import type { MonthRange, RebalanceFrequency, SimulationInput, SimulationResult } from "~/lib/backtest/types";
+import type {
+  Allocation,
+  MonthRange,
+  RebalanceFrequency,
+  SimulationInput,
+  SimulationResult,
+} from "~/lib/backtest/types";
 
 /** Months between rebalancing dates. `never` is represented by no reset at all. */
 function periodMonths(frequency: RebalanceFrequency): number | null {
@@ -78,21 +84,12 @@ export function resolvableRange(input: Pick<SimulationInput, "allocations" | "se
   return commonRange(found);
 }
 
-export function simulate(input: SimulationInput): SimulationResult {
-  const held = input.allocations.filter((one) => one.weight !== 0);
-
-  const missing: MissingHistory[] = [];
-  for (const allocation of held) {
-    const series = input.series.get(allocation.symbol);
-    if (series === undefined) {
-      missing.push({ symbol: allocation.symbol, absent: true });
-    }
+/** Throws unless every held symbol has a series that covers `range`. */
+function requireCoverage(input: SimulationInput, held: readonly Allocation[], range: MonthRange | null): MonthRange {
+  const absent = held.filter((one) => input.series.get(one.symbol) === undefined);
+  if (absent.length > 0) {
+    throw new InsufficientHistoryError(absent.map((one) => ({ symbol: one.symbol, absent: true })));
   }
-  if (missing.length > 0) {
-    throw new InsufficientHistoryError(missing);
-  }
-
-  const range = input.range ?? resolvableRange(input);
   if (range === null) {
     throw new InsufficientHistoryError(held.map((one) => ({ symbol: one.symbol, absent: false })));
   }
@@ -112,9 +109,14 @@ export function simulate(input: SimulationInput): SimulationResult {
   if (short.length > 0) {
     throw new InsufficientHistoryError(short);
   }
+  return range;
+}
 
-  // Duplicated symbols are summed rather than rejected: two lines of the same fund
-  // are the same holding, and a user who typed it twice meant the total.
+/** Two lines of the same fund are one holding, so their weights are summed. */
+function collapse(held: readonly Allocation[]): {
+  readonly targets: Map<string, number>;
+  readonly expenses: Map<string, number>;
+} {
   const targets = new Map<string, number>();
   const expenses = new Map<string, number>();
   for (const allocation of held) {
@@ -123,6 +125,13 @@ export function simulate(input: SimulationInput): SimulationResult {
       expenses.set(allocation.symbol, allocation.expenseRatio);
     }
   }
+  return { targets, expenses };
+}
+
+export function simulate(input: SimulationInput): SimulationResult {
+  const held = input.allocations.filter((one) => one.weight !== 0);
+  const range = requireCoverage(input, held, input.range ?? resolvableRange(input));
+  const { targets, expenses } = collapse(held);
 
   const symbols = [...targets.keys()];
   const target = symbols.map((symbol) => targets.get(symbol) ?? 0);
