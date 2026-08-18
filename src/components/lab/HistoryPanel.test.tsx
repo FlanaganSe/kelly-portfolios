@@ -97,7 +97,7 @@ describe("HistoryPanel", () => {
     const screen = render(() => <HistoryPanel holdings={HOLDINGS} benchmarkDefault="BENCH" />);
     paste(screen, fixture());
 
-    const growth = () => screen.getByRole("img", { name: /Growth of one unit invested/ });
+    const growth = () => screen.getByRole("img", { name: /Growth of 10,000 invested/ });
     expect(growth()).toBeInTheDocument();
 
     fireEvent.click(screen.getByLabelText("Ratio (log) value axis"));
@@ -150,5 +150,46 @@ describe("the invented example", () => {
 
     fireEvent.click(screen.getByRole("button", { name: /^clear$/i }));
     expect(screen.queryByText(/these results are of invented data/i)).toBeNull();
+  });
+});
+
+describe("the controls the brief asks for", () => {
+  it("scales the growth chart to a starting investment without touching any rate", async () => {
+    render(() => <HistoryPanel holdings={[...HOLDINGS]} />);
+    fireEvent.click(await screen.findByRole("button", { name: /load example/i }));
+
+    const metrics = screen.getByRole("table", { name: /^Your portfolio against BENCH,/ });
+    const cagrBefore = within(metrics).getAllByRole("row")[1]?.textContent;
+
+    fireEvent.input(screen.getByLabelText(/starting investment/i), { target: { value: "250000" } });
+    fireEvent.blur(screen.getByLabelText(/starting investment/i));
+
+    expect(await screen.findByRole("img", { name: /Growth of 250,000 invested/ })).toBeInTheDocument();
+    // The rate is a property of the returns, not of how much was put in.
+    expect(
+      within(screen.getByRole("table", { name: /^Your portfolio against BENCH,/ })).getAllByRole("row")[1]?.textContent
+    ).toBe(cagrBefore);
+  });
+
+  it("restricts the period, and falls back to the whole window when asked for a year that is not there", async () => {
+    render(() => <HistoryPanel holdings={[...HOLDINGS]} />);
+    fireEvent.click(await screen.findByRole("button", { name: /load example/i }));
+
+    const wholeWindow = screen.getByText("Common history").parentElement?.textContent;
+
+    fireEvent.change(screen.getByLabelText("From"), { target: { value: "2021-01" } });
+    expect(screen.getByText("Common history").parentElement?.textContent).not.toBe(wholeWindow);
+
+    fireEvent.click(screen.getByRole("button", { name: /whole history/i }));
+    expect(screen.getByText("Common history").parentElement?.textContent).toBe(wholeWindow);
+  });
+
+  it("prints a return for every complete calendar year", async () => {
+    render(() => <HistoryPanel holdings={[...HOLDINGS]} />);
+    fireEvent.click(await screen.findByRole("button", { name: /load example/i }));
+
+    const table = await screen.findByRole("table", { name: /calendar-year total return/i });
+    // Five years of example data, one header row plus one row each.
+    expect(within(table).getAllByRole("row")).toHaveLength(6);
   });
 });

@@ -6,7 +6,7 @@ import { Figure } from "~/components/Figure";
 import { NumberInput } from "~/components/NumberInput";
 import { Prose } from "~/components/Prose";
 import { Slider } from "~/components/Slider";
-import { toYearMonth } from "~/lib/backtest/calendar";
+import { toMonthIndex, toYearMonth } from "~/lib/backtest/calendar";
 import {
   annualisedVolatility,
   beta,
@@ -56,6 +56,16 @@ export interface HistoryPanelProps {
 
 const ROLLING_MONTHS = 36;
 const MONTHS_PER_YEAR = 12;
+
+/**
+ * A starting investment, and the values derived from it, with no currency symbol.
+ *
+ * The reader's own data may be in any currency and this panel has no way to know which,
+ * so it prints a number and stays quiet about the unit rather than guessing at a dollar.
+ */
+function money(value: number): string {
+  return value >= 1000 ? Math.round(value).toLocaleString("en-US") : value.toFixed(2);
+}
 const EXAMPLE_MONTHS = 60;
 const EXAMPLE_START = "2019-01";
 
@@ -95,6 +105,8 @@ interface AnalysisInput {
   readonly rebalance: RebalanceFrequency;
   readonly applyExpenses: boolean;
   readonly expensePercent: (ticker: string) => number;
+  /** Clips the test to a window inside the common history. `null` means all of it. */
+  readonly restrict: { readonly from: string | null; readonly to: string | null };
 }
 
 interface Analysis {
@@ -141,10 +153,20 @@ function analyse(input: AnalysisInput): AnalysisState {
     return series === undefined ? [] : [series];
   });
   const involved = [...holdingSeries, benchmark];
-  const range = commonRange(involved);
-  if (range === null) {
+  const available = commonRange(involved);
+  if (available === null) {
     return { kind: "no-overlap" };
   }
+
+  // A requested window is clipped to what the data has rather than refused, and an
+  // inverted or too-short request falls back to the whole of it: a period control that
+  // can empty the page is worse than one that quietly declines.
+  const asked = {
+    start:
+      input.restrict.from === null ? available.start : Math.max(available.start, toMonthIndex(input.restrict.from)),
+    end: input.restrict.to === null ? available.end : Math.min(available.end, toMonthIndex(input.restrict.to)),
+  };
+  const range = asked.end - asked.start + 1 >= MONTHS_PER_YEAR ? asked : available;
 
   try {
     const result = simulate({
@@ -312,6 +334,9 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
   const [expenses, setExpenses] = createSignal<Readonly<Record<string, number>>>({});
   const [riskFreePercent, setRiskFreePercent] = createSignal(0);
   const [logGrowth, setLogGrowth] = createSignal(false);
+  const [initial, setInitial] = createSignal(10_000);
+  const [fromMonth, setFromMonth] = createSignal<string | null>(null);
+  const [toMonth, setToMonth] = createSignal<string | null>(null);
 
   const parsed = createMemo(() => (submitted() === "" ? null : importReturns(submitted())));
   const problems = (): readonly ImportProblem[] => parsed()?.problems ?? [];
@@ -349,8 +374,25 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
           rebalance: rebalance(),
           applyExpenses: applyExpenses(),
           expensePercent,
+          restrict: { from: fromMonth(), to: toMonth() },
         })
   );
+
+  /**
+   * What the period control may offer. Deliberately computed from the unrestricted
+   * common history, so narrowing the window never narrows the control that widens it.
+   */
+  const availableWindow = createMemo<{ first: string; last: string } | null>(() => {
+    const all = parsed();
+    if (all === null) {
+      return null;
+    }
+    const held = props.holdings.filter((one) => one.percent !== 0).map((one) => seriesById().get(one.ticker));
+    const benchmark = benchmarkChoice() === null ? undefined : seriesById().get(benchmarkChoice() ?? "");
+    const involved = [...held, benchmark].filter((one): one is ReturnSeries => one !== undefined);
+    const range = involved.length === 0 ? null : commonRange(involved);
+    return range === null ? null : { first: toYearMonth(range.start), last: toYearMonth(range.end) };
+  });
 
   const ok = createMemo<Analysis | null>(() => {
     const current = state();
@@ -509,13 +551,20 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
     if (analysis === null) {
       return [];
     }
+    const start = initial();
     return [
-      { id: "portfolio", label: "Your portfolio", abbr: "Yours", values: analysis.result.growth, emphasis: true },
+      {
+        id: "portfolio",
+        label: "Your portfolio",
+        abbr: "Yours",
+        values: analysis.result.growth.map((one) => one * start),
+        emphasis: true,
+      },
       {
         id: "benchmark",
         label: analysis.benchmark.id,
         abbr: analysis.benchmark.id,
-        values: growthPath(analysis.benchmarkReturns),
+        values: growthPath(analysis.benchmarkReturns).map((one) => one * start),
       },
     ];
   });
@@ -690,6 +739,62 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
             </p>
           </div>
 
+          <div class="flex flex-col gap-1">
+            <NumberInput
+              label="Starting investment"
+              value={initial()}
+              onInput={setInitial}
+              min={1}
+              max={100_000_000}
+              step={1000}
+              hint="Scales the growth chart and nothing else. No return, ratio or drawdown depends on it."
+            />
+          </div>
+
+          <fieldset class="flex flex-col gap-2">
+            <legend class="text-sm font-medium text-ink">Period</legend>
+            <div class="flex flex-wrap items-end gap-3">
+              <label class="flex flex-col gap-1 text-sm text-ink">
+                From
+                <input
+                  type="month"
+                  class="control"
+                  value={fromMonth() ?? availableWindow()?.first ?? ""}
+                  min={availableWindow()?.first}
+                  max={availableWindow()?.last}
+                  onChange={(event) =>
+                    setFromMonth(event.currentTarget.value === "" ? null : event.currentTarget.value)
+                  }
+                />
+              </label>
+              <label class="flex flex-col gap-1 text-sm text-ink">
+                To
+                <input
+                  type="month"
+                  class="control"
+                  value={toMonth() ?? availableWindow()?.last ?? ""}
+                  min={availableWindow()?.first}
+                  max={availableWindow()?.last}
+                  onChange={(event) => setToMonth(event.currentTarget.value === "" ? null : event.currentTarget.value)}
+                />
+              </label>
+              <button
+                type="button"
+                class="control cursor-pointer"
+                onClick={() => {
+                  setFromMonth(null);
+                  setToMonth(null);
+                }}
+              >
+                Whole history
+              </button>
+            </div>
+            <p class="max-w-[42ch] text-xs text-ink-faint">
+              Clipped to the window every column covers. A request the data cannot honour, or one shorter than a year,
+              falls back to the whole of it rather than emptying the page.
+            </p>
+          </fieldset>
+
           <Slider
             label="Risk-free rate, annual"
             value={riskFreePercent()}
@@ -805,7 +910,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
 
             <div class="mt-8">
               <div class="flex flex-wrap items-baseline justify-between gap-3">
-                <h4 class="text-base font-semibold text-ink">Growth of 1 unit</h4>
+                <h4 class="text-base font-semibold text-ink">Growth of {money(initial())}</h4>
                 <label for={logId} class="flex items-center gap-2 text-sm text-ink">
                   <input
                     id={logId}
@@ -821,12 +926,12 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
                 series={growthSeries()}
                 start={analysis().range.start - 1}
                 logScale={logGrowth()}
-                baseline={1}
+                baseline={initial()}
                 baselineLabel="starting value"
-                valueAxisLabel="Growth of 1 unit"
-                ariaLabel={`Growth of one unit invested, your portfolio against ${analysis().benchmark.id}, from ${toYearMonth(analysis().range.start)} to ${toYearMonth(analysis().range.end)}. The table below the chart carries the same figures.`}
-                tableCaption="Growth of 1 unit, at each year end"
-                formatValue={(value) => value.toFixed(2)}
+                valueAxisLabel={`Growth of ${money(initial())}`}
+                ariaLabel={`Growth of ${money(initial())} invested, your portfolio against ${analysis().benchmark.id}, from ${toYearMonth(analysis().range.start)} to ${toYearMonth(analysis().range.end)}. The table below the chart carries the same figures.`}
+                tableCaption={`Growth of ${money(initial())}, at each year end`}
+                formatValue={money}
               />
             </div>
 
@@ -878,6 +983,54 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
                   Each point is a 36-month window ending that month, so consecutive points share 35 of their months.
                   Overlapping windows are not independent observations and the share ahead is not a significance test.
                 </p>
+              </Show>
+            </div>
+
+            <div class="mt-10">
+              <h4 class="text-base font-semibold text-ink">Return by calendar year</h4>
+              <Show
+                when={years().length > 0}
+                fallback={
+                  <p class="mt-2 max-w-measure text-sm text-ink-muted">
+                    The window contains no complete calendar year. Part-years are excluded rather than annualised,
+                    because a nine-month year printed beside a twelve-month one is not a comparison.
+                  </p>
+                }
+              >
+                <DataTable
+                  class="mt-3"
+                  caption={`Calendar-year total return, your portfolio against ${analysis().benchmark.id}`}
+                  captionHidden
+                  columns={[
+                    { key: "year", header: "Year", rowHeader: true, cell: (row: CalendarYear) => String(row.year) },
+                    {
+                      key: "portfolio",
+                      header: "Portfolio",
+                      numeric: true,
+                      cell: (row: CalendarYear) => formatPercent(row.portfolio, 1),
+                    },
+                    {
+                      key: "benchmark",
+                      header: analysis().benchmark.id,
+                      numeric: true,
+                      cell: (row: CalendarYear) => (row.benchmark === null ? "—" : formatPercent(row.benchmark, 1)),
+                    },
+                    {
+                      key: "excess",
+                      header: "Difference",
+                      numeric: true,
+                      cell: (row: CalendarYear) =>
+                        row.benchmark === null ? "—" : formatPercent(row.portfolio - row.benchmark, 1),
+                    },
+                  ]}
+                  rows={years()}
+                  footnote={
+                    <>
+                      Complete calendar years only. The difference is a difference of annual total returns, not a
+                      compounded excess.
+                    </>
+                  }
+                />
               </Show>
             </div>
 
