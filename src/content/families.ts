@@ -5,7 +5,7 @@ import { asOf } from "~/content/types";
  * The research library, organised by what a strategy claims rather than by which file
  * happens to hold it.
  *
- * Each family answers the same ten questions in the same order, because the interesting
+ * Each family answers the same questions in the same order, because the interesting
  * comparison between two return engines is not which sounds better — it is which one
  * survives the same interrogation. `headline` is the number a reader should leave with;
  * `strength` is this repository's own status word for it, never a grade invented here.
@@ -188,7 +188,7 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "A working lifetime may not settle it",
         detail:
-          "At a 20% weight the thirty-year detection floor is 142 bp against a 43 bp edge. You would hold the tilt for thirty years and still not know.",
+          "A 20% US large-value tilt earns +24.4 bp against 135 bp of tracking error, which puts its thirty-year detection floor near 61 bp — more than twice the edge. The small-value alternative is worse: 142 bp against 43. You would hold either for thirty years and still not know.",
       },
       {
         title: "Small value is the worse trade",

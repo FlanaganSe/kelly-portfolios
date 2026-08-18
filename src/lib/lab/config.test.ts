@@ -5,6 +5,7 @@ import {
   normalise,
   parseHoldings,
   parseLabConfig,
+  toBenchmark,
   toLabHref,
   toSearchParams,
   totalPercent,
@@ -117,5 +118,14 @@ describe("weights too small to matter", () => {
       { ticker: "A", percent: 50 },
       { ticker: "B", percent: 50 },
     ]);
+  });
+});
+
+describe("narrowing a control's value", () => {
+  it("accepts every benchmark the type holds and refuses anything else", () => {
+    expect(toBenchmark("average-investor")).toBe("average-investor");
+    expect(toBenchmark("own-counterfactual")).toBe("own-counterfactual");
+    expect(toBenchmark("cheap-index")).toBe("cheap-index");
+    expect(toBenchmark("something-else")).toBe(defaultLabConfig.benchmark);
   });
 });

@@ -81,7 +81,7 @@ frozen specification and a ledger entry.
 | --- | --- |
 | `/` | Which benchmark you mean, and why the two do not add |
 | `/portfolios`, `/portfolios/:id` | Four candidate constructions, ordered by how much of each case is a fact: exact weights, notional exposure where it differs from capital, and what would break each one |
-| `/research`, `/research/:slug` | Ten strategy families, each asked the same ten questions — mechanism, evidence for, evidence against, failure modes, cost, overlap, role |
+| `/research`, `/research/:slug` | Ten strategy families, each put through the same seven questions — mechanism, evidence for, evidence against, failure modes, cost, overlap, role |
 | `/funds`, `/funds/:ticker` | The audited shelf: delivered exposure with the panel it was measured on, cost net of securities lending, wrapper arithmetic, and issuer-filed structure |
 | `/lab` | What an edge and a tracking error imply: the wait, the distribution, and how long you could sit behind |
 | `/reference` | The construction this repository's own research signs off, and the longest section is what is deliberately absent |

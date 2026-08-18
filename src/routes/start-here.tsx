@@ -14,6 +14,7 @@ import { engineMeta, portfolios, type ReturnEngine } from "~/content/portfolios"
 import { shelfAudit } from "~/content/shelf";
 import { statusMeta } from "~/content/types";
 import { CORPUS_AS_OF } from "~/lib/nav";
+import { Spell } from "~/lib/spell";
 
 /**
  * The front page.
@@ -113,7 +114,7 @@ export default function StartHere(): JSX.Element {
         <div class="grid gap-8 sm:grid-cols-3">
           <Action
             href="/portfolios"
-            title={`${portfolios.length} portfolios`}
+            title={`${Spell(portfolios.length)} portfolios`}
             detail="Ordered by how much of each construction's case is a fact and how much is a bet. Exact weights, notional exposure, and what would break each one."
           />
           <Action
@@ -123,7 +124,7 @@ export default function StartHere(): JSX.Element {
           />
           <Action
             href="/research"
-            title={`${families.length} research families`}
+            title={`${Spell(families.length)} research families`}
             detail="Each put through the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
           />
         </div>
@@ -209,9 +210,9 @@ export default function StartHere(): JSX.Element {
           Where a return can actually come from
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
-          {ENGINE_ORDER.length} engines, in descending order of how certain their sign is. A portfolio is a decision
-          about how much of each to hold, and almost every disagreement about investing is really a disagreement about
-          this ordering.
+          {Spell(ENGINE_ORDER.length)} engines, in descending order of how certain their sign is. A portfolio is a
+          decision about how much of each to hold, and almost every disagreement about investing is really a
+          disagreement about this ordering.
         </p>
 
         <ol class="mt-8 space-y-6">

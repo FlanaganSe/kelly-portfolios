@@ -24,6 +24,7 @@ import {
   type LabHolding,
   normalise,
   parseLabConfig,
+  toBenchmark,
   toLabHref,
   totalPercent,
 } from "~/lib/lab/config";
@@ -724,7 +725,7 @@ export default function Lab(): JSX.Element {
             <select
               class="control"
               value={config().benchmark}
-              onChange={(event) => update({ benchmark: event.currentTarget.value as LabBenchmark })}
+              onChange={(event) => update({ benchmark: toBenchmark(event.currentTarget.value) })}
             >
               <option value="cheap-index">A cheap index fund</option>
               <option value="own-counterfactual">The portfolio you would otherwise have owned</option>
@@ -830,7 +831,7 @@ export default function Lab(): JSX.Element {
 
         <div class="mt-8">
           <Suspense fallback={<p class="text-sm text-ink-muted">Loading the history panel…</p>}>
-            <HistoryPanel holdings={config().holdings} />
+            <HistoryPanel holdings={settled().holdings} />
           </Suspense>
         </div>
       </section>

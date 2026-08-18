@@ -6,6 +6,7 @@ import { Prose } from "~/components/Prose";
 import { CertaintyChip, StatusChip } from "~/components/StatusChip";
 import { families, familiesAsOf, type StrategyFamily } from "~/content/families";
 import { DEEP_PAGES } from "~/lib/nav";
+import { Spell } from "~/lib/spell";
 
 /**
  * The research index, grouped by what a strategy claims rather than by file name.
@@ -72,12 +73,12 @@ export default function Research(): JSX.Element {
       <Title>Research — Portfolio Edge</Title>
       <Meta
         name="description"
-        content="Ten research families, each put through the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
+        content="Research families, each put through the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
       />
 
       <PageHeader
         eyebrow="Research"
-        title={`${families.length} families, each put through the same interrogation`}
+        title={`${Spell(families.length)} families, each put through the same interrogation`}
         standfirst="The useful comparison between two return engines is not which one sounds better. It is which one survives the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
         lastChecked={familiesAsOf}
       />

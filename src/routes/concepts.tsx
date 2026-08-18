@@ -9,6 +9,7 @@ import { type GlossaryEntry, glossary } from "~/content/glossary";
 import { lessons } from "~/content/lessons";
 import { type CertaintyClass, certaintyMeta, type EvidenceStatus, statusMeta } from "~/content/types";
 import { CORPUS_AS_OF } from "~/lib/nav";
+import { Spell } from "~/lib/spell";
 
 /**
  * The field guide. Every term the rest of the site assumes you know, grouped so the
@@ -152,8 +153,8 @@ export default function Concepts() {
           The short course
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
-          {lessons.length} claims, ordered so that each one depends only on the ones above it. Read these before tilting
-          anything.
+          {Spell(lessons.length)} claims, ordered so that each one depends only on the ones above it. Read these before
+          tilting anything.
         </p>
 
         <ol class="mt-8 space-y-8">

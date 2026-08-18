@@ -16,7 +16,7 @@ import NotFound from "~/routes/not-found";
 /**
  * One strategy family.
  *
- * Every page is the same ten sections in the same order, so two families can be compared
+ * Every page is the same sections in the same order, so two families can be compared
  * by scrolling to the same place rather than by trusting whichever page argued harder.
  */
 

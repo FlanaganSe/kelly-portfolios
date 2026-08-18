@@ -187,7 +187,7 @@ const READ = asOf("2026-08-17");
 const control: PortfolioCandidate = {
   id: "control",
   name: "The control",
-  thesis: "Own every listed company in the world at its market weight, for about half a basis point a year.",
+  thesis: "Own the whole of every major equity market, in three funds, for about half a basis point a year.",
   forWhom: "Everyone, as the starting position. Every other portfolio on this site has to beat this one.",
   holdings: [
     {

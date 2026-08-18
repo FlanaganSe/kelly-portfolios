@@ -305,7 +305,12 @@ export default function PortfolioDetail(): JSX.Element {
                   </For>
                 </div>
 
-                <Show when={found().priced.length > 1}>
+                <Show
+                  when={
+                    found().priced.filter((line) => line.certainty === "risk-premium" && line.edgeBp !== null).length >
+                    1
+                  }
+                >
                   <Callout variant="caveat" label="These lines are not added" class="mt-10">
                     <p>
                       No total appears above, and that is deliberate. Two of these lines may be measured against

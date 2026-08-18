@@ -117,6 +117,16 @@ function benchmarkFrom(code: string | null): LabBenchmark {
   return found?.[0] ?? defaultLabConfig.benchmark;
 }
 
+/**
+ * The same narrowing for a control's value rather than a link's. A `<select>` can only
+ * emit what it renders, but a cast would let a renamed option through silently — and the
+ * one thing this type exists to prevent is a figure measured against one benchmark being
+ * relabelled as measured against another.
+ */
+export function toBenchmark(value: string): LabBenchmark {
+  return value in BENCHMARK_CODE ? (value as LabBenchmark) : defaultLabConfig.benchmark;
+}
+
 export function parseLabConfig(search: string | URLSearchParams): LabConfig {
   const params = typeof search === "string" ? new URLSearchParams(search) : search;
   return {

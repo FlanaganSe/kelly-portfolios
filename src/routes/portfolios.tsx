@@ -137,11 +137,9 @@ export default function Portfolios(): JSX.Element {
               key: "name",
               header: "Portfolio",
               rowHeader: true,
-              cell: (row: PortfolioCandidate) => (
-                <A href={`/portfolios/${row.id}`} class="link">
-                  {row.name}
-                </A>
-              ),
+              // Deliberately not a link: the card below carries the only link to each
+              // portfolio, so a screen reader listing links does not get every name twice.
+              cell: (row: PortfolioCandidate) => row.name,
             },
             { key: "lines", header: "Lines", numeric: true, cell: (row: PortfolioCandidate) => row.holdings.length },
             {
