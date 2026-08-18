@@ -403,7 +403,9 @@ export function TimeSeriesChart(props: TimeSeriesChartProps): JSX.Element {
       <Show when={props.tableCaption}>
         {(caption) => (
           <details class="mt-3">
-            <summary class="cursor-pointer text-sm text-ink-muted hover:text-ink">Read the chart as a table</summary>
+            <summary class="cursor-pointer py-2 text-sm text-ink-muted hover:text-ink">
+              Read the chart as a table
+            </summary>
             <div class="mt-3">
               <DataTable
                 caption={caption()}

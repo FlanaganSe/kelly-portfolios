@@ -301,6 +301,10 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
   const logId = createUniqueId();
 
   const [draft, setDraft] = createSignal("");
+  // Whether what is currently shown came from the invented example. The results region
+  // has to say so: real tickers over made-up returns produce a CAGR and a drawdown that
+  // look exactly like a finding.
+  const [fromExample, setFromExample] = createSignal(false);
   const [submitted, setSubmitted] = createSignal("");
   const [chosenBenchmark, setChosenBenchmark] = createSignal<string | null>(null);
   const [rebalance, setRebalance] = createSignal<RebalanceFrequency>("annually");
@@ -542,6 +546,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
     const text = exampleText(heldTickers(), props.benchmarkDefault ?? "BENCH");
     setDraft(text);
     setSubmitted(text);
+    setFromExample(true);
   };
 
   return (
@@ -575,16 +580,20 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
           is ever inferred from how big a number looks. Commas or tabs both work. Leave a cell blank for a month a fund
           did not exist; a blank is never read as zero.
         </p>
-        <pre class="mt-2 overflow-x-auto border border-rule bg-sunken p-3 text-xs">
-          {"Month,VTI,AVUV\n2019-01,0.0854,0.1131\n2019-02,0.0342,0.0447\n2019-03,0.0144,-0.0281"}
+        <p class="mt-2 text-xs text-ink-faint">The shape, with invented numbers and invented column names:</p>
+        <pre class="mt-1 overflow-x-auto border border-rule bg-sunken p-3 text-xs">
+          {"Month,FUND_A,FUND_B\n2019-01,0.0854,0.1131\n2019-02,0.0342,0.0447\n2019-03,0.0144,-0.0281"}
         </pre>
         <textarea
           id={pasteId}
           class="control mt-3 h-44 w-full font-mono text-xs"
           aria-describedby={`${pasteId}-hint`}
-          placeholder="Month,VTI,AVUV&#10;2019-01,0.0854,0.1131"
+          placeholder="Month,FUND_A,FUND_B&#10;2019-01,0.0854,0.1131"
           value={draft()}
-          onInput={(event) => setDraft(event.currentTarget.value)}
+          onInput={(event) => {
+            setDraft(event.currentTarget.value);
+            setFromExample(false);
+          }}
         />
         <div class="mt-3 flex flex-wrap items-center gap-3">
           <button type="button" class="control cursor-pointer font-medium" onClick={() => setSubmitted(draft())}>
@@ -599,6 +608,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
             onClick={() => {
               setDraft("");
               setSubmitted("");
+              setFromExample(false);
             }}
           >
             Clear
@@ -739,7 +749,17 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
       <Show when={ok()}>
         {(analysis) => (
           <div class="mt-8">
-            <div class="flex flex-wrap items-start gap-x-10 gap-y-4 border-y border-rule py-4">
+            <Show when={fromExample()}>
+              <Callout variant="caveat" label="These results are of invented data">
+                <p>
+                  Every figure and every chart below was computed from the example series, which came out of a fixed
+                  pseudo-random generator. The column names are your own tickers so that the controls work; the returns
+                  under them belong to no fund and no market. Nothing here is a finding about anything.
+                </p>
+              </Callout>
+            </Show>
+
+            <div aria-live="polite" class="flex flex-wrap items-start gap-x-10 gap-y-4 border-y border-rule py-4">
               <Figure
                 label="Common history"
                 value={`${toYearMonth(analysis().range.start)} → ${toYearMonth(analysis().range.end)}`}
@@ -890,7 +910,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
             </div>
 
             <details class="mt-6">
-              <summary class="cursor-pointer text-sm text-ink-muted hover:text-ink">
+              <summary class="cursor-pointer py-2 text-sm text-ink-muted hover:text-ink">
                 What each of these means, in plain English
               </summary>
               <dl class="mt-3 max-w-measure text-sm">

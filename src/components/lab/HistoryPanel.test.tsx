@@ -1,4 +1,4 @@
-import { cleanup, fireEvent, render, within } from "@solidjs/testing-library";
+import { cleanup, fireEvent, render, screen, within } from "@solidjs/testing-library";
 import { afterEach, describe, expect, it } from "vitest";
 import { HistoryPanel } from "~/components/lab/HistoryPanel";
 import { toYearMonth } from "~/lib/backtest/calendar";
@@ -138,5 +138,17 @@ describe("HistoryPanel", () => {
     expect(picker).toBeInTheDocument();
     fireEvent.change(picker, { target: { value: "AAA" } });
     expect(screen.getByRole("table", { name: /Your portfolio against AAA/ })).toBeInTheDocument();
+  });
+});
+
+describe("the invented example", () => {
+  it("marks its own results, and stops marking them once the reader edits the paste", async () => {
+    render(() => <HistoryPanel holdings={[{ ticker: "AAA", percent: 100 }]} />);
+
+    fireEvent.click(await screen.findByRole("button", { name: /load example/i }));
+    expect(await screen.findByText(/these results are of invented data/i)).toBeInTheDocument();
+
+    fireEvent.click(screen.getByRole("button", { name: /^clear$/i }));
+    expect(screen.queryByText(/these results are of invented data/i)).toBeNull();
   });
 });
