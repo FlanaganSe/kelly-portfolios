@@ -34,8 +34,10 @@ tax-lot method and account placement — because that edge is contractual rather
 statistical. **It is conditional**: only the ~49 bp fee line requires nothing but currently
 holding an expensive fund, and for a reader already in cheap index funds in one tax-deferred
 account the honest figure is close to zero. Against a cheap index the whole honest budget is
-about 24 bp against 401 bp of tracking error — **a 63% chance of being ahead after thirty
-years.** Tracking error, not edge size, is what decides that.
+about **46 bp against 313 bp of tracking error — a 79.2% chance of being ahead after thirty
+years**, and about 74 years to be 90% sure. Tracking error, not edge size, is what decides
+that. (The 46 bp figure rose from 24.4 on 2026-08-17, when the factor line stopped
+multiplying a fund's loading by a capture fraction that is itself a loading.)
 
 **And the null result is partly a property of where the search has looked.** Several of the
 instruments used here have measured detection floors above the effect size that would
@@ -57,6 +59,13 @@ A static reading of that research: what was tested, what survived, and what each
 worth in confidence terms rather than in expected return. It calls no API, holds no keys and
 ships no price data. What the reader types stays in their browser.
 
+**There is no backtest on this site, and its absence is deliberate.** No research-grade
+total-return source exists here ([decision 0002](docs/decisions/0002-no-research-grade-free-price-source.md)),
+no per-fund loading vector is committed, and the redistribution terms on the public factor
+libraries were not established. A growth chart built on any of those would be the most
+persuasive object on the site and the least defensible one. The lab prices a forward edge
+against a tracking error instead, which is arithmetic this repository has already tested.
+
 [Decision 0007](docs/decisions/0007-application-may-render-research.md) permits it to show a
 research number at all, under four conditions: every fact lives in one typed content layer
 under `src/content/`; status, `as of` date, interval and source travel with every figure;
@@ -71,6 +80,10 @@ frozen specification and a ledger entry.
 | Route | Answers |
 | --- | --- |
 | `/` | Which benchmark you mean, and why the two do not add |
+| `/portfolios`, `/portfolios/:id` | Four candidate constructions, ordered by how much of each case is a fact: exact weights, notional exposure where it differs from capital, and what would break each one |
+| `/research`, `/research/:slug` | Ten strategy families, each asked the same ten questions — mechanism, evidence for, evidence against, failure modes, cost, overlap, role |
+| `/funds`, `/funds/:ticker` | The audited shelf: delivered exposure with the panel it was measured on, cost net of securities lending, wrapper arithmetic, and issuer-filed structure |
+| `/lab` | What an edge and a tracking error imply: the wait, the distribution, and how long you could sit behind |
 | `/portfolio` | What to hold, and the longest section is what is deliberately absent |
 | `/edge-budget` | Your budget against your own counterfactual, grouped so the groups cannot be summed |
 | `/placement` | Which account each holding belongs in, computed from your bracket rather than asserted |
