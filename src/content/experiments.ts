@@ -127,7 +127,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "Superseded as a description of the US shelf by Experiment 013, which re-ran it on a census frame that can see the whole shelf and reproduced every one of these 44 funds to zero difference. Read every count here as of the 44 products the 2019Q4 filing quarter contained. Fifteen of them reached the per-fund status exploratory, which permits use as an implementation proxy in a later experiment and nothing else.",
+      "Superseded as a description of the US shelf by Experiment 013, which re-ran it on a census frame that can see the whole shelf and reproduced every one of these 44 funds to zero difference. Read every count here as counting only the 44 products the 2019Q4 filing quarter contained. Fifteen of them reached the per-fund status exploratory, which permits use as an implementation proxy in a later experiment and nothing else.",
     verdict:
       'Exposure is delivered and alpha is not measurable, and those are two different findings. Thirty-eight of 44 funds reject a zero loading in their mandate\'s own direction, while only five of 132 alpha tests survive a correction valid under dependence, and all five are negative. The comparison that rejected most products is a four-fund combination fitted in sample, so every such rejection reads as "a look-ahead mix of cheap funds beat this over 72 months". The 44 were not the shelf: the frame missed two thirds of it, which is what Experiment 013 corrects.',
     keyNumbers: [
