@@ -51,7 +51,8 @@ describe("the portfolio library", () => {
   it("lists every published candidate", async () => {
     mount("/portfolios", "/portfolios", Portfolios);
     for (const portfolio of portfolios) {
-      expect(await screen.findByRole("link", { name: portfolio.name })).toBeInTheDocument();
+      // Twice: once in the comparison table and once on its own card.
+      expect((await screen.findAllByRole("link", { name: portfolio.name })).length).toBeGreaterThanOrEqual(1);
     }
   });
 

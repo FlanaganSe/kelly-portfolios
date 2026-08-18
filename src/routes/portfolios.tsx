@@ -1,9 +1,11 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
+import { DataTable } from "~/components/DataTable";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
 import { ExposureBar } from "~/components/portfolio/ExposureBar";
+import { StatusChip } from "~/components/StatusChip";
 import { engineMeta, type PortfolioCandidate, portfolios, portfoliosAsOf, weightByEngine } from "~/content/portfolios";
 
 /**
@@ -118,6 +120,82 @@ export default function Portfolios(): JSX.Element {
           no portfolio here is claimed to beat an index.
         </p>
       </Prose>
+
+      <section aria-labelledby="side-by-side" class="mb-14">
+        <h2 id="side-by-side" class="mb-4 font-serif text-2xl tracking-[-0.01em]">
+          Side by side
+        </h2>
+        <DataTable
+          caption="The four candidates compared on the things that differ between them."
+          captionHidden
+          columns={[
+            {
+              key: "name",
+              header: "Portfolio",
+              rowHeader: true,
+              cell: (row: PortfolioCandidate) => (
+                <A href={`/portfolios/${row.id}`} class="link">
+                  {row.name}
+                </A>
+              ),
+            },
+            { key: "lines", header: "Lines", numeric: true, cell: (row: PortfolioCandidate) => row.holdings.length },
+            {
+              key: "gross",
+              header: "Gross exposure",
+              numeric: true,
+              cell: (row: PortfolioCandidate) => `${row.grossExposurePercent}%`,
+            },
+            {
+              key: "complexity",
+              header: "Complexity",
+              cell: (row: PortfolioCandidate) => complexityLabel[row.complexity],
+            },
+            {
+              key: "benchmark",
+              header: "Measured against",
+              cell: (row: PortfolioCandidate) => row.benchmark.label,
+            },
+            {
+              key: "edge",
+              header: "Widest priced line",
+              cell: (row: PortfolioCandidate) => {
+                const widest = [...row.priced]
+                  .filter((one) => one.edgeBp !== null && (one.trackingErrorBp ?? 0) > 0)
+                  .sort((a, b) => (b.trackingErrorBp ?? 0) - (a.trackingErrorBp ?? 0))[0];
+                return widest === undefined ? (
+                  <span class="text-ink-faint">None published</span>
+                ) : (
+                  <span data-numeric>
+                    {widest.edgeBp} bp / {widest.trackingErrorBp} bp
+                  </span>
+                );
+              },
+            },
+            {
+              key: "status",
+              header: "Highest status held",
+              cell: (row: PortfolioCandidate) => {
+                const held = row.holdings.map((one) => one.status).filter((one) => one !== null);
+                return held.includes("exploratory") ? (
+                  <StatusChip status="exploratory" />
+                ) : held.length === 0 ? (
+                  <span class="text-ink-faint">Control only</span>
+                ) : (
+                  <StatusChip status="unresolved" />
+                );
+              },
+            },
+          ]}
+          rows={portfolios}
+          footnote={
+            <>
+              “Widest priced line” is the single published line with the largest tracking error, not a portfolio-level
+              expected return. No experiment here has ever tested any of these constructions as a joint object.
+            </>
+          }
+        />
+      </section>
 
       <div>
         <For each={portfolios}>{(portfolio) => <Card portfolio={portfolio} />}</For>
