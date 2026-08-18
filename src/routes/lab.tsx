@@ -1,6 +1,6 @@
 import { Title } from "@solidjs/meta";
 import { A, useNavigate, useSearchParams } from "@solidjs/router";
-import { createMemo, createSignal, For, type JSX, Show } from "solid-js";
+import { createMemo, createSignal, For, type JSX, onCleanup, Show } from "solid-js";
 import { Callout } from "~/components/Callout";
 import { FanChart } from "~/components/charts/FanChart";
 import { DataTable } from "~/components/DataTable";
@@ -43,7 +43,14 @@ import { tiltVerdict } from "~/lib/tilt";
  * the same model, and reproduces the curve rather than competing with it.
  */
 
-const PATHS = 4000;
+const PATHS = 2000;
+
+/**
+ * The simulation costs a couple of hundred milliseconds, which is fine once and awful on
+ * every frame of a slider drag. The closed-form figures update immediately; the fan and
+ * the URL wait until the reader stops moving.
+ */
+const SETTLE_MS = 150;
 
 /** One editable line: what the reader typed, and what the shelf knows about it. */
 interface Row {
@@ -105,11 +112,19 @@ export default function Lab(): JSX.Element {
   const [premiumId, setPremiumId] = createSignal(pricedTilts[0]?.defaultPremiumId ?? "");
   const [tiltWeight, setTiltWeight] = createSignal((pricedTilts[0]?.publishedWeight ?? 0.2) * 100);
 
+  const [settled, setSettled] = createSignal<LabConfig>(config());
+  let settleTimer: ReturnType<typeof setTimeout> | undefined;
+  onCleanup(() => clearTimeout(settleTimer));
+
   const update = (patch: Partial<LabConfig>) => {
     const next = { ...config(), ...patch };
     setConfig(next);
     setCopied(false);
-    navigate(toLabHref(next), { replace: true, scroll: false });
+    clearTimeout(settleTimer);
+    settleTimer = setTimeout(() => {
+      setSettled(next);
+      navigate(toLabHref(next), { replace: true, scroll: false });
+    }, SETTLE_MS);
   };
 
   const total = () => totalPercent(config().holdings);
@@ -179,11 +194,11 @@ export default function Lab(): JSX.Element {
 
   const paths = createMemo(() =>
     simulateRelativePaths({
-      edgeBp: config().edgeBp,
-      trackingErrorBp: config().trackingErrorBp,
-      horizonYears: config().horizonYears,
+      edgeBp: settled().edgeBp,
+      trackingErrorBp: settled().trackingErrorBp,
+      horizonYears: settled().horizonYears,
       paths: PATHS,
-      seed: config().seed,
+      seed: settled().seed,
     })
   );
 
@@ -747,8 +762,8 @@ export default function Lab(): JSX.Element {
         <div class="mt-10">
           <FanChart
             bands={paths().bands}
-            horizonYears={config().horizonYears}
-            ariaLabel={`Simulated wealth relative to ${BENCHMARK_LABEL[config().benchmark]} over ${config().horizonYears} years, shown as percentile bands from ${PATHS} seeded paths.`}
+            horizonYears={settled().horizonYears}
+            ariaLabel={`Simulated wealth relative to ${BENCHMARK_LABEL[settled().benchmark]} over ${settled().horizonYears} years, shown as percentile bands from ${PATHS} seeded paths.`}
             tableCaption="Wealth relative to the benchmark, by percentile and horizon."
             caption={
               <>
