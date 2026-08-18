@@ -369,6 +369,43 @@ export default function Method() {
           </p>
         </Prose>
       </section>
+
+      <section aria-labelledby="what-the-site-computes">
+        <Prose>
+          <h2 id="what-the-site-computes">What the site computes, and what it refuses to</h2>
+          <p>
+            Three calculations run in the browser. Each is a port of a research module and each is tested against
+            fixtures that module generates, so a study whose numbers move breaks a client test.
+          </p>
+          <ul>
+            <li>
+              <strong>The probability of being ahead.</strong> <code>P = Φ(e√T / s)</code> for an edge <code>e</code>, a
+              tracking error <code>s</code> and a horizon <code>T</code> in years, inverted to give the horizon at which
+              any confidence is reached: <code>T = (z·s/e)²</code>.
+            </li>
+            <li>
+              <strong>The value-tilt chain.</strong>{" "}
+              <code>weight × (fund loading − incumbent loading) × premium − incremental cost</code>. Three terms. The
+              module raises rather than accepting a capture fraction, because a capture fraction is itself a loading and
+              the product would discount the same exposure twice. Alongside the edge it returns the substitution's
+              effect on portfolio variance, so the figure that decides is geometric growth rather than an arithmetic
+              average.
+            </li>
+            <li>
+              <strong>The relative path.</strong> The same model as the first, simulated instead of solved: relative
+              wealth as a random walk with drift, log-normal in the ratio, from a fixed seed. The share of paths ahead
+              at the horizon reproduces the closed form rather than competing with it.
+            </li>
+          </ul>
+          <p>
+            <strong>What it refuses.</strong> There is no backtest anywhere on this site. No total-return source here is
+            research-grade, no per-fund exposure vector is committed, and the redistribution terms on the public factor
+            libraries were never established. A growth chart built on any of those would be the most persuasive object
+            on the site and the least defensible one. The lab will happily run history the reader supplies, and it ships
+            none.
+          </p>
+        </Prose>
+      </section>
     </>
   );
 }
