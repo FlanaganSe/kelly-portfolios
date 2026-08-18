@@ -544,7 +544,7 @@ export function OutperformanceChart(props: OutperformanceChartProps): JSX.Elemen
       </Show>
 
       <details class="mt-4">
-        <summary class="cursor-pointer text-sm text-ink-muted hover:text-ink">Read the chart as a table</summary>
+        <summary class="cursor-pointer py-2 text-sm text-ink-muted hover:text-ink">Read the chart as a table</summary>
         <div class="mt-3">
           <DataTable
             caption={props.tableCaption}

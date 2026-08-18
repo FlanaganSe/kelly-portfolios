@@ -208,7 +208,7 @@ export default function Funds(): JSX.Element {
             placeholder="AVLV"
           />
         </label>
-        <p data-numeric class="text-sm text-ink-muted">
+        <p aria-live="polite" data-numeric class="text-sm text-ink-muted">
           {groups().reduce((sum, group) => sum + group.funds.length, 0)} of {shelf.length} funds
         </p>
       </div>
@@ -224,8 +224,10 @@ export default function Funds(): JSX.Element {
       >
         <For each={groups()}>
           {(group) => (
-            <section class="mb-12">
-              <h2 class="mb-3 font-serif text-xl">{CATEGORY_LABEL[group.category]}</h2>
+            <section aria-labelledby={`group-${group.category}`} class="mb-12">
+              <h2 id={`group-${group.category}`} class="mb-3 font-serif text-xl">
+                {CATEGORY_LABEL[group.category]}
+              </h2>
               <DataTable
                 caption={`${CATEGORY_LABEL[group.category]}: fee, net cost, delivered exposure and evidence status.`}
                 captionHidden

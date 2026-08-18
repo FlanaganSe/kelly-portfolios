@@ -10,10 +10,10 @@ import { DataTable } from "~/components/DataTable";
  * fact about a small edge against a large tracking error is how much of the fan sits
  * under that line for how long.
  *
- * **No colour carries meaning.** The bands are distinguished by fill density and by
- * direct labels at the right-hand edge, so the figure survives greyscale and colour
- * blindness. The accompanying table is the real accessible alternative: it prints the
- * same five numbers at four horizons.
+ * **No colour carries meaning.** The bands are distinguished by fill density alone, so
+ * the figure survives greyscale and colour blindness — and because density alone cannot
+ * name a percentile, the table underneath is not an alternative view but the primary
+ * one: it prints the same five numbers at four horizons, always visible.
  */
 
 export interface FanBands {

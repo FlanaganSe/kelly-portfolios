@@ -177,7 +177,7 @@ export default function StartHere(): JSX.Element {
                           <A href={`/funds/${holding.ticker}`} data-numeric class="link font-mono text-sm">
                             {holding.ticker}
                           </A>
-                          <span class="flex-1 truncate text-sm text-ink-faint">{engineMeta[holding.engine].label}</span>
+                          <span class="flex-1 text-sm text-ink-faint">{engineMeta[holding.engine].label}</span>
                           <span data-numeric class="font-medium tabular-nums">
                             {holding.percent}%
                           </span>

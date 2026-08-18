@@ -416,12 +416,13 @@ export default function Lab(): JSX.Element {
                 },
                 {
                   key: "remove",
-                  header: "",
+                  header: "Remove",
                   width: "5rem",
                   cell: (row: Row) => (
                     <button
                       type="button"
-                      class="text-sm text-ink-muted underline underline-offset-2 hover:text-ink"
+                      aria-label={`Remove ${row.holding.ticker}`}
+                      class="-mx-2 inline-flex min-h-11 items-center px-2 text-sm text-ink-muted underline underline-offset-2 hover:text-ink"
                       onClick={() =>
                         update({ holdings: config().holdings.filter((one) => one.ticker !== row.holding.ticker) })
                       }
@@ -434,7 +435,7 @@ export default function Lab(): JSX.Element {
               rows={resolved()}
             />
 
-            <div class="mt-6 flex flex-wrap items-baseline gap-x-10 gap-y-4">
+            <div aria-live="polite" class="mt-6 flex flex-wrap items-baseline gap-x-10 gap-y-4">
               <Figure
                 label="Total weight"
                 value={`${total()}%`}
@@ -553,11 +554,11 @@ export default function Lab(): JSX.Element {
               <Show when={verdict()}>
                 {(result) => (
                   <>
-                    <div class="mt-10 flex flex-wrap gap-x-12 gap-y-8">
+                    <div aria-live="polite" class="mt-10 flex flex-wrap gap-x-12 gap-y-8">
                       <Figure
                         label="Exposure actually bought"
                         value={result().deliveredLoading.toFixed(3)}
-                        note={`${chosen().fundTicker} loading less ${chosen().incumbentTicker}'s. The incumbent is not exposure-free.`}
+                        note={`${chosen().fundTicker} loading less ${chosen().incumbentTicker}'s, measured over ${chosen().window}. The incumbent is not exposure-free.`}
                       />
                       <Figure label="Incremental cost" value={result().incrementalCost.toFixed(3)} unit="pp/yr" />
                       <Figure
@@ -642,7 +643,8 @@ export default function Lab(): JSX.Element {
             {(preset) => (
               <button
                 type="button"
-                class="control cursor-pointer text-sm"
+                aria-pressed={config().edgeBp === preset.edgeBp && config().trackingErrorBp === preset.trackingErrorBp}
+                class="control cursor-pointer text-sm aria-pressed:border-accent aria-pressed:text-ink"
                 onClick={() =>
                   update({
                     edgeBp: preset.edgeBp,
@@ -709,7 +711,7 @@ export default function Lab(): JSX.Element {
           </label>
         </div>
 
-        <div class="mt-10 flex flex-wrap gap-x-12 gap-y-8">
+        <div aria-live="polite" class="mt-10 flex flex-wrap gap-x-12 gap-y-8">
           <Figure
             label={`Chance of being ahead at ${config().horizonYears} years`}
             value={`${(probability(config().horizonYears) * 100).toFixed(1)}%`}
@@ -758,7 +760,7 @@ export default function Lab(): JSX.Element {
           route, and the route is what people actually abandon a strategy over.
         </p>
 
-        <div class="mt-8 flex flex-wrap gap-x-12 gap-y-8">
+        <div aria-live="polite" class="mt-8 flex flex-wrap gap-x-12 gap-y-8">
           <Figure
             label="Median longest spell behind"
             value={(paths().medianLongestDroughtMonths / 12).toFixed(1)}
@@ -850,9 +852,9 @@ export default function Lab(): JSX.Element {
           <button type="button" class="control cursor-pointer" onClick={share}>
             Copy a link to this experiment
           </button>
-          <Show when={copied()}>
-            <span class="text-sm text-ink-muted">Copied.</span>
-          </Show>
+          <span role="status" class="text-sm text-ink-muted">
+            <Show when={copied()}>Copied to the clipboard.</Show>
+          </span>
           <button type="button" class="control cursor-pointer" onClick={() => update({ ...defaultLabConfig })}>
             Reset
           </button>

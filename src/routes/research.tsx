@@ -93,8 +93,13 @@ export default function Research(): JSX.Element {
 
       <For each={GROUPS}>
         {(group) => (
-          <section class="mb-14">
-            <h2 class="font-serif text-2xl tracking-[-0.01em]">{group.title}</h2>
+          <section aria-labelledby={`group-${group.title.replace(/\W+/g, "-").toLowerCase()}`} class="mb-14">
+            <h2
+              id={`group-${group.title.replace(/\W+/g, "-").toLowerCase()}`}
+              class="font-serif text-2xl tracking-[-0.01em]"
+            >
+              {group.title}
+            </h2>
             <p class="mt-2 max-w-measure text-base text-ink-muted">{group.blurb}</p>
             <ul class="mt-6">
               <For each={group.slugs}>
@@ -108,8 +113,10 @@ export default function Research(): JSX.Element {
         )}
       </For>
 
-      <section class="mt-16 border-t border-rule-strong pt-8">
-        <h2 class="font-serif text-2xl tracking-[-0.01em]">The long-form pages</h2>
+      <section aria-labelledby="long-form" class="mt-16 border-t border-rule-strong pt-8">
+        <h2 id="long-form" class="font-serif text-2xl tracking-[-0.01em]">
+          The long-form pages
+        </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
           The original working pages, each canonical for what it covers and each going further than the family summary
           above it.

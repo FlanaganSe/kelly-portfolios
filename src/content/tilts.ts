@@ -47,6 +47,15 @@ export interface PricedTilt {
     readonly trackingErrorBp: number;
     readonly growthBp: number;
   };
+  /**
+   * The window every measured input below was estimated over.
+   *
+   * It has to be printed. DFIV reads +0.662 on its own 51-month window and +0.698 on the
+   * 45 months common to the shelf, and VEA's own HML changes sign between them. Both are
+   * correct; a page showing one number without its window makes the other look like an
+   * error.
+   */
+  readonly window: string;
   /** Every measured input except the weight and the premium. */
   readonly measured: Omit<TiltInputs, "weight" | "hmlPremium">;
   readonly premia: readonly PremiumChoice[];
@@ -100,6 +109,7 @@ export const pricedTilts: readonly PricedTilt[] = [
     incumbentTicker: "VTI",
     publishedWeight: 0.2,
     published: { edgeBp: 24.4, trackingErrorBp: 135, growthBp: 24.9 },
+    window: "51 months, US panel",
     measured: {
       fundHmlLoading: 0.322028508346998,
       benchmarkHmlLoading: 0.0246971965235378,
@@ -126,6 +136,7 @@ export const pricedTilts: readonly PricedTilt[] = [
     incumbentTicker: "VEA",
     publishedWeight: 0.08,
     published: { edgeBp: 27.1, trackingErrorBp: 47.6, growthBp: 29.5 },
+    window: "45 months common to the shelf, developed ex-US panel",
     measured: {
       fundHmlLoading: 0.6976037808578383,
       benchmarkHmlLoading: -0.025186177492858675,
