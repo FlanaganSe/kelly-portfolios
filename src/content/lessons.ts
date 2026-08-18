@@ -105,6 +105,27 @@ export const lessons: readonly Lesson[] = [
     hrefLabel: "Rebalancing",
   },
   {
+    id: "leverage-needs-a-levered-benchmark",
+    title: "A levered portfolio has to be judged against levered risk, not against the index",
+    body: "Borrowing to hold more of everything raises the expected return and the drawdown together, so beating an unlevered index proves nothing — the leverage did it. The honest control is the same base scaled to the same volatility. Held that way, a 25% trend overlay improved the Sharpe ratio by +0.050 over 426 months while the identically-levered base improved it by +0.001: a real difference, and about a fiftieth the size the unlevered comparison would have implied.",
+    href: "/research/capital-efficiency",
+    hrefLabel: "Return stacking",
+  },
+  {
+    id: "reading-the-shape",
+    title: "A drawdown, a rolling return and a tracking error answer three different questions",
+    body: "A drawdown says how far you fell from your own best and is measured on month ends, so it always understates what a holder actually saw. A rolling return says what a holder who started at an awkward moment earned, and consecutive windows share almost all their months, so a long run of them is one observation wearing many hats. A tracking error says how far you drift from the thing you are being judged against, and it alone decides whether an edge can ever be demonstrated.",
+    href: "/lab",
+    hrefLabel: "See all three at once",
+  },
+  {
+    id: "normal-or-broken",
+    title: "Deciding whether underperformance is the strategy or a broken thesis",
+    body: "Write the answer down before you need it. A tilt earning 25 bp against 135 bp of dispersion will trail for years as a matter of arithmetic, and that is not evidence. What would be evidence is the mechanism failing: the exposure you bought no longer showing up in the fund's loadings, the cost rising until it eats the premium, or the correlation that justified a diversifier turning positive in exactly the months it was held for. Those are checkable. A run of bad years is not.",
+    href: "/research/value",
+    hrefLabel: "What would invalidate a value tilt",
+  },
+  {
     id: "taxes-and-accounts",
     title: "Where a fund is held changes what you keep",
     body: "Foreign withholding is paid and permanently lost inside an IRA, because §408(e)(1) exempts the account and §904's numerator becomes zero. The resulting ranking between developed and emerging markets inverts at a 21.51% qualified dividend rate, which sits between two live US brackets — so a rule of thumb is wrong for a large share of readers and the arithmetic has to be done for your own bracket.",

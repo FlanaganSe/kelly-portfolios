@@ -78,3 +78,19 @@ describe("moving between a strategy and the portfolios that use it", () => {
     expect(screen.getByRole("link", { name: "AVLV" })).toHaveAttribute("href", "/funds/AVLV");
   });
 });
+
+describe("changing the benchmark and the period", () => {
+  it("re-measures against the column the reader picks, over the window they choose", async () => {
+    mount("/lab?p=VTI:100", "/lab", Lab);
+
+    // The history panel is lazy; wait for it, then run the invented example through it.
+    fireEvent.click(await screen.findByRole("button", { name: /load example/i }, { timeout: 3000 }));
+
+    const benchmark = screen.getByLabelText(/^Benchmark$/);
+    expect(benchmark).toBeInTheDocument();
+
+    const before = screen.getByText("Common history").parentElement?.textContent;
+    fireEvent.change(screen.getByLabelText("From"), { target: { value: "2021-01" } });
+    expect(screen.getByText("Common history").parentElement?.textContent).not.toBe(before);
+  });
+});
