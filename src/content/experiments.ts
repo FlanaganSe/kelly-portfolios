@@ -127,7 +127,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "Superseded as a description of the US shelf by Experiment 013, which re-ran it on a census frame that can see the whole shelf and reproduced every one of these 44 funds to zero difference. Read every count here as `of the 44 products the 2019Q4 filing quarter contained`. Fifteen of them reached the per-fund status `exploratory`, which permits use as an implementation proxy in a later experiment and nothing else.",
+      "Superseded as a description of the US shelf by Experiment 013, which re-ran it on a census frame that can see the whole shelf and reproduced every one of these 44 funds to zero difference. Read every count here as of the 44 products the 2019Q4 filing quarter contained. Fifteen of them reached the per-fund status exploratory, which permits use as an implementation proxy in a later experiment and nothing else.",
     verdict:
       'Exposure is delivered and alpha is not measurable, and those are two different findings. Thirty-eight of 44 funds reject a zero loading in their mandate\'s own direction, while only five of 132 alpha tests survive a correction valid under dependence, and all five are negative. The comparison that rejected most products is a four-fund combination fitted in sample, so every such rejection reads as "a look-ahead mix of cheap funds beat this over 72 months". The 44 were not the shelf: the frame missed two thirds of it, which is what Experiment 013 corrects.',
     keyNumbers: [
@@ -201,7 +201,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "rejected",
     statusNote:
-      "Rejected under the absolute reading of its clause (d), as frozen. Under the relative reading, which Experiment 008 judges better justified, the verdict is `unresolved`. Unresolved is not a promotion.",
+      "Rejected under the absolute reading of its clause (d), as frozen. Under the relative reading, which Experiment 008 judges better justified, the verdict is unresolved. Unresolved is not a promotion.",
     verdict:
       "The sleeve added +1.342 pp/yr of certainty equivalent over a risk-matched comparator, and survived every hostile test including removal of its best crisis. It then fired its own falsifier: a replica built only from a static and a volatility-scaled market position, with the intercept stripped out, reproduces 44% of that. The standalone series decayed enormously after publication while the marginal benefit barely moved, which is the finding underneath the verdict.",
     keyNumbers: [
@@ -259,7 +259,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "The family's terminal ledger status. Per factor: HML advanced to `exploratory`, RMW and CMA are `rejected` and closed on public data.",
+      "The family's terminal ledger status. Per factor: HML advanced to exploratory, RMW and CMA are rejected and closed on public data.",
     verdict:
       "Both branches of the falsifier fired, which is what it was designed for. Value cleared every clause on a pooled +4.74 pp/yr. Profitability and investment did not, and the experiment measured why: pooling three correlated regions bought far less than three regions' worth of evidence, leaving detection thresholds above the repository's own materiality bar. That closes those two on public data permanently rather than asking for another pass.",
     keyNumbers: [
@@ -431,7 +431,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "DBMF reached `exploratory`; CTA, FMF, KMLM and WTMF are `rejected` against the frozen 0.50 loading bar. Decision 0002 caps the whole audit at `exploratory`.",
+      "DBMF reached exploratory; CTA, FMF, KMLM and WTMF are rejected against the frozen 0.50 loading bar. Decision 0002 caps the whole audit at exploratory.",
     verdict:
       "One product on the listed shelf delivers the exposure, and it is the one that sells replication. DBMF loads +0.671 with an interval clear of the bar, holds it across every split the window supports, and trailed a cost-free vendor index by less than it charges. The tax the funds distribute is two to three times their fee, and it is zero inside a shelter — but that is a fact about a pro-rata fund, not about the exposure: the same trend notional through a return-stacked wrapper carries 0.32 pp/yr, of which 4.5 bp is incremental over the equity fund inside it. The wrapper decides more than the account does.",
     keyNumbers: [
@@ -490,12 +490,12 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "`Exploratory` by decision rather than by outcome. Decision 0002 caps all fund-level work there, and a window beginning in 2019 caps it again. This may not promote a sleeve, and the per-fund statuses below permit these products to be used as implementation proxies in a later experiment and permit nothing else.",
+      "Exploratory by decision rather than by outcome. Decision 0002 caps all fund-level work there, and a window beginning in 2019 caps it again. This may not promote a sleeve, and the per-fund statuses below permit these products to be used as implementation proxies in a later experiment and permit nothing else.",
     verdict:
-      "This is the missing half of Experiment 002, and the exposure is delivered. That audit's exclusion pattern removed every international, global, emerging, developed and ex-US series, while Experiments 005 and 007 put nearly all of the value premium's measurable weight outside the United States — so the repository had audited products where the premium is weakest and none where it is strongest. Of 25 funds with enough filed history, 12 reached `exploratory`, 8 were rejected and 5 are unresolved. Every one of the twelve is developed ex-US; no emerging-market product reached `exploratory` at all.",
+      "This is the missing half of Experiment 002, and the exposure is delivered. That audit's exclusion pattern removed every international, global, emerging, developed and ex-US series, while Experiments 005 and 007 put nearly all of the value premium's measurable weight outside the United States — so the repository had audited products where the premium is weakest and none where it is strongest. Of 25 funds with enough filed history, 12 reached exploratory, 8 were rejected and 5 are unresolved. Every one of the twelve is developed ex-US; no emerging-market product reached exploratory at all.",
     keyNumbers: [
       { label: "Series screened, of which 26 passed and 25 had enough history", value: "537" },
-      { label: "Reaching `exploratory`, all of them developed ex-US", value: "12 of 25" },
+      { label: "Reaching exploratory, all of them developed ex-US", value: "12 of 25" },
       { label: "Value premium by region", value: "US +1.57, developed ex-US +5.07, emerging +7.58", unit: "pp/yr" },
       {
         label: "Funds below the loading bar on the US panel instead of their own region's",
@@ -529,7 +529,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "exploratory",
     statusNote:
-      "`Exploratory` by decision rather than by outcome: decision 0002 caps all fund-level work there. Forty-eight products reached the per-fund status `exploratory`, which permits use as an implementation proxy in a later experiment and nothing else. Nothing here is promoted and no residual return is claimed.",
+      "Exploratory by decision rather than by outcome: decision 0002 caps all fund-level work there. Forty-eight products reached the per-fund status exploratory, which permits use as an implementation proxy in a later experiment and nothing else. Nothing here is promoted and no residual return is claimed.",
     verdict:
       "Most of it. Form N-PORT is filed on each fund's own fiscal calendar and public reporting begins with periods ending 2019-09-30, so the 2019Q4 census carries no fund with an August fiscal year — Schwab's equity range, Vanguard's ETF-only trusts, Invesco's S&P factor range and Avantis among them — and the 2016 inception cutoff then removed every product that launched later. Experiment 002 could see 44 US factor products; the union of the 2019Q4 and 2025Q4 censuses contains 109. Two criteria moved and nothing else, and all 44 of the original funds reproduce to zero difference in loading, alpha, shortfall and status.",
     keyNumbers: [
@@ -542,7 +542,7 @@ export const experiments: readonly Experiment[] = [
       {
         label: "Products the corrected frame adds",
         value: "65",
-        note: "42 absent from the 2019Q4 census, 23 excluded by a criterion that moved. 33 of them reach `exploratory`",
+        note: "42 absent from the 2019Q4 census, 23 excluded by a criterion that moved. 33 of them reach exploratory",
       },
       {
         label: "Median shortfall to the cheap replication",
@@ -577,7 +577,7 @@ export const experiments: readonly Experiment[] = [
     whyItMatters:
       "It is the only place in this repository where a published conclusion was overturned by asking what a data file physically contains rather than by re-reading a result. The shortlist of products a later experiment may test went from fifteen index trackers to forty-eight, and now includes every systematic value and small-value product on the US shelf.",
     whatWouldChangeIt: [
-      "A replication whose weights are fitted on a prior window. Clause (c) separates the 48 `exploratory` products from the 48 rejected ones and it is still decided with hindsight.",
+      "A replication whose weights are fitted on a prior window. Clause (c) separates the 48 exploratory products from the 48 rejected ones and it is still decided with hindsight.",
       "A comparator basis containing a small-value building block. The frozen basis has none, so a small-value product is scored against a mix that cannot express it.",
       "A licensed, survivorship-free total-return source from at least 2003. Nothing here makes the alpha column measurable and a longer window is the only thing that would.",
     ],
@@ -597,7 +597,7 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "rejected",
     statusNote:
-      "Two specifications judged the same data and added no trials between them: one on a certainty equivalent at gamma = 3, one on geometric growth. Growth decides, and that is what moved the family from `unresolved` to `rejected`. Every input is a paper portfolio, a vendor series or a modelled proxy, and the weights are evaluated in sample, so the family is capped at `exploratory` whatever it had found.",
+      "Two specifications judged the same data and added no trials between them: one on a certainty equivalent at gamma = 3, one on geometric growth. Growth decides, and that is what moved the family from unresolved to rejected. Every input is a paper portfolio, a vendor series or a modelled proxy, and the weights are evaluated in sample, so the family is capped at exploratory whatever it had found.",
     verdict:
       "Every sleeve except trend had been judged by a standalone chain, which sets the covariance term to zero by construction. Judged inside a portfolio instead, no sleeve survives, and the reason is a bound rather than a measurement: the diversification credit has a ceiling set by the base portfolio's own variance, and the ceiling is below the bar. The portfolio view rescues nothing the standalone chain dismissed, and against a 60/40 base it strengthens six of those dismissals instead. The bound and what it means for a trend sleeve are on the portfolio page.",
     keyNumbers: [

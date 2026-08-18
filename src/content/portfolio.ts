@@ -411,7 +411,7 @@ export const funds: readonly Fund[] = [
       },
     ],
     whatItBuys:
-      "Developed and emerging international equity in one holding, at 1.43 bp net — the cheapest total-international fund audited, and still dearer than holding the two separately. See `vxusTradeoff`.",
+      "Developed and emerging international equity in one holding, at 1.43 bp net — the cheapest total-international fund audited, and still dearer than holding the two separately. See vxusTradeoff.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: decomposition,
@@ -521,7 +521,7 @@ export const optionalSleeves: readonly OptionalSleeve[] = [
     size: "0–20% of US equity",
     requiredAccount: "Anywhere. Treat it as US equity in the placement ranking",
     verdict:
-      "An `exploratory` product on an `exploratory` premium. Its best case is +43 bp/yr of edge against 312 bp of tracking error, worth +21 bp of geometric growth and 6.6% more terminal wealth over thirty years; on the US-only post-publication premium the growth contribution is negative at every weight. The +15 bp/yr this page carried until 2026-08-17 multiplied a loading by a capture fraction, which is the same quantity measured a second way.",
+      "An exploratory product on an exploratory premium. Its best case is +43 bp/yr of edge against 312 bp of tracking error, worth +21 bp of geometric growth and 6.6% more terminal wealth over thirty years; on the US-only post-publication premium the growth contribution is negative at every weight. The +15 bp/yr this page carried until 2026-08-17 multiplied a loading by a capture fraction, which is the same quantity measured a second way.",
     sizingNote:
       "VBR's yield is higher than the market's, which raises its shelter priority above the 26.2 / 20.7 / 16.5 bp of plain US equity. By how much is not measured here. A small-value fund also carries an SMB loading near +0.85 whose premium this repository tested and could not sign, so a large-value fund buys comparable HML exposure at roughly half the tracking error.",
     productStatus: "exploratory",
@@ -537,7 +537,7 @@ export const optionalSleeves: readonly OptionalSleeve[] = [
     size: "0–10% of total",
     requiredAccount: "Tax-deferred only",
     verdict:
-      "An `exploratory` product on an `unresolved` index, with single-product risk: four of the five listed managed-futures ETFs fail the 0.50 loading bar, so there is no fallback. Its 2.09 pp/yr distribution tax drag is 2.5× its own fee in a taxable account and zero in a shelter.",
+      "An exploratory product on an unresolved index, with single-product risk: four of the five listed managed-futures ETFs fail the 0.50 loading bar, so there is no fallback. Its 2.09 pp/yr distribution tax drag is 2.5× its own fee in a taxable account and zero in a shelter.",
     sizingNote:
       "Experiment 004 priced a 15% trend sleeve, not a 10% one. The cap is set below the tested weight because one product delivers the exposure and there is no fallback, not because 10% was measured to be better.",
     productStatus: "exploratory",
@@ -574,7 +574,7 @@ export const whatThisIsNot: readonly { readonly claim: string; readonly detail: 
   {
     claim: "Not a promotion",
     detail:
-      "No sleeve reached `production-eligible`, or `walk-forward-tested`, or even `independently-reproduced`. VBR and DBMF are `exploratory` products, which permits them to be used as implementation proxies in a later experiment and permits nothing else.",
+      "No sleeve reached production-eligible, or walk-forward-tested, or even independently-reproduced. VBR and DBMF are exploratory products, which permits them to be used as implementation proxies in a later experiment and permits nothing else.",
   },
   {
     claim: "Not a claim of outperformance against an index",
@@ -594,6 +594,6 @@ export const whatThisIsNot: readonly { readonly claim: string; readonly detail: 
   {
     claim: "Not vintage-stable",
     detail:
-      "Ken French rebuilds the whole history from the current vintage on every rebuild, and the Phase 1 gate is `unresolved`. HML's and RMW's standard deviations do not reproduce, leaving a systematic 3–5% band on anything that divides by them. Five series carry no measured band at all, which is weaker than a band of zero — including all three momentum files.",
+      "Ken French rebuilds the whole history from the current vintage on every rebuild, and the Phase 1 gate is unresolved. HML's and RMW's standard deviations do not reproduce, leaving a systematic 3–5% band on anything that divides by them. Five series carry no measured band at all, which is weaker than a band of zero — including all three momentum files.",
   },
 ];

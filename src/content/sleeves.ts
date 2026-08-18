@@ -93,7 +93,7 @@ export const sleeves: readonly Sleeve[] = [
     ticker: "VBR",
     verdict: "optional",
     status: "exploratory",
-    statusNote: "An `exploratory` product on an `exploratory` premium. Both rungs are the lowest one.",
+    statusNote: "An exploratory product on an exploratory premium. Both rungs are the lowest one.",
     loading: {
       factor: "HML",
       value: 0.41,
@@ -114,7 +114,7 @@ export const sleeves: readonly Sleeve[] = [
     ticker: "DBMF",
     verdict: "optional",
     status: "exploratory",
-    statusNote: "An `exploratory` product on an `unresolved` index.",
+    statusNote: "An exploratory product on an unresolved index.",
     loading: {
       factor: "AQR TSMOM index",
       value: 0.671,
@@ -147,7 +147,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "Momentum is the largest gross premium in this repository, pooled +7.33 pp/yr, and MTUM delivers the exposure cleanly. It is excluded on two other grounds: turnover, and three regions that crash together.",
     caveat:
-      "It lost 1.22 pp/yr to a three-fund combination whose fee premium over it was 0.12 — leaving the audit's 1.10 pp/yr shortfall figure, which is the tracking difference net of that fee advantage. Its pooled detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and all lost their worst calendar year in 2009; and the academic construction rebalances monthly at an assumed 3.30–18.67 pp/yr of cost against a 7.33 gross premium. The third ground has gone: `MTUM is the entire retail momentum shelf` was true of the census frame Experiment 002 screened, and the corrected frame carries six momentum products of which four reach `exploratory`.",
+      "It lost 1.22 pp/yr to a three-fund combination whose fee premium over it was 0.12 — leaving the audit's 1.10 pp/yr shortfall figure, which is the tracking difference net of that fee advantage. Its pooled detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and all lost their worst calendar year in 2009; and the academic construction rebalances monthly at an assumed 3.30–18.67 pp/yr of cost against a 7.33 gross premium. The third ground has gone: MTUM is the entire retail momentum shelf was true of the census frame Experiment 002 screened, and the corrected frame carries six momentum products of which four reach exploratory.",
     source: productAudit,
   },
   {
@@ -160,9 +160,9 @@ export const sleeves: readonly Sleeve[] = [
     feeBp: 15,
     feeAsOf: asOf("2026-08-12"),
     reason:
-      "The profitability premium is `rejected` and closed on public data. An unsigned premium makes the product's own quality irrelevant to the decision.",
+      "The profitability premium is rejected and closed on public data. An unsigned premium makes the product's own quality irrelevant to the decision.",
     caveat:
-      "`Rejected` does not mean the premium is zero. It means the publicly available data cannot sign it either way, and that adding more of the same data provably will not: RMW pooled at +2.53 pp/yr against its own measured 2.62 pp/yr detection threshold.",
+      "Rejected does not mean the premium is zero. It means the publicly available data cannot sign it either way, and that adding more of the same data provably will not: RMW pooled at +2.53 pp/yr against its own measured 2.62 pp/yr detection threshold.",
     source: {
       label: "0005 — Profitability and investment premia are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
@@ -182,7 +182,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "Same reason as QUAL, and it does not turn on the product. Its shortfall against the cheap combination is −0.13, so nothing about the fund decides this.",
     caveat:
-      "`QUAL and SPHQ are the entire quality shelf` was true of Experiment 002's census frame. The corrected frame carries nine quality products and NOT ONE reaches `exploratory`: five fire a falsifier clause and four are unresolved with intervals straddling 0.15. A quality proxy is not purchasable on this shelf at this threshold, which is a stronger statement than the old one.",
+      "QUAL and SPHQ are the entire quality shelf was true of Experiment 002's census frame. The corrected frame carries nine quality products and NOT ONE reaches exploratory: five fire a falsifier clause and four are unresolved with intervals straddling 0.15. A quality proxy is not purchasable on this shelf at this threshold, which is a stronger statement than the old one.",
     source: productAudit,
   },
   {
@@ -565,7 +565,7 @@ export const diversificationCredit = {
     "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold has since been tested and it lands exactly on the ceiling: its beta to the equity core measures zero, so it takes the whole credit and still loses 0.10 pp/yr. Per unit of weight the credit is 2.17 pp/yr against a standalone shortfall of 2.95, so the most the credit can ever pay is 74% of the gap — and because both scale with the weight, holding more does not close it.",
   status: "rejected" as EvidenceStatus,
   statusNote:
-    "A falsifier written down before the result fired. Two specifications judged the same data, one on a certainty equivalent and one on growth; growth decides, and that is what moved the family from `unresolved` to `rejected`. Every input is a paper portfolio, a vendor series or a model. None of it is investable, and none of it says trend is worthless.",
+    "A falsifier written down before the result fired. Two specifications judged the same data, one on a certainty equivalent and one on growth; growth decides, and that is what moved the family from unresolved to rejected. Every input is a paper portfolio, a vendor series or a model. None of it is investable, and none of it says trend is worthless.",
   source: marginalValue,
   asOf: asOf("2026-08-12"),
 } as const;
@@ -675,7 +675,7 @@ export const factorPremia: readonly FactorPremium[] = [
     label: "Diversified trend (AQR TSMOM index)",
     status: "unresolved",
     statusNote:
-      "`Rejected` under the absolute reading of clause (d) as frozen, `unresolved` under the relative reading that Experiment 008 judges better justified. Unresolved is not a promotion, and a vendor-series evaluation is capped at `exploratory` in any case.",
+      "Rejected under the absolute reading of clause (d) as frozen, unresolved under the relative reading that Experiment 008 judges better justified. Unresolved is not a promotion, and a vendor-series evaluation is capped at exploratory in any case.",
     // Decision 0008 constraint 2: growth, the certainty equivalent and the de-risking
     // component between them are published as three numbers or as none. This record
     // carried the CE alone until 2026-08-12.

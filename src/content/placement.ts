@@ -189,7 +189,7 @@ export const priorityTable: readonly PriorityRow[] = [
     at18_8Bp: 189.7,
     at15Bp: 189.7,
     caveat:
-      "189.7 uses the 40.8% top ordinary rate, which belongs with the 23.8% qualified rate and not with the other two columns. See `bondRowCaveat`.",
+      "189.7 uses the 40.8% top ordinary rate, which belongs with the 23.8% qualified rate and not with the other two columns. See bondRowCaveat.",
   },
   {
     asset: "Developed ex-US equity",
