@@ -31,7 +31,7 @@ guarantee, and never a claim that any portfolio beats an index.
 | `/portfolios`, `/portfolios/:id` | Four candidates: control, control-held-properly, evidence-led tilt, stacked candidate |
 | `/research`, `/research/:slug` | Ten strategy families, each put through the same seven questions |
 | `/funds`, `/funds/:ticker` | The 56-fund audited shelf: delivered exposure with its panel, cost net of lending, wrapper arithmetic, issuer-filed structure |
-| `/lab` | Compose a portfolio, price a value tilt, see the wait an edge implies, simulate the drought, run your own history |
+| `/lab` | Compose a portfolio, price a value tilt, see the wait an edge implies, simulate the drought, and run your own monthly returns: starting investment, period, benchmark, rebalancing frequency, fees on or off, growth, drawdown, rolling excess, calendar years and a metrics table |
 | `/concepts` | The short course, then the vocabulary |
 | `/method` | How a result earns a status, and the three calculations the client runs |
 | `/reference`, `/edge-budget`, `/placement`, `/confidence`, `/evidence` | The original long-form pages, reached from the research index. `/portfolio` redirects to `/reference` |
@@ -75,7 +75,7 @@ that module generates.
 
 ## Checks
 
-`pnpm typecheck`, `pnpm test` (380 tests, 27 files), `pnpm biome check .` and `pnpm build`
+`pnpm typecheck`, `pnpm test` (403 tests, 29 files), `pnpm biome check .` and `pnpm build`
 are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` are clean
 after the fixture change.
 
@@ -91,7 +91,11 @@ after the fixture change.
   pinned by a test, but it is an inference.
 - No browser automation is available in this environment, so there are no true
   end-to-end tests. The route and flow tests drive real controls in jsdom, which catches
-  state and content regressions but not layout or paint.
+  state and content regressions but not layout or paint. `src/routes/layout.test.tsx`
+  substitutes what can be checked without a browser: every control on every new route has
+  an accessible name, no route skips a heading level or carries a second `h1`, and no
+  source file commits a layout to a width a 360px screen does not have. The last of those
+  was verified by planting a violation and watching it fail.
 - The stacked candidate departs from decision 0004 by being levered, and holds one fund
   the product audit excludes and one that is `unresolved`. All three departures are stated
   on its own page and none is resolved.
