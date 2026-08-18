@@ -71,8 +71,9 @@ describe("the portfolio library", () => {
   it("lists every published candidate", async () => {
     mount("/portfolios", "/portfolios", Portfolios);
     for (const portfolio of portfolios) {
-      // Twice: once in the comparison table and once on its own card.
-      expect((await screen.findAllByRole("link", { name: portfolio.name })).length).toBeGreaterThanOrEqual(1);
+      // Exactly one link per portfolio. The comparison table names them as text, so a
+      // screen reader listing links does not get every name twice.
+      expect(await screen.findAllByRole("link", { name: portfolio.name })).toHaveLength(1);
     }
   });
 
