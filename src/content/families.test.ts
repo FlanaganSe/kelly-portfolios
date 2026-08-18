@@ -1,16 +1,30 @@
 import { describe, expect, it } from "vitest";
 import { families, familyBySlug } from "~/content/families";
 import { portfolioById } from "~/content/portfolios";
-import { statusMeta } from "~/content/types";
+import { certaintyMeta, statusMeta } from "~/content/types";
 
 describe("the research library", () => {
   it("has a unique slug per family", () => {
     expect(new Set(families.map((one) => one.slug)).size).toBe(families.length);
   });
 
-  it("uses only the repository's closed status vocabulary", () => {
+  it("uses only the repository's closed vocabularies", () => {
     for (const family of families) {
-      expect(statusMeta[family.status], family.slug).toBeDefined();
+      expect(certaintyMeta[family.certainty], family.slug).toBeDefined();
+      if (family.status !== null) {
+        expect(statusMeta[family.status], family.slug).toBeDefined();
+      }
+    }
+  });
+
+  /**
+   * The experiment ladder grades experiments. A contractual result is not one, and
+   * giving it a rung would put a status on the page above the highest any experiment
+   * here has actually reached.
+   */
+  it("gives a contractual family no experiment status at all", () => {
+    for (const family of families.filter((one) => one.certainty === "contractual")) {
+      expect(family.status, family.slug).toBeNull();
     }
   });
 

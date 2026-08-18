@@ -6,7 +6,7 @@ import { Figure } from "~/components/Figure";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
 import { SourceLink } from "~/components/SourceLink";
-import { StatusChip } from "~/components/StatusChip";
+import { CertaintyChip, StatusChip } from "~/components/StatusChip";
 import { families } from "~/content/families";
 import { portfolioById } from "~/content/portfolios";
 import NotFound from "~/routes/not-found";
@@ -74,8 +74,9 @@ export default function ResearchDetail(): JSX.Element {
             />
           </div>
 
-          <div class="flex flex-wrap items-baseline gap-x-6 gap-y-3">
-            <StatusChip status={found().status} showGloss />
+          <div class="flex flex-wrap items-baseline gap-x-8 gap-y-3">
+            <CertaintyChip certainty={found().certainty} showGloss />
+            <Show when={found().status}>{(status) => <StatusChip status={status()} showGloss />}</Show>
           </div>
           <p class="mt-3 max-w-measure text-sm text-ink-muted">{found().statusReason}</p>
           <Show when={found().headline.note}>

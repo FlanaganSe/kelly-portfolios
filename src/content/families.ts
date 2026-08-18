@@ -1,4 +1,4 @@
-import type { AsOf, Citation, EvidenceStatus } from "~/content/types";
+import type { AsOf, CertaintyClass, Citation, EvidenceStatus } from "~/content/types";
 import { asOf } from "~/content/types";
 
 /**
@@ -24,7 +24,14 @@ export interface StrategyFamily {
   /** The short answer, near the top of the page. Two or three sentences at most. */
   readonly inPractice: string;
   readonly mechanism: string;
-  readonly status: EvidenceStatus;
+  /**
+   * What kind of thing this family's return is. It governs the wording: a risk premium
+   * may never be called an edge, and a contractual line is not graded on the experiment
+   * ladder at all — which is why `status` is nullable rather than forced to a word that
+   * would overstate it.
+   */
+  readonly certainty: CertaintyClass;
+  readonly status: EvidenceStatus | null;
   /** Why the status is that word and not a neighbouring one. */
   readonly statusReason: string;
   readonly headline: {
@@ -96,9 +103,10 @@ export const families: readonly StrategyFamily[] = [
       "This is the only part of the site where the arithmetic is an accounting identity rather than a bet. If you hold an expensive active fund, in one account, on average-cost lots, roughly 109 bp a year is available for work you can finish in an afternoon. If you already hold cheap index funds in a single tax-deferred account, the honest figure for you is close to zero.",
     mechanism:
       "Four statutes and one accounting rule do the work: §852(b)(6) lets an ETF push appreciated stock out in kind rather than selling it, §853 passes foreign tax through to the shareholder, §904 limits what can be credited, specific-lot identification decides which gain is realised, and §1014 resets basis at death. None of them requires a view on any market.",
-    status: "independently-reproduced",
+    certainty: "contractual",
+    status: null,
     statusReason:
-      "The lines are measured across 25 funds and 110 regulatory filings rather than estimated, and every one of them is an arithmetic consequence of a filed number. The status word describes the measurement, not a promise about your account.",
+      "Contractual, and therefore not on the experiment ladder at all — there is no hypothesis here to promote or reject. The lines are measured across 25 funds and 110 regulatory filings rather than estimated, and each is an arithmetic consequence of a filed number. That says nothing about whether the conditions hold for your account.",
     headline: {
       value: "109 bp/yr",
       label: "Against the portfolio you would otherwise have owned",
@@ -152,6 +160,7 @@ export const families: readonly StrategyFamily[] = [
       "Value is the only factor premium in this repository that advanced on its own strength. Pooled across three regions it measures +4.74 pp/yr against a detection floor of 3.35. But that figure is a gross long-short spread you cannot buy, and what reaches a shareholder is `weight × (fund loading − incumbent loading) × premium − cost`. At a 20% weight in a US large-value fund that is about 24 bp a year against 135 bp of tracking error.",
     mechanism:
       "Either a risk story — cheap firms are distressed and their cash flows are more exposed to bad states — or a behavioural one, that investors over-extrapolate growth. This repository does not adjudicate between them, and the distinction matters only for whether the premium should survive being known.",
+    certainty: "risk-premium",
     status: "exploratory",
     statusReason:
       "The premium clears its own detection floor pooled across three regions and survives Holm correction and the removal of its best year. The missing promotion clause is a prior-window replication that no experiment here has fitted.",
@@ -208,6 +217,7 @@ export const families: readonly StrategyFamily[] = [
       "Momentum has the largest gross premium in this repository — +7.33 pp/yr pooled — and is the clearest case of a real effect that implementation destroys. The one investable route audited here files 105% annual turnover, and cost takes 43% of the gross exposure. It is excluded from the reference portfolio on those grounds, not on the premium's.",
     mechanism:
       "Under-reaction to news followed by over-extrapolation, with the academic construction re-forming every month. The mechanism implies turnover, and the turnover is the problem.",
+    certainty: "risk-premium",
     status: "exploratory",
     statusReason:
       "The premium clears its own floor pooled, so the effect is `exploratory`. The implementation is separately excluded, and those are two different findings that are frequently merged into one.",
@@ -264,6 +274,7 @@ export const families: readonly StrategyFamily[] = [
       "Trend's correlation claim holds on three independent instruments. Its return claim does not resolve on any of them. Treat a trend sleeve as a risk-reduction decision that may also pay, and size it as though the mean were zero.",
     mechanism:
       "Futures markets under-react to slow-moving information, so a systematic long/short book across dozens of markets earns a premium — and because it can be short, its correlation to equity is near zero unconditionally and negative inside sustained equity declines.",
+    certainty: "risk-premium",
     status: "unresolved",
     statusReason:
       "The vendor index is `rejected` against the falsifier frozen before the run, and `unresolved` on the reading the experiment itself judges better. DBMF is `exploratory`. Nothing is promoted, and the mean does not resolve on any instrument tried.",
@@ -321,6 +332,7 @@ export const families: readonly StrategyFamily[] = [
       "This is the strongest closed-form result on the site and the one most often misread. The funding rule is worth about +2.44 pp/yr for a 100% equity base — and that number contains nothing whatever about the sleeve being stacked. What decides whether a particular wrapper delivers it is one quantity, `delta = (1 − b) / d`, and a fund with a half-sized equity base can be arithmetically worse than simply selling equity.",
     mechanism:
       "Buying a sleeve with capital forces you to sell base exposure, so the sleeve must clear `a_p − σ_p²(1 − β)`. Financing it as notional removes that sale, and the hurdle falls to `ρ σ_p σ_d`. The wrapper's structure enters exactly once, through `delta`.",
+    certainty: "risk-premium",
     status: "exploratory",
     statusReason:
       "No specification was frozen before these numbers were examined, and the page says so. What is established is the closed form and the structural verification of individual funds from their own holdings — not a return.",
@@ -376,6 +388,7 @@ export const families: readonly StrategyFamily[] = [
       "Closed. The pooled premium is +2.53 pp/yr against its own measured detection floor of 2.62 — the instrument cannot see an effect of the size being claimed. Reopening it needs about 245 months of additional data, around 2035, or a construction that is not Ken French's.",
     mechanism:
       "Profitable firms with the same book value have higher expected cash flows, so at the same price they must have higher expected returns. The logic is an identity; whether the market prices it away is the question.",
+    certainty: "risk-premium",
     status: "rejected",
     statusReason:
       "The falsifier fired: the premium sits below the floor its own window could detect. `rejected` here means the test fired, never that the premium is zero — and decision 0005 records exactly that distinction.",
@@ -426,6 +439,7 @@ export const families: readonly StrategyFamily[] = [
       "Almost all of it fails, and mostly on cost or on benchmark rather than on the premium. The recurring error is booking a distinct risk premium as an edge over an equity index: that is a benchmark switch, not a return source.",
     mechanism:
       "Each of these earns compensation for bearing a risk somebody else wants to shed. That is real pay for real risk — the question is whether the vehicle available to a retail holder keeps enough of it.",
+    certainty: "different-benchmark",
     status: "rejected",
     statusReason:
       "Family by family the falsifiers fired: put-writing on live-only alpha, credit on its correlation to Treasuries, REITs and dividend funds on dominance, TIPS on correlation, buffered products on the option arithmetic. Catastrophe bonds pass the correlation test and fail on the vehicle.",
@@ -475,6 +489,7 @@ export const families: readonly StrategyFamily[] = [
       "It does not, and this is the one rejection here that is not an underpowered null. Rebalancing measured −38.7 bp/yr against buy-and-hold across 420 months. Keep rebalancing — it is how you control exposure — but do not budget a bonus for it.",
     mechanism:
       "Constant weights earn `γ* = ½(Σ wᵢσᵢ² − σ_p²) ≥ 0` in excess growth. The catch is that the term is tiny, and it is exactly a short straddle on relative log performance struck at zero, so trending components take more than the premium pays.",
+    certainty: "risk-premium",
     status: "rejected",
     statusReason:
       "The effect is large, negative, and its mechanism is measured rather than assumed. The closed form reproduces on real data to 0.09 bp/yr, so the arithmetic is not in doubt — only the claim built on it.",
@@ -523,7 +538,8 @@ export const families: readonly StrategyFamily[] = [
       "It does, by about 10 bp a year, and it is the one decision on this site that genuinely requires a calculator rather than a rule: the ranking between developed and emerging markets inverts between two live US dividend rates, so any page that states one ordering is wrong for a large share of its readers.",
     mechanism:
       "`priority = (recurring tax if held in taxable) − (irrecoverable withholding if sheltered)`. For a domestic asset the second term is zero and this collapses to the familiar rule. For a foreign fund it does not: §408(e)(1) exempts the account from tax, so §904's numerator is zero and foreign withholding is paid and permanently lost inside a traditional IRA and a Roth alike.",
-    status: "independently-reproduced",
+    certainty: "contractual",
+    status: null,
     statusReason:
       "Every term is a statute or a filed number, and the inversion is reproduced from the funds' own filings.",
     headline: {
@@ -570,6 +586,7 @@ export const families: readonly StrategyFamily[] = [
       "It does, and this repository cannot set it for you. Moving from 60/40 to 90/10 is worth +127.1 bp a year against 485 bp of tracking error — larger than every factor tilt priced here combined. It is also the only decision on the site that depends on facts about you rather than about markets.",
     mechanism:
       "Equities pay a premium for a risk that shows up as drawdown. The optimal share is a function of that premium, its volatility and your horizon — and the premium is not estimable to the precision the answer requires.",
+    certainty: "risk-premium",
     status: "exploratory",
     statusReason:
       "The drawdown and withdrawal work is measured across sixteen countries and a century, but every forward figure rests on an equity premium nobody here forecasts.",

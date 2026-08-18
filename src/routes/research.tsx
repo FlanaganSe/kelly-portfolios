@@ -1,9 +1,9 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
-import { For, type JSX } from "solid-js";
+import { For, type JSX, Show } from "solid-js";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
-import { StatusChip } from "~/components/StatusChip";
+import { CertaintyChip, StatusChip } from "~/components/StatusChip";
 import { families, familiesAsOf, type StrategyFamily } from "~/content/families";
 import { DEEP_PAGES } from "~/lib/nav";
 
@@ -49,7 +49,10 @@ function Entry(props: { readonly family: StrategyFamily }): JSX.Element {
             {props.family.name}
           </A>
         </h3>
-        <StatusChip status={props.family.status} class="shrink-0 text-sm" />
+        <span class="flex shrink-0 flex-wrap items-baseline gap-x-4 gap-y-1 text-sm">
+          <CertaintyChip certainty={props.family.certainty} />
+          <Show when={props.family.status}>{(status) => <StatusChip status={status()} />}</Show>
+        </span>
       </div>
       <p class="mt-2 max-w-measure text-base text-ink-muted">{props.family.claim}</p>
       <p class="mt-2 flex flex-wrap items-baseline gap-x-2 text-sm">
