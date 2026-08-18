@@ -1,10 +1,12 @@
 import { Title } from "@solidjs/meta";
+import { A } from "@solidjs/router";
 import { For, Show } from "solid-js";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
 import { SourceLink } from "~/components/SourceLink";
 import { CertaintyChip, StatusChip } from "~/components/StatusChip";
 import { type GlossaryEntry, glossary } from "~/content/glossary";
+import { lessons } from "~/content/lessons";
 import { type CertaintyClass, certaintyMeta, type EvidenceStatus, statusMeta } from "~/content/types";
 import { CORPUS_AS_OF } from "~/lib/nav";
 
@@ -149,7 +151,38 @@ export default function Concepts() {
         </p>
       </Prose>
 
-      <nav aria-labelledby="on-this-page" class="mt-10 border-y border-rule py-6">
+      <section aria-labelledby="short-course" class="mt-12 border-t border-rule pt-8">
+        <h2 id="short-course" class={H2}>
+          The short course
+        </h2>
+        <p class="mt-2 max-w-measure text-base text-ink-muted">
+          Fourteen claims, each readable in under a minute, ordered so that each one depends only on the ones above it.
+          Read these before tilting anything.
+        </p>
+
+        <ol class="mt-8 space-y-8">
+          <For each={lessons}>
+            {(lesson, index) => (
+              <li id={lesson.id} class="flex gap-4 border-t border-rule pt-5">
+                <span data-numeric class="shrink-0 text-lg font-semibold text-ink-faint tabular-nums">
+                  {String(index() + 1).padStart(2, "0")}
+                </span>
+                <div>
+                  <h3 class="text-base font-semibold text-ink">{lesson.title}</h3>
+                  <p class="mt-1.5 max-w-measure text-base text-ink-muted">{lesson.body}</p>
+                  <p class="mt-2 text-sm">
+                    <A href={lesson.href} class="link">
+                      {lesson.hrefLabel}
+                    </A>
+                  </p>
+                </div>
+              </li>
+            )}
+          </For>
+        </ol>
+      </section>
+
+      <nav aria-labelledby="on-this-page" class="mt-14 border-y border-rule py-6">
         <h2 id="on-this-page" class="eyebrow mb-4">
           On this page
         </h2>

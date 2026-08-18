@@ -36,6 +36,18 @@ from portfolio_edge.studies.tax_structure import (
     location_breakeven_rate,
     shelter_priority_bp,
 )
+from portfolio_edge.studies.value_tilt import (
+    TiltInputs,
+    certainty_equivalent_contribution,
+    marginal_growth_contribution,
+    portfolio_tracking_error,
+    sleeve_edge,
+    substitution_variance_change,
+    terminal_wealth_multiple,
+    tilt_verdict,
+    turnover_cost_percent,
+    variance_drag,
+)
 
 out: dict[str, object] = {
     "_provenance": {
@@ -47,8 +59,9 @@ out: dict[str, object] = {
         "sourceModules": [
             "portfolio_edge.studies.outperformance_horizon",
             "portfolio_edge.studies.tax_structure",
+            "portfolio_edge.studies.value_tilt",
         ],
-        "asOf": "2026-08-12",
+        "asOf": "2026-08-17",
         "purpose": (
             "Expected values for the TypeScript ports in src/lib/. Computed by the Python "
             "research workspace, so a passing test checks the port against something "
@@ -322,5 +335,367 @@ for years in (10, 20, 30):
             }
         )
 out["disposalPaths"] = step_up_cases
+
+# ---------------------------------------------------------------- the value tilt
+
+# `weight x (h_fund - h_incumbent) x premium - cost`, with no capture term anywhere.
+# Two of the cases below are the tilts `docs/research/portfolio-recommendation.md` §5
+# publishes, so the client's port reproduces printed figures and not only itself; the
+# rest are corners the published pair never reaches — a zero and a unit weight, a zero
+# and a negative delivered loading, a zero premium, perfect and negative correlation,
+# and a fund quieter than the incumbent it replaces.
+#
+# The two published rows carry the loadings and second moments
+# `studies/_value_tilt_tables` and `studies/_exus_value_tilt_tables` measure from the
+# cache. They are transcribed rather than recomputed because this module reads no
+# market data, in the tradition of `value_tilt` itself.
+
+TILT_GAMMAS: tuple[float, ...] = (1.0, 2.0, 3.0, 5.0)
+
+tilt_cases: list[tuple[str, TiltInputs]] = [
+    # AVLV at 20% of portfolio out of VTI, pooled post-publication HML premium,
+    # k = 1.7. §5 "Which value product, if any" prints +24.4 bp, 135 bp, +24.9 bp,
+    # +26.0 bp and 1.078.
+    (
+        "AVLV 20% out of VTI, pooled premium, k = 1.7",
+        TiltInputs(
+            weight=0.20,
+            fund_hml_loading=0.322028508346998,
+            benchmark_hml_loading=0.0246971965235378,
+            hml_premium=4.740625,
+            fund_fee=0.15,
+            benchmark_fee=0.03,
+            fund_turnover_percent=7.0,
+            benchmark_turnover_percent=3.0,
+            turnover_coefficient=1.7,
+            fund_volatility=17.181423095590738,
+            benchmark_volatility=16.23770348459306,
+            correlation=0.9194103780959881,
+        ),
+    ),
+    # DFIV at 8% out of VEA on the common 2022-04..2025-12 window, developed-ex-US
+    # post-publication premium, k = 1.7. §5 "The same question on the ex-US shelf"
+    # prints +27.1 bp, 47.6 bp, +29.5 bp and +34.2 bp. DFIV is also the case in which
+    # the fund is *less* volatile than the incumbent it replaces, so the substitution
+    # variance change is negative and the drag is a credit.
+    (
+        "DFIV 8% out of VEA, common window, ex-US post-publication premium, k = 1.7",
+        TiltInputs(
+            weight=0.08,
+            fund_hml_loading=0.6976037808578383,
+            benchmark_hml_loading=-0.025186177492858675,
+            hml_premium=5.071250000000001,
+            fund_fee=0.27,
+            benchmark_fee=0.03,
+            fund_turnover_percent=6.0,
+            benchmark_turnover_percent=4.0,
+            turnover_coefficient=1.7,
+            fund_volatility=15.781965234617221,
+            benchmark_volatility=16.598108003208974,
+            correlation=0.9337858710123662,
+        ),
+    ),
+]
+
+# The same AVLV swap across the weight range, including both endpoints. At w = 0
+# nothing is bought and every portfolio-level figure must be exactly zero; at w = 1 the
+# incumbent is gone and the sleeve edge is the portfolio edge.
+for tilt_weight in (0.0, 0.05, 0.10, 0.30, 0.50, 1.0):
+    tilt_cases.append(
+        (
+            f"AVLV at weight {tilt_weight:g}",
+            TiltInputs(
+                weight=tilt_weight,
+                fund_hml_loading=0.322028508346998,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=4.740625,
+                fund_fee=0.15,
+                benchmark_fee=0.03,
+                fund_turnover_percent=7.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=17.181423095590738,
+                benchmark_volatility=16.23770348459306,
+                correlation=0.9194103780959881,
+            ),
+        )
+    )
+
+tilt_cases.extend(
+    [
+        # A swap that buys no exposure at all: the edge is exactly minus the
+        # incremental cost, whatever the premium is.
+        (
+            "zero delivered loading",
+            TiltInputs(
+                weight=0.20,
+                fund_hml_loading=0.35,
+                benchmark_hml_loading=0.35,
+                hml_premium=4.740625,
+                fund_fee=0.25,
+                benchmark_fee=0.03,
+                fund_turnover_percent=6.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=20.0,
+                benchmark_volatility=16.0,
+                correlation=0.85,
+            ),
+        ),
+        # An incumbent with more value exposure than the fund bought to replace it.
+        (
+            "negative delivered loading",
+            TiltInputs(
+                weight=0.25,
+                fund_hml_loading=0.12,
+                benchmark_hml_loading=0.41,
+                hml_premium=4.740625,
+                fund_fee=0.20,
+                benchmark_fee=0.05,
+                fund_turnover_percent=25.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=22.5,
+                benchmark_volatility=17.75,
+                correlation=0.89,
+            ),
+        ),
+        # A premium of zero is the honest reading of an era Experiment 007 marks
+        # UNSTABLE: the exposure is bought and only the cost is paid.
+        (
+            "zero premium",
+            TiltInputs(
+                weight=0.20,
+                fund_hml_loading=0.5368,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=0.0,
+                fund_fee=0.25,
+                benchmark_fee=0.03,
+                fund_turnover_percent=6.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=26.9562,
+                benchmark_volatility=17.7483,
+                correlation=0.8346,
+            ),
+        ),
+        # Perfect correlation: the sleeve tracking error collapses to the difference of
+        # the two volatilities, and the variance change is exact and linear in weight.
+        (
+            "correlation 1.0, fund more volatile",
+            TiltInputs(
+                weight=0.20,
+                fund_hml_loading=0.5368,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=4.740625,
+                fund_fee=0.25,
+                benchmark_fee=0.03,
+                fund_turnover_percent=6.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=26.9562,
+                benchmark_volatility=17.7483,
+                correlation=1.0,
+            ),
+        ),
+        # The degenerate case the sqrt guard exists for: equal volatilities at rho = 1
+        # leave no tracking error whatever, and floating point can push the variance
+        # fractionally below zero.
+        (
+            "correlation 1.0, volatilities equal",
+            TiltInputs(
+                weight=0.40,
+                fund_hml_loading=0.44,
+                benchmark_hml_loading=0.02,
+                hml_premium=3.45,
+                fund_fee=0.30,
+                benchmark_fee=0.03,
+                fund_turnover_percent=9.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.0,
+                fund_volatility=17.7483,
+                benchmark_volatility=17.7483,
+                correlation=1.0,
+            ),
+        ),
+        (
+            "correlation 0.0",
+            TiltInputs(
+                weight=0.15,
+                fund_hml_loading=0.5368,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=4.740625,
+                fund_fee=0.25,
+                benchmark_fee=0.03,
+                fund_turnover_percent=6.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=26.9562,
+                benchmark_volatility=17.7483,
+                correlation=0.0,
+            ),
+        ),
+        (
+            "correlation -1.0",
+            TiltInputs(
+                weight=0.35,
+                fund_hml_loading=0.5368,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=4.740625,
+                fund_fee=0.25,
+                benchmark_fee=0.03,
+                fund_turnover_percent=6.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.7,
+                fund_volatility=26.9562,
+                benchmark_volatility=17.7483,
+                correlation=-1.0,
+            ),
+        ),
+        # A quieter fund bought for less than the incumbent charges: the incremental
+        # cost is negative and so is the variance change, so both corrections are
+        # credits and the growth contribution exceeds the arithmetic edge.
+        (
+            "fund quieter and cheaper than the incumbent",
+            TiltInputs(
+                weight=0.20,
+                fund_hml_loading=0.30,
+                benchmark_hml_loading=0.02,
+                hml_premium=4.740625,
+                fund_fee=0.02,
+                benchmark_fee=0.05,
+                fund_turnover_percent=3.0,
+                benchmark_turnover_percent=25.0,
+                turnover_coefficient=1.7,
+                fund_volatility=13.75,
+                benchmark_volatility=16.0,
+                correlation=0.94,
+            ),
+        ),
+        # k at the patient floor rather than the pessimistic column, and a fund whose
+        # sort is an index reconstitution, so trading cost rather than fee dominates.
+        (
+            "RPV 20% out of VTI, k = 1.0",
+            TiltInputs(
+                weight=0.20,
+                fund_hml_loading=0.7098,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=4.740625,
+                fund_fee=0.35,
+                benchmark_fee=0.03,
+                fund_turnover_percent=42.0,
+                benchmark_turnover_percent=3.0,
+                turnover_coefficient=1.0,
+                fund_volatility=23.8688,
+                benchmark_volatility=17.7483,
+                correlation=0.8214,
+            ),
+        ),
+        # No trading cost at all on either side, so the incremental cost is the fee
+        # difference alone.
+        (
+            "zero turnover on both legs",
+            TiltInputs(
+                weight=0.10,
+                fund_hml_loading=0.6372,
+                benchmark_hml_loading=0.0246971965235378,
+                hml_premium=1.566,
+                fund_fee=0.21,
+                benchmark_fee=0.03,
+                fund_turnover_percent=0.0,
+                benchmark_turnover_percent=0.0,
+                turnover_coefficient=1.7,
+                fund_volatility=13.7539,
+                benchmark_volatility=12.56,
+                correlation=0.8114,
+            ),
+        ),
+    ]
+)
+
+out["valueTilt"] = {
+    "gammas": list(TILT_GAMMAS),
+    "cases": [
+        {
+            "label": label,
+            "inputs": {
+                "weight": tilt.weight,
+                "fundHmlLoading": tilt.fund_hml_loading,
+                "benchmarkHmlLoading": tilt.benchmark_hml_loading,
+                "hmlPremium": tilt.hml_premium,
+                "fundFee": tilt.fund_fee,
+                "benchmarkFee": tilt.benchmark_fee,
+                "fundTurnoverPercent": tilt.fund_turnover_percent,
+                "benchmarkTurnoverPercent": tilt.benchmark_turnover_percent,
+                "turnoverCoefficient": tilt.turnover_coefficient,
+                "fundVolatility": tilt.fund_volatility,
+                "benchmarkVolatility": tilt.benchmark_volatility,
+                "correlation": tilt.correlation,
+            },
+            "deliveredLoading": tilt.delivered_loading,
+            "incrementalCost": tilt.incremental_cost,
+            "sleeveTrackingError": tilt.sleeve_tracking_error,
+            "sleeveEdge": sleeve_edge(tilt),
+            "portfolioTrackingError": portfolio_tracking_error(tilt),
+            "substitutionVarianceChange": substitution_variance_change(tilt),
+            "marginalGrowthContribution": marginal_growth_contribution(tilt),
+            "varianceDrag": [
+                {"gamma": gamma, "expected": variance_drag(tilt, gamma=gamma)}
+                for gamma in TILT_GAMMAS
+            ],
+            "certaintyEquivalentContribution": [
+                {
+                    "gamma": gamma,
+                    "expected": certainty_equivalent_contribution(tilt, gamma=gamma),
+                }
+                for gamma in TILT_GAMMAS
+            ],
+            "verdict": {
+                "gamma": 3.0,
+                "years": 30.0,
+                "weight": verdict.weight,
+                "deliveredLoading": verdict.delivered_loading,
+                "hmlPremium": verdict.hml_premium,
+                "incrementalCost": verdict.incremental_cost,
+                "sleeveEdgePercent": verdict.sleeve_edge_percent,
+                "portfolioEdgeBasisPoints": verdict.portfolio_edge_basis_points,
+                "portfolioTrackingErrorBasisPoints": (
+                    verdict.portfolio_tracking_error_basis_points
+                ),
+                "growthContributionPercent": verdict.growth_contribution_percent,
+                "certaintyEquivalentPercent": verdict.certainty_equivalent_percent,
+                "terminalWealthMultiple30y": verdict.terminal_wealth_multiple_30y,
+            },
+        }
+        for label, tilt, verdict in (
+            (label, tilt, tilt_verdict(tilt)) for label, tilt in tilt_cases
+        )
+    ],
+    # `k * turnover` basis points in percent per year, over the range
+    # `portfolio_edge.core.costs` calibrates and the turnover rates the shelf files.
+    "turnoverCost": [
+        {
+            "oneSidedTurnoverPercent": turnover,
+            "coefficient": coefficient,
+            "expected": turnover_cost_percent(
+                one_sided_turnover_percent=turnover, coefficient=coefficient
+            ),
+        }
+        for turnover in (0.0, 3.0, 4.0, 5.0, 6.0, 7.0, 9.0, 25.0, 42.0, 105.0)
+        for coefficient in (0.0, 1.0, 1.7)
+    ],
+    # `exp(g T)` against the untilted portfolio, on growth contributions of both signs.
+    "terminalWealthMultiple": [
+        {
+            "growthContribution": growth,
+            "years": years,
+            "expected": terminal_wealth_multiple(
+                growth_contribution=growth, years=years
+            ),
+        }
+        for growth in (-0.2024, -0.0432, 0.0, 0.2140, 0.2494, 0.2949, 0.56)
+        for years in (0.0, 1.0, 10.0, 30.0, 50.0)
+    ],
+}
 
 print(json.dumps(out, indent=2))

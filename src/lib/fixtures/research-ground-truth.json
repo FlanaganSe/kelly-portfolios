@@ -4,9 +4,10 @@
     "regenerate": "cd research && uv run python -m portfolio_edge.reporting.client_fixtures > ../src/lib/fixtures/research-ground-truth.json",
     "sourceModules": [
       "portfolio_edge.studies.outperformance_horizon",
-      "portfolio_edge.studies.tax_structure"
+      "portfolio_edge.studies.tax_structure",
+      "portfolio_edge.studies.value_tilt"
     ],
-    "asOf": "2026-08-12",
+    "asOf": "2026-08-17",
     "purpose": "Expected values for the TypeScript ports in src/lib/. Computed by the Python research workspace, so a passing test checks the port against something calculated independently of it. Do not hand-edit; regenerate."
   },
   "probabilityOfOutperformance": [
@@ -1900,5 +1901,1676 @@
       "terminalWealth": 8.166169912567659,
       "annualisedLogGrowth": 0.07000000000000003
     }
-  ]
+  ],
+  "valueTilt": {
+    "gammas": [
+      1.0,
+      2.0,
+      3.0,
+      5.0
+    ],
+    "cases": [
+      {
+        "label": "AVLV 20% out of VTI, pooled premium, k = 1.7",
+        "inputs": {
+          "weight": 0.2,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 1.3543632719624084,
+        "substitutionVarianceChange": -1.029542462536142,
+        "marginalGrowthContribution": 0.2494549623352989,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.00514771231268071
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.01029542462536142
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.01544313693804213
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.02573856156340355
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.2494549623352989
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.2546026746479796
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.25975038696066033
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.27004581158602176
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.2,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 24.43072500226182,
+          "portfolioTrackingErrorBasisPoints": 135.43632719624082,
+          "growthContributionPercent": 0.2494549623352989,
+          "certaintyEquivalentPercent": 0.25975038696066033,
+          "terminalWealthMultiple30y": 1.077707919054847
+        }
+      },
+      {
+        "label": "DFIV 8% out of VEA, common window, ex-US post-publication premium, k = 1.7",
+        "inputs": {
+          "weight": 0.08,
+          "fundHmlLoading": 0.6976037808578383,
+          "benchmarkHmlLoading": -0.025186177492858675,
+          "hmlPremium": 5.071250000000001,
+          "fundFee": 0.27,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 6.0,
+          "benchmarkTurnoverPercent": 4.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 15.781965234617221,
+          "benchmarkVolatility": 16.598108003208974,
+          "correlation": 0.9337858710123662
+        },
+        "deliveredLoading": 0.7227899583506969,
+        "incrementalCost": 0.274,
+        "sleeveTrackingError": 5.946072005951454,
+        "sleeveEdge": 3.3914485762859723,
+        "portfolioTrackingError": 0.47568576047611627,
+        "substitutionVarianceChange": -4.716325850838871,
+        "marginalGrowthContribution": 0.2948975153570721,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.023581629254194353
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.047163258508388706
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.07074488776258306
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.11790814627097176
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.2948975153570721
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.3184791446112665
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.34206077386546085
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.3892240323738495
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.08,
+          "deliveredLoading": 0.7227899583506969,
+          "hmlPremium": 5.071250000000001,
+          "incrementalCost": 0.274,
+          "sleeveEdgePercent": 3.3914485762859723,
+          "portfolioEdgeBasisPoints": 27.131588610287775,
+          "portfolioTrackingErrorBasisPoints": 47.56857604761163,
+          "growthContributionPercent": 0.2948975153570721,
+          "certaintyEquivalentPercent": 0.34206077386546085,
+          "terminalWealthMultiple30y": 1.0925006627320195
+        }
+      },
+      {
+        "label": "AVLV at weight 0",
+        "inputs": {
+          "weight": 0.0,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 0.0,
+        "substitutionVarianceChange": 0.0,
+        "marginalGrowthContribution": 0.0,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.0
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.0
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.0,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 0.0,
+          "portfolioTrackingErrorBasisPoints": 0.0,
+          "growthContributionPercent": 0.0,
+          "certaintyEquivalentPercent": 0.0,
+          "terminalWealthMultiple30y": 1.0
+        }
+      },
+      {
+        "label": "AVLV at weight 0.05",
+        "inputs": {
+          "weight": 0.05,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 0.3385908179906021,
+        "substitutionVarianceChange": -0.6013168417167094,
+        "marginalGrowthContribution": 0.0640833967142381,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.003006584208583547
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.006013168417167094
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.009019752625750641
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.015032921042917735
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.0640833967142381
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.06708998092282165
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.07009656513140519
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.07610973354857228
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.05,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 6.107681250565455,
+          "portfolioTrackingErrorBasisPoints": 33.859081799060206,
+          "growthContributionPercent": 0.0640833967142381,
+          "certaintyEquivalentPercent": 0.07009656513140519,
+          "terminalWealthMultiple30y": 1.0194110096716749
+        }
+      },
+      {
+        "label": "AVLV at weight 0.1",
+        "inputs": {
+          "weight": 0.1,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 0.6771816359812042,
+        "substitutionVarianceChange": -0.9733461993782839,
+        "marginalGrowthContribution": 0.12702035600820052,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.00486673099689142
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.00973346199378284
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.01460019299067426
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.0243336549844571
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.12702035600820052
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.13188708700509194
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.13675381800198336
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.1464872799957662
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.1,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 12.21536250113091,
+          "portfolioTrackingErrorBasisPoints": 67.71816359812041,
+          "growthContributionPercent": 0.12702035600820052,
+          "certaintyEquivalentPercent": 0.13675381800198336,
+          "terminalWealthMultiple30y": 1.0388414551757983
+        }
+      },
+      {
+        "label": "AVLV at weight 0.3",
+        "inputs": {
+          "weight": 0.3,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 2.031544907943612,
+        "substitutionVarianceChange": -0.16858878947380163,
+        "marginalGrowthContribution": 0.36730381898129627,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.0008429439473690081
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.0016858878947380162
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.0025288318421070244
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.00421471973684504
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.36730381898129627
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.36814676292866527
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.3689897068760343
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.37067559477077233
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.3,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 36.64608750339273,
+          "portfolioTrackingErrorBasisPoints": 203.1544907943612,
+          "growthContributionPercent": 0.36730381898129627,
+          "certaintyEquivalentPercent": 0.3689897068760343,
+          "terminalWealthMultiple30y": 1.116491462599625
+        }
+      },
+      {
+        "label": "AVLV at weight 0.5",
+        "inputs": {
+          "weight": 0.5,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 3.3859081799060204,
+        "substitutionVarianceChange": 4.304768365312157,
+        "marginalGrowthContribution": 0.5892442832299847,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.021523841826560784
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.04304768365312157
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.06457152547968235
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.10761920913280391
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.5892442832299847
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.5677204414034238
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.5461965995768631
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.5031489159237416
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.5,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 61.076812505654544,
+          "portfolioTrackingErrorBasisPoints": 338.59081799060203,
+          "growthContributionPercent": 0.5892442832299847,
+          "certaintyEquivalentPercent": 0.5461965995768631,
+          "terminalWealthMultiple30y": 1.1933605096906776
+        }
+      },
+      {
+        "label": "AVLV at weight 1",
+        "inputs": {
+          "weight": 1.0,
+          "fundHmlLoading": 0.322028508346998,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.15,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 7.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 17.181423095590738,
+          "benchmarkVolatility": 16.23770348459306,
+          "correlation": 0.9194103780959881
+        },
+        "deliveredLoading": 0.2973313118234602,
+        "incrementalCost": 0.188,
+        "sleeveTrackingError": 6.771816359812041,
+        "sleeveEdge": 1.2215362501130909,
+        "portfolioTrackingError": 6.771816359812041,
+        "substitutionVarianceChange": 31.538285136133254,
+        "marginalGrowthContribution": 1.0638448244324246,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.15769142568066627
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.31538285136133254
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.47307427704199884
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.7884571284033314
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 1.0638448244324246
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.9061533987517583
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.748461973071092
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.4330791217097595
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 1.0,
+          "deliveredLoading": 0.2973313118234602,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.188,
+          "sleeveEdgePercent": 1.2215362501130909,
+          "portfolioEdgeBasisPoints": 122.15362501130909,
+          "portfolioTrackingErrorBasisPoints": 677.1816359812041,
+          "growthContributionPercent": 1.0638448244324246,
+          "certaintyEquivalentPercent": 0.748461973071092,
+          "terminalWealthMultiple30y": 1.3759624464708209
+        }
+      },
+      {
+        "label": "zero delivered loading",
+        "inputs": {
+          "weight": 0.2,
+          "fundHmlLoading": 0.35,
+          "benchmarkHmlLoading": 0.35,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.25,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 6.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 20.0,
+          "benchmarkVolatility": 16.0,
+          "correlation": 0.85
+        },
+        "deliveredLoading": 0.0,
+        "incrementalCost": 0.271,
+        "sleeveTrackingError": 10.583005244258363,
+        "sleeveEdge": -0.271,
+        "portfolioTrackingError": 2.1166010488516727,
+        "substitutionVarianceChange": 10.880000000000052,
+        "marginalGrowthContribution": -0.10860000000000027,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.05440000000000026
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.10880000000000052
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.1632000000000008
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.2720000000000013
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": -0.10860000000000027
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.16300000000000053
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.2174000000000008
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.3262000000000013
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.2,
+          "deliveredLoading": 0.0,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.271,
+          "sleeveEdgePercent": -0.271,
+          "portfolioEdgeBasisPoints": -5.420000000000001,
+          "portfolioTrackingErrorBasisPoints": 211.66010488516727,
+          "growthContributionPercent": -0.10860000000000027,
+          "certaintyEquivalentPercent": -0.2174000000000008,
+          "terminalWealthMultiple30y": 0.9679450111329087
+        }
+      },
+      {
+        "label": "negative delivered loading",
+        "inputs": {
+          "weight": 0.25,
+          "fundHmlLoading": 0.12,
+          "benchmarkHmlLoading": 0.41,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.2,
+          "benchmarkFee": 0.05,
+          "fundTurnoverPercent": 25.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 22.5,
+          "benchmarkVolatility": 17.75,
+          "correlation": 0.89
+        },
+        "deliveredLoading": -0.29,
+        "incrementalCost": 0.524,
+        "sleeveTrackingError": 10.508330029076935,
+        "sleeveEdge": -1.8987812499999999,
+        "portfolioTrackingError": 2.627082507269234,
+        "substitutionVarianceChange": 27.092187500000023,
+        "marginalGrowthContribution": -0.6101562500000001,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.1354609375000001
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.2709218750000002
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.40638281250000036
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.6773046875000006
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": -0.6101562500000001
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.7456171875000002
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.8810781250000004
+          },
+          {
+            "gamma": 5.0,
+            "expected": -1.1520000000000006
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.25,
+          "deliveredLoading": -0.29,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.524,
+          "sleeveEdgePercent": -1.8987812499999999,
+          "portfolioEdgeBasisPoints": -47.469531249999996,
+          "portfolioTrackingErrorBasisPoints": 262.7082507269234,
+          "growthContributionPercent": -0.6101562500000001,
+          "certaintyEquivalentPercent": -0.8810781250000004,
+          "terminalWealthMultiple30y": 0.8327291206446829
+        }
+      },
+      {
+        "label": "zero premium",
+        "inputs": {
+          "weight": 0.2,
+          "fundHmlLoading": 0.5368,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 0.0,
+          "fundFee": 0.25,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 6.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 26.9562,
+          "benchmarkVolatility": 17.7483,
+          "correlation": 0.8346
+        },
+        "deliveredLoading": 0.5121028034764623,
+        "incrementalCost": 0.271,
+        "sleeveTrackingError": 15.590028314963643,
+        "sleeveEdge": -0.271,
+        "portfolioTrackingError": 3.118005662992729,
+        "substitutionVarianceChange": 43.43907585218113,
+        "marginalGrowthContribution": -0.2713953792609057,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.21719537926090568
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.43439075852181136
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.651586137782717
+          },
+          {
+            "gamma": 5.0,
+            "expected": 1.0859768963045284
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": -0.2713953792609057
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.4885907585218114
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.705786137782717
+          },
+          {
+            "gamma": 5.0,
+            "expected": -1.1401768963045285
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.2,
+          "deliveredLoading": 0.5121028034764623,
+          "hmlPremium": 0.0,
+          "incrementalCost": 0.271,
+          "sleeveEdgePercent": -0.271,
+          "portfolioEdgeBasisPoints": -5.420000000000001,
+          "portfolioTrackingErrorBasisPoints": 311.8005662992729,
+          "growthContributionPercent": -0.2713953792609057,
+          "certaintyEquivalentPercent": -0.705786137782717,
+          "terminalWealthMultiple30y": 0.9218077292493168
+        }
+      },
+      {
+        "label": "correlation 1.0, fund more volatile",
+        "inputs": {
+          "weight": 0.2,
+          "fundHmlLoading": 0.5368,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.25,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 6.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 26.9562,
+          "benchmarkVolatility": 17.7483,
+          "correlation": 1.0
+        },
+        "deliveredLoading": 0.5121028034764623,
+        "incrementalCost": 0.271,
+        "sleeveTrackingError": 9.2079,
+        "sleeveEdge": 2.156687352730604,
+        "portfolioTrackingError": 1.8415800000000002,
+        "substitutionVarianceChange": 68.76124552440007,
+        "marginalGrowthContribution": 0.08753124292412046,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.34380622762200036
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.6876124552440007
+          },
+          {
+            "gamma": 3.0,
+            "expected": 1.031418682866001
+          },
+          {
+            "gamma": 5.0,
+            "expected": 1.7190311381100016
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.08753124292412046
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.2562749846978799
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.6000812123198802
+          },
+          {
+            "gamma": 5.0,
+            "expected": -1.2876936675638808
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.2,
+          "deliveredLoading": 0.5121028034764623,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.271,
+          "sleeveEdgePercent": 2.156687352730604,
+          "portfolioEdgeBasisPoints": 43.13374705461208,
+          "portfolioTrackingErrorBasisPoints": 184.15800000000002,
+          "growthContributionPercent": 0.08753124292412046,
+          "certaintyEquivalentPercent": -0.6000812123198802,
+          "terminalWealthMultiple30y": 1.026607188004437
+        }
+      },
+      {
+        "label": "correlation 1.0, volatilities equal",
+        "inputs": {
+          "weight": 0.4,
+          "fundHmlLoading": 0.44,
+          "benchmarkHmlLoading": 0.02,
+          "hmlPremium": 3.45,
+          "fundFee": 0.3,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 9.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.0,
+          "fundVolatility": 17.7483,
+          "benchmarkVolatility": 17.7483,
+          "correlation": 1.0
+        },
+        "deliveredLoading": 0.42,
+        "incrementalCost": 0.33,
+        "sleeveTrackingError": 0.0,
+        "sleeveEdge": 1.119,
+        "portfolioTrackingError": 0.0,
+        "substitutionVarianceChange": 0.0,
+        "marginalGrowthContribution": 0.4476,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.0
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.0
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.4476
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.4476
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.4476
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.4476
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.4,
+          "deliveredLoading": 0.42,
+          "hmlPremium": 3.45,
+          "incrementalCost": 0.33,
+          "sleeveEdgePercent": 1.119,
+          "portfolioEdgeBasisPoints": 44.76,
+          "portfolioTrackingErrorBasisPoints": 0.0,
+          "growthContributionPercent": 0.4476,
+          "certaintyEquivalentPercent": 0.4476,
+          "terminalWealthMultiple30y": 1.1437130144593295
+        }
+      },
+      {
+        "label": "correlation 0.0",
+        "inputs": {
+          "weight": 0.15,
+          "fundHmlLoading": 0.5368,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.25,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 6.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 26.9562,
+          "benchmarkVolatility": 17.7483,
+          "correlation": 0.0
+        },
+        "deliveredLoading": 0.5121028034764623,
+        "incrementalCost": 0.271,
+        "sleeveTrackingError": 32.27443061201855,
+        "sleeveEdge": 2.156687352730604,
+        "portfolioTrackingError": 4.841164591802782,
+        "substitutionVarianceChange": -71.06377126207502,
+        "marginalGrowthContribution": 0.6788219592199658,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.35531885631037513
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.7106377126207503
+          },
+          {
+            "gamma": 3.0,
+            "expected": -1.0659565689311252
+          },
+          {
+            "gamma": 5.0,
+            "expected": -1.7765942815518756
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.6788219592199658
+          },
+          {
+            "gamma": 2.0,
+            "expected": 1.0341408155303409
+          },
+          {
+            "gamma": 3.0,
+            "expected": 1.389459671840716
+          },
+          {
+            "gamma": 5.0,
+            "expected": 2.100097384461466
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.15,
+          "deliveredLoading": 0.5121028034764623,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.271,
+          "sleeveEdgePercent": 2.156687352730604,
+          "portfolioEdgeBasisPoints": 32.35031029095906,
+          "portfolioTrackingErrorBasisPoints": 484.1164591802782,
+          "growthContributionPercent": 0.6788219592199658,
+          "certaintyEquivalentPercent": 1.389459671840716,
+          "terminalWealthMultiple30y": 1.2258648412596607
+        }
+      },
+      {
+        "label": "correlation -1.0",
+        "inputs": {
+          "weight": 0.35,
+          "fundHmlLoading": 0.5368,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.25,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 6.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 26.9562,
+          "benchmarkVolatility": 17.7483,
+          "correlation": -1.0
+        },
+        "deliveredLoading": 0.5121028034764623,
+        "incrementalCost": 0.271,
+        "sleeveTrackingError": 44.704499999999996,
+        "sleeveEdge": 2.156687352730604,
+        "portfolioTrackingError": 15.646574999999997,
+        "substitutionVarianceChange": -310.584904914375,
+        "marginalGrowthContribution": 2.3077650980275863,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -1.552924524571875
+          },
+          {
+            "gamma": 2.0,
+            "expected": -3.10584904914375
+          },
+          {
+            "gamma": 3.0,
+            "expected": -4.658773573715624
+          },
+          {
+            "gamma": 5.0,
+            "expected": -7.764622622859374
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 2.3077650980275863
+          },
+          {
+            "gamma": 2.0,
+            "expected": 3.8606896225994616
+          },
+          {
+            "gamma": 3.0,
+            "expected": 5.4136141471713355
+          },
+          {
+            "gamma": 5.0,
+            "expected": 8.519463196315085
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.35,
+          "deliveredLoading": 0.5121028034764623,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.271,
+          "sleeveEdgePercent": 2.156687352730604,
+          "portfolioEdgeBasisPoints": 75.48405734557114,
+          "portfolioTrackingErrorBasisPoints": 1564.6574999999996,
+          "growthContributionPercent": 2.3077650980275863,
+          "certaintyEquivalentPercent": 5.4136141471713355,
+          "terminalWealthMultiple30y": 1.9983653660678897
+        }
+      },
+      {
+        "label": "fund quieter and cheaper than the incumbent",
+        "inputs": {
+          "weight": 0.2,
+          "fundHmlLoading": 0.3,
+          "benchmarkHmlLoading": 0.02,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.02,
+          "benchmarkFee": 0.05,
+          "fundTurnoverPercent": 3.0,
+          "benchmarkTurnoverPercent": 25.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 13.75,
+          "benchmarkVolatility": 16.0,
+          "correlation": 0.94
+        },
+        "deliveredLoading": 0.27999999999999997,
+        "incrementalCost": -0.404,
+        "sleeveTrackingError": 5.6091443197692845,
+        "sleeveEdge": 1.7313749999999999,
+        "portfolioTrackingError": 1.121828863953857,
+        "substitutionVarianceChange": -18.42149999999998,
+        "marginalGrowthContribution": 0.4383824999999999,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.0921074999999999
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.1842149999999998
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.2763224999999997
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.4605374999999995
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.4383824999999999
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.5304899999999998
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.6225974999999997
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.8068124999999995
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.2,
+          "deliveredLoading": 0.27999999999999997,
+          "hmlPremium": 4.740625,
+          "incrementalCost": -0.404,
+          "sleeveEdgePercent": 1.7313749999999999,
+          "portfolioEdgeBasisPoints": 34.6275,
+          "portfolioTrackingErrorBasisPoints": 112.1828863953857,
+          "growthContributionPercent": 0.4383824999999999,
+          "certaintyEquivalentPercent": 0.6225974999999997,
+          "terminalWealthMultiple30y": 1.14055473078058
+        }
+      },
+      {
+        "label": "RPV 20% out of VTI, k = 1.0",
+        "inputs": {
+          "weight": 0.2,
+          "fundHmlLoading": 0.7098,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 4.740625,
+          "fundFee": 0.35,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 42.0,
+          "benchmarkTurnoverPercent": 3.0,
+          "turnoverCoefficient": 1.0,
+          "fundVolatility": 23.8688,
+          "benchmarkVolatility": 17.7483,
+          "correlation": 0.8214
+        },
+        "deliveredLoading": 0.6851028034764621,
+        "incrementalCost": 0.71,
+        "sleeveTrackingError": 13.739773608028917,
+        "sleeveEdge": 2.5378154777306032,
+        "portfolioTrackingError": 2.7479547216057836,
+        "substitutionVarianceChange": 20.738471502018,
+        "marginalGrowthContribution": 0.4038707380360307,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": 0.10369235751009001
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.20738471502018002
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.31107707253027
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.51846178755045
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.4038707380360307
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.30017838052594065
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.19648602301585066
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.010898692004329358
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.2,
+          "deliveredLoading": 0.6851028034764621,
+          "hmlPremium": 4.740625,
+          "incrementalCost": 0.71,
+          "sleeveEdgePercent": 2.5378154777306032,
+          "portfolioEdgeBasisPoints": 50.756309554612066,
+          "portfolioTrackingErrorBasisPoints": 274.79547216057836,
+          "growthContributionPercent": 0.4038707380360307,
+          "certaintyEquivalentPercent": 0.19648602301585066,
+          "terminalWealthMultiple30y": 1.1288068855365816
+        }
+      },
+      {
+        "label": "zero turnover on both legs",
+        "inputs": {
+          "weight": 0.1,
+          "fundHmlLoading": 0.6372,
+          "benchmarkHmlLoading": 0.0246971965235378,
+          "hmlPremium": 1.566,
+          "fundFee": 0.21,
+          "benchmarkFee": 0.03,
+          "fundTurnoverPercent": 0.0,
+          "benchmarkTurnoverPercent": 0.0,
+          "turnoverCoefficient": 1.7,
+          "fundVolatility": 13.7539,
+          "benchmarkVolatility": 12.56,
+          "correlation": 0.8114
+        },
+        "deliveredLoading": 0.6125028034764621,
+        "incrementalCost": 0.18,
+        "sleeveTrackingError": 8.160043748338609,
+        "sleeveEdge": 0.7791793902441397,
+        "portfolioTrackingError": 0.8160043748338609,
+        "substitutionVarianceChange": -2.8511517367319925,
+        "marginalGrowthContribution": 0.09217369770807393,
+        "varianceDrag": [
+          {
+            "gamma": 1.0,
+            "expected": -0.014255758683659962
+          },
+          {
+            "gamma": 2.0,
+            "expected": -0.028511517367319925
+          },
+          {
+            "gamma": 3.0,
+            "expected": -0.04276727605097989
+          },
+          {
+            "gamma": 5.0,
+            "expected": -0.07127879341829982
+          }
+        ],
+        "certaintyEquivalentContribution": [
+          {
+            "gamma": 1.0,
+            "expected": 0.09217369770807393
+          },
+          {
+            "gamma": 2.0,
+            "expected": 0.1064294563917339
+          },
+          {
+            "gamma": 3.0,
+            "expected": 0.12068521507539387
+          },
+          {
+            "gamma": 5.0,
+            "expected": 0.1491967324427138
+          }
+        ],
+        "verdict": {
+          "gamma": 3.0,
+          "years": 30.0,
+          "weight": 0.1,
+          "deliveredLoading": 0.6125028034764621,
+          "hmlPremium": 1.566,
+          "incrementalCost": 0.18,
+          "sleeveEdgePercent": 0.7791793902441397,
+          "portfolioEdgeBasisPoints": 7.791793902441397,
+          "portfolioTrackingErrorBasisPoints": 81.60043748338609,
+          "growthContributionPercent": 0.09217369770807393,
+          "certaintyEquivalentPercent": 0.12068521507539387,
+          "terminalWealthMultiple30y": 1.0280379773647543
+        }
+      }
+    ],
+    "turnoverCost": [
+      {
+        "oneSidedTurnoverPercent": 0.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 0.0,
+        "coefficient": 1.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 0.0,
+        "coefficient": 1.7,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 3.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 3.0,
+        "coefficient": 1.0,
+        "expected": 0.03
+      },
+      {
+        "oneSidedTurnoverPercent": 3.0,
+        "coefficient": 1.7,
+        "expected": 0.051
+      },
+      {
+        "oneSidedTurnoverPercent": 4.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 4.0,
+        "coefficient": 1.0,
+        "expected": 0.04
+      },
+      {
+        "oneSidedTurnoverPercent": 4.0,
+        "coefficient": 1.7,
+        "expected": 0.068
+      },
+      {
+        "oneSidedTurnoverPercent": 5.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 5.0,
+        "coefficient": 1.0,
+        "expected": 0.05
+      },
+      {
+        "oneSidedTurnoverPercent": 5.0,
+        "coefficient": 1.7,
+        "expected": 0.085
+      },
+      {
+        "oneSidedTurnoverPercent": 6.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 6.0,
+        "coefficient": 1.0,
+        "expected": 0.06
+      },
+      {
+        "oneSidedTurnoverPercent": 6.0,
+        "coefficient": 1.7,
+        "expected": 0.102
+      },
+      {
+        "oneSidedTurnoverPercent": 7.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 7.0,
+        "coefficient": 1.0,
+        "expected": 0.07
+      },
+      {
+        "oneSidedTurnoverPercent": 7.0,
+        "coefficient": 1.7,
+        "expected": 0.11900000000000001
+      },
+      {
+        "oneSidedTurnoverPercent": 9.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 9.0,
+        "coefficient": 1.0,
+        "expected": 0.09
+      },
+      {
+        "oneSidedTurnoverPercent": 9.0,
+        "coefficient": 1.7,
+        "expected": 0.153
+      },
+      {
+        "oneSidedTurnoverPercent": 25.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 25.0,
+        "coefficient": 1.0,
+        "expected": 0.25
+      },
+      {
+        "oneSidedTurnoverPercent": 25.0,
+        "coefficient": 1.7,
+        "expected": 0.425
+      },
+      {
+        "oneSidedTurnoverPercent": 42.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 42.0,
+        "coefficient": 1.0,
+        "expected": 0.42
+      },
+      {
+        "oneSidedTurnoverPercent": 42.0,
+        "coefficient": 1.7,
+        "expected": 0.714
+      },
+      {
+        "oneSidedTurnoverPercent": 105.0,
+        "coefficient": 0.0,
+        "expected": 0.0
+      },
+      {
+        "oneSidedTurnoverPercent": 105.0,
+        "coefficient": 1.0,
+        "expected": 1.05
+      },
+      {
+        "oneSidedTurnoverPercent": 105.0,
+        "coefficient": 1.7,
+        "expected": 1.7850000000000001
+      }
+    ],
+    "terminalWealthMultiple": [
+      {
+        "growthContribution": -0.2024,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": -0.2024,
+        "years": 1.0,
+        "expected": 0.9979780469067874
+      },
+      {
+        "growthContribution": -0.2024,
+        "years": 10.0,
+        "expected": 0.9799634538526252
+      },
+      {
+        "growthContribution": -0.2024,
+        "years": 30.0,
+        "expected": 0.9410867071668604
+      },
+      {
+        "growthContribution": -0.2024,
+        "years": 50.0,
+        "expected": 0.9037522643567424
+      },
+      {
+        "growthContribution": -0.0432,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": -0.0432,
+        "years": 1.0,
+        "expected": 0.9995680932985646
+      },
+      {
+        "growthContribution": -0.0432,
+        "years": 10.0,
+        "expected": 0.9956893177775713
+      },
+      {
+        "growthContribution": -0.0432,
+        "years": 30.0,
+        "expected": 0.9871236191753663
+      },
+      {
+        "growthContribution": -0.0432,
+        "years": 50.0,
+        "expected": 0.9786316094148849
+      },
+      {
+        "growthContribution": 0.0,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.0,
+        "years": 1.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.0,
+        "years": 10.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.0,
+        "years": 30.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.0,
+        "years": 50.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.214,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.214,
+        "years": 1.0,
+        "expected": 1.0021422914342648
+      },
+      {
+        "growthContribution": 0.214,
+        "years": 10.0,
+        "expected": 1.0216306221668419
+      },
+      {
+        "growthContribution": 0.214,
+        "years": 30.0,
+        "expected": 1.066305638564527
+      },
+      {
+        "growthContribution": 0.214,
+        "years": 50.0,
+        "expected": 1.1129342544793257
+      },
+      {
+        "growthContribution": 0.2494,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.2494,
+        "years": 1.0,
+        "expected": 1.0024971126050746
+      },
+      {
+        "growthContribution": 0.2494,
+        "years": 10.0,
+        "expected": 1.0252536034627278
+      },
+      {
+        "growthContribution": 0.2494,
+        "years": 30.0,
+        "expected": 1.0776901491981479
+      },
+      {
+        "growthContribution": 0.2494,
+        "years": 50.0,
+        "expected": 1.132808559517488
+      },
+      {
+        "growthContribution": 0.2949,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.2949,
+        "years": 1.0,
+        "expected": 1.0029533525780325
+      },
+      {
+        "growthContribution": 0.2949,
+        "years": 10.0,
+        "expected": 1.0299291361290337
+      },
+      {
+        "growthContribution": 0.2949,
+        "years": 30.0,
+        "expected": 1.0925014770745365
+      },
+      {
+        "growthContribution": 0.2949,
+        "years": 50.0,
+        "expected": 1.158875339614152
+      },
+      {
+        "growthContribution": 0.56,
+        "years": 0.0,
+        "expected": 1.0
+      },
+      {
+        "growthContribution": 0.56,
+        "years": 1.0,
+        "expected": 1.0056157093103564
+      },
+      {
+        "growthContribution": 0.56,
+        "years": 10.0,
+        "expected": 1.0575976837366112
+      },
+      {
+        "growthContribution": 0.56,
+        "years": 30.0,
+        "expected": 1.182936610647811
+      },
+      {
+        "growthContribution": 0.56,
+        "years": 50.0,
+        "expected": 1.3231298123374369
+      }
+    ]
+  }
 }
