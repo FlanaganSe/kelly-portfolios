@@ -115,7 +115,7 @@ export const lessons: readonly Lesson[] = [
   {
     id: "backtest-is-not-proof",
     title: "A backtest is evidence, and a weak kind",
-    body: "On this shelf 96 of 109 factor loadings survive multiple-comparison correction, and 5 of 327 alpha tests do — all five negative. The median alpha these windows could detect is about 5 pp/yr against roughly 1.25 pp/yr of true dispersion between funds, so most alpha findings are noise by construction. Exposure is measurable; skill is not. Build the portfolio out of the thing that can be measured.",
+    body: "On this shelf 96 of 109 factor loadings survive multiple-comparison correction, and 5 of 327 alpha tests do — all five negative. The median alpha these windows could detect is about 5 pp/yr against roughly 1.25 pp/yr of true dispersion between funds, so most alpha findings are noise by construction. Exposure is measurable; skill is not.",
     href: "/method",
     hrefLabel: "How a result earns a status",
   },

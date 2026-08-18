@@ -12,8 +12,8 @@ import { NAV_ITEMS } from "~/lib/nav";
 
 const WHERE: Readonly<Record<string, string>> = {
   "/": "The argument, and the two benchmarks hiding inside “beat the market”.",
-  "/portfolios": "Four constructions with exact weights, notional exposure and named failure modes.",
-  "/research": "Ten return engines, each asked the same ten questions.",
+  "/portfolios": "Candidate constructions with exact weights, notional exposure and named failure modes.",
+  "/research": "Research families, each put through the same seven questions.",
   "/funds": "Every fund this repository has priced or regressed, with its delivered exposure.",
   "/lab": "Set an edge and a tracking error and see the wait they imply.",
   "/concepts": "The vocabulary, defined once.",

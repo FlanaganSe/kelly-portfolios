@@ -45,7 +45,7 @@ export interface StrategyFamily {
   readonly failureModes: readonly FamilyFailure[];
   readonly implementation: string;
   readonly cost: string;
-  /** What it overlaps with, and what it is genuinely distinct from. */
+  /** What it overlaps with, and what it is actually distinct from. */
   readonly overlap: string;
   readonly roleInPortfolio: string;
   /** Portfolio ids from `src/content/portfolios.ts`. */
@@ -132,7 +132,7 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "Turnover eats it",
         detail:
-          "A taxable account faces a horizon-free 162 bp/yr hurdle on realising gains, 84 bp at thirty years. Realising 10% of standing gain a year already costs 41.5 of that 84, so 'low turnover' is not by itself a defence.",
+          "A taxable account faces a horizon-free 162 bp/yr hurdle on realising gains, 84 bp at thirty years. Realising 10% of standing gain a year already costs 41.5 bp of that 84, so 'low turnover' is not by itself a defence.",
       },
       {
         title: "It is a per-reader number",
@@ -172,7 +172,7 @@ export const families: readonly StrategyFamily[] = [
     },
     evidenceFor: [
       "Positive in all three regions post-publication: +1.57 US, +5.07 developed ex-US, +7.58 emerging.",
-      "Nine systematic value and small-value products keep their `exploratory` status under every comparator basis tested. The exposure they sell is genuinely delivered.",
+      "Nine systematic value and small-value products keep their `exploratory` status under every comparator basis tested. The exposure they sell is delivered.",
       "The developed ex-US tilt is the only line in this repository whose thirty-year detection floor, 21.6 bp, sits below its own edge of 27.1 bp.",
     ],
     evidenceAgainst: [
@@ -257,7 +257,7 @@ export const families: readonly StrategyFamily[] = [
       "IDMO at 25 bp is the cheapest audited route and is what causes IMTM at 30 bp to be rejected. MTUM is `rejected` on its shortfall against a cheap fitted combination.",
     cost: "25 bp of fee and roughly 1.7 pp/yr of trading at 105% turnover. In a taxable account the turnover meets the 162 bp/yr realisation hurdle head-on.",
     overlap:
-      "Momentum is genuinely distinct from value — the two are negatively correlated — which is the strongest argument for holding it. It overlaps with trend conceptually and not statistically: trend is time-series, momentum is cross-sectional.",
+      "Momentum is distinct from value — the two are negatively correlated — which is the strongest argument for holding it. It overlaps with trend conceptually and not statistically: trend is time-series, momentum is cross-sectional.",
     roleInPortfolio:
       "This repository excludes it. A reader who holds it anyway should size it knowing that its detection floor is the worst here and its regional diversification is close to imaginary.",
     portfolios: ["candidate"],
@@ -315,7 +315,7 @@ export const families: readonly StrategyFamily[] = [
       "DBMF is the only managed-futures ETF whose loading on the vendor index has been measured here: +0.671 [+0.513, +0.829] against a frozen 0.50 bar. CTA, KMLM, FMF and WTMF are all `rejected` against the same bar. RSST delivers the exposure as notional rather than capital, and its own loading has never been measured.",
     cost: "85 bp for DBMF and 99 bp all-in for RSST, plus a distribution tax drag of 2.09 pp/yr and 0.32 pp/yr respectively. Once the equity each displaces is subtracted, that is 143.9 bp against 4.5 bp — the wrapper, not the strategy, decides the tax outcome.",
     overlap:
-      "Trend is the one engine on this site genuinely uncorrelated with equity. It overlaps with nothing else here, which is why its diversification credit survives even when its mean does not.",
+      "Trend is the one engine here uncorrelated with equity. It overlaps with nothing else here, which is why its diversification credit survives even when its mean does not.",
     roleInPortfolio:
       "A sleeve sized by the drawdown it changes, not by the return it might add. The resampled probability that the overlay is the deeper drawdown is 6.9% at 30% of notional and then doubles from 10.8% to 18.9% between 58% and 60% — a cliff, not a ramp, and the reason the practical ceiling sits near 55%.",
     portfolios: ["candidate"],
@@ -449,7 +449,7 @@ export const families: readonly StrategyFamily[] = [
       note: "Its up-beta is 0.45 against a down-beta of 0.86, and the record before 2007 is a backtest.",
     },
     evidenceFor: [
-      "Catastrophe bonds genuinely pass the correlation screen at about 0.10 to equity.",
+      "Catastrophe bonds pass the correlation screen at about 0.10 to equity.",
       "Merger arbitrage is borderline rather than refuted: MERFX earned +2.06%/yr over cash across ten years, +0.30% across five.",
     ],
     evidenceAgainst: [
@@ -535,7 +535,7 @@ export const families: readonly StrategyFamily[] = [
     name: "Asset location",
     claim: "Which account holds which fund changes terminal wealth.",
     inPractice:
-      "It does, by about 10 bp a year, and it is the one decision on this site that genuinely requires a calculator rather than a rule: the ranking between developed and emerging markets inverts between two live US dividend rates, so any page that states one ordering is wrong for a large share of its readers.",
+      "It does, by about 10 bp a year, and it is the one decision here that requires a calculator rather than a rule: the ranking between developed and emerging markets inverts between two live US dividend rates, so any page that states one ordering is wrong for a large share of its readers.",
     mechanism:
       "`priority = (recurring tax if held in taxable) − (irrecoverable withholding if sheltered)`. For a domestic asset the second term is zero and this collapses to the familiar rule. For a foreign fund it does not: §408(e)(1) exempts the account from tax, so §904's numerator is zero and foreign withholding is paid and permanently lost inside a traditional IRA and a Roth alike.",
     certainty: "contractual",
@@ -622,7 +622,8 @@ export const families: readonly StrategyFamily[] = [
     cost: "None directly. The cost is the drawdown you have to sit through.",
     overlap:
       "It dominates everything else on this site. A 30-percentage-point change in equity share is worth roughly five times the largest factor tilt priced here.",
-    roleInPortfolio: "The first decision, and the one the evidence is most honestly silent on.",
+    roleInPortfolio:
+      "The first decision, and the one this evidence is silent on. It turns on facts about you rather than about markets, which is why no page here sets it.",
     portfolios: ["control", "candidate"],
     tickers: ["VTI", "BND"],
     sources: [equityShare, recommendation],

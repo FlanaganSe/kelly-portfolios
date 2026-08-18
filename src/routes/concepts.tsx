@@ -138,16 +138,12 @@ export default function Concepts() {
 
       <Prose as="section">
         <p>
-          Every page here leans on a small set of terms. This one says what they mean and why they change an answer,
-          rather than only what they are.
-        </p>
-        <p>
           Four carry most of the argument. <a href="#tracking-error">Tracking error</a> decides whether an edge can ever
           be demonstrated. <a href="#geometric-vs-arithmetic-return">Geometric versus arithmetic return</a> decides
           which number you actually compounded. <a href="#capture-fraction">Capture fraction</a> decides how much of a
           long-short premium a long-only holder receives, and it has no single value.{" "}
-          <a href="#certainty-class">Certainty class</a> decides what a line of return may be called at all. Read those
-          and the rest of the site reads itself.
+          <a href="#certainty-class">Certainty class</a> decides what a line of return may be called at all. Every other
+          page assumes those four.
         </p>
       </Prose>
 
@@ -156,8 +152,8 @@ export default function Concepts() {
           The short course
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
-          Fourteen claims, each readable in under a minute, ordered so that each one depends only on the ones above it.
-          Read these before tilting anything.
+          {lessons.length} claims, ordered so that each one depends only on the ones above it. Read these before tilting
+          anything.
         </p>
 
         <ol class="mt-8 space-y-8">

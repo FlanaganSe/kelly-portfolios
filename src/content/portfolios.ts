@@ -402,7 +402,7 @@ const disciplined: PortfolioCandidate = {
   tax: "This is the tax portfolio. The emerging-market withholding input, 9.853%, is below ten of eleven funds' filed rates, and correcting it would move the placement ranking rather than the size of the prize.",
   rebalancing: control.rebalancing,
   placement:
-    "Bonds dominate the shelter by more than four to one at every rate. Between developed and emerging the ranking inverts at a 21.51% qualified dividend rate, which sits between two live US brackets — so this is the one decision on the site that genuinely requires a calculator.",
+    "Bonds dominate the shelter by more than four to one at every rate. Between developed and emerging the ranking inverts at a 21.51% qualified dividend rate, which sits between two live US brackets — so the ordering has to be computed for your own bracket rather than asserted.",
   evidenceSummary:
     "The largest reliably available result in this repository, and the only one whose sign is known before the fact. It is also the one most often quoted at the wrong size: it is measured against your own counterfactual, never against an index.",
   editorialNote:

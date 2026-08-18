@@ -77,8 +77,8 @@ export default function Research(): JSX.Element {
 
       <PageHeader
         eyebrow="Research"
-        title="Ten families, each asked the same ten questions"
-        standfirst="The useful comparison between two return engines is not which one sounds better. It is which one survives the same interrogation: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
+        title={`${families.length} families, each put through the same interrogation`}
+        standfirst="The useful comparison between two return engines is not which one sounds better. It is which one survives the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
         lastChecked={familiesAsOf}
       />
 

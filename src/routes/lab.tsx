@@ -51,6 +51,17 @@ import { tiltVerdict } from "~/lib/tilt";
  */
 const HistoryPanel = lazy(() => import("~/components/lab/HistoryPanel"));
 
+/** Tenths of a year are false precision on a horizon driven by a basis-point slider. */
+function formatYears(years: number | null): string {
+  if (years === null) {
+    return "never";
+  }
+  if (years > 500) {
+    return ">500";
+  }
+  return years >= 10 ? String(Math.round(years)) : years.toFixed(1);
+}
+
 const PATHS = 2000;
 
 /**
@@ -830,8 +841,7 @@ export default function Lab(): JSX.Element {
             </li>
             <li>
               The edge and the tracking error are <strong>yours</strong>. The presets are figures this repository has
-              measured, but nothing here forecasts a premium, and no figure on this site is evidence that any portfolio
-              will beat an index.
+              measured; none of them is a forecast.
             </li>
             <li>
               Fees are counted only through the weighted expense ratio, which omits spread, brokerage, realised

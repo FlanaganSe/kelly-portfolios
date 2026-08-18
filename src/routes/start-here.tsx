@@ -35,7 +35,7 @@ const cheapIndex = requireRow("vs-cheap-index");
 
 /** A probability as printed, without inventing precision the arithmetic does not have. */
 function formatPercent(probability: number | undefined): string {
-  return probability === undefined ? "—" : `${(probability * 100).toFixed(1)}%`;
+  return probability === undefined ? "—" : `${Math.round(probability * 100)}%`;
 }
 
 /** The contrast the site is built around: a proposal, and the defensible version of it. */
@@ -113,7 +113,7 @@ export default function StartHere(): JSX.Element {
         <div class="grid gap-8 sm:grid-cols-3">
           <Action
             href="/portfolios"
-            title="Four portfolios"
+            title={`${portfolios.length} portfolios`}
             detail="Ordered by how much of each construction's case is a fact and how much is a bet. Exact weights, notional exposure, and what would break each one."
           />
           <Action
@@ -123,8 +123,8 @@ export default function StartHere(): JSX.Element {
           />
           <Action
             href="/research"
-            title="Ten return engines"
-            detail="Each asked the same ten questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
+            title={`${families.length} research families`}
+            detail="Each put through the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
           />
         </div>
       </section>
@@ -153,8 +153,8 @@ export default function StartHere(): JSX.Element {
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
           The same money, arranged two ways. On the left, a construction that diversifies the return engine and accepts
-          leverage to do it. On the right, only the lines this repository has measured and can defend, unlevered. The
-          difference between them is the whole argument of the site.
+          leverage to do it. On the right, only the lines this repository has measured and can defend, unlevered. One
+          runs at 1.32× of its own capital; the other at 1.00×.
         </p>
 
         <div class="mt-8 grid gap-10 lg:grid-cols-2">
@@ -209,8 +209,9 @@ export default function StartHere(): JSX.Element {
           Where a return can actually come from
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
-          Five engines, in descending order of how certain their sign is. A portfolio is a decision about how much of
-          each to hold, and almost every disagreement about investing is really a disagreement about this ordering.
+          {ENGINE_ORDER.length} engines, in descending order of how certain their sign is. A portfolio is a decision
+          about how much of each to hold, and almost every disagreement about investing is really a disagreement about
+          this ordering.
         </p>
 
         <ol class="mt-8 space-y-6">
@@ -254,14 +255,16 @@ export default function StartHere(): JSX.Element {
         <Prose class="mt-8">
           <p>
             Exposure is measurable and skill is not. A fund's factor loadings can be estimated tightly enough to act on;
-            its alpha cannot — the median alpha this instrument could detect is about 5 percentage points a year,
-            against a true cross-sectional dispersion of roughly 1.25. That asymmetry is the single most useful thing on
-            this site, and it decides what a portfolio should be built out of.
+            its alpha cannot. The median alpha this instrument could detect is{" "}
+            <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span> percentage points a year, against a true
+            cross-sectional dispersion of about <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span>. So a
+            portfolio built out of loadings rests on something that can be estimated, and one built out of alpha does
+            not.
           </p>
           <p>
             Nothing here is promoted. The status vocabulary is closed and nothing has passed <em>exploratory</em>, which
             permits a product to stand in for a real one in a later experiment and permits nothing else.{" "}
-            <em>Rejected</em> means a test written down before the result fired — not that the effect is zero.
+            <em>Rejected</em> means a test written down in advance fired — not that the effect is zero.
           </p>
         </Prose>
 
