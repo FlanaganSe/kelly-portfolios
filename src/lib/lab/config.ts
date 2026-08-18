@@ -75,7 +75,9 @@ export function parseHoldings(raw: string): LabHolding[] {
     const ticker = normaliseTicker(tickerPart);
     // `Number("")` is 0, so an empty weight would otherwise become a real 0% line.
     const percent = percentPart.trim() === "" ? Number.NaN : Number(percentPart);
-    if (ticker === null || !Number.isFinite(percent) || percent < 0) {
+    // A weight that rounds away is a typo, not a position: admitting it here and then
+    // rounding it to zero is exactly the silent 0% line this parser exists to refuse.
+    if (ticker === null || !Number.isFinite(percent) || percent < 0 || (percent > 0 && roundPercent(percent) === 0)) {
       continue;
     }
     const existing = holdings.findIndex((one) => one.ticker === ticker);
@@ -162,7 +164,9 @@ export function totalPercent(holdings: readonly LabHolding[]): number {
 
 /** Scales the weights to 100% and keeps the total exact by adjusting the last line. */
 export function normalise(holdings: readonly LabHolding[]): LabHolding[] {
-  const total = totalPercent(holdings);
+  // The raw sum, not `totalPercent`: dividing by an already-rounded denominator moves
+  // real weight onto the last line, and rounds a tiny portfolio to a total of zero.
+  const total = holdings.reduce((sum, one) => sum + one.percent, 0);
   if (total <= 0 || holdings.length === 0) {
     return [...holdings];
   }

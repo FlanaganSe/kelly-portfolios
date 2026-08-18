@@ -35,7 +35,7 @@ export interface ExposureBarProps {
   readonly class?: string;
 }
 
-/** Four fills that stay distinct in greyscale. Solid ink first, then increasing air. */
+/** Five fills that stay distinct in greyscale. Solid ink first, then increasing air. */
 const FILLS = ["solid", "diagonal", "dots", "cross", "sparse"] as const;
 
 function fillFor(index: number): (typeof FILLS)[number] {

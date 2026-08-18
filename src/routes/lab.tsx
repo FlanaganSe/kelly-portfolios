@@ -218,15 +218,30 @@ export default function Lab(): JSX.Element {
     }
   });
 
-  const paths = createMemo(() =>
-    simulateRelativePaths({
+  /**
+   * The simulation reads four numbers, and `settled` is a whole fresh object on every
+   * change — so tracking `settled()` directly re-ran a 150–250 ms simulation whenever a
+   * weight was typed. This memo is the narrow gate: it changes only when one of the four
+   * inputs does.
+   */
+  const simulationInputs = createMemo(
+    () => ({
       edgeBp: settled().edgeBp,
       trackingErrorBp: settled().trackingErrorBp,
       horizonYears: settled().horizonYears,
-      paths: PATHS,
       seed: settled().seed,
-    })
+    }),
+    undefined,
+    {
+      equals: (a, b) =>
+        a.edgeBp === b.edgeBp &&
+        a.trackingErrorBp === b.trackingErrorBp &&
+        a.horizonYears === b.horizonYears &&
+        a.seed === b.seed,
+    }
   );
+
+  const paths = createMemo(() => simulateRelativePaths({ ...simulationInputs(), paths: PATHS }));
 
   const liveSeries = (): OutperformanceSeries => ({
     id: "live",
@@ -610,7 +625,7 @@ export default function Lab(): JSX.Element {
                         class="control cursor-pointer"
                         onClick={() =>
                           update({
-                            edgeBp: Math.round(result().portfolioEdgeBasisPoints * 10) / 10,
+                            edgeBp: Math.round(result().portfolioEdgeBasisPoints),
                             trackingErrorBp: Math.round(result().portfolioTrackingErrorBasisPoints),
                             benchmark: "cheap-index",
                           })
@@ -785,7 +800,7 @@ export default function Lab(): JSX.Element {
             note="How far below its own relative peak a typical path fell."
           />
           <Figure
-            label="Paths behind for 3 years or more"
+            label="Paths spending 3 years or more below their own best"
             value={`${(paths().fractionWithLongDrought * 100).toFixed(0)}%`}
           />
           <Figure label="Paths ahead at the end" value={`${(paths().fractionAhead * 100).toFixed(1)}%`} />

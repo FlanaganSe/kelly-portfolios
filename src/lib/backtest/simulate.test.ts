@@ -237,3 +237,19 @@ describe("simulate", () => {
     expect(result.returns[0]).toBeCloseTo(0.005, 12);
   });
 });
+
+describe("a duplicated symbol", () => {
+  it("refuses two different expense ratios for one fund", () => {
+    expect(() =>
+      simulate({
+        allocations: [
+          { symbol: "FLAT", weight: 0.5, expenseRatio: 0.0003 },
+          { symbol: "FLAT", weight: 0.5, expenseRatio: 0.01 },
+        ],
+        series: seriesMap(flat),
+        rebalance: "never",
+        applyExpenses: true,
+      })
+    ).toThrow(/different expense ratios/);
+  });
+});

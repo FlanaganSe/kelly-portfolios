@@ -61,6 +61,6 @@ export interface SimulationResult {
   readonly weights: ReadonlyMap<string, number>;
   /** Capital left in cash because the weights summed to less than one. */
   readonly cashWeight: number;
-  /** Weighted expense ratio actually charged, annual decimal. Zero when off. */
+  /** Weighted expense ratio at the target weights, annual decimal. Zero when off. */
   readonly effectiveExpenseRatio: number;
 }

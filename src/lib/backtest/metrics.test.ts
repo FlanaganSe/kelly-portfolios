@@ -206,3 +206,10 @@ describe("rolling windows", () => {
     expect(fractionAhead([])).toBeNull();
   });
 });
+
+describe("a series that never falls", () => {
+  it("has no recovery month, rather than reporting month zero", () => {
+    expect(maxDrawdown([0.01, 0.01]).recoveryIndex).toBeNull();
+    expect(maxDrawdown([]).recoveryIndex).toBeNull();
+  });
+});

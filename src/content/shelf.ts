@@ -1150,7 +1150,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "The one product that delivers this benchmark's exposure: the interval clears the frozen 0.50 bar, one regressor explains 52% of its monthly variance, and the loading holds across the fixed split and all 19 rolling windows with no sign change. It trailed a cost-free vendor index by 0.48 pp/yr against an 0.85% fee.",
+      "The one product that delivers this benchmark's exposure: the interval clears the frozen 0.50 bar, one regressor explains 52% of its monthly variance, and the loading holds across the fixed split and all 19 rolling windows with no sign change. It trailed a cost-free vendor index by 0.48 pp/yr against its 85 bp fee.",
     caution:
       "Its 2.09 pp/yr distribution tax drag is 2.5 times its own fee, 143.9 bp of it incremental over the equity it displaces — 43 bp of portfolio return at a 30% weight. Bought pro rata it keeps none of the funding-rule gap. The post-publication trend interval includes zero and fails Holm.",
     wrapper: {
@@ -1240,7 +1240,7 @@ export const shelf: readonly ShelfFund[] = [
     status: "rejected",
     verdict:
       "`rejected` at +0.303 on 78 months — the tightest interval of the four rejections and clearly under the 0.50 bar, so this is a delivered-exposure verdict rather than an underpowered one.",
-    caution: "The dearest of the five at 0.98%.",
+    caution: "The dearest of the five tested at 98 bp.",
     wrapper: {
       delta: 1,
       fundingCapturePercent: 0,
@@ -1257,7 +1257,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "WTMF",
     name: "WisdomTree Managed Futures Strategy Fund",
     category: "managed-futures",
-    mandate: "A managed-futures book that the frozen screen admitted and nobody asked for.",
+    mandate: "A systematic managed-futures book, audited against the same frozen 0.50 loading bar as the rest of the shelf.",
     expenseRatioBp: 66,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -1433,7 +1433,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Its 2026-02-28 N-PORT reads 84.80% equity plus 83.63% gold futures, 1.684× gross, `delta` 0.182, keeping 81.8% of the funding-rule gap. The all-in overlay cost is about 0.60%/yr once ≤40 bp of gold-futures financing is added to the 0.20% fee.",
     caution:
-      "As a sleeve it contributes +0.09 pp/yr against an MDE₈₀ of 1.68 — unmeasurable. Its 1.53 pp/yr distribution tax drag is the second largest on the wrapper shelf (1.31 restated at a 24%/15%-federal plus 9.3%-CA investor), and the naive rule 'shelter the highest drag' puts it at the front of the queue, which is exactly backwards.",
+      "As a sleeve it contributes +0.09 pp/yr against a detection floor of 1.68 — unmeasurable. Its 1.53 pp/yr distribution tax drag is the second largest on the wrapper shelf (1.31 restated at a 24%/15%-federal plus 9.3%-CA investor), and the naive rule 'shelter the highest drag' puts it at the front of the queue, which is exactly backwards.",
     wrapper: {
       delta: 0.182,
       fundingCapturePercent: 81.8,
@@ -1465,7 +1465,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Essentially nothing is known. What the repository has is: an equity ETF leg at 49.8% of net assets plus a futures top-up and a trend sleeve, $36.3m at 2026-02-28, new, an overlay rather than pro rata, and not in Experiment 008. Its fee is `not found` and so is its all-in cost. No `delta` was computed, no loading measured, no tax drag, no survival data, no test of any kind.",
+      "Almost nothing is measured. What the repository has is: an equity ETF leg at 49.8% of net assets plus a futures top-up and a trend sleeve, $36.3m at 2026-02-28, new, an overlay rather than pro rata, and not in Experiment 008. Its fee is `not found` and so is its all-in cost. No `delta` was computed, no loading measured, no tax drag, no survival data, no test of any kind.",
     caution:
       "This is the largest gap in the candidate portfolio, and the missing `delta` is why. A 49.8% base leg sits in the range where a wrapper is *worse* than selling equity outright — the worked warning is that 40% equity with 30% trend gives `delta = 2.0`, and HOLD is the audited instance of that failure at `delta = 0.333`, costing 0.81 pp/yr. A gross-notional figure cannot distinguish that case from the good one. MATE may be in that category and this repository has not checked. The 49.8% below is the only leg filed here; the futures and trend legs are `not found`, so the list is incomplete by construction.",
     wrapper: {
@@ -1500,7 +1500,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "JPFP",
     name: "JPMorgan Managed Futures Plus ETF",
     category: "capital-efficient",
-    mandate: "A stated equity-plus-trend stack that does not exist yet.",
+    mandate: "A stacked managed-futures and US equity ETF, listed two months before this shelf was read.",
     expenseRatioBp: 59,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -1511,7 +1511,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "It has not commenced operations (497K of 2026-04-15). A 0.59% unitary fee with no waiver and no recoupment is the only fact that exists. Net assets, holdings and commencement date are all `not found`, so its 100/100 claim rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else.",
+      "When this repository last read it, it had not commenced operations (497K of 2026-04-15), and a 0.59% unitary fee with no waiver and no recoupment was the only fact that existed. It has since listed — see the filings block below — but no holdings, loading or record have been examined here, so its stack still rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else."
     caution:
       "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 0.99%, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. It is named in three places as a standing review trigger, not as a holding. No `delta`, no loading, no record.",
     wrapper: {

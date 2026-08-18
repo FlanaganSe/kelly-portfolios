@@ -122,6 +122,14 @@ function collapse(held: readonly Allocation[]): {
   for (const allocation of held) {
     targets.set(allocation.symbol, (targets.get(allocation.symbol) ?? 0) + allocation.weight);
     if (allocation.expenseRatio !== undefined) {
+      const seen = expenses.get(allocation.symbol);
+      // Summing two lines of one fund is right; quietly taking the second line's fee is
+      // not, because the result would be a cost the portfolio never paid.
+      if (seen !== undefined && seen !== allocation.expenseRatio) {
+        throw new RangeError(
+          `"${allocation.symbol}" appears twice with different expense ratios, ${seen} and ${allocation.expenseRatio}`
+        );
+      }
       expenses.set(allocation.symbol, allocation.expenseRatio);
     }
   }

@@ -99,7 +99,9 @@ export function maxDrawdown(returns: readonly number[]): Drawdown {
   const path = growthPath(returns);
   let peak = path[0] ?? 1;
   let peakIndex = 0;
-  let worst: Drawdown = { depth: 0, peakIndex: 0, troughIndex: 0, recoveryIndex: 0 };
+  // `recoveryIndex` is null rather than 0 for a series that never fell: 0 is a valid
+  // index and would render as "recovered in month zero".
+  let worst: Drawdown = { depth: 0, peakIndex: 0, troughIndex: 0, recoveryIndex: null };
 
   for (let index = 1; index < path.length; index += 1) {
     const value = path[index] ?? 1;

@@ -100,3 +100,22 @@ describe("weights", () => {
     expect(normalise([{ ticker: "A", percent: 0 }])).toEqual([{ ticker: "A", percent: 0 }]);
   });
 });
+
+describe("weights too small to matter", () => {
+  it("drops a weight that would round to zero rather than making it a real 0% line", () => {
+    expect(parseHoldings("C:1e-30")).toEqual([]);
+    expect(parseHoldings("C:0")).toEqual([{ ticker: "C", percent: 0 }]);
+  });
+
+  it("normalises a tiny portfolio instead of silently doing nothing", () => {
+    expect(
+      normalise([
+        { ticker: "A", percent: 0.004 },
+        { ticker: "B", percent: 0.004 },
+      ])
+    ).toEqual([
+      { ticker: "A", percent: 50 },
+      { ticker: "B", percent: 50 },
+    ]);
+  });
+});

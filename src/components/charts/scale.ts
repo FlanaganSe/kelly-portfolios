@@ -63,6 +63,14 @@ export function niceTicks(min: number, max: number, count = 5): number[] {
 
 /** Pads a domain outwards to the nearest gridline so the extremes are not clipped. */
 export function niceDomain(min: number, max: number, count = 5): [number, number] {
+  // A NaN or inverted domain produces a NaN scale, which `linePath` then skips point by
+  // point — a silently blank chart rather than a visible failure. Refuse it here instead.
+  if (!Number.isFinite(min) || !Number.isFinite(max)) {
+    return [0, 1];
+  }
+  if (min > max) {
+    return niceDomain(max, min, count);
+  }
   if (min === max) {
     return [min - 0.5, max + 0.5];
   }
