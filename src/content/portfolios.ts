@@ -548,7 +548,7 @@ const candidate: PortfolioCandidate = {
       percent: 30,
       engine: "trend",
       why: "107.2% equity plus roughly 100% managed-futures notional per dollar, at delta −0.07 — the sleeve keeps essentially all of the funding advantage a standalone trend fund gives away.",
-      status: null,
+      status: "exploratory",
       certainty: "risk-premium",
     },
     {

@@ -46,7 +46,7 @@ export const ClaimTag: Component<ClaimTagProps> = (props) => (
       ·
     </span>
     <span class="eyebrow">
-      <span class="sr-only">This section is a </span>
+      <span class="sr-only">Section type: </span>
       {claimKindMeta[props.kind].label}
     </span>
   </span>
