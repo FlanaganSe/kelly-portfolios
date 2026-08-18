@@ -1,17 +1,45 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
+import { For, type JSX } from "solid-js";
 import { PageHeader } from "~/components/PageHeader";
+import { NAV_ITEMS } from "~/lib/nav";
 
-export default function NotFound() {
+/**
+ * The 404, which is also reached from a detail route whose id or ticker is unknown —
+ * so it has to be useful to someone who followed a stale link to a fund, not only to
+ * someone who mistyped a URL.
+ */
+
+const WHERE: Readonly<Record<string, string>> = {
+  "/": "The argument, and the two benchmarks hiding inside “beat the market”.",
+  "/portfolios": "Four constructions with exact weights, notional exposure and named failure modes.",
+  "/research": "Ten return engines, each asked the same ten questions.",
+  "/funds": "Every fund this repository has priced or regressed, with its delivered exposure.",
+  "/lab": "Set an edge and a tracking error and see the wait they imply.",
+  "/concepts": "The vocabulary, defined once.",
+  "/method": "How a result earns a status here, and where the machinery is broken.",
+};
+
+export default function NotFound(): JSX.Element {
   return (
     <>
       <Title>Not found — Portfolio Edge</Title>
-      <PageHeader title="No such page" standfirst="That URL does not match anything on this site." />
-      <p>
-        <A href="/" class="link">
-          Back to the start
-        </A>
-      </p>
+      <PageHeader
+        title="No such page"
+        standfirst="That address does not match anything here. If you followed a link to a fund, it may be one this repository has never audited — the shelf holds what was priced, not the whole market."
+      />
+      <ul class="space-y-4">
+        <For each={NAV_ITEMS}>
+          {(item) => (
+            <li class="border-l-2 border-rule-strong pl-4">
+              <A href={item.href} class="link font-medium">
+                {item.label}
+              </A>
+              <p class="mt-0.5 max-w-measure text-sm text-ink-muted">{WHERE[item.href]}</p>
+            </li>
+          )}
+        </For>
+      </ul>
     </>
   );
 }
