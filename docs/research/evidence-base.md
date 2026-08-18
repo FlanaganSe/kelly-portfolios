@@ -33,7 +33,8 @@ exceeds the bar, a null result carries almost no information.**
 | Same, pooled over three regions | + 2 regional files | **2.62** best of twelve cells | 2.0 pp/yr | **no**, narrowly and measured |
 | Same, momentum pooled | 3 regional momentum files | **4.98**, the worst here | 2.0 pp/yr | **no**, by ~2.5× |
 | Long-only capture fraction | 6 sorted portfolios, 750 mo | interval width ≈ 0.29 | a factor of 2 | **yes**, once a benchmark is named — but it may not multiply a loading, being one |
-| Size premium | quintile/decile sorts, 750 mo | 4.7 pp/yr | 2.0 pp/yr | **no** |
+| Size premium, US quintile/decile sorts | 750 mo, one region | 4.7 pp/yr | 2.0 pp/yr | **no** |
+| **Size premium, SMB pooled over three regions** | 384 joint months, 3 five-factor files | **2.47** pp/yr | 2.0 pp/yr | **no**, narrowly — and the ex-US legs are **measured, not transferred**: developed ex-US +0.49 against 2.83, emerging −0.05 against 3.07 |
 | Fund **factor loading** | N-PORT, 46–78 months | interval half-width ≈ 0.10 | 0.15 loading | **yes** |
 | Fund **alpha**, US factor shelf | N-PORT, 72 months | median **4.52** pp/yr | ≈1.25 pp/yr true dispersion | **no**, by ~3.6× |
 | Fund alpha, ex-US shelf | N-PORT, 27–78 months | median 3.23 pp/yr | ≈1.25 pp/yr | **no** |

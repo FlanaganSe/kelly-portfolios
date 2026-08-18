@@ -118,7 +118,21 @@ that could not see two thirds of the shelf.
    in its own cell. **65% of the shortfall magnitude survives** across the ten funds the
    small-value column reaches, against the US shelf's 73%.
    [§what the ex-US comparator decided](#what-the-ex-us-comparator-decided-measured).
-9. **`GWX` is rejected because its comparator did not exist for one of its months.** The
+9. **An intended loading is half of what a fund sells, and the other half decides the
+   ex-US shelf.** Decomposing all twelve ex-US `exploratory` products into every leg on
+   their own panel shows the two small-value funds carrying **SMB +0.671 and +0.431**
+   against −0.11 to −0.29 for the four large-value funds, and AVDV carrying **RMW +0.386**
+   as well. The developed-ex-US size premium was then **measured rather than assumed** and
+   is **+0.49 `[−1.44, +2.44]` against a 2.83 pp/yr floor** — not signable, exactly as the
+   US one is not. So **large value dominates small value on this shelf too**, on evidence
+   gathered independently of the shelf that first produced that conclusion.
+   [§what the value funds also buy](#what-the-value-funds-also-buy).
+10. **The ex-US shelf's filed turnover had never been read, and it is far lower than every
+   assumption used against it — except IDMO's.** AVDV files **4%/yr**, the lowest of any
+   factor product in either audit; seven of eight file 4–23%. **IDMO files 105%**, which at
+   `k = 1.7` costs 1.79 pp/yr and takes 43% of its gross momentum exposure.
+   [§turnover](#what-these-funds-file-for-turnover-which-nobody-had-read).
+11. **`GWX` is rejected because its comparator did not exist for one of its months.** The
    largest intended loading in the entire ex-US audit, +0.856, is `rejected` on clause (c)
    alone under all seven bases — and under four of them its "cheap replication" is **VEA at
    weight 1.000**, a developed large-cap fund standing in for a developed small-cap fund,
@@ -799,6 +813,125 @@ basis containing a developed-ex-US small-value or a cheaper momentum column.**
 their point estimates are positive and their windows are short. This is the status the
 specification predicted a short window would produce.
 
+### What the value funds also buy
+
+**The table above reports each fund's *intended* loading and nothing else, and for a
+small-value fund that hides half of what it sells.** Every product that reached
+`exploratory` is decomposed below into **all five non-market legs on its own region's
+panel**, over Experiment 009's own window for it, so the HML column reproduces the table
+above exactly and the SMB column beside it is measured on the same months. Intervals are
+the same joint block bootstrap Experiment 009 uses — rows resampled across the fund return
+and the whole factor design together, mean block 6, 95% — and they reproduce that
+experiment's published HML intervals to about 0.01 on an independent seed.
+
+`as of 2026-08-18`, `exploratory`, from
+`studies/_exus_value_tilt_tables.py` reading run `f6ce1701324546b28c03598c935b7819`.
+**Every panel below is `developed_ex_us`**, which is the only thing that makes any of these
+numbers comparable to one another
+([conclusion 5](#conclusion)). Bold marks a leg whose 95% interval excludes zero.
+
+| Ticker | Mandate | mo | **HML** | 95% | **SMB** | 95% | RMW | CMA | UMD |
+| --- | --- | ---: | ---: | --- | ---: | --- | ---: | ---: | ---: |
+| **DFIV** | value | 51 | **+0.662** | `[+0.53, +0.85]` | −0.114 | `[−0.26, +0.03]` | −0.001 | −0.122 | +0.016 |
+| **IVLU** | value | 77 | **+0.475** | `[+0.33, +0.60]` | −0.121 | `[−0.32, +0.07]` | +0.053 | +0.020 | −0.083 |
+| **AVIV** | value | 51 | **+0.489** | `[+0.36, +0.63]` | **−0.285** | `[−0.47, −0.13]` | −0.031 | −0.182 | −0.109 |
+| **EFV** | value | 77 | **+0.368** | `[+0.26, +0.49]` | **−0.160** | `[−0.31, −0.06]` | −0.006 | +0.170 | −0.069 |
+| **AVDV** | small-cap value | 75 | **+0.510** | `[+0.32, +0.78]` | **+0.671** | `[+0.46, +0.84]` | **+0.386** | −0.114 | +0.008 |
+| **DISV** | small-cap value | 45 | **+0.495** | `[+0.36, +0.64]` | **+0.431** | `[+0.23, +0.65]` | +0.049 | −0.005 | −0.088 |
+| **SCZ** | small cap | 77 | −0.032 | `[−0.16, +0.14]` | **+0.551** | `[+0.43, +0.64]` | +0.041 | +0.036 | −0.024 |
+| **IDMO** | momentum | 77 | +0.218 | `[−0.13, +0.52]` | −0.164 | `[−0.34, +0.04]` | +0.040 | **−0.394** | **+0.540** |
+| *IMTM†* | momentum | 77 | +0.088 | `[−0.04, +0.21]` | **−0.306** | `[−0.44, −0.16]` | −0.012 | **−0.241** | **+0.505** |
+| *FNDC†* | small cap | 76 | +0.035 | `[−0.08, +0.14]` | **+0.671** | `[+0.55, +0.83]` | +0.010 | +0.215 | **−0.062** |
+| *SCHC†* | small cap | 76 | +0.122 | `[−0.08, +0.35]` | **+0.629** | `[+0.46, +0.77]` | −0.017 | −0.194 | +0.082 |
+| *DFIS†* | small cap | 45 | +0.119 | `[−0.03, +0.28]` | **+0.591** | `[+0.46, +0.73]` | −0.027 | −0.080 | −0.014 |
+
+**Three readings, and the first is the one that matters.**
+
+1. **The two developed-ex-US small-value funds buy a large size exposure alongside the
+   value one, and the ex-US size premium cannot be signed.** AVDV loads **+0.671
+   `[+0.46, +0.84]`** on SMB and DISV **+0.431 `[+0.23, +0.65]`**, against −0.11 to −0.29
+   for all four large-value funds. The developed-ex-US SMB premium is **+0.49
+   `[−1.44, +2.44]` against a 2.83 pp/yr detection floor**, and pooled over three regions
+   **+0.33 against 2.47** ([factor persistence,
+   §Size](factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment)).
+   **That was measured here rather than transferred from the US result**, precisely because
+   HML is three times larger abroad and the size premium might have been too. It is not.
+   An exposure whose premium cannot be signed contributes variance and no priced
+   expectation, so **the value exposure a small-value fund sells arrives wrapped in a leg
+   nobody can price** — the same finding the US shelf produced, reached independently.
+2. **AVDV carries a second unpriceable leg: RMW +0.386 `[+0.12, +0.65]`.** RMW is
+   `rejected` in this repository and its developed-ex-US post-publication premium is
+   **+1.68 `[−0.79, +4.01]` against a 3.08 floor**. **AVDV is the only value or small-value
+   fund in the table carrying two side loads whose intervals exclude zero**; among the
+   funds Experiment 015 rejected, IMTM carries two as well (SMB −0.306 and CMA −0.241).
+3. **IDMO's momentum leg is clean and its investment leg is not.** UMD **+0.540
+   `[+0.39, +0.70]`** on a developed-ex-US premium that *is* signable (+8.35 `[+4.82,
+   +11.66]` against a 5.21 floor), but **CMA −0.394 `[−0.72, −0.06]`** on one that is not
+   (+0.53 against 3.53, `rejected`). Its SMB and RMW legs both span zero and are small.
+   See [§what IDMO costs](#what-idmos-momentum-actually-costs).
+
+### What these funds file for turnover, which nobody had read
+
+**Experiment 009 read every fund's fee from its own 497K and read no fund's turnover.**
+The Item 3 portfolio turnover rate is `min(purchases, sales) / average net assets` and
+**excludes an ETF's in-kind creations and redemptions**, which is the one-sided measure
+`core/costs.py` wants. `as of 2026-08-18`, most recent fiscal year, from the filings
+Experiment 009's `product_facts.json` already cites — plus SPDW's, which that file does
+not carry.
+
+| Fund | Fee %/yr | **Turnover %/yr** | Trading cost at `k = 1.7` | Filing |
+| --- | ---: | ---: | ---: | --- |
+| **AVDV** | 0.36 | **4** | 0.068 | 497K 2025-12-31, `0001710607-25-000402` |
+| **DFIV** | 0.27 | **6** | 0.102 | 497K 2026-02-27, `0001816125-26-000082` |
+| **DISV** | 0.42 | 8 | 0.136 | 497K 2026-02-27, `0001816125-26-000069` |
+| **AVIV** | 0.25 | 11 | 0.187 | 497K 2025-12-31, `0001710607-25-000400` |
+| **IVLU** | 0.31 | 16 | 0.272 | 497K 2025-11-28, `0001193125-25-302146` |
+| **SCZ** | 0.40 | 18 | 0.306 | 497K 2025-11-28, `0001193125-25-302167` |
+| **EFV** | 0.31 | 23 | 0.391 | 497K 2025-11-28, `0001193125-25-302176` |
+| **IDMO** | 0.25 | **105** | **1.785** | 497K 2026-02-27, `0001193125-26-079059` |
+| *VEA*, the incumbent | 0.03 | 4 | 0.068 | 497K 2026-04-28, `0000923202-26-000061` |
+| *SPDW*, its alternative | 0.03 | 3 | 0.051 | 497K 2026-01-31, `0001193125-26-031210` |
+
+**Two facts, and they run in opposite directions.**
+
+- **The ex-US value shelf rotates less than the US one, and far less than any assumption
+  this repository has used.** AVDV files **4%/yr** — the lowest of any factor product in either
+  audit, level with the incumbent it would displace — against the 20–40% Experiment 007
+  assumed for an annual book-to-market reconstitution. Seven of the eight file 4–23%. On
+  cost, these are not expensive funds to own beyond their fee.
+- **IDMO is the exception and it is not close.** 105%/yr is 26 times the incumbent's and
+  4.5 times the dearest value product here, and at `k = 1.7` it costs **1.79 pp/yr**
+  before the fee. It is still far below the academic momentum construction's 300–900%
+  ([factor persistence, cost](factor-persistence.md#cost-as-a-function-of-turnover)),
+  which is the point: the shelf product is a much cheaper instrument than the factor, and
+  is still the dearest thing on this shelf to trade.
+
+### What IDMO's momentum actually costs
+
+The chain in `studies/value_tilt.py` names every field for HML, so a UMD loading is not
+run through it — that would be the mislabelling `outperformance_horizon.aggregate` raises
+over. The components are reported instead and the multiplication is done in the open.
+
+| Term | Value | Where it comes from |
+| --- | ---: | --- |
+| IDMO's UMD loading | +0.540 | the decomposition above |
+| VEA's UMD loading | +0.006 | the same fit on the incumbent |
+| delivered | **+0.535** | the difference |
+| developed-ex-US UMD premium, post-publication | **+8.351** | reproduces Experiment 006's cell exactly |
+| gross | **+4.47 pp/yr** | delivered × premium |
+| fee over the incumbent | 0.22 | filings above |
+| trading over the incumbent, `k = 1.7` | **1.72** | 105% against 4% |
+| **net, per dollar of sleeve** | **+2.53 pp/yr** | `k = 1.0` gives +3.24 |
+| **cost as a share of gross** | **43%** | 28% at `k = 1.0` |
+
+**Cost eats between a quarter and a half of the gross exposure**, on the only premium
+reading that clears its own floor, before anything is said about whether a 120-month
+detection threshold of 6.99 pp/yr can confirm any of it. The conclusion
+[portfolio recommendation §4](portfolio-recommendation.md#4-verdict-on-the-proposed-portfolio)
+already reached on turnover grounds survives with a measured turnover in place of an
+assumed one, and **the number moved by an order of magnitude in the product's favour
+without changing the verdict.**
+
 `rejected`: EFG, GWX and DIHP on clause (c) alone, losing 2.76, 1.61 and 1.23 pp/yr to
 their replications; RODM and IMFL on (a), (c) and (d); JHMD on (a) and (b); JHEM and MFEM
 on (a). **Three of those five clause (c) figures are decided by a basis that was not there
@@ -1290,9 +1423,16 @@ transition that way for INTF and Experiment 009 carried it to three more funds.
 2. **Does any N-PORT return agree with an independent measurement?** Unanswered for all
    134 funds across the three audits. Experiment 013's cross-source check refused for
    **109 of 109** tickers, exactly as its two predecessors did.
-3. **What do realised distributions and turnover do to the cost ranking?** Neither is in
-   N-PORT; both are in N-CSR as unstructured HTML. **Clause (d) is evaluated without the
-   distribution term the falsifier names.**
+3. **What do realised distributions do to the cost ranking?** Not in N-PORT and in N-CSR
+   as unstructured HTML. **Clause (d) is still evaluated without the distribution term the
+   falsifier names.** The *turnover* half of this question is now answered for the eight
+   ex-US products a tilt could be bought through and for the US shelf's nine systematic
+   ones, from Item 3 of each fund's own summary prospectus
+   ([§turnover](#what-these-funds-file-for-turnover-which-nobody-had-read)) — and in both
+   audits the filed figure is far below the assumption it replaced. **No clause (d) verdict
+   was recomputed on it**, because the filed rate arrived after Experiment 009 ran and
+   re-scoring a frozen clause on a fact discovered afterwards is the thing a frozen
+   specification exists to prevent.
 4. **Would an out-of-sample replication change clause (c)?** Weights fitted on a prior
    window would remove the look-ahead. Not runnable on 72 months — or on the ex-US shelf's
    44 to 78 — without shortening the estimation window further, and **this is still the

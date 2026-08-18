@@ -308,6 +308,16 @@ sample, but it is a ratio of a small number to a smaller one — the post-public
 reading of **−9.679** against an interval of `[0.287, 1.389]` shows exactly how little
 that means. This is a plain quintile or decile spread and is **not** the Fama–French SMB.
 
+**It is not signable as Fama–French SMB either, and not on any panel.** This table is a
+plain quintile and decile spread in the United States alone, which was the objection to
+reading it as a verdict on size. That objection is now answered: SMB itself, on all three
+regional five-factor panels over the same eras Experiment 005 froze, reads **+0.33 pp/yr
+pooled `[−1.32, +2.06]` against a 2.47 detection floor**, developed ex-US **+0.49** against
+2.83 and emerging −0.05
+([factor persistence, §Size](factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment)).
+**The ex-US legs were measured rather than carried over from this table**, because HML is
+three times larger abroad and nothing said size would behave the same. It does.
+
 ---
 
 ## Cost, as a separate column

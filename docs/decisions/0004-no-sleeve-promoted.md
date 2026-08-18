@@ -85,6 +85,14 @@ Consequently:
   carries one — IMTM to IDMO at 0.25% against its own 0.30%, the other three to a
   developed-ex-US small-value column
   ([Experiment 015](../research/factor-products.md#do-the-twelve-incumbents-hold-four-of-them-do-not)).
+  **The seven survivors have since been decomposed into every leg on their own panel**, and
+  the two small-value ones — AVDV and DISV — carry SMB loadings of **+0.671 and +0.431**
+  against −0.11 to −0.29 for the four large-value funds, with AVDV carrying **RMW +0.386**
+  besides. Both legs are exposures to premia this repository cannot sign, so **the ex-US
+  shelf reproduces the US shelf's ordering: large value ahead of small value**, from
+  independent data ([factor products](../research/factor-products.md#what-the-value-funds-also-buy)).
+  Nothing about that promotes the large-value funds; two of them carry raw alphas their own
+  windows can measure and both are negative.
 - ~~**No number from `research/` may appear in the shipped application as a
   finding.**~~ **Lifted by [decision 0007](0007-application-may-render-research.md)**,
   which replaces the ban with four constraints. Everything else in this record stands
@@ -107,7 +115,7 @@ unsigned**, which is why every product row below points back at a factor row.
 | Profitability (RMW) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Reopening needs a materially longer out-of-sample window — roughly a further decade — or a genuinely independent, non-French premium series. Not another pass over these files |
 | Momentum | A net premium computed from **observed** turnover rather than assumed tiers, with one-sided monthly turnover below 50%. **The second condition is met and was met by a frame correction rather than by a new product.** "The entire retail shelf clearing a $1bn / 0.60% screen is one fund" was true of the 2019Q4 census only: the corrected frame carries six — MTUM, SPMO, XSMO, XMMO, VFMO and JMOM — of which four reach `exploratory` with loadings from +0.372 to +0.462 and shortfalls from −2.49 to −4.53 pp/yr. The premium condition is untouched and still binds. **The ex-US momentum path, which is where Experiment 006 located the premium, is two funds and one of them does not survive its own comparator**: IDMO at 0.25% holds `exploratory` under every basis tested, and IMTM at 0.30% is `rejected` once the basis carries IDMO ([Experiment 015](../research/factor-products.md#do-the-twelve-incumbents-hold-four-of-them-do-not)) |
 | Investment (CMA) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Re-entry requires a new frozen specification on a genuinely post-2026 window. The current rejection stands |
-| Size | A premium test that has never been run, plus the same product protocol |
+| Size | **The premium test has now been run and it fails, on every panel this repository can reach.** SMB is **+0.33 pp/yr pooled over three regions, `[−1.32, +2.06]`, against a 2.47 pp/yr detection floor**; developed ex-US +0.49 against 2.83, emerging −0.05, US +0.29 post-Banz ([factor persistence, §Size](../research/factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment)). **The ex-US legs were measured and not transferred**, which mattered because HML is three times larger abroad. The consequence is not a status for a factor but a restriction on every product row: **no chain may price an SMB loading**, so a small-value fund's size leg is variance with no priced expectation on both shelves. Reopening needs an instrument that can resolve below 2.5 pp/yr, which no pooling of these files can |
 | Trend | A multi-asset attribution leaving a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |
 | Rebalancing as return | A real, investable, low-correlation pair whose drift gap is genuinely below its `gamma_star`. **Half-met, and the half that is met does not promote anything.** Over 1963-2020 US against an equal-weight ex-US basket had a drift gap of 0.05 pp/yr against a `gamma_star` of 17.2 bp — the condition holds — but the correlation is **+0.75, not low**, the near-equal drift is known only in retrospect, and the measured prize is **12-18 bp/yr gross** ([rebalancing §6](../research/rebalancing-policy.md)). A rounding error is not a sleeve |
 | Anything fund-level | A licensed, survivorship-free, point-in-time total-return source covering the listed shelf from at least 2003, so the window is 240 months rather than 72. Required contents are specified in the research framework under "The next experiment" |

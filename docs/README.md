@@ -52,19 +52,24 @@ and current status.
   ingestion gate, `unresolved`: which published table was reproduced from which vintage, the
   two cells that do not, and the systematic 3–5% volatility band that follows.
 - [Factor persistence and decay](research/factor-persistence.md) — Experiments 001, 005 and
-  006. What HML, UMD, RMW and CMA did before and after publication across frozen eras in
-  three regions, **the measured effective sample size that pooling correlated regions
-  actually buys**, and why profitability and investment are closed on the public files.
+  006, plus the size study. What HML, UMD, RMW and CMA did before and after publication
+  across frozen eras in three regions, **the measured effective sample size that pooling
+  correlated regions actually buys**, why profitability and investment are closed on the
+  public files, and — measured rather than transferred — **why SMB cannot be signed on any
+  panel, ex-US included**.
 - [The long-only capture fraction](research/long-only-capture.md) — Experiment 007. What
   fraction of a long-short premium a long-only tilt delivers, measured from the portfolios
   the factor is assembled from. **Five defensible benchmarks disagree by 0.846**, so the
   rejection is of the premise that there is one number — and the fraction turns out to be
   **an HML loading rather than a multiplier**, so it may never multiply one. Also the first
-  test of size as a premium.
+  test of size as a premium — since extended to SMB on all three panels in
+  [factor persistence](research/factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment).
 - [Investable factor products](research/factor-products.md) — Experiments 002, 009, 013, 014 and 015.
   Which of 134 audited ETFs deliver the exposure they advertise, on both the US and the
   ex-US shelf, why a 72-month N-PORT window decides nothing about alpha, and why an ex-US
-  loading without its panel named is not a number. **The US half was re-run on a corrected
+  loading without its panel named is not a number. Every ex-US product at `exploratory` is
+  now decomposed into **all five legs**, which is what shows a small-value fund selling its
+  value exposure wrapped in an unpriceable size one. **The US half was re-run on a corrected
   census frame**: the 2019Q4 file carries no fund with an August fiscal year, so it could
   see 44 of the 109 auditable US products, and on the frame that sees all of them the
   cost verdict reverses for the funds it had been missing.

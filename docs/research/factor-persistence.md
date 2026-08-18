@@ -2,21 +2,26 @@
 
 **Question.** Do HML, UMD, RMW and CMA retain a positive, economically meaningful premium
 after publication — and when the United States window turns out to be too short to
-answer that, do independent regions supply the sample size it lacks?
+answer that, do independent regions supply the sample size it lacks? And, added later
+because a product decision turned on it: **can SMB be signed on any of the same panels?**
 
 **Decision it informs.** Whether any of the four factors earns a place in the
 [product audit](factor-products.md), and whether more public factor data is worth reading
 at all. Out of scope: investability, cost, whether publication *caused* any change, and
 any allocation.
 
-**Three experiments.** [Experiment 001](#experiment-001--the-united-states-grid) measured
-four factors across frozen pre- and post-publication eras in the US and left three
+**Three experiments and one study.** [Experiment 001](#experiment-001--the-united-states-grid)
+measured four factors across frozen pre- and post-publication eras in the US and left three
 `unresolved` on power grounds.
 [Experiment 005](#experiment-005--the-regional-replication) added developed-ex-US and
 emerging equity over the *same* eras, pooled under a cross-region joint block bootstrap,
 and **measured** how much effective sample size that bought.
 [Experiment 006](#experiment-006--regional-momentum) ran the identical design on UMD,
 using three regional momentum files nobody had downloaded.
+[The size study](#size-on-the-three-panels--a-study-not-an-experiment) adds a fifth factor
+to the same machinery, on the same files and eras, because a product decision downstream
+turned on whether the **ex-US** size premium could be signed and only the US one had ever
+been tested. **It froze no specification and is `exploratory`.**
 
 ---
 
@@ -28,6 +33,7 @@ using three regional momentum files nobody had downloaded.
 | **UMD** | **`exploratory`** | Pooled **+7.33 pp/yr**, `[+3.92, +10.31]`, positive in all three, surviving its best year (+6.65) and Holm at 0.0016. **But its detection threshold is 4.98 pp/yr, the worst here**, its regions are the least independent measured anywhere (1.33 effective, ρ̄ = 0.66), and **they crash together** — all three lost their worst calendar year in 2009 |
 | **RMW** | **`rejected`** | Pooled **+2.53 pp/yr** against its window's own minimum detectable effect of **2.62** — the premium is below the smallest one this window could resolve. Adding two regions did not fix it |
 | **CMA** | **`rejected`** | −1.39 pp/yr in the US, +0.20 pooled, against a 3.41 detection threshold |
+| **SMB** | **not signable, on any panel** | Pooled **+0.33 pp/yr**, joint 90% `[−1.32, +2.06]`, against a **2.47** detection floor — the sharpest size instrument here. Developed ex-US **+0.49** `[−1.44, +2.44]` against 2.83; emerging −0.05; US +0.29 post-Banz. **Measured rather than transferred**, because HML is three times larger abroad and nothing said SMB would not be ([§Size](#size-on-the-three-panels--a-study-not-an-experiment)) |
 
 **`rejected` under branch (b) has a precise meaning and it is not "the premium is
 zero".** Every independent region the public library distributes was added, the effective
@@ -375,6 +381,79 @@ regions; and the Carhart alternative date gives +6.71, changing no status.
 
 ---
 
+## Size, on the three panels — a study, not an experiment
+
+**The question this answers.** A developed-ex-US small-value fund carries an SMB loading
+near +0.5 to +0.7 beside its HML loading
+([factor products](factor-products.md#what-the-value-funds-also-buy)). Whether that leg is
+an exposure worth paying for depends on whether the **ex-US** size premium can be signed,
+and this repository has only ever tested the **US** one — as a quintile and decile spread
+over `Portfolios_Formed_on_ME`, not as SMB
+([Experiment 007](long-only-capture.md#momentum-and-size)). The US answer does not
+transfer either way: HML is three times larger outside the United States, so nothing says
+SMB behaves the same.
+
+**No specification was frozen before these numbers were seen, so this is `exploratory`
+and is a study rather than an experiment.** It reads the same three five-factor files
+Experiment 005 pins, over the same eras, with the same 12-month block bootstrap, the same
+10,000 resamples and the same conventional MDE₈₀. **It reproduces every published
+Experiment 005 and 006 developed-ex-US and emerging cell exactly** — HML +5.071 and
++7.584, RMW +1.681 and CMA +0.533 on their own 2014-01 boundary, UMD +8.351 — which is
+what licenses reading a new row beside them.
+
+**SMB's own boundary is 1982-01**, the first January strictly after
+[Banz (1981)](https://doi.org/10.1016/0304-405X%2881%2990018-0), *Journal of Financial
+Economics* 9(1), March 1981 — the same rule the four factors above use, applied to a fifth.
+**Outside the United States it makes no difference and cannot**: the international files
+begin 1990-07 and 1989-07 and are entirely post-Banz, so **ex-US SMB has no
+pre-publication era and no decay across a size boundary is measurable there at all.** The
+figures below therefore report SMB on HML's 1994-01 window as well, which is the window
+every product figure downstream uses.
+
+Percentage points per year. `90% interval` is the joint stationary block bootstrap;
+**MDE₈₀** is the smallest true premium the window could reject a zero mean for at 80%
+power, on the conventional standard error, as everywhere else on this page.
+
+| Panel | Era | Window | n | Premium | 90% interval | MDE₈₀ | HAC *t* |
+| --- | --- | --- | ---: | ---: | --- | ---: | ---: |
+| US | full sample | 1963-07…2025-12 | 750 | +2.15 | `[−0.41, +4.78]` | 3.30 | 1.52 |
+| US | post-Banz | 1982-01…2025-12 | 528 | **+0.29** | `[−2.22, +2.86]` | 3.80 | 0.19 |
+| US | on HML's window | 1994-01…2025-12 | 384 | +0.57 | `[−2.44, +3.73]` | 4.74 | 0.31 |
+| **Developed ex-US** | **full sample = post-Banz** | **1990-07…2025-12** | **426** | **+0.49** | **`[−1.44, +2.44]`** | **2.83** | **0.44** |
+| **Developed ex-US** | **on HML's window** | **1994-01…2025-12** | **384** | **+0.49** | **`[−1.55, +2.56]`** | **2.85** | **0.43** |
+| Emerging | full sample = post-Banz | 1989-07…2025-12 | 438 | +1.83 | `[−0.33, +4.16]` | 3.29 | 1.28 |
+| Emerging | on HML's window | 1994-01…2025-12 | 384 | −0.05 | `[−1.72, +1.59]` | 3.07 | −0.04 |
+| Both regions | recent decade | 2016-01…2025-12 | 120 | −1.31 / −2.19 | `[−4.28, +1.53]` / `[−5.19, +0.93]` | 3.66 / 4.15 | −0.86 / −1.30 |
+| **Pooled, three regions** | **1994-01…2025-12** | equal weights, joint | **384** | **+0.33** | **`[−1.32, +2.06]`** | **2.47** | **0.33** |
+
+**The ex-US size premium is not signable either, and the pooling that rescued HML does not
+rescue it.** Every interval on every panel contains zero, every point estimate sits below
+its own detection floor, and the pooled reading — **+0.33 against a 2.47 pp/yr floor** — is
+the sharpest instrument this repository owns for size and still cannot sign it. For
+comparison the same pooling gives HML **+4.74 against 3.35**, which is why one is
+`exploratory` and the other is not.
+
+**Three things this is not.**
+
+- **Not evidence that the size premium is zero.** The pooled floor of 2.47 sits *above* the
+  2.0 pp/yr materiality threshold, so this is branch (b): nothing was found *and* nothing
+  material could have been. Read it beside
+  [the resolution table](evidence-base.md#1-the-resolution-table--read-this-before-proposing-an-experiment).
+- **Not a formal rejection.** No falsifier was frozen for SMB, no multiple-testing family
+  contains it, and no clause fired. It is a measurement, and its consequence is a
+  restriction on how a *loading* may be priced, not a status for a factor.
+- **Not decay.** Outside the United States there is no pre-publication era to decay from.
+  Inside it, the post-Banz reading of +0.29 against a full-sample +2.15 is the same
+  before/after comparison this page refuses to read causally everywhere else.
+
+**The consequence is downstream and specific.** A fund's SMB loading is exposure to a
+premium nobody here can sign, on any panel, so it contributes variance and no priced
+expectation — pure drag on the geometric term. That is the argument that put a large-value
+fund ahead of a small-value one on the US shelf, and **it now survives the only test that
+could have overturned it abroad.**
+
+---
+
 ## The systematic volatility band, and what carries none
 
 The [Phase 1 gate](fama-french-reproduction.md) is **`unresolved`**: means, *t*-statistics
@@ -516,6 +595,12 @@ true correction**, which is why Holm is reported beside them throughout.
    says that it did not.
 6. **The 2026-01-onward window is the natural confirmatory test** and has not been read in
    any region. Six to eight months against a 2.6 pp/yr floor is not yet worth spending it.
+7. **SMB may not be priced into any chain, on any panel.** A fund's size loading is
+   exposure to a premium that three regions and 384 joint months cannot sign, so it enters
+   a growth calculation as variance and nothing else. This is what makes a large-value fund
+   beat a small-value one on both shelves
+   ([portfolio recommendation §5](portfolio-recommendation.md#5-what-each-tilt-costs-in-confidence-terms)),
+   and it is a restriction on how a loading is used rather than a status for a factor.
 
 ## Reproduce it
 
@@ -524,8 +609,15 @@ cd research
 uv run python -m portfolio_edge.experiments.exp_001_factor_decay --view-results
 uv run python -m portfolio_edge.experiments.exp_005_regional_replication --view-results
 uv run python -m portfolio_edge.experiments.exp_006_regional_momentum --view-results
+uv run python -m portfolio_edge.studies._exus_value_tilt_tables   # the size study
 uv run pytest tests/unit/test_experiments_exp_00{1,5,6}_*.py
+uv run pytest tests/unit/test_studies_exus_value_tilt.py
 ```
+
+The size study has **no run id, no spec hash and no ledger entry**, because it froze no
+specification and is not an experiment. It reads the pinned files above, prints its own
+reproduction of Experiment 005's and 006's developed-ex-US cells beside its new rows, and
+is `exploratory` for exactly that reason.
 
 | | Experiment 001 | Experiment 005 | Experiment 006 |
 | --- | --- | --- | --- |

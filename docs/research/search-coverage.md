@@ -108,6 +108,18 @@ programme-level pessimism about factor investing. Only the first is supported. T
 factors that did advance did so **because their premia are larger than the blind spot,
 not because the blind spot closed** — and both pages say so.
 
+**A fifth factor joined the list on 2026-08-18 and is the cleanest instance yet.** SMB was
+measured on all three panels with the same machinery and reads **+0.33 pp/yr pooled,
+`[−1.32, +2.06]`, against a 2.47 detection floor**
+([factor persistence, §Size](factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment)).
+The floor sits **above** the 2.0 materiality threshold, so the null was guaranteed in the
+same way — and the study says so in its own text rather than leaving it to this page. What
+makes it worth recording here is that the measurement was taken **because the US answer
+might not have transferred**: HML is three times larger outside the United States, so
+assuming SMB behaved the same way would have been a search failure of exactly the kind
+[§2](#2-what-has-never-been-tested) catalogues. It did transfer, and that is now a
+measurement rather than an assumption.
+
 **The consequence for round two is narrow and useful:** no further experiment on these
 files can resolve anything in the 0–2.6 pp/yr range, so a question in that range needs a
 different instrument, not a different pooling scheme. Decision 0005's reopening

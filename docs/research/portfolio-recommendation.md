@@ -288,9 +288,12 @@ investor holding appreciated taxable lots can get to without realising gain
 ([§7](capital-efficiency-and-breadth.md)). **A reader with no embedded gain may hold 0.50.
 Nobody should hold the optimum.**
 
-Everything else tested is out: momentum (MTUM), quality (QUAL, SPHQ), large-cap value
-(VTV), plain small-cap (VB), the other four managed-futures ETFs, rebalancing as a source
-of return, and the small-value corner as the literature defines it.
+Everything else tested is out: momentum (MTUM and IDMO), quality (QUAL, SPHQ), large-cap
+value (VTV), plain small-cap (VB), the other four managed-futures ETFs, rebalancing as a
+source of return, the small-value corner as the literature defines it, and **every
+developed-ex-US value and small-value product** — the last of these evaluated on
+2026-08-18 and left out, not overlooked
+([§5.2](#the-same-question-on-the-ex-us-shelf-where-the-premium-actually-is)).
 
 **"Leverage and return-stacking" left that list on 2026-08-16, and has not joined the
 table above.** [Capital efficiency and breadth](capital-efficiency-and-breadth.md) shows
@@ -400,6 +403,9 @@ better exists` means the alternatives were tested and lost.
 | **VTV**, large-cap value | HML +0.337, but a +2.57 pp/yr shortfall — and its replication is degenerate (VTI + VB), so read that as "value underperformed the market over these 72 months", not as a defect |
 | **VB**, plain small-cap | Largest shortfall on the shelf, +2.89 pp/yr; and **the size premium is not signable**: +1.91 `[−1.90, +6.00]` over 750 months against a 4.73 threshold |
 | **QUAL, SPHQ**, quality | RMW is `rejected` and closed on public data. **An unsigned premium makes the product's own quality irrelevant** |
+| **AVDV, DISV**, developed-ex-US *small* value | The same defect as AVUV, found independently abroad. Both carry an SMB loading of **+0.43 to +0.67** and the developed-ex-US size premium is **+0.49 `[−1.44, +2.44]` against a 2.83 pp/yr floor** — measured on the ex-US panels, not transferred. AVDV carries **RMW +0.386** as well, on a `rejected` factor. Both are last on growth per unit of tracking error among five candidates ([§5.2](#the-same-question-on-the-ex-us-shelf-where-the-premium-actually-is)) |
+| **DFIV, AVIV, IVLU, EFV**, developed-ex-US *large* value | **The strongest tilt candidates this repository has priced, and still absent.** They buy HML +0.37 to +0.70 on the one panel where the premium is signable, at 3.9–6.5 pp/yr of tracking error against VEA and 4–23%/yr of filed turnover. What keeps them out: DFIV's and AVIV's raw alphas are **measurably negative** on their own windows, IVLU's is not but its edge is smaller, and **nothing here is promoted** ([decision 0004](../decisions/0004-no-sleeve-promoted.md)) |
+| **IDMO**, developed-ex-US momentum | Delivers UMD **+0.540** on the one momentum premium that clears its own floor (+8.35 `[+4.82, +11.66]` against 5.21), and is excluded anyway: it files **105%/yr** of portfolio turnover against VEA's 4%, so cost takes **43% of the gross exposure**, and it carries **CMA −0.394** on a `rejected` factor |
 | **CTA, FMF, KMLM, WTMF** | Loadings 0.475, 0.303, 0.245, 0.099 against a 0.50 bar. Read KMLM as "not *this* index" — its own index holds no equity futures while AQR's holds nine |
 | **NTSX and any 90/60 return-stacked fund** | Needs **48.3 bp/yr** of Treasury excess return over cash before the overlay contributes, at the 15 bp OIS financing benchmark. **This row previously said 92.0 bp against a 58.70 bp basis; that basis was measured against special-collateral repo, which is not a rate a fund pays** ([structural and tax-aware edges](structural-and-tax-edges.md#3-section-1256-and-capital-efficiency-handled-honestly)). Both inputs remain forecasts |
 | **Leverage of any kind** | Zero, and it stays zero. Conditioned on an unlevered edge surviving the protocol; none has |
@@ -530,7 +536,7 @@ sleeve absorbs the five points.
 | --- | --- | --- |
 | **US 45 / international 35** | **Supported, as an investor choice.** No change required | A 56:44 US:ex-US split against the repository's declared 60:40. **No page here can distinguish them** — there is no global market-capitalisation series here and no experiment signed a regional tilt. Choose either and stop |
 | **"Other" 25%** | **Underspecified. Split it** | If bonds, they go in the shelter first by a factor of four. If managed futures at anything like 25%, far too large for a sleeve whose index is `unresolved` and whose only delivering product is one fund |
-| **Small-cap value** | **Keep it small, and buy the exposure rather than the label.** 0–20% of US equity, and **the growth case now favours a large-value fund over a small-value one** | The chain is `weight × (loading − VTI's loading) × premium − cost` and carries **no capture term**: a capture fraction *is* a loading ([identity (C)](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)), so the old reading discounted one exposure twice. On the pooled +4.74 a 20% AVUV tilt is **+43 bp/yr of edge and +21 bp of geometric growth**; on the US-only +1.57 the growth contribution is **−11 bp**. **The size leg is the problem**: a small-value fund carries an SMB loading near +0.85 whose premium this repository tested and could not sign, so it is variance with no priced expectation — DFUV and AVLV buy comparable HML at half the tracking error. Judged marginally it gets worse still: US small value's beta to an equity core is 1.083, so its credit is −0.181 pp/yr per unit weight |
+| **Small-cap value** | **Keep it small, and buy the exposure rather than the label.** 0–20% of US equity, and **the growth case now favours a large-value fund over a small-value one** | The chain is `weight × (loading − VTI's loading) × premium − cost` and carries **no capture term**: a capture fraction *is* a loading ([identity (C)](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)), so the old reading discounted one exposure twice. On the pooled +4.74 a 20% AVUV tilt is **+43 bp/yr of edge and +21 bp of geometric growth**; on the US-only +1.57 the growth contribution is **−11 bp**. **The size leg is the problem**: a small-value fund carries an SMB loading near +0.85 whose premium this repository tested and could not sign, so it is variance with no priced expectation — DFUV and AVLV buy comparable HML at half the tracking error. Judged marginally it gets worse still: US small value's beta to an equity core is 1.083, so its credit is −0.181 pp/yr per unit weight. **The same test abroad reaches the same answer from independent data**: the developed-ex-US size premium is +0.49 `[−1.44, +2.44]` against a 2.83 floor, and AVDV is fourth or fifth of five candidates ([§5.2](#the-same-question-on-the-ex-us-shelf-where-the-premium-actually-is)) |
 | **Momentum** | **Drop** | **Not because the premium is weak** — it is the largest gross factor measured here, pooled **+7.33 pp/yr**. Because its detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and **crash together**; the academic construction rebalances **monthly** with an assumed cost of 3.30–18.67 pp/yr against that 7.33; and the entire retail shelf is MTUM, `rejected` on cost |
 | **Managed futures** | **Keep. The account rule applies to DBMF and does not apply to RSST** | **Only DBMF's loading has been measured against the benchmark**, on three independent measurements, and the other fourteen listed funds are untested rather than rejected. DBMF's tax drag is 2.09 pp/yr — 2.5× its own fee, zero in a shelter, and 143.9 bp of it incremental over the equity it is sold to buy; **RSST's incremental drag is 4.5 bp and its account does not decide its sign.** RSST is also the vehicle that keeps the funding-rule benefit. **25% of capital is far too large for DBMF and is inside the range for RSST notional**, which is the distinction §1.3 insists on |
 
@@ -586,6 +592,8 @@ probability below is an **upper bound**: the machinery treats `e` as known.
 | The whole honest budget **vs a cheap index** | 46 bp | 313 bp | **0.792** | ~74 yr | ~245 yr |
 | Best case for a 20% small-value tilt, **AVUV** | **43 bp** | **312 bp** | **0.776** | **86 yr** | ~283 yr |
 | Worst case for the same tilt | **−29 bp** | 312 bp | **0.31** | never | never |
+| **An 8% developed-ex-US value tilt, DFIV** — a candidate, not a holding | **27 bp** | **48 bp** | **0.999** | **5 yr** | ~17 yr |
+| The same, alpha charged at what its own window measures | **−8 bp** | 48 bp | **0.171** | never | never |
 | Best case for a 15% trend sleeve in a shelter | 88 bp | 251 bp | 0.973 | 13 yr | ~44 yr |
 
 \* **assumed**, not measured, and the components are not independent.
@@ -733,6 +741,112 @@ Second, RPV's and VBR's alphas are also negative at −2.80 and −2.78, though 
 detection thresholds. Third, every window here is shorter than one value cycle. Fourth,
 **nothing here is promoted**: [decision 0002](../decisions/0002-no-research-grade-free-price-source.md)
 caps every product result at `exploratory`.
+
+### The same question on the ex-US shelf, where the premium actually is
+
+**Everything above is US.** The tilt is scoped to "0–20% of US equity", the products are
+US products, and the premium behind them is the weakest of the three this repository
+measures. **The developed-ex-US HML premium is +5.07 pp/yr `[+1.45, +9.05]` against a 3.67
+detection floor — signable — where the US one is +1.57 `[−2.28, +5.54]` against 5.03 and is
+not.** So the shelf where a value tilt would be most defensible has never been priced here,
+and the shelf where it is least defensible has been priced twice.
+
+**This section prices it, and one premise it was asked to check is simply false: no ex-US
+value or small-value fund is held anywhere in this recommendation, at 8% or at any weight.**
+[§1.2](#12-the-holdings) holds VEA for developed ex-US, and
+[§1.3](#13-the-two-optional-sleeves-and-nothing-else) lists exactly two optional sleeves,
+neither of them ex-US. What follows is therefore a
+**candidate** evaluation and changes no holding.
+
+`as of 2026-08-18`, `exploratory`, `k = 1.7`, an 8%-of-portfolio substitution **out of VEA**
+— which at the declared 60/30/10 equity split is about a third of the developed-ex-US
+sleeve. VEA's own loadings on the developed-ex-US panel are the incumbent term: **HML
++0.015 over 2019-08…2025-12 and −0.025 over the common window**, both small and both
+measured. Tracking error is realised against VEA, not borrowed from a fitted replication.
+
+**The window decides more than the fund, so both are reported.** These funds' filed
+histories run from 45 to 77 months and only one contains 2020; AVDV's volatility is
+20.1%/yr on its own window and 17.1% on the window all five share, which is enough to move
+a variance drag by more than the effect being measured. The ranking below is therefore
+computed on the **common 45 months, 2022-04…2025-12**, with each fund's own window beside
+it, and **the ordering is the same in both.**
+
+| Fund | mo | HML | SMB | Cost | Net edge | TE | **Growth** | CE γ=3 | **Growth / TE** | TE per unit HML | α | MDE α |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **DFIV** large value | 45 | **+0.698** | −0.13 | 0.27 | **+27.1 bp** | 47.6 bp | **+29.5 bp** | +34.2 bp | **0.620** | **8.2** | **−4.11** | 3.52 |
+| **AVIV** large value | 45 | +0.485 | −0.27 | 0.34 | +18.0 bp | **31.3 bp** | +18.0 bp | +18.1 bp | 0.576 | **7.7** | **−3.13** | 1.81 |
+| **IVLU** large value | 45 | +0.549 | −0.28 | 0.48 | +19.4 bp | 38.9 bp | **+21.4 bp** | +25.5 bp | 0.552 | 8.5 | −2.53 | 2.63 |
+| **AVDV** *small* value | 45 | +0.437 | **+0.51** | 0.33 | +16.1 bp | 40.5 bp | +16.4 bp | +17.1 bp | **0.406** | **11.0** | +2.47 | 3.96 |
+| **DISV** *small* value | 45 | +0.495 | **+0.43** | 0.46 | +17.4 bp | 48.3 bp | +18.4 bp | +20.2 bp | **0.380** | **11.6** | −0.21 | 3.98 |
+
+On each fund's own Experiment 009 window the same ordering holds with wider spacing:
+growth per unit of tracking error reads DFIV 0.512, AVIV 0.482, DISV 0.346, IVLU 0.320,
+AVDV 0.298. **AVDV is fourth or fifth of five in every window and on every premium, and the
+two small-value funds are the two worst on tracking error per unit of value exposure —
+11.0 and 11.6 against 7.7 to 8.5.**
+
+**Five readings.**
+
+1. **The US conclusion survives its only real test.** A small-value fund's extra tracking
+   error *is* its size leg — AVDV and DISV load **+0.51 and +0.43** on SMB against −0.13 to
+   −0.28 for the three large-value funds — and **the developed-ex-US size premium is not
+   signable: +0.49 `[−1.44, +2.44]` against a 2.83 pp/yr floor, pooled +0.33 against
+   2.47** ([factor persistence,
+   §Size](factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment)).
+   **That was measured on the ex-US panels and not carried over**, which is the whole point:
+   HML is three times larger abroad, so SMB might have been too. AVDV additionally carries
+   **RMW +0.386 `[+0.12, +0.65]`** on a `rejected` factor — two unpriceable legs, more than
+   any other value candidate on the shelf.
+2. **Growth is positive on all three premia, which it is not in the US.** On the US-only
+   post-publication premium the US tilt's growth contribution is negative at every weight.
+   Ex-US, the three defensible premia are **+5.07 post-publication, +4.79 full sample and
+   +4.74 pooled**, they differ by under 7%, and every fund's growth contribution is
+   positive on all three. **The reason is not the funds; it is that a signable premium and an
+   unsignable one are different objects**, and the developed-ex-US file's full sample and
+   post-publication window share 384 of 426 months, so no decay across HML's boundary can
+   be measured there and none is claimed.
+3. **This is the only tilt in the repository whose edge approaches its own detection
+   floor.** At 8% the 30-year MDE₈₀ is **21.6 bp against DFIV's +27.1 bp edge** — the first
+   time on this page the effect exceeds the floor rather than sitting three times under it.
+   The US comparison is 142 bp against 43. **That is a fact about tracking error, not about
+   value**: a developed-ex-US value fund tracks VEA at 3.9 to 6.0 pp/yr on the common
+   window and 4.4 to 6.5 on its own, where AVUV tracks VTI at 15.6. **It is still not a
+   demonstration**, because the floor treats the premium as known and the premium's own
+   interval `[+1.45, +9.05]` is four times wider than anything the floor measures.
+4. **Two of the three large-value funds are flattered by the chain and one is not.** The
+   chain prices exposure and **assumes alpha is zero**. DFIV's raw alpha is **−4.11 pp/yr
+   against a 3.52 detection floor** and AVIV's **−3.13 against 1.81** — both measurable, and
+   charging them against the tilt at 8% takes DFIV from +27.1 bp to **−8.2** and AVIV from
+   +18.0 to **−9.5**. IVLU's −2.53 is inside its 2.63 floor, DISV's −0.21 and AVDV's +2.47
+   are far inside theirs, and **a positive alpha is never credited**, so those three rows
+   stand. **On the alpha-charged reading the answer is IVLU**, at 0.552 growth per unit of
+   tracking error against AVDV's 0.406 and DISV's 0.380.
+5. **Why the ex-US large-value alphas are negative is not established here.** All four
+   large-value funds on the shelf read **−2.2 to −4.1** — DFIV, AVIV, IVLU and EFV — and
+   both small-value funds read about zero, on the same panel over overlapping months. That
+   is a pattern, not an explanation; candidate causes include the funds' indices differing
+   from the French developed-ex-US universe in Canada and Korea, foreign withholding, and
+   2022–2025 being one value cycle. **It is an
+   open question and it is the largest one on this section.**
+
+**Which fund, then.** On exposure alone, **DFIV** — the largest HML loading on the shelf at
++0.662 on its own window, the second-lowest turnover at 6%/yr, the lowest incremental cost
+at 0.27 pp/yr, and the best growth per unit of tracking error in every window and on every
+premium. Charging the alpha that its own window can measure, **IVLU**, which is the only
+large-value fund whose alpha is not measurably below its pedestal. **AVDV is not the answer
+under any reading**, and the reason is the same one that demoted AVUV: it sells a value
+exposure wrapped in a size exposure nobody can price. **Nothing here is promoted**, and no
+holding changes.
+
+**Two things absent, and both matter.** There is **no emerging-market value product at
+`exploratory`** — AVES and DFEV are `unresolved` on window length, so the region with the
+largest measured HML premium (+7.58 `[+4.34, +11.01]`) has nothing investable audited
+here. And **momentum**: IDMO delivers UMD +0.540 on a developed-ex-US premium of +8.35 that
+does clear its floor, but it files **105%/yr of portfolio turnover** — 26 times VEA's — so
+cost takes **43% of its gross exposure at `k = 1.7`**, and it carries a **CMA loading of
+−0.394** on a factor this repository `rejected`
+([factor products](factor-products.md#what-idmos-momentum-actually-costs)). §4's verdict on
+momentum survives with a measured turnover in place of an assumed one.
 
 **A 15% managed-futures sleeve.** Experiment 004 measured the **index** at +1.312 pp/yr of
 marginal growth against a risk-matched cash comparator, falling to **+0.883 post-publication
