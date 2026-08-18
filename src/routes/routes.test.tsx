@@ -5,9 +5,16 @@ import { afterEach, describe, expect, it } from "vitest";
 import { families } from "~/content/families";
 import { portfolios } from "~/content/portfolios";
 import { shelf } from "~/content/shelf";
+import Concepts from "~/routes/concepts";
+import Confidence from "~/routes/confidence";
+import EdgeBudget from "~/routes/edge-budget";
+import Evidence from "~/routes/evidence";
 import FundDetail from "~/routes/fund-detail";
 import Funds from "~/routes/funds";
 import Lab from "~/routes/lab";
+import Method from "~/routes/method";
+import Placement from "~/routes/placement";
+import Portfolio from "~/routes/portfolio";
 import PortfolioDetail from "~/routes/portfolio-detail";
 import Portfolios from "~/routes/portfolios";
 import Research from "~/routes/research";
@@ -176,5 +183,26 @@ describe("the lab's benchmark control", () => {
     // Three reference portfolios, three options. A missing option would render blank and
     // coerce an average-investor figure into an index-relative one on the next change.
     expect(select.querySelectorAll("option")).toHaveLength(3);
+  });
+});
+
+describe("the long-form pages", () => {
+  /**
+   * These pre-date the portfolio layer and read from the same content modules, so an
+   * edit made for a new page can break an old one silently. One assertion each: that it
+   * renders, and that the fact it exists to carry is on it.
+   */
+  it.each([
+    ["/reference", Portfolio, /reference construction/i],
+    ["/edge-budget", EdgeBudget, /109/],
+    ["/placement", Placement, /shelter/i],
+    ["/confidence", Confidence, /tracking error/i],
+    ["/evidence", Evidence, /exploratory/i],
+    ["/concepts", Concepts, /tracking error/i],
+    ["/method", Method, /status/i],
+  ])("renders %s", async (path, component, expected) => {
+    mount(path, path, component);
+    expect(await screen.findByRole("heading", { level: 1 })).toBeInTheDocument();
+    expect(document.body.textContent).toMatch(expected);
   });
 });
