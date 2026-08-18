@@ -79,6 +79,12 @@ describe("the portfolio library", () => {
     }
   });
 
+  it("tells the reader what the evidence would change about the proposal", async () => {
+    mount("/portfolios/candidate", "/portfolios/:id", PortfolioDetail);
+    expect(await screen.findByRole("heading", { level: 2, name: /what this evidence would change/i })).toBeInTheDocument();
+    expect(document.body.textContent).toContain("Drop IDMO");
+  });
+
   it("shows a not-found page for an unknown portfolio", async () => {
     mount("/portfolios/does-not-exist", "/portfolios/:id", PortfolioDetail);
     expect(await screen.findByRole("heading", { level: 1 })).toHaveTextContent(/no such page/i);

@@ -111,6 +111,12 @@ export interface FailureMode {
 
 export type Complexity = "low" | "moderate" | "high";
 
+/** A concrete change to the construction, and the measured reason for it. */
+export interface SuggestedChange {
+  readonly change: string;
+  readonly because: string;
+}
+
 export interface PortfolioCandidate {
   readonly id: string;
   readonly name: string;
@@ -140,6 +146,11 @@ export interface PortfolioCandidate {
   readonly evidenceSummary: string;
   /** Where this construction is editorial rather than measured. Never empty. */
   readonly editorialNote: string;
+  /**
+   * What this evidence would change about the construction, stated as specific swaps
+   * rather than as a general warning. Editorial, and marked as such on the page.
+   */
+  readonly suggestedChanges?: readonly SuggestedChange[];
   readonly benchmarkTicker: string;
   readonly sources: readonly Citation[];
   readonly asOf: AsOf;
@@ -678,6 +689,33 @@ const candidate: PortfolioCandidate = {
     "The obvious rule — shelter the highest tax drag — is exactly backwards here. It puts DBMF and GDE at the front and RSST near the back, when RSST is the one whose marginal contribution clears its own detection floor and the one that needs the shelter least.",
   evidenceSummary:
     "Two lines are `exploratory`, one is `unresolved`, one is `rejected` on the repository's own bar, and the largest holding has never been measured at all. The construction's case rests on a funding identity that is closed-form and solid, applied to a sleeve whose return this evidence cannot sign.",
+  suggestedChanges: [
+    {
+      change: "Drop IDMO and put the 5% back into VEA.",
+      because:
+        "Momentum's pooled detection floor is 4.98 pp/yr, the worst measured here, its three regions are worth 1.33 effective regions and all three lost their worst calendar year in 2009. IDMO turns over 105% a year, which takes 43% of the gross exposure in cost. This repository's product audit excludes it by name.",
+    },
+    {
+      change: "Drop AVES and hold the emerging sleeve plain in IEMG.",
+      because:
+        "AVES is `unresolved` on window length, and no comparator however expressive can move an emerging-market value product to `exploratory` on the windows available. The emerging HML premium is the largest measured anywhere here, at +7.58 pp/yr, and there is nothing audited to buy it with.",
+    },
+    {
+      change: "Take the 30% wrapper line to RSST specifically, or leave it out.",
+      because:
+        "Of the three, only RSST has a verified structure, a published dollar-for-dollar target, a computed delta of −0.07 and a measured tax drag. MATE has eight months, estimated expenses, no delta, and states §1256 mark-to-market outright — phantom income in a taxable account. JPFP has two months and $17.07m. None of the three has a measured trend loading.",
+    },
+    {
+      change: "Move AVLV to 20% and DFIV to 8%, the weights they were priced at.",
+      because:
+        "Those are the only two weights at which this repository publishes an edge, a tracking error and a growth contribution. At any other weight the figures have to be recomputed, which the lab will do — but the published line is the one that has been checked.",
+    },
+    {
+      change: "Decide the equity-versus-bond split before any of the above.",
+      because:
+        "Moving 60/40 to 90/10 is worth about +127 bp a year against 485 bp of tracking error — larger than every tilt on this page combined. This portfolio holds no bonds at all, which is a position rather than an oversight, and it should be a deliberate one.",
+    },
+  ],
   editorialNote:
     "This is a reader's proposal, priced against the same shelf as everything else here. It departs from this repository's research in three specific ways: it is levered, it holds a momentum fund the product audit excludes, and it holds an emerging value fund that is `unresolved`. Those are stated, not hidden.",
   benchmarkTicker: "VT",

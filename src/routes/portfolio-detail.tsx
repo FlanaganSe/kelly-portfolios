@@ -317,6 +317,32 @@ export default function PortfolioDetail(): JSX.Element {
               </dl>
             </Section>
 
+            <Show when={found().suggestedChanges}>
+              {(changes) => (
+                <Section id="changes" title="What this evidence would change">
+                  <p class="mb-6 max-w-measure text-base text-ink-muted">
+                    Specific swaps, not a general warning. Each is editorial — this repository promotes no sleeve — but
+                    each rests on a measurement named beside it.
+                  </p>
+                  <ol class="max-w-measure space-y-6">
+                    <For each={changes()}>
+                      {(one, index) => (
+                        <li class="flex gap-4 border-t border-rule pt-4">
+                          <span data-numeric class="shrink-0 text-lg font-semibold text-ink-faint tabular-nums">
+                            {String(index() + 1).padStart(2, "0")}
+                          </span>
+                          <div>
+                            <p class="text-base font-semibold text-ink">{one.change}</p>
+                            <p class="mt-1.5 text-sm text-ink-muted">{one.because}</p>
+                          </div>
+                        </li>
+                      )}
+                    </For>
+                  </ol>
+                </Section>
+              )}
+            </Show>
+
             <Section id="evidence" title="How much of this is evidence">
               <Prose>
                 <p>{found().evidenceSummary}</p>
