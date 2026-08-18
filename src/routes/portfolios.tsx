@@ -1,4 +1,4 @@
-import { Title } from "@solidjs/meta";
+import { Meta, Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
 import { DataTable } from "~/components/DataTable";
@@ -96,6 +96,10 @@ export default function Portfolios(): JSX.Element {
   return (
     <>
       <Title>Portfolios — Portfolio Edge</Title>
+      <Meta
+        name="description"
+        content="Four portfolio candidates with exact weights, notional exposure where it differs from capital, and what would break each one."
+      />
 
       <PageHeader
         eyebrow="Portfolios"

@@ -1,4 +1,4 @@
-import { Title } from "@solidjs/meta";
+import { Meta, Title } from "@solidjs/meta";
 import { A, useParams } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
 import { Callout } from "~/components/Callout";
@@ -48,6 +48,7 @@ export default function ResearchDetail(): JSX.Element {
       {(found) => (
         <>
           <Title>{found().name} — Portfolio Edge</Title>
+          <Meta name="description" content={found().claim} />
 
           <nav aria-label="Breadcrumb" class="mb-6 text-sm">
             <A href="/research" class="link">

@@ -1,4 +1,4 @@
-import { Title } from "@solidjs/meta";
+import { Meta, Title } from "@solidjs/meta";
 import { A, useNavigate, useSearchParams } from "@solidjs/router";
 import { createMemo, createSignal, For, type JSX, lazy, onCleanup, Show, Suspense } from "solid-js";
 import { Callout } from "~/components/Callout";
@@ -273,6 +273,10 @@ export default function Lab(): JSX.Element {
   return (
     <>
       <Title>Lab — Portfolio Edge</Title>
+      <Meta
+        name="description"
+        content="Set an edge and a tracking error and see the horizon they imply, the distribution of outcomes, and how long a holder could sit behind."
+      />
 
       <PageHeader
         eyebrow="Lab"

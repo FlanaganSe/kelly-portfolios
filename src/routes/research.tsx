@@ -1,4 +1,4 @@
-import { Title } from "@solidjs/meta";
+import { Meta, Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
 import { PageHeader } from "~/components/PageHeader";
@@ -70,6 +70,10 @@ export default function Research(): JSX.Element {
   return (
     <>
       <Title>Research — Portfolio Edge</Title>
+      <Meta
+        name="description"
+        content="Ten return engines, each asked the same ten questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
+      />
 
       <PageHeader
         eyebrow="Research"

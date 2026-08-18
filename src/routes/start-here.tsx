@@ -1,4 +1,4 @@
-import { Title } from "@solidjs/meta";
+import { Meta, Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
 import { For, type JSX } from "solid-js";
 import { Callout } from "~/components/Callout";
@@ -64,6 +64,10 @@ export default function StartHere(): JSX.Element {
   return (
     <>
       <Title>Portfolio Edge — what beating the market actually costs</Title>
+      <Meta
+        name="description"
+        content="Two benchmarks hide inside “beat the market”. This site prices every route to outperformance the research could measure, says which are facts and which are bets, and lets you size them."
+      />
 
       <PageHeader
         title="Most of what you can reliably win is decided before you pick a fund."

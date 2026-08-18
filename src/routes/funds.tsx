@@ -1,4 +1,4 @@
-import { Title } from "@solidjs/meta";
+import { Meta, Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
 import { createMemo, createSignal, For, type JSX, Show } from "solid-js";
 import { DataTable } from "~/components/DataTable";
@@ -164,6 +164,10 @@ export default function Funds(): JSX.Element {
   return (
     <>
       <Title>Funds — Portfolio Edge</Title>
+      <Meta
+        name="description"
+        content="Every fund audited here, with the factor exposure it actually delivers, its cost net of securities lending, and the status of the evidence behind it."
+      />
 
       <PageHeader
         eyebrow="Funds"
