@@ -83,6 +83,19 @@ only because no clause fired; on growth it reads **−0.385** and clause (a) fir
 *proxy* either way, and whatever status it carries is a statement about the model, never
 about a real Treasury sleeve.
 
+**And on 2026-08-17 a measured series replaced it, which moves the cell and does not move
+the verdict.** Goyal–Welch `ltr` — 1,200 months of long-term US government total return
+from 1926-01, [in this repository's cache and manifests the whole time](evidence-base.md) —
+was run through the same construction on this experiment's own 420-month sample. The
+first-order marginal at the 10% reference weight moves from **−0.328 to −0.136 pp/yr**
+pro rata, and from **+0.258 to +0.450** under financed overlay funding before costs, or
+**+0.375** after a 60 bp borrow spread and a 15 bp fee. **The proxy was understating the
+exposure**, by 1.76 pp/yr of excess return and 3.5 pp/yr of volatility. It still does not
+clear anything: the pro-rata figure is far below the 0.30 bar, and the overlay figure sits
+at less than half its own 80%-power floor of **0.868 pp/yr**. The working is in
+[alternative sleeves audit §8.6](alternative-sleeves-audit.md); the two figures that matter
+are repeated here because this is the page whose cell they change.
+
 ### What is NOT established, and the page previously overstated
 
 Under pro-rata funding the credit is `sigma_p**2 (1 − beta)` per unit weight, so at
@@ -136,7 +149,7 @@ metrics.
 | Run kind | **exploratory** both; neither consumes the final holdout |
 | Ledger `run_id` | exp_010: `b27643d6…`, `7e5016a3…`, `11d76e90…`. exp_010b: `eb2279fa…`, `cb564f2a…` (quoted here) |
 | Sample | 1991-01…2025-12, **420 months**, one lead month read and never reported |
-| Base portfolios | `global_equity_core` 60/30/10 US / developed ex-US / emerging, monthly rebalanced — a **frozen round approximation of global market capitalisation, not an optimum**; `balanced_60_40`, 60% of that plus 40% cash. **Cash rather than bonds**, because no investable bond total-return history is available |
+| Base portfolios | `global_equity_core` 60/30/10 US / developed ex-US / emerging, monthly rebalanced — a **frozen round approximation of global market capitalisation, not an optimum**; `balanced_60_40`, 60% of that plus 40% cash. **Cash rather than bonds**, because no bond total-return history was thought to be available. **That reason expired on 2026-08-17** and the specification stays as frozen; a successor may use a bond leg for the base and this one may not |
 | Sleeves | 10 in the Holm family, plus one **modelled proxy** and one **calibration control** = 12 |
 | Funding legs | `pro_rata` (primary), `named_leg`, `cash` |
 | Weights | reference **10%**, cap 20%, grid step 0.005 |
@@ -178,6 +191,7 @@ difference** — what the CRRA metric was paying, or charging, for a change in r
 | `us_momentum_overlay` | **−0.299** | +0.734 | **+1.033** | `[−1.175, +0.570]` | 1.0000 | `rejected` (a, c, d) |
 | `dev_ex_us_equity` | **−0.348** | −0.345 | +0.003 | `[−0.573, −0.116]` | 1.0000 | `rejected` (a, c, d) |
 | **PROXY** `long_duration_treasury_proxy` | **−0.385** | +0.492 | +0.877 | `[−1.064, +0.330]` | — | `rejected` (a, c) |
+| *the same leg, **measured** `ltr` instead of the proxy, recomputed 2026-08-17 outside the frozen run* | **−0.136** *(first order, pro rata, gross)* | — | — | — | — | still below the 0.30 bar and inside its 0.868 floor |
 | **CONTROL** `cash_control` | **−0.643** | +0.166 | **+0.809** | `[−1.231, −0.036]` | — | `rejected` (a, c) |
 
 **Seven sleeves cleared the 0.30 bar on the certainty equivalent. Six fail it on growth**,
@@ -209,6 +223,7 @@ ordered exactly as `beta` is, because under pro-rata funding it *is* `sigma_p**2
 | `emerging_momentum_overlay` | funded long-short | −0.158 | +2.512 | +0.251 |
 | `trend_aqr` | funded long-short, vendor | −0.132 | +2.457 | +0.246 |
 | `long_duration_treasury_proxy` | **modelled proxy** | −0.018 | +2.208 | +0.221 |
+| *`ltr`, the **measured** long Treasury that replaced it* | Goyal–Welch index, gross | **−0.092** | **+2.370** | **+0.237** |
 | **`cash_control`** | **control** | **+0.001** | **+2.168** | **+0.217 = the ceiling** |
 | **`gold`** — added later, **exploratory** | benchmark price + assumed carry | **+0.000** | **+2.171** | **+0.217 = the ceiling** |
 | `dev_ex_us_small_value` | long-only | 0.809 | **+0.413** | +0.041 |
@@ -842,8 +857,13 @@ history at all.
    does anything the one-sleeve-at-a-time design cannot see, and whether the overlay
    funding rule — which gold clears and pro rata does not — should be the primary arm of
    the successor specification rather than its robustness arm.
-3. **An investable bond sleeve was not tested either.** The `GS10` duration proxy stands in
-   its place, and clause (u5) is what keeps it from resolving anything.
+3. **A measured bond sleeve is now tested and an investable one is now possible.** As of
+   2026-08-17 the `GS10` proxy is superseded by Goyal–Welch `ltr` and `corpr` as a
+   measurement and by eighteen funds' Item B.5 returns as an investable series
+   ([alternative sleeves audit §8](alternative-sleeves-audit.md)). Clause (u5) still binds
+   this frozen run, because its leg is still the proxy. **What is open is whether the
+   successor specification should carry a bond leg in the *base* rather than as a sleeve**,
+   which is the question [setting the equity share](setting-the-equity-share.md) asks.
 4. **The credit is a difference of two covariances from 420 months.** A credit that moves
    by more than itself when the correlation moves by 0.10 is not a finding, **and several
    of these do.**

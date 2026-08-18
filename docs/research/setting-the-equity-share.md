@@ -12,9 +12,11 @@ stands.
 **Out of scope.** A forecast of any market. A recommended number. Glide paths as products.
 Annuities, which change the problem rather than the parameter.
 
-`as of 2026-08-12`. Every measured figure regenerates from
+`as of 2026-08-17`. Every measured figure in §§1–7 regenerates from
 [`studies/equity_share.py`](../../research/src/portfolio_edge/studies/equity_share.py) and
-is pinned in `research/tests/unit/test_studies_equity_share.py`.
+is pinned in `research/tests/unit/test_studies_equity_share.py`; conclusion 8's figures come
+from [`studies/fixed_income_shelf.py`](../../research/src/portfolio_edge/studies/fixed_income_shelf.py)
+and are set out in [alternative sleeves audit §8](alternative-sleeves-audit.md).
 
 ---
 
@@ -57,10 +59,24 @@ is pinned in `research/tests/unit/test_studies_equity_share.py`.
    own data the equity/bond beta ran **+0.129 (1974–1999), −0.055 (2000–2022Q3), +0.116
    (2022Q4–2024Q2) and −0.109 since**. The all-bond portfolio drew down **−25.1%**, deeper
    than the 30/70 mix's −17.9%. **Bonds are not a floor.**
-8. **Status.** §§1–3 are **arithmetic** — closed forms, exact given their inputs, and not
+8. **Added 2026-08-17: TIPS do not fix that, and they are not a second asset.** The obvious
+   answer to point 7 is an inflation-indexed bond, on the argument that it responds to a
+   different state variable and so should hold its correlation where the nominal bond does
+   not. **Measured, it is the reverse.** On the 275 months where both exist, TIPS'
+   correlation to US equity is **+0.131 against the nominal ten-year's −0.076** — a gap of
+   3.5 standard errors — and their five-year-block dispersion is **0.200 against 0.114**.
+   TIPS correlate **+0.76 to +0.85** with the nominal bond funds they would sit beside, so
+   holding both is the same fake breadth as holding credit beside Treasuries. And the era
+   that would settle it cannot be reached: **no TIPS return exists before 2003**, which is
+   entirely inside the period when the nominal bond's correlation had already flipped
+   negative. Full working in
+   [alternative sleeves audit §8.4](alternative-sleeves-audit.md); the practical reading is
+   that **point 7's regime dependence has no fixed-income remedy on any evidence held here.**
+9. **Status.** §§1–3 are **arithmetic** — closed forms, exact given their inputs, and not
    evidence about any market. §§5–7 are **`exploratory` at best**: one sample, one country,
    one modelled bond series, and in the retirement case a permutation null that deliberately
-   destroys serial dependence. Nothing here is promoted.
+   destroys serial dependence. Point 8's TIPS figures are `exploratory` too and rest on a
+   modelled real-yield series over 275 months. Nothing here is promoted.
 
 ---
 
@@ -508,9 +524,18 @@ Campbell–Pflueger–Viceira sign pattern in its three long eras.
 
 **Assumed on this page, and nowhere else.**
 
-1. **The ten-year bond total return is modelled from `GS10`, not measured.** No total-return
-   bond series exists in this repository. The proxy carries no on-the-run premium, no
-   bid/ask, no tax and no index roll rules. **Every bond figure inherits it.**
+1. **The ten-year bond total return on this page is modelled from `GS10`, not measured**,
+   and **as of 2026-08-17 that is a choice rather than a necessity.** Goyal–Welch `ltr`
+   carries 1,200 months of measured long-Treasury total return from 1926-01 and eighteen
+   bond and TIPS ETFs carry investable Item B.5 returns from 2019-09
+   ([evidence base](evidence-base.md)). **This page has not been re-run on either**, and the
+   two are not interchangeable with the proxy: `ltr` is a roughly twenty-year exposure
+   against `GS10`'s ten-year point, they correlate **+0.663** over the 750 months both
+   cover, and the proxy is 3.4 pp/yr less volatile and 0.8 pp/yr lower in excess return.
+   Rebuilding §5's ladder on `ltr` would make the bond column a *different question*, not a
+   better answer to the same one — so it is left as it is, labelled, and the substitution is
+   named as open below. The proxy still carries no on-the-run premium, no bid/ask, no tax
+   and no index roll rules. **Every bond figure on this page inherits it.**
 2. **Monthly rebalancing** in every constant mix. Experiment 003 priced the policy difference
    at 0.3–1.2 bp/yr in cost and nothing in return, so this is small — but it is one.
 3. **`sigma` known and returns Gaussian and independent** in §2.1. Both fail in practice, and
@@ -532,6 +557,14 @@ full sample and 16th of 16 from 1963. What remains open is the *constant-mix lad
 countries — this page's rungs are still computed on US data alone, and rebuilding them
 per country is a study nobody has run.
 
+**One item joined it on 2026-08-17.** §5's ladder should be rebuilt on the **measured**
+`ltr` bond leg beside the modelled `GS10` one, so that the drawdown a reader is asked to
+choose from is a drawdown someone could have taken. It is a study, not an acquisition: the
+series is held. **What it will not change is the corner solution**, which is set by the
+equity premium over the safe leg and the zero-leverage rule — and `ltr`'s realised excess
+return over 1991-2025 is *higher* than the proxy's by 1.76 pp/yr at a *higher* volatility,
+so the bonds still come from the constraint.
+
 **Reproducibility.** `cd research && uv run python -m portfolio_edge.studies.equity_share`.
 Equity: Ken French `Mkt-RF + RF`, 1963-07…2025-12, 750 observations. Cash: the `RF` column.
 Bond: FRED `GS10`, **modelled** by pricing a semiannual par bond struck at last month's
@@ -551,6 +584,11 @@ and it decides nothing a frozen specification would have to adjudicate.**
    answers above a 4% real draw.
 3. **The bond–stock citation needs tightening.** The era boundaries and the
    three-currency-area attribution are not supported by anything reachable; §6 states what is.
+   **What §6 asserts is now also measured here**: on Goyal–Welch `ltr` against Ken French's
+   market, the correlation to equity spans **0.802** across twelve non-overlapping five-year
+   blocks, seven positive then five negative — compactly, **+0.352 to 1998-06 and −0.206
+   after**, on a break date chosen by eye and reported as descriptive. The sign change is
+   real and it is not a citation problem.
 4. **An application may render §7 and must render it whole.** Every input in step 1, the
    stop-here marker at step 2's last row, and the drawdown table with its limitations. **A
    calculator that outputs an equity share from an age or a risk questionnaire is the thing

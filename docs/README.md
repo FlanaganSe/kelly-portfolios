@@ -93,7 +93,11 @@ and current status.
   2007. The ordinary half, added 2026-08-17: SCHD is a value-and-quality tilt whose record
   is 87% its loadings, REITs give 112% of the downside for 80% of the upside, buffer funds
   sell twice as much upside as they buy downside, and spot bitcoin clears the admission
-  threshold on an input that has no defensible estimate.
+  threshold on an input that has no defensible estimate. **Fixed income, added the same
+  day**: SCHP costs a net 2.99 bp against TIP's 17.92 for a +0.9997 correlated exposure,
+  the bond leg is now measured back to 1926 and investable back to 2019, and TIPS are
+  **rejected** — +0.76 to +0.85 correlated with the nominal funds they would sit beside,
+  and *more* equity-correlated and *less* stable than nominal on identical months.
 - [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) — what the
   funding rule is worth (`a_p - sigma_p**2`, containing nothing about the sleeve), why the
   realised growth optimum on levered equity is unholdable at a -99.3% drawdown, how many

@@ -1,0 +1,32 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_cpiaucns",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS",
+  "retrieved_utc": "2026-08-18T02:52:46Z",
+  "sha256_raw": "ff0e1a1bb2af9364c1975f373cbac514f4f537fea9515c83c8b6994e8aa9a8a1",
+  "sha256_normalized": "a99093f0d89c1af302ff3daf6ed648a89999f3c474393afbd0cf0fe560fd199f",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "monthly",
+  "units": "index_1982_1984_eq_100",
+  "source_units": "index_1982_1984_eq_100",
+  "unit_transform": "identity",
+  "first_observation": "1913-01-01",
+  "last_observation": "2026-07-01",
+  "rows": 1363,
+  "availability_policy": "Roughly mid-month for the prior month, on the BLS schedule. Unlike the seasonally adjusted series this one is essentially final on first publication, which is why the indexed security references it. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "The published NSA index is not revised in the ordinary course; the seasonally adjusted twin is rewritten every year. That asymmetry is the reason 31 CFR 356 names this one. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "1 observations were the FRED missing token '.' and became missing values, not zeros: ['2025-10-01']",
+    "series definition: The NOT seasonally adjusted CPI-U index level. Registered because it, and not CPIAUCSL, is the reference index a Treasury Inflation-Protected Security's principal is indexed to: 31 CFR 356.2 defines the Index Ratio from the non-seasonally-adjusted CPI-U, applied with a THREE-MONTH LAG and interpolated within the month. Anything that models a TIPS return with the seasonally adjusted series is using a series the security does not reference. Measured 2026-08-17: monthly from 1913-01.",
+    "release timing: Roughly mid-month for the prior month, on the BLS schedule. Unlike the seasonally adjusted series this one is essentially final on first publication, which is why the indexed security references it.",
+    "revision behaviour: The published NSA index is not revised in the ordinary course; the seasonally adjusted twin is rewritten every year. That asymmetry is the reason 31 CFR 356 names this one.",
+    "transformation applied by the source: none (index level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: None months (construction: index_level). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable.",
+    "This, not CPIAUCSL, is the index a TIPS principal references: 31 CFR 356.2 defines the CPI as the monthly non-seasonally adjusted CPI-U, and appendix B section I paragraph B applies it with a three-month lag."
+  ]
+}

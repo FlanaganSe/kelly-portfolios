@@ -63,6 +63,13 @@ exceeds the bar, a null result carries almost no information.**
 | **Real-estate equity FF3 alpha, long proxy** | French `RlEst`, 750 mo | **5.00 pp/yr** | 2.0 pp/yr | **yes** — measured −6.66, *t* = −3.31. **But the proxy tracks VNQ at ρ = 0.797 and a 7.61 pp/yr difference**, so it does not transfer |
 | **Bitcoin's correlation to equity** | 137 months | SE ≈ 0.085 on ρ ≈ 0.34 | **0.5**, the boundary at which equation (4) stops being usable | **yes, narrowly** — +0.342 sits 1.9 SE inside the boundary and the 81-month sub-window reads +0.531, outside it |
 | **Bitcoin against equity, matched volatility** | 81 months | **15.58 pp/yr** | 0.30 pp/yr | **no**, by 52× — the measured gap is +0.10 |
+| **TIPS fund against VTI, matched volatility** | N-PORT, 79 months | **14.89 to 16.01 pp/yr** | 0.30 pp/yr | **no**, by ~50× — but SCHP's `[−24.22, −0.74]` excludes zero at less than 80% power, the same shape as the REIT funds |
+| **Nominal Treasury fund against VTI, matched volatility** | N-PORT, 79 months | **19.90 to 20.97 pp/yr** | 0.30 pp/yr | **no**, by ~66×. Every fund's excess return over this window is negative; it is a bond bear market and it settles nothing about returns |
+| **Credit fund against VTI, matched volatility** | N-PORT, 79 months | **6.74 to 12.23 pp/yr** | 0.30 pp/yr | **no** by the floor, **yes by the interval** — LQD, VCIT and HYG all exclude zero |
+| **Marginal bond sleeve at 10% weight, measured `ltr`** | 420 months | **0.868 pp/yr** | 0.30 pp/yr | **no**, by ~2.9× — measured −0.136 pro rata and +0.375 financed overlay, both inside the floor |
+| **TIPS against the nominal bond leg — one engine or two?** | 79 investable months; 275 modelled | SE ≈ 0.032 and 0.022 on ρ ≈ 0.8 | 0.75, the threshold [capital efficiency §3](capital-efficiency-and-breadth.md) uses | **yes** — +0.761 to +0.851 on funds, +0.798 modelled. **One engine** |
+| **TIPS' correlation to equity against nominal's, identical months** | 275 months | SE ≈ 0.060 on each | the sign difference | **yes** — **+0.131 against −0.076**, a gap of 3.5 SE, and TIPS' five-year-block dispersion is 0.200 against 0.114 |
+| **Is nominal bonds' correlation to equity era-dependent?** | 750 months, twelve 60-month blocks | block SE ≈ 0.13 at ρ ≈ 0 | a sign change | **yes, decisively** — span **0.802** across the twelve blocks, seven positive then five negative. The compact form, **+0.352 to 1998-06 and −0.206 after**, splits on a date chosen by eye and is descriptive |
 
 Three entries in that table are the whole shape of the programme's results. **Exposure is
 measurable and alpha is not** — 96 of 109 US funds reject a zero intended loading under
@@ -161,6 +168,7 @@ series above carry no measured band at all, which is weaker than a band of zero.
 | **Form 497K summary prospectus** | Fee tables and SEC-standardised **after-tax returns**, read by hand with the accession committed | Anything at scale — unstructured, read per fund |
 | **Form N-CSR** | Securities-lending income, capital-gain distributions from Financial Highlights, foreign taxes passed through | Anything at scale — unstructured HTML |
 | **Form N-CEN**, acquired 2026-08-17. 110 filings, 25 core funds, 8 fiscal years (`data-manifests/core_beta_shelf/`) | The only **structured** fund-cost source held: Item C.3.b tracking difference against the fund's own index, Item C.6 securities lending, Item C.8 **recoupable** waiver flags — per series, per fiscal year, as XML | Treat as audited. Every figure is filer-reported: BlackRock filed the before- and after-expense tracking difference *identically* for eight funds; Item C.3.b never says which share class a multi-class fund answered for; and Schwab's Item C.8 recoupment flag contradicts its own prospectus |
+| **N-PORT Item B.5, fixed-income shelf**, acquired 2026-08-17. 18 bond and TIPS ETFs, 79 common months 2019-09…2026-03 (`data-manifests/fixed_income_shelf/`) | The **only investable bond total-return history held**: TIPS, Treasuries by maturity bucket, aggregate and credit, each net of its own fee | Resolve a return. Every fund's excess return over the window is negative and the matched-volatility floor runs 6.7 to 21.0 pp/yr. It resolves correlations and nothing else |
 | **N-PORT holdings** | Position-level holdings, **not yet used by any experiment** | — |
 
 The 2019 start is the binding limitation and it selects on survival in the direction
@@ -188,7 +196,10 @@ series this repository holds for any strategy.
 | Source | Series | Status |
 | --- | --- | --- |
 | FRED | `TB3MS` (used as cash), `DGS3MO`, `DFF` (registered, not interchangeable) | measured |
-| FRED | `GS10` → a **modelled** rolled par-bond total return | **modelled, `research_grade = False`** |
+| FRED | `GS10` → a **modelled** rolled par-bond total return | **modelled, `research_grade = False`**, and **superseded as a measurement** by Goyal–Welch `ltr` — see the bond-leg section below |
+| FRED | `FII10` ten-year **real** constant-maturity yield, `fa8082c5`, 2003-01…2026-07 | **modelled** when turned into a return. Not interchangeable with `GS10`; **negative in 45 of 283 months**; carries a documented 2008-12-01 curve methodology break |
+| FRED | `T10YIE` ten-year breakeven inflation, `8ec9064b`, daily from 2003-01 | measured **price**, never a forecast — it contains an inflation risk premium and a TIPS liquidity premium of unknown sign |
+| FRED | `CPIAUCNS` non-seasonally-adjusted CPI-U, `ff0e1a1b`, monthly from 1913-01 | measured. **This, not `CPIAUCSL`, is the index 31 CFR 356 names for a TIPS principal**, with a three-month lag |
 | FRED | `CPIAUCSL` | measured; ends two months before the equity series |
 | FRED | `CBBTCUSD` (Coinbase bitcoin), `f48960f9`, 2014-12-01…2026-08-16, 4,277 daily rows | **exploratory.** One venue's 5 p.m. PST print, not the CME CF rate an ETP prices against, and **not redistributable** — Coinbase prohibits reproduction, so bytes stay uncommitted |
 | AQR | `Time-Series-Momentum-Factors-Monthly.xlsx`, sheet `TSMOM Factors`, `33470930`, 1985-01…2026-05 | **vendor series, author-maintained, reconstructed on every update** |
@@ -205,9 +216,42 @@ financing basis anywhere**. And **the sheet name must be pinned as well as the h
 AQR changes URLs, workbook names and sheet names, and a manifest without a sheet is not
 reproducible.
 
-**There is no investable bond total-return history in this repository.** The `GS10`
-proxy stands in for one everywhere a bond appears, and every bond figure inherits its
-absence of on-the-run premium, bid/ask, tax and index roll rules.
+### The bond leg — resolved 2026-08-17, and the source was already here
+
+This section previously read *"there is no investable bond total-return history in this
+repository"*. That was wrong in a way worth recording rather than quietly fixing: **two
+of the sources listed above already carried one.**
+
+| Leg | Source | Coverage | Investable? | Status |
+| --- | --- | --- | --- | --- |
+| Long-term US government total return | **Goyal–Welch `ltr`**, `1e4b6527` | monthly, **1926-01…2025-12, 1,200 months** | no — an index, gross of fee | **measured** |
+| Long-term US IG corporate total return | **Goyal–Welch `corpr`**, same file | monthly, 1926-01…2025-12 | no | **measured** |
+| Standalone credit | `corpr − ltr` | monthly, 1926-01…2025-12 | no | **measured**, and it carries a duration residual because the two indices are not duration-matched |
+| Eighteen bond and TIPS ETFs | **N-PORT Item B.5** | monthly, 2019-07…2026-05, **79 common months** | **yes**, net of each fund's own fee | **exploratory** |
+| Ten-year TIPS | **modelled** from FRED `FII10` + `CPIAUCNS` | monthly, 2003-02…2026-06, 279 months | no | **modelled** |
+| The `GS10` ten-year par bond | FRED `GS10` | monthly, 1953-04…2026-06 | no | **modelled — superseded as a measurement** |
+
+**`ltr` and `corpr` had been downloaded, parsed, hashed and manifested here since
+2026-08-16** and read by one page for one table, while every diversification, correlation
+and marginal-sleeve figure in the programme used the modelled proxy instead. **They are
+not the same exposure**: on the 750 months both cover they correlate **+0.663**, and the
+proxy runs at 6.73%/yr of volatility against `ltr`'s 10.11% and 1.63%/yr of excess return
+against 2.47%. `GS10` is a ten-year point and `ltr` a roughly twenty-year index, so most
+of that is exposure rather than error — but the substitution moves Experiment 010's bond
+cell from −0.328 to −0.136 pp/yr pro rata and from +0.258 to +0.450 financed.
+
+Three FRED series were added the same day and each is registered with the trap it carries:
+**`FII10`** (`fa8082c5`), the ten-year real constant-maturity yield, monthly 2003-01
+onward — **negative in 45 of 283 months** and carrying the Treasury's documented
+**2008-12-01 curve methodology break**; **`T10YIE`** (`8ec9064b`), the ten-year breakeven,
+which is a market price containing an inflation risk premium and a TIPS liquidity premium
+and is **never used here as a forecast**; and **`CPIAUCNS`** (`ff0e1a1b`), the
+non-seasonally-adjusted CPI-U, which is the index **31 CFR 356** actually names for a
+TIPS principal, applied with a three-month lag — the seasonally adjusted twin is the wrong
+series for that job and is rewritten every year besides.
+
+What is still absent is a *measured* TIPS total-return index of any length, and any bond
+history at all outside the United States beyond JST's annual panel.
 
 ### Gold — acquired 2026-08-17, and the first asset held outside equity and cash
 
@@ -384,7 +428,7 @@ than a budget question:
 
 | Acquisition | Status | Opens |
 | --- | --- | --- |
-| A documented total-return series for bonds, gold, commodities and REITs | **gold landed 2026-08-17**; commodities were already held via AQR CLR; **bonds and REITs still absent** | Gold is tested and the result is in [marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested). **The stated bias was real and the sentence it defended is falsified in form and confirmed in substance**: gold reaches the credit ceiling exactly, and the ceiling was never the binding term. What is still blocked is an investable **bond** sleeve, where the `GS10` proxy still stands in |
+| A documented total-return series for bonds, gold, commodities and REITs | **complete, 2026-08-17, and it cost nothing** — gold from the World Bank Pink Sheet, commodities already held via AQR CLR, REITs from N-PORT and French `RlEst`, and **bonds, TIPS and credit last**, from Goyal–Welch `ltr`/`corpr` and eighteen funds' Item B.5 | Gold reaches the credit ceiling exactly and the ceiling was never the binding term ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)). The bond leg is measured back to 1926-01 and investable back to 2019-09 ([alternative sleeves audit §8](alternative-sleeves-audit.md)), and it moves Experiment 010's bond cell. **This item is closed, and the closing acquisition was already inside `data-manifests/`** |
 | Long-horizon non-US equity histories | **landed 2026-08-16** (JST R6) | The drawdown ladder underneath the equity-share decision was **one country**. It is now sixteen, and −50.3% is measurably not a bound |
 | Goyal–Welch at its current URL, and an inflation series | **landed 2026-08-16** (Goyal–Welch, Shiller, and JST's 18-country CPI) | Any conditional or valuation-dependent allocation, none of which has ever been tested here |
 
@@ -409,3 +453,7 @@ repository's null result is partly a property of where it has looked.
    did not.
 5. **Nothing here is point-in-time.** A sha256 proves which file was used, never what was
    available at an earlier date.
+6. **Search `data-manifests/` before recording a source as absent.** Five sources this page
+   called unavailable were published the whole time; the sixth, the bond leg, was already
+   downloaded, parsed and manifested here. That is the cheapest failure mode in the
+   repository and the only one with a one-line remedy.

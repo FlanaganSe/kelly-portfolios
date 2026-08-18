@@ -75,6 +75,8 @@ Construction = Literal[
     "market_yield_at_constant_maturity",
     "index_level",
     "exchange_reference_price",
+    "real_yield_at_constant_maturity",
+    "breakeven_inflation_spread",
 ]
 
 _REVISION_NOT_POINT_IN_TIME: Final = (
@@ -263,6 +265,76 @@ SERIES: Final[dict[str, FredSeries]] = {
             revision_behavior="Rarely revised; corrections are possible.",
         ),
         FredSeries(
+            series_id="FII10",
+            title=(
+                "Market Yield on U.S. Treasury Securities at 10-Year Constant "
+                "Maturity, Quoted on an Investment Basis, Inflation-Indexed"
+            ),
+            definition=(
+                "Monthly average of the daily ten-year REAL constant-maturity "
+                "Treasury yield. The Treasury's own definition, from "
+                "https://home.treasury.gov/resource-center/data-chart-center/"
+                "interest-rates/TextView?type=daily_treasury_real_yield_curve "
+                "read 2026-08-17: 'Par real yields on Treasury Inflation "
+                "Protected Securities (TIPS) at \"constant maturity\" are "
+                "interpolated by the U.S. Treasury from Treasury's daily par "
+                "real yield curve. These par real yields are calculated from "
+                "indicative secondary market quotations obtained by the Federal "
+                "Reserve Bank of New York.' NOT interchangeable with GS10: that "
+                "is a nominal yield and this is a real one, and the difference "
+                "between them is a breakeven inflation rate, not a spread. "
+                "Measured 2026-08-17: 283 monthly observations, 2003-01 to "
+                "2026-07. THE SERIES CARRIES A DOCUMENTED METHODOLOGY BREAK the "
+                "same page states: 'Starting 12/01/2008, the TIPS yield curve "
+                "began using the most recently auctioned TIPS as knot points "
+                "rather than all securities. The reported values from September "
+                "2 to November 28, 2008, utilize the old methodology and remain "
+                "official.' A study that splits this series at a date near 2008 "
+                "is splitting on a construction change as well as on an era."
+            ),
+            frequency="monthly",
+            source_units="percent_per_year",
+            units="decimal_per_year",
+            unit_transform=_PERCENT_TO_DECIMAL,
+            transformation="none (level, as published)",
+            maturity_months=120.0,
+            construction="real_yield_at_constant_maturity",
+            day_count="bond-equivalent, investment basis, on an inflation-indexed principal",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing="Monthly average published early in the following month.",
+            revision_behavior="Rarely revised; corrections are possible.",
+        ),
+        FredSeries(
+            series_id="T10YIE",
+            title="10-Year Breakeven Inflation Rate",
+            definition=(
+                "The daily difference between the ten-year nominal and ten-year "
+                "real constant-maturity Treasury yields. It is a MARKET-IMPLIED "
+                "BREAKEVEN, not an inflation forecast and not an expectation: it "
+                "contains an inflation risk premium and a TIPS liquidity premium "
+                "of unknown and time-varying sign, so quoting it as 'expected "
+                "inflation' overstates what it measures. Registered here for one "
+                "purpose only -- to state what real return a TIPS holder is "
+                "buying against what a nominal Treasury holder is buying on a "
+                "given date -- and never as a predictor. Measured 2026-08-17: "
+                "daily from 2003-01-02."
+            ),
+            frequency="daily",
+            source_units="percent_per_year",
+            units="decimal_per_year",
+            unit_transform=_PERCENT_TO_DECIMAL,
+            transformation="none (level, as published)",
+            maturity_months=120.0,
+            construction="breakeven_inflation_spread",
+            day_count="not applicable (a difference of two quoted yields)",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing="Next business day.",
+            revision_behavior=(
+                "Revised whenever either input yield curve is revised, and it "
+                "inherits the TIPS curve's 2008-12-01 methodology break."
+            ),
+        ),
+        FredSeries(
             series_id="BAMLCC0A0CMTRIV",
             title="ICE BofA US Corporate Index Total Return Index Value",
             definition=(
@@ -361,6 +433,40 @@ SERIES: Final[dict[str, FredSeries]] = {
                 "Seasonally adjusted history is revised every year when seasonal "
                 "factors are re-estimated. Values downloaded today differ from "
                 "values downloaded last year for the same months."
+            ),
+        ),
+        FredSeries(
+            series_id="CPIAUCNS",
+            title="Consumer Price Index for All Urban Consumers: All Items (NSA)",
+            definition=(
+                "The NOT seasonally adjusted CPI-U index level. Registered "
+                "because it, and not CPIAUCSL, is the reference index a Treasury "
+                "Inflation-Protected Security's principal is indexed to: 31 CFR "
+                "356.2 defines the Index Ratio from the non-seasonally-adjusted "
+                "CPI-U, applied with a THREE-MONTH LAG and interpolated within "
+                "the month. Anything that models a TIPS return with the "
+                "seasonally adjusted series is using a series the security does "
+                "not reference. Measured 2026-08-17: monthly from 1913-01."
+            ),
+            frequency="monthly",
+            source_units="index_1982_1984_eq_100",
+            units="index_1982_1984_eq_100",
+            unit_transform="identity",
+            transformation="none (index level, as published)",
+            maturity_months=None,
+            construction="index_level",
+            day_count="not applicable",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing=(
+                "Roughly mid-month for the prior month, on the BLS schedule. "
+                "Unlike the seasonally adjusted series this one is essentially "
+                "final on first publication, which is why the indexed security "
+                "references it."
+            ),
+            revision_behavior=(
+                "The published NSA index is not revised in the ordinary course; "
+                "the seasonally adjusted twin is rewritten every year. That "
+                "asymmetry is the reason 31 CFR 356 names this one."
             ),
         ),
         FredSeries(

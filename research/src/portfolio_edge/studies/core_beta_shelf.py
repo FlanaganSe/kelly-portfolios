@@ -211,18 +211,24 @@ def load_ncen_manifest(root: Path) -> Mapping[str, object]:
     return loaded
 
 
-def summarise(manifest: Mapping[str, object]) -> tuple[ShelfCostSummary, ...]:
+def summarise(
+    manifest: Mapping[str, object], *, shelf: Sequence[ShelfFund] = CORE_BETA_SHELF
+) -> tuple[ShelfCostSummary, ...]:
     """One row per fund, in the shelf's declared order.
 
     A fund absent from the manifest is omitted rather than defaulted, because a missing
     filing and a filed zero are different facts and this repository has already been
     caught treating one as the other.
+
+    ``shelf`` is an argument so that a second shelf built by the same machinery --
+    :mod:`portfolio_edge.studies._fixed_income_tables` builds one for bond and TIPS
+    funds -- summarises through this function rather than through a copy of it.
     """
     series = manifest.get("series")
     if not isinstance(series, dict):
         raise ValueError("the core-beta manifest carries no 'series' object")
     rows: list[ShelfCostSummary] = []
-    for fund in CORE_BETA_SHELF:
+    for fund in shelf:
         entry = series.get(fund.ticker)
         if not isinstance(entry, dict):
             continue
@@ -297,18 +303,28 @@ def _float(value: object) -> float | None:
     return None
 
 
-def build_ncen_manifest(cache: RawCache) -> dict[str, object]:
+def build_ncen_manifest(
+    cache: RawCache,
+    *,
+    shelf: Sequence[ShelfFund] = CORE_BETA_SHELF,
+    purpose: str | None = None,
+    regenerate: str | None = None,
+) -> dict[str, object]:
     """Rebuild the manifest from EDGAR. Needs the network; nothing else here does.
 
     Every N-CEN a registrant has ever filed is read, not only the latest, because a
     registrant files one per fiscal-year group and the shelf spans eleven fiscal-year
     ends. The raw XML is hashed into the cache before it is parsed, so the manifest's
     ``sha256_raw`` identifies the exact bytes each row came from.
+
+    ``shelf``, ``purpose`` and ``regenerate`` are arguments so the fixed-income shelf
+    is built by this function rather than by a fork of it; the screens, units and notes
+    are the same because the form is the same.
     """
-    wanted = {fund.ticker: fund for fund in CORE_BETA_SHELF}
+    wanted = {fund.ticker: fund for fund in shelf}
     filings: dict[str, dict[str, object]] = {}
     per_ticker: dict[str, dict[str, NcenSeriesRecord]] = {}
-    for cik in sorted({fund.registrant_cik for fund in CORE_BETA_SHELF}):
+    for cik in sorted({fund.registrant_cik for fund in shelf}):
         for ref in ncen_filing_index(cache, cik):
             throttle()
             records, entry = fetch_ncen(cache, ref)
@@ -329,14 +345,16 @@ def build_ncen_manifest(cache: RawCache) -> dict[str, object]:
                 }
     return {
         "schema_version": "1",
-        "purpose": (
+        "purpose": purpose
+        or (
             "Provenance for the core-beta shelf cost audit in "
             "docs/research/portfolio-recommendation.md and "
             "docs/research/structural-and-tax-edges.md. Form N-CEN Items C.3.b (index "
             "tracking difference), C.6 (securities lending) and C.8 (expense limitations "
             "and recoupment), per series per fiscal year, as filed."
         ),
-        "regenerate": (
+        "regenerate": regenerate
+        or (
             "cd research && uv run python -m portfolio_edge.studies.core_beta_shelf --build"
         ),
         "units": _UNITS,

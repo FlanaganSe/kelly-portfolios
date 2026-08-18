@@ -10,9 +10,11 @@ of any result in it. Every number here is quoted from an experiment page; none i
 **Conclusion, stated directly.** **Mostly a finding about the search.** Four specific
 design choices — each defensible when it was made, each now measurably load-bearing —
 mean the programme has been looking in places where finding something was close to
-arithmetically impossible, and in one case at a shelf two thirds of which was invisible. A fourth problem is coverage: entire asset classes, the whole
-of conditional allocation, and the only test that treats a portfolio as a joint object
-have never been run at all.
+arithmetically impossible, and in one case at a shelf two thirds of which was invisible. A
+fourth problem is coverage: entire asset classes, the whole of conditional allocation, and
+the only test that treats a portfolio as a joint object had never been run at all. **The
+asset-class half of that closed on 2026-08-17** and none of it needed a purchase — the
+last piece, a bond total-return history, was already in this repository's own manifests.
 
 Two things this does **not** mean. It is not an argument that a tilt would have worked.
 And it does not touch the results that are robust for reasons no amount of further
@@ -244,11 +246,14 @@ in this repository that used the 2019Q4 file alone, and it was the first one wri
 
 The programme has run twelve experiment families on **three equity regions and cash**. It
 has never touched the following, and each is a place a whole-portfolio effect could live.
+**One row has now closed and is kept rather than deleted**, because how it closed — six
+sources called absent that were published, the last of them already sitting in
+`data-manifests/` — is the most transferable thing on this page.
 
 | Never tested | Why it is absent | What it would need |
 | --- | --- | --- |
 | **Joint portfolio construction** — market weight, equal weight, inverse volatility, constrained minimum variance, linear-shrinkage minimum variance, ERC, compared on identical point-in-time inputs | Designed in the framework with comparators and falsifiers. Blocked by [decision 0004](../decisions/0004-no-sleeve-promoted.md) on the grounds that "step 6 combines sleeves and there are no promoted sleeves" | **Nothing.** The reasoning is circular: a construction tournament compares *weighting methods* on assets that already exist. It does not need a promoted sleeve |
-| **Any asset outside equity and cash** — investable bonds, TIPS, credit | **Gold left this row on 2026-08-17** ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)) and commodities were already held via AQR CLR. **REITs left it on 2026-08-17 too**: VNQ, SCHH and USRT are tested from their own Form N-PORT returns, with French's `RlEst` industry portfolio as a 1926-onward proxy and TLT's own filed return as an investable duration leg ([alternative sleeves audit §5](alternative-sleeves-audit.md)). **Bitcoin and the buffer family were never in this row and should have been** — see the note below. What remains absent is an investable **bond** total-return history, the leg everywhere still being a modelled `GS10` proxy, plus TIPS and standalone credit | A documented total-return series. Not necessarily a licensed one. **The gold and REIT acquisitions show the row was a search failure rather than a data failure**: both instruments were free, documented and reachable the whole time |
+| **Any asset outside equity and cash** — investable bonds, TIPS, credit | **CLOSED 2026-08-17.** Gold left this row that day ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)); commodities were already held via AQR CLR; REITs left it with VNQ, SCHH and USRT tested from their own Form N-PORT returns ([alternative sleeves audit §5](alternative-sleeves-audit.md)); and **bonds, TIPS and credit left it last** ([§8](alternative-sleeves-audit.md)). The bond leg is now two series that are never spliced: Goyal–Welch `ltr` and `corpr`, **1,200 months of measured long-Treasury and long-corporate total return from 1926-01**, and eighteen bond and TIPS ETFs' own Item B.5 returns over **79 common months from 2019-09**. The `GS10` proxy is superseded as a measurement and the substitution is material: Experiment 010's bond cell moves from −0.328 to −0.136 pp/yr pro rata and from +0.258 to +0.450 financed. **Bitcoin and the buffer family were never in this row and should have been** — see the note below | Nothing further. **This row was a search failure and not a data failure, and the bond leg is the sixth and worst instance**: `ltr` and `corpr` were already downloaded, parsed and manifested in this repository, and no experiment had read them |
 | **Any equity market's history but the US at long horizon** | Still untested, but no longer blocked. The instrument was acquired on 2026-08-16: the Jordà–Schularick–Taylor panel gives 16 countries of annual nominal equity, bond, bill and housing returns with consumer prices, 1870–2020 ([evidence base §2](evidence-base.md)). What it already shows is that **−50.3% is nowhere near a bound**: 15 of 16 countries have a worse real annual drawdown than the US even inside the same 1963-onward window | An experiment, not an acquisition |
 | **Any conditional or dynamic allocation** — valuation-conditioned equity share, regime conditioning, trend applied to the portfolio rather than as a sleeve | Never proposed. The Goyal–Welch data built for exactly this had 404'd at the recorded URL — it had **moved, not disappeared**, and was landed on 2026-08-16 along with Shiller's CAPE file | An experiment, not an acquisition |
 | **Concentration** | Every sleeve tested is a diversifier or a tilt. **This row's stated reason was wrong and is corrected**: the equity-share corner and securities concentration are different corners, and the variance penalty for concentration is measured at **0.17 pp/yr at twenty-five names** ([capital efficiency §8](capital-efficiency-and-breadth.md)). The objective is close to *indifferent* above ~25 names; the real argument is return skewness, which `gamma_star` does not contain | A cross-sectional skewness test, which no detection floor here could resolve |
@@ -273,8 +278,16 @@ that the omission was costing information rather than merely looking careless.
 French's 49-industry file carries a documented real-estate equity total return from
 1926-07 and FRED carries a bitcoin price from 2014-12. **That is the fourth and fifth
 time a source recorded here as unavailable turned out to be published**, after
-Goyal–Welch, Shiller and gold. The rule in §5 item 4 stands and now has five instances
-behind it: before pricing an acquisition, check whether the thing is published.
+Goyal–Welch, Shiller and gold.
+
+**The sixth, later the same day, is the one that should change behaviour.** The bond leg
+this table called absent is Goyal–Welch `ltr` and `corpr`, 1,200 months of measured
+long-Treasury and long-corporate total return from 1926-01 — and they were not merely
+published, they were **already downloaded, parsed, hashed and manifested here**, read by
+one page for one table while every bond figure the programme published came from a
+modelled `GS10` proxy. The rule in §5 item 4 stands and now has six instances behind it,
+with a stronger form: before pricing an acquisition, check whether the thing is
+published — **and before that, check whether it is already in `data-manifests/`.**
 
 ---
 
@@ -417,16 +430,26 @@ the LBMA benchmark it is built from is reachable as a cross-check. Landed and te
 2026-08-17. Commodities were already held via AQR CLR.
 
 **The lesson is the same one [§3 of the evidence base](evidence-base.md) draws about
-Goyal–Welch and Shiller, and it has now happened three times.** A source recorded as
+Goyal–Welch and Shiller, and it has now happened six times.** A source recorded as
 absent was not absent. **Before pricing an acquisition, check whether the thing is
 published** — and check the *reasoning* of any decision that appears to forbid it, because
-decision 0002's two failure modes do not reach an asset that pays no distribution.
+decision 0002's two failure modes do not reach an asset that pays no distribution. **The
+sixth instance raises the bar on that rule**: the bond leg was not merely published, it was
+already in this repository's own cache and manifest directory. **Search the manifests before
+searching the internet.**
 
-**What is still genuinely absent is the bond leg**, and it is the one that matters most:
-`GS10` is a modelled proxy standing in for an investable bond total return in every
-experiment here, and clause (u5) is what stops it resolving anything. REITs and standalone
-credit are absent too. **One long-horizon non-US equity history was the other half of this
-item and it landed on 2026-08-16.**
+**The bond leg landed on 2026-08-17 and it cost nothing at all**, which makes it the
+sharpest instance of this item's own lesson. Goyal–Welch `ltr` and `corpr` — a hundred
+years of measured long-Treasury and long-corporate total return — had been downloaded,
+parsed, hashed and manifested in this repository since 2026-08-16 and read by one page for
+one table, while every bond figure the programme published was computed from a modelled
+`GS10` proxy. The two are not the same exposure: on the 750 months both cover they
+correlate **+0.663**, and the proxy runs 3.4 pp/yr less volatile and 0.8 pp/yr lower in
+excess return. TIPS and standalone credit landed the same day, TIPS modelled from the
+Treasury's real curve back to 2003 and both measured on eighteen funds' filed returns from
+2019. **One long-horizon non-US equity history was the other half of this item and it
+landed on 2026-08-16.** This item is now closed; see
+[alternative sleeves audit §8](alternative-sleeves-audit.md).
 
 ### 5. Test conditional allocation for the first time
 

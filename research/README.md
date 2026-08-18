@@ -63,8 +63,11 @@ uv run ruff check
   a primary metric, a cost model, a sample policy, and a rejection rule.
 - **No observation may be used before its availability timestamp.**
 - **Costs alter the trading rule**, never appear as a constant haircut afterwards.
-- **Check whether a source exists before recording it as absent.** Goyal-Welch, Shiller and
-  gold were each written down here as unavailable and each was published the whole time.
+- **Check whether a source exists before recording it as absent, and check
+  `data-manifests/` first.** Goyal-Welch, Shiller, gold, French's `RlEst` industry return
+  and FRED's bitcoin price were each written down as unavailable and each was published the
+  whole time. The sixth was worse: the bond total-return leg the programme called missing is
+  Goyal-Welch `ltr`/`corpr`, **already downloaded, parsed and manifested here**.
   Check the *reasoning* of any decision that appears to forbid a source, too: decision 0002
   bans free price feeds because they drop distributions and mishandle corporate actions,
   and neither failure mode exists for an asset that pays nothing.
@@ -79,9 +82,9 @@ uv run ruff check
 | Source | Use | Do not |
 | --- | --- | --- |
 | Ken French data library | Factor returns, research portfolios | Treat as investable, or assume the current file matches the vintage a paper used |
-| FRED | Cash rates, macro series | Treat as point-in-time; it is revised. `TB3MS`, `DGS3MO`, `DFF` are not interchangeable. Reach for its ICE BofA total-return indices: since April 2026 they serve a trailing **three years** and nothing more |
+| FRED | Cash rates, macro series, and the **real** yield curve (`FII10`) with its breakeven (`T10YIE`) and reference index (`CPIAUCNS`) | Treat as point-in-time; it is revised. `TB3MS`, `DGS3MO`, `DFF` are not interchangeable, and neither are `GS10` and `FII10` — one is nominal and one is real. Reach for its ICE BofA total-return indices: since April 2026 they serve a trailing **three years** and nothing more. Read `T10YIE` as a forecast: it is a market price containing an inflation risk premium and a TIPS liquidity premium |
 | AQR public datasets | Author-maintained replication targets, and the only broad-commodity and credit series held here | Call an evaluation of a vendor series an independent replication. Treat `Commodities for the Long Run` as a total return — it is excess of cash — or add `CORP_XS` to a cash rate, because it is excess of duration-matched governments, not of cash |
-| Goyal–Welch | Return-predictability tests | Describe an annually updated full-sample file as point-in-time, or predict with `cay`, `pce`, `ogap`, `sntm`, `fbm`, `tchi` or `shtint` — the source marks all seven as full-sample estimates written back over history |
+| Goyal–Welch | Return-predictability tests, **and the only long bond total-return history held**: `ltr` and `corpr`, 1,200 months from 1926-01 | Describe an annually updated full-sample file as point-in-time, or predict with `cay`, `pce`, `ogap`, `sntm`, `fbm`, `tchi` or `shtint` — the source marks all seven as full-sample estimates written back over history. Treat `ltr` as the `GS10` proxy's equal: it is a roughly twenty-year index against a ten-year point, they correlate +0.663, and `ltr` is not investable |
 | Shiller | Long-horizon sensitivity | Use for modern execution backtests, or treat `P` as a month-end price; it is a monthly average of daily closes |
 | Jordà–Schularick–Taylor Macrohistory (R6) | The only multi-country long-horizon returns held: 16 countries, 1870–2020, annual | Read it as 18 countries (Canada and Ireland carry no returns), compare its annual drawdowns with a monthly one, forget it is nominal and local-currency, or quote Portugal 1975–77, Spain 1937–40 or Germany 1922–23 without saying what they are |
 | Stooq / free price feeds | Exploratory only | Use in a confirmatory experiment; there is no documented total-return or corporate-action contract |
