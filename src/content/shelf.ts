@@ -1257,7 +1257,8 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "WTMF",
     name: "WisdomTree Managed Futures Strategy Fund",
     category: "managed-futures",
-    mandate: "A systematic managed-futures book, audited against the same frozen 0.50 loading bar as the rest of the shelf.",
+    mandate:
+      "A systematic managed-futures book, audited against the same frozen 0.50 loading bar as the rest of the shelf.",
     expenseRatioBp: 66,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -1511,9 +1512,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "When this repository last read it, it had not commenced operations (497K of 2026-04-15), and a 0.59% unitary fee with no waiver and no recoupment was the only fact that existed. It has since listed — see the filings block below — but no holdings, loading or record have been examined here, so its stack still rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else."
+      "When this repository last read it, it had not commenced operations (497K of 2026-04-15), and a 0.59% unitary fee with no waiver and no recoupment was the only fact that existed. It has since listed — see the filings block below — but no holdings, loading or record have been examined here, so its stack still rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else.",
     caution:
-      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 0.99%, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. It is named in three places as a standing review trigger, not as a holding. No `delta`, no loading, no record.",
+      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. It is named in three places as a standing review trigger, not as a holding. No `delta`, no loading, no record.",
     wrapper: {
       delta: null,
       fundingCapturePercent: null,
