@@ -10,7 +10,7 @@ import { SourceLink } from "~/components/SourceLink";
 import { StatusChip } from "~/components/StatusChip";
 import { families } from "~/content/families";
 import { portfolios } from "~/content/portfolios";
-import { type FactorLoading, findFund } from "~/content/shelf";
+import { type FactorLoading, findFund, fundingRuleGapPpYr } from "~/content/shelf";
 import NotFound from "~/routes/not-found";
 
 /**
@@ -186,8 +186,8 @@ export default function FundDetail(): JSX.Element {
                   <p class="mb-6 max-w-measure text-base text-ink-muted">
                     A wrapper may not be scored from its gross notional. The deciding quantity is{" "}
                     <code class="font-mono text-sm">delta = (1 − b) / d</code>, the base sold per unit of diversifier
-                    notional obtained. One minus that is the share of the +2.44 pp/yr funding-rule gap the wrapper
-                    keeps.
+                    notional obtained. One minus that is the share of the{" "}
+                    <span data-numeric>+{fundingRuleGapPpYr.value}</span> pp/yr funding-rule gap the wrapper keeps.
                   </p>
                   <div class="flex flex-wrap gap-x-12 gap-y-6">
                     <Figure label="delta" value={wrapper().delta === null ? "—" : String(wrapper().delta)} />

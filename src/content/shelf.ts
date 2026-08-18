@@ -1551,6 +1551,41 @@ export function findFund(ticker: string): ShelfFund | undefined {
   return shelf.find((one) => one.ticker === ticker);
 }
 
+/**
+ * The audit as a whole, rather than any one fund.
+ *
+ * These are the numbers a page reaches for when it wants to say what the *instrument*
+ * can and cannot see, and they belong here rather than in a route: a count typed into a
+ * paragraph is a number with no source and no `as of`.
+ */
+export const shelfAudit = {
+  usProductsAudited: 109,
+  loadingsSurvivingCorrection: 96,
+  alphaTests: 327,
+  alphaTestsSurviving: 5,
+  alphaTestsSurvivingAllNegative: true,
+  medianDetectableAlphaUsPpYr: 5.01,
+  medianDetectableAlphaExUsPpYr: 3.23,
+  medianDetectableAlphaManagedFuturesPpYr: 12.75,
+  trueAlphaDispersionPpYr: 1.25,
+  correction: "Benjamini–Hochberg on the loadings, Holm on the alphas",
+  note: "Exposure is measurable and skill is not. The median alpha this instrument can detect is about four times the true dispersion between funds, so most alpha findings on any shelf are noise by construction.",
+  source: products,
+  asOf: READ,
+} as const;
+
+/**
+ * The funding-rule gap: what financing a diversifier as notional is worth for a 100%
+ * equity base, before anything at all is said about the diversifier.
+ */
+export const fundingRuleGapPpYr = {
+  value: 2.44,
+  basis: "100% equity base; 2.08 pp/yr for a 60/40 base",
+  formula: "a_p − σ_p² = σ_p²(L_p* − 1)",
+  source: capital,
+  asOf: READ,
+} as const;
+
 export const shelfAsOf = READ;
 
 /** Re-exported so a route can name the owning page without re-declaring a citation. */

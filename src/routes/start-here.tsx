@@ -8,8 +8,11 @@ import { Prose } from "~/components/Prose";
 import { StatusChip } from "~/components/StatusChip";
 import { contractualRows } from "~/content/confidence";
 import { edgeBudgetTotal } from "~/content/edgeBudget";
+import { highestStatusReached } from "~/content/experiments";
 import { families } from "~/content/families";
 import { engineMeta, portfolios, type ReturnEngine } from "~/content/portfolios";
+import { shelfAudit } from "~/content/shelf";
+import { statusMeta } from "~/content/types";
 import { CORPUS_AS_OF } from "~/lib/nav";
 
 /**
@@ -230,9 +233,18 @@ export default function StartHere(): JSX.Element {
         </h2>
 
         <div class="mt-6 flex flex-wrap gap-x-12 gap-y-8">
-          <Figure label="Highest status reached, anywhere" value="Exploratory" size="md" />
-          <Figure label="US factor loadings surviving correction" value="96 of 109" size="md" />
-          <Figure label="Alpha tests surviving correction" value="5 of 327" size="md" note="All five negative." />
+          <Figure label="Highest status reached, anywhere" value={statusMeta[highestStatusReached].label} size="md" />
+          <Figure
+            label="US factor loadings surviving correction"
+            value={`${shelfAudit.loadingsSurvivingCorrection} of ${shelfAudit.usProductsAudited}`}
+            size="md"
+          />
+          <Figure
+            label="Alpha tests surviving correction"
+            value={`${shelfAudit.alphaTestsSurviving} of ${shelfAudit.alphaTests}`}
+            size="md"
+            note={shelfAudit.alphaTestsSurvivingAllNegative ? "All five negative." : undefined}
+          />
         </div>
 
         <Prose class="mt-8">

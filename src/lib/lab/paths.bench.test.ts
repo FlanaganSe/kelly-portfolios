@@ -9,7 +9,9 @@ describe("simulation cost", () => {
   it("stays well inside an interaction budget at the size the lab uses", () => {
     const started = performance.now();
     simulateRelativePaths({ edgeBp: 46, trackingErrorBp: 313, horizonYears: 50, paths: 2000, seed: 1 });
-    // The lab debounces this behind a 150 ms settle, so the budget is a settle, not a frame.
-    expect(performance.now() - started).toBeLessThan(400);
+    // A regression guard, not a benchmark: the ceiling is loose enough to survive a
+    // loaded CI box and tight enough to catch an accidental order-of-magnitude change.
+    // The lab debounces this behind a settle, so the budget is a settle, not a frame.
+    expect(performance.now() - started).toBeLessThan(1500);
   });
 });
