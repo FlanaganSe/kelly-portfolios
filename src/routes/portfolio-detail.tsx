@@ -2,6 +2,7 @@ import { Title } from "@solidjs/meta";
 import { A, useParams } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
 import { Callout } from "~/components/Callout";
+import { type ClaimKind, ClaimLegend, ClaimTag } from "~/components/ClaimKind";
 import { DataTable } from "~/components/DataTable";
 import { Figure } from "~/components/Figure";
 import { OutperformanceChart, type OutperformanceSeries } from "~/components/OutperformanceChart";
@@ -30,11 +31,17 @@ import NotFound from "~/routes/not-found";
  * the same order.
  */
 
-function Section(props: { readonly id: string; readonly title: string; readonly children: JSX.Element }): JSX.Element {
+function Section(props: {
+  readonly id: string;
+  readonly title: string;
+  readonly kind?: ClaimKind;
+  readonly children: JSX.Element;
+}): JSX.Element {
   return (
     <section aria-labelledby={props.id} class="mt-14 border-t border-rule pt-8 first:mt-0 first:border-t-0 first:pt-0">
-      <h2 id={props.id} class="font-serif text-2xl tracking-[-0.01em]">
+      <h2 id={props.id} class="flex flex-wrap items-baseline gap-x-3 font-serif text-2xl tracking-[-0.01em]">
         {props.title}
+        <Show when={props.kind}>{(kind) => <ClaimTag kind={kind()} />}</Show>
       </h2>
       <div class="mt-4">{props.children}</div>
     </section>
@@ -161,6 +168,8 @@ export default function PortfolioDetail(): JSX.Element {
               </p>
             </Prose>
 
+            <ClaimLegend class="mt-8" />
+
             <nav aria-labelledby="on-this-page" class="mt-8 border-y border-rule py-4">
               <h2 id="on-this-page" class="eyebrow mb-3">
                 On this page
@@ -178,7 +187,7 @@ export default function PortfolioDetail(): JSX.Element {
               </ul>
             </nav>
 
-            <Section id="allocation" title="What it holds">
+            <Section id="allocation" title="What it holds" kind="filed">
               <DataTable
                 caption={`${found().name}: exact allocation, summing to 100% of capital.`}
                 columns={holdingColumns()}
@@ -232,7 +241,7 @@ export default function PortfolioDetail(): JSX.Element {
               </Show>
             </Section>
 
-            <Section id="why" title="Why it may outperform">
+            <Section id="why" title="Why it may outperform" kind="estimated">
               <ul class="max-w-measure space-y-4">
                 <For each={found().mayOutperform}>
                   {(reason) => <li class="border-l-2 border-rule-strong pl-4 text-base text-ink">{reason}</li>}
@@ -240,7 +249,7 @@ export default function PortfolioDetail(): JSX.Element {
               </ul>
             </Section>
 
-            <Section id="why-not" title="Why it may not">
+            <Section id="why-not" title="Why it may not" kind="estimated">
               <ul class="max-w-measure space-y-4">
                 <For each={found().mayUnderperform}>
                   {(reason) => <li class="border-l-2 border-rule-strong pl-4 text-base text-ink">{reason}</li>}
@@ -249,7 +258,7 @@ export default function PortfolioDetail(): JSX.Element {
             </Section>
 
             <Show when={found().priced.length > 0}>
-              <Section id="priced" title="What each line is worth, and at what dispersion">
+              <Section id="priced" title="What each line is worth, and at what dispersion" kind="assumed">
                 <Prose class="mb-6">
                   <p>
                     A tilt quoted as an expected return without its tracking error is not reportable here. Each line
@@ -315,7 +324,7 @@ export default function PortfolioDetail(): JSX.Element {
               </Section>
             </Show>
 
-            <Section id="failure" title="What would break it">
+            <Section id="failure" title="What would break it" kind="editorial">
               <div class="grid gap-6 sm:grid-cols-2">
                 <For each={found().failureModes}>
                   {(mode) => (
@@ -332,7 +341,7 @@ export default function PortfolioDetail(): JSX.Element {
               </Callout>
             </Section>
 
-            <Section id="holding-it" title="Cost, tax, rebalancing and where it is held">
+            <Section id="holding-it" title="Cost, tax, rebalancing and where it is held" kind="filed">
               <dl class="max-w-measure space-y-6">
                 <div>
                   <dt class="eyebrow">Tax</dt>
@@ -355,7 +364,7 @@ export default function PortfolioDetail(): JSX.Element {
 
             <Show when={found().suggestedChanges}>
               {(changes) => (
-                <Section id="changes" title="What this evidence would change">
+                <Section id="changes" title="What this evidence would change" kind="editorial">
                   <p class="mb-6 max-w-measure text-base text-ink-muted">
                     Specific swaps, not a general warning. Each is editorial — this repository promotes no sleeve — but
                     each rests on a measurement named beside it.
