@@ -129,6 +129,18 @@ cd research && uv run python -m portfolio_edge.reporting.client_fixtures \
   > ../src/lib/fixtures/research-ground-truth.json
 ```
 
+## Deploying
+
+`pnpm build` writes a static site to `dist/`, plus a `dist/404.html` copy of the entry
+document. Any static host can serve it, and the 404 copy is what makes a direct load of
+`/portfolios/candidate` work on a host that returns its 404 document for an unknown key.
+On CloudFront the equivalent is `errorPage: "index.html"`, which `sst.config.ts` sets.
+
+The intended target is `sst deploy`, and **it cannot be run from a fresh clone**: the
+`./infra/*` modules and the `functions/` handlers that `sst.config.ts` imports are not in
+version control. Do not "repair" the config by deleting those imports. The client itself
+needs none of them — it calls no API, holds no keys and reads no environment variable.
+
 ## Repository map
 
 - `src/content/` is the only place a research fact may live. Typed, sourced, dated. **A
