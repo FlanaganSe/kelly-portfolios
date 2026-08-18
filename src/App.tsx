@@ -6,6 +6,10 @@ import { ThemeToggle } from "~/components/ThemeToggle";
 import { CORPUS_AS_OF, NAV_ITEMS, REPO_URL } from "~/lib/nav";
 
 const StartHere = lazy(() => import("~/routes/start-here"));
+const Portfolios = lazy(() => import("~/routes/portfolios"));
+const PortfolioDetail = lazy(() => import("~/routes/portfolio-detail"));
+const Research = lazy(() => import("~/routes/research"));
+const ResearchDetail = lazy(() => import("~/routes/research-detail"));
 const Portfolio = lazy(() => import("~/routes/portfolio"));
 const EdgeBudget = lazy(() => import("~/routes/edge-budget"));
 const Placement = lazy(() => import("~/routes/placement"));
@@ -135,6 +139,10 @@ export default function App() {
         />
         <Router root={Layout}>
           <Route path="/" component={StartHere} />
+          <Route path="/portfolios" component={Portfolios} />
+          <Route path="/portfolios/:id" component={PortfolioDetail} />
+          <Route path="/research" component={Research} />
+          <Route path="/research/:slug" component={ResearchDetail} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/edge-budget" component={EdgeBudget} />
           <Route path="/placement" component={Placement} />
