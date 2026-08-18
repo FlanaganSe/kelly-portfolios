@@ -54,6 +54,12 @@ or an implementation supports it.
 - Free price sources are not research-grade and the code raises rather than warns
   when a confirmatory experiment reaches for one. See
   `docs/decisions/0002-no-research-grade-free-price-source.md` before "fixing" it.
+- **The client ships no return series and the lab is forward-looking on purpose.** No
+  fund history is research-grade here, no per-fund loading vector is committed, and the
+  redistribution terms on the public factor libraries were never established. Do not
+  "complete" the lab by fetching prices, committing a factor panel, or generating a
+  growth chart: it would be the most persuasive object on the site and the least
+  defensible. `src/lib/backtest/` exists to run data the *reader* supplies.
 
 ## Commands
 
