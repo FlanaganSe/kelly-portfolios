@@ -2,6 +2,7 @@ import { Meta, Title } from "@solidjs/meta";
 import { A, useParams } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
 import { Callout } from "~/components/Callout";
+import { DataTable } from "~/components/DataTable";
 import { Figure } from "~/components/Figure";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
@@ -9,6 +10,7 @@ import { SourceLink } from "~/components/SourceLink";
 import { CertaintyChip, StatusChip } from "~/components/StatusChip";
 import { families } from "~/content/families";
 import { portfolioById } from "~/content/portfolios";
+import { findFund, type ShelfFund } from "~/content/shelf";
 import NotFound from "~/routes/not-found";
 
 /**
@@ -27,6 +29,18 @@ function Section(props: { readonly id: string; readonly title: string; readonly 
       <div class="mt-4">{props.children}</div>
     </section>
   );
+}
+
+const PANEL_SHORT = {
+  us: "US",
+  "developed-ex-us": "dev ex-US",
+  emerging: "EM",
+  "aqr-tsmom": "TSMOM",
+} as const;
+
+/** Only the tickers the shelf actually carries. A missing one is a content bug, not a row. */
+function auditedFunds(tickers: readonly string[]): ShelfFund[] {
+  return tickers.map((ticker) => findFund(ticker)).filter((fund): fund is ShelfFund => fund !== undefined);
 }
 
 function Points(props: { readonly items: readonly string[] }): JSX.Element {
@@ -131,17 +145,69 @@ export default function ResearchDetail(): JSX.Element {
               </div>
             </dl>
 
-            <Show when={found().tickers.length > 0}>
-              <p class="mt-6 flex flex-wrap items-baseline gap-x-3 gap-y-2 text-sm">
-                <span class="eyebrow">Funds audited</span>
-                <For each={found().tickers}>
-                  {(ticker) => (
-                    <A href={`/funds#${ticker}`} data-numeric class="link font-mono">
-                      {ticker}
-                    </A>
-                  )}
-                </For>
-              </p>
+            <Show when={auditedFunds(found().tickers).length > 0}>
+              <div class="mt-8">
+                <DataTable
+                  caption={`Funds audited under ${found().name}, with what each delivers and what it costs.`}
+                  columns={[
+                    {
+                      key: "ticker",
+                      header: "Fund",
+                      rowHeader: true,
+                      cell: (row: ShelfFund) => (
+                        <A href={`/funds/${row.ticker}`} data-numeric class="link font-mono text-sm">
+                          {row.ticker}
+                        </A>
+                      ),
+                    },
+                    { key: "name", header: "Name", cell: (row: ShelfFund) => row.name },
+                    {
+                      key: "fee",
+                      header: "Fee bp",
+                      numeric: true,
+                      cell: (row: ShelfFund) => row.expenseRatioBp ?? "—",
+                    },
+                    {
+                      key: "turnover",
+                      header: "Turnover",
+                      numeric: true,
+                      cell: (row: ShelfFund) => (row.turnoverPercent === null ? "—" : `${row.turnoverPercent}%`),
+                    },
+                    {
+                      key: "loading",
+                      header: "Delivers",
+                      cell: (row: ShelfFund) => {
+                        const top = [...row.loadings].sort((a, b) => Math.abs(b.value) - Math.abs(a.value))[0];
+                        return top === undefined ? (
+                          <span class="text-ink-faint">Not regressed here</span>
+                        ) : (
+                          <span data-numeric>
+                            {top.factor} {top.value > 0 ? "+" : ""}
+                            {top.value.toFixed(3)}
+                            <span class="ml-1 text-xs text-ink-faint">{PANEL_SHORT[top.panel]}</span>
+                          </span>
+                        );
+                      },
+                    },
+                    {
+                      key: "status",
+                      header: "Status",
+                      cell: (row: ShelfFund) => (
+                        <Show when={row.status} fallback={<span class="text-ink-faint">Control</span>}>
+                          {(status) => <StatusChip status={status()} />}
+                        </Show>
+                      ),
+                    },
+                  ]}
+                  rows={auditedFunds(found().tickers)}
+                  footnote={
+                    <>
+                      Every loading names the panel it was measured on. The same fund can read a different sign on a
+                      different panel.
+                    </>
+                  }
+                />
+              </div>
             </Show>
           </Section>
 

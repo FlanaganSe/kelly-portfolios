@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { families, familyBySlug } from "~/content/families";
 import { portfolioById } from "~/content/portfolios";
+import { findFund } from "~/content/shelf";
 import { certaintyMeta, statusMeta } from "~/content/types";
 
 describe("the research library", () => {
@@ -67,5 +68,15 @@ describe("the research library", () => {
   it("finds a family by slug and returns undefined for an unknown one", () => {
     expect(familyBySlug("value")?.name).toBe("Value");
     expect(familyBySlug("nope")).toBeUndefined();
+  });
+});
+
+describe("the funds a family names", () => {
+  it("names only tickers the shelf actually carries", () => {
+    for (const family of families) {
+      for (const ticker of family.tickers) {
+        expect(findFund(ticker), `${family.slug} -> ${ticker}`).toBeDefined();
+      }
+    }
   });
 });
