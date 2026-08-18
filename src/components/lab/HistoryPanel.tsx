@@ -546,9 +546,9 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
 
   return (
     <section class="mt-10" aria-labelledby={`${pasteId}-heading`}>
-      <h2 id={`${pasteId}-heading`} class="text-xl font-semibold text-ink">
+      <h3 id={`${pasteId}-heading`} class="text-lg font-semibold text-ink">
         Run it on your own history
-      </h2>
+      </h3>
 
       <Prose class="mt-3">
         <p>
@@ -785,7 +785,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
 
             <div class="mt-8">
               <div class="flex flex-wrap items-baseline justify-between gap-3">
-                <h3 class="text-base font-semibold text-ink">Growth of 1 unit</h3>
+                <h4 class="text-base font-semibold text-ink">Growth of 1 unit</h4>
                 <label for={logId} class="flex items-center gap-2 text-sm text-ink">
                   <input
                     id={logId}
@@ -811,7 +811,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
             </div>
 
             <div class="mt-10">
-              <h3 class="text-base font-semibold text-ink">Drawdown</h3>
+              <h4 class="text-base font-semibold text-ink">Drawdown</h4>
               <TimeSeriesChart
                 class="mt-3"
                 series={drawdownSeries()}
@@ -826,7 +826,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
             </div>
 
             <div class="mt-10">
-              <h3 class="text-base font-semibold text-ink">Rolling 3-year excess return</h3>
+              <h4 class="text-base font-semibold text-ink">Rolling 3-year excess return</h4>
               <Show
                 when={windows().length > 0}
                 fallback={
@@ -862,7 +862,7 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
             </div>
 
             <div class="mt-10">
-              <h3 class="text-base font-semibold text-ink">Metrics</h3>
+              <h4 class="text-base font-semibold text-ink">Metrics</h4>
               <DataTable
                 class="mt-3"
                 caption={`Your portfolio against ${analysis().benchmark.id}, ${toYearMonth(analysis().range.start)} to ${toYearMonth(analysis().range.end)}`}
