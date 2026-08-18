@@ -15,7 +15,7 @@ export const NAV_ITEMS = [
  * and none of their content is duplicated into it.
  */
 export const DEEP_PAGES = [
-  { href: "/portfolio", label: "The reference construction" },
+  { href: "/reference", label: "The reference construction" },
   { href: "/edge-budget", label: "The edge budget, line by line" },
   { href: "/placement", label: "Where each holding is held" },
   { href: "/confidence", label: "How long until you would know" },

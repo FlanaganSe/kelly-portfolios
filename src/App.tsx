@@ -1,5 +1,5 @@
 import { Meta, MetaProvider, Title } from "@solidjs/meta";
-import { A, Route, Router, useLocation } from "@solidjs/router";
+import { A, Navigate, Route, Router, useLocation } from "@solidjs/router";
 import { createEffect, createSignal, For, lazy, type ParentComponent } from "solid-js";
 import { ErrorBoundary } from "~/components/ErrorBoundary";
 import { ThemeToggle } from "~/components/ThemeToggle";
@@ -149,7 +149,10 @@ export default function App() {
           <Route path="/funds" component={Funds} />
           <Route path="/funds/:ticker" component={FundDetail} />
           <Route path="/lab" component={Lab} />
-          <Route path="/portfolio" component={Portfolio} />
+          <Route path="/reference" component={Portfolio} />
+          {/* `/portfolio` was this page's address before the portfolio library existed.
+              One character apart from `/portfolios` is a trap, so it redirects. */}
+          <Route path="/portfolio" component={() => <Navigate href="/reference" />} />
           <Route path="/edge-budget" component={EdgeBudget} />
           <Route path="/placement" component={Placement} />
           <Route path="/confidence" component={Confidence} />

@@ -152,10 +152,11 @@ function ExcludedSleeve(props: { readonly sleeve: Sleeve }) {
 export default function Portfolio() {
   return (
     <>
-      <Title>The portfolio — Portfolio Edge</Title>
+      <Title>The reference construction — Portfolio Edge</Title>
       <PageHeader
-        title="The portfolio"
-        standfirst="What to hold, what each line buys, and how confident anyone is entitled to be about it."
+        eyebrow="Reference construction"
+        title="The reference construction"
+        standfirst="What this repository's own research says to hold, what each line buys, and how confident anyone is entitled to be about it. It carries no tilt and no leverage, because nothing has been promoted."
         lastChecked={constructionSummary.asOf}
       />
 
