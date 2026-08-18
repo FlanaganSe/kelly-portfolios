@@ -1,16 +1,10 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
 import { For, type JSX, Show } from "solid-js";
-import { ExposureBar } from "~/components/portfolio/ExposureBar";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
-import {
-  engineMeta,
-  type PortfolioCandidate,
-  portfolios,
-  portfoliosAsOf,
-  weightByEngine,
-} from "~/content/portfolios";
+import { ExposureBar } from "~/components/portfolio/ExposureBar";
+import { engineMeta, type PortfolioCandidate, portfolios, portfoliosAsOf, weightByEngine } from "~/content/portfolios";
 
 /**
  * The portfolio library.

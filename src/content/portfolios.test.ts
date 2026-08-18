@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  engineMeta,
-  portfolioById,
-  portfolios,
-  totalWeight,
-  weightByEngine,
-} from "~/content/portfolios";
+import { engineMeta, portfolioById, portfolios, totalWeight, weightByEngine } from "~/content/portfolios";
 
 describe("every published portfolio", () => {
   it("has holdings summing to exactly 100% of capital", () => {

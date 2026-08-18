@@ -55,15 +55,34 @@ describe("ticks", () => {
 
 describe("paths", () => {
   it("draws a polyline", () => {
-    expect(linePath([[0, 0], [10, 5]])).toBe("M0.00 0.00L10.00 5.00");
+    expect(
+      linePath([
+        [0, 0],
+        [10, 5],
+      ])
+    ).toBe("M0.00 0.00L10.00 5.00");
   });
 
   it("breaks the line at a gap rather than bridging it", () => {
-    expect(linePath([[0, 0], [5, Number.NaN], [10, 5]])).toBe("M0.00 0.00M10.00 5.00");
+    expect(
+      linePath([
+        [0, 0],
+        [5, Number.NaN],
+        [10, 5],
+      ])
+    ).toBe("M0.00 0.00M10.00 5.00");
   });
 
   it("closes an area back to the baseline", () => {
-    expect(areaPath([[0, 0], [10, 5]], 20)).toBe("M0.00 0.00L10.00 5.00L10.00 20.00L0.00 20.00Z");
+    expect(
+      areaPath(
+        [
+          [0, 0],
+          [10, 5],
+        ],
+        20
+      )
+    ).toBe("M0.00 0.00L10.00 5.00L10.00 20.00L0.00 20.00Z");
   });
 
   it("draws nothing when there is nothing finite to draw", () => {
