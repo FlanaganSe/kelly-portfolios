@@ -45,6 +45,17 @@ describe("the front page", () => {
     expect(document.body.textContent).toContain("109");
     expect(document.body.textContent).toContain("313");
   });
+
+  it("shows the proposal beside the evidence-led alternative, with real weights", async () => {
+    mount("/", "/", StartHere);
+    expect(await screen.findByRole("heading", { level: 2, name: /a proposal, and what the evidence supports/i })).toBeInTheDocument();
+    const candidate = portfolios.find((one) => one.id === "candidate");
+    for (const holding of candidate?.holdings ?? []) {
+      expect(screen.getAllByRole("link", { name: holding.ticker }).length).toBeGreaterThan(0);
+    }
+    // The stacked construction's exposure has to be visible on the front page.
+    expect(document.body.textContent).toContain("1.32×");
+  });
 });
 
 describe("the portfolio library", () => {

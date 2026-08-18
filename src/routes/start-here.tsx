@@ -35,6 +35,9 @@ function formatPercent(probability: number | undefined): string {
   return probability === undefined ? "—" : `${(probability * 100).toFixed(1)}%`;
 }
 
+/** The contrast the site is built around: a proposal, and the defensible version of it. */
+const FEATURED = ["candidate", "evidence-led"] as const;
+
 const ENGINE_ORDER: readonly ReturnEngine[] = ["cost-and-tax", "equity-beta", "value", "momentum", "trend"];
 
 const ENGINE_VERDICT: Readonly<Record<string, string>> = {
@@ -135,6 +138,63 @@ export default function StartHere(): JSX.Element {
             )}
           </For>
         </ul>
+      </section>
+
+      <section aria-labelledby="two-portfolios" class="mt-16 border-t border-rule pt-8">
+        <h2 id="two-portfolios" class="font-serif text-2xl tracking-[-0.01em]">
+          A proposal, and what the evidence supports
+        </h2>
+        <p class="mt-2 max-w-measure text-base text-ink-muted">
+          The same money, arranged two ways. On the left, a construction that diversifies the return engine and accepts
+          leverage to do it. On the right, only the lines this repository has measured and can defend, unlevered. The
+          difference between them is the whole argument of the site.
+        </p>
+
+        <div class="mt-8 grid gap-10 lg:grid-cols-2">
+          <For each={FEATURED}>
+            {(id) => {
+              const portfolio = portfolios.find((one) => one.id === id);
+              return portfolio === undefined ? null : (
+                <article>
+                  <h3 class="font-serif text-xl">
+                    <A href={`/portfolios/${portfolio.id}`} class="text-ink transition-colors hover:text-accent">
+                      {portfolio.name}
+                    </A>
+                  </h3>
+                  <p class="mt-1.5 max-w-measure text-sm text-ink-muted">{portfolio.thesis}</p>
+
+                  <ul class="mt-5 divide-y divide-rule border-y border-rule">
+                    <For each={portfolio.holdings}>
+                      {(holding) => (
+                        <li class="flex items-baseline justify-between gap-4 py-2">
+                          <A href={`/funds/${holding.ticker}`} data-numeric class="link font-mono text-sm">
+                            {holding.ticker}
+                          </A>
+                          <span class="flex-1 truncate text-sm text-ink-faint">{engineMeta[holding.engine].label}</span>
+                          <span data-numeric class="font-medium tabular-nums">
+                            {holding.percent}%
+                          </span>
+                        </li>
+                      )}
+                    </For>
+                  </ul>
+
+                  <p class="mt-3 flex items-baseline justify-between gap-4 text-sm">
+                    <span class="text-ink-muted">Exposure per unit of capital</span>
+                    <span data-numeric class="font-medium">
+                      {(portfolio.grossExposurePercent / 100).toFixed(2)}×
+                    </span>
+                  </p>
+                  <p class="mt-4 text-sm">
+                    <A href={`/portfolios/${portfolio.id}`} class="link">
+                      Why it may outperform, and what would break it
+                    </A>
+                  </p>
+                </article>
+              );
+            }}
+          </For>
+        </div>
       </section>
 
       <section aria-labelledby="engines" class="mt-16 border-t border-rule pt-8">
