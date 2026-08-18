@@ -1,80 +1,96 @@
 # STATE
 
-`as of 2026-08-17` · branch `further-research`
+`as of 2026-08-18` · branch `further-research`
 
 ## Objective
 
 A portfolio-research website that presents concrete portfolio candidates designed to
 outperform a cap-weighted benchmark, the evidence behind each return engine, and a
-frontend-only lab for sizing a tilt yourself. Confident, skeptical, evidence-driven;
-never a guarantee.
+frontend-only lab for sizing a tilt. Confident, skeptical, evidence-driven; never a
+guarantee, and never a claim that any portfolio beats an index.
 
 ## Direction
 
-- The existing design system in `src/styles.css` is kept and extended. It is already a
-  serious editorial system: tokens, dark mode, tabular numerals, one accent, patterns
-  rather than colour for categorical identity.
-- The typed content layer discipline is kept and widened. No number in a component; every
-  figure carries status, `as of` and source.
-- **The site cannot ship a fund backtest and does not pretend to.** No research-grade
-  price source exists here (decision 0002), there are no committed per-fund loading
-  vectors, and the redistribution terms on the factor libraries were not verifiable
-  offline. The lab therefore prices a forward edge against a tracking error — this
-  repository's own tested arithmetic — and simulates what holding it feels like.
+- The design system in `src/styles.css` was kept and extended, not replaced. Tokens, dark
+  mode, tabular numerals, one accent, and categorical identity carried by pattern and
+  direct labelling rather than by colour.
+- The typed content layer was widened rather than bypassed. No research number is written
+  into a component; every figure carries status, certainty class, `as of` and source.
+- **The site ships no return series, and says so on every page that would want one.** No
+  fund history here is research-grade ([decision 0002](docs/decisions/0002-no-research-grade-free-price-source.md)),
+  no per-fund exposure vector is committed, and the redistribution terms on the public
+  factor libraries could not be established offline. The lab prices a forward edge against
+  a tracking error — arithmetic this repository has already tested — and will run history
+  the reader supplies.
 
 ## Information architecture
 
 | Route | What it is |
 |---|---|
-| `/` | The two benchmarks, the five engines, the portfolio list |
+| `/` | The two benchmarks, the five engines, the proposal beside the evidence-led alternative |
 | `/portfolios`, `/portfolios/:id` | Four candidates: control, control-held-properly, evidence-led tilt, stacked candidate |
-| `/research`, `/research/:slug` | Ten strategy families, each asked the same ten questions |
-| `/funds`, `/funds/:ticker` | The 52-fund audited shelf, with loadings, net cost and issuer-filed structure |
-| `/lab` | Edge, tracking error, the wait each implies |
-| `/concepts`, `/method` | Vocabulary and how a result earns a status |
-| `/portfolio`, `/edge-budget`, `/placement`, `/confidence`, `/evidence` | The original long-form pages, reached from the research index |
+| `/research`, `/research/:slug` | Ten strategy families, each put through the same seven questions |
+| `/funds`, `/funds/:ticker` | The 56-fund audited shelf: delivered exposure with its panel, cost net of lending, wrapper arithmetic, issuer-filed structure |
+| `/lab` | Compose a portfolio, price a value tilt, see the wait an edge implies, simulate the drought, run your own history |
+| `/concepts` | The short course, then the vocabulary |
+| `/method` | How a result earns a status, and the three calculations the client runs |
+| `/reference`, `/edge-budget`, `/placement`, `/confidence`, `/evidence` | The original long-form pages, reached from the research index. `/portfolio` redirects to `/reference` |
 
 ## Content model
 
-- `src/content/portfolios.ts` — four candidates, weights validated to 100%, notional
-  exposure where it differs from capital, priced lines carrying edge *and* tracking error.
-- `src/content/families.ts` — ten strategy families.
-- `src/content/shelf.ts` — 52 funds: loadings with their panel, alpha with its detection
-  floor and pedestal, cost net of securities lending, wrapper arithmetic, issuer facts.
-- `src/content/{confidence,edgeBudget,placement,sleeves,experiments,openQuestions,glossary}.ts`
-  — the pre-existing layer, unchanged and still canonical for what it covers.
+- `src/content/portfolios.ts` — four candidates, weights validated to exactly 100%,
+  notional exposure where it differs from capital, priced lines carrying edge *and*
+  tracking error, named failure modes, and the specific changes the evidence argues for.
+- `src/content/families.ts` — ten strategy families, each with certainty class, status,
+  contrary evidence and failure modes.
+- `src/content/shelf.ts` — 56 funds: loadings with their panel and window, alpha only
+  beside its detection floor and its pedestal, cost net of securities lending, wrapper
+  arithmetic (`delta`), and issuer-filed structure with its own read date.
+- `src/content/tilts.ts` — the two tilts priced end to end, at full precision, so the
+  client's own arithmetic reproduces the published figures.
+- `src/content/lessons.ts` — the short course.
+- The pre-existing modules (`confidence`, `edgeBudget`, `placement`, `sleeves`,
+  `experiments`, `openQuestions`, `glossary`, `portfolio`) are unchanged and still
+  canonical for what they cover.
 
 ## Computation
 
-- `src/lib/horizon.ts` — probability of outperformance, ported and fixture-tested.
-- `src/lib/backtest/` — deterministic engine: alignment, calendar-anchored rebalancing,
-  geometric fee charging, and the metrics. 52 tests. Not yet wired to a data source,
-  because no honest one exists; it is used by the scenario work in the lab.
-- `src/lib/lab/config.ts` — shareable URL state with per-field fallback.
-- `src/lib/lab/paths.ts` — seeded relative-path simulation reproducing the closed form.
+Every calculation in the client is a port of a research module, checked against fixtures
+that module generates.
+
+- `src/lib/horizon.ts` — probability of outperformance, and the horizon any confidence
+  needs. Pre-existing.
+- `src/lib/tilt.ts` — the value-tilt chain, `weight × (fund loading − incumbent loading) ×
+  premium − incremental cost`. Raises rather than accepting a capture fraction. Matches
+  `research/.../value_tilt.py` to 1e-10 across 18 generated cases.
+- `src/lib/lab/paths.ts` — seeded relative-path simulation, reproducing the closed form.
+- `src/lib/lab/config.ts` — the lab's whole state in the query string, lossless, with
+  per-field fallback.
+- `src/lib/lab/importReturns.ts` — parses the reader's own monthly returns; refuses a gap
+  rather than filling it, and never guesses percent from magnitude.
+- `src/lib/backtest/` — alignment, calendar-anchored rebalancing, geometric fee charging
+  and the metrics. Wired to `src/components/lab/HistoryPanel.tsx`, which is the only place
+  history enters the site.
 - `src/components/charts/scale.ts` — chart arithmetic, tested without a DOM.
 
-## Work completed
+## Checks
 
-Backtest engine · lab URL state and path simulation · chart scales · portfolio, family
-and fund content layers with tests · portfolio library and detail · research library and
-family pages · fund shelf and fund pages · home page · route smoke tests · a useful 404.
-
-## In progress
-
-The value-tilt port and its research-workspace fixtures, then the lab route itself.
+`pnpm typecheck`, `pnpm test` (361 tests, 25 files), `pnpm biome check .` and `pnpm build`
+are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` are clean
+after the fixture change.
 
 ## Unresolved
 
-- Ken French and AQR redistribution terms were not verifiable offline, so no factor
-  series is committed. Until that is settled the lab stays forward-looking.
+- Ken French and AQR redistribution terms were not verifiable offline, so no factor series
+  is committed and the lab stays forward-looking. That is the single decision to revisit
+  if a licensed source appears.
 - `src/content/portfolio.ts` (`funds`) and `src/content/shelf.ts` overlap on eight
-  tickers. A test pins them together; they should eventually be one record.
-- The stacked candidate departs from decision 0004 by being levered. That is stated on
-  its own page and is not resolved.
-
-## Next three actions
-
-1. Land the value-tilt port and build `/lab` on it.
-2. Red-team pass: claims, weights, prose tone, accessibility, mobile.
-3. Update `README.md`, which still prints the superseded 24 bp / 401 bp figures.
+  tickers. A test pins their cost fields together; they should eventually be one record.
+- VB's fund name follows the 2026-07-29 Morningstar rename pattern, which the source
+  records for VTI and VBR but not for VB. It matches the pre-existing content layer and is
+  pinned by a test, but it is an inference.
+- The stacked candidate departs from decision 0004 by being levered, and holds one fund
+  the product audit excludes and one that is `unresolved`. All three departures are stated
+  on its own page and none is resolved.
+- No experiment has ever tested any of these constructions as a joint object. The
+  construction tournament has never run.
