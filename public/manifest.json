@@ -1,12 +1,11 @@
 {
-  "name": "Kelly Portfolios - Portfolio Optimization Tool",
-  "short_name": "Kelly Portfolios",
-  "description": "Advanced portfolio optimization using Kelly criterion and modern portfolio theory",
+  "name": "Portfolio Edge",
+  "short_name": "Portfolio Edge",
+  "description": "What beating the market actually costs: portfolio candidates, the evidence behind each return engine, and a lab for sizing a tilt. No sleeve is promoted.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1f2937",
-  "orientation": "portrait-primary",
+  "background_color": "#faf9f6",
+  "theme_color": "#faf9f6",
   "scope": "/",
   "lang": "en",
   "icons": [
@@ -23,13 +22,5 @@
       "purpose": "any"
     }
   ],
-  "categories": ["finance", "productivity", "business"],
-  "screenshots": [
-    {
-      "src": "/logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "form_factor": "wide"
-    }
-  ]
+  "categories": ["finance", "education"]
 }
