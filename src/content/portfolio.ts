@@ -411,7 +411,7 @@ export const funds: readonly Fund[] = [
       },
     ],
     whatItBuys:
-      "Developed and emerging international equity in one holding, at 1.43 bp net — the cheapest total-international fund audited, and still dearer than holding the two separately. See vxusTradeoff.",
+      "Developed and emerging international equity in one holding, at 1.43 bp net — the cheapest total-international fund audited, and still dearer than holding the two separately. The trade-off is set out below.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: decomposition,
