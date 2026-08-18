@@ -116,7 +116,6 @@ export const families: readonly StrategyFamily[] = [
     evidenceFor: [
       "A fund's cost is fee less securities lending, and the two rankings differ. IEMG costs less to own than VWO at a 50% higher fee; BND is the dearest aggregate bond fund audited because it is the only one that does not lend at all; SPY runs 9.45 bp because a unit investment trust cannot lend.",
       "Every one of the 25 audited core funds distributed zero capital gains in every fiscal year on file.",
-      "The confidence horizon is short. At 46 bp of tracking error a 109 bp edge is about 90% established in three and a half months.",
     ],
     evidenceAgainst: [
       "Only the 49 bp fee line is unconditional. Harvesting needs a taxable account with gains, placement needs more than one account type, and the wrapper line needs you to be leaving an active mutual fund.",
@@ -144,7 +143,7 @@ export const families: readonly StrategyFamily[] = [
       "Move to funds whose fee less lending is lowest, hold them in an ETF wrapper, set specific-lot identification once at the brokerage, and place each sleeve by computed priority rather than by rule of thumb.",
     cost: "The whole fund-selection decision inside a cheap four-fund construction is worth 0.60 bp/yr — 1.36 against 0.76 — against an 84 bp/yr hurdle for the turnover needed to capture it.",
     overlap:
-      "It overlaps with nothing else on this site, which is the point. It is the one line that adds to a factor tilt rather than competing with it — as long as the two are not quoted against different benchmarks and then summed.",
+      "Nothing, which is the point. It is the one line that adds to a factor tilt rather than competing with it — as long as the two are not quoted against different benchmarks and then summed.",
     roleInPortfolio:
       "The first thing to do and the last thing to give up. It changes no holding you need to believe in.",
     portfolios: ["disciplined"],
@@ -315,7 +314,7 @@ export const families: readonly StrategyFamily[] = [
       "DBMF is the only managed-futures ETF whose loading on the vendor index has been measured here: +0.671 [+0.513, +0.829] against a frozen 0.50 bar. CTA, KMLM, FMF and WTMF are all `rejected` against the same bar. RSST delivers the exposure as notional rather than capital, and its own loading has never been measured.",
     cost: "85 bp for DBMF and 99 bp all-in for RSST, plus a distribution tax drag of 2.09 pp/yr and 0.32 pp/yr respectively. Once the equity each displaces is subtracted, that is 143.9 bp against 4.5 bp — the wrapper, not the strategy, decides the tax outcome.",
     overlap:
-      "Trend is the one engine here uncorrelated with equity. It overlaps with nothing else here, which is why its diversification credit survives even when its mean does not.",
+      "Nothing else here. Trend is the one engine uncorrelated with equity, which is why its diversification credit survives even when its mean does not.",
     roleInPortfolio:
       "A sleeve sized by the drawdown it changes, not by the return it might add. The resampled probability that the overlay is the deeper drawdown is 6.9% at 30% of notional and then doubles from 10.8% to 18.9% between 58% and 60% — a cliff, not a ramp, and the reason the practical ceiling sits near 55%.",
     portfolios: ["candidate"],

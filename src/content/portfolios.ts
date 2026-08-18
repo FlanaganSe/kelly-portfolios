@@ -383,7 +383,7 @@ const disciplined: PortfolioCandidate = {
     {
       title: "The wrapper line is decaying",
       detail:
-        "The ETF-versus-mutual-fund advantage rests on active managers not having an ETF share class. Fourteen registrants now do. The line is +23 bp today and its mechanism is visibly closing.",
+        "The ETF-versus-mutual-fund advantage rests on active managers not having an ETF share class. There are now 94 SEC orders and 89 filings naming one, from fourteen registrants, against two filings before the first order — though only nine funds have actually listed. The line is +23 bp today and its mechanism is visibly closing.",
     },
     {
       title: "The tracking error is assumed",
