@@ -5,6 +5,7 @@ import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
 import { StatusChip } from "~/components/StatusChip";
 import { families, familiesAsOf, type StrategyFamily } from "~/content/families";
+import { DEEP_PAGES } from "~/lib/nav";
 
 /**
  * The research index, grouped by what a strategy claims rather than by file name.
@@ -99,6 +100,25 @@ export default function Research(): JSX.Element {
           </section>
         )}
       </For>
+
+      <section class="mt-16 border-t border-rule-strong pt-8">
+        <h2 class="font-serif text-2xl tracking-[-0.01em]">The long-form pages</h2>
+        <p class="mt-2 max-w-measure text-base text-ink-muted">
+          The original working pages, each canonical for what it covers. They go further than the family summaries above
+          and none of their content is repeated there.
+        </p>
+        <ul class="mt-6 space-y-3">
+          <For each={DEEP_PAGES}>
+            {(page) => (
+              <li>
+                <A href={page.href} class="link">
+                  {page.label}
+                </A>
+              </li>
+            )}
+          </For>
+        </ul>
+      </section>
     </>
   );
 }
