@@ -910,3 +910,6 @@ export function HistoryPanel(props: HistoryPanelProps): JSX.Element {
     </section>
   );
 }
+
+/** Default export so the lab can code-split it. */
+export default HistoryPanel;

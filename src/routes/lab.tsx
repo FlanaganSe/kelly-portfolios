@@ -1,11 +1,11 @@
 import { Title } from "@solidjs/meta";
 import { A, useNavigate, useSearchParams } from "@solidjs/router";
-import { createMemo, createSignal, For, type JSX, onCleanup, Show } from "solid-js";
+import { createMemo, createSignal, For, type JSX, lazy, onCleanup, Show, Suspense } from "solid-js";
 import { Callout } from "~/components/Callout";
 import { FanChart } from "~/components/charts/FanChart";
 import { DataTable } from "~/components/DataTable";
 import { Figure } from "~/components/Figure";
-import { HistoryPanel } from "~/components/lab/HistoryPanel";
+
 import { NumberInput } from "~/components/NumberInput";
 import { OutperformanceChart, type OutperformanceSeries } from "~/components/OutperformanceChart";
 import { PageHeader } from "~/components/PageHeader";
@@ -44,6 +44,12 @@ import { tiltVerdict } from "~/lib/tilt";
  * probability curve is a tested port of a study module; the fan is a seeded simulation of
  * the same model, and reproduces the curve rather than competing with it.
  */
+
+/**
+ * The history panel is the heaviest thing on the page and most readers never paste
+ * anything into it, so it is fetched after the rest of the lab is interactive.
+ */
+const HistoryPanel = lazy(() => import("~/components/lab/HistoryPanel"));
 
 const PATHS = 2000;
 
@@ -797,7 +803,9 @@ export default function Lab(): JSX.Element {
         </p>
 
         <div class="mt-8">
-          <HistoryPanel holdings={config().holdings} />
+          <Suspense fallback={<p class="text-sm text-ink-muted">Loading the history panel…</p>}>
+            <HistoryPanel holdings={config().holdings} />
+          </Suspense>
         </div>
       </section>
 
