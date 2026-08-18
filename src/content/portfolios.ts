@@ -650,6 +650,11 @@ const candidate: PortfolioCandidate = {
         "52% of the managed-futures ETFs listed in 2019 were gone by the end of 2025 — a 10.7%/yr hazard, 43% at five years. RSST itself is under three years old and its 28-month tax window is entirely a rising market.",
     },
     {
+      title: "The three stacked wrappers are not interchangeable",
+      detail:
+        "RSST, MATE and JPFP look like the same product and are not. RSST costs 99 bp, has 35 months of record and publishes an explicit dollar-for-dollar target. MATE costs 97 bp, has eight months, quotes its Other Expenses as estimates, and is the only one whose prospectus states §1256 mark-to-market outright — 60/40 treatment with unrealised gains recognised at year end, which is phantom income in a taxable account and the opposite of the deferral the wrapper case elsewhere rests on. JPFP costs 59 bp, which would change the ranking, and has two months of record and $17.07m of assets. All three run a Cayman subsidiary capped at 25% of assets, and this repository has measured a trend loading for none of them.",
+    },
+    {
       title: "It is levered, and this repository does not permit that",
       detail:
         "Decision 0004 holds leverage at zero and is unsuperseded. This portfolio runs about 132% of gross exposure. That is a deliberate departure from the research, not a conclusion of it.",

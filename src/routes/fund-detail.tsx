@@ -235,6 +235,29 @@ export default function FundDetail(): JSX.Element {
               )}
             </Show>
 
+            <Show when={found().issuer}>
+              {(issuer) => (
+                <section class="mt-12 border-t border-rule pt-8" aria-labelledby="issuer">
+                  <h2 id="issuer" class="mb-2 font-serif text-2xl tracking-[-0.01em]">
+                    Read off the filing
+                  </h2>
+                  <p class="mb-6 max-w-measure text-base text-ink-muted">
+                    Structure, cost and disclosure taken directly from the fund's own prospectus or fund page rather
+                    than from this repository's research. Read on <span data-numeric>{issuer().readOn}</span>. Fund
+                    facts go stale — re-read them rather than re-quoting them from here.
+                  </p>
+                  <ul class="max-w-measure space-y-4">
+                    <For each={issuer().notes}>
+                      {(note) => <li class="border-l-2 border-rule-strong pl-4 text-base">{note}</li>}
+                    </For>
+                  </ul>
+                  <p class="mt-6">
+                    <SourceLink citation={issuer().source} prefix />
+                  </p>
+                </section>
+              )}
+            </Show>
+
             <section class="mt-12 border-t border-rule pt-8" aria-labelledby="where">
               <h2 id="where" class="mb-4 font-serif text-2xl tracking-[-0.01em]">
                 Where it appears

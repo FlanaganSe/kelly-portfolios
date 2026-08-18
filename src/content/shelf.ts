@@ -92,6 +92,22 @@ export interface WrapperFacts {
   readonly structureAsOf: AsOf | null;
 }
 
+/**
+ * A fact read off the issuer's own filing or fund page rather than out of this
+ * repository's research.
+ *
+ * Kept in its own field, with its own source and its own access date, so that a reader
+ * and a later agent can both tell at a glance which figures were measured here and which
+ * were merely read. An issuer fact may state structure, cost and disclosure; it may never
+ * stand in for a loading, an alpha or a return this repository has not measured.
+ */
+export interface IssuerRecord {
+  readonly notes: readonly string[];
+  readonly source: Citation;
+  /** The date the page or filing was read. Fund facts go stale; re-read, do not re-quote. */
+  readonly readOn: AsOf;
+}
+
 export interface ShelfFund {
   readonly ticker: string;
   readonly name: string;
@@ -122,6 +138,8 @@ export interface ShelfFund {
   readonly wrapper?: WrapperFacts;
   /** Present only where a filing was read. An empty list would claim the fund holds nothing. */
   readonly notionalExposure?: readonly NotionalExposure[];
+  /** Present where a primary filing was read directly. Absent means nobody looked. */
+  readonly issuer?: IssuerRecord;
   readonly source: Citation;
   readonly asOf: AsOf;
 }
@@ -1297,6 +1315,20 @@ export const shelf: readonly ShelfFund[] = [
       { kind: "us-equity", perDollarOfCapital: 1.072 },
       { kind: "trend", perDollarOfCapital: 1.0 },
     ],
+    issuer: {
+      notes: [
+        "The fund's own words: \"one dollar invested in the Fund provides approximately one dollar of exposure to the Fund's U.S. Equity strategy and approximately one dollar of exposure to the Fund's Managed Futures strategy\", targeting 100% of each.",
+        "The managed-futures leg runs through a wholly-owned Cayman subsidiary capped at 25% of total assets, tested quarterly. The subsidiary is not registered under the 1940 Act, and breaching the cap would put the fund's RIC status at risk.",
+        "35 months live at 2026-08-17, at $508.70m of net assets on 2026-08-14. The fee table shows no waiver line at all, so 99 bp is both gross and net.",
+        "Over its short life it has trailed US equity: the prospectus reports 17.17% a year since inception on 2023-09-05 against 21.50% for the S&P 500. Thirty-five months settles nothing about a sleeve whose whole purpose is the years equities lose, and it is not evidence either way.",
+      ],
+      source: {
+        label: "RSST summary prospectus, 497K filed 2026-04-27",
+        docPath: "docs/research/capital-efficiency-and-breadth.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1924868/000199937126009152/rsst-497k_042726.htm",
+      },
+      readOn: asOf("2026-08-17"),
+    },
     source: capital,
     asOf: READ,
   },
@@ -1331,6 +1363,18 @@ export const shelf: readonly ShelfFund[] = [
       { kind: "global-equity", perDollarOfCapital: 1.0007 },
       { kind: "treasury-futures", perDollarOfCapital: 1.0033 },
     ],
+    issuer: {
+      notes: [
+        'One dollar of global equity plus one dollar of US Treasury futures, and 39 bp rather than RSST\'s 99 — because Treasury futures generate qualifying income, so no Cayman subsidiary is needed. The words "Cayman" and "Subsidiary" do not appear in its summary prospectus.',
+        'Its expense example still carries the sentence "The management fee waiver discussed above is reflected only through May 31, 2026" although no waiver is discussed and none appears in the fee table. Read gross = net = 39 bp and treat the sentence as stale boilerplate.',
+      ],
+      source: {
+        label: "RSSB summary prospectus, 497K filed 2026-04-27",
+        docPath: "docs/research/capital-efficiency-and-breadth.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1924868/000199937126009149/rssb-497k_042726.htm",
+      },
+      readOn: asOf("2026-08-17"),
+    },
     source: capital,
     asOf: READ,
   },
@@ -1430,6 +1474,21 @@ export const shelf: readonly ShelfFund[] = [
       structureAsOf: asOf("2026-02-28"),
     },
     notionalExposure: [{ kind: "equity", perDollarOfCapital: 0.498 }],
+    issuer: {
+      notes: [
+        "Man Active Trend Enhanced ETF — a Man Group fund sub-advised by AHL Partners, not a Return Stacked product and not merger arbitrage. Inception 2025-12-16, so eight months live at 2026-08-17.",
+        '97 bp all-in, with Other Expenses and acquired-fund fees "based on estimated amounts for the current fiscal year" rather than incurred. No waiver. A 12b-1 plan of up to 25 bp is adopted but dormant.',
+        "It targets 100% exposure to each of its trend-following and equity strategies through a wholly-owned Cayman subsidiary, MATE Cayman Holdings, LLC, under the same 25% cap.",
+        "It is the only wrapper on this shelf whose prospectus states the §1256 treatment outright: contracts marked to market annually, 60% long-term and 40% short-term, which forces recognition of unrealised gains at year end. In a taxable account that is phantom income, and it is the opposite of the deferral the wrapper argument elsewhere depends on.",
+        "Net assets are not published on any Man Group page that was read. Third-party figures exist and are not quoted here.",
+      ],
+      source: {
+        label: "Man Active Trend Enhanced ETF, 485BPOS effective 2025-12-13",
+        docPath: "docs/research/capital-efficiency-and-breadth.md",
+        href: "https://www.sec.gov/Archives/edgar/data/2065379/000119312525316292/d98016d485bpos.htm",
+      },
+      readOn: asOf("2026-08-17"),
+    },
     source: capital,
     asOf: READ,
   },
@@ -1459,6 +1518,20 @@ export const shelf: readonly ShelfFund[] = [
       distributionTaxDragPpYr: null,
       incrementalTaxDragBp: null,
       structureAsOf: null,
+    },
+    issuer: {
+      notes: [
+        "It has since commenced. Performance inception 2026-05-27, so two months live at 2026-08-17, with $17.07m of net assets on its 2026-06-30 fact sheet — the smallest fund on this shelf and the one with the highest closure risk.",
+        "59 bp unitary, no waiver: 40 bp cheaper than RSST for a structurally similar product, which is why it is a standing review trigger in the research rather than a footnote.",
+        'It says only that it "seeks to provide full exposure to each of the Managed Futures Strategy and the U.S. Equity Strategy, simultaneously" and that "aggregate notional exposure will exceed its net assets". Unlike RSST, RSSB and MATE it publishes no numeric per-dollar breakdown anywhere, so none is stated here.',
+        "The commodity leg runs through Managed Futures Plus Fund CS Ltd., a wholly-owned Cayman subsidiary, capped at 25% of assets.",
+      ],
+      source: {
+        label: "JPMorgan Managed Futures Plus ETF, 485BPOS filed 2026-04-15",
+        docPath: "docs/research/capital-efficiency-and-breadth.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1485894/000119312526156138/d63821d485bpos.htm",
+      },
+      readOn: asOf("2026-08-17"),
     },
     source: capital,
     asOf: READ,
