@@ -9,6 +9,8 @@ const StartHere = lazy(() => import("~/routes/start-here"));
 const Portfolios = lazy(() => import("~/routes/portfolios"));
 const PortfolioDetail = lazy(() => import("~/routes/portfolio-detail"));
 const Research = lazy(() => import("~/routes/research"));
+const Funds = lazy(() => import("~/routes/funds"));
+const FundDetail = lazy(() => import("~/routes/fund-detail"));
 const ResearchDetail = lazy(() => import("~/routes/research-detail"));
 const Portfolio = lazy(() => import("~/routes/portfolio"));
 const EdgeBudget = lazy(() => import("~/routes/edge-budget"));
@@ -143,6 +145,8 @@ export default function App() {
           <Route path="/portfolios/:id" component={PortfolioDetail} />
           <Route path="/research" component={Research} />
           <Route path="/research/:slug" component={ResearchDetail} />
+          <Route path="/funds" component={Funds} />
+          <Route path="/funds/:ticker" component={FundDetail} />
           <Route path="/portfolio" component={Portfolio} />
           <Route path="/edge-budget" component={EdgeBudget} />
           <Route path="/placement" component={Placement} />
