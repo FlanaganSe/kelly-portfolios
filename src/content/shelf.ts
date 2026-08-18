@@ -528,7 +528,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
     verdict:
-      "rejected on clause (c) at a +2.89 pp/yr shortfall, its cheap replication being 0.733 VTI plus 0.267 VTV. Its 2.72 bp round trip is nearly a year of expense ratio and is the binding constraint on rebalancing frequency.",
+      "Rejected on clause (c) at a +2.89 pp/yr shortfall, its cheap replication being 0.733 VTI plus 0.267 VTV. Its 2.72 bp round trip is nearly a year of expense ratio and is the binding constraint on rebalancing frequency.",
     caution:
       "Like VTV, it sits inside the basis it is scored against, so the rejection reads as 'small-cap is approximable', not as a defect.",
     source: products,
@@ -594,7 +594,7 @@ export const shelf: readonly ShelfFund[] = [
     alphaDetectionFloorPpYr: 3.13,
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
-    verdict: "rejected on clause (c) at a +1.14 pp/yr shortfall, on an RMW loading of +0.186.",
+    verdict: "Rejected on clause (c) at a +1.14 pp/yr shortfall, on an RMW loading of +0.186.",
     caution:
       "The exposure is not purchasable at this threshold anywhere on the shelf — nine quality products and the largest RMW loading is +0.228 — and the premium behind it is rejected and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
     source: products,
@@ -615,7 +615,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "unresolved",
     verdict:
-      "unresolved: its RMW interval straddles the 0.15 bar, so the window could not say whether the exposure is there. Shortfall −0.13.",
+      "Unresolved: its RMW interval straddles the 0.15 bar, so the window could not say whether the exposure is there. Shortfall −0.13.",
     caution: "RMW is closed on public data. Nothing this fund does can reopen it.",
     source: products,
     asOf: READ,
@@ -634,7 +634,7 @@ export const shelf: readonly ShelfFund[] = [
     alphaDetectionFloorPpYr: 4.46,
     pedestalPpYr: US_PEDESTAL,
     status: "unresolved",
-    verdict: "unresolved on the same clause as SPHQ: the interval contains 0.15 on 46 months. Shortfall −0.11.",
+    verdict: "Unresolved on the same clause as SPHQ: the interval contains 0.15 on 46 months. Shortfall −0.11.",
     caution: "The only Dimensional product on the US shelf that does not reach exploratory, and the factor is why.",
     source: products,
     asOf: READ,
@@ -931,7 +931,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "rejected",
     verdict:
-      "rejected on clause (c) at +1.24 pp/yr under all seven bases — and the rejection turns on one month. GWX files from 2019-07, which only three basis constituents cover, so its 'cheap replication' is VEA at weight 1.000: a large-cap fund standing in for a small-cap one.",
+      "Rejected on clause (c) at +1.24 pp/yr under all seven bases — and the rejection turns on one month. GWX files from 2019-07, which only three basis constituents cover, so its 'cheap replication' is VEA at weight 1.000: a large-cap fund standing in for a small-cap one.",
     caution:
       "Trim that single uncovered month and the shortfall falls to between +0.00 and +0.39, all under the threshold. The published verdict stands because the specification was frozen, but it must be read as 'the comparator did not exist for one of its months'. Its fee was never read.",
     source: products,
@@ -985,7 +985,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "rejected",
     verdict:
-      "exploratory at −2.31 on the frozen basis and rejected at +0.91 once the basis can hold IDMO at 0.25%, which takes 57.5% of the fitted weight. The loss is a cheaper fund in its own cell, which is exactly what clause (c) exists to find.",
+      "Exploratory at −2.31 on the frozen basis and rejected at +0.91 once the basis can hold IDMO at 0.25%, which takes 57.5% of the fitted weight. The loss is a cheaper fund in its own cell, which is exactly what clause (c) exists to find.",
     caution:
       "Like AVDV it carries two side loads whose intervals exclude zero, SMB −0.306 and CMA −0.241. Only its shrunk alpha, −1.46 against a 3.81 floor, was published.",
     source: products,
@@ -1056,7 +1056,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: EMERGING_PEDESTAL,
     status: "unresolved",
     verdict:
-      "unresolved on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to exploratory, because clause (a) reads the loading and unresolved reads its interval and neither reads the basis.",
+      "Unresolved on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to exploratory, because clause (a) reads the loading and unresolved reads its interval and neither reads the basis.",
     caution:
       "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. No fee, no turnover, no net cost and no tax figure for AVES appears anywhere in this repository. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
     source: products,
@@ -1180,7 +1180,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "rejected against the frozen 0.50 bar: the point estimate is below it and the interval spans from 0.058 to 0.991, on 46 months with an R² of 0.137 and a +1.90 pp/yr tracking difference.",
+      "Rejected against the frozen 0.50 bar: the point estimate is below it and the interval spans from 0.058 to 0.991, on 46 months with an R² of 0.137 and a +1.90 pp/yr tracking difference.",
     caution:
       "A 13.14 pp/yr detection floor. This is a statement about what the window could see, not that the fund holds no trend.",
     wrapper: {
@@ -1210,7 +1210,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "rejected at +0.245 with an interval containing zero. The shortfall is partly definitional and must not be read as a defect: its index holds none of the nine equity futures in AQR's universe.",
+      "Rejected at +0.245 with an interval containing zero. The shortfall is partly definitional and must not be read as a defect: its index holds none of the nine equity futures in AQR's universe.",
     caution: "A 16.49 pp/yr detection floor, the worst of the five, on an R² of 0.066.",
     wrapper: {
       delta: 1,
@@ -1239,7 +1239,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "rejected at +0.303 on 78 months — the tightest interval of the four rejections and clearly under the 0.50 bar, so this is a delivered-exposure verdict rather than an underpowered one.",
+      "Rejected at +0.303 on 78 months — the tightest interval of the four rejections and clearly under the 0.50 bar, so this is a delivered-exposure verdict rather than an underpowered one.",
     caution: "The dearest of the five tested at 98 bp.",
     wrapper: {
       delta: 1,
