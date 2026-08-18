@@ -167,3 +167,14 @@ describe("the fund shelf", () => {
     expect(await screen.findAllByRole("heading", { level: 1 })).toBeTruthy();
   });
 });
+
+describe("the lab's benchmark control", () => {
+  it("offers every benchmark the configuration can hold, so none is silently relabelled", async () => {
+    mount("/lab?b=peer", "/lab", Lab);
+    const select = await screen.findByLabelText(/measured against/i);
+    expect(select).toHaveValue("average-investor");
+    // Three reference portfolios, three options. A missing option would render blank and
+    // coerce an average-investor figure into an index-relative one on the next change.
+    expect(select.querySelectorAll("option")).toHaveLength(3);
+  });
+});

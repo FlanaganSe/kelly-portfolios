@@ -724,16 +724,16 @@ export default function Lab(): JSX.Element {
             <select
               class="control"
               value={config().benchmark}
-              onChange={(event) =>
-                update({
-                  benchmark: event.currentTarget.value === "own-counterfactual" ? "own-counterfactual" : "cheap-index",
-                })
-              }
+              onChange={(event) => update({ benchmark: event.currentTarget.value as LabBenchmark })}
             >
               <option value="cheap-index">A cheap index fund</option>
               <option value="own-counterfactual">The portfolio you would otherwise have owned</option>
+              <option value="average-investor">The average investor</option>
             </select>
-            <span class="text-ink-muted">These are different claims and may never be added together.</span>
+            <span class="text-ink-muted">
+              Three claims about three different reference portfolios. No two of them may be added, and a figure
+              measured against one of them is not a figure measured against another.
+            </span>
           </label>
         </div>
 
