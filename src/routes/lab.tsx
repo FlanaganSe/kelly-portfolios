@@ -746,13 +746,7 @@ export default function Lab(): JSX.Element {
           <Figure label="At ten years" value={`${(probability(10) * 100).toFixed(1)}%`} />
           <Figure
             label="Years to be 90% sure"
-            value={
-              ninetyPercent() === null
-                ? "never"
-                : (ninetyPercent() ?? 0) > 500
-                  ? ">500"
-                  : (ninetyPercent() ?? 0).toFixed(1)
-            }
+            value={formatYears(ninetyPercent())}
             unit={ninetyPercent() === null ? undefined : "yr"}
             note={ninetyPercent() === null ? "A zero or negative edge never becomes visible." : undefined}
           />
@@ -877,9 +871,9 @@ export default function Lab(): JSX.Element {
           <button type="button" class="control cursor-pointer" onClick={share}>
             Copy a link to this experiment
           </button>
-          <span role="status" class="text-sm text-ink-muted">
+          <output class="text-sm text-ink-muted">
             <Show when={copied()}>Copied to the clipboard.</Show>
-          </span>
+          </output>
           <button type="button" class="control cursor-pointer" onClick={() => update({ ...defaultLabConfig })}>
             Reset
           </button>
