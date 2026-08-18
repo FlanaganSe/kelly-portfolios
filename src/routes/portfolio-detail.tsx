@@ -304,6 +304,19 @@ export default function PortfolioDetail(): JSX.Element {
                   </For>
                 </div>
 
+                <Show when={found().priced.length > 1}>
+                  <Callout variant="caveat" label="These lines are not added" class="mt-10">
+                    <p>
+                      No total appears above, and that is deliberate. Two of these lines may be measured against
+                      different benchmarks, in which case adding them swaps the yardstick rather than adding return.
+                      Where they do share a benchmark, combining their tracking errors in quadrature would assume the
+                      lines are independent — and two tilts into the same factor plainly are not, so the combined
+                      dispersion would come out too small. This repository has not measured the correlation between
+                      them, so it does not publish a portfolio-level figure and neither does this page.
+                    </p>
+                  </Callout>
+                </Show>
+
                 <Show when={series().length > 0}>
                   <div class="mt-12">
                     <OutperformanceChart
