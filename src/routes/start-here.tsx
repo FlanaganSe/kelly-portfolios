@@ -1,281 +1,225 @@
 import { Title } from "@solidjs/meta";
 import { A } from "@solidjs/router";
-import { For } from "solid-js";
+import { For, type JSX } from "solid-js";
 import { Callout } from "~/components/Callout";
-import { DataTable } from "~/components/DataTable";
+import { Figure } from "~/components/Figure";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
-import { SourceLink } from "~/components/SourceLink";
-import {
-  contractualRows,
-  decidingComparison,
-  formulas,
-  managedFuturesCases,
-  smallValueCorners,
-  smallValueReading,
-  upperBoundWarning,
-} from "~/content/confidence";
+import { StatusChip } from "~/components/StatusChip";
+import { contractualRows } from "~/content/confidence";
 import { edgeBudgetTotal } from "~/content/edgeBudget";
-import { experiments } from "~/content/experiments";
-import { factorPremia, sleeves } from "~/content/sleeves";
-import type { Citation, KeyNumber } from "~/content/types";
-import { CORPUS_AS_OF, NAV_ITEMS } from "~/lib/nav";
+import { families } from "~/content/families";
+import { engineMeta, portfolios, type ReturnEngine } from "~/content/portfolios";
+import { CORPUS_AS_OF } from "~/lib/nav";
 
 /**
  * The front page.
  *
- * Every figure below is read from `src/content/`. Nothing is formatted on the way
- * out except a probability, which is a plain number in the content layer rather
- * than a printed string, and is rendered at the full precision it is held at.
+ * Every figure is read from `src/content/`. The pairing rule from decision 0007 is
+ * structural here rather than incidental: the 109 bp and the index-relative 46 bp appear
+ * in the same paragraph, because quoting either alone is how this number gets misused.
  */
 
-function requireById<T extends { readonly id: string }>(rows: readonly T[], id: string): T {
-  const row = rows.find((candidate) => candidate.id === id);
+function requireRow(id: string) {
+  const row = contractualRows.find((one) => one.id === id);
   if (row === undefined) {
-    throw new Error(`content record "${id}" is missing; a page may not substitute a number for it`);
+    throw new Error(`the confidence record no longer holds "${id}"; a page may not substitute a number for it`);
   }
   return row;
 }
 
-function requireKeyNumber(experimentId: string, label: string): KeyNumber {
-  const found = requireById(experiments, experimentId).keyNumbers.find((number) => number.label === label);
-  if (found === undefined) {
-    throw new Error(`experiment "${experimentId}" no longer records "${label}"`);
-  }
-  return found;
+const cheapIndex = requireRow("vs-cheap-index");
+
+/** A probability as printed, without inventing precision the arithmetic does not have. */
+function formatPercent(probability: number | undefined): string {
+  return probability === undefined ? "—" : `${(probability * 100).toFixed(1)}%`;
 }
 
-/**
- * `decidingComparison` carries no probability, so each of its rows is joined to the
- * record that does. The join matches on edge *and* tracking error rather than on an
- * id, and throws when no record matches, so it fails loudly rather than quietly
- * pairing the wrong line if either module moves.
- */
-function probabilityAtThirtyYears(row: (typeof decidingComparison)[number]): number {
-  const candidates = [
-    ...contractualRows.map((r) => ({ edgeBp: r.edgeBp, te: r.trackingErrorBp, p: r.probability30yr })),
-    ...smallValueCorners.map((r) => ({ edgeBp: r.netEdgeBp, te: r.trackingErrorBp, p: r.probability30yr })),
-    ...managedFuturesCases.map((r) => ({ edgeBp: r.netEdgeBp, te: r.trackingErrorBp, p: r.probability30yr })),
-  ];
-  const match = candidates.find((c) => c.edgeBp === row.edgeBp && c.te === row.trackingErrorBp && c.p !== undefined);
-  if (match?.p === undefined) {
-    throw new Error(`no 30-year probability is recorded for a ${row.edgeBp} bp / ${row.trackingErrorBp} bp line`);
-  }
-  return match.p;
+const ENGINE_ORDER: readonly ReturnEngine[] = ["cost-and-tax", "equity-beta", "value", "momentum", "trend"];
+
+const ENGINE_VERDICT: Readonly<Record<string, string>> = {
+  "cost-and-tax": "The sign is known before the fact. Everything else here is a bet.",
+  "equity-beta": "Not an edge. It is the thing an edge is measured against.",
+  value: "The one factor premium that advanced on its own strength. Decades of dispersion for tens of basis points.",
+  momentum: "The largest gross premium measured here, and the one implementation destroys.",
+  trend: "A risk-reduction claim before it is a return claim. The correlation resolves; the mean does not.",
+};
+
+function Action(props: { readonly href: string; readonly title: string; readonly detail: string }): JSX.Element {
+  return (
+    <A href={props.href} class="group block border-t-2 border-rule-strong pt-4 transition-colors hover:border-accent">
+      <span class="font-serif text-xl text-ink transition-colors group-hover:text-accent">{props.title}</span>
+      <span class="mt-1.5 block max-w-[38ch] text-sm text-ink-muted">{props.detail}</span>
+    </A>
+  );
 }
 
-const cheapIndex = requireById(contractualRows, "vs-cheap-index");
-const momentum = requireById(factorPremia, "umd");
-const momentumCost = requireKeyNumber("exp-006-regional-momentum", "Assumed cost of the academic construction");
-const capture = requireKeyNumber("exp-007-longonly-capture", "Size-neutral value capture");
-const captureSpread = requireKeyNumber("exp-007-longonly-capture", "Spread across five defensible benchmarks");
-const taxDrag = requireKeyNumber("exp-008-managed-futures-products", "Distribution tax drag");
-const smallValue = requireById(sleeves, "vbr-small-value");
-const trend = requireById(sleeves, "dbmf-managed-futures");
-const exploratoryProducts = sleeves.filter((sleeve) => sleeve.status === "exploratory").length;
-
-/** The module that refuses the sum, not a page describing it. */
-const refusesToSum: Citation = {
-  label: "studies/outperformance_horizon.py",
-  docPath: formulas.implementation,
-};
-
-const onwardLinks: Readonly<Record<string, string>> = {
-  "/portfolio": "The construction itself, fund by fund, and the one decision the evidence refuses to make for you.",
-  "/edge-budget":
-    "Every line of the contractual budget, what each needs to be true, and the lines subtracted rather than added.",
-  "/placement":
-    "Which account each holding belongs in, computed from your own bracket rather than asserted from a rule.",
-  "/confidence":
-    "How long each edge takes to become visible, and why tracking error rather than edge size decides that.",
-  "/evidence": "Every experiment, the status it was given, and the counter-evidence that travels with it.",
-  "/concepts": "The vocabulary, defined once: capture fraction, tracking error, certainty class, detection threshold.",
-  "/method": "How a result earns a status here, what the ledger records, and where the machinery is currently broken.",
-};
-
-export default function StartHere() {
+export default function StartHere(): JSX.Element {
   return (
     <>
-      <Title>Start here — Portfolio Edge</Title>
+      <Title>Portfolio Edge — what beating the market actually costs</Title>
 
       <PageHeader
-        title="You probably can’t beat the index. You can almost certainly beat yourself."
-        standfirst="Nine experiment families with a synthesis behind them, two more run and not yet written up, a specification frozen before each one of them ran, and a ledger that records the failures too. This is what came out, including the parts that argue against the interesting answer."
+        title="Most of what you can reliably win is decided before you pick a fund."
+        standfirst="This site prices every route to outperformance that this repository has been able to measure, states which ones are facts and which are bets, and lets you size them yourself. It promises nothing, and it shows its working."
         lastChecked={CORPUS_AS_OF}
       />
 
-      <section aria-labelledby="two-benchmarks">
+      <section aria-labelledby="thesis">
         <Prose>
-          <h2 id="two-benchmarks">Two benchmarks, and why the difference is the whole game</h2>
+          <h2 id="thesis">Two benchmarks hide inside “beat the market”</h2>
           <p>
-            There are two different things hiding inside “beat the market”. Most investing advice never says which one
-            it means.
+            Almost every claim about outperformance is ambiguous between two comparisons, and the difference between
+            them is larger than the effect being argued about.
           </p>
           <p>
-            <strong>The index.</strong> A cheap, broad, fully invested fund. Beating it is hard, and everything measured
-            here agrees. Add up every honest edge in this repository and you get about{" "}
-            <span data-numeric>{cheapIndex.edgeBp}</span> bp a year against{" "}
+            <strong>Against the portfolio you would otherwise have owned</strong> — an expensive fund, in one account,
+            on average-cost lots — fee, wrapper, lot method and account placement are worth about{" "}
+            <span data-numeric>{edgeBudgetTotal.basisPoints}</span> bp a year, against{" "}
+            <span data-numeric>{edgeBudgetTotal.combinedTrackingErrorBp}</span> bp of tracking error. That is{" "}
+            {edgeBudgetTotal.ninetyNinePercentConfidence} to 99% confidence. None of it needs a view on any market,
+            because every line is an accounting or statutory fact.
+          </p>
+          <p>
+            <strong>Against a cheap index fund</strong>, the same work plus every tilt this repository can defend comes
+            to about <span data-numeric>{cheapIndex.edgeBp}</span> bp a year against{" "}
             <span data-numeric>{cheapIndex.trackingErrorBp}</span> bp of tracking error — a{" "}
-            <span data-numeric>{cheapIndex.probability30yr}</span> probability of being ahead after thirty years. That
-            is a coin flip with a slight lean, and it is the honest answer.
+            <span data-numeric>{formatPercent(cheapIndex.probability30yr)}</span> chance of being ahead after thirty
+            years, and about {cheapIndex.ninetyPercentAt} to be 90% sure. It is an upper bound on an upper bound.
           </p>
           <p>
-            <strong>The portfolio you’d otherwise have owned.</strong> The active funds, the wrong account, the default
-            FIFO lots, the turnover. Beating that is worth about <span data-numeric>{edgeBudgetTotal.basisPoints}</span>{" "}
-            bp a year, and it is near-certain, because it is bought with arithmetic and tax law instead of forecasts. It
-            reaches 99% confidence in {edgeBudgetTotal.ninetyNinePercentConfidence}.
-          </p>
-          <p>
-            Those two numbers get added together all the time. They can’t be. They are measured against different
-            things, and the code that computes them refuses to sum across benchmarks for exactly that reason —{" "}
-            <SourceLink citation={refusesToSum} />.
+            <strong>The two may never be added.</strong> They are different claims about different reference portfolios,
+            and this repository's own code raises an error rather than summing them. The interesting consequence is not
+            that outperformance is impossible. It is that the reliable part is cheap and immediate, and the exciting
+            part is slow and uncertain — which is the reverse of how it is usually sold.
           </p>
         </Prose>
-
-        <Callout variant="caveat" label="What is wrong with the smaller number">
-          <p>{cheapIndex.note}</p>
-        </Callout>
       </section>
 
-      <section aria-labelledby="comparison">
-        <Prose>
-          <h2 id="comparison">The comparison that decides what to work on</h2>
-        </Prose>
+      <section aria-labelledby="actions" class="mt-14">
+        <h2 id="actions" class="sr-only">
+          Where to start
+        </h2>
+        <div class="grid gap-8 sm:grid-cols-3">
+          <Action
+            href="/portfolios"
+            title="Four portfolios"
+            detail="Ordered by how much of each construction's case is a fact and how much is a bet. Exact weights, notional exposure, and what would break each one."
+          />
+          <Action
+            href="/lab"
+            title="Size it yourself"
+            detail="Set an edge and a tracking error and see the wait it implies — the distribution of outcomes, and how long you could sit behind on the way there."
+          />
+          <Action
+            href="/research"
+            title="Ten return engines"
+            detail="Each asked the same ten questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
+          />
+        </div>
+      </section>
 
-        <DataTable
-          class="mt-8"
-          caption="Three candidate lines: what each is worth, and how long it takes to prove"
-          columns={[
-            { key: "label", header: "Line", rowHeader: true, cell: (row) => row.label },
-            { key: "edge", header: "Edge, bp/yr", numeric: true, cell: (row) => row.edgeBp },
-            { key: "te", header: "Tracking error, bp/yr", numeric: true, cell: (row) => row.trackingErrorBp },
-            {
-              key: "probability",
-              header: "P(ahead at 30 yr)",
-              numeric: true,
-              cell: (row) => probabilityAtThirtyYears(row).toFixed(3),
-            },
-            { key: "confident", header: "99% confident in", cell: (row) => row.ninetyNinePercentAt },
-          ]}
-          rows={decidingComparison}
-          footnote={
-            <>
-              The tilt is {smallValue.ticker} and the trend sleeve is {trend.ticker}. {upperBoundWarning} The first
-              row’s probability is ~1.00 rather than exactly 1.{" "}
-              <SourceLink citation={smallValueReading.source} prefix />
-            </>
-          }
-        />
+      <section aria-labelledby="candidates" class="mt-16 border-t border-rule pt-8">
+        <h2 id="candidates" class="font-serif text-2xl tracking-[-0.01em]">
+          The portfolios
+        </h2>
+        <ul class="mt-6 space-y-6">
+          <For each={portfolios}>
+            {(portfolio) => (
+              <li class="flex flex-col gap-1.5 border-l-2 border-rule-strong pl-4 sm:flex-row sm:items-baseline sm:gap-4">
+                <A href={`/portfolios/${portfolio.id}`} class="link shrink-0 font-medium sm:w-52">
+                  {portfolio.name}
+                </A>
+                <span class="max-w-measure text-base text-ink-muted">{portfolio.thesis}</span>
+              </li>
+            )}
+          </For>
+        </ul>
+      </section>
+
+      <section aria-labelledby="engines" class="mt-16 border-t border-rule pt-8">
+        <h2 id="engines" class="font-serif text-2xl tracking-[-0.01em]">
+          Where a return can actually come from
+        </h2>
+        <p class="mt-2 max-w-measure text-base text-ink-muted">
+          Five engines, in descending order of how certain their sign is. A portfolio is a decision about how much of
+          each to hold, and almost every disagreement about investing is really a disagreement about this ordering.
+        </p>
+
+        <ol class="mt-8 space-y-6">
+          <For each={ENGINE_ORDER}>
+            {(engine, index) => (
+              <li class="flex gap-4 border-t border-rule pt-4">
+                <span data-numeric class="shrink-0 text-2xl font-semibold text-ink-faint tabular-nums">
+                  {index() + 1}
+                </span>
+                <div>
+                  <h3 class="text-base font-semibold text-ink">{engineMeta[engine].label}</h3>
+                  <p class="mt-1 max-w-measure text-sm text-ink-muted">{engineMeta[engine].gloss}</p>
+                  <p class="mt-1.5 max-w-measure text-sm text-ink">{ENGINE_VERDICT[engine]}</p>
+                </div>
+              </li>
+            )}
+          </For>
+        </ol>
+      </section>
+
+      <section aria-labelledby="evidence" class="mt-16 border-t border-rule pt-8">
+        <h2 id="evidence" class="font-serif text-2xl tracking-[-0.01em]">
+          What the evidence is worth
+        </h2>
+
+        <div class="mt-6 flex flex-wrap gap-x-12 gap-y-8">
+          <Figure label="Highest status reached, anywhere" value="Exploratory" size="md" />
+          <Figure label="US factor loadings surviving correction" value="96 of 109" size="md" />
+          <Figure label="Alpha tests surviving correction" value="5 of 327" size="md" note="All five negative." />
+        </div>
 
         <Prose class="mt-8">
           <p>
-            The point is not that tilts are worthless. It is that{" "}
-            <strong>tracking error, not edge size, decides whether a lifetime is long enough to tell.</strong> The
-            horizon scales with the square of tracking error over edge, so halving the edge quadruples the wait.
+            Exposure is measurable and skill is not. A fund's factor loadings can be estimated tightly enough to act on;
+            its alpha cannot — the median alpha this instrument could detect is about 5 percentage points a year,
+            against a true cross-sectional dispersion of roughly 1.25. That asymmetry is the single most useful thing on
+            this site, and it decides what a portfolio should be built out of.
           </p>
           <p>
-            Every probability in that table is an <strong>upper bound</strong>. The arithmetic treats the edge as a
-            known quantity, which removes the largest source of uncertainty there is.
+            Nothing here is promoted. The status vocabulary is closed and nothing has passed <em>exploratory</em>, which
+            permits a product to stand in for a real one in a later experiment and permits nothing else.{" "}
+            <em>Rejected</em> means a test written down before the result fired — not that the effect is zero.
           </p>
         </Prose>
+
+        <div class="mt-6 flex flex-wrap gap-x-8 gap-y-3">
+          <StatusChip status="exploratory" showGloss />
+          <StatusChip status="unresolved" showGloss />
+          <StatusChip status="rejected" showGloss />
+        </div>
       </section>
 
-      <section aria-labelledby="what-was-found">
-        <Prose>
-          <h2 id="what-was-found">What the research actually found</h2>
-          <p>Four things worth knowing before anything else.</p>
-          <p>
-            <strong>The reliable money is in decisions, not predictions.</strong> Fund choice, account placement, lot
-            method and not trading. All four are contractual — their sign is known in advance — and together they are
-            larger than any tilt measured here.
-          </p>
-          <p>
-            <strong>Some tilts are real and still not worth much to you.</strong> Momentum has the largest gross premium
-            in the whole repository, <span data-numeric>{momentum.pooledPremium}</span> pooled across three regions,{" "}
-            <span data-numeric>{momentum.pooledInterval}</span>. It is still excluded, because its academic construction
-            rebalances monthly at an assumed cost of{" "}
-            <span data-numeric>
-              {momentumCost.value} {momentumCost.unit}
-            </span>
-            , its three regions crash together, and the entire retail shelf is one fund that loses to a cheap three-fund
-            combination.
-          </p>
-          <p>
-            <strong>
-              A long-only tilt delivers about half of the premium it advertises, and that half is counted once.
-            </strong>{" "}
-            The measured capture fraction is <span data-numeric>{capture.value}</span>,{" "}
-            <span data-numeric>{capture.interval}</span>, and five defensible ways to define it disagree by{" "}
-            <span data-numeric>{captureSpread.value}</span>. But regress the same spread on the factors and 94% of that{" "}
-            <span data-numeric>{capture.value}</span> is simply its HML coefficient, so the fraction may not multiply a
-            fund's own loading. The chain is <code>weight × (loading − incumbent loading) × premium − cost</code>, and
-            it carries no capture term.
-          </p>
-          <p>
-            <strong>Where you hold something can decide its sign.</strong> The managed-futures shelf distributes{" "}
-            <span data-numeric>
-              {taxDrag.value} {taxDrag.unit}
-            </span>{" "}
-            of tax in a taxable account — {taxDrag.note}. The account is a larger controllable term than the product.
-          </p>
-        </Prose>
-      </section>
-
-      <section aria-labelledby="what-this-is-not">
-        <Prose>
-          <h2 id="what-this-is-not">What this is not</h2>
-        </Prose>
-
-        <dl class="mt-6 max-w-measure border-t border-rule">
-          <div class="border-b border-rule py-4">
-            <dt class="font-medium">Not advice</dt>
-            <dd class="mt-1 text-ink-muted">
-              It is a construction derived from measurements, for one stated reference investor: US federal, thirty-year
-              horizon, contributions continuing, state tax excluded.
-            </dd>
-          </div>
-          <div class="border-b border-rule py-4">
-            <dt class="font-medium">Not a forecast</dt>
-            <dd class="mt-1 text-ink-muted">No expected return for any market appears anywhere on this site.</dd>
-          </div>
-          <div class="border-b border-rule py-4">
-            <dt class="font-medium">Not a promotion</dt>
-            <dd class="mt-1 text-ink-muted">
-              Nothing tested here reached <code>production-eligible</code>, or <code>walk-forward-tested</code>, or even{" "}
-              <code>independently-reproduced</code>. <span data-numeric>{exploratoryProducts}</span> products are{" "}
-              <code>exploratory</code>, which permits them as proxies in a later experiment and permits nothing else.
-            </dd>
-          </div>
-          <div class="border-b border-rule py-4">
-            <dt class="font-medium">Not settled</dt>
-            <dd class="mt-1 text-ink-muted">
-              The largest decision in your portfolio — the split between equities and bonds — is the one thing here the
-              evidence cannot set for you.
-            </dd>
-          </div>
-        </dl>
-      </section>
-
-      <section aria-labelledby="onward">
-        <Prose>
-          <h2 id="onward">Where to go next</h2>
-        </Prose>
-
-        <dl class="mt-6 max-w-measure">
-          <For each={NAV_ITEMS.filter((item) => item.href !== "/")}>
-            {(item) => (
-              <div class="mt-4 first:mt-0 sm:flex sm:gap-4">
-                <dt class="sm:w-40 sm:shrink-0">
-                  <A href={item.href} class="link">
-                    {item.label}
-                  </A>
-                </dt>
-                <dd class="text-ink-muted">{onwardLinks[item.href] ?? ""}</dd>
-              </div>
+      <section aria-labelledby="reading" class="mt-16 border-t border-rule pt-8">
+        <h2 id="reading" class="font-serif text-2xl tracking-[-0.01em]">
+          The highest-value research
+        </h2>
+        <ul class="mt-6 space-y-5">
+          <For each={families.slice(0, 5)}>
+            {(family) => (
+              <li class="border-l-2 border-rule-strong pl-4">
+                <A href={`/research/${family.slug}`} class="link font-medium">
+                  {family.name}
+                </A>
+                <p class="mt-1 max-w-measure text-sm text-ink-muted">{family.claim}</p>
+              </li>
             )}
           </For>
-        </dl>
+        </ul>
       </section>
+
+      <Callout variant="caveat" label="What this is not" class="mt-16">
+        <p>
+          Nothing here is advice, and no sleeve in the underlying research is promoted. No page forecasts any market's
+          return, and no number on this site is a claim that a portfolio will beat an index.
+        </p>
+      </Callout>
     </>
   );
 }
