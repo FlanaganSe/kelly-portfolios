@@ -89,3 +89,14 @@ describe("paths", () => {
     expect(areaPath([[0, Number.NaN]], 20)).toBe("");
   });
 });
+
+describe("a chart axis over a short horizon", () => {
+  it("still has more than one tick", () => {
+    // The fan chart picks its year step from the horizon; a one-year test that plotted a
+    // single "0" was the failure this guards.
+    for (const total of [1, 2, 3, 5, 10, 30, 50]) {
+      const step = total <= 4 ? 1 : total <= 10 ? 2 : total <= 30 ? 5 : 10;
+      expect(Math.floor(total / step) + 1, `horizon ${total}`).toBeGreaterThan(1);
+    }
+  });
+});

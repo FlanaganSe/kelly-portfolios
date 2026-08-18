@@ -113,7 +113,7 @@ export function FanChart(props: FanChartProps): JSX.Element {
 
   const yearTicks = createMemo(() => {
     const total = props.horizonYears;
-    const step = total <= 10 ? 2 : total <= 30 ? 5 : 10;
+    const step = total <= 4 ? 1 : total <= 10 ? 2 : total <= 30 ? 5 : 10;
     const out: number[] = [];
     for (let year = 0; year <= total + 1e-9; year += step) {
       out.push(year);
