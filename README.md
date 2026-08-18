@@ -143,6 +143,8 @@ cd research && uv run python -m portfolio_edge.reporting.client_fixtures \
   is an unseeded random walk and **is not market data.**
 - [`research/`](research/README.md) is the Python research workspace, with its own toolchain
   and its own README.
+- [`STATE.md`](STATE.md) is the current state of the client: its information architecture,
+  what each content module owns, what the browser computes, and what is unresolved.
 - [`docs/README.md`](docs/README.md) indexes durable project knowledge.
 - [`AGENTS.md`](AGENTS.md) is the canonical working agreement for coding agents, extended by
   [`docs/AGENTS.md`](docs/AGENTS.md) for documentation and research.
