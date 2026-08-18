@@ -48,7 +48,9 @@ describe("the front page", () => {
 
   it("shows the proposal beside the evidence-led alternative, with real weights", async () => {
     mount("/", "/", StartHere);
-    expect(await screen.findByRole("heading", { level: 2, name: /a proposal, and what the evidence supports/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { level: 2, name: /a proposal, and what the evidence supports/i })
+    ).toBeInTheDocument();
     const candidate = portfolios.find((one) => one.id === "candidate");
     for (const holding of candidate?.holdings ?? []) {
       expect(screen.getAllByRole("link", { name: holding.ticker }).length).toBeGreaterThan(0);
@@ -81,7 +83,9 @@ describe("the portfolio library", () => {
 
   it("tells the reader what the evidence would change about the proposal", async () => {
     mount("/portfolios/candidate", "/portfolios/:id", PortfolioDetail);
-    expect(await screen.findByRole("heading", { level: 2, name: /what this evidence would change/i })).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { level: 2, name: /what this evidence would change/i })
+    ).toBeInTheDocument();
     expect(document.body.textContent).toContain("Drop IDMO");
   });
 
