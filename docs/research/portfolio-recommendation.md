@@ -13,8 +13,9 @@ best-supported construction given the evidence**, and nothing more.
 sleeve. **Nothing here reached `production-eligible`, and nothing here is claimed to beat
 an index.** Every fund-specific fact below is dated and must be re-checked before use.
 
-`as of 2026-08-17` for the wrapper and managed-futures product facts and for **every
-core-fund cost fact in §1.2**, `2026-08-12` for everything else. US federal individual
+`as of 2026-08-17` for the wrapper and managed-futures product facts, for **every
+core-fund cost fact in §1.2**, and for **every fee, turnover rate and tilt figure in §5**;
+`2026-08-12` for everything else. US federal individual
 investor, state tax excluded and additive **except in §3.1, which is worked for one named
 California investor and says so.**
 
@@ -36,10 +37,20 @@ California investor and says so.**
    zero.** Its largest new component is decaying while being measured, and the ~46 bp
    tracking error behind the "99% in twelve months" claim is an assumption rather than a
    measurement.
-3. **Every tilt is smaller, slower, and not signable within a lifetime.** The best case for
-   a 20%-of-portfolio small-value tilt is **+15 bp/yr against 140 bp of tracking error** —
-   a 0.72 probability of being ahead after thirty years and 139 years to 90% confidence. On
-   the defensible reading of the two terms that decide it, **the same tilt is negative**.
+3. **Every tilt is smaller, slower, and not signable within a lifetime — and the figure
+   this page published for the value tilt was wrong twice over, both times downward.** The
+   **+15 bp/yr against 140 bp** previously quoted multiplied a fund's HML loading by a
+   long-only capture fraction, which is
+   [the same quantity measured a second way](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one),
+   and used **VBR's** +0.410 rather than the +0.537 of AVUV, a fund the corrected census
+   frame admitted after that figure was written. The best case for a 20%-of-portfolio
+   small-value tilt is **+43 bp/yr against 312 bp of tracking error** — a 0.78 probability
+   of being ahead after thirty years and **86 years** to 90% confidence. **On growth it is
+   worth half of that**, +21 bp, because the swap adds portfolio variance; over thirty years
+   that compounds to **6.6% more terminal wealth**. On the US-only post-publication premium
+   the growth contribution is **negative at every weight**, and on a `γ = 3` certainty
+   equivalent so is almost every corner. **Bigger than this page said, still small, and
+   still undemonstrable: its 30-year MDE₈₀ is 142 bp against a 43 bp edge.**
 4. **The equity/bond split is the investor's to set and nothing here can set it.** It is the
    largest single decision in the portfolio and the only one the evidence is silent on.
 5. **One account-placement result is not the textbook one:** at a 15% or 18.8% qualified
@@ -519,13 +530,14 @@ sleeve absorbs the five points.
 | --- | --- | --- |
 | **US 45 / international 35** | **Supported, as an investor choice.** No change required | A 56:44 US:ex-US split against the repository's declared 60:40. **No page here can distinguish them** — there is no global market-capitalisation series here and no experiment signed a regional tilt. Choose either and stop |
 | **"Other" 25%** | **Underspecified. Split it** | If bonds, they go in the shelter first by a factor of four. If managed futures at anything like 25%, far too large for a sleeve whose index is `unresolved` and whose only delivering product is one fund |
-| **Small-cap value** | **Reduce, and know what you are buying.** 0–20% of US equity, via VBR | On the size-neutral capture (0.520) and the US-only premium (+1.57) the chain is **+0.09 to −0.39 pp/yr — negative on the defensible reading of both terms.** It is positive only on the pooled premium *and* the market-relative capture, and the gap between those captures is **a size premium wearing a value label** — which the size test then failed to sign. Judged marginally it gets worse: US small value's beta to an equity core is 1.083, so its credit is −0.181 pp/yr per unit weight |
+| **Small-cap value** | **Keep it small, and buy the exposure rather than the label.** 0–20% of US equity, and **the growth case now favours a large-value fund over a small-value one** | The chain is `weight × (loading − VTI's loading) × premium − cost` and carries **no capture term**: a capture fraction *is* a loading ([identity (C)](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)), so the old reading discounted one exposure twice. On the pooled +4.74 a 20% AVUV tilt is **+43 bp/yr of edge and +21 bp of geometric growth**; on the US-only +1.57 the growth contribution is **−11 bp**. **The size leg is the problem**: a small-value fund carries an SMB loading near +0.85 whose premium this repository tested and could not sign, so it is variance with no priced expectation — DFUV and AVLV buy comparable HML at half the tracking error. Judged marginally it gets worse still: US small value's beta to an equity core is 1.083, so its credit is −0.181 pp/yr per unit weight |
 | **Momentum** | **Drop** | **Not because the premium is weak** — it is the largest gross factor measured here, pooled **+7.33 pp/yr**. Because its detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and **crash together**; the academic construction rebalances **monthly** with an assumed cost of 3.30–18.67 pp/yr against that 7.33; and the entire retail shelf is MTUM, `rejected` on cost |
 | **Managed futures** | **Keep. The account rule applies to DBMF and does not apply to RSST** | **Only DBMF's loading has been measured against the benchmark**, on three independent measurements, and the other fourteen listed funds are untested rather than rejected. DBMF's tax drag is 2.09 pp/yr — 2.5× its own fee, zero in a shelter, and 143.9 bp of it incremental over the equity it is sold to buy; **RSST's incremental drag is 4.5 bp and its account does not decide its sign.** RSST is also the vehicle that keeps the funding-rule benefit. **25% of capital is far too large for DBMF and is inside the range for RSST notional**, which is the distinction §1.3 insists on |
 
 ### What changed since the earlier answer to the owner
 
-Six corrections, all running against what was said before.
+Seven corrections. Six run against what was said before; the seventh runs the other way,
+and it is the only one that has ever made a sleeve look *better*.
 
 1. **Momentum is the strongest gross factor, not the weakest.** The case against it is
    entirely turnover, product shelf and a shared crash — not the premium.
@@ -536,12 +548,16 @@ Six corrections, all running against what was said before.
 3. **Experiment 004's verdict was repeated as though it applied to KMLM, DBMF and CTA. It
    evaluated an index.** Experiment 008 tested the products and reached a different answer
    for DBMF.
-4. **The long-only capture fraction is measured, and it makes a US-only long-only value tilt
-   negative after cost.** Five benchmarks span 0.846, which is why Experiment 007 is
-   `rejected` on its own dispersion clause: **what was rejected is not the capture fraction
-   but the premise that there is one.**
+4. **The long-only capture fraction is measured, and then found to be a quantity that may
+   not be used the way this page used it.** Five benchmarks span 0.846, which is why
+   Experiment 007 is `rejected` on its own dispersion clause: **what was rejected is not the
+   capture fraction but the premise that there is one.** The stronger correction came later:
+   a capture fraction **is** an HML loading — 94% of the size-neutral 0.520 is the loading
+   0.4891 — so multiplying the two discounts one exposure twice, and **every
+   `loading × capture` figure this repository published was about half what it should have
+   been.**
 5. **The chain that judged every sleeve here except trend was the wrong shape.**
-   `premium × loading × capture − cost` sets the covariance term to zero by construction.
+   `premium × loading − cost` sets the covariance term to zero by construction.
    [Experiment 010](marginal-sleeve-value.md) added it. **No holding moves; the reasoning
    behind three of them does** — and the marginal view makes the equity tilts look *worse*,
    because a beta above one makes the credit negative.
@@ -549,6 +565,12 @@ Six corrections, all running against what was said before.
    [Experiment 009](factor-products.md) found is a **cost** problem rather than an exposure
    problem — with one exception that matters here: **no emerging product reached
    `exploratory` at all.**
+7. **The value tilt is nearly three times larger than this page said, and its cost is four
+   to eight times smaller.** The double count above, a fund the corrected census frame
+   admitted after the figure was written, and portfolio turnover read from filings instead
+   of assumed from a sort. **It is also less demonstrable than the page said**, because the
+   tracking error was assumed at 7 pp/yr and measures 15.6. See
+   [§5](#the-value-tilt-recomputed).
 
 ---
 
@@ -561,30 +583,156 @@ probability below is an **upper bound**: the machinery treats `e` as known.
 | Line | Edge | TE | P(30 yr) | 90% at | 99% at |
 | --- | ---: | ---: | ---: | ---: | ---: |
 | **Cost + tax + placement, vs your own counterfactual** | **109 bp** | 46 bp* | ~1.00 | **3.5 months** | **~12 months** |
-| The whole honest budget **vs a cheap index** | 24 bp | 401 bp | **0.631** | ~443 yr | — |
-| Best case for a 20% small-value tilt | 15.2 bp | 140 bp | 0.724 | 139 yr | ~460 yr |
-| Worst case for the same tilt | **−7.8 bp** | 140 bp | **0.380** | never | never |
+| The whole honest budget **vs a cheap index** | 46 bp | 313 bp | **0.792** | ~74 yr | ~245 yr |
+| Best case for a 20% small-value tilt, **AVUV** | **43 bp** | **312 bp** | **0.776** | **86 yr** | ~283 yr |
+| Worst case for the same tilt | **−29 bp** | 312 bp | **0.31** | never | never |
 | Best case for a 15% trend sleeve in a shelter | 88 bp | 251 bp | 0.973 | 13 yr | ~44 yr |
 
 \* **assumed**, not measured, and the components are not independent.
 
-**A 20% small-value tilt, all four corners.** Gross contribution is
-`weight × loading × capture × premium`; cost is Experiment 007's assumed sort turnover plus
-VBR's 5 bp fee, giving about 0.25–0.73 pp/yr; tracking error is taken at **7 pp/yr**, inside
-Experiment 002's measured 1.38–8.65 range — **an assumption, since VBR's own tracking error
-is not published anywhere here.**
+### The value tilt, recomputed
 
-| Premium used | Sleeve cost | Net edge | **P(30 yr)** | 90% confidence at |
-| --- | --- | ---: | ---: | ---: |
-| Pooled +4.74 pp/yr | 0.25 | **+15.2 bp** | **0.724** | 139 yr |
-| Pooled +4.74 | 0.73 | +5.6 bp | 0.587 | 1,026 yr |
-| **US-only +1.57** | 0.25 | +1.8 bp | 0.528 | ~10,000 yr |
-| **US-only +1.57** | 0.73 | **−7.8 bp** | **0.380** | never |
+**The 15.2 bp this page published on 2026-08-12 is withdrawn, and both of its errors ran in
+the same direction.** It came from `0.20 × 0.410 × 0.520 × 4.74 − 0.20 × 0.25`, in which
 
-**That table is the whole case, for and against.** The best corner requires believing a
-premium whose weight sits in the two regions where shorting is hardest and where no audited
-product exists here; the worst corner is a persistent loss. **At no corner is the tilt
-demonstrable from the investor's own experience.**
+- **`0.410 × 0.520` discounts one exposure twice.** A capture fraction *is* an HML loading:
+  the size-neutral 0.520 decomposes exactly into a loading of 0.4891 plus a 0.0313 residue,
+  and 94% of it is the loading
+  ([long-only capture, identity (C)](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)).
+  A fund's regression coefficient already contains the long-only discount, because a
+  long-only fund cannot load 1.0 on a long-short factor and its coefficient says so.
+- **`0.410` is VBR's loading.** [Experiment 013](factor-products.md#what-the-corrected-frame-finds)
+  admitted nine systematic value and small-value products the 2019Q4 census frame could not
+  see, and **AVUV's HML loading is +0.537** over the full 72 months, on an interval of
+  `[+0.43, +0.64]`.
+
+Two further terms were wrong and they run the *other* way, which is why the corrected
+figure is not simply 2.8× larger everywhere:
+
+- **The incumbent is not exposure-free.** VTI's own FF5+UMD HML loading over the same 72
+  months is **+0.0247**, so the swap buys `0.537 − 0.025 = 0.512`, not 0.537.
+- **The tracking error was assumed at 7 pp/yr and is measured at 15.6.** AVUV against VTI
+  over 2020-01…2025-12 has a realised tracking error of **15.59 pp/yr**; French's
+  small-value research portfolio against the market reads 16.47 pp/yr over the same months
+  and **11.13 over 1963-07…2025-12**, so the fund's figure is a high but not aberrant
+  window. The 7 pp/yr came from Experiment 002's tracking error against a *fitted cheap
+  replication*, which is not what an investor sells. **At 20% weight that is 312 bp of
+  portfolio tracking error, not 140.**
+
+And the cost is lower than assumed, from the funds' own filings rather than from a sort:
+
+| | Fee %/yr | Item 3 turnover %/yr | Trading cost at `k = 1.7` | **Incremental over VTI** |
+| --- | ---: | ---: | ---: | ---: |
+| **AVUV** | 0.25 | **6** | 0.102 | — |
+| VTI | 0.03 | **3** | 0.051 | — |
+| **the swap** | +0.22 | +3 | +0.051 | **0.271 pp/yr** |
+
+Experiment 007 *assumed* 20–40%/yr for an annual book-to-market reconstitution. Eight of
+the nine systematic products file 5–9%; the two whose sort is an index reconstitution, VBR
+and RPV, file 25% and 42%. `as of 2026-08-17`, from each fund's own 497K or 485BPOS.
+
+**The corrected chain is `weight × (h_fund − h_VTI) × premium − weight × incremental cost`,
+and it has three terms, not four.**
+
+### A 20% AVUV tilt, all the corners
+
+Growth beside demonstrability, as [decision 0008](../decisions/0008-growth-decides-crra-reports.md)
+requires. **Growth** is the substitution's marginal contribution to `g = A − V/2`, which is
+`w × edge` less the variance the swap adds — the matched-volatility reading of
+`studies/overlay_growth` equation (5), *not* its equation (4) admission rule, which the
+module itself says is inadmissible above `|ρ| ≈ 0.5` and AVUV's correlation to VTI is 0.835.
+**CE** is the same at `γ = 3`, reported and not deciding. **Wealth ×** is terminal wealth
+after 30 years relative to not tilting. `k = 1.7`, the repository's pessimistic column.
+
+| Premium | Weight | Net edge | TE | **Growth** | CE γ=3 | **Wealth × 30 yr** | P(30 yr) | 90% at | MDE₈₀ at 30 yr |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **Pooled +4.74** | 10% | +21.6 bp | 156 bp | **+11.9 bp** | −7.4 bp | **1.036** | 0.776 | 86 yr | 71 bp |
+| **Pooled +4.74** | **20%** | **+43.1 bp** | **312 bp** | **+21.4 bp** | **−22.0 bp** | **1.066** | **0.776** | **86 yr** | **142 bp** |
+| **Pooled +4.74** | 30% | +64.7 bp | 468 bp | +28.5 bp | −44.0 bp | 1.089 | 0.776 | 86 yr | 212 bp |
+| US full sample +3.45 | 10% | +15.0 bp | 156 bp | +5.3 bp | −14.0 bp | 1.016 | 0.700 | 178 yr | 71 bp |
+| US full sample +3.45 | 20% | +29.9 bp | 312 bp | +8.2 bp | −35.3 bp | 1.025 | 0.700 | 178 yr | 142 bp |
+| US full sample +3.45 | 30% | +44.9 bp | 468 bp | +8.6 bp | −63.8 bp | 1.026 | 0.700 | 178 yr | 212 bp |
+| **US post-pub +1.57** | 10% | +5.3 bp | 156 bp | **−4.3 bp** | −23.6 bp | **0.987** | 0.574 | 1,405 yr | 71 bp |
+| **US post-pub +1.57** | 20% | +10.7 bp | 312 bp | **−11.1 bp** | −54.5 bp | **0.967** | 0.574 | 1,405 yr | 142 bp |
+| **US post-pub +1.57** | 30% | +16.0 bp | 468 bp | **−20.2 bp** | −92.7 bp | **0.941** | 0.574 | 1,405 yr | 212 bp |
+
+**P(30 yr) and the horizon do not vary with weight**, because edge and tracking error are
+both linear in it. Weight decides the size of the bet, never its demonstrability.
+
+**Six readings, and three of them cut against the tilt.**
+
+1. **The best case roughly triples, from +15.2 bp to +43.1 bp.** The double count was worth
+   about 1.92× and AVUV's loading about 1.25×; the incumbent's own loading and the fee gave
+   a little back.
+2. **On growth it is worth about half that.** +43.1 bp of arithmetic edge becomes **+21.4 bp
+   of geometric growth** at 20%, because the swap adds 43.4 percent-squared of portfolio
+   variance and `V/2` takes 21.7 bp of it back. **A tilt that raises portfolio volatility
+   pays for its own edge**, and no chain of the form `premium × loading − cost` can see
+   that. Over thirty years +21.4 bp compounds to a terminal wealth multiple of **1.066** —
+   6.6% more money, on the most favourable premium this repository can defend.
+3. **On a `γ = 3` certainty equivalent the same tilt is negative at every weight and every
+   premium but one.** Decision 0008 says growth decides and the certainty equivalent
+   reports beside it, and this is what that looks like when the two disagree: the tilt buys
+   return by buying variance, so a risk-averse investor is worse off while a growth-maximising
+   one is better off. **Neither reading is a defect in the other.**
+4. **It is nowhere demonstrable.** MDE₈₀ over thirty years is **142 bp at a 20% weight
+   against a 43 bp edge** — the detection floor is 3.3 times the effect. **A positive
+   expected edge below its detection floor is still a positive expected edge**; the MDE says
+   the investor will never know, not that it is not there.
+5. **On the US-only post-publication premium the growth contribution is negative at every
+   weight**, because 5.3 to 16.0 bp of arithmetic edge does not cover the variance the swap
+   adds. And that premium's own 90% interval is `[−2.28, +5.54]`: at 20% weight the net edge
+   across it runs **−28.8 bp to +51.3 bp**. Across the *pooled* premium's `[+1.46, +8.10]`
+   it runs **+9.5 bp to +77.5 bp** and does not change sign.
+6. **The second moments are one window and they matter more than the loading.** Repriced on
+   62 years of research portfolios instead of six years of a fund — small-value 2×3 against
+   the market, σ 19.95 against 15.40, ρ 0.832, TE 11.13 — the same 20% tilt on the pooled
+   premium gives **223 bp of tracking error, +36.9 bp of growth, +24.6 bp of CE and a 1.117
+   wealth multiple**, with 90% confidence at 44 years. **The headline row uses the fund's own
+   worse window on purpose**, which is this repository's net-pessimistic convention applied
+   to a second moment.
+
+### Which value product, if any
+
+Every product at 20% of portfolio, pooled premium, `k = 1.7`. **`α` is the fund's own raw
+FF5+UMD alpha and `MDE α` what its window could detect** — the chain prices the HML exposure
+and *assumes alpha is zero*, so a fund whose alpha is measurably negative is being flattered
+by every figure in its row.
+
+| Fund | mo | HML | SMB | Net edge | TE | **Growth** | CE γ=3 | **Wealth ×** | 90% at | α | MDE α |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **DFLV** large value | 36 | +0.637 | −0.05 | +53.8 bp | 163 bp | **+56.0 bp** | +60.3 bp | **1.183** | 15 yr | **−6.06** | 5.69 |
+| **RPV** value | 72 | +0.710 | +0.20 | +45.3 bp | 275 bp | +34.9 bp | +14.2 bp | 1.111 | 60 yr | **−2.80** | 6.50 |
+| **AVUV** small-cap value | 72 | +0.537 | +0.88 | +43.1 bp | 312 bp | +21.4 bp | −22.0 bp | 1.066 | 86 yr | +0.39 | 3.64 |
+| **DFUV** value | 43 | +0.515 | +0.12 | +42.2 bp | 160 bp | **+43.2 bp** | +45.1 bp | **1.138** | 23 yr | **−2.06** | 5.21 |
+| DFSV small-cap value | 46 | +0.442 | +0.85 | +32.1 bp | 262 bp | +21.6 bp | +0.6 bp | 1.067 | 109 yr | +0.45 | 4.84 |
+| DFAT small-cap value | 54 | +0.433 | +0.83 | +31.7 bp | 239 bp | +26.5 bp | +16.1 bp | 1.083 | 93 yr | +0.33 | 3.79 |
+| VBR small value | 72 | +0.410 | +0.56 | +28.7 bp | 210 bp | +18.2 bp | −2.8 bp | 1.056 | 88 yr | **−2.78** | 3.22 |
+| AVLV value | 51 | +0.322 | +0.12 | +24.4 bp | 135 bp | +24.9 bp | +26.0 bp | 1.078 | 50 yr | −0.92 | 5.28 |
+| AVSC small cap | 47 | +0.243 | +1.06 | +15.7 bp | 252 bp | +6.1 bp | −13.0 bp | 1.019 | 425 yr | +0.62 | 3.14 |
+| DFAS small cap | 54 | +0.241 | +0.82 | +14.9 bp | 190 bp | +9.9 bp | −0.0 bp | 1.030 | 265 yr | **−1.40** | 2.97 |
+
+**The best value tilt on growth grounds is not a small-value one, and this is the strongest
+new result on the page.** A large-value fund buys the HML exposure without the SMB loading
+of +0.83 to +1.06 that comes with a small-value one — and **this repository has tested the
+size premium and cannot sign it**: +1.91 pp/yr full sample on an interval of
+`[−1.90, +6.00]`, +0.41 post-publication ([Experiment 007](long-only-capture.md#momentum-and-size)).
+An unsignable exposure contributes variance and no priced expectation, so it is pure drag
+on the geometric term. DFUV and AVLV carry SMB loadings near +0.12 and tracking errors of
+160 and 135 bp at a 20% weight, against AVUV's 312.
+
+**Four caveats, and the first is disqualifying for the top row.** DFLV's raw alpha is
+**−6.06 pp/yr against an MDE₈₀ of 5.69** — it is one of the sixteen funds on the whole
+109-fund shelf whose alpha exceeds what its own window could detect, and all sixteen are
+negative ([Experiment 013](factor-products.md#alpha-is-exactly-as-unmeasurable-as-it-was)).
+Charging that alpha against the tilt takes its 53.8 bp edge to about **−67 bp**, or −54 bp
+once its own 36-month pedestal of −0.65 pp/yr is netted off. Its window is also 36
+months, the shortest on the shelf. **Read the DFLV row as what the exposure would be worth
+if the fund delivered it cleanly, and note that on the only evidence available it did not.**
+Second, RPV's and VBR's alphas are also negative at −2.80 and −2.78, though below their
+detection thresholds. Third, every window here is shorter than one value cycle. Fourth,
+**nothing here is promoted**: [decision 0002](../decisions/0002-no-research-grade-free-price-source.md)
+caps every product result at `exploratory`.
 
 **A 15% managed-futures sleeve.** Experiment 004 measured the **index** at +1.312 pp/yr of
 marginal growth against a risk-matched cash comparator, falling to **+0.883 post-publication
@@ -659,7 +807,7 @@ Each is measurable and dated. None is a hope.
 - **Not a promotion.** **No sleeve reached `production-eligible`, `walk-forward-tested`, or
   even `independently-reproduced`.**
 - **Not a claim of outperformance against an index.** Against a cheap index the whole honest
-  budget is ~24 bp against 401 bp of tracking error.
+  budget is ~46 bp against 313 bp of tracking error.
 - **Not net of everything, though the core four are now closer.** Their fee, securities
   lending, realised capital-gain distributions and waiver terms are all read from filings
   ([structural and tax-aware edges §6](structural-and-tax-edges.md#6-the-core-beta-shelf-audited-on-cost-rather-than-on-fee)).
@@ -705,8 +853,9 @@ rather than a judgement about a strategy.**
 **Verified elsewhere and quoted here.** Every number traces to a page, an artifact or the
 ledger: the ≈109 bp budget and its lines
 ([structural and tax-aware edges](structural-and-tax-edges.md), regenerated by
-`studies/tax_structure.py`); the break-evens of 10.52% and 21.51%; the long-only capture and
-its 0.846 spread ([Exp 007](long-only-capture.md)); pooled HML +4.74 and UMD +7.33 with
+`studies/tax_structure.py`); the break-evens of 10.52% and 21.51%; the long-only capture,
+its 0.846 spread and identity (C) ([Exp 007](long-only-capture.md), with the tilt arithmetic
+in `studies/value_tilt.py` and pinned in `tests/unit/test_studies_value_tilt.py`); pooled HML +4.74 and UMD +7.33 with
 their thresholds and effective region counts ([Exps 005 and 006](factor-persistence.md));
 every fund loading, fee and status ([Exps 002 and 009](factor-products.md),
 [Exp 008](trend-marginal-value.md#experiment-008--the-products)); the trend marginal growth
@@ -723,9 +872,13 @@ regenerated by `studies/core_beta_shelf.py` from 110 hashed N-CEN filings and pi
 
 **Assumed on this page, and nowhere else.**
 
-1. **A 7 pp/yr tracking error for a value sleeve.** Inside Experiment 002's measured range
-   for *other* funds, but **VBR's own is not published anywhere here.** §5 is proportionally
-   sensitive to it in the horizon column and not in the sign.
+1. ~~*A 7 pp/yr tracking error for a value sleeve.*~~ **Retired: it is measured.** Every
+   fund's tracking error against VTI is now computed from the two return series over the
+   fund's own Experiment 013 window, and AVUV's is **15.59 pp/yr**, not 7. The old figure
+   came from Experiment 002's tracking error against a *fitted cheap replication*, which is
+   not the thing an investor sells. It remains an assumption that a six-year window
+   forecasts a second moment; French's research portfolios read 11.13 pp/yr over 62 years
+   and 16.47 over the same six, and §5 reports both.
 2. **That a trend sleeve's marginal growth scales linearly in the product's loading.**
    `0.671 × 0.883` is an approximation; the experiment measured the index at a 15% weight,
    not DBMF at any weight, and Experiment 008's own marginal arm is **labelled invalid for
@@ -738,8 +891,13 @@ regenerated by `studies/core_beta_shelf.py` from 110 hashed N-CEN filings and pi
    used as primary.
 4. **Experiment 003's US 60 / developed-ex-US 30 / emerging 10 as the equity composition.**
    A declared research weight, not a measured optimum and not a market weight.
-5. **That VBR's 5 bp fee substitutes for the 15–25 bp assumed in Experiment 007's cost
-   table.**
+5. ~~*That VBR's 5 bp fee substitutes for the 15–25 bp assumed in Experiment 007's cost
+   table.*~~ **Retired: fees and turnover are read from filings.** Each fund's net expense
+   ratio and Item 3 portfolio turnover rate come from its own 497K or 485BPOS, `as of
+   2026-08-17`, and cost is charged **incrementally over VTI**. What remains assumed is the
+   `k = 1.0` to `1.7` cost-per-turnover coefficient from `core/costs.py`, and that an SEC
+   turnover rate — which excludes an ETF's in-kind creations and redemptions — is the right
+   one-sided input to it.
 6. **That RSST's measured tax drag may be substituted into a chain built on DBMF's measured
    loading.** §5's RSST row changes one term of a four-term chain and leaves the other three
    at DBMF's values. **RSST's loading on the benchmark has never been measured**, its
@@ -753,10 +911,12 @@ regenerated by `studies/core_beta_shelf.py` from 110 hashed N-CEN filings and pi
    weight.** DBMF's distribution composition is `not found` and is bounded as 100%
    non-qualified ordinary, which makes its restated 170.6 bp an upper bound.
 
-**Open.** Which benchmark a factor line may book its capture against — the answer moves the
-line by a factor of two and a half. What a real fund's delivered capture is; every figure
-here is from research portfolios, and measuring a fund's own **needs holdings rather than
-returns**. Whether the emerging inversion survives harvesting value — **it survives
+**Open.** ~~Which benchmark a factor line may book its capture against.~~ **Closed: none.**
+A factor line prices a delivered loading against a factor, so no capture term and no
+benchmark choice enters it. What a real fund's delivered capture is; every figure here is
+from research portfolios, and measuring a fund's own **needs holdings rather than
+returns** — which matters less than it did, since the loading is what the line needs.
+**Whether a 36- to 72-month loading forecasts anything**, which nothing here tests. Whether the emerging inversion survives harvesting value — **it survives
 capital-gain distributions, which are now measured at zero for every fund on the shelf.**
 **What the true effective foreign withholding rate is**: eleven funds file 9.12–14.23% for
 emerging against the 9.853% §3 uses, and reconciling the filings' "foreign source income"

@@ -105,7 +105,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "It is the only US value product that both delivers its exposure and does not lose to a cheap combination — a shortfall of −0.62 pp/yr, meaning it beat the fitted four-fund mix. It is not here because the chain is positive.",
     caveat:
-      "Chaining premium × loading × capture − cost gives +0.09 to −0.39 pp/yr on the US premium and +0.28 to +0.76 on the pooled one. It is negative on the defensible reading of both terms. VBR's own tracking error is not published anywhere in this repository.",
+      "The chain carries no capture term: a capture fraction is itself an HML loading, so multiplying the two discounted one exposure twice. Restated as weight × (loading − VTI's +0.0247) × premium − cost, a 20% VBR tilt is +28.7 bp of edge and +18.2 bp of growth on the pooled premium. AVUV, which the corrected census frame admitted after this sleeve was written, delivers +0.537 rather than +0.410. VBR's tracking error against VTI is 10.48 pp/yr, measured over 2020-01…2025-12.",
     source: recommendation,
   },
   {

@@ -229,35 +229,14 @@ def aggregate(components: Iterable[EdgeComponent]) -> AggregateEdge:
     )
 
 
-@dataclass(frozen=True)
-class FactorTiltChain:
-    """Every multiplier between a published factor premium and a retail portfolio return.
-
-    The point of writing this as a chain rather than a number is that each step is
-    separately arguable and separately sourced, and the product is what actually
-    reaches the investor. Four of the five multipliers are below one, and one of them
-    — the long-only capture fraction — is recorded in
-    ``docs/research/portfolio-edge-research-framework.md`` as *not established by any
-    source*, so the output is a construction, not a measurement.
-    """
-
-    gross_long_short_premium_bp: float
-    post_publication_retention: float
-    long_only_capture: float
-    portfolio_exposure: float
-    incremental_fee_bp: float
-    incremental_trading_cost_bp: float
-
-    @property
-    def net_edge_bp(self) -> float:
-        return (
-            self.gross_long_short_premium_bp
-            * self.post_publication_retention
-            * self.long_only_capture
-            * self.portfolio_exposure
-            - self.incremental_fee_bp
-            - self.incremental_trading_cost_bp
-        )
+# ``FactorTiltChain`` lived here and is deleted. It multiplied a gross long-short premium
+# by a post-publication retention, a long-only capture fraction and a portfolio exposure.
+# Two of those four terms are now known to be wrong rather than uncertain: a capture
+# fraction *is* an HML loading, so multiplying one by a fund's loading discounts the same
+# exposure twice, and the premium this budget quotes is already post-publication, so a
+# retention factor decays it a second time. See
+# ``docs/research/long-only-capture.md`` identity (C).
+# :mod:`portfolio_edge.studies.value_tilt` replaces it.
 
 
 def probability_table(
@@ -368,25 +347,29 @@ REBALANCING_POLICY = EdgeComponent(
 FACTOR_TILT = EdgeComponent(
     name="Factor tilt",
     mechanism=(
-        "Tilt a long-only portfolio towards value, profitability, investment or "
-        "momentum. A published long-short premium reaches the portfolio only after "
-        "post-publication decay, long-only capture, exposure scaling and fees."
+        "Move 20% of the portfolio out of a total-market fund and into a systematic "
+        "value fund. What reaches the investor is the difference in the two funds' HML "
+        "loadings times the premium, less the difference in their costs: "
+        "0.20 x (0.537 - 0.025) x 4.74 pp/yr - 0.20 x 0.271 pp/yr. There is no capture "
+        "term, because a capture fraction is itself an HML loading."
     ),
     benchmark=Benchmark.STATED_INDEX,
     certainty=Certainty.PROBABILISTIC,
-    low_bp=-30.0,
-    central_bp=21.0,
-    high_bp=80.0,
-    tracking_error_bp=400.0,
+    low_bp=-28.8,
+    central_bp=43.1,
+    high_bp=77.5,
+    tracking_error_bp=311.8,
     conditions=(
-        "Requires the factor to be true, to survive publication, and for a long-only "
-        "sleeve to capture a fraction of it that no source in the research framework "
-        "establishes."
+        "Requires the factor to be true and to survive publication. The range is the "
+        "premium and nothing else: -28.8 bp is the US post-publication premium's lower "
+        "bound of -2.28 pp/yr and +77.5 bp the pooled premium's upper bound of +8.10. "
+        "Only about half of the central figure survives into geometric growth, because "
+        "the swap raises portfolio variance."
     ),
     falsifier=(
-        "The tilt's realised premium net of its incremental fee is negative over a "
-        "predeclared out-of-sample window, or the long-only capture fraction is "
-        "measured below the level that makes the chain positive."
+        "The tilt's realised premium net of its incremental cost is negative over a "
+        "predeclared out-of-sample window, or the fund's HML loading falls materially "
+        "below the +0.537 measured over 2020-01..2025-12."
     ),
 )
 

@@ -103,7 +103,7 @@ unsigned**, which is why every product row below points back at a factor row.
 
 | Candidate | Condition for promotion |
 | --- | --- |
-| Value | The premium is now signed (`exploratory`), so two conditions remain: a **measured** long-only capture fraction, which no source read here establishes and which the edge budget currently *assumes* at 0.40; and a product meeting Experiment 002's frozen promotion protocol — loading ≥ 0.15 with a 95% interval excluding 0.15 from below, the same on both fixed halves, shortfall ≤ 0 pp/yr against a replication fitted on a **prior** window, and total cost of ownership including realised distributions and turnover ≤ 1.0 pp/yr. **The candidate set is larger and higher-loading than it was.** VBR already met the first two clauses on Experiment 002's frame at +0.410, with halves of +0.431 and +0.451. On the corrected frame AVUV does so at **+0.537 `[+0.43, +0.64]` over all 72 months, with halves of +0.603 and +0.467**, and beats an *in-sample* four-fund replication by 4.92 pp/yr — **4.23 pp/yr of which survives a replication that contains a small-value fund**, the remaining 0.69 having been the comparator's inability to express small value ([Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured)); DFAT, DFSV, AVLV, DFUV, DFLV and RPV clear the loading clause too, five of them on windows shorter than the fixed halves. What is still missing is unchanged and still binds: the **prior-window** replication the protocol asks for, which no experiment here has fitted; a bootstrap interval on each half, which none computes; and the capture fraction |
+| Value | The premium is now signed (`exploratory`), so **one condition remains** — the capture fraction is no longer among them, because [it is an HML loading rather than a multiplier](../research/long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one) and Experiments 002 and 013 already measure those. What remains is a product meeting Experiment 002's frozen promotion protocol — loading ≥ 0.15 with a 95% interval excluding 0.15 from below, the same on both fixed halves, shortfall ≤ 0 pp/yr against a replication fitted on a **prior** window, and total cost of ownership including realised distributions and turnover ≤ 1.0 pp/yr. **The candidate set is larger and higher-loading than it was.** VBR already met the first two clauses on Experiment 002's frame at +0.410, with halves of +0.431 and +0.451. On the corrected frame AVUV does so at **+0.537 `[+0.43, +0.64]` over all 72 months, with halves of +0.603 and +0.467**, and beats an *in-sample* four-fund replication by 4.92 pp/yr — **4.23 pp/yr of which survives a replication that contains a small-value fund**, the remaining 0.69 having been the comparator's inability to express small value ([Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured)); DFAT, DFSV, AVLV, DFUV, DFLV and RPV clear the loading clause too, five of them on windows shorter than the fixed halves. What is still missing is unchanged and still binds: the **prior-window** replication the protocol asks for, which no experiment here has fitted; a bootstrap interval on each half, which none computes; and any evidence that a 36-to-72-month loading forecasts the next one |
 | Profitability (RMW) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Reopening needs a materially longer out-of-sample window — roughly a further decade — or a genuinely independent, non-French premium series. Not another pass over these files |
 | Momentum | A net premium computed from **observed** turnover rather than assumed tiers, with one-sided monthly turnover below 50%. **The second condition is met and was met by a frame correction rather than by a new product.** "The entire retail shelf clearing a $1bn / 0.60% screen is one fund" was true of the 2019Q4 census only: the corrected frame carries six — MTUM, SPMO, XSMO, XMMO, VFMO and JMOM — of which four reach `exploratory` with loadings from +0.372 to +0.462 and shortfalls from −2.49 to −4.53 pp/yr. The premium condition is untouched and still binds. **The ex-US momentum path, which is where Experiment 006 located the premium, is two funds and one of them does not survive its own comparator**: IDMO at 0.25% holds `exploratory` under every basis tested, and IMTM at 0.30% is `rejected` once the basis carries IDMO ([Experiment 015](../research/factor-products.md#do-the-twelve-incumbents-hold-four-of-them-do-not)) |
 | Investment (CMA) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Re-entry requires a new frozen specification on a genuinely post-2026 window. The current rejection stands |
@@ -113,12 +113,15 @@ unsigned**, which is why every product row below points back at a factor row.
 | Anything fund-level | A licensed, survivorship-free, point-in-time total-return source covering the listed shelf from at least 2003, so the window is 240 months rather than 72. Required contents are specified in the research framework under "The next experiment" |
 
 **Experiment 005 has run and did both things at once.** Value advanced; profitability
-and investment were closed on public data. **The immediate next step is still not a
-promotion attempt and still not the purchase.** It is the measurement of the long-only
-capture fraction — how much of a gross long-short spread a long-only tilt actually
-delivers — which is now the only unmeasured term in the chain for value, and which the
-Ken French sorted-portfolio files can address before any money is spent. The framework
-sets out that design under "The premium is signed for one factor".
+and investment were closed on public data. The next step was recorded here as the
+measurement of the long-only capture fraction. **Experiment 007 took it, and the answer
+removed the term rather than filling it in**: a capture fraction is an HML loading
+measured a second way, so the chain for value is
+`premium × (fund loading − incumbent loading) − cost` and every term in it is already
+measured ([Experiment 007](../research/long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)).
+**The immediate next step is still not a promotion attempt and still not the purchase.**
+It is the **prior-window** replication the frozen protocol asks for, which no experiment
+here has fitted.
 
 ## Alternatives considered
 
@@ -137,9 +140,12 @@ unresolved ±5.09% systematic band from Phase 1
 
 **Promote value now that its premium is signed.** Rejected. `exploratory` is the
 lowest rung of the ladder and permits an implementation to be *tested*, nothing more.
-The premium is gross, long-short and not investable; its long-only capture fraction is
-unmeasured; and its pooled figure is carried by the two non-US regions, with the
-largest leg in emerging markets where shorting is hardest and dearest.
+The premium is gross, long-short and not investable; what a long-only fund delivers of
+it is a **measured** loading of +0.537 rather than the whole of it; and its pooled figure
+is carried by the two non-US regions, with the largest leg in emerging markets where
+shorting is hardest and dearest. The US leg alone is +1.57 on an interval of
+`[−2.28, +5.54]`, and on that premium a 20% tilt's contribution to geometric growth is
+**negative at every weight**.
 
 **Report the 2000–2019 era, in which annual rebalancing was worth +0.575 pp/yr and
 cleared the materiality threshold twice over.** Rejected, and the rejection rule was

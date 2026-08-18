@@ -367,9 +367,9 @@ export const experiments: readonly Experiment[] = [
     runState: "synthesised",
     status: "rejected",
     statusNote:
-      "What was rejected is not the capture fraction. It is the premise that there is one: five defensible benchmarks span 0.846, against a 0.30 threshold frozen in advance as the point at which a multiplier stops being a multiplier.",
+      "What was rejected is not the capture fraction. It is the premise that there is one: five defensible benchmarks span 0.846, against a 0.30 threshold frozen in advance as the point at which a multiplier stops being a multiplier. A later correction went further: the fraction is itself an HML loading, so it may not multiply one.",
     verdict:
-      "Against a size-neutral benchmark the capture is about 0.520, in the US, in developed ex-US, in emerging markets, and for momentum as well as value — a structural one half, because a long leg is one half of a symmetric spread. Against the capitalisation-weighted market the same tilt reads 0.958, and the whole difference is a size premium wearing a value label. Chaining premium, loading, capture and cost leaves a US-only long-only value tilt negative.",
+      "Against a size-neutral benchmark the capture is about 0.520, in the US, in developed ex-US, in emerging markets, and for momentum as well as value — a structural one half, because a long leg is one half of a symmetric spread. Against the capitalisation-weighted market the same tilt reads 0.958, and the whole difference is a size premium wearing a value label. Regress that same spread on the factors and 94% of the 0.520 is simply its HML coefficient, 0.4891, so every chain of the form loading × capture discounted one exposure twice and understated a long-only value tilt by roughly a factor of two.",
     keyNumbers: [
       {
         label: "Size-neutral value capture",
@@ -378,6 +378,11 @@ export const experiments: readonly Experiment[] = [
         note: "1963-07…2025-12, 750 months, gross",
       },
       { label: "Spread across five defensible benchmarks", value: "0.846" },
+      {
+        label: "HML loading of the same size-neutral spread",
+        value: "0.4891",
+        note: "94% of the 0.520 capture; identity holds to 4.4e-16, so the two may not be multiplied",
+      },
       { label: "Against the capitalisation-weighted market", value: "0.958", interval: "[0.586, 1.662]" },
       {
         label: "Small-value half against the market",
@@ -409,10 +414,10 @@ export const experiments: readonly Experiment[] = [
       },
     ],
     whyItMatters:
-      "It replaced the edge budget's assumed 0.40 with a measurement, and showed the assumption was under-specified rather than wrong: the number moves by a factor of two and a half depending on a benchmark the budget never states.",
+      "It replaced the edge budget's assumed 0.40 with a measurement, showed the assumption was under-specified rather than wrong, and then removed the term from the budget altogether. A factor line is weight × (fund loading − incumbent loading) × premium − cost, and it carries no capture at all.",
     whatWouldChangeIt: [
-      "Agreement on which benchmark a budget with no separate size line may book its capture against. Framework open question 11, still open.",
-      "A fund's delivered capture, which needs holdings rather than returns, and is Experiment 002's data rather than this one's.",
+      "A fund's delivered capture, which needs holdings rather than returns, and is Experiment 002's data rather than this one's. It now matters less, since a budget needs the loading and not the ratio.",
+      "Evidence that a loading estimated on 36 to 72 months forecasts the next 36 to 72, which nothing here tests.",
     ],
     source: { label: "The long-only capture fraction", docPath: "docs/research/long-only-capture.md" },
   },

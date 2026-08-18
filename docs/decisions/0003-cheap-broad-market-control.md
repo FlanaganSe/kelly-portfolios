@@ -64,7 +64,7 @@ places the comparator turned out to decide the answer:
 The [edge decomposition](../research/expected-edge-decomposition.md) adds the reason
 this cannot be left implicit: the three benchmarks it uses — a stated index, the
 investor's own counterfactual, and the average investor — carry central edges of
-24 bp, 89 bp and 15 bp with tracking errors of 401 bp, 41 bp and 150 bp. They never
+46 bp, 89 bp and 15 bp with tracking errors of 313 bp, 41 bp and 150 bp. They never
 aggregate, and conflating them is the standard way this argument is inflated.
 
 ## Decision

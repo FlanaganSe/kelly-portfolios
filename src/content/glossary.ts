@@ -66,9 +66,9 @@ export const glossary: readonly GlossaryEntry[] = [
   {
     term: "Capture fraction",
     short: "The share of a long-short premium that a long-only holder actually receives.",
-    long: "Academic factors are long-short spreads with zero net investment that no retail investor can hold. A long-only tilt gets some fraction of the spread, and against a size-neutral benchmark that fraction is about one half — for a structural reason, since the long leg is one half of a symmetric spread. Against the market it reads far higher, and the difference is a size premium wearing another name.",
+    long: "Academic factors are long-short spreads with zero net investment that no retail investor can hold. A long-only tilt gets some fraction of the spread, and against a size-neutral benchmark that fraction is about one half — for a structural reason, since the long leg is one half of a symmetric spread. Against the market it reads far higher, and the difference is a size premium wearing another name. Regress that same long-only spread on the factors and 94% of the one half is simply its own value loading, which is what the fraction turns out to be.",
     whyYouCare:
-      "It has no single value. Five defensible benchmarks span 0.846, and the choice decides the sign of a value tilt.",
+      "It has no single value — five defensible benchmarks span 0.846 — and it must never multiply a fund's own loading, because it is a second copy of one. Doing so halved every value-tilt figure this repository published before 2026-08-17.",
     source: capture,
   },
   {

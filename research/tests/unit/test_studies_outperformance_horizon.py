@@ -17,7 +17,6 @@ from portfolio_edge.studies.outperformance_horizon import (
     Benchmark,
     Certainty,
     EdgeComponent,
-    FactorTiltChain,
     aggregate,
     budget_for,
     detectable_edge_bp,
@@ -228,54 +227,6 @@ def test_aggregating_nothing_is_refused() -> None:
 # The factor chain
 # --------------------------------------------------------------------------------------
 
-
-def test_factor_tilt_chain_multiplies_out_to_a_small_number() -> None:
-    """6.6%/yr gross long-short becomes 21 bp/yr of portfolio edge, before any doubt.
-
-    Harvey, Liu and Zhu's structural prior for a *true* factor is 0.55%/month, which is
-    6.6%/yr at their imposed 15% volatility, in sample and gross. McLean and Pontiff's
-    post-publication decay leaves 42% of it. A long-only implementation captures some
-    fraction of a long-short premium that no source in the research framework
-    establishes — 40% is an assumption, not a measurement. A 30% portfolio-level factor
-    exposure and a 12 bp incremental fee over a broad index fund finish the chain.
-
-    The output is 21.2 bp/yr against several hundred basis points of tracking error, so
-    by the horizon arithmetic above it is undemonstrable within a lifetime. That is the
-    honest status of factor tilting in this budget: plausible, small, and unverifiable
-    from the investor's own experience.
-    """
-    chain = FactorTiltChain(
-        gross_long_short_premium_bp=660.0,
-        post_publication_retention=0.42,
-        long_only_capture=0.40,
-        portfolio_exposure=0.30,
-        incremental_fee_bp=12.0,
-        incremental_trading_cost_bp=0.0,
-    )
-    assert chain.net_edge_bp == pytest.approx(21.264, rel=0.0, abs=1e-3)
-    assert horizon_for_confidence(
-        edge_bp=chain.net_edge_bp, tracking_error_bp=400.0, confidence=0.90
-    ) > 500.0
-
-
-def test_factor_tilt_chain_turns_negative_on_plausible_pessimistic_inputs() -> None:
-    """Halve the capture fraction and the tilt costs more than it earns.
-
-    Every multiplier in the chain is disputed, and the product crosses zero well inside
-    the range of defensible inputs. A budget line whose sign is not robust cannot be
-    counted as an edge.
-    """
-    chain = FactorTiltChain(
-        gross_long_short_premium_bp=660.0,
-        post_publication_retention=0.42,
-        long_only_capture=0.20,
-        portfolio_exposure=0.20,
-        incremental_fee_bp=20.0,
-        incremental_trading_cost_bp=10.0,
-    )
-    assert chain.net_edge_bp < 0.0
-
-
 # --------------------------------------------------------------------------------------
 # The committed budget
 # --------------------------------------------------------------------------------------
@@ -295,16 +246,21 @@ def test_every_budget_line_declares_a_mechanism_condition_and_falsifier() -> Non
 def test_budget_totals_by_benchmark_are_pinned() -> None:
     """The three totals, and the fact that they are never added together.
 
-    Against the index the honest central estimate is 24.4 bp with a range spanning zero.
+    Against the index the honest central estimate is 46.5 bp with a range spanning zero.
     Against the investor's own counterfactual it is 89 bp and almost all of it is
     contractual. The gap between those two rows is the practical finding of the study.
     """
     index = budget_for(Benchmark.STATED_INDEX)
     assert index.components == 3
-    assert index.central_bp == pytest.approx(24.4, rel=0.0, abs=1e-9)
-    assert index.low_bp == pytest.approx(-29.9, rel=0.0, abs=1e-9)
-    assert index.high_bp == pytest.approx(101.0, rel=0.0, abs=1e-9)
-    assert index.tracking_error_bp == pytest.approx(400.9152, rel=1e-6)
+    # 2.4 + 1.0 + 43.1, and sqrt(27**2 + 2**2 + 311.8**2), both derived here rather than
+    # recorded from the module, so a change to any component line fails this rather than
+    # silently restating itself.
+    assert index.central_bp == pytest.approx(2.4 + 1.0 + 43.1, rel=0.0, abs=1e-9)
+    assert index.low_bp == pytest.approx(0.0 + 0.1 - 28.8, rel=0.0, abs=1e-9)
+    assert index.high_bp == pytest.approx(18.0 + 3.0 + 77.5, rel=0.0, abs=1e-9)
+    assert index.tracking_error_bp == pytest.approx(
+        math.sqrt(27.0**2 + 2.0**2 + 311.8**2), rel=1e-12
+    )
 
     counterfactual = budget_for(Benchmark.COUNTERFACTUAL_HOLDING)
     assert counterfactual.components == 3
@@ -319,7 +275,7 @@ def test_budget_totals_by_benchmark_are_pinned() -> None:
 @pytest.mark.parametrize(
     ("benchmark", "expected"),
     [
-        (Benchmark.STATED_INDEX, [0.5763, 0.6073, 0.6306, 0.6665]),
+        (Benchmark.STATED_INDEX, [0.6808, 0.7468, 0.7921, 0.8533]),
         (Benchmark.AVERAGE_INVESTOR, [0.6241, 0.6726, 0.7081, 0.7602]),
         (Benchmark.COUNTERFACTUAL_HOLDING, [1.0, 1.0, 1.0, 1.0]),
     ],
@@ -329,7 +285,7 @@ def test_attainable_probability_by_benchmark_and_horizon(
 ) -> None:
     """The deliverable, in one assertion.
 
-    Beating the index is a 63% proposition after thirty years and does not improve much
+    Beating the index is a 79% proposition after thirty years and does not improve much
     with waiting. Beating the portfolio the investor would otherwise have held is
     effectively certain, because most of that edge is contractual rather than statistical.
     """
@@ -340,12 +296,12 @@ def test_attainable_probability_by_benchmark_and_horizon(
 
 
 def test_the_index_relative_budget_range_spans_zero() -> None:
-    """Low -29.9 bp, high +101 bp. A budget whose sign is not robust is not an edge."""
+    """Low -28.7 bp, high +98.5 bp. A budget whose sign is not robust is not an edge."""
     index = budget_for(Benchmark.STATED_INDEX)
     assert index.low_bp < 0.0 < index.high_bp
     assert horizon_for_confidence(
         edge_bp=index.central_bp, tracking_error_bp=index.tracking_error_bp, confidence=0.90
-    ) == pytest.approx(444.0, rel=1e-2)
+    ) == pytest.approx(74.4, rel=1e-2)
 
 
 def test_the_counterfactual_budget_reaches_high_confidence_within_months() -> None:
@@ -366,7 +322,7 @@ def test_deterministic_lines_dominate_the_counterfactual_budget() -> None:
     assert all(item.certainty is Certainty.DETERMINISTIC for item in counterfactual)
     index = [item for item in EDGE_BUDGET if item.benchmark is Benchmark.STATED_INDEX]
     probabilistic = [item for item in index if item.certainty is Certainty.PROBABILISTIC]
-    assert sum(item.central_bp for item in probabilistic) == pytest.approx(23.4, abs=1e-9)
+    assert sum(item.central_bp for item in probabilistic) == pytest.approx(2.4 + 43.1, abs=1e-9)
 
 
 def test_rebalancing_earns_less_than_a_small_cap_round_trip_costs() -> None:

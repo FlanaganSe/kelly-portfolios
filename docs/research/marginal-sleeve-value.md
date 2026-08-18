@@ -1,8 +1,10 @@
 # What a sleeve is worth inside a portfolio, rather than on its own
 
 **Question.** Every sleeve judged here except trend was judged by a *standalone* chain —
-`premium × loading × capture − cost` — which asks whether an asset beats the market on its
-own and **sets the covariance term to zero by construction**. The portfolio question is
+`premium × loading − cost`, which at the time also carried a capture term that
+[Experiment 007 has since shown to be a second copy of the loading](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)
+— and that chain asks whether an asset beats the market on its own while **setting the
+covariance term to zero by construction**. The portfolio question is
 different. Funding weight `w` in sleeve `i` out of leg `f` inside portfolio `p`, to first
 order,
 

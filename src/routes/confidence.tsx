@@ -448,24 +448,33 @@ export default function Confidence() {
           </p>
         </div>
 
-        <h3 class="mt-10 font-sans text-base font-semibold text-ink">Four corners of a 20% small-value tilt</h3>
+        <h3 class="mt-10 font-sans text-base font-semibold text-ink">A small-value tilt, premium by weight</h3>
         <p class="mt-2 max-w-measure text-ink-muted">
-          One sleeve, two inputs, and two defensible readings of each. The corners are not a range of opinion: they are
-          the same arithmetic run on a premium pooled across regions or measured in the US alone, and on a sleeve cost
-          at the low or high end of the audit.
+          One sleeve, one product, and three readings of the premium that decides it. Growth is what decides and the
+          certainty equivalent reports beside it, so both are shown: a tilt raises expected terminal wealth whether or
+          not its t-statistic ever clears 2, and a risk-averse investor can be worse off while a growth-maximising one
+          is better off.
         </p>
         <DataTable
           class="mt-4"
-          caption="A 20% small-value tilt, four corners"
+          caption="A small-value tilt via AVUV, three premia by three weights"
           columns={[
             {
               key: "corner",
               header: "Corner",
               rowHeader: true,
-              cell: (row) => `${row.premiumUsed}, cost ${row.sleeveCostPpYr} pp/yr`,
+              cell: (row) => `${row.premiumUsed}, ${percent(row.weight)} of portfolio`,
             },
             { key: "edge", header: "Net edge bp/yr", numeric: true, cell: (row) => formatBp(row.netEdgeBp) },
             { key: "te", header: "Tracking error bp/yr", numeric: true, cell: (row) => formatBp(row.trackingErrorBp) },
+            { key: "growth", header: "Growth bp/yr", numeric: true, cell: (row) => formatBp(row.growthBp) },
+            { key: "ce", header: "CE γ=3 bp/yr", numeric: true, cell: (row) => formatBp(row.certaintyEquivalentBp) },
+            {
+              key: "wealth",
+              header: "Wealth × 30 yr",
+              numeric: true,
+              cell: (row) => row.wealthMultiple30yr.toFixed(3),
+            },
             { key: "p30", header: "Ahead at 30 yr", numeric: true, cell: (row) => percent(row.probability30yr) },
             { key: "ninety", header: "90% at", numeric: true, cell: (row) => row.ninetyPercentAt },
             {
@@ -481,7 +490,7 @@ export default function Confidence() {
                 <Load
                   edgeBp={row.netEdgeBp}
                   trackingErrorBp={row.trackingErrorBp}
-                  describe={`the ${row.premiumUsed} corner at a ${row.sleeveCostPpYr} pp/yr sleeve cost`}
+                  describe={`the ${row.premiumUsed} corner at a ${percent(row.weight)} weight`}
                 />
               ),
             },
@@ -493,8 +502,10 @@ export default function Confidence() {
           <p>
             <strong>{smallValueReading.headline}</strong> {smallValueReading.detail}
           </p>
+          <p>{smallValueReading.correction}</p>
           <p>{smallValueReading.assumption}</p>
           <p>{smallValueReading.costAssumption}</p>
+          <p>{smallValueReading.detectability}</p>
         </Prose>
         <p class="mt-3">
           <SourceLink citation={smallValueReading.source} prefix />

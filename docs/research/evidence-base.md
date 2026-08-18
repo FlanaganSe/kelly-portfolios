@@ -32,7 +32,7 @@ exceeds the bar, a null result carries almost no information.**
 | US post-publication factor premium | 384 months, one region | 5.0 pp/yr (HML) | 2.0 pp/yr | **no**, by ~2.5× |
 | Same, pooled over three regions | + 2 regional files | **2.62** best of twelve cells | 2.0 pp/yr | **no**, narrowly and measured |
 | Same, momentum pooled | 3 regional momentum files | **4.98**, the worst here | 2.0 pp/yr | **no**, by ~2.5× |
-| Long-only capture fraction | 6 sorted portfolios, 750 mo | interval width ≈ 0.29 | a factor of 2 | **yes**, once a benchmark is named |
+| Long-only capture fraction | 6 sorted portfolios, 750 mo | interval width ≈ 0.29 | a factor of 2 | **yes**, once a benchmark is named — but it may not multiply a loading, being one |
 | Size premium | quintile/decile sorts, 750 mo | 4.7 pp/yr | 2.0 pp/yr | **no** |
 | Fund **factor loading** | N-PORT, 46–78 months | interval half-width ≈ 0.10 | 0.15 loading | **yes** |
 | Fund **alpha**, US factor shelf | N-PORT, 72 months | median **4.52** pp/yr | ≈1.25 pp/yr true dispersion | **no**, by ~3.6× |

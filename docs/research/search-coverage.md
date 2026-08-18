@@ -257,7 +257,7 @@ sources called absent that were published, the last of them already sitting in
 | **Any equity market's history but the US at long horizon** | Still untested, but no longer blocked. The instrument was acquired on 2026-08-16: the Jordà–Schularick–Taylor panel gives 16 countries of annual nominal equity, bond, bill and housing returns with consumer prices, 1870–2020 ([evidence base §2](evidence-base.md)). What it already shows is that **−50.3% is nowhere near a bound**: 15 of 16 countries have a worse real annual drawdown than the US even inside the same 1963-onward window | An experiment, not an acquisition |
 | **Any conditional or dynamic allocation** — valuation-conditioned equity share, regime conditioning, trend applied to the portfolio rather than as a sleeve | Never proposed. The Goyal–Welch data built for exactly this had 404'd at the recorded URL — it had **moved, not disappeared**, and was landed on 2026-08-16 along with Shiller's CAPE file | An experiment, not an acquisition |
 | **Concentration** | Every sleeve tested is a diversifier or a tilt. **This row's stated reason was wrong and is corrected**: the equity-share corner and securities concentration are different corners, and the variance penalty for concentration is measured at **0.17 pp/yr at twenty-five names** ([capital efficiency §8](capital-efficiency-and-breadth.md)). The objective is close to *indifferent* above ~25 names; the real argument is return skewness, which `gamma_star` does not contain | A cross-sectional skewness test, which no detection floor here could resolve |
-| **Delivered capture from a fund's holdings** | Named as the next experiment in the framework and not run. Every capture figure here is from research portfolios | N-PORT holdings, already held |
+| **Delivered exposure from a fund's holdings** | Named as the next experiment in the framework and not run. Every exposure figure here comes from a return regression | N-PORT holdings, already held |
 | **Leverage and financing** | Correctly deferred — it sizes an edge and there is no edge | Contract-level futures data |
 | **After-tax anything** | No experiment holds a tax lot, so none may price a realisation | Lot-level modelling |
 
@@ -414,12 +414,18 @@ amended.
 **Free** — the data is already held and unused.
 
 [Experiment 007](long-only-capture.md) measured the capture fraction from Ken French
-sorted portfolios and found that it is a range rather than a number, spanning 0.846
-across five defensible benchmarks. A fund's tilt is its holdings, not a sort. N-PORT
-carries position-level holdings and no experiment has read them.
+sorted portfolios, found it a range rather than a number spanning 0.846 across five
+defensible benchmarks, and has since shown it to be
+[an HML loading rather than a multiplier](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one).
+**That lowers this item's priority without removing it.** A budget needs the loading,
+which Experiments 002 and 013 already measure from returns; what holdings would add is the
+first exposure figure here that does not come from a return regression, and therefore the
+first that could contradict one. A fund's tilt is its holdings, not a sort. N-PORT carries
+position-level holdings and no experiment has read them.
 
-Pass condition: a delivered capture with a named benchmark and an interval, for at least
-one `exploratory` product on each of the US and developed-ex-US shelves.
+Pass condition: a holdings-derived HML exposure with an interval, for at least one
+`exploratory` product on each of the US and developed-ex-US shelves, reported beside that
+product's return-regression loading.
 
 ### 4. Buy breadth before buying depth — **and check whether it needs buying first**
 
@@ -464,8 +470,8 @@ probabilities available on the decision date — which is a specification, not a
 **Money, the large kind.** Its required contents are in
 [evidence base](evidence-base.md) §4 and should not be relaxed. Buy it after 1–3 have
 narrowed what it is for: it purchases resolution on the alpha term, which is the term
-every audit here has found unmeasurable, and it does nothing for the premium term or the
-capture term.
+every audit here has found unmeasurable, and it does nothing for the premium term, which
+is now the whole of a factor line's uncertainty.
 
 ### Deliberately not in round two
 

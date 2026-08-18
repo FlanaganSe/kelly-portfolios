@@ -201,11 +201,15 @@ export default function StartHere() {
             combination.
           </p>
           <p>
-            <strong>A long-only tilt delivers about half of the premium it advertises.</strong> The measured capture
-            fraction is <span data-numeric>{capture.value}</span>, <span data-numeric>{capture.interval}</span>. Five
-            defensible ways to define it disagree by <span data-numeric>{captureSpread.value}</span>, which is its own
-            finding. Chain <code>premium × loading × capture − cost</code> and a US-only long-only value tilt goes
-            negative.
+            <strong>
+              A long-only tilt delivers about half of the premium it advertises, and that half is counted once.
+            </strong>{" "}
+            The measured capture fraction is <span data-numeric>{capture.value}</span>,{" "}
+            <span data-numeric>{capture.interval}</span>, and five defensible ways to define it disagree by{" "}
+            <span data-numeric>{captureSpread.value}</span>. But regress the same spread on the factors and 94% of that{" "}
+            <span data-numeric>{capture.value}</span> is simply its HML coefficient, so the fraction may not multiply a
+            fund's own loading. The chain is <code>weight × (loading − incumbent loading) × premium − cost</code>, and
+            it carries no capture term.
           </p>
           <p>
             <strong>Where you hold something can decide its sign.</strong> The managed-futures shelf distributes{" "}

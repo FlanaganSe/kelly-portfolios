@@ -58,8 +58,9 @@ and current status.
 - [The long-only capture fraction](research/long-only-capture.md) — Experiment 007. What
   fraction of a long-short premium a long-only tilt delivers, measured from the portfolios
   the factor is assembled from. **Five defensible benchmarks disagree by 0.846**, so the
-  rejection is of the premise that there is one number. Also the first test of size as a
-  premium.
+  rejection is of the premise that there is one number — and the fraction turns out to be
+  **an HML loading rather than a multiplier**, so it may never multiply one. Also the first
+  test of size as a premium.
 - [Investable factor products](research/factor-products.md) — Experiments 002, 009, 013, 014 and 015.
   Which of 134 audited ETFs deliver the exposure they advertise, on both the US and the
   ex-US shelf, why a 72-month N-PORT window decides nothing about alpha, and why an ex-US

@@ -139,11 +139,13 @@ share — none of which this record's closure rule addresses.
   smaller than the smallest one three regions of public data can resolve.
 - The design map's Map C promotion conditions for profitability and investment are
   replaced by the reopening conditions above.
-- The programme's remaining live question for factors is no longer the premium. For
-  HML it is the **long-only capture fraction**, which no source read in this
-  repository establishes and which the
-  [edge decomposition](../research/expected-edge-decomposition.md) currently
-  *assumes* at 0.40.
+- The programme's remaining live question for factors is no longer the premium. It was
+  recorded here as the **long-only capture fraction**; that is superseded. Experiment 007
+  measured it and then showed it to be
+  [an HML loading rather than a multiplier](../research/long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one),
+  so the edge decomposition's 0.40 is deleted rather than replaced. **What is live for HML
+  is now a product on a prior-window comparator, and whether a short-window loading
+  forecasts anything.**
 - [Decision 0004](0004-no-sleeve-promoted.md) stands: no sleeve is promoted. A
   factor reaching `exploratory` is not a sleeve, and every value product still has
   to pass [Experiment 002](../research/factor-products.md)'s frozen promotion

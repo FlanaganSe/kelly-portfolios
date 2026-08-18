@@ -17,7 +17,7 @@ data. Retrieval date for every source: **2026-08-12**.
 ## Conclusion
 
 1. **Three benchmarks, and they never aggregate.** Against a **cheap index** the whole
-   honest budget is about **24 bp/yr against 401 bp of tracking error** — a 0.63
+   honest budget is about **46 bp/yr against 313 bp of tracking error** — a 0.79
    thirty-year probability of being ahead. Against the **investor's own plausible
    alternative** it is about **89 bp against ~41 bp** here, revised to **≈110 bp** by
    [structural and tax-aware edges](structural-and-tax-edges.md). Against the **average
@@ -50,8 +50,8 @@ data. Retrieval date for every source: **2026-08-12**.
 | Timing / behaviour gap avoided | **average investor** | probabilistic | 5 | **15 bp** | 60 | 150 bp | a decomposition attributing most of the gap to timing |
 | Rebalancing, net of diversification | stated index | probabilistic | 0 | **2.4 bp** | 18 | 27 bp | a drift gap above `gamma_star` — **which has since been measured** |
 | Securities-lending pass-through | stated index | contractual | 0.1 | **1 bp** | 3 | 2 bp | the fund report shows less, or the manager keeps the split |
-| Factor tilt | stated index | probabilistic | −30 | **21 bp** | 80 | 400 bp | the capture term is a range, not a number, and the line is negative on the defensible reading |
-| **Total vs the stated index** | | | **−30** | **24 bp** | **101** | **401 bp** | P(ahead at 30 yr) = **0.63** |
+| Factor tilt | stated index | probabilistic | −29 | **43 bp** | 78 | 312 bp | the premium's sign; on the US-only post-publication figure the growth contribution is negative at every weight |
+| **Total vs the stated index** | | | **−29** | **46 bp** | **99** | **319 bp** | P(ahead at 30 yr) = **0.79** |
 | **Total vs own counterfactual** | | | **40** | **89 bp** | **170** | **41 bp** | revised to ≈110 bp by [structural edges](structural-and-tax-edges.md) |
 | **Total vs the average investor** | | | **5** | **15 bp** | **60** | **150 bp** | P(ahead at 30 yr) = **0.71** |
 
@@ -145,18 +145,43 @@ the cost line. The decision-relevant fact is that a small-cap or international r
 approaches a full year of expense ratio — **and is larger than the 2.4 bp/yr the
 rebalancing line earns.**
 
-**Factor tilt: 21 bp central, sign not robust.** The chain is
+**Factor tilt: 43 bp central, sign decided by the premium alone.** The chain that
+produced the original 21 bp was
 `6.6%/yr gross long-short × 0.42 post-publication retention × 0.40 long-only capture ×
-0.30 portfolio exposure − 12 bp incremental fee`. Three of the four multipliers have
-since been measured here, for value only, and they pull in opposite directions. Pooled
-HML retention is nearer 1 than 0.42 — though the pooled figure is a gross long-short
-spread in three regions, not the object 0.42 was measured on. **The capture term is not
-under-measured but under-specified**: five defensible benchmarks span 0.846, and the
-budget never states which one it means ([Experiment 007](long-only-capture.md)). On the
-size-neutral capture (0.52) and the US-only premium (+1.6 pp/yr) the gross line is
-0.28–0.34 pp/yr against 0.35–0.93 pp/yr of assumed cost — **negative**. On the pooled
-premium and the market-relative capture it is positive, but the gap between those two
-captures is a size premium wearing a value label.
+0.30 portfolio exposure − 12 bp incremental fee`, and **two of its five terms have been
+deleted rather than measured.**
+
+- **The capture term is gone.** A capture fraction *is* an HML loading — 94% of the
+  size-neutral 0.520 is the loading 0.4891, and the identity is exact
+  ([Experiment 007](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)).
+  Multiplying a fund's loading by it discounted one exposure twice. **This closed open
+  question 1 below**, which asked which benchmark the capture might be booked against: the
+  answer is none, because a loading is taken against a factor.
+- **The retention term is gone too.** It multiplied a gross premium by a decay factor;
+  the premium used here is now already the post-publication one, so applying 0.42 to it
+  would decay it twice.
+
+The line is now `weight × (h_fund − h_incumbent) × premium − weight × incremental cost`,
+with every term measured:
+
+| Term | Value | Source |
+| --- | --- | --- |
+| weight | 20% of portfolio | the reference construction |
+| `h_fund` | AVUV +0.537 `[+0.43, +0.64]` | [Experiment 013](factor-products.md#what-the-corrected-frame-finds) |
+| `h_incumbent` | VTI +0.0247 | computed on the same 72 months |
+| premium | pooled post-publication HML +4.74 `[+1.46, +8.10]` | [Experiment 005](factor-persistence.md) |
+| incremental cost | 0.271 pp/yr — 22 bp of fee, 5 bp of turnover at `k = 1.7` | the funds' own 497K and 485BPOS |
+| tracking error | 312 bp, **measured** against VTI, not assumed | AVUV against VTI, 2020-01…2025-12 |
+
+**+43 bp central, `[+9, +78]` across the premium's own interval.** The low end of the range
+in the table above is the US-only post-publication premium's lower bound, −2.28 pp/yr,
+which gives −29 bp. **Two qualifications this budget cannot express and the recommendation
+does.** Only 21 bp of the 43 survives into *geometric growth*, because a substitution into
+a more volatile fund pays for its arithmetic edge out of `V/2`. And on the US-only
+post-publication premium of +1.57 the growth contribution is negative at every weight —
+that premium's own interval is `[−2.28, +5.54]`, and it survives no multiple-testing
+correction ([Experiment 001](factor-persistence.md)). See
+[the recommendation §5](portfolio-recommendation.md#5-what-each-tilt-costs-in-confidence-terms).
 
 ### 1.2 What is rejected, and why
 
@@ -187,7 +212,7 @@ captures is a size premium wearing a value label.
   single tax-deferred account with no taxable holdings zeroes both at once.
 - **Rebalancing and the factor tilt sit inside the same equity portfolio**, so combining
   their tracking errors in quadrature assumes an independence that is optimistic. The
-  401 bp is a **lower bound** on its own dispersion.
+  313 bp is a **lower bound** on its own dispersion.
 
 ---
 
@@ -277,7 +302,7 @@ The same 50 bp edge against different tracking errors, reaching 90%: **24 days**
 
 | Benchmark | Central edge | TE | 10 yr | 30 yr | 90% at |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Stated index | 24 bp | 401 bp | 0.576 | **0.631** | ~443 yr |
+| Stated index | 46 bp | 313 bp | 0.681 | **0.792** | ~74 yr |
 | Average investor | 15 bp | 150 bp | 0.624 | **0.708** | ~164 yr |
 | Own counterfactual | 89 bp | 41 bp | ~1.00 | **~1.00** | ~4 months |
 
@@ -286,9 +311,10 @@ active-fund counterfactual, a taxable account, more than one account type and co
 contributions, against an assumed tracking error. Change any of those and the row moves
 towards the first.
 
-Read the table the other way and it stops being about markets: against 400 bp of tracking
-error, thirty years can only *demonstrate* an edge of about 94 bp/yr at 90% confidence and
-fifty years 72 bp. **No probabilistic line in this budget is demonstrable from an
+Read the table the other way and it stops being about markets: against the 313 bp of
+tracking error the index-relative budget carries, thirty years can only *demonstrate* an
+edge of about 73 bp/yr at 90% confidence and fifty years 57 bp — against a central estimate
+of 46 bp. **No probabilistic line in this budget is demonstrable from an
 investor's own experience.** Evidence has to come from somewhere other than a track
 record.
 
@@ -304,8 +330,12 @@ an upper bound. Every tax figure is US federal and jurisdiction-specific.
 
 **Open questions.**
 
-1. **Which benchmark the factor line's capture term may be taken against.** The fraction
-   is measured; which one a budget with no separate size line may book is not.
+1. ~~*Which benchmark the factor line's capture term may be taken against.*~~ **Closed:
+   there is no capture term.** A capture fraction is an HML loading measured a second way
+   ([Experiment 007](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)),
+   and a loading is taken against a factor rather than against a portfolio. What replaces
+   it is open in a smaller way: **whether a loading estimated on 36 to 72 months of a
+   fund's history forecasts the next 36 to 72**, which nothing here tests.
 2. **Tax outside the US, and the step-up interaction.** The harvesting alpha sits between
    the after-liquidation 1.10% and the before-liquidation 1.47% depending on whether the
    low-basis position is ever sold, which turns on §1014 and on charitable donation —
@@ -338,7 +368,7 @@ be retrieved are named on the pages that wanted them; the register is in
 2. **Every result carries a benchmark and a certainty class.** A number without both is
    not reportable.
 3. **Report probability of outperformance by horizon, never a point estimate of edge.**
-   "24 bp with a 0.63 thirty-year probability" is honest output; "+24 bp/yr" is not.
+   "46 bp with a 0.79 thirty-year probability" is honest output; "+46 bp/yr" is not.
 4. **Rank features by their effect on the budget.** Cost, tax and account selection is
    worth roughly 89 conditional basis points. Rebalancing policy is worth about 2.4
    probabilistic ones — less than the round-trip spread on a small-cap ETF. **The

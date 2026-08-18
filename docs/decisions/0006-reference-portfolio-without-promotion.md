@@ -100,7 +100,7 @@ sharply different questions is the correct split; a third page on the same quest
 would not be.
 
 **Let the page state a probability of beating the market.** Rejected. Against a cheap
-index the honest budget is ~24 bp against 401 bp of tracking error and a 0.631
+index the honest budget is ~46 bp against 313 bp of tracking error and a 0.792
 thirty-year probability, which is not a claim worth making and is trivially
 misreadable as one that is.
 

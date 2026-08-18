@@ -87,9 +87,9 @@ at 15 bp against the *average investor*, and the two benchmarks may never be add
 
 ### Against a cheap index: no, at any horizon a human has
 
-Against **a stated cheap index**, the whole honest budget is about **24 bp/yr against
-401 bp of tracking error** — a thirty-year probability of being ahead of **0.63**, and
-roughly 443 years to 90% confidence. Read 24 bp as an **upper bound**, because its
+Against **a stated cheap index**, the whole honest budget is about **46 bp/yr against
+313 bp of tracking error** — a thirty-year probability of being ahead of **0.79**, and
+roughly 74 years to 90% confidence. Read 46 bp as an **upper bound**, because its
 rebalancing line has since been measured negative on real data and its factor line's
 sign turns on a benchmark choice the budget never states.
 
@@ -147,7 +147,7 @@ into "works".
 | Candidate | Status | The number that decides it | Condition for promotion |
 | --- | --- | --- | --- |
 | **Cheap broad market** | **the control** | Sharpe's identity; ~1.3 bp round-trip friction at retail. But FF5+UMD prices VTI itself at −0.55 pp/yr, so the standard model does not span the control | none — it is the control |
-| **Value (HML)** | **`exploratory`** | Pooled +4.7 pp/yr `[+1.5, +8.1]` post-publication across three regions, positive in all three, surviving Holm and its own best year. **US leg alone is +1.6 and survives no correction** | A delivered capture measured from a fund's holdings, and a product clearing the frozen promotion protocol on a prior-window comparator |
+| **Value (HML)** | **`exploratory`** | Pooled +4.7 pp/yr `[+1.5, +8.1]` post-publication across three regions, positive in all three, surviving Holm and its own best year. **US leg alone is +1.6 and survives no correction** | A product clearing the frozen promotion protocol on a **prior-window** comparator, and evidence that a fund's 36-to-72-month loading forecasts the next. **The capture fraction is no longer among the conditions**: it is an HML loading, and Experiments 002 and 013 already measure those |
 | **Momentum (UMD)** | **`exploratory`** | Pooled +7.3 pp/yr `[+3.9, +10.3]`, the largest gross premium here — against the worst detection threshold (4.98), the fewest effective regions (1.33), and three regions that **crash together** in 2009 | A net premium from **observed** turnover below 50%/month one-sided, and a second product: the retail shelf is MTUM alone |
 | **Profitability (RMW)** | **`rejected`** | Pooled +2.5 pp/yr against its own 2.62 pp/yr detection threshold. **Closed on the public files** ([decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)) | A further decade of out-of-sample months (~2035), or a non-French construction |
 | **Investment (CMA)** | **`rejected`** | −1.4 pp/yr post-publication in the US, +0.2 pooled, against a 3.41 threshold. Outside the US the premium is ~0 rather than negative, so the sign flip is a US phenomenon and the rejection rests on materiality | As above. **Never count HML and CMA as two bets** — 0.63 correlated |
@@ -419,9 +419,11 @@ and results that are now measurements rather than citations.
   entirely by treating correlated regions as independent.
 - **The excess-growth closed form is confirmed on real data** to 0.09 bp/yr, and the
   exact condition `g_p > max_i g_i` was proved rather than cited.
-- **The long-only capture fraction was measured** and found to be a range, not a number:
-  0.52 `[0.43, 0.72]` size-neutral against 0.96 market-relative, spanning 0.846 across
-  five defensible benchmarks ([Exp 007](long-only-capture.md)).
+- **The long-only capture fraction was measured**, found to be a range rather than a
+  number — 0.52 `[0.43, 0.72]` size-neutral against 0.96 market-relative, spanning 0.846
+  across five defensible benchmarks — and then found to be **an HML loading in disguise**:
+  94% of the 0.52 is the loading 0.4891 of the very same spread, so it may not multiply a
+  fund's loading ([Exp 007](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)).
 - **The ex-US product gap is closed as a gap** — twelve products reach `exploratory` on
   delivered exposure against their own region's panel, and substituting the US panel
   would put 16 of 25 below the bar rather than 5 ([Exp 009](factor-products.md)).
@@ -565,9 +567,10 @@ survives the protocol. **None has.**
    constraint on every investable conclusion
    ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)). Required
    contents in [evidence base](evidence-base.md) §4.
-3. **Which benchmark may an edge budget's factor line book its capture against?** The
-   fraction is measured — 0.52 size-neutral, 0.96 market-relative — but the gap between
-   them is a size premium, and booking it under value counts it twice.
+3. ~~*Which benchmark may an edge budget's factor line book its capture against?*~~
+   **Closed: no capture term, so no benchmark.** A factor line prices a delivered loading
+   against a factor. What replaces it is narrower and still open: **whether a loading
+   estimated on 36 to 72 months of a fund's history forecasts the next 36 to 72.**
 4. **What capital scale, tax model, leverage source, margin rules and liquidity reserve
    define implementability?**
 5. **What estimation window and regime-conditioning scheme should the covariance matrix

@@ -8,10 +8,72 @@ retail investor cannot hold one. What fraction does a long-only tilt actually de
 21 bp/yr for its factor line by *assuming* a 0.40 capture, and the framework recorded four
 separate times that no source read there establishes the number. This page replaces the
 assumption with a measurement. Out of scope: whether any tilt is worth holding, which
-needs the whole of `premium × loading × capture − cost`.
+needs the whole of `premium × delivered loading − cost`.
 
 **Status: `rejected`, and the rejection is the finding.** What is rejected is not the
-capture fraction. It is the premise that there *is* one.
+capture fraction. It is the premise that there *is* one — and, since 2026-08-17, the
+premise that it may multiply anything.
+
+---
+
+## The correction: a capture fraction is a loading, so it may not multiply one
+
+**This page was read as supplying a multiplier and it does not supply one.** Every chain
+of the form `loading × capture × premium` in this repository discounted the same
+long-only exposure twice. The error is now settled by computation rather than by
+argument, and it is worth about a factor of two.
+
+**The algebra.** Regress the very spread this page measures, `L − B`, on the very factors
+this repository uses:
+
+```
+L − B  =  a  +  h · HML  +  Σ_{k ≠ HML} b_k · f_k  +  e,     mean(e) = 0 by construction
+```
+
+Take means and divide by `mean(HML)`:
+
+```
+capture  =  h  +  ( a + Σ_{k ≠ HML} b_k · mean(f_k) ) / mean(HML)                     (C)
+```
+
+**A capture fraction is an HML loading plus a residue.** It is not a haircut applied to a
+loading; it is a second, noisier measurement of the same exposure, with the spread's alpha
+and every other factor's contribution folded into its numerator.
+
+**The measurement, on this page's own primary definition, own file and own 750 months:**
+
+| Quantity | Value |
+| --- | ---: |
+| capture, the direct ratio `mean(L − B)/mean(HML)` | **0.5204** |
+| capture, rebuilt from identity (C) | **0.5204** |
+| identity error | 4.4 × 10⁻¹⁶ |
+| **HML loading `h` of the same spread**, FF5+UMD, HAC 6 | **0.4891** (*t* = 53.9) |
+| residue | +0.0313 |
+| of which the spread's own alpha | +0.0489 |
+| of which the other five factors | −0.0177 |
+| **share of the ratio that is the exposure** | **0.940** |
+
+**94% of the 0.520 is the HML loading.** So multiplying a fund's own HML loading by 0.520
+does not convert a gross exposure into a delivered one. It multiplies a delivered exposure
+by another delivered exposure and produces a number with no interpretation — in the case
+this repository actually shipped, 0.410 × 0.520 = 0.213, which is *below the loading of
+any audited value product on the shelf.*
+
+**The loading form also dissolves the benchmark problem this page opened.** The 0.846
+spread across five benchmarks is a property of the ratio, not of the exposure. Regress the
+same long-only value halves against the **market** instead of against the size-neutral
+six and the single ratio `0.959` splits into an **HML loading of +0.699 and an SMB loading
+of +0.452**. The "size premium wearing a value label" identified below in prose is that
+SMB coefficient, and a regression separates it automatically where a ratio cannot. A
+loading is taken against a *factor*; the only benchmark choice that survives is which fund
+is sold to buy the tilt, and that enters as one small measured number — VTI's own HML
+loading is **+0.0247** over 2020-01…2025-12.
+
+**What the capture fraction is still for.** It remains the honest summary of *the whole
+return difference* between a long-only portfolio and a named benchmark, all-in, including
+alpha and every other exposure. Quoted that way, with its benchmark, it is a measurement.
+Used as a multiplier it is a double count. `studies/value_tilt.py` raises
+`CaptureDoubleCountError` rather than accepting one.
 
 ---
 
@@ -31,6 +93,11 @@ The number to use, and the only one entitled to be called a *value* capture:
 > Every one is **gross**, and the two shorter ones are marked **UNSTABLE**: the denominator
 > is a premium that is not reliably signed, so the ratio has no finite variance.
 
+**The result that precedes all four below: it is a loading, and it may not multiply one.**
+Identity (C) above, exact to 4.4 × 10⁻¹⁶ on this page's own numbers. **94% of the 0.520 is
+the HML regression coefficient of the same spread**, 0.4891. Every `loading × capture`
+chain in this repository was discounting one exposure twice and has been corrected.
+
 Four results follow.
 
 1. **The reconstruction is exact.** `HML = 0.5(SH + BH) − 0.5(SL + BL)` reproduces the
@@ -48,10 +115,12 @@ Four results follow.
    overwhelmingly big **is a size bet**, and crediting the value line of a budget with it
    is crediting value with a size premium under another name. The small-value half alone
    reads `1.287` — more than the whole long-short spread, from one leg of it.
-4. **The `0.40` in the edge budget is not obviously wrong, and that is the problem.** It
+4. **The `0.40` in the edge budget was not obviously wrong, and that was the problem.** It
    sits inside the size-neutral interval post-publication and just below it in the full
-   sample. **It is defensible or indefensible depending on a benchmark choice the budget
-   never states.**
+   sample, so it looked defensible or indefensible depending on a benchmark choice the
+   budget never stated. **The correction above retires the question rather than answering
+   it**: a budget that prices its factor line from a delivered loading needs no capture
+   term at any benchmark, and the edge decomposition's open question 1 is closed.
 
 ---
 
@@ -273,31 +342,63 @@ long-only excess of **+1.80 pp/yr** full sample and **+0.90** post-publication, 
 tilt's 0.35–0.93 pp/yr of total assumed cost consumes between a fifth and all of it. **A
 momentum tilt's does not survive at all.**
 
+**The 20–40% assumption has since been checked against the funds and is four to eight
+times too high.** Every US systematic value and small-value product Experiment 013
+admitted files an Item 3 portfolio turnover rate in its own summary prospectus, and eight
+of the nine report **5% to 9% a year**, `as of 2026-08-17`:
+
+| Fund | Turnover %/yr | Fund | Turnover %/yr |
+| --- | ---: | --- | ---: |
+| AVSC, DFUV, DFLV | 5 | DFAT, DFSV | 9 |
+| AVUV, DFAS | 6 | VBR | 25 |
+| AVLV | 7 | RPV | 42 |
+| | | **VTI** (the incumbent) | **3** |
+
+At `k = 1.7` that is **0.09–0.15 pp/yr for a systematic fund, and 0.05 pp/yr incremental
+over VTI**, against the 0.20–0.68 assumed here. Two qualifications, both real: the SEC
+turnover rate is `min(purchases, sales) / average net assets` and **excludes an ETF's
+in-kind creations and redemptions**, so it understates rotation while correctly excluding
+the part that costs the fund nothing; and the two funds whose sort is an *index*
+reconstitution rather than a manager's, VBR and RPV, are the two that look like the
+assumption. **The assumption was right about index reconstitution and wrong about the
+funds an investor would actually buy.**
+
 ---
 
 ## What this does to `premium × delivered loading − cost`
 
-The chain gains its missing middle term. With Experiment 005's pooled post-publication HML
-of +4.74 pp/yr and, beside it, the US-only figure this experiment measured from the same
-pinned file (+1.57, reproducing Experiment 001 exactly):
+**The chain has no missing middle term, and this page's earlier answer that it did is
+withdrawn.** The version published here on 2026-08-12 read
 
-| Product | Delivered HML loading | Capture used | On the pooled +4.74 | On the US-only +1.57 |
+> | Product | Delivered HML loading | Capture used | On the pooled +4.74 | On the US-only +1.57 |
+> | VBR small value | 0.410 | 0.520 size-neutral | 1.01 pp/yr | 0.34 pp/yr |
+
+and concluded that the choice of capture definition moved the gross factor line by a
+factor of two and a half. Identity (C) says that table multiplied a delivered exposure by
+a delivered exposure. **The correct chain has three terms and not four**, and it is
+`weight × (h_fund − h_incumbent) × premium − cost`.
+
+Restated with the incumbent named — VTI, HML loading **+0.0247** over 2020-01…2025-12 —
+and against Experiment 005's pooled post-publication +4.74 and the US-only +1.57:
+
+| Product | HML loading | Delivered over VTI | On the pooled +4.74 | On the US-only +1.57 |
 | --- | ---: | ---: | ---: | ---: |
-| VTV large value | 0.337 | 0.520 size-neutral | 0.83 pp/yr | **0.28 pp/yr** |
-| VBR small value | 0.410 | 0.520 size-neutral | 1.01 | **0.34** |
-| VTV large value | 0.337 | 1.287 vs market | 2.06 | 0.68 |
-| VBR small value | 0.410 | 1.287 vs market | 2.50 | 0.83 |
+| **AVUV** small-cap value | +0.537 | 0.512 | **2.43 pp/yr** | **0.80 pp/yr** |
+| VBR small value | +0.410 | 0.386 | 1.83 | 0.61 |
+| VTV large value | +0.337 | 0.312 | 1.48 | 0.49 |
+| *the same on the superseded chain* | | | *1.01 (VBR)* | *0.34 (VBR)* |
 
-Cost is deliberately not subtracted: folding it in would produce a net figure from two
-quoted numbers and two assumed turnovers.
+Cost is deliberately not subtracted here: the net figures, at three weights and with
+growth and the certainty equivalent beside them, belong in
+[the recommendation](portfolio-recommendation.md#5-what-each-tilt-costs-in-confidence-terms)
+where the weight is set.
 
-Two things follow. **The choice of capture definition moves the gross factor line by a
-factor of two and a half** for the same product on the same premium. And on the
-size-neutral capture and the US-only premium the line is **0.28 to 0.34 pp/yr gross against
-0.35–0.93 pp/yr of assumed cost** — **negative on the defensible reading of both terms**,
-and positive only if one takes the pooled premium (whose weight sits where shorting is
-hardest and no audited product operates) together with the market-relative capture (which
-is largely a size premium).
+Two things follow, and neither is the pair this page originally drew. **The gross factor
+line roughly doubles**, because the discount was applied twice. And it remains **small
+relative to what decides it**: the same product's line is 2.43 pp/yr on the pooled premium
+and 0.80 on the US-only one, a factor of three, and the US-only premium's own 90% interval
+is `[−2.28, +5.54]`. **The premium, not the capture, is now the whole of the uncertainty**
+— which is the honest place for it to sit.
 
 ---
 
@@ -325,9 +426,12 @@ is largely a size premium).
 
 ## Verified, assumed, open
 
-**Verified.** All four reconstruction identities to their derived tolerance, and the
-five-factor SMB's failure to reconstruct. Long and short leg shares summing to 1 to machine
-precision. The US HML reconstructed here over 1994-01…2025-12 is +1.5703 pp/yr, matching
+**Verified.** Identity (C) to 4.4 × 10⁻¹⁶, on this page's own primary definition and
+months, with VTI's own alpha over 2020-01…2025-12 reproducing Experiment 013's published
+pedestal of −0.5470 pp/yr exactly — which is what licenses reading a comparator loading
+computed here beside that experiment's fund loadings. All four reconstruction identities
+to their derived tolerance, and the five-factor SMB's failure to reconstruct. Long and
+short leg shares summing to 1 to machine precision. The US HML reconstructed here over 1994-01…2025-12 is +1.5703 pp/yr, matching
 Experiment 001's published +1.57. ME1 × BM5 held 21.24% of listed firms and 0.236% of
 market capitalisation at 2025-12.
 
@@ -337,26 +441,37 @@ implementable object in the library and using it would flatter everything here. 
 comparator is `Mkt-RF + RF` from the same file and vintage, and for the regional files `RF`
 is the US bill with the regional markets USD unhedged. Internal sort turnover of
 20–40%/yr for value and 300–900% for momentum, and expense ratios of 0.15–0.25%/yr: **all
-four are assumptions, none is measured.** The pooled premium and the delivered loadings in
-the chain table are **quoted** from Experiments 005 and 002, not recomputed here.
+four are assumptions, none is measured** — and the first has since been contradicted by
+the funds' own filings, above. The pooled premium and the fund loadings in the chain table
+are **quoted** from Experiments 005 and 013, not recomputed here; only VTI's loading and
+identity (C) are computed on this page.
+
+**Closed since 2026-08-12.** Two of the three open questions this page carried are
+answered by identity (C) rather than by a new measurement.
+
+- ~~*What benchmark an edge budget's factor line should use.*~~ **No benchmark.** A
+  delivered loading is taken against a factor, so a budget that prices its factor line
+  from one needs no capture term and makes no benchmark choice. The only benchmark left is
+  the fund being sold, and it enters as `h_incumbent`.
+- ~~*Whether the ratio is the right object at all.*~~ **Not for a budget.** The loading is,
+  and it is estimated on the same months from the same series with a standard error the
+  ratio cannot offer. The long-only excess in pp/yr remains the better *descriptive*
+  summary, and it still needs no denominator.
 
 **Open.**
 
-- **What benchmark an edge budget's factor line should use.** This page argues the
-  size-neutral one and shows the arithmetic; it does not settle it, and the answer depends
-  on whether the budget carries a separate size line.
-- **What a real fund's capture looks like.** Every figure here is a research portfolio.
-  Experiment 002 measured delivered *loadings* but not delivered *capture*, and the two are
-  not the same quantity. **Measuring a fund's own needs holdings rather than returns** —
-  N-PORT data that is already held and that no experiment has read.
-- **Whether the ratio is the right object at all.** A capture fraction is undefined when
-  its denominator is, and the post-publication HML nearly is. **The long-only excess in
-  pp/yr — +0.90 post-publication, +1.80 full sample — may be the more honest summary, and
-  it needs no denominator.**
+- **What a real fund's capture looks like.** Every capture figure here is a research
+  portfolio. This matters less than it did — the loading is what a budget needs and
+  Experiments 002 and 013 measure it directly — but a *holdings*-based delivered exposure
+  would still be the first thing here that did not come from a return regression. N-PORT
+  data is already held and no experiment has read it.
+- **Whether a loading estimated on 36 to 72 months forecasts anything.** Identity (C)
+  settles what the loading *is*; it says nothing about stability. Every fund loading in the
+  chain table above comes from a window shorter than one value cycle.
 
 ## What this does not establish
 
-- **Not** that a long-only value tilt is worth holding. This measures one term of four.
+- **Not** that a long-only value tilt is worth holding. This measures one term of three.
 - **Not** that 0.520 is a *forecast*. It is an in-sample ratio whose stability is partly
   structural.
 - **Not** that the small-value corner's premium is real — its excess over the market
@@ -367,22 +482,36 @@ the chain table are **quoted** from Experiments 005 and 002, not recomputed here
 
 ## Consequence for this repository
 
-1. **No page may quote a long-only capture fraction without its benchmark.**
-2. **The edge decomposition's 0.40 is superseded by a measurement with a stated
-   benchmark**: 0.520 `[0.434, 0.722]` size-neutral, 0.958 market-relative, and **the
-   difference between them is a size premium the budget does not separately carry.**
-3. **Size has now been tested as a premium and is not signable.** The design map's
-   `not tested as a premium` is retired.
-4. **The small-value corner is a real result about a portfolio nobody can hold at scale.**
-5. **A concrete next step exists and this page does not take it**: delivered capture from a
-   fund's holdings.
+1. **A capture fraction may never multiply a regression loading.** They are the same
+   quantity measured two ways — identity (C) — and their product discounts one exposure
+   twice. `studies/value_tilt.sleeve_edge` raises rather than accepting a capture
+   argument, so this is enforced in code and not only in prose.
+2. **No page may quote a long-only capture fraction without its benchmark**, in the one
+   use that survives: as a description of a whole return difference against a named
+   portfolio.
+3. **The edge decomposition's 0.40 is not replaced by 0.520; it is deleted.** A factor
+   line is `weight × (h_fund − h_incumbent) × premium − cost`, and every term in it is
+   measured.
+4. **Size has now been tested as a premium and is not signable.** The design map's
+   `not tested as a premium` is retired. This now bears directly on product choice: a
+   small-value fund carries an SMB loading near +0.85 whose premium this repository cannot
+   sign, so that exposure is variance without a priced expectation.
+5. **The small-value corner is a real result about a portfolio nobody can hold at scale.**
+6. **The turnover assumption is superseded by filings** for every fund on the US
+   systematic shelf, and it was too high by a factor of four to eight.
 
 ## Reproduce it
 
 ```sh
 cd research
 uv run python -m portfolio_edge.experiments.exp_007_longonly_capture --view-results
+uv run python -m portfolio_edge.studies.value_tilt   # identity (C), the funds, the corners
 ```
+
+The second command is **not** part of Experiment 007 and is not ledgered as one. It is a
+study, `exploratory` throughout, and it froze no specification before its numbers were
+seen. It reads Experiment 013's committed exposures rather than re-estimating them, and
+computes only VTI's own loadings, identity (C), and the arithmetic over both.
 
 | | |
 | --- | --- |

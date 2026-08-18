@@ -461,10 +461,12 @@ true correction**, which is why Holm is reported beside them throughout.
 **Open.**
 
 - **What the equal-weighted constructions do.** Untestable from the distributed files.
-- **What the long-only capture fraction is.** Measured since, and found to be a range
-  rather than a number ([Experiment 007](long-only-capture.md)). The chain a shareholder
-  receives is `premium × delivered loading × capture − cost`, and these experiments moved
-  only the first term, in gross long-short form.
+- **What the long-only capture fraction is.** Measured since, found to be a range rather
+  than a number, and then found to be an HML loading rather than a multiplier
+  ([Experiment 007](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)).
+  The chain a shareholder receives is
+  `premium × (fund loading − incumbent loading) − cost`, and these experiments moved only
+  the first term, in gross long-short form.
 - **What premium would be worth detecting.** Harvey, Liu and Zhu's structural estimate for
   a genuinely true factor is 6.6 pp/yr gross. Against the 2.0 pp/yr threshold used here,
   **no US post-publication window in Experiment 001's grid exceeds 26% power**, and

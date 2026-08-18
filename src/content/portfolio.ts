@@ -521,9 +521,9 @@ export const optionalSleeves: readonly OptionalSleeve[] = [
     size: "0–20% of US equity",
     requiredAccount: "Anywhere. Treat it as US equity in the placement ranking",
     verdict:
-      "An `exploratory` product on an `exploratory` premium, and the chain is negative on the defensible reading of both terms. Its best case is +15 bp/yr against 140 bp of tracking error; its worst is a persistent loss.",
+      "An `exploratory` product on an `exploratory` premium. Its best case is +43 bp/yr of edge against 312 bp of tracking error, worth +21 bp of geometric growth and 6.6% more terminal wealth over thirty years; on the US-only post-publication premium the growth contribution is negative at every weight. The +15 bp/yr this page carried until 2026-08-17 multiplied a loading by a capture fraction, which is the same quantity measured a second way.",
     sizingNote:
-      "VBR's yield is higher than the market's, which raises its shelter priority above the 26.2 / 20.7 / 16.5 bp of plain US equity. By how much is not measured here.",
+      "VBR's yield is higher than the market's, which raises its shelter priority above the 26.2 / 20.7 / 16.5 bp of plain US equity. By how much is not measured here. A small-value fund also carries an SMB loading near +0.85 whose premium this repository tested and could not sign, so a large-value fund buys comparable HML exposure at roughly half the tracking error.",
     productStatus: "exploratory",
     underlyingStatus: "exploratory",
     source: recommendation,
@@ -555,9 +555,9 @@ export const constructionSummary = {
   detail:
     "A cheap, broad, long-only, fully invested global equity/bond portfolio, held in the right accounts, with lot discipline, and not traded. That is not a default chosen for want of anything better. It is the only construction whose delivery is contractual rather than statistical.",
   disciplinesAreWorthMore:
-    "The disciplines are worth more than the sleeves. About 109 bp/yr against your own counterfactual, 99% confident in about twelve months, against a best case of 15.2 bp for a 20% small-value tilt and 90 bp for a sheltered trend sleeve.",
+    "The disciplines are worth more than the sleeves. About 109 bp/yr against your own counterfactual, 99% confident in about twelve months, against a best case of 43.1 bp for a 20% small-value tilt — 21 bp of it in geometric growth — and 90 bp for a sheltered trend sleeve.",
   source: recommendation,
-  asOf: asOf("2026-08-12"),
+  asOf: asOf("2026-08-17"),
 } as const;
 
 export const whatThisIsNot: readonly { readonly claim: string; readonly detail: string }[] = [
@@ -579,7 +579,7 @@ export const whatThisIsNot: readonly { readonly claim: string; readonly detail: 
   {
     claim: "Not a claim of outperformance against an index",
     detail:
-      "Against a cheap index the whole honest budget is about 24 bp against 401 bp of tracking error — a 0.631 probability of being ahead after thirty years.",
+      "Against a cheap index the whole honest budget is about 46 bp against 313 bp of tracking error — a 0.792 probability of being ahead after thirty years.",
   },
   {
     claim: "Not net of everything",

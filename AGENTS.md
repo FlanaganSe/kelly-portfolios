@@ -30,6 +30,14 @@ or an implementation supports it.
   number hardcoded in a route or a component is a defect. The old copy claiming
   real-time data, optimality and professional validation has been deleted; do not
   reintroduce that register.
+- **Never multiply a factor loading by a long-only capture fraction.** They are the
+  same quantity measured two ways: the capture of a long-only spread decomposes exactly
+  into that spread's own HML loading plus a small residue, and 94% of Experiment 007's
+  0.520 is the loading 0.4891. Their product discounts one exposure twice, and it
+  understated this repository's value tilt by about a factor of two in five places. A
+  factor line is `weight × (fund loading − incumbent loading) × premium − cost`.
+  `studies/value_tilt.sleeve_edge` raises rather than accepting a capture argument
+  ([long-only capture](docs/research/long-only-capture.md)).
 - **Never add lines measured against different benchmarks.** A cheap index, the
   average investor, and the reader's own counterfactual are three different
   claims. `aggregate()` in `studies/outperformance_horizon.py` raises rather than
