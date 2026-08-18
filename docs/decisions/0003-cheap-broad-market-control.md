@@ -24,6 +24,15 @@ shape, and in three separate places the comparator turned out to decide the answ
   The comparator is fitted in sample, so it is a look-ahead best case for the
   combination — which is why the rejection reads as "four cheap funds beat this over
   these 72 months", not "this product is badly run".
+- **The composition of that combination is itself a choice, and how much it decides is
+  measured.** [Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured)
+  re-scored all 109 US products under six bases and changed nothing else. The clause (c)
+  count moves from 35 to 26 and the `exploratory` count from 48 to 49 under a complete cheap
+  style grid — but **two placebo bases, which add as many columns while adding no new
+  size-by-style cell, move more verdicts than the expressive ones do**. So the rule this
+  record establishes stands, and it acquires a second obligation: **a fitted comparator
+  needs a placebo comparator beside it**, or a movement in the count cannot be attributed to
+  what the added funds express.
 - [Experiment 002](../research/factor-products.md) also measured a **model-misfit
   pedestal**: VTI, which *is* the market portfolio, prices at −0.55 pp/yr alpha under
   FF5+UMD over 2020–2025. Every fund alpha in that window must be read as a distance

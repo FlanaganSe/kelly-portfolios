@@ -379,7 +379,7 @@ records publication date and performance either side of it.
 ### The ledger, counted rather than described
 
 Verified directly from [`research/ledger.jsonl`](../../research/ledger.jsonl):
-**110 entries, 39 runs, 19 distinct specification hashes, 15 experiment families.**
+**113 entries, 40 runs, 20 distinct specification hashes, 16 experiment families.**
 Recount rather than quoting; the ledger is append-only:
 
 ```sh
@@ -390,14 +390,17 @@ python3 -c "import json; r=[json.loads(l) for l in open('research/ledger.jsonl')
 | --- | ---: | --- |
 | `unresolved` | 9 | Phase 1; Exp 001; Exp 007's superseded specification; Exp 010 (3 executions of one specification); Exp 011 (1); Exp 012 (2 executions of one question) |
 | `rejected` | 9 | Exp 003 (1); Exp 004 (5 executions of one specification); Exp 007 (1); Exp 010b (2) |
-| `exploratory` | 13 | Exp 002 (3); Exp 005 (1); Exp 006 (1); Exp 008 (3); Exp 009 (3); Exp 013 (2) |
+| `exploratory` | 14 | Exp 002 (3); Exp 005 (1); Exp 006 (1); Exp 008 (3); Exp 009 (3); Exp 013 (2); Exp 014 (1) |
 | no terminal status | 8 | 3 `failed`, 5 `abandoned` |
 
-**Nineteen, not thirty-nine, is the number a deflated-Sharpe trial count starts from —
+**Twenty, not forty, is the number a deflated-Sharpe trial count starts from —
 and it is an upper bound**, because `exp_010b` re-judges data `exp_010` had already spent
 and the two are one search, because `exp_012` re-asks `exp_011`'s question with a
-different instrument on a shorter window, and because `exp_013` re-runs `exp_002`'s
-falsifier unchanged on a corrected census frame rather than asking a new question. No run consumed the final holdout. The ledger also contains a
+different instrument on a shorter window, and because `exp_013` and `exp_014` both re-run
+`exp_002`'s falsifier on data it had already spent — `exp_013` on a corrected census frame
+and `exp_014` under six comparator bases — rather than asking a new question. `exp_014`
+additionally declares, in its own frozen file, one uncommitted scratch look that preceded
+it, which the ledger cannot see. No run consumed the final holdout. The ledger also contains a
 correction to itself: one `abandoned` entry was appended prematurely and for the wrong
 run's reason, and a superseding entry says so rather than repairing it in place.
 

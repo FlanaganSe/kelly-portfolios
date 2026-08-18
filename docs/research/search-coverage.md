@@ -155,6 +155,32 @@ What changes is its direction. **It was suppressing a positive answer, not manuf
 a negative one**, and the funds it was hardest on were the ones the frame had already
 removed.
 
+**Second update, same day, and it upgrades this subsection from a criticism to a
+measurement.** Experiment 013 flagged, against itself, that its basis contains **no
+small-value fund** and therefore cannot express what the products with the largest negative
+shortfalls deliver.
+[Experiment 014](factor-products.md#what-the-comparator-decided-measured) re-scored the
+same 109 funds under **six bases**, varying nothing else and reproducing the frozen basis
+to zero difference first. Three results, and the third is the one this page exists for:
+
+- **The nine systematic value and small-value products keep 73% of their shortfall
+  magnitude** under a complete cheap style grid, and **all nine keep their status**. AVUV
+  goes from −4.92 to −4.23 pp/yr; the largest single attribution is DFAT's +1.62; two of
+  the nine move the other way, the frozen basis having been *harder* on them.
+- **47 of the 48 `exploratory` statuses survive.** The one casualty is IWN, and the shelf's
+  count reads 47 to 49 across expressive bases.
+- **Two placebo bases — as many columns as the most expressive basis, and not one new
+  size-by-style cell — moved 9 and 15 verdicts, against 1, 5 and 5 for the expressive
+  ones.** So across the shelf **clause (c) responds more to the number of columns a
+  look-ahead fit is handed than to what they span**, and the two placebos differ from each
+  other by six verdicts, which is the noise floor under any comparison of this kind.
+
+**The generalisable rule: an experiment that fits a comparator must fit a placebo
+comparator beside it.** Without one, a movement in the count cannot be attributed to what
+the added funds express, and this repository would have attributed it wrongly — the
+expressive bases look like the larger intervention and are the smaller one. **The ex-US
+audit's five clause (c) rejections have never had this treatment and are owed it.**
+
 ### 1.4 A frame that could not see the shelf it was auditing
 
 **This one is not a threshold or a floor. It is a census that does not contain what it
@@ -442,10 +468,15 @@ capture term.
    statement about what has been looked for, and it was wrong about gold for as long as it
    was written down. Any row in §2 blocked on an acquisition must name the source that was
    checked and the date, or it is an assumption wearing a constraint's clothes.
-3. **The rejection counts must always travel with their clause and their frame.** "24 of 44
-   rejected" is not a finding about the funds: 22 of those 24 fired on an in-sample fitted
-   comparator, and the 44 were the products one quarterly filing happened to contain. On
-   the corrected frame it is 48 of 109, and 24 of the 65 funds that frame adds.
+3. **The rejection counts must always travel with their clause, their frame and their
+   comparator.** "24 of 44 rejected" is not a finding about the funds: 22 of those 24 fired
+   on an in-sample fitted comparator, and the 44 were the products one quarterly filing
+   happened to contain. On the corrected frame it is 48 of 109, and 24 of the 65 funds that
+   frame adds — **and 35 to 49 depending on which cheap funds the comparator is built
+   from**. §1.3.
+   **A fitted comparator gets a placebo comparator beside it**, of the same width and with
+   no added span, or the count cannot be attributed. That control has been run once, on the
+   US shelf, and it moved more than the intervention it was controlling for.
 4. **A null result from an underpowered instrument is not evidence of absence**, and the
    [resolution table](evidence-base.md#1-the-resolution-table--read-this-before-proposing-an-experiment)
    is how to check before committing.
