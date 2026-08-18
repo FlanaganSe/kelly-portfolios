@@ -56,8 +56,13 @@ describe("every published portfolio", () => {
   it("prices every risk premium with a tracking error", () => {
     for (const portfolio of portfolios) {
       for (const line of portfolio.priced) {
-        if (line.certainty === "risk-premium" && line.status !== "rejected") {
-          expect(line.trackingErrorBp, `${portfolio.id}/${line.label}`).toBeGreaterThan(0);
+        if (line.edgeBp !== null && line.certainty === "risk-premium") {
+          expect(line.trackingErrorBp, `${portfolio.id}/${line.label}`).not.toBeNull();
+          expect(line.trackingErrorBp ?? 0, `${portfolio.id}/${line.label}`).toBeGreaterThan(0);
+        }
+        // A line with no edge has to be saying something else instead.
+        if (line.edgeBp === null) {
+          expect(line.growthBp, `${portfolio.id}/${line.label}`).not.toBeNull();
         }
       }
     }

@@ -67,9 +67,10 @@ function holdingsOf(portfolioId: string): LabHolding[] {
 
 /** The widest priced line a portfolio publishes, which is the one worth starting from. */
 function pricedStart(portfolioId: string): Pick<LabConfig, "edgeBp" | "trackingErrorBp"> | null {
-  const priced = portfolioById(portfolioId)?.priced.filter((one) => one.trackingErrorBp > 0) ?? [];
-  const widest = [...priced].sort((a, b) => b.trackingErrorBp - a.trackingErrorBp)[0];
-  return widest === undefined ? null : { edgeBp: widest.edgeBp, trackingErrorBp: widest.trackingErrorBp };
+  const priced =
+    portfolioById(portfolioId)?.priced.filter((one) => one.edgeBp !== null && (one.trackingErrorBp ?? 0) > 0) ?? [];
+  const widest = [...priced].sort((a, b) => (b.trackingErrorBp ?? 0) - (a.trackingErrorBp ?? 0))[0];
+  return widest === undefined ? null : { edgeBp: widest.edgeBp ?? 0, trackingErrorBp: widest.trackingErrorBp ?? 0 };
 }
 
 const BENCHMARK_LABEL = {

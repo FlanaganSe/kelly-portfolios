@@ -83,11 +83,19 @@ export interface NotionalLine {
   readonly note?: string;
 }
 
-/** A priced line: edge, its dispersion, and how long before a holder could tell. */
+/**
+ * A priced line: edge, its dispersion, and how long before a holder could tell.
+ *
+ * `edgeBp` and `trackingErrorBp` are both nullable because some results are not of that
+ * shape at all. A marginal *growth* contribution measured against a frozen bar has no
+ * edge and no tracking error, and forcing one into those fields would relabel it as
+ * something a reader could compare with a tilt. Decision 0006 still binds the other way:
+ * a risk premium that does quote an edge must quote its dispersion beside it.
+ */
 export interface PricedLine {
   readonly label: string;
-  readonly edgeBp: number;
-  readonly trackingErrorBp: number;
+  readonly edgeBp: number | null;
+  readonly trackingErrorBp: number | null;
   /** Geometric growth contribution where the owning page states one, bp/yr. */
   readonly growthBp: number | null;
   readonly horizonNote: string;
@@ -607,8 +615,8 @@ const candidate: PortfolioCandidate = {
     },
     {
       label: "A 10% trend sleeve against a global equity core",
-      edgeBp: 25.8,
-      trackingErrorBp: 0,
+      edgeBp: null,
+      trackingErrorBp: null,
       growthBp: 25.8,
       horizonNote:
         "+0.258 pp/yr of marginal growth against a frozen 0.30 pp/yr bar — `rejected`. Against a risk-matched cash comparator the same sleeve measures +1.312 pp/yr, which is a different question with a different answer.",

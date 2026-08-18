@@ -87,14 +87,14 @@ function holdingColumns() {
 /** Only a line with dispersion belongs on a probability curve. */
 function chartSeries(portfolio: PortfolioCandidate): OutperformanceSeries[] {
   return portfolio.priced
-    .filter((line) => line.trackingErrorBp > 0)
+    .filter((line) => line.edgeBp !== null && (line.trackingErrorBp ?? 0) > 0)
     .map((line, index) => ({
       id: `${portfolio.id}-${index}`,
       label: line.label.length > 26 ? `${line.label.slice(0, 25)}…` : line.label,
       abbr: `${line.edgeBp}/${line.trackingErrorBp} bp`,
       fullLabel: line.label,
-      edgeBp: line.edgeBp,
-      trackingErrorBp: line.trackingErrorBp,
+      edgeBp: line.edgeBp ?? 0,
+      trackingErrorBp: line.trackingErrorBp ?? 0,
       kind: line.certainty === "contractual" ? ("contractual" as const) : ("probabilistic" as const),
     }));
 }
@@ -228,13 +228,15 @@ export default function PortfolioDetail(): JSX.Element {
                       <div class="border-t border-rule pt-4">
                         <p class="text-sm font-medium text-ink">{line.label}</p>
                         <div class="mt-3 flex flex-wrap items-baseline gap-x-8 gap-y-3">
-                          <Figure
-                            label="Expected edge"
-                            value={`${line.edgeBp > 0 ? "+" : ""}${line.edgeBp}`}
-                            unit="bp/yr"
-                            size="md"
-                          />
-                          <Show when={line.trackingErrorBp > 0}>
+                          <Show when={line.edgeBp !== null}>
+                            <Figure
+                              label="Expected edge"
+                              value={`${(line.edgeBp ?? 0) > 0 ? "+" : ""}${line.edgeBp}`}
+                              unit="bp/yr"
+                              size="md"
+                            />
+                          </Show>
+                          <Show when={(line.trackingErrorBp ?? 0) > 0}>
                             <Figure label="Tracking error" value={`${line.trackingErrorBp}`} unit="bp/yr" size="md" />
                           </Show>
                           <Show when={line.growthBp !== null}>
