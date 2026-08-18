@@ -111,8 +111,8 @@ export default function Research(): JSX.Element {
       <section class="mt-16 border-t border-rule-strong pt-8">
         <h2 class="font-serif text-2xl tracking-[-0.01em]">The long-form pages</h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
-          The original working pages, each canonical for what it covers. They go further than the family summaries above
-          and none of their content is repeated there.
+          The original working pages, each canonical for what it covers and each going further than the family summary
+          above it.
         </p>
         <ul class="mt-6 space-y-3">
           <For each={DEEP_PAGES}>

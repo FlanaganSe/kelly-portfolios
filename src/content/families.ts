@@ -303,7 +303,7 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "The funds do not survive",
         detail:
-          "52% of the managed-futures ETFs listed in 2019 were gone by the end of 2025: a 10.7%/yr hazard, 43% at five years, 90% at twenty. Fifteen are listed now and eleven of them have never been tested here.",
+          "52% of the managed-futures ETFs listed in 2019 were gone by the end of 2025: a 10.7%/yr hazard, 43% at five years, 90% at twenty. Fifteen are listed now; five have been tested here and ten never have.",
       },
       {
         title: "Nobody discloses the financing cost",
@@ -317,7 +317,7 @@ export const families: readonly StrategyFamily[] = [
     overlap:
       "Trend is the one engine on this site genuinely uncorrelated with equity. It overlaps with nothing else here, which is why its diversification credit survives even when its mean does not.",
     roleInPortfolio:
-      "A sleeve sized by the drawdown it changes, not by the return it might add. The resampled probability that the overlay produces the deeper drawdown roughly doubles between 30% and 60% of notional, which sets a practical ceiling near 55%.",
+      "A sleeve sized by the drawdown it changes, not by the return it might add. The resampled probability that the overlay is the deeper drawdown is 6.9% at 30% of notional and then doubles from 10.8% to 18.9% between 58% and 60% — a cliff, not a ramp, and the reason the practical ceiling sits near 55%.",
     portfolios: ["candidate"],
     tickers: ["DBMF", "RSST", "KMLM", "CTA"],
     sources: [trendValue, liveTrend, capital, marginal],

@@ -187,7 +187,7 @@ const READ = asOf("2026-08-17");
 const control: PortfolioCandidate = {
   id: "control",
   name: "The control",
-  thesis: "Own every listed company in the world at its market weight, for about one basis point a year.",
+  thesis: "Own every listed company in the world at its market weight, for about half a basis point a year.",
   forWhom: "Everyone, as the starting position. Every other portfolio on this site has to beat this one.",
   holdings: [
     {
@@ -224,7 +224,7 @@ const control: PortfolioCandidate = {
   priced: [],
   mayOutperform: [
     "It does not have to. Ninety-six of the 109 US factor loadings audited here survive multiple-comparison correction; five of 327 alpha tests do, and all five are negative. Exposure is measurable and skill is not.",
-    "Its cost is about 1 bp a year against a shelf where the same three regions can be bought for 3 bp or for 67 bp. The whole fund-selection decision inside this construction is worth 0.60 bp/yr.",
+    "Its cost, net of securities lending, is about 0.52 bp a year, against 0.76 bp for the cheapest combination on the shelf and 3.12 for the dearest plausible one. The whole fund-selection decision inside this construction is worth 0.60 bp/yr, against an 84 bp/yr hurdle for the turnover needed to capture it.",
   ],
   mayUnderperform: [
     "It will track the market down as well as up. The US market lost 50.3% over the modern sample and 83.7% over the full hundred-year record.",
@@ -328,12 +328,33 @@ const disciplined: PortfolioCandidate = {
       source: structural,
     },
     {
+      label: "Foreign tax credit forfeited inside a shelter",
+      edgeBp: -3.4,
+      trackingErrorBp: 0,
+      growthBp: null,
+      horizonNote:
+        "−6 to 0 bp. A correction rather than a line: sheltering a foreign fund pays the withholding and permanently loses the credit.",
+      certainty: "contractual",
+      status: null,
+      source: structural,
+    },
+    {
+      label: "Direct-indexing fee, netted against harvesting",
+      edgeBp: -4.4,
+      trackingErrorBp: 0,
+      growthBp: null,
+      horizonNote: "−30 to +6 bp. The fee the harvesting line above never subtracted.",
+      certainty: "contractual",
+      status: null,
+      source: structural,
+    },
+    {
       label: "The whole budget, against your own counterfactual",
       edgeBp: 109,
       trackingErrorBp: 46,
       growthBp: null,
       horizonNote:
-        "About 3.5 months to 90% confidence and about 12 months to 99%. The 46 bp tracking error is assumed, not measured, and the components are not independent.",
+        "The five positive lines sum to 117 and the two corrections bring it to 109.2. About 3.5 months to 90% confidence and about twelve to 99% — but the 46 bp tracking error is assumed rather than measured, and the components are not independent.",
       certainty: "contractual",
       status: null,
       source: structural,
@@ -411,7 +432,7 @@ const evidenceLed: PortfolioCandidate = {
       ticker: "AVLV",
       percent: 20,
       engine: "value",
-      why: "HML +0.322 against the incumbent's +0.025, at 15 bp and 7%/yr turnover. Comparable value exposure to a small-value fund at roughly half the tracking error.",
+      why: "HML +0.322 [+0.22, +0.46] over 51 months on the US panel, against VTI's +0.0247, at 15 bp and 7%/yr turnover. Less value exposure than a small-value fund and under half the tracking error — and none of its SMB loading, which is variance this repository cannot price.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -427,7 +448,7 @@ const evidenceLed: PortfolioCandidate = {
       ticker: "DFIV",
       percent: 8,
       engine: "value",
-      why: "HML +0.662, the deepest on the audited ex-US shelf, on the one panel where the value premium is signable.",
+      why: "HML +0.662 [+0.53, +0.85] over 51 months on the developed ex-US panel — the deepest on the audited ex-US shelf, on the one panel where the value premium is signable. The priced line below uses the +0.698 measured over the 45 months common to the shelf.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -476,7 +497,7 @@ const evidenceLed: PortfolioCandidate = {
     "Large value rather than small value is a measured choice, not a compromise: a small-value fund's size leg is variance with no priced expectation, since the size premium is +0.33 pp/yr against a 2.47 pp/yr floor and is not signable on any panel.",
   ],
   mayUnderperform: [
-    "The US value premium on its own panel is +1.57 pp/yr [−2.28, +5.54] and is not signable. Only the pooled three-region figure makes the AVLV line's growth contribution positive.",
+    "The US value premium on its own panel is +1.57 pp/yr [−2.28, +5.54] against a 5.03 pp/yr detection floor, and is not signable. Only the pooled three-region figure makes the AVLV line's growth contribution positive.",
     "DFIV's own alpha is −4.11 pp/yr against a 3.52 pp/yr detection floor. Charge it and the 8% tilt goes from +27.1 bp to −8.2 bp. Four ex-US large-value funds read −2.2 to −4.1 and nobody here knows why.",
     "Every fund window on this shelf is shorter than one value cycle. Whether 36 to 72 months of loading forecasts the next 36 to 72 is an open question nothing here tests.",
   ],
@@ -489,7 +510,7 @@ const evidenceLed: PortfolioCandidate = {
     {
       title: "Thirty years may not settle it",
       detail:
-        "At a 20% weight the US tilt's 30-year detection floor is 142 bp against a 43 bp edge. You would hold it for a working lifetime without learning whether it worked.",
+        "Scaled to AVLV's 135 bp of tracking error, the thirty-year detection floor at a 20% weight is about 61 bp against its +24.4 bp edge. The small-value alternative is worse: 142 bp against 43. Either way you would hold the tilt for a working lifetime and still not know whether it worked.",
     },
     {
       title: "The alpha problem is unexplained",
@@ -566,7 +587,7 @@ const candidate: PortfolioCandidate = {
       ticker: "IDMO",
       percent: 5,
       engine: "momentum",
-      why: "UMD +0.540 on the one momentum premium that clears its own detection floor.",
+      why: "UMD +0.540 [+0.39, +0.71] over 77 months on the developed ex-US panel, the one momentum premium that clears its own detection floor.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -582,7 +603,7 @@ const candidate: PortfolioCandidate = {
       ticker: "AVES",
       percent: 5,
       engine: "value",
-      why: "The emerging value tilt, into the region with the largest measured HML premium at +7.58 pp/yr.",
+      why: "The emerging value tilt, into the region with the largest measured HML premium: +7.58 pp/yr [+4.34, +11.01]. AVES's own HML reads +0.237 on the emerging panel and −0.074 on the US one.",
       status: "unresolved",
       certainty: "risk-premium",
     },
@@ -630,7 +651,7 @@ const candidate: PortfolioCandidate = {
       trackingErrorBp: null,
       growthBp: 25.8,
       horizonNote:
-        "+0.258 pp/yr of marginal growth against a frozen 0.30 pp/yr bar — `rejected`. Against a risk-matched cash comparator the same sleeve measures +1.312 pp/yr, which is a different question with a different answer.",
+        "Quoted at the 10% reference weight Experiment 010 used. This portfolio carries about 30% of trend notional, the repository publishes no figure at that weight, and its own search-coverage audit records that this closure turns on the reference weight rather than on evidence. The certainty equivalent at γ=3 for the same row is +1.172 pp/yr, and decision 0008 says growth decides when the two disagree. A different experiment, measuring the vendor index at a 15% weight against a risk-matched cash comparator rather than an equity core, reads +1.312 — a different question, and not a figure that may be carried back to this line.",
       certainty: "risk-premium",
       status: "rejected",
       source: capital,
@@ -656,7 +677,7 @@ const candidate: PortfolioCandidate = {
     {
       title: "The overlay is the deeper drawdown above a weight this portfolio is near",
       detail:
-        "The resampled probability that the overlay produces the deeper drawdown jumps from 10.8% to 18.9% between 30% and 60% of notional. The ceiling implied is about 0.55 of notional; this portfolio sits at 0.30.",
+        "The resampled probability that the overlay is the deeper drawdown is 6.9% at 30% of notional, and then doubles from 10.8% to 18.9% between 58% and 60%. That is a cliff rather than a ramp, and it is why the implied ceiling is near 55%. This portfolio sits at 30%, clear of it — and the cliff is the reason the weight cannot simply be raised.",
     },
     {
       title: "Trend fails exactly when it is needed",

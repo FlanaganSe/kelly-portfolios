@@ -31,14 +31,14 @@ export const lessons: readonly Lesson[] = [
   {
     id: "alpha-vs-beta",
     title: "Extra return from extra risk is not skill",
-    body: "A portfolio that holds more equity, or that borrows to hold more of everything, should earn more on average. That is more beta, not alpha, and the honest comparison is against the same risk taken the simple way. Moving from 60/40 to 90/10 is worth about +127 bp a year — more than every factor tilt on this site combined — and it is not an edge, because anyone can do it by changing one number.",
+    body: "A portfolio that holds more equity, or that borrows to hold more of everything, should earn more on average. That is more beta, not alpha, and the honest comparison is against the same risk taken the simple way. Moving from 60/40 to 90/10 is worth about +127 bp a year against 485 bp of tracking error: more than every factor tilt on this site combined, and still only 92% likely to be ahead after thirty years. It is not an edge, because anyone can do it by changing one number.",
     href: "/research/equity-share",
     hrefLabel: "The equity share",
   },
   {
     id: "tracking-error-decides",
     title: "Tracking error, not the size of the edge, decides whether a lifetime is enough",
-    body: "Time to any confidence level scales with the square of tracking error over edge: T = (z·s/e)². The same 50 bp edge is settled in about 24 days at 10 bp of tracking error and takes about 105 years at 400 bp. This is why a 109 bp contractual edge is 99% established inside a year while a 46 bp index-relative one needs about 74 years — the smaller number is not the reason.",
+    body: "Time to any confidence level scales with the square of tracking error over edge: T = (z·s/e)². The same 50 bp edge reaches 90% confidence in about 24 days at 10 bp of tracking error and in about 105 years at 400 bp. It is why a 109 bp contractual edge is 99% established inside a year while a 46 bp index-relative one needs about 245 years for the same confidence, and 74 even for 90%. The smaller number is not the reason.",
     href: "/lab",
     hrefLabel: "Try it in the lab",
   },
