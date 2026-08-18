@@ -84,6 +84,25 @@ function holdingColumns() {
   ];
 }
 
+/**
+ * The page's sections, in render order. Kept beside the render rather than derived from
+ * the DOM so that a section that is conditionally absent — a portfolio with nothing
+ * priced, or with no suggested changes — never leaves a dead anchor in the contents.
+ */
+function sectionsOf(portfolio: PortfolioCandidate): { id: string; title: string }[] {
+  return [
+    { id: "allocation", title: "What it holds" },
+    { id: "why", title: "Why it may outperform" },
+    { id: "why-not", title: "Why it may not" },
+    ...(portfolio.priced.length > 0 ? [{ id: "priced", title: "What each line is worth" }] : []),
+    { id: "failure", title: "What would break it" },
+    { id: "holding-it", title: "Cost, tax and placement" },
+    ...(portfolio.suggestedChanges === undefined ? [] : [{ id: "changes", title: "What the evidence would change" }]),
+    { id: "evidence", title: "How much is evidence" },
+    { id: "next", title: "Where to go next" },
+  ];
+}
+
 /** Only a line with dispersion belongs on a probability curve. */
 function chartSeries(portfolio: PortfolioCandidate): OutperformanceSeries[] {
   return portfolio.priced
@@ -141,6 +160,23 @@ export default function PortfolioDetail(): JSX.Element {
                 <strong>Who it is for.</strong> {found().forWhom}
               </p>
             </Prose>
+
+            <nav aria-labelledby="on-this-page" class="mt-8 border-y border-rule py-4">
+              <h2 id="on-this-page" class="eyebrow mb-3">
+                On this page
+              </h2>
+              <ul class="flex flex-wrap gap-x-6 gap-y-2 text-sm">
+                <For each={sectionsOf(found())}>
+                  {(section) => (
+                    <li>
+                      <a href={`#${section.id}`} class="link">
+                        {section.title}
+                      </a>
+                    </li>
+                  )}
+                </For>
+              </ul>
+            </nav>
 
             <Section id="allocation" title="What it holds">
               <DataTable
