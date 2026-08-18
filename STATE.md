@@ -75,7 +75,7 @@ that module generates.
 
 ## Checks
 
-`pnpm typecheck`, `pnpm test` (361 tests, 25 files), `pnpm biome check .` and `pnpm build`
+`pnpm typecheck`, `pnpm test` (380 tests, 27 files), `pnpm biome check .` and `pnpm build`
 are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` are clean
 after the fixture change.
 
@@ -89,6 +89,9 @@ after the fixture change.
 - VB's fund name follows the 2026-07-29 Morningstar rename pattern, which the source
   records for VTI and VBR but not for VB. It matches the pre-existing content layer and is
   pinned by a test, but it is an inference.
+- No browser automation is available in this environment, so there are no true
+  end-to-end tests. The route and flow tests drive real controls in jsdom, which catches
+  state and content regressions but not layout or paint.
 - The stacked candidate departs from decision 0004 by being levered, and holds one fund
   the product audit excludes and one that is `unresolved`. All three departures are stated
   on its own page and none is resolved.
