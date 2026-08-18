@@ -1,9 +1,8 @@
 /**
  * The short course.
  *
- * Fourteen things a reader has to understand before any other page on this site is
- * useful, each written to be read in under a minute and each grounded in a number this
- * repository actually measured. They are ordered so that each one depends only on the
+ * The things a reader has to understand before any other page on this site is useful,
+ * each short and each grounded in a number this repository actually measured. They are ordered so that each one depends only on the
  * ones above it.
  *
  * These are explanations, not findings. Where a lesson quotes a figure, the figure's

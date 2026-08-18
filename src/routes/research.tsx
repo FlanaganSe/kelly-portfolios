@@ -72,7 +72,7 @@ export default function Research(): JSX.Element {
       <Title>Research — Portfolio Edge</Title>
       <Meta
         name="description"
-        content="Ten return engines, each asked the same ten questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
+        content="Ten research families, each put through the same seven questions: mechanism, evidence for, evidence against, failure modes, cost, overlap and role."
       />
 
       <PageHeader
