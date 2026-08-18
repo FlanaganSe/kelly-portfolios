@@ -1,0 +1,858 @@
+{
+ "schema_version": 1,
+ "what_this_is": "Experiment 009's PUBLISHED per-fund verdict and clause (c) column under its frozen VEA/VWO/VSS/EFV/EFG basis, extracted verbatim from its committed run artifact. Experiment 015 varies only the basis, so it must reproduce every figure here to ZERO difference before any of its own numbers may be read. A disagreement means something other than the basis moved.",
+ "source_run_id": "f6ce1701324546b28c03598c935b7819",
+ "source_spec_hash": "e99e2a6e27fbf301a351ed7863820a3f5fb56e99a7183f30321444721d899687",
+ "source_artifact_sha256": "273e899fb9dc31910a1bd04b5932784f8e99965c18ac38f8808d9028c9736e56",
+ "source_artifact_path": "artifacts/f6ce1701324546b28c03598c935b7819/result.json",
+ "extracted_utc": "2026-08-17",
+ "note_on_provenance": "artifacts/ is not in Git, so the artifact itself cannot be a test input. This file is the small committed record of what it said, which is the same treatment every other frozen fixture in this workspace gets.",
+ "basis": [
+  "VEA",
+  "VWO",
+  "VSS",
+  "EFV",
+  "EFG"
+ ],
+ "note_on_the_basis_column": "`basis_used` is the subset of the declared basis that covered THAT fund's own window. Experiment 009 drops a basis constituent that does not cover a fund's months, so its basis silently varies fund by fund: GWX and RODM, whose filed history begins one month before every other constituent's, were replicated by VEA ALONE. MFEM has no replication at all because the emerging comparator VWO does not cover its first month.",
+ "status_counts": {
+  "exploratory": 12,
+  "rejected": 8,
+  "unresolved": 5
+ },
+ "funds": {
+  "AVDV": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap_value",
+   "intended_factor": "HML",
+   "months": 75,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5103781731358822,
+   "alpha_annual_percent": 0.5540352834966421,
+   "alpha_mde_80pc_power_percent": 3.959546093440123,
+   "intended_loading_interval": [
+    0.3200421995499987,
+    0.7710158605243014
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    1.1345350852472066e-16,
+    0.0,
+    0.6145291976725192,
+    0.38547080232748077,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 4.372829037703076,
+   "tracking_error_vs_combination_pp": 3.9569796045980925,
+   "fee_premium_over_basis_pp": 0.2036322994181298,
+   "implementation_shortfall_pp": -4.576461337121206
+  },
+  "AVES": {
+   "region": "emerging",
+   "mandate": "value",
+   "intended_factor": "HML",
+   "months": 51,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.2373625415942627,
+   "alpha_annual_percent": -0.1589421469703338,
+   "alpha_mde_80pc_power_percent": 4.483408803047852,
+   "intended_loading_interval": [
+    0.11782216750734847,
+    0.3653957105456703
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.0,
+    0.6386775587106124,
+    0.282676258002856,
+    0.07864618328653172,
+    3.438321230173778e-18
+   ],
+   "tracking_difference_vs_combination_pp": 1.639811310461429,
+   "tracking_error_vs_combination_pp": 3.613113768883716,
+   "fee_premium_over_basis_pp": 0.28033845417836706,
+   "implementation_shortfall_pp": -1.920149764639796
+  },
+  "AVIV": {
+   "region": "developed_ex_us",
+   "mandate": "value",
+   "intended_factor": "HML",
+   "months": 51,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.48873699267001613,
+   "alpha_annual_percent": -2.8752366265645675,
+   "alpha_mde_80pc_power_percent": 1.8129907956537437,
+   "intended_loading_interval": [
+    0.35725610634241334,
+    0.6358252037433328
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.18865179942986995,
+    2.5522956167373984e-18,
+    0.07841716133851928,
+    0.7329310392316107,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.4971896575263697,
+   "tracking_error_vs_combination_pp": 2.1955467486289284,
+   "fee_premium_over_basis_pp": 0.012426794174993427,
+   "implementation_shortfall_pp": -0.509616451701363
+  },
+  "DFEV": {
+   "region": "emerging",
+   "mandate": "value",
+   "intended_factor": "HML",
+   "months": 44,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.26738951471746647,
+   "alpha_annual_percent": -1.1871326203530455,
+   "alpha_mde_80pc_power_percent": 3.2319756212233934,
+   "intended_loading_interval": [
+    0.08312571692211057,
+    0.43527421033982633
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.0,
+    0.8081477658681945,
+    0.17285399377256067,
+    0.018998240359244706,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 1.8276947021152463,
+   "tracking_error_vs_combination_pp": 4.1562033742414215,
+   "fee_premium_over_basis_pp": 0.3652504399101888,
+   "implementation_shortfall_pp": -2.192945142025435
+  },
+  "DFIS": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap",
+   "intended_factor": "SMB",
+   "months": 45,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5912973617167513,
+   "alpha_annual_percent": 0.8501470140326289,
+   "alpha_mde_80pc_power_percent": 1.9516680896879006,
+   "intended_loading_interval": [
+    0.457308460223954,
+    0.7249552647624012
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.0,
+    1.2645211737791671e-17,
+    0.7622752928668856,
+    0.23772470713311428,
+    1.749172184057959e-16
+   ],
+   "tracking_difference_vs_combination_pp": 0.8395961724746758,
+   "tracking_error_vs_combination_pp": 3.0043595892969557,
+   "fee_premium_over_basis_pp": 0.2705688232167214,
+   "implementation_shortfall_pp": -1.110164995691397
+  },
+  "DFIV": {
+   "region": "developed_ex_us",
+   "mandate": "value",
+   "intended_factor": "HML",
+   "months": 51,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.6615235458902856,
+   "alpha_annual_percent": -3.880122647224988,
+   "alpha_mde_80pc_power_percent": 3.520657157077472,
+   "intended_loading_interval": [
+    0.5246389496212821,
+    0.852585582980064
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.050258540221335433,
+    0.9497414597786646,
+    4.030425425652629e-17
+   ],
+   "tracking_difference_vs_combination_pp": 1.5345121539518842,
+   "tracking_error_vs_combination_pp": 3.1663691877710205,
+   "fee_premium_over_basis_pp": -0.02743536494466614,
+   "implementation_shortfall_pp": -1.507076789007218
+  },
+  "DIHP": {
+   "region": "developed_ex_us",
+   "mandate": "quality",
+   "intended_factor": "RMW",
+   "months": 45,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.23 pp/yr to its cheap ex-US replication against a fee premium of only -0.01 pp/yr"
+   ],
+   "intended_loading": 0.346730758850903,
+   "alpha_annual_percent": -1.0509802271228184,
+   "alpha_mde_80pc_power_percent": 2.614190730718348,
+   "intended_loading_interval": [
+    0.20034634583004723,
+    0.5058275773746742
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.17506431559039207,
+    0.36933001273286314,
+    0.4556056716767449
+   ],
+   "tracking_difference_vs_combination_pp": -1.2308506519834557,
+   "tracking_error_vs_combination_pp": 2.2804314035817956,
+   "fee_premium_over_basis_pp": -0.00990209125270436,
+   "implementation_shortfall_pp": 1.24075274323616
+  },
+  "DISV": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap_value",
+   "intended_factor": "HML",
+   "months": 45,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.49514874797369907,
+   "alpha_annual_percent": -0.20717960325372445,
+   "alpha_mde_80pc_power_percent": 3.982293745000158,
+   "intended_loading_interval": [
+    0.36475925432391804,
+    0.6372069538057981
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    2.633839941370772e-16,
+    0.0,
+    0.37485779403610897,
+    0.6251422059638908,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 2.6897683362441795,
+   "tracking_error_vs_combination_pp": 3.912926528612579,
+   "fee_premium_over_basis_pp": 0.20371444850902728,
+   "implementation_shortfall_pp": -2.893482784753207
+  },
+  "EFG": {
+   "region": "developed_ex_us",
+   "mandate": "growth",
+   "intended_factor": "HML",
+   "months": 77,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +2.76 pp/yr to its cheap ex-US replication against a fee premium of only +0.31 pp/yr"
+   ],
+   "intended_loading": 0.43459113925092707,
+   "alpha_annual_percent": 0.13906768813087075,
+   "alpha_mde_80pc_power_percent": 2.6225677106754293,
+   "intended_loading_interval": [
+    0.2683313004380307,
+    0.6026811413774391
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV"
+   ],
+   "weights": [
+    0.9999999999999992,
+    0.0,
+    8.04911692853238e-16,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -2.7629802233766223,
+   "tracking_error_vs_combination_pp": 5.575938971750053,
+   "fee_premium_over_basis_pp": 0.31,
+   "implementation_shortfall_pp": 2.4529802233766222
+  },
+  "EFV": {
+   "region": "developed_ex_us",
+   "mandate": "value",
+   "intended_factor": "HML",
+   "months": 77,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.36839433817008055,
+   "alpha_annual_percent": -2.2104619472011624,
+   "alpha_mde_80pc_power_percent": 2.2170518401564103,
+   "intended_loading_interval": [
+    0.25481818076774393,
+    0.48536154943464593
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFG"
+   ],
+   "weights": [
+    0.9999999999999998,
+    0.0,
+    1.7607857811657645e-16,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.9087080883116886,
+   "tracking_error_vs_combination_pp": 5.559093905710629,
+   "fee_premium_over_basis_pp": 0.27999999999999997,
+   "implementation_shortfall_pp": -1.1887080883116885
+  },
+  "FNDC": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap",
+   "intended_factor": "SMB",
+   "months": 76,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.6707726690372948,
+   "alpha_annual_percent": 0.23423612248242576,
+   "alpha_mde_80pc_power_percent": 1.9024338038702435,
+   "intended_loading_interval": [
+    0.5472337260274238,
+    0.8234888543622735
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    5.344233324046719e-18,
+    0.0,
+    0.6734025034526313,
+    0.29230404211157535,
+    0.03429345443579329
+   ],
+   "tracking_difference_vs_combination_pp": -0.12749311949721856,
+   "tracking_error_vs_combination_pp": 3.5106631140686324,
+   "fee_premium_over_basis_pp": 0.24732182223008406,
+   "implementation_shortfall_pp": -0.1198287027328655
+  },
+  "GWX": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap",
+   "intended_factor": "SMB",
+   "months": 78,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.61 pp/yr to its cheap ex-US replication against a fee premium of only +0.37 pp/yr"
+   ],
+   "intended_loading": 0.8563186412786814,
+   "alpha_annual_percent": 0.036330654045834895,
+   "alpha_mde_80pc_power_percent": 2.50183634481291,
+   "intended_loading_interval": [
+    0.746365803995333,
+    1.032823959812658
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA"
+   ],
+   "weights": [
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -1.6114336307692299,
+   "tracking_error_vs_combination_pp": 5.706548112487171,
+   "fee_premium_over_basis_pp": 0.37,
+   "implementation_shortfall_pp": 1.24143363076923
+  },
+  "IDHQ": {
+   "region": "developed_ex_us",
+   "mandate": "quality",
+   "intended_factor": "RMW",
+   "months": 77,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3209046522160306,
+   "alpha_annual_percent": 0.04338045766418101,
+   "alpha_mde_80pc_power_percent": 3.240917395257928,
+   "intended_loading_interval": [
+    0.0977963740279321,
+    0.5198882259795448
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    1.5132329190083684e-17,
+    0.017464035633420305,
+    0.0,
+    0.17247945225267264,
+    0.8100565121139072
+   ],
+   "tracking_difference_vs_combination_pp": 1.0423337333242446,
+   "tracking_error_vs_combination_pp": 2.9343945951447243,
+   "fee_premium_over_basis_pp": -0.03993568645506218,
+   "implementation_shortfall_pp": -1.0023980468691824
+  },
+  "IDMO": {
+   "region": "developed_ex_us",
+   "mandate": "momentum",
+   "intended_factor": "UMD",
+   "months": 77,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5402233278168034,
+   "alpha_annual_percent": 0.10861085021118197,
+   "alpha_mde_80pc_power_percent": 5.341685108985365,
+   "intended_loading_interval": [
+    0.3885640867404896,
+    0.7070411540235945
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.6211918020726449,
+    0.020472944420724153,
+    0.05403178734967748,
+    0.007164369662986696,
+    0.2971390964939667
+   ],
+   "tracking_difference_vs_combination_pp": 5.3057929284759835,
+   "tracking_error_vs_combination_pp": 6.8143382718114225,
+   "fee_premium_over_basis_pp": 0.12364571462812199,
+   "implementation_shortfall_pp": -5.429438643104105
+  },
+  "IMFL": {
+   "region": "developed_ex_us",
+   "mandate": "multifactor",
+   "intended_factor": "HML",
+   "months": 58,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.258 is below 0.15",
+    "(c) lost +1.14 pp/yr to its cheap ex-US replication against a fee premium of only +0.29 pp/yr",
+    "(d) total cost of ownership 1.48 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": -0.2584977168482539,
+   "alpha_annual_percent": -1.494261367650523,
+   "alpha_mde_80pc_power_percent": 7.049589739435891,
+   "intended_loading_interval": [
+    -0.5728613559397194,
+    0.04341092423792987
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.931634242240876,
+    0.0,
+    0.01635932569658433,
+    0.03743903382457081,
+    0.014567398237968899
+   ],
+   "tracking_difference_vs_combination_pp": -1.1364751907551927,
+   "tracking_error_vs_combination_pp": 4.781724893952682,
+   "fee_premium_over_basis_pp": 0.29451039730445233,
+   "implementation_shortfall_pp": 0.8419647934507404
+  },
+  "IMTM": {
+   "region": "developed_ex_us",
+   "mandate": "momentum",
+   "intended_factor": "UMD",
+   "months": 77,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5048446943981637,
+   "alpha_annual_percent": -3.1843330971721375,
+   "alpha_mde_80pc_power_percent": 3.8100781941646513,
+   "intended_loading_interval": [
+    0.4387865016883149,
+    0.5877179439589599
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.24140469675035733,
+    0.06232440738453629,
+    0.0,
+    0.12424022403801376,
+    0.5720306718270927
+   ],
+   "tracking_difference_vs_combination_pp": 2.2494842103981947,
+   "tracking_error_vs_combination_pp": 5.027579732253852,
+   "fee_premium_over_basis_pp": 0.056013496781421285,
+   "implementation_shortfall_pp": -2.305497707179616
+  },
+  "IQLT": {
+   "region": "developed_ex_us",
+   "mandate": "quality",
+   "intended_factor": "RMW",
+   "months": 77,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.18375090176438968,
+   "alpha_annual_percent": -0.29816148268563963,
+   "alpha_mde_80pc_power_percent": 2.700035031923174,
+   "intended_loading_interval": [
+    -0.0434074988095748,
+    0.3932296660067253
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    6.092307613429202e-17,
+    0.00043610736349715347,
+    7.645067954686456e-18,
+    0.28673394482378883,
+    0.712829947812714
+   ],
+   "tracking_difference_vs_combination_pp": 0.8407428254726103,
+   "tracking_error_vs_combination_pp": 2.0079016591246686,
+   "fee_premium_over_basis_pp": -0.03127587159350714,
+   "implementation_shortfall_pp": -0.8094669538791031
+  },
+  "IVLU": {
+   "region": "developed_ex_us",
+   "mandate": "value",
+   "intended_factor": "HML",
+   "months": 77,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4748463451088812,
+   "alpha_annual_percent": -1.0521565523618652,
+   "alpha_mde_80pc_power_percent": 2.6322517689843488,
+   "intended_loading_interval": [
+    0.3146697126198963,
+    0.5984320885152058
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    8.326672684688674e-17,
+    0.0,
+    0.0,
+    1.0,
+    1.3912655740943001e-18
+   ],
+   "tracking_difference_vs_combination_pp": 1.1937662337662331,
+   "tracking_error_vs_combination_pp": 2.1939862502848153,
+   "fee_premium_over_basis_pp": 0.0,
+   "implementation_shortfall_pp": -1.1937662337662331
+  },
+  "JHEM": {
+   "region": "emerging",
+   "mandate": "multifactor",
+   "intended_factor": "HML",
+   "months": 77,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.054 is below 0.15"
+   ],
+   "intended_loading": 0.054104079960132445,
+   "alpha_annual_percent": -1.7700284084418496,
+   "alpha_mde_80pc_power_percent": 1.174971046705073,
+   "intended_loading_interval": [
+    -0.006100884346315329,
+    0.12133832899781878
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.07084845047645942,
+    0.8583242003397954,
+    0.07082734918374518,
+    0.0,
+    9.747542180137788e-19
+   ],
+   "tracking_difference_vs_combination_pp": -0.37582293867957606,
+   "tracking_error_vs_combination_pp": 3.3878071539620005,
+   "fee_premium_over_basis_pp": 0.43212545351429377,
+   "implementation_shortfall_pp": -0.05630251483471771
+  },
+  "JHMD": {
+   "region": "developed_ex_us",
+   "mandate": "multifactor",
+   "intended_factor": "HML",
+   "months": 77,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.089 is below 0.15",
+    "(b) intended loading flips sign between halves: -0.013 then +0.125"
+   ],
+   "intended_loading": 0.08948765275021414,
+   "alpha_annual_percent": -1.2148540303945194,
+   "alpha_mde_80pc_power_percent": 1.2601329599534417,
+   "intended_loading_interval": [
+    0.00879810653111093,
+    0.15845857843930608
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.12183070782347967,
+    0.5213005989971583,
+    0.3568686931793621
+   ],
+   "tracking_difference_vs_combination_pp": -0.07186772707176142,
+   "tracking_error_vs_combination_pp": 2.1742997453974877,
+   "fee_premium_over_basis_pp": 0.09975161616048905,
+   "implementation_shortfall_pp": -0.02788388908872763
+  },
+  "MFEM": {
+   "region": "emerging",
+   "mandate": "multifactor",
+   "intended_factor": "HML",
+   "months": 78,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.117 is below 0.15"
+   ],
+   "intended_loading": 0.11727418233060738,
+   "alpha_annual_percent": -3.0763628608998483,
+   "alpha_mde_80pc_power_percent": 2.7752105963889537,
+   "intended_loading_interval": [
+    -0.020765183543309546,
+    0.2623452077789069
+   ],
+   "replication_fitted": false
+  },
+  "RODM": {
+   "region": "developed_ex_us",
+   "mandate": "multifactor",
+   "intended_factor": "HML",
+   "months": 69,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.055 is below 0.15",
+    "(c) lost +1.47 pp/yr to its cheap ex-US replication against a fee premium of only +0.26 pp/yr",
+    "(d) total cost of ownership 1.76 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.05454257293194331,
+   "alpha_annual_percent": -2.334243297088413,
+   "alpha_mde_80pc_power_percent": 5.018796997655995,
+   "intended_loading_interval": [
+    -0.1997900021244666,
+    0.30522930091523737
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA"
+   ],
+   "weights": [
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -1.472892234782609,
+   "tracking_error_vs_combination_pp": 4.7867283252045825,
+   "fee_premium_over_basis_pp": 0.26,
+   "implementation_shortfall_pp": 1.212892234782609
+  },
+  "SCHC": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap",
+   "intended_factor": "SMB",
+   "months": 76,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.6287326291671409,
+   "alpha_annual_percent": -1.5067189470680635,
+   "alpha_mde_80pc_power_percent": 4.01600998640858,
+   "intended_loading_interval": [
+    0.4624536753146984,
+    0.765227676975148
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.09434463416208833,
+    3.984773867813762e-17,
+    0.9056553658379116,
+    7.05238317001692e-18,
+    7.971594580214568e-18
+   ],
+   "tracking_difference_vs_combination_pp": 0.5326782649724945,
+   "tracking_error_vs_combination_pp": 3.189536180804278,
+   "fee_premium_over_basis_pp": 0.002830339024862648,
+   "implementation_shortfall_pp": -0.5355086039973571
+  },
+  "SCZ": {
+   "region": "developed_ex_us",
+   "mandate": "small_cap",
+   "intended_factor": "SMB",
+   "months": 77,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5514965464638648,
+   "alpha_annual_percent": -0.5835179332491842,
+   "alpha_mde_80pc_power_percent": 2.434057662081998,
+   "intended_loading_interval": [
+    0.43401610656537115,
+    0.6356771552917537
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.09781015937722103,
+    0.0,
+    0.6312356828648861,
+    0.10793190096794969,
+    0.16302225678994314
+   ],
+   "tracking_difference_vs_combination_pp": -0.631881801290998,
+   "tracking_error_vs_combination_pp": 3.10318580270522,
+   "fee_premium_over_basis_pp": 0.27030509763814514,
+   "implementation_shortfall_pp": 0.3615767036528529
+  },
+  "TLTD": {
+   "region": "developed_ex_us",
+   "mandate": "multifactor",
+   "intended_factor": "HML",
+   "months": 77,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.20493334607598507,
+   "alpha_annual_percent": -0.4293317407915477,
+   "alpha_mde_80pc_power_percent": 1.4389583054821742,
+   "intended_loading_interval": [
+    0.12893143119553402,
+    0.2727100073349542
+   ],
+   "replication_fitted": true,
+   "basis_used": [
+    "VEA",
+    "VWO",
+    "VSS",
+    "EFV",
+    "EFG"
+   ],
+   "weights": [
+    0.021201720723711424,
+    1.2152369160318531e-17,
+    0.36306240574466786,
+    0.501718838367373,
+    0.11401703516424765
+   ],
+   "tracking_difference_vs_combination_pp": 0.6338738541569214,
+   "tracking_error_vs_combination_pp": 2.255434770660889,
+   "fee_premium_over_basis_pp": 0.1732815721838788,
+   "implementation_shortfall_pp": -0.8071554263408003
+  }
+ }
+}

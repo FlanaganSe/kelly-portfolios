@@ -5,8 +5,8 @@ updated the factor rows and left the decision unchanged; amended 2026-08-16 to r
 that the block on step 7 is circular for a derived reason; amended 2026-08-17 after
 Experiment 013, which found that the product row's supporting statistic was a property of
 Experiment 002's census frame and re-ran the audit on a frame that can see the shelf, and
-after Experiment 014, which measured how much of that audit's cost verdict was its
-comparator.
+after Experiments 014 and 015, which measured how much of the US and ex-US audits' cost
+verdicts was their comparator.
 **The non-promotion itself has never changed.** Supersede rather than amend when the
 first sleeve is promoted.
 
@@ -26,6 +26,7 @@ The outcomes then, in the closed status vocabulary:
 | CMA premium persists post-publication | **`rejected`** | −1.39 pp/yr post-publication against +3.91 in-sample; +0.20 pp/yr pooled across three regions |
 | Pooling three regions signs the HML, RMW, CMA premia | **`exploratory` (HML), `rejected` (RMW, CMA)** | HML +4.74 pp/yr `[+1.46, +8.10]` pooled; RMW's +2.53 sits below its own measured 2.62 pp/yr detection threshold ([decision 0005](0005-factor-premia-closed-on-public-data.md)) |
 | Retail factor products deliver exposure worth buying | `exploratory` | **Restated 2026-08-17.** Experiment 002 reported 24 of 44 `rejected` with clause (c) firing on 22. Its frame was the 2019Q4 N-PORT census, which carries no fund with an August fiscal quarter-end and no fund that launched later, so it could see 44 of the 109 auditable US products. [Experiment 013](../research/factor-products.md#the-us-shelf-on-the-corrected-frame) re-ran it unchanged on the union of the 2019Q4 and 2025Q4 censuses: **48 of 109 `rejected`, clause (c) on 35, and 48 `exploratory`.** Among the 65 funds the corrected frame admits, clause (c) fires on 13 and the median shortfall is **−0.48 pp/yr** rather than +0.53. [Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured) then varied the comparator basis and nothing else: **47 of the 48 `exploratory` statuses survive**, the count reads 47 to 49 across bases that can express the exposures tested, and the nine systematic value and small-value products keep **73% of their shortfall magnitude** |
+| The same, on the ex-US shelf | `exploratory` | **Added 2026-08-17.** Experiment 009 reached 12 `exploratory`, 8 `rejected` and 5 `unresolved` over 25 products. [Experiment 015](../research/factor-products.md#what-the-ex-us-comparator-decided-measured) varied its comparator basis and nothing else, over seven bases with a placebo matched on column count to each expressive one: **only 8 of the 12 survive a basis that can express what they sell.** IMTM, FNDC, SCHC and DFIS lose `exploratory` to a cheaper fund in their own cell; 65% of the shortfall magnitude survives across the ten funds the small-value column reaches. **No emerging product reaches `exploratory` under any basis and none could** — all four verdicts are decided by the loading or its interval, which no comparator reads |
 | Rebalancing is a source of return | **`rejected`** | Every policy lost on all three cost bases; drift gap ran ~35× `gamma_star` |
 | A trend sleeve adds marginal value a simpler exposure cannot | **`rejected`** | A static + volatility-exposure replica delivers 44% of the benefit |
 
@@ -63,7 +64,8 @@ Consequently:
   for 0.3 to 1.2 bp/yr. Anyone who wants their declared allocation to remain their
   actual allocation should rebalance. No rebalancing-bonus feature may be built.
 - **The forty-eight `exploratory` US products and twelve ex-US products may be used as
-  implementation proxies in a later experiment and for nothing else.** That list was
+  implementation proxies in a later experiment and for nothing else — and on the ex-US side
+  only eight of the twelve survive a fair comparator.** That list was
   fifteen US products until 2026-08-17 and the change is a frame correction, not a new
   result: Experiment 002's numbers reproduce to zero difference on every fund it audited.
   **The shortlist now includes every systematic value and small-value product on the US
@@ -72,10 +74,17 @@ Consequently:
   has an alpha its own window could measure.
   **The count is 48 on the frozen comparator and 47 to 49 on comparators that can express
   what these funds deliver**, so the number quoted must always name its basis. The single
-  product whose status does not survive a fair comparator is **IWN**, replaced at a corner
+  US product whose status does not survive a fair comparator is **IWN**, replaced at a corner
   by a small-value index fund at a fifth of its fee; **all nine systematic value and
   small-value products survive every basis tested**
   ([Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured)).
+  **The ex-US list is the one that shrinks.** Of its twelve, **AVDV, AVIV, DFIV, DISV,
+  IDMO, IVLU and SCZ survive every basis tested**, EFV survives all but the one that hands
+  a second EAFE value fund to a fund that *is* EAFE value, and **IMTM, FNDC, SCHC and DFIS
+  do not survive at all**: each loses to a cheaper fund in its own cell once the basis
+  carries one — IMTM to IDMO at 0.25% against its own 0.30%, the other three to a
+  developed-ex-US small-value column
+  ([Experiment 015](../research/factor-products.md#do-the-twelve-incumbents-hold-four-of-them-do-not)).
 - ~~**No number from `research/` may appear in the shipped application as a
   finding.**~~ **Lifted by [decision 0007](0007-application-may-render-research.md)**,
   which replaces the ban with four constraints. Everything else in this record stands
@@ -96,7 +105,7 @@ unsigned**, which is why every product row below points back at a factor row.
 | --- | --- |
 | Value | The premium is now signed (`exploratory`), so two conditions remain: a **measured** long-only capture fraction, which no source read here establishes and which the edge budget currently *assumes* at 0.40; and a product meeting Experiment 002's frozen promotion protocol — loading ≥ 0.15 with a 95% interval excluding 0.15 from below, the same on both fixed halves, shortfall ≤ 0 pp/yr against a replication fitted on a **prior** window, and total cost of ownership including realised distributions and turnover ≤ 1.0 pp/yr. **The candidate set is larger and higher-loading than it was.** VBR already met the first two clauses on Experiment 002's frame at +0.410, with halves of +0.431 and +0.451. On the corrected frame AVUV does so at **+0.537 `[+0.43, +0.64]` over all 72 months, with halves of +0.603 and +0.467**, and beats an *in-sample* four-fund replication by 4.92 pp/yr — **4.23 pp/yr of which survives a replication that contains a small-value fund**, the remaining 0.69 having been the comparator's inability to express small value ([Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured)); DFAT, DFSV, AVLV, DFUV, DFLV and RPV clear the loading clause too, five of them on windows shorter than the fixed halves. What is still missing is unchanged and still binds: the **prior-window** replication the protocol asks for, which no experiment here has fitted; a bootstrap interval on each half, which none computes; and the capture fraction |
 | Profitability (RMW) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Reopening needs a materially longer out-of-sample window — roughly a further decade — or a genuinely independent, non-French premium series. Not another pass over these files |
-| Momentum | A net premium computed from **observed** turnover rather than assumed tiers, with one-sided monthly turnover below 50%. **The second condition is met and was met by a frame correction rather than by a new product.** "The entire retail shelf clearing a $1bn / 0.60% screen is one fund" was true of the 2019Q4 census only: the corrected frame carries six — MTUM, SPMO, XSMO, XMMO, VFMO and JMOM — of which four reach `exploratory` with loadings from +0.372 to +0.462 and shortfalls from −2.49 to −4.53 pp/yr. The premium condition is untouched and still binds |
+| Momentum | A net premium computed from **observed** turnover rather than assumed tiers, with one-sided monthly turnover below 50%. **The second condition is met and was met by a frame correction rather than by a new product.** "The entire retail shelf clearing a $1bn / 0.60% screen is one fund" was true of the 2019Q4 census only: the corrected frame carries six — MTUM, SPMO, XSMO, XMMO, VFMO and JMOM — of which four reach `exploratory` with loadings from +0.372 to +0.462 and shortfalls from −2.49 to −4.53 pp/yr. The premium condition is untouched and still binds. **The ex-US momentum path, which is where Experiment 006 located the premium, is two funds and one of them does not survive its own comparator**: IDMO at 0.25% holds `exploratory` under every basis tested, and IMTM at 0.30% is `rejected` once the basis carries IDMO ([Experiment 015](../research/factor-products.md#do-the-twelve-incumbents-hold-four-of-them-do-not)) |
 | Investment (CMA) | **Closed on public data** ([decision 0005](0005-factor-premia-closed-on-public-data.md)). Re-entry requires a new frozen specification on a genuinely post-2026 window. The current rejection stands |
 | Size | A premium test that has never been run, plus the same product protocol |
 | Trend | A multi-asset attribution leaving a residual after non-US-equity exposures; a fund-level audit on a licensed total-return source with real fees; and a contract-level test of the volatility scaling, which no public aggregate can support |

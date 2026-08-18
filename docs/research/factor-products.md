@@ -9,7 +9,8 @@ implementation proxy in a later experiment. Out of scope: allocation, sizing, af
 outcomes, and whether any factor premium exists — that is
 [factor persistence](factor-persistence.md).
 
-**Four experiments over two shelves, and each one corrected the frame of the last.**
+**Five experiments over two shelves: the first three corrected the frame of the last, and
+the last two corrected its comparator.**
 [Experiment 002](#the-us-shelf-as-experiment-002-framed-it) audited the US shelf against
 the **2019Q4 census alone**. [Experiment 009](#the-ex-us-shelf) audited the ex-US and
 emerging shelf against the **union of the 2019Q4 and 2025Q4 censuses**, because a
@@ -18,14 +19,18 @@ emerging shelf against the **union of the 2019Q4 and 2025Q4 censuses**, because 
 US shelf, which nobody had done, and re-runs Experiment 002 unchanged on the corrected
 frame. [Experiment 014](#what-the-comparator-decided-measured) then re-scores Experiment
 013's cost clause under **six replicating bases**, because Experiment 013's own basis
-could not express the exposures of the products it admitted. All four assert Experiment
-002's two screening regexes byte-for-byte before they run, and Experiment 014 additionally
-asserts Experiment 013's specification, universe and product facts by sha256.
+could not express the exposures of the products it admitted.
+[Experiment 015](#what-the-ex-us-comparator-decided-measured) does the same for the ex-US
+shelf under **seven bases**, three of them placebos, which
+[decision 0003](../decisions/0003-cheap-broad-market-control.md) now requires. All five
+assert Experiment 002's two screening regexes byte-for-byte before they run; Experiment
+014 additionally asserts Experiment 013's specification, universe and product facts by
+sha256, and Experiment 015 asserts Experiment 009's the same way.
 
 **Status: `exploratory`, and nothing is promoted.**
 [Decision 0002](../decisions/0002-no-research-grade-free-price-source.md) fixes the
 ceiling until a source with a documented total-return and corporate-action contract is
-licensed. Experiments 013 and 014 are `as of 2026-08-17`; Experiments 002 and 009 are
+licensed. Experiments 013, 014 and 015 are `as of 2026-08-17`; Experiments 002 and 009 are
 `as of 2026-08-12`.
 
 ---
@@ -96,13 +101,30 @@ that could not see two thirds of the shelf.
    [§the corrected frame](#the-us-shelf-on-the-corrected-frame) and
    [§the comparator](#the-comparator-shrinkage-and-two-traps).
 7. **The comparator's *composition* decides individual verdicts, and how much has now
-   been measured.** Re-scoring the same 109 funds under six bases moves **1 to 5 verdicts**
-   when the added funds express something new and **9 to 15** when they express nothing new,
-   so **clause (c) is more sensitive to how many columns a look-ahead fit is handed than to
-   what they span**. On the nine systematic value and small-value products the picture is
-   the opposite and cleaner: **73% of their shortfall magnitude survives a basis that can
-   express small value, 27% was the basis, and nine of nine keep their status.**
+   been measured on both shelves — with opposite answers.** Re-scoring the same 109 **US**
+   funds under six bases moves **1 to 5 verdicts** when the added funds express something
+   new and **9 to 15** when they express nothing new, so on that shelf **clause (c) is more
+   sensitive to how many columns a look-ahead fit is handed than to what they span**. On
+   the nine systematic value and small-value products the picture is the opposite and
+   cleaner: **73% of their shortfall magnitude survives a basis that can express small
+   value, 27% was the basis, and nine of nine keep their status.**
    [§what the comparator decided](#what-the-comparator-decided-measured).
+8. **On the ex-US shelf clause (c) *is* informative, and what it says is unflattering.**
+   Re-scoring the same 25 funds under seven bases, each expressive basis paired with a
+   column-count-matched placebo, moves **1, 0 and 4 verdicts against the placebos' 0, 0 and
+   1** — the reverse of the US result. A basis that can express developed-ex-US small
+   value, quality and momentum **rejects four of the twelve products that reached
+   `exploratory`**: IMTM, FNDC, SCHC and DFIS, every one of them losing to a cheaper fund
+   in its own cell. **65% of the shortfall magnitude survives** across the ten funds the
+   small-value column reaches, against the US shelf's 73%.
+   [§what the ex-US comparator decided](#what-the-ex-us-comparator-decided-measured).
+9. **`GWX` is rejected because its comparator did not exist for one of its months.** The
+   largest intended loading in the entire ex-US audit, +0.856, is `rejected` on clause (c)
+   alone under all seven bases — and under four of them its "cheap replication" is **VEA at
+   weight 1.000**, a developed large-cap fund standing in for a developed small-cap fund,
+   because GWX files from 2019-07 and almost nothing else does. Trim one month so the whole
+   basis exists and its shortfall goes from +1.24 to **+0.09**. **Span and coverage are
+   different defects and only the first is a property of the basis.**
 
 ### What decided the rejections
 
@@ -118,7 +140,10 @@ comparator fitted in sample, and the composition of that comparator moves indivi
 verdicts** ([§what the comparator decided](#what-the-comparator-decided-measured)). Read every (c) rejection as *"a look-ahead combination of
 cheap funds beat this product over these months"*, **never** as *"this product is badly
 run"*. The clearest demonstration is `GWX`, which carries **the largest intended loading
-in the entire ex-US audit at +0.856** and is rejected anyway.
+in the entire ex-US audit at +0.856** and is rejected anyway —
+and [Experiment 015 has now measured why](#does-gwx-survive-no--and-the-basis-is-not-why):
+its replication is one large-cap fund, because its filed history begins one month before
+every other basis constituent's.
 
 **The reverse reading is the stronger one and it is new.** A *positive* shortfall against
 a hindsight comparator is weak evidence against a product. A *negative* one is hard
@@ -740,27 +765,33 @@ Of 537 matching series, 26 passed the screen and 25 had at least 36 filed monthl
 **Median usable history is 76 months against Experiment 002's uniform 72** — so the ex-US
 window is not the shorter one, which was the expected objection and does not hold.
 
-### The twelve that deliver
+### The twelve that deliver, and the eight that survive a fair comparator
 
 Loading is on the intended factor in the fund's **own** region's panel. `α*` is shrunk and
-decides nothing.
+decides nothing. **`†` marks a product that loses `exploratory` under a replicating basis
+that can express what it sells**
+([Experiment 015](#do-the-twelve-incumbents-hold-four-of-them-do-not)).
 
 | Ticker | Region | Factor | Loading | 95% interval | Months | α* |
 | --- | --- | --- | ---: | --- | ---: | ---: |
 | **DFIV** | developed ex-US | HML | **0.662** | `[0.52, 0.85]` | 51 | −1.93 |
-| **FNDC** | developed ex-US | SMB | **0.671** | `[0.55, 0.82]` | 76 | +0.18 |
-| **SCHC** | developed ex-US | SMB | **0.629** | `[0.46, 0.77]` | 76 | −0.65 |
-| **DFIS** | developed ex-US | SMB | **0.591** | `[0.46, 0.72]` | 45 | +0.65 |
+| **FNDC†** | developed ex-US | SMB | **0.671** | `[0.55, 0.82]` | 76 | +0.18 |
+| **SCHC†** | developed ex-US | SMB | **0.629** | `[0.46, 0.77]` | 76 | −0.65 |
+| **DFIS†** | developed ex-US | SMB | **0.591** | `[0.46, 0.72]` | 45 | +0.65 |
 | **SCZ** | developed ex-US | SMB | **0.551** | `[0.43, 0.64]` | 77 | −0.39 |
 | **IDMO** | developed ex-US | UMD | **0.540** | `[0.39, 0.71]` | 77 | +0.03 |
 | **AVDV** | developed ex-US | HML | **0.510** | `[0.32, 0.77]` | 75 | +0.24 |
-| **IMTM** | developed ex-US | UMD | **0.505** | `[0.44, 0.59]` | 77 | −1.46 |
+| **IMTM†** | developed ex-US | UMD | **0.505** | `[0.44, 0.59]` | 77 | −1.46 |
 | **DISV** | developed ex-US | HML | **0.495** | `[0.36, 0.64]` | 45 | −0.09 |
 | **AVIV** | developed ex-US | HML | **0.489** | `[0.36, 0.64]` | 51 | −2.27 |
 | **IVLU** | developed ex-US | HML | **0.475** | `[0.31, 0.60]` | 77 | −0.67 |
 | **EFV** | developed ex-US | HML | **0.368** | `[0.25, 0.49]` | 77 | −1.58 |
 
-**Every one is developed ex-US. No emerging-market product reached `exploratory`.**
+**Every one is developed ex-US. No emerging-market product reached `exploratory`** — and
+[Experiment 015 shows that none could have](#do-any-emerging-products-reach-exploratory-no-and-no-basis-could-do-it),
+because every emerging verdict here is decided by the loading or its interval, and neither
+reads the comparator. **Four of the twelve — FNDC, SCHC, DFIS and IMTM — do not survive a
+basis containing a developed-ex-US small-value or a cheaper momentum column.**
 
 `unresolved`, the interval containing the bar: IDHQ (RMW 0.321), **DFEV (emerging HML
 0.267, 44 months)**, **AVES (emerging HML 0.237, 51 months)**, TLTD (HML 0.205), IQLT
@@ -770,7 +801,11 @@ specification predicted a short window would produce.
 
 `rejected`: EFG, GWX and DIHP on clause (c) alone, losing 2.76, 1.61 and 1.23 pp/yr to
 their replications; RODM and IMFL on (a), (c) and (d); JHMD on (a) and (b); JHEM and MFEM
-on (a).
+on (a). **Three of those five clause (c) figures are decided by a basis that was not there
+rather than by one that could not express the fund**: GWX's and RODM's replications are
+`VEA` alone, and MFEM has no replication at any point because the emerging comparator does
+not cover its first month
+([§coverage is not span](#does-gwx-survive-no--and-the-basis-is-not-why)).
 
 ### What the ex-US shelf actually contains
 
@@ -787,7 +822,9 @@ on (a).
 **Emerging markets — where the largest value premium was measured — has four products in
 total, two rejected and two unresolved.** That is concentration risk the specification's
 mechanism section predicted: an exposure may exist in only one product at any price, which
-is not a choice.
+is not a choice. **It is also not a comparator problem**: all four verdicts are decided by
+clause (a) or by an interval, and
+[Experiment 015 confirms that no basis moves any of them](#do-any-emerging-products-reach-exploratory-no-and-no-basis-could-do-it).
 
 ### The drag that could not be measured
 
@@ -800,6 +837,271 @@ been an upper bound; a positive one means index-construction differences swamp w
 withholding costs. **Withholding is certainly being paid, is inside every ex-US return
 here, and is not separable from the benchmark mismatch by this construction.** Anything
 that needs it needs Form N-CSR or a 1099-DIV.
+
+---
+
+## What the ex-US comparator decided, measured
+
+**Experiment 014 measured the US shelf's comparator and left a debt: the ex-US basis had
+never been varied, and decision 0003 now requires a fitted comparator to carry a placebo
+comparator beside it.**
+[Experiment 015](../../research/experiments/exp_015_exus_replication_basis.yaml) pays it.
+It re-scores the same 25 ex-US funds under **seven bases** and changes nothing else: the
+same committed universe *and the same committed product facts* by sha256, the same
+windows, the same **regional** panels, the same four clauses at the same thresholds, the
+same comparators VEA and VWO, HAC 6, block 6, 10,000 resamples, seed 20260812. Every
+loading, alpha, MDE, interval and pedestal is **identical by construction**, because the
+basis enters nowhere except clauses (c) and (d), and a test enforces that the scoring
+function cannot recompute one.
+
+**The control reproduces Experiment 009 to zero difference** — all 25 statuses, and every
+shortfall, tracking difference and fitted weight of the 24 funds that have a replication —
+against a committed fixture of what that experiment published. The bootstrap is consumed
+in Experiment 009's own order over its own fund list, so the intervals that decide an
+`unresolved` status reproduce bit for bit rather than approximately. Had it failed, the
+run would have been abandoned.
+
+**The headline is the opposite of the US shelf's, and that is the finding.** On the US
+shelf the placebos moved *more* verdicts than the expressive bases. Here every placebo
+moves *fewer* than the expressive basis it is matched to, and the one verdict a placebo
+does move is on a fund inside its own basis. **Clause (c) is informative on the ex-US
+shelf in a way it is not on the US one**, and the reason it is informative is not
+flattering to the shelf: a basis that can express what these funds sell **rejects four of
+the twelve products that reached `exploratory`**.
+
+### The seven bases, and each one beside its placebo
+
+Every basis is fitted in sample. *Cells* counts distinct **region-by-style** positions;
+each placebo has exactly as many columns as the expressive basis it is matched to and
+**not one new cell**. Fees are Experiment 009's committed product facts, unchanged.
+
+| Basis | Constituents (fee %) | Cols | Cells | `expl` | `rej` | `unres` | (c) | Median shortfall | Verdicts moved |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| **A frozen** *(control)* | VEA .03, VWO .06, VSS .06, EFV .31, EFG .34 | 5 | 5 | **12** | 8 | 5 | 5 | −0.81 | — |
+| **B + developed small value** | A + AVDV .36 | 6 | 6 | 11 | 9 | 5 | 6 | −0.12 | **1** |
+| *B placebo* | A + IEFA .07 | 6 | **5** | 12 | 8 | 5 | 5 | −0.82 | **0** |
+| **C + emerging blocks** | A + EWX .65, MFEM .49 | 7 | 7 | 12 | 8 | 5 | 5 | −0.81 | **0** |
+| *C placebo* | A + IEFA .07, SCZ .40 | 7 | **5** | 12 | 8 | 5 | 5 | −0.86 | **0** |
+| **D expressive** | A + AVDV .36, IDHQ .29, IDMO .25, EWX .65, MFEM .49 | 10 | 10 | **8** | 12 | 5 | **10** | **+0.20** | **4** |
+| *D placebo* | A + IEFA .07, IVLU .31, SCZ .40, SCHC .06, FNDC .39 | 10 | **5** | 11 | 9 | 5 | 5 | −0.51 | **1** |
+
+**The placebo movement beside the expressive movement, which is the number decision 0003
+asks for:** at six columns **1 against 0**, at seven columns **0 against 0**, at ten
+columns **4 against 1**. On the US shelf the same comparison ran 1, 5 and 5 against 9 and
+15. The ex-US placebos are more collinear with the frozen basis than the US ones were —
+IEFA is another cap-weighted EAFE fund and IVLU another EAFE value fund — which is
+exactly what a placebo is supposed to be, and Experiment 014's own caveat that *"same cell
+is not same exposure"* is what its S&P and Schwab columns violated.
+
+**How each was chosen, before any of them was scored.** **B** adds one fund in the cell
+the frozen basis most obviously lacks: it carries a *large* value fund and a small
+*blend* fund and cannot express their interaction, which is what AVDV, DISV, FNDC and GWX
+are sold as. AVDV at 0.36% is the cheapest developed-ex-US small-value ETF with a usable
+window. **C** adds two emerging columns, because the frozen basis carries **one emerging
+fund for a whole asset class** and scores four emerging products against it. **D** is
+every region-by-style cell any product in the audit claims, at the cheapest fund per cell
+covering a usable window, chosen on fee and declared mandate alone and before any loading
+was read — which is why the momentum leg is IDMO at 0.25% and not IMTM at 0.30%, and the
+quality leg IDHQ at 0.29% and not IQLT at 0.30%. **The placebos** draw from cells the
+frozen basis already carries: a second EAFE market fund, a second EAFE value fund and
+three more ex-US small-blend funds.
+
+**One constituent is dearer than the shelf's own cap and it is declared rather than
+buried.** EWX at 0.65% exceeds the 0.60% expense ceiling this audit applies to *graded*
+products. It is the only emerging small-cap ETF with a window long enough to be a column
+at all, so it enters as a building block and not as an investment. Its effect runs through
+the fee-premium term, which is reported separately: the median fee premium falls from
+**+0.204 pp/yr under the frozen basis to +0.080 under D**, one to two orders of magnitude
+smaller than the tracking-difference term that moves everything below.
+
+### The decomposition: how much of each shortfall was the comparator
+
+Shortfall in pp/yr, positive meaning the product lost to its replication. **`Basis` is the
+difference D − A: the part of the frozen figure that was the comparator rather than the
+fund.** Placebo columns are in *italics* and belong beside the expressive ones, not after
+them. Every loading is on the fund's **own** region's panel.
+
+| Ticker | Panel | Mandate | Months | Loading | MDE₈₀ (α) | **A frozen** | **B +AVDV** | **C +EM** | **D expressive** | **Basis** | *B placebo* | *C placebo* | *D placebo* | Status, A → D |
+| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- |
+| **IMTM** | developed | momentum | 77 | +0.505 | 3.81 | **−2.31** | −2.31 | −2.27 | **+0.91** | **+3.22** | *−2.31* | *−2.31* | *−2.29* | `exploratory` → `rejected` |
+| **DISV** | developed | small-cap value | 45 | +0.495 | 3.98 | **−2.89** | +0.05 | −2.89 | **+0.26** | **+3.15** | *−2.89* | *−3.09* | *−2.97* | `exploratory` → `exploratory` |
+| **EFV** | developed | value | 77 | +0.368 | 2.22 | **−1.19** | −1.19 | −1.20 | **−1.20** | **−0.01** | *−1.91* | *−1.91* | *+0.70* | `exploratory` → `exploratory` |
+| **DFIS** | developed | small cap | 45 | +0.591 | 1.95 | **−1.11** | +0.27 | −1.11 | **+0.75** | **+1.86** | *−1.11* | *−1.48* | *−0.50* | `exploratory` → `rejected` |
+| **SCHC** | developed | small cap | 76 | +0.629 | 4.02 | **−0.54** | +0.24 | −0.54 | **+0.59** | **+1.13** | *−0.59* | *−0.73* | *−0.51* | `exploratory` → `rejected` |
+| **IDHQ** | developed | quality | 77 | +0.321 | 3.24 | **−1.00** | −1.00 | −1.01 | **+0.03** | **+1.03** | *−1.00* | *−1.00* | *−0.90* | `unresolved` → `unresolved` |
+| **FNDC** | developed | small cap | 76 | +0.671 | 1.90 | **−0.12** | +0.64 | −0.12 | **+0.74** | **+0.86** | *−0.18* | *−0.50* | *+0.06* | `exploratory` → `rejected` |
+| **EFG** | developed | growth | 77 | +0.435 | 2.62 | **+2.45** | +2.45 | +2.45 | **+1.70** | **−0.75** | *+1.76* | *+1.76* | *+1.76* | `rejected` → `rejected` |
+| **JHMD** | developed | multifactor | 77 | +0.089 | 1.26 | **−0.03** | −0.03 | −0.01 | **+0.72** | **+0.75** | *−0.01* | *−0.01* | *+0.18* | `rejected` → `rejected` |
+| **AVES** | emerging | value | 51 | +0.237 | 4.48 | **−1.92** | −1.61 | −1.81 | **−1.18** | **+0.74** | *−1.92* | *−1.92* | *−1.69* | `unresolved` → `unresolved` |
+| **AVDV** | developed | small-cap value | 75 | +0.510 | 3.96 | **−4.58** | −4.58 | −4.58 | **−4.58** | **−0.00** | *−4.58* | *−4.74* | *−3.99* | `exploratory` → `exploratory` |
+| **IMFL** | developed | multifactor | 58 | −0.258 | 7.05 | **+0.84** | +0.84 | +0.81 | **+0.58** | **−0.26** | *+0.84* | *+0.82* | *+0.38* | `rejected` → `rejected` |
+| **DFIV** | developed | value | 51 | +0.662 | 3.52 | **−1.51** | −1.09 | −1.48 | **−1.08** | **+0.43** | *−1.51* | *−1.51* | *−1.34* | `exploratory` → `exploratory` |
+| **AVIV** | developed | value | 51 | +0.489 | 1.81 | **−0.51** | −0.18 | −0.51 | **−0.16** | **+0.35** | *−0.51* | *−0.51* | *−0.12* | `exploratory` → `exploratory` |
+| **TLTD** | developed | multifactor | 77 | +0.205 | 1.44 | **−0.81** | −0.81 | −0.81 | **−0.51** | **+0.30** | *−0.84* | *−0.91* | *−0.68* | `unresolved` → `unresolved` |
+| **IDMO** | developed | momentum | 77 | +0.540 | 5.34 | **−5.43** | −5.43 | −5.42 | **−5.18** | **+0.25** | *−5.46* | *−5.46* | *−5.46* | `exploratory` → `exploratory` |
+| **IQLT** | developed | quality | 77 | +0.184 | 2.70 | **−0.81** | −0.81 | −0.81 | **−0.57** | **+0.24** | *−0.81* | *−0.81* | *−0.81* | `unresolved` → `unresolved` |
+| **DIHP** | developed | quality | 45 | +0.347 | 2.61 | **+1.24** | +1.24 | +1.24 | **+1.02** | **−0.22** | *+1.24* | *+1.24* | *+1.40* | `rejected` → `rejected` |
+| **JHEM** | emerging | multifactor | 77 | +0.054 | 1.17 | **−0.06** | −0.06 | +0.12 | **+0.15** | **+0.20** | *−0.06* | *−0.06* | *−0.06* | `rejected` → `rejected` |
+| **DFEV** | emerging | value | 44 | +0.267 | 3.23 | **−2.19** | −2.19 | −2.03 | **−2.03** | **+0.16** | *−2.19* | *−2.19* | *−2.02* | `unresolved` → `unresolved` |
+| **RODM** | developed | multifactor | 69 | +0.055 | 5.02 | **+1.21** | +1.21 | +1.33 | **+1.33** | **+0.12** | *+1.21* | *+1.21* | *+1.21* | `rejected` → `rejected` |
+| **SCZ** | developed | small cap | 77 | +0.551 | 2.43 | **+0.36** | +0.36 | +0.36 | **+0.36** | **−0.00** | *+0.41* | *+0.41* | *+0.41* | `exploratory` → `exploratory` |
+| **GWX** | developed | small cap | 78 | +0.856 | 2.50 | **+1.24** | +1.24 | +1.24 | **+1.24** | **−0.00** | *+1.24* | *+1.24* | *+1.24* | `rejected` → `rejected` |
+| **IVLU** | developed | value | 77 | +0.475 | 2.63 | **−1.19** | −1.19 | −1.19 | **−1.19** | **−0.00** | *−1.19* | *−1.19* | *−1.19* | `exploratory` → `exploratory` |
+
+**MFEM has no replication under any basis and never had one.** Its filed history begins
+2019-07 and the emerging comparator VWO does not cover that month, so Experiment 009's
+rule declines to fit anything. It is `rejected` on clause (a) regardless.
+
+**Across the ten funds the small-value column actually reaches, 65% of the shortfall
+magnitude survives and 35% was the basis** — the ex-US analogue of the US shelf's 73/27,
+and a larger share attributable to the comparator. The strongest single case is **DISV**,
+whose shortfall goes from −2.89 to +0.05 once a small-value column exists, on a
+replication that puts **69% of its weight on AVDV**. Its status survives only because
++0.05 sits under the 0.50 threshold.
+
+### The basis reaches only half the shelf, and that is a fact about the shelf
+
+**AVDV files from 2019-09 and eleven of the audited funds file from 2019-08, so the
+small-value column is simply absent from their bases.** Experiment 009 drops a
+constituent that does not cover a fund's own months — this experiment keeps that rule
+unchanged, because changing it would be a second variable — and the consequence is that
+basis B reaches ten funds and not twenty-four. That is not a defect in the design. **It is
+the statement that a purchasable developed-ex-US small-value fund did not exist for the
+first months of this window**, which is the same fact that put AVDV, AVIV, DISV, DFIV,
+DFIS and DFEV outside a 2019Q4-only frame in the first place.
+
+### Does GWX survive? No — and the basis is not why
+
+**GWX's shortfall is +1.24 pp/yr under every one of the seven bases, to two decimal
+places.** It carries the largest intended loading in the entire ex-US audit at +0.856 on
+its own developed panel, and clause (c) rejects it under a comparator that never changes.
+The reason is not span. It is **coverage**:
+
+> **GWX files from 2019-07. Of the fifteen funds used in any basis here, only VEA, EWX and
+> MFEM carry a 2019-07 filing.** So GWX's "cheap replication" under the frozen basis, under
+> both of the first two placebos and under D's placebo is **VEA at weight 1.000** — a
+> developed *large-cap* fund standing in for a developed *small-cap* fund. Under C and D it
+> gains EWX and MFEM, both emerging, and the fit still lands 0.796 on VEA.
+
+The frozen specification declares a second-variable diagnostic for exactly this, and
+labels it as one: recompute GWX's clause (c) on its window **trimmed by one month to
+2019-08**, so that the whole declared basis is available. It moves the window as well as
+the basis, so it produces no status and reverses no verdict.
+
+| GWX, 78 months → 77 | Columns available | Shortfall, full window | Shortfall, trimmed | Would (c) fire? |
+| --- | ---: | ---: | ---: | --- |
+| A frozen | 1 → 5 | +1.24 | **+0.09** | **no** |
+| B + developed small value | 1 → 5 | +1.24 | **+0.09** | **no** |
+| *B placebo* | 1 → 6 | +1.24 | *+0.19* | *no* |
+| C + emerging blocks | 3 → 7 | +1.24 | **+0.09** | **no** |
+| *C placebo* | 1 → 7 | +1.24 | *+0.00* | *no* |
+| D expressive | 3 → 9 | +1.24 | **+0.39** | **no** |
+| *D placebo* | 1 → 8 | +1.24 | *+0.00* | *no* |
+
+**Under every basis, GWX's clause (c) firing depends on a single month of filed history
+that no comparator covers.** Deleting that month takes its shortfall from +1.24 to between
+0.00 and +0.39, all of them under the 0.50 threshold, on a fund that delivers the largest
+size loading on the shelf. **The published verdict stands** — the specification was frozen
+and the window is the fund's own — but it must be read as *"the comparator did not exist
+for one of its months"*, never as *"this product is badly run"*. **RODM, the other fund
+filing from 2019-07, is not rescued by the same trim**: its shortfall runs +0.91 to +2.28
+across the bases and it fires clauses (a) and (d) anyway, on an intended loading of +0.055.
+
+### Do any emerging products reach `exploratory`? No, and no basis could do it
+
+**None of the four, under any of the seven bases.** More usefully, the question is not
+decidable by a comparator at all, and saying so is the point:
+
+| Ticker | Months | HML on its **own emerging** panel | HML on the **US** panel | What decides its status | Basis-invariant? |
+| --- | ---: | ---: | ---: | --- | --- |
+| **DFEV** | 44 | **+0.267** | −0.092 | interval contains 0.15 | **yes** |
+| **AVES** | 51 | **+0.237** | −0.074 | interval contains 0.15 | **yes** |
+| **MFEM** | 78 | +0.117 | +0.103 | clause (a) | **yes** |
+| **JHEM** | 77 | +0.054 | +0.078 | clause (a) | **yes** |
+
+Clause (a) tests the intended **loading** and `unresolved` tests its **interval**. Neither
+reads the basis, so **no comparator, however expressive, can move an emerging product to
+`exploratory`.** The emerging shortfalls do move — AVES from −1.92 to −1.18 once the basis
+carries emerging small-cap and emerging-multifactor columns, DFEV from −2.19 to −2.03 —
+but none of them approaches the 0.50 threshold in either direction and none changes a
+status.
+
+**Three separate problems are being confused whenever this is discussed and they must be
+kept apart.** The basis is one: it is now measured and it moves nothing here. **The window
+is a second**: AVES has 51 months and DFEV 44, which is why their intervals straddle the
+bar, and no comparator shortens or lengthens a window. **The shelf is a third**: there are
+four emerging products in total and two of them carry a loading indistinguishable from
+zero.
+
+**And the panel is doing the heaviest work of all.** DFEV and AVES read **+0.267 and
++0.237** on their own emerging panel and **−0.092 and −0.074** on the US one. Grading the
+only two emerging value products in existence on the US factors would not merely lower
+their loadings; it would **flip their sign**, and with it the only evidence this
+repository has that the emerging value premium is purchasable at all. That is the fifth
+conclusion of this page in its sharpest available form.
+
+### Do the twelve incumbents hold? Four of them do not
+
+A richer basis is a **harder** test, and this is where it bites.
+
+| Product | Panel | Mandate | Fee % | A frozen | Under a basis that can express it | Why |
+| --- | --- | --- | ---: | --- | --- | --- |
+| **IMTM** | developed | momentum | 0.30 | `exploratory`, −2.31 | **`rejected` under D, +0.91** | The basis gains **IDMO at 0.25%**, the cheaper of the shelf's two momentum funds, and the fit puts **57.5%** of its weight there |
+| **FNDC** | developed | small cap | 0.39 | `exploratory`, −0.12 | **`rejected` under B and D, +0.64 / +0.74** | A small-value column appears and takes 22% of the weight |
+| **SCHC** | developed | small cap | 0.06 | `exploratory`, −0.54 | **`rejected` under D, +0.59** | Same cause; its replication is 71% VSS plus 20% AVDV |
+| **DFIS** | developed | small cap | 0.39 | `exploratory`, −1.11 | **`rejected` under D, +0.75** | Same cause; 33% AVDV |
+| *EFV* | developed | value | 0.31 | `exploratory`, −1.19 | *`rejected` under D placebo, +0.70* | **Degenerate.** EFV is inside the basis, and the placebo adds IVLU — a second EAFE value fund — which replicates it at 85%. This is a change in what is measured, not in the fund |
+
+**Seven of the twelve survive every basis tested: AVDV, AVIV, DFIV, DISV, IDMO, IVLU and
+SCZ.** An eighth, EFV, survives every basis except the one that hands a second EAFE value
+fund to a fund that *is* EAFE value. **The four genuine losses are all small-cap or
+momentum products losing to a cheaper fund in their own cell**, which is the reading
+clause (c) exists to produce and the one Experiment 009 could not reach with five columns.
+
+**AVDV and IDMO are the two that matter most and both hold.** AVDV keeps a −4.58 pp/yr
+shortfall under every basis, including the ones containing itself, because it is excluded
+from its own basis and no other column can express developed-ex-US small value. IDMO keeps
+−5.43 to −5.18. Both alphas remain unmeasurable: **+0.55 pp/yr against an MDE₈₀ of 3.96
+for AVDV and +0.11 against 5.34 for IDMO.**
+
+### What a richer basis did to the shelf as a whole
+
+| | A frozen | D expressive | *D placebo* |
+| --- | ---: | ---: | ---: |
+| Clause (c) fired | 5 | **10** | *5* |
+| Products with a **negative** shortfall | 18 of 24 | **10 of 24** | *15 of 24* |
+| Median implementation shortfall | −0.81 | **+0.20** | *−0.51* |
+| Median tracking error vs the combination | 3.45 | 3.00 | *2.93* |
+| Products replicated at a corner | 5 | **1** | *4* |
+| Median fee premium over the fitted basis | +0.204 | +0.080 | *+0.129* |
+| Funds excluded from their own basis | 2 | 5 | *6* |
+
+**The threshold is still far below what the dispersion can resolve.** Median tracking
+error against the fitted combination is 3.45 pp/yr under the frozen basis and 3.00 under
+the most expressive one, against a clause-(c) threshold of 0.50. **Clause (c) remains a
+decision rule applied as frozen, not a measurement**, and Experiment 015 does not change
+that — it measures how much the rule depends on a choice, and finds that on this shelf it
+depends on the choice rather more than the placebos do.
+
+**What would settle it is still not run.** Weights fitted on a **prior** window would
+remove the look-ahead entirely, and windows of 44 to 78 months cannot support that without
+shortening the estimation window further. That remains the most load-bearing open question
+on this page and Experiment 015 does not answer it.
+
+### The regional pedestals, which travel with every alpha here
+
+| Region | Comparator | Months | Pedestal (FF5+UMD α) | Fee % |
+| --- | --- | ---: | ---: | ---: |
+| Developed ex-US | VEA | 78 | **−0.31 pp/yr** | 0.03 |
+| **Emerging** | VWO | 77 | **+1.50 pp/yr** | 0.06 |
+| US | VTI | 78 | −0.49 pp/yr | 0.03 |
+
+Reproduced from Experiment 009 and basis-invariant. **The emerging pedestal is positive
+and large**: a cap-weighted emerging index fund earns +1.50 pp/yr of alpha against the
+emerging research portfolio it is supposed to be, so every emerging alpha on this page is
+a distance from **+1.50** and not from zero. Read against that pedestal, DFEV's −1.19 and
+AVES's −0.16 are further below their control than the raw numbers suggest — and both sit
+inside MDE₈₀ of 3.23 and 4.48, so neither is a measurement.
 
 ---
 
@@ -839,15 +1141,29 @@ entitled to make. And **tracking error against the combination ranges 1.38 to 8.
 median about 5**, against a clause-(c) threshold of 0.50. **Clause (c) is a decision rule
 applied as frozen, not a measurement.**
 
-**Trap three, which is new: the basis is a choice, and how much it decides is now
-measured.** The US basis was frozen in Experiment 002, before the census correction made
-any systematic small-value product visible, and it contains no small-value fund. Under a
-basis that does, **the nine systematic value and small-value products keep 73% of their
+**Trap three, which is new: the basis is a choice, and how much it decides is now measured
+on both shelves.** The US basis was frozen in Experiment 002, before the census correction
+made any systematic small-value product visible, and it contains no small-value fund. Under
+a basis that does, **the nine systematic value and small-value products keep 73% of their
 shortfall magnitude and all nine keep their status** — but two placebo bases that add as
 many columns while adding no new size-by-style cell move **more** verdicts across the
 shelf than the expressive bases do.
 [§what the comparator decided](#what-the-comparator-decided-measured) has the
-decomposition. The ex-US basis has never been varied and the same question is open there.
+decomposition. **The ex-US basis has now been varied too and answers the other way**: its
+three placebos move 0, 0 and 1 verdicts against their partners' 1, 0 and 4, so clause (c)
+is informative there — and what it says is that **four of the twelve ex-US products at
+`exploratory` lose that status** to a cheaper fund in their own cell
+([§what the ex-US comparator decided](#what-the-ex-us-comparator-decided-measured)).
+
+**Trap four, which the ex-US shelf makes unavoidable: a basis constituent that does not
+cover a fund's months is dropped, so the basis varies fund by fund.** Both audits use that
+rule and neither could avoid it. On the US shelf, where every constituent covers all 72
+months, it never binds. On the ex-US shelf it decides verdicts: `GWX` and `RODM` file from
+2019-07 and only three of the fifteen funds used in any declared basis carry a 2019-07
+filing, so both are replicated by **VEA at weight 1.000**, and `MFEM` gets no replication
+at all because the emerging comparator does not cover its first month. **Span is what a
+basis can express; coverage is which columns were there. Only the first is a property of
+the comparator's design.**
 
 ---
 
@@ -891,20 +1207,21 @@ series present in 2019Q4 and absent in 2025Q4.
 
 ## Hostile tests: what ran, and what was wrong on the way
 
-| Declared test | Experiment 002 | Experiment 013 | Experiment 014 |
-| --- | --- | --- | --- |
-| Re-estimate under CAPM, FF3 and FF5+UMD and report all three | **Run.** 132 fits | **Run.** 327 fits | Reproduced, not re-corrected: an identical test under a different comparator is not a new hypothesis about alpha |
-| Fixed calendar halves and rolling 36-month windows | **Run.** 37 windows per fund | **Run**, and reported as not evaluable where a fund's window cannot support it | Reproduced; clause (b) does not read the basis |
-| Substitute DGS3MO and DFF for TB3MS | **Run.** Wrong in the first two successful runs; fixed | Not repeated: a constant shift in the dependent variable moves only the intercept, and 002 measured it at ≤ 0.20 pp/yr with every loading invariant | Not repeated, same reason |
-| Every screened fund and specification in the denominator | **Run.** 6,315-member padded family | **Run.** 9,507-member padded family; BH 3, Holm 0 | Not repeated; the multiplicity it creates is in the *basis* dimension and all six bases are declared in one frozen file |
-| Assert Experiment 002's screen unchanged before running | n/a | **Run**, and enforced by a test that fails if either regex moves | **Run**, plus Experiment 013's specification, universe and product facts by sha256 |
-| Report the pedestal on each fund's own window | Not designed | **Run.** Fourteen distinct windows, −0.26 to −0.65 pp/yr | Reproduced |
-| Decompose the added funds by *why* the old frame missed them | n/a | **Run.** 42 absent from the 2019Q4 census, 23 excluded by a criterion that moved | n/a |
-| **Cross-check every N-PORT return against an independent source** | **Did not run at all** | **Did not run at all** | **Still has not run** |
-| Report MDE₈₀ beside every alpha | **Run** | **Run**, with the minimum detectable *loading* beside every loading | **Run**, unchanged |
-| Measure attrition between the censuses | **Run**, with the defect above | **Run**, with renames separated from deaths | n/a; the universe is inherited and never rebuilt |
-| **Reproduce the previous experiment's published numbers to zero difference before reading your own** | n/a | **Run** on all 44 of 002's funds | **Run** on all 109, against a committed fixture, with the run abandoned if it fails |
-| **Run a placebo comparator that adds columns without adding span** | Not designed | Not designed | **Run twice**, and it moved more verdicts than the expressive bases did |
+| Declared test | Experiment 002 | Experiment 013 | Experiment 014 | Experiment 015 |
+| --- | --- | --- | --- | --- |
+| Re-estimate under CAPM, FF3 and FF5+UMD and report all three | **Run.** 132 fits | **Run.** 327 fits | Reproduced, not re-corrected: an identical test under a different comparator is not a new hypothesis about alpha | Reproduced, not re-corrected, on the ex-US panels |
+| Fixed calendar halves and rolling 36-month windows | **Run.** 37 windows per fund | **Run**, and reported as not evaluable where a fund's window cannot support it | Reproduced; clause (b) does not read the basis | Reproduced; same reason |
+| Substitute DGS3MO and DFF for TB3MS | **Run.** Wrong in the first two successful runs; fixed | Not repeated: a constant shift in the dependent variable moves only the intercept, and 002 measured it at ≤ 0.20 pp/yr with every loading invariant | Not repeated, same reason | Not repeated, same reason |
+| Every screened fund and specification in the denominator | **Run.** 6,315-member padded family | **Run.** 9,507-member padded family; BH 3, Holm 0 | Not repeated; the multiplicity it creates is in the *basis* dimension and all six bases are declared in one frozen file | Not repeated; all seven bases are declared in one frozen file |
+| Assert Experiment 002's screen unchanged before running | n/a | **Run**, and enforced by a test that fails if either regex moves | **Run**, plus Experiment 013's specification, universe and product facts by sha256 | **Run**, plus Experiment 009's specification, universe and product facts by sha256 |
+| Report the pedestal on each fund's own window | Not designed | **Run.** Fourteen distinct windows, −0.26 to −0.65 pp/yr | Reproduced | Reproduced, per region: VEA −0.31, VWO **+1.50**, VTI −0.49 |
+| Decompose the added funds by *why* the old frame missed them | n/a | **Run.** 42 absent from the 2019Q4 census, 23 excluded by a criterion that moved | n/a | n/a |
+| **Cross-check every N-PORT return against an independent source** | **Did not run at all** | **Did not run at all** | **Still has not run** | **Still has not run** |
+| Report MDE₈₀ beside every alpha | **Run** | **Run**, with the minimum detectable *loading* beside every loading | **Run**, unchanged | **Run**, unchanged; ex-US median 3.23 pp/yr |
+| Measure attrition between the censuses | **Run**, with the defect above | **Run**, with renames separated from deaths | n/a; the universe is inherited and never rebuilt | n/a; same reason |
+| **Reproduce the previous experiment's published numbers to zero difference before reading your own** | n/a | **Run** on all 44 of 002's funds | **Run** on all 109, against a committed fixture, with the run abandoned if it fails | **Run** on all 25 statuses and all 24 clause (c) figures, against a committed fixture, with the bootstrap consumed in 009's own order |
+| **Run a placebo comparator that adds columns without adding span** | Not designed | Not designed | **Run twice**, and it moved more verdicts than the expressive bases did | **Run three times, one per expressive basis**, and each moved fewer than its partner: 0, 0, 1 against 1, 0, 4 |
+| **Separate what the basis could not express from what was not there** | Not designed | Not designed | Not designed; every US constituent covers all 72 months | **Run.** Columns available reported per fund per basis; GWX and RODM are replicated by VEA alone and the one-month coverage trim is reported as a second-variable diagnostic |
 
 **The cross-source check produced nothing, three times.** All 44 US, all 25 ex-US and all
 109 corrected-frame tickers are in the `unavailable` list with `HTTPError` and the
@@ -942,10 +1259,12 @@ excess return is taken over the rate `Mkt-RF` is defined against. Both French fi
 pinned by raw sha256 and a new vintage aborts the run. The HML/RMW volatility band does
 **not** propagate here: every figure is a loading, a mean or a difference of means, and
 nothing divides by those volatilities. Experiment 002's two regexes were asserted
-byte-for-byte before Experiments 009, 013 and 014 ran, Experiment 013 reproduces every one
-of Experiment 002's 44 funds to zero difference, and Experiment 014 reproduces all 109 of
+byte-for-byte before Experiments 009, 013, 014 and 015 ran, Experiment 013 reproduces every
+one of Experiment 002's 44 funds to zero difference, Experiment 014 reproduces all 109 of
 Experiment 013's clause (c) figures and statuses to zero difference against a committed
-fixture before any of its own numbers are read.
+fixture before any of its own numbers are read, and Experiment 015 does the same for all 25
+of Experiment 009's statuses and all 24 of its clause (c) figures, weights and tracking
+differences.
 
 **Assumptions.** `sigma_true = 1.25%/yr` is *transferred, not measured* — it comes from a
 bootstrap of US active mutual funds over 1984–2006 and is applied to index-tracking ETFs
@@ -969,22 +1288,30 @@ transition that way for INTF and Experiment 009 carried it to three more funds.
    each fund's own window. A small-cap value fund is still not the market, and **a pedestal
    per style does not exist**.
 2. **Does any N-PORT return agree with an independent measurement?** Unanswered for all
-   134 funds across the three experiments. Experiment 013's cross-source check refused for
+   134 funds across the three audits. Experiment 013's cross-source check refused for
    **109 of 109** tickers, exactly as its two predecessors did.
 3. **What do realised distributions and turnover do to the cost ranking?** Neither is in
    N-PORT; both are in N-CSR as unstructured HTML. **Clause (d) is evaluated without the
    distribution term the falsifier names.**
 4. **Would an out-of-sample replication change clause (c)?** Weights fitted on a prior
-   window would remove the look-ahead. Not runnable on 72 months without shortening the
-   estimation window further, and **this is still the single most load-bearing open
-   question on the page.** The half of it that *was* answerable has been answered:
-   Experiment 014 varied the basis and found the nine systematic products keep 73% of
-   their shortfall magnitude while the shelf's verdict count moves more under a placebo
-   than under an expressive basis. The look-ahead itself is untouched by that and remains
-   the binding limitation on every clause (c) figure here.
-   **The ex-US basis has never been varied**, so the same measurement is owed to
-   Experiment 009's five clause (c) rejections.
-5. **What is a fund's delivered *capture*, as opposed to its loading?** Every capture
+   window would remove the look-ahead. Not runnable on 72 months — or on the ex-US shelf's
+   44 to 78 — without shortening the estimation window further, and **this is still the
+   single most load-bearing open question on the page.** The half of it that *was*
+   answerable has now been answered on both shelves. Experiment 014 varied the US basis and
+   found the nine systematic products keep 73% of their shortfall magnitude while the
+   shelf's verdict count moves more under a placebo than under an expressive basis;
+   Experiment 015 varied the ex-US basis under seven bases with a placebo matched to each
+   expressive one, and found the reverse — the placebos move less, clause (c) is
+   informative there, and four of the twelve ex-US products at `exploratory` do not survive
+   a basis that can express what they sell. **The look-ahead itself is untouched by either
+   and remains the binding limitation on every clause (c) figure here.**
+5. **Is a fund's clause (c) decided by span or by coverage?** Answered for the ex-US shelf
+   and open as a general design question. Both audits drop a basis constituent that does
+   not cover a fund's months, so a fund with a longer filed history than its comparator is
+   scored against a smaller basis. It never binds on the US shelf and it decides three of
+   the five ex-US clause (c) figures. **Any future comparator either requires every
+   constituent to cover the whole window, or reports the columns each fund actually had.**
+6. **What is a fund's delivered *capture*, as opposed to its loading?** Every capture
    figure here is from research portfolios. Measuring a fund's own needs **holdings rather
    than returns** — which N-PORT carries and no experiment has read.
 
@@ -1003,9 +1330,10 @@ transition that way for INTF and Experiment 009 carried it to three more funds.
   cap. The inception cutoff is gone, but seven funds are still absent for having fewer
   than 36 filed months, and a fund that closed before 2019 is invisible to both censuses.
 - **Not a vindication of the products, either.** A negative shortfall says a look-ahead
-  combination of cheap funds — four of them, or nine, or ten — could not match a product
-  over 72 months or fewer. It does not say the product will do it again, and the residual
-  that would have to be real for that is exactly the quantity this window cannot measure.
+  combination of cheap funds — four of them, or five, or nine, or ten — could not match a
+  product over 78 months or fewer. It does not say the product will do it again, and the
+  residual that would have to be real for that is exactly the quantity this window cannot
+  measure.
 - **Not a return finding.** Where a product's shortfall is really the realised style return
   of 2020–2025, this page is measuring the window, not the product.
 
@@ -1025,6 +1353,10 @@ tested, and it is still not enough to promote anything.
    ones with the largest delivered loadings are the systematic value and small-value
    products Experiment 002's frame could not see. **Forty-seven of those 48 survive a
    comparator that can express what they deliver**; the one that does not is IWN.
+   **The ex-US shortlist is smaller than it looked.** Twelve ex-US products reach
+   `exploratory` on the frozen comparator and **eight of the twelve survive one that can
+   express what they sell** — AVDV, AVIV, DFIV, DISV, IDMO, IVLU, SCZ, and EFV on every
+   basis but the degenerate one. IMTM, FNDC, SCHC and DFIS do not.
 2. **Exactly what would change that.** A licensed, point-in-time, survivorship-free
    total-return source covering the listed shelf **from at least 2003, so the window is 240
    months rather than 72** ([evidence base](evidence-base.md) §4). Re-freeze and run
@@ -1038,7 +1370,10 @@ tested, and it is still not enough to promote anything.
    one extra regression and it is the difference between "this index fund destroyed
    3 pp/yr" and "this model does not span 2020–2025 to better than half a point".
 4. **Any ex-US factor loading names its panel.** On this evidence the US panel is wrong by
-   enough to reverse eleven verdicts.
+   enough to reverse eleven verdicts — and on the two emerging value products it does worse
+   than that. DFEV and AVES read **+0.267 and +0.237** on their own emerging panel and
+   **−0.092 and −0.074** on the US one, so the wrong panel would flip the sign of the only
+   evidence this repository has that an emerging value tilt is purchasable at all.
 5. **The edge budget's fund-cost line survives, and its supporting statistic does not.**
    It books 49 bp against an investor's own counterfactual, untouched here. What this page
    used to add was *"for most of this shelf the gap to a cheap replication is larger than
@@ -1053,7 +1388,9 @@ tested, and it is still not enough to promote anything.
    XMMO, VFMO and JMOM — five of them new to the audit and four reaching `exploratory`,
    where MTUM alone was rejected. **Quality went the other way**: nine products, and not
    one reaches `exploratory`. On the ex-US side, four emerging products in total, and
-   that has not moved.
+   that has not moved. **The ex-US shelf is thinner than the US one in the sense that
+   binds**: for two of its funds the whole cheap-replication basis reduces to a single
+   large-cap fund, and for a third no replication exists at all.
 7. **A frame is a result.** Experiment 002's numbers were right and its conclusion was a
    property of which funds a filing calendar let it see. Any future screen against a
    quarterly regulatory census states which fiscal quarter-ends that census carries,
@@ -1064,8 +1401,21 @@ tested, and it is still not enough to promote anything.
    one** — the nine systematic products keep 73% of their advantage, and the shelf's
    verdict count is more sensitive to how many columns a look-ahead fit is offered than to
    what those columns span. **Any experiment that fits a comparator runs a placebo
-   comparator beside it**, or it cannot tell the two apart. The ex-US audit has not done
-   this and owes it.
+   comparator beside it**, or it cannot tell the two apart. Experiment 015 has now paid
+   that debt on the ex-US shelf, with a placebo matched on column count to each expressive
+   basis, and it establishes the second half of the rule: **the placebo result does not
+   generalise across shelves.** The US placebos moved 9 and 15 verdicts and the ex-US ones
+   moved 0, 0 and 1. So a placebo is not a correction factor that can be measured once and
+   reused; **it has to be run beside every fitted comparator, on that comparator's own
+   shelf**, which is what [decision 0003](../decisions/0003-cheap-broad-market-control.md)
+   now says.
+9. **A comparator that is not there is a different defect from a comparator that cannot
+   express something, and the second is the one everybody looks for.** Three of the five
+   ex-US clause (c) figures are decided by which constituents covered a fund's months at
+   all. **Any future fitted comparator either requires every constituent to cover the whole
+   window — which Experiment 014 did and enforced by aborting — or reports the columns each
+   fund actually had**, which is what Experiment 015 does, because the ex-US shelf makes
+   the first impossible.
 
 ## Reproduce it
 
@@ -1076,17 +1426,19 @@ uv run python -m portfolio_edge.experiments.exp_013_us_products_union_frame --vi
 uv run python -m portfolio_edge.experiments.exp_002_fund_exposure --view-results
 uv run python -m portfolio_edge.experiments.exp_009_exus_products --view-results
 uv run python -m portfolio_edge.experiments.exp_014_replication_basis --view-results
+uv run python -m portfolio_edge.experiments.exp_015_exus_replication_basis --view-results
 uv run pytest tests/unit/test_experiments_exp_013_us_products_union_frame.py
 uv run pytest tests/unit/test_experiments_exp_014_replication_basis.py
+uv run pytest tests/unit/test_experiments_exp_015_exus_replication_basis.py
 uv run pytest tests/integration/test_exp_013_universe_committed.py
 ```
 
-| | Experiment 002 | Experiment 009 | Experiment 013 | Experiment 014 |
-| --- | --- | --- | --- | --- |
-| Specification | `exp_002_fund_exposure.yaml`, `b4c9a134e106…` | `exp_009_exus_factor_products.yaml`, `e99e2a6e27…` | `exp_013_us_products_union_frame.yaml`, `79f4e7628a3a…` | `exp_014_replication_basis.yaml`, `ae0ca0f6f34b…` |
-| Run reported | `fbe139abd9114abeb69e39fad8839f8e` | `f6ce1701324546b28c03598c935b7819` | `2b8cc7f73aef4d8abee68b7abcde9c1c` | `643d8ba561cb4407a71e2bb8ff923e89` |
-| Other ledgered runs | 1 `failed`, 3 `abandoned`, 2 superseded `succeeded` | 2 earlier `succeeded`, 1 `failed` on a non-JSON-compliant `NaN` | 1 `abandoned` before any return was read, 1 superseded `succeeded` | None. One uncommitted scratch look preceded it and is declared in the specification |
-| Seed | 20260812 | 20260812 | 20260812 | 20260812 |
+| | Experiment 002 | Experiment 009 | Experiment 013 | Experiment 014 | Experiment 015 |
+| --- | --- | --- | --- | --- | --- |
+| Specification | `exp_002_fund_exposure.yaml`, `b4c9a134e106…` | `exp_009_exus_factor_products.yaml`, `e99e2a6e27…` | `exp_013_us_products_union_frame.yaml`, `79f4e7628a3a…` | `exp_014_replication_basis.yaml`, `ae0ca0f6f34b…` | `exp_015_exus_replication_basis.yaml`, `37a498c022f9…` |
+| Run reported | `fbe139abd9114abeb69e39fad8839f8e` | `f6ce1701324546b28c03598c935b7819` | `2b8cc7f73aef4d8abee68b7abcde9c1c` | `643d8ba561cb4407a71e2bb8ff923e89` | `96e3f95961184e75827aa4c30c16eb99` |
+| Other ledgered runs | 1 `failed`, 3 `abandoned`, 2 superseded `succeeded` | 2 earlier `succeeded`, 1 `failed` on a non-JSON-compliant `NaN` | 1 `abandoned` before any return was read, 1 superseded `succeeded` | None. One uncommitted scratch look preceded it and is declared in the specification | None. It ran once and the control reproduced on the first attempt |
+| Seed | 20260812 | 20260812 | 20260812 | 20260812 | 20260812 |
 
 **Experiment 014's prior look is on the record rather than in nobody's memory.** A scratch
 script computed four of the six bases before the specification was frozen, and its results
@@ -1095,6 +1447,14 @@ frozen file declares it, states the one design change made afterwards — placeb
 rewritten to hold every column inside a cell the frozen basis already carries — and keeps
 the discarded first draft as basis F rather than letting it vanish. No threshold, no fund
 and no clause was changed after that look.
+
+**Experiment 015 declares what it read before freezing, which was not a candidate basis.**
+Experiment 009's committed artifact was opened in order to extract the reproduction fixture
+and to establish which constituents carry which first month of filed coverage. The first is
+that experiment's own published output, already on this page; the second is a property of
+the SEC filing calendar and of no return. **No candidate basis was scored before the
+specification was frozen**, so the effective number of looks is the seven bases the file
+declares, and the file says so.
 
 **Experiment 013's two non-reported runs are both recorded and both are worth reading.**
 The `abandoned` one was killed during its download phase, before any return existed,
