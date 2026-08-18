@@ -98,7 +98,7 @@ const EMERGING: PremiumChoice = {
   value: 7.58,
   interval: "[+4.34, +11.01]",
   detectionFloor: 3.0,
-  note: "The largest measured anywhere here — and no emerging-market value product on this shelf reaches `exploratory`, so there is nothing audited to buy it with.",
+  note: "The largest measured anywhere here — and no emerging-market value product on this shelf reaches exploratory, so there is nothing audited to buy it with.",
 };
 
 export const pricedTilts: readonly PricedTilt[] = [

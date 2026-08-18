@@ -273,7 +273,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
     verdict:
-      "Delivers HML +0.337 and is still `rejected` on clause (c): a +2.57 pp/yr shortfall to a cheap combination that is 78% VTI plus 22% VB. Read that as 'value can be approximated with VTI and VB', not as a defect in the fund.",
+      "Delivers HML +0.337 and is still rejected on clause (c): a +2.57 pp/yr shortfall to a cheap combination that is 78% VTI plus 22% VB. Read that as 'value can be approximated with VTI and VB', not as a defect in the fund.",
     caution:
       "It is inside the basis every other US product is scored against, so its own rejection is partly a statement about the test.",
     source: products,
@@ -528,7 +528,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
     verdict:
-      "`rejected` on clause (c) at a +2.89 pp/yr shortfall, its cheap replication being 0.733 VTI plus 0.267 VTV. Its 2.72 bp round trip is nearly a year of expense ratio and is the binding constraint on rebalancing frequency.",
+      "rejected on clause (c) at a +2.89 pp/yr shortfall, its cheap replication being 0.733 VTI plus 0.267 VTV. Its 2.72 bp round trip is nearly a year of expense ratio and is the binding constraint on rebalancing frequency.",
     caution:
       "Like VTV, it sits inside the basis it is scored against, so the rejection reads as 'small-cap is approximable', not as a defect.",
     source: products,
@@ -553,7 +553,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
     verdict:
-      "Delivers UMD +0.444 and is `rejected` anyway on a +1.10 pp/yr shortfall to a cheap combination. That it was 'the entire momentum shelf' was a property of Experiment 002's census frame, not of the market.",
+      "Delivers UMD +0.444 and is rejected anyway on a +1.10 pp/yr shortfall to a cheap combination. That it was 'the entire momentum shelf' was a property of Experiment 002's census frame, not of the market.",
     caution:
       "Its 7.34 pp/yr detection floor is the worst on the US shelf, so its −2.95 alpha means nothing either way. The sleeve stays excluded on the premium and on turnover, which the corrected frame did not touch.",
     source: products,
@@ -574,7 +574,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "Reaches `exploratory` on UMD +0.414 with a −4.53 pp/yr shortfall — the deepest of the four momentum products the corrected frame found. The page prints the loading and the shortfall and nothing else.",
+      "Reaches exploratory on UMD +0.414 with a −4.53 pp/yr shortfall — the deepest of the four momentum products the corrected frame found. The page prints the loading and the shortfall and nothing else.",
     caution:
       "No fee, no window, no interval and no alpha were recorded for it here, so it cannot be compared with MTUM on cost. Momentum is excluded regardless: the pooled premium's detection floor is 4.98 pp/yr and its three regions are worth 1.33 effective regions.",
     source: products,
@@ -594,9 +594,9 @@ export const shelf: readonly ShelfFund[] = [
     alphaDetectionFloorPpYr: 3.13,
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
-    verdict: "`rejected` on clause (c) at a +1.14 pp/yr shortfall, on an RMW loading of +0.186.",
+    verdict: "rejected on clause (c) at a +1.14 pp/yr shortfall, on an RMW loading of +0.186.",
     caution:
-      "The exposure is not purchasable at this threshold anywhere on the shelf — nine quality products and the largest RMW loading is +0.228 — and the premium behind it is `rejected` and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
+      "The exposure is not purchasable at this threshold anywhere on the shelf — nine quality products and the largest RMW loading is +0.228 — and the premium behind it is rejected and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
     source: products,
     asOf: READ,
   },
@@ -615,7 +615,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "unresolved",
     verdict:
-      "`unresolved`: its RMW interval straddles the 0.15 bar, so the window could not say whether the exposure is there. Shortfall −0.13.",
+      "unresolved: its RMW interval straddles the 0.15 bar, so the window could not say whether the exposure is there. Shortfall −0.13.",
     caution: "RMW is closed on public data. Nothing this fund does can reopen it.",
     source: products,
     asOf: READ,
@@ -624,7 +624,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "DUHP",
     name: "Dimensional US High Profitability ETF",
     category: "us-quality",
-    mandate: "A US profitability tilt from the sponsor whose value products all reach `exploratory`.",
+    mandate: "A US profitability tilt from the sponsor whose value products all reach exploratory.",
     expenseRatioBp: 20,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -634,8 +634,8 @@ export const shelf: readonly ShelfFund[] = [
     alphaDetectionFloorPpYr: 4.46,
     pedestalPpYr: US_PEDESTAL,
     status: "unresolved",
-    verdict: "`unresolved` on the same clause as SPHQ: the interval contains 0.15 on 46 months. Shortfall −0.11.",
-    caution: "The only Dimensional product on the US shelf that does not reach `exploratory`, and the factor is why.",
+    verdict: "unresolved on the same clause as SPHQ: the interval contains 0.15 on 46 months. Shortfall −0.11.",
+    caution: "The only Dimensional product on the US shelf that does not reach exploratory, and the factor is why.",
     source: products,
     asOf: READ,
   },
@@ -831,7 +831,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Shortfall −1.19 frozen and −1.20 expressive, and it survives every basis except the placebo that hands a second EAFE value fund to a fund that *is* EAFE value — a change in what is measured, not in the fund.",
     caution:
-      "Only its shrunk alpha, −1.58 pp/yr against a 2.22 floor, was published; the raw figure is not in this repository, so `alphaPpYr` is null rather than the shrunk number wearing a raw label.",
+      "Only its shrunk alpha, −1.58 pp/yr against a 2.22 floor, was published; the raw figure is not in this repository, so alphaPpYr is null rather than the shrunk number wearing a raw label.",
     source: products,
     asOf: READ,
   },
@@ -858,7 +858,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Keeps a −4.58 pp/yr shortfall under all seven bases, including the ones containing itself, because no other column can express developed-ex-US small value. It files 4%/yr of turnover, the lowest of any factor product in either audit.",
     caution:
-      "The only value fund on the shelf carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 `[−1.44, +2.44]`, and RMW +0.386 on a `rejected` factor. It is fourth or fifth of five on growth per unit of tracking error in every window. The two owning pages print different alphas for it — +2.47 on the common 45-month window and +0.55 on the ex-US audit page — against the same 3.96 floor; the figure here is the former.",
+      "The only value fund on the shelf carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 [−1.44, +2.44], and RMW +0.386 on a rejected factor. It is fourth or fifth of five on growth per unit of tracking error in every window. The two owning pages print different alphas for it — +2.47 on the common 45-month window and +0.55 on the ex-US audit page — against the same 3.96 floor; the figure here is the former.",
     source: recommendation,
     asOf: READ,
   },
@@ -883,7 +883,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The largest basis effect on the ex-US shelf: its shortfall goes from −2.89 to +0.05 once a small-value column exists, on a replication that puts 69% of its weight on AVDV. It keeps `exploratory` only because +0.05 sits under the 0.50 threshold.",
+      "The largest basis effect on the ex-US shelf: its shortfall goes from −2.89 to +0.05 once a small-value column exists, on a replication that puts 69% of its weight on AVDV. It keeps exploratory only because +0.05 sits under the 0.50 threshold.",
     caution:
       "Worst of five on tracking error per unit of HML at 11.6, and its SMB leg of +0.431 is on a premium that cannot be signed.",
     source: recommendation,
@@ -931,7 +931,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "rejected",
     verdict:
-      "`rejected` on clause (c) at +1.24 pp/yr under all seven bases — and the rejection turns on one month. GWX files from 2019-07, which only three basis constituents cover, so its 'cheap replication' is VEA at weight 1.000: a large-cap fund standing in for a small-cap one.",
+      "rejected on clause (c) at +1.24 pp/yr under all seven bases — and the rejection turns on one month. GWX files from 2019-07, which only three basis constituents cover, so its 'cheap replication' is VEA at weight 1.000: a large-cap fund standing in for a small-cap one.",
     caution:
       "Trim that single uncovered month and the shortfall falls to between +0.00 and +0.39, all under the threshold. The published verdict stands because the specification was frozen, but it must be read as 'the comparator did not exist for one of its months'. Its fee was never read.",
     source: products,
@@ -958,9 +958,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "Delivers +0.535 of UMD over VEA on a signable premium (+8.35 `[+4.82, +11.66]` against a 5.21 floor), worth +4.47 pp/yr gross and +2.53 net per dollar of sleeve. It survives all seven bases at −5.43 to −5.18, and at 0.25% it is what causes IMTM to be rejected.",
+      "Delivers +0.535 of UMD over VEA on a signable premium (+8.35 [+4.82, +11.66] against a 5.21 floor), worth +4.47 pp/yr gross and +2.53 net per dollar of sleeve. It survives all seven bases at −5.43 to −5.18, and at 0.25% it is what causes IMTM to be rejected.",
     caution:
-      "Excluded from the reference portfolio anyway. It files 105%/yr of turnover against VEA's 4%, so cost takes 43% of the gross exposure at `k = 1.7` (28% at `k = 1.0`), and it carries CMA −0.394 on a `rejected` factor.",
+      "Excluded from the reference portfolio anyway. It files 105%/yr of turnover against VEA's 4%, so cost takes 43% of the gross exposure at k = 1.7 (28% at k = 1.0), and it carries CMA −0.394 on a rejected factor.",
     source: products,
     asOf: READ,
   },
@@ -985,7 +985,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "rejected",
     verdict:
-      "`exploratory` at −2.31 on the frozen basis and `rejected` at +0.91 once the basis can hold IDMO at 0.25%, which takes 57.5% of the fitted weight. The loss is a cheaper fund in its own cell, which is exactly what clause (c) exists to find.",
+      "exploratory at −2.31 on the frozen basis and rejected at +0.91 once the basis can hold IDMO at 0.25%, which takes 57.5% of the fitted weight. The loss is a cheaper fund in its own cell, which is exactly what clause (c) exists to find.",
     caution:
       "Like AVDV it carries two side loads whose intervals exclude zero, SMB −0.306 and CMA −0.241. Only its shrunk alpha, −1.46 against a 3.81 floor, was published.",
     source: products,
@@ -1056,7 +1056,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: EMERGING_PEDESTAL,
     status: "unresolved",
     verdict:
-      "`unresolved` on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to `exploratory`, because clause (a) reads the loading and `unresolved` reads its interval and neither reads the basis.",
+      "unresolved on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to exploratory, because clause (a) reads the loading and unresolved reads its interval and neither reads the basis.",
     caution:
       "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. No fee, no turnover, no net cost and no tax figure for AVES appears anywhere in this repository. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
     source: products,
@@ -1080,9 +1080,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: EMERGING_PEDESTAL,
     status: "unresolved",
     verdict:
-      "The larger of the two emerging value loadings and the shorter window: 44 months, interval across the bar, shortfall −2.19 frozen and −2.03 expressive. `unresolved`, basis-invariant.",
+      "The larger of the two emerging value loadings and the shorter window: 44 months, interval across the bar, shortfall −2.19 frozen and −2.03 expressive. unresolved, basis-invariant.",
     caution:
-      "Reads −0.092 on the US panel. With AVES it is why the region with the largest measured HML premium — +7.58 `[+4.34, +11.01]` — has nothing investable audited here. No fee was read. Only its shrunk alpha, −1.19 against a 3.23 floor, was published.",
+      "Reads −0.092 on the US panel. With AVES it is why the region with the largest measured HML premium — +7.58 [+4.34, +11.01] — has nothing investable audited here. No fee was read. Only its shrunk alpha, −1.19 against a 3.23 floor, was published.",
     source: products,
     asOf: READ,
   },
@@ -1180,7 +1180,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "`rejected` against the frozen 0.50 bar: the point estimate is below it and the interval spans from 0.058 to 0.991, on 46 months with an R² of 0.137 and a +1.90 pp/yr tracking difference.",
+      "rejected against the frozen 0.50 bar: the point estimate is below it and the interval spans from 0.058 to 0.991, on 46 months with an R² of 0.137 and a +1.90 pp/yr tracking difference.",
     caution:
       "A 13.14 pp/yr detection floor. This is a statement about what the window could see, not that the fund holds no trend.",
     wrapper: {
@@ -1210,7 +1210,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "`rejected` at +0.245 with an interval containing zero. The shortfall is partly definitional and must not be read as a defect: its index holds none of the nine equity futures in AQR's universe.",
+      "rejected at +0.245 with an interval containing zero. The shortfall is partly definitional and must not be read as a defect: its index holds none of the nine equity futures in AQR's universe.",
     caution: "A 16.49 pp/yr detection floor, the worst of the five, on an R² of 0.066.",
     wrapper: {
       delta: 1,
@@ -1239,7 +1239,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "`rejected` at +0.303 on 78 months — the tightest interval of the four rejections and clearly under the 0.50 bar, so this is a delivered-exposure verdict rather than an underpowered one.",
+      "rejected at +0.303 on 78 months — the tightest interval of the four rejections and clearly under the 0.50 bar, so this is a delivered-exposure verdict rather than an underpowered one.",
     caution: "The dearest of the five tested at 98 bp.",
     wrapper: {
       delta: 1,
@@ -1304,9 +1304,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "What is established is structure and cost, both from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross notional to deliver ~100% of risk exposure. `delta` is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% notional weight.",
+      "What is established is structure and cost, both from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross notional to deliver ~100% of risk exposure. delta is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% notional weight.",
     caution:
-      "**Its loading on any trend benchmark has never been measured** — stated three separate times in the owning pages. There is no alpha, no return, no Sharpe and no drawdown for the fund itself, and every trend number in this repository belongs to the AQR index or to DBMF. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the sleeve exists for. Under three years old.",
+      "Its loading on any trend benchmark has never been measured — stated three separate times in the owning pages. There is no alpha, no return, no Sharpe and no drawdown for the fund itself, and every trend number in this repository belongs to the AQR index or to DBMF. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the sleeve exists for. Under three years old.",
     wrapper: {
       delta: -0.07,
       fundingCapturePercent: 100,
@@ -1352,9 +1352,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "The clean read, and it verifies the marketing exactly: two equity ETFs at 90.53% of net assets plus one equity-index future at 9.54% is 100.07% equity, and four Treasury futures total 100.33%. The two legs use different N-PORT asset categories, so nothing is commingled and `delta` is −0.0007 at 0.39% all-in with no waiver.",
+      "The clean read, and it verifies the marketing exactly: two equity ETFs at 90.53% of net assets plus one equity-index future at 9.54% is 100.07% equity, and four Treasury futures total 100.33%. The two legs use different N-PORT asset categories, so nothing is commingled and delta is −0.0007 at 0.39% all-in with no waiver.",
     caution:
-      "Rejected as a second overlay and as a replacement. A bond overlay does not inherit trend's flat drawdown: resampled, it is the deeper drawdown in 49.7% of histories at 30% notional and 70.0% at 100%, against trend's 6.9%; at matched 1.6× gross, 60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single `delta` scores it for a US-based reader.",
+      "Rejected as a second overlay and as a replacement. A bond overlay does not inherit trend's flat drawdown: resampled, it is the deeper drawdown in 49.7% of histories at 30% notional and 70.0% at 100%, against trend's 6.9%; at matched 1.6× gross, 60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single delta scores it for a US-based reader.",
     wrapper: {
       delta: -0.0007,
       fundingCapturePercent: 100,
@@ -1398,7 +1398,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Its 2026-03-31 N-PORT reads 90.83% equity plus 63.50% Treasury futures, 1.543× gross, `delta` 0.144 — so it keeps 85.6% of the funding-rule gap and its sleeve hurdle is 0.35 pp/yr. The 0.20% fee converted to overlay notional is 0.315%.",
+      "Its 2026-03-31 N-PORT reads 90.83% equity plus 63.50% Treasury futures, 1.543× gross, delta 0.144 — so it keeps 85.6% of the funding-rule gap and its sleeve hurdle is 0.35 pp/yr. The 0.20% fee converted to overlay notional is 0.315%.",
     caution:
       "It needs 48.3 bp/yr of Treasury excess return over cash at the 15 bp OIS financing benchmark before the overlay contributes anything, and both inputs are forecasts. This row previously said 92.0 bp against a basis measured on special-collateral repo, which is not a rate a fund pays. No loading of any kind has been measured for it.",
     wrapper: {
@@ -1432,7 +1432,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Its 2026-02-28 N-PORT reads 84.80% equity plus 83.63% gold futures, 1.684× gross, `delta` 0.182, keeping 81.8% of the funding-rule gap. The all-in overlay cost is about 0.60%/yr once ≤40 bp of gold-futures financing is added to the 0.20% fee.",
+      "Its 2026-02-28 N-PORT reads 84.80% equity plus 83.63% gold futures, 1.684× gross, delta 0.182, keeping 81.8% of the funding-rule gap. The all-in overlay cost is about 0.60%/yr once ≤40 bp of gold-futures financing is added to the 0.20% fee.",
     caution:
       "As a sleeve it contributes +0.09 pp/yr against a detection floor of 1.68 — unmeasurable. Its 1.53 pp/yr distribution tax drag is the second largest on the wrapper shelf (1.31 restated at a 24%/15%-federal plus 9.3%-CA investor), and the naive rule 'shelter the highest drag' puts it at the front of the queue, which is exactly backwards.",
     wrapper: {
@@ -1466,9 +1466,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Almost nothing is measured. What the repository has is: an equity ETF leg at 49.8% of net assets plus a futures top-up and a trend sleeve, $36.3m at 2026-02-28, new, an overlay rather than pro rata, and not in Experiment 008. Its fee is `not found` and so is its all-in cost. No `delta` was computed, no loading measured, no tax drag, no survival data, no test of any kind.",
+      "Almost nothing is measured. What the repository has is: an equity ETF leg at 49.8% of net assets plus a futures top-up and a trend sleeve, $36.3m at 2026-02-28, new, an overlay rather than pro rata, and not in Experiment 008. Its fee is not found and so is its all-in cost. No delta was computed, no loading measured, no tax drag, no survival data, no test of any kind.",
     caution:
-      "This is the largest gap in the candidate portfolio, and the missing `delta` is why. A 49.8% base leg sits in the range where a wrapper is *worse* than selling equity outright — the worked warning is that 40% equity with 30% trend gives `delta = 2.0`, and HOLD is the audited instance of that failure at `delta = 0.333`, costing 0.81 pp/yr. A gross-notional figure cannot distinguish that case from the good one. MATE may be in that category and this repository has not checked. The 49.8% below is the only leg filed here; the futures and trend legs are `not found`, so the list is incomplete by construction.",
+      "This is the largest gap in the candidate portfolio, and the missing delta is why. A 49.8% base leg sits in the range where a wrapper is *worse* than selling equity outright — the worked warning is that 40% equity with 30% trend gives delta = 2.0, and HOLD is the audited instance of that failure at delta = 0.333, costing 0.81 pp/yr. A gross-notional figure cannot distinguish that case from the good one. MATE may be in that category and this repository has not checked. The 49.8% below is the only leg filed here; the futures and trend legs are not found, so the list is incomplete by construction.",
     wrapper: {
       delta: null,
       fundingCapturePercent: null,
@@ -1514,7 +1514,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "When this repository last read it, it had not commenced operations (497K of 2026-04-15), and a 0.59% unitary fee with no waiver and no recoupment was the only fact that existed. It has since listed — see the filings block below — but no holdings, loading or record have been examined here, so its stack still rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else.",
     caution:
-      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. It is named in three places as a standing review trigger, not as a holding. No `delta`, no loading, no record.",
+      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. It is named in three places as a standing review trigger, not as a holding. No delta, no loading, no record.",
     wrapper: {
       delta: null,
       fundingCapturePercent: null,
@@ -1558,7 +1558,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Dominated. Sharpe 0.643 at a correlation of +0.820 to the equity core, against 6 bp of fee and 0.51 pp/yr of distribution tax. It is the equity sleeve with a screen and a tax bill, not a second engine.",
     caution:
-      "The detection floor on its alpha is 10.93 pp/yr, so the rejection rests on dominance and correlation rather than on a measured alpha. `rejected` means a falsifier fired, never that the effect is zero.",
+      "The detection floor on its alpha is 10.93 pp/yr, so the rejection rests on dominance and correlation rather than on a measured alpha. rejected means a falsifier fired, never that the effect is zero.",
     source: alternatives,
     asOf: READ,
   },
@@ -1621,7 +1621,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Correlated +0.9997 with TIP and costs 2.99 bp net against its 17.92. If a TIPS sleeve is held at all, that arithmetic is the whole of the decision about which one.",
     caution:
-      "The sleeve itself is `rejected` on correlation. Being the cheaper way to hold it is not an argument for holding it.",
+      "The sleeve itself is rejected on correlation. Being the cheaper way to hold it is not an argument for holding it.",
     source: alternatives,
     asOf: READ,
   },

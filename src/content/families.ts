@@ -156,7 +156,7 @@ export const families: readonly StrategyFamily[] = [
     name: "Value",
     claim: "Cheap stocks have earned more than expensive ones, and a long-only fund can capture part of the spread.",
     inPractice:
-      "Value is the only factor premium in this repository that advanced on its own strength. Pooled across three regions it measures +4.74 pp/yr against a detection floor of 3.35. But that figure is a gross long-short spread you cannot buy, and what reaches a shareholder is `weight × (fund loading − incumbent loading) × premium − cost`. At a 20% weight in a US large-value fund that is about 24 bp a year against 135 bp of tracking error.",
+      "Value is the only factor premium in this repository that advanced on its own strength. Pooled across three regions it measures +4.74 pp/yr against a detection floor of 3.35. But that figure is a gross long-short spread you cannot buy, and what reaches a shareholder is weight × (fund loading − incumbent loading) × premium − cost. At a 20% weight in a US large-value fund that is about 24 bp a year against 135 bp of tracking error.",
     mechanism:
       "Either a risk story — cheap firms are distressed and their cash flows are more exposed to bad states — or a behavioural one, that investors over-extrapolate growth. This repository does not adjudicate between them, and the distinction matters only for whether the premium should survive being known.",
     certainty: "risk-premium",
@@ -171,7 +171,7 @@ export const families: readonly StrategyFamily[] = [
     },
     evidenceFor: [
       "Positive in all three regions post-publication: +1.57 US, +5.07 developed ex-US, +7.58 emerging.",
-      "Nine systematic value and small-value products keep their `exploratory` status under every comparator basis tested. The exposure they sell is delivered.",
+      "Nine systematic value and small-value products keep their exploratory status under every comparator basis tested. The exposure they sell is delivered.",
       "The developed ex-US tilt is the only line in this repository whose thirty-year detection floor, 21.6 bp, sits below its own edge of 27.1 bp.",
     ],
     evidenceAgainst: [
@@ -219,7 +219,7 @@ export const families: readonly StrategyFamily[] = [
     certainty: "risk-premium",
     status: "exploratory",
     statusReason:
-      "The premium clears its own floor pooled, so the effect is `exploratory`. The implementation is separately excluded, and those are two different findings that are frequently merged into one.",
+      "The premium clears its own floor pooled, so the effect is exploratory. The implementation is separately excluded, and those are two different findings that are frequently merged into one.",
     headline: {
       value: "+7.33 pp/yr",
       label: "UMD pooled post-publication, three regions",
@@ -253,7 +253,7 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "IDMO at 25 bp is the cheapest audited route and is what causes IMTM at 30 bp to be rejected. MTUM is `rejected` on its shortfall against a cheap fitted combination.",
+      "IDMO at 25 bp is the cheapest audited route and is what causes IMTM at 30 bp to be rejected. MTUM is rejected on its shortfall against a cheap fitted combination.",
     cost: "25 bp of fee and roughly 1.7 pp/yr of trading at 105% turnover. In a taxable account the turnover meets the 162 bp/yr realisation hurdle head-on.",
     overlap:
       "Momentum is distinct from value — the two are negatively correlated — which is the strongest argument for holding it. It overlaps with trend conceptually and not statistically: trend is time-series, momentum is cross-sectional.",
@@ -276,12 +276,12 @@ export const families: readonly StrategyFamily[] = [
     certainty: "risk-premium",
     status: "unresolved",
     statusReason:
-      "The vendor index is `rejected` against the falsifier frozen before the run, and `unresolved` on the reading the experiment itself judges better. DBMF is `exploratory`. Nothing is promoted, and the mean does not resolve on any instrument tried.",
+      "The vendor index is rejected against the falsifier frozen before the run, and unresolved on the reading the experiment itself judges better. DBMF is exploratory. Nothing is promoted, and the mean does not resolve on any instrument tried.",
     headline: {
       value: "+1.312 pp/yr",
       label: "Marginal growth of a 15% sleeve against a risk-matched cash comparator, 432 months",
       interval: "certainty equivalent +1.342 [+0.759, +1.916]",
-      note: "Against a global equity core rather than cash, a 10% sleeve measures +0.258 pp/yr against a frozen 0.30 bar and is `rejected`.",
+      note: "Against a global equity core rather than cash, a 10% sleeve measures +0.258 pp/yr against a frozen 0.30 bar and is rejected.",
     },
     evidenceFor: [
       "The correlation holds three ways: −0.07 in the construction built here, −0.11 across 46 live funds, −0.08 from the vendor index. Inside crisis months it is −0.59, with a downside beta of −0.67.",
@@ -311,7 +311,7 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "DBMF is the only managed-futures ETF whose loading on the vendor index has been measured here: +0.671 [+0.513, +0.829] against a frozen 0.50 bar. CTA, KMLM, FMF and WTMF are all `rejected` against the same bar. RSST delivers the exposure as notional rather than capital, and its own loading has never been measured.",
+      "DBMF is the only managed-futures ETF whose loading on the vendor index has been measured here: +0.671 [+0.513, +0.829] against a frozen 0.50 bar. CTA, KMLM, FMF and WTMF are all rejected against the same bar. RSST delivers the exposure as notional rather than capital, and its own loading has never been measured.",
     cost: "85 bp for DBMF and 99 bp all-in for RSST, plus a distribution tax drag of 2.09 pp/yr and 0.32 pp/yr respectively. Once the equity each displaces is subtracted, that is 143.9 bp against 4.5 bp — the wrapper, not the strategy, decides the tax outcome.",
     overlap:
       "Nothing else here. Trend is the one engine uncorrelated with equity, which is why its diversification credit survives even when its mean does not.",
@@ -328,9 +328,9 @@ export const families: readonly StrategyFamily[] = [
     claim:
       "Getting a diversifier as financed notional instead of selling equity to buy it lowers its hurdle, so a sleeve that would not be worth holding becomes worth holding.",
     inPractice:
-      "This is the strongest closed-form result on the site and the one most often misread. The funding rule is worth about +2.44 pp/yr for a 100% equity base — and that number contains nothing whatever about the sleeve being stacked. What decides whether a particular wrapper delivers it is one quantity, `delta = (1 − b) / d`, and a fund with a half-sized equity base can be arithmetically worse than simply selling equity.",
+      "This is the strongest closed-form result on the site and the one most often misread. The funding rule is worth about +2.44 pp/yr for a 100% equity base — and that number contains nothing whatever about the sleeve being stacked. What decides whether a particular wrapper delivers it is one quantity, delta = (1 − b) / d, and a fund with a half-sized equity base can be arithmetically worse than simply selling equity.",
     mechanism:
-      "Buying a sleeve with capital forces you to sell base exposure, so the sleeve must clear `a_p − σ_p²(1 − β)`. Financing it as notional removes that sale, and the hurdle falls to `ρ σ_p σ_d`. The wrapper's structure enters exactly once, through `delta`.",
+      "Buying a sleeve with capital forces you to sell base exposure, so the sleeve must clear a_p − σ_p²(1 − β). Financing it as notional removes that sale, and the hurdle falls to ρ σ_p σ_d. The wrapper's structure enters exactly once, through delta.",
     certainty: "risk-premium",
     status: "exploratory",
     statusReason:
@@ -338,7 +338,7 @@ export const families: readonly StrategyFamily[] = [
     headline: {
       value: "+2.44 pp/yr",
       label: "The funding-rule gap for a 100% equity base",
-      note: "`a_p − σ_p² = σ_p²(L_p* − 1)`. It contains nothing about the sleeve. RSST's delta of −0.07 keeps 100% of it; a standalone managed-futures fund keeps 0%.",
+      note: "a_p − σ_p² = σ_p²(L_p* − 1). It contains nothing about the sleeve. RSST's delta of −0.07 keeps 100% of it; a standalone managed-futures fund keeps 0%.",
     },
     evidenceFor: [
       "The result is closed-form and pinned by tests, not estimated from a window.",
@@ -368,7 +368,7 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "Compute `delta = (1 − b) / d` for the fund and convert its fee to `fee / d` before comparing anything. RSST reads −0.07, RSSB −0.00, NTSX 0.144, GDE 0.182, and a standalone managed-futures fund 1.000. A wrapper whose base leg is not your own base gets a refusal, not a number.",
+      "Compute delta = (1 − b) / d for the fund and convert its fee to fee / d before comparing anything. RSST reads −0.07, RSSB −0.00, NTSX 0.144, GDE 0.182, and a standalone managed-futures fund 1.000. A wrapper whose base leg is not your own base gets a refusal, not a number.",
     cost: "99 bp all-in for RSST with no waiver and no recoupment clause. The financing cost is undisclosed and is the largest unpriced term in the whole family.",
     overlap:
       "Capital efficiency is not a return engine. It is a funding decision applied to whatever engine you already chose, and it is the reason a trend sleeve is cheaper to hold inside a stacked fund than beside one.",
@@ -390,7 +390,7 @@ export const families: readonly StrategyFamily[] = [
     certainty: "risk-premium",
     status: "rejected",
     statusReason:
-      "The falsifier fired: the premium sits below the floor its own window could detect. `rejected` here means the test fired, never that the premium is zero — and decision 0005 records exactly that distinction.",
+      "The falsifier fired: the premium sits below the floor its own window could detect. rejected here means the test fired, never that the premium is zero — and decision 0005 records exactly that distinction.",
     headline: {
       value: "+2.53 pp/yr",
       label: "RMW pooled, against a 2.62 pp/yr detection floor",
@@ -404,7 +404,7 @@ export const families: readonly StrategyFamily[] = [
     evidenceAgainst: [
       "62% of the US premium is the single year 2021. Dropping the pooled best year takes it to +1.79 pp/yr.",
       "Its volatility carries an unresolved ±5.09% band from the Phase 1 reproduction gate, so anything dividing by it inherits that.",
-      "Nine quality products on the US shelf and not one reaches `exploratory`. The largest RMW loading found is +0.228.",
+      "Nine quality products on the US shelf and not one reaches exploratory. The largest RMW loading found is +0.228.",
     ],
     failureModes: [
       {
@@ -418,8 +418,7 @@ export const families: readonly StrategyFamily[] = [
           "The detection floor falls with the square root of time. Reaching materiality needs roughly 245 more months, which is about 2035 — and only if the effect is at the top of its interval.",
       },
     ],
-    implementation:
-      "None recommended. QUAL and SPHQ are `rejected` and `unresolved` respectively; DUHP is `unresolved`.",
+    implementation: "None recommended. QUAL and SPHQ are rejected and unresolved respectively; DUHP is unresolved.",
     cost: "Immaterial, because there is nothing to buy.",
     overlap:
       "Quality overlaps with value negatively — cheap firms are often unprofitable — which is why systematic value funds increasingly screen on profitability. That screen is inside AVLV and DFIV already.",
@@ -487,7 +486,7 @@ export const families: readonly StrategyFamily[] = [
     inPractice:
       "It does not, and this is the one rejection here that is not an underpowered null. Rebalancing measured −38.7 bp/yr against buy-and-hold across 420 months. Keep rebalancing — it is how you control exposure — but do not budget a bonus for it.",
     mechanism:
-      "Constant weights earn `γ* = ½(Σ wᵢσᵢ² − σ_p²) ≥ 0` in excess growth. The catch is that the term is tiny, and it is exactly a short straddle on relative log performance struck at zero, so trending components take more than the premium pays.",
+      "Constant weights earn γ* = ½(Σ wᵢσᵢ² − σ_p²) ≥ 0 in excess growth. The catch is that the term is tiny, and it is exactly a short straddle on relative log performance struck at zero, so trending components take more than the premium pays.",
     certainty: "risk-premium",
     status: "rejected",
     statusReason:
@@ -536,7 +535,7 @@ export const families: readonly StrategyFamily[] = [
     inPractice:
       "It does, by about 10 bp a year, and it is the one decision here that requires a calculator rather than a rule: the ranking between developed and emerging markets inverts between two live US dividend rates, so any page that states one ordering is wrong for a large share of its readers.",
     mechanism:
-      "`priority = (recurring tax if held in taxable) − (irrecoverable withholding if sheltered)`. For a domestic asset the second term is zero and this collapses to the familiar rule. For a foreign fund it does not: §408(e)(1) exempts the account from tax, so §904's numerator is zero and foreign withholding is paid and permanently lost inside a traditional IRA and a Roth alike.",
+      "priority = (recurring tax if held in taxable) − (irrecoverable withholding if sheltered). For a domestic asset the second term is zero and this collapses to the familiar rule. For a foreign fund it does not: §408(e)(1) exempts the account from tax, so §904's numerator is zero and foreign withholding is paid and permanently lost inside a traditional IRA and a Roth alike.",
     certainty: "contractual",
     status: null,
     statusReason:
@@ -602,13 +601,13 @@ export const families: readonly StrategyFamily[] = [
     evidenceAgainst: [
       "−50.3% is not a worst case. Over the full hundred-year US record it is −83.7%, and across sixteen countries the US ranks 16th of 16 from 1963 while the median market lost about three quarters of its real value.",
       "The bond–equity correlation is not stable: beta ran +0.129, then −0.055, then +0.116, then −0.109 across four regimes.",
-      "The cost of estimating the optimum is `1/(2T)` — about 0.80%/yr even with 62 years of data.",
+      "The cost of estimating the optimum is 1/(2T) — about 0.80%/yr even with 62 years of data.",
     ],
     failureModes: [
       {
         title: "Overshooting is asymmetric",
         detail:
-          "Growth retained at a fraction `f` of the optimum is `1 − (1 − f)²`: half the optimal share keeps 75% of the growth, and twice it keeps none at all.",
+          "Growth retained at a fraction f of the optimum is 1 − (1 − f)²: half the optimal share keeps 75% of the growth, and twice it keeps none at all.",
       },
       {
         title: "The horizon is not the only input",

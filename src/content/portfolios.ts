@@ -247,7 +247,7 @@ const control: PortfolioCandidate = {
   complexity: "low",
   tax: "All three funds distributed zero capital gains in every fiscal year on file. The foreign tax credit on VEA is worth 15.78 bp/yr and only in a taxable account.",
   rebalancing:
-    "Annually or on a 25% relative band. Rebalancing is `rejected` here as a source of return — it measured −38.7 bp/yr — and retained as risk control, which is what the 0.3–1.2 bp/yr buys.",
+    "Annually or on a 25% relative band. Rebalancing is rejected here as a source of return — it measured −38.7 bp/yr — and retained as risk control, which is what the 0.3–1.2 bp/yr buys.",
   placement:
     "Bonds first if you hold any, then developed ex-US, then US, then emerging — but the order between developed and emerging inverts between two live US dividend rates, so compute it rather than asserting it.",
   evidenceSummary:
@@ -456,7 +456,7 @@ const evidenceLed: PortfolioCandidate = {
       ticker: "IEMG",
       percent: 10,
       engine: "equity-beta",
-      why: "Emerging beta at −0.87 bp net. No emerging value product on this shelf reaches `exploratory`, so the region with the largest measured premium is held plain.",
+      why: "Emerging beta at −0.87 bp net. No emerging value product on this shelf reaches exploratory, so the region with the largest measured premium is held plain.",
       status: null,
       certainty: "nothing-better-exists",
     },
@@ -492,7 +492,7 @@ const evidenceLed: PortfolioCandidate = {
     },
   ],
   mayOutperform: [
-    "Both tilts buy a factor whose pooled premium is `exploratory` at +4.74 pp/yr [+1.46, +8.10] against a 3.35 pp/yr detection floor, positive in all three regions and surviving multiple-comparison correction.",
+    "Both tilts buy a factor whose pooled premium is exploratory at +4.74 pp/yr [+1.46, +8.10] against a 3.35 pp/yr detection floor, positive in all three regions and surviving multiple-comparison correction.",
     "Both funds deliver the exposure they advertise. Their loadings survive Benjamini–Hochberg correction and keep their status under every comparator basis tested.",
     "Large value rather than small value is a measured choice, not a compromise: a small-value fund's size leg is variance with no priced expectation, since the size premium is +0.33 pp/yr against a 2.47 pp/yr floor and is not signable on any panel.",
   ],
@@ -527,7 +527,7 @@ const evidenceLed: PortfolioCandidate = {
   placement:
     "Same ordering as the control. The tilt funds are US and developed ex-US, so neither changes the shelter ranking.",
   evidenceSummary:
-    "Two `exploratory` tilts, which is the highest status anything in this repository has reached. `exploratory` means a product may stand in for a real one in a later experiment. It does not mean the tilt works.",
+    "Two exploratory tilts, which is the highest status anything in this repository has reached. exploratory means a product may stand in for a real one in a later experiment. It does not mean the tilt works.",
   editorialNote:
     "This construction is editorial. The repository's own reference portfolio holds no tilt at all — decision 0004 promotes no sleeve — and the weights here are the weights at which each tilt was priced, chosen so that its published edge and tracking error can be quoted without rescaling.",
   benchmarkTicker: "VT",
@@ -666,7 +666,7 @@ const candidate: PortfolioCandidate = {
     "Three of its eight lines have no measured factor exposure of any kind. RSST's loading on any trend benchmark has never been measured here — the statement appears three separate times in the research.",
     "Trend's mean does not resolve. Post-publication the sleeve measures +0.883 pp/yr with an interval containing zero, failing Holm correction, and the standalone index's Sharpe fell from 1.34 to 0.18 across three eras.",
     "Momentum is excluded by this repository's own audit. IDMO files 105%/yr of turnover, which takes 43% of the gross exposure in cost, and momentum's pooled detection floor of 4.98 pp/yr is the worst measured here.",
-    "AVES is `unresolved`, and no comparator however expressive can move an emerging-market value product to `exploratory` on the windows available.",
+    "AVES is unresolved, and no comparator however expressive can move an emerging-market value product to exploratory on the windows available.",
   ],
   failureModes: [
     {
@@ -709,7 +709,7 @@ const candidate: PortfolioCandidate = {
   placement:
     "The obvious rule — shelter the highest tax drag — is exactly backwards here. It puts DBMF and GDE at the front and RSST near the back, when RSST is the one whose marginal contribution clears its own detection floor and the one that needs the shelter least.",
   evidenceSummary:
-    "Two lines are `exploratory`, one is `unresolved`, one is `rejected` on the repository's own bar, and the largest holding has never been measured at all. The construction's case rests on a funding identity that is closed-form and solid, applied to a sleeve whose return this evidence cannot sign.",
+    "Two lines are exploratory, one is unresolved, one is rejected on the repository's own bar, and the largest holding has never been measured at all. The construction's case rests on a funding identity that is closed-form and solid, applied to a sleeve whose return this evidence cannot sign.",
   suggestedChanges: [
     {
       change: "Drop IDMO and put the 5% back into VEA.",
@@ -719,7 +719,7 @@ const candidate: PortfolioCandidate = {
     {
       change: "Drop AVES and hold the emerging sleeve plain in IEMG.",
       because:
-        "AVES is `unresolved` on window length, and no comparator however expressive can move an emerging-market value product to `exploratory` on the windows available. The emerging HML premium is the largest measured anywhere here, at +7.58 pp/yr, and there is nothing audited to buy it with.",
+        "AVES is unresolved on window length, and no comparator however expressive can move an emerging-market value product to exploratory on the windows available. The emerging HML premium is the largest measured anywhere here, at +7.58 pp/yr, and there is nothing audited to buy it with.",
     },
     {
       change: "Take the 30% wrapper line to RSST specifically, or leave it out.",
@@ -738,7 +738,7 @@ const candidate: PortfolioCandidate = {
     },
   ],
   editorialNote:
-    "This is a reader's proposal, priced against the same shelf as everything else here. It departs from this repository's research in three specific ways: it is levered, it holds a momentum fund the product audit excludes, and it holds an emerging value fund that is `unresolved`. Those are stated, not hidden.",
+    "This is a reader's proposal, priced against the same shelf as everything else here. It departs from this repository's research in three specific ways: it is levered, it holds a momentum fund the product audit excludes, and it holds an emerging value fund that is unresolved. Those are stated, not hidden.",
   benchmarkTicker: "VT",
   sources: [capital, trendValue, recommendation, noSleeve],
   asOf: READ,
