@@ -108,6 +108,14 @@ describe("the lab", () => {
     expect(document.body.textContent).toContain("100%");
   });
 
+  it("reproduces the published tilt figure in the tilt calculator", async () => {
+    mount("/lab", "/lab", Lab);
+    expect(await screen.findByRole("heading", { level: 2, name: /price a value tilt/i })).toBeInTheDocument();
+    // AVLV at its published 20% weight on the pooled premium: +24.4 bp against 135 bp.
+    expect(document.body.textContent).toContain("+24.4");
+    expect(document.body.textContent).toContain("135.4");
+  });
+
   it("reads the edge and tracking error out of the link", async () => {
     mount("/lab?e=109&te=46&h=10", "/lab", Lab);
     expect(await screen.findByRole("heading", { level: 2, name: /how much that moves/i })).toBeInTheDocument();

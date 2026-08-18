@@ -14,6 +14,7 @@ import { Slider } from "~/components/Slider";
 import { contractualRows } from "~/content/confidence";
 import { engineMeta, portfolioById, portfolios } from "~/content/portfolios";
 import { findFund, shelf } from "~/content/shelf";
+import { pricedTilts, tiltById } from "~/content/tilts";
 import { horizonForConfidence, probabilityOfOutperformance } from "~/lib/horizon";
 import {
   defaultLabConfig,
@@ -25,6 +26,7 @@ import {
   totalPercent,
 } from "~/lib/lab/config";
 import { simulateRelativePaths } from "~/lib/lab/paths";
+import { tiltVerdict } from "~/lib/tilt";
 
 /**
  * The lab.
@@ -98,6 +100,9 @@ export default function Lab(): JSX.Element {
 
   const [config, setConfig] = createSignal<LabConfig>(initial());
   const [copied, setCopied] = createSignal(false);
+  const [tiltId, setTiltId] = createSignal(pricedTilts[0]?.id ?? "");
+  const [premiumId, setPremiumId] = createSignal(pricedTilts[0]?.defaultPremiumId ?? "");
+  const [tiltWeight, setTiltWeight] = createSignal((pricedTilts[0]?.publishedWeight ?? 0.2) * 100);
 
   const update = (patch: Partial<LabConfig>) => {
     const next = { ...config(), ...patch };
@@ -201,6 +206,28 @@ export default function Lab(): JSX.Element {
       trackingErrorBp: preset.trackingErrorBp,
       kind: preset.benchmark === "own-counterfactual" ? ("contractual" as const) : ("probabilistic" as const),
     }));
+
+  const tilt = () => tiltById(tiltId());
+  const premium = () => tilt()?.premia.find((one) => one.id === premiumId()) ?? tilt()?.premia[0];
+
+  const verdict = createMemo(() => {
+    const chosen = tilt();
+    const chosenPremium = premium();
+    if (chosen === undefined || chosenPremium === undefined) {
+      return null;
+    }
+    return tiltVerdict({ ...chosen.measured, weight: tiltWeight() / 100, hmlPremium: chosenPremium.value });
+  });
+
+  const selectTilt = (id: string) => {
+    const chosen = tiltById(id);
+    if (chosen === undefined) {
+      return;
+    }
+    setTiltId(id);
+    setPremiumId(chosen.defaultPremiumId);
+    setTiltWeight(chosen.publishedWeight * 100);
+  };
 
   const share = async () => {
     const url = `${window.location.origin}${toLabHref(config())}`;
@@ -429,9 +456,146 @@ export default function Lab(): JSX.Element {
 
       {/* ------------------------------------------------------------------ */}
 
+      <section aria-labelledby="tilt" class="mt-14 border-t border-rule pt-8">
+        <h2 id="tilt" class="font-serif text-2xl tracking-[-0.01em]">
+          2. Price a value tilt
+        </h2>
+        <p class="mt-2 max-w-measure text-base text-ink-muted">
+          Two tilts here have been priced end to end. Everything but the weight and the premium was measured over a
+          stated window and is fixed: both loadings, both fees, both turnovers, both volatilities and the correlation.
+          At the published weight this arithmetic reproduces the published figure exactly, which is the only reason to
+          trust it at any other weight.
+        </p>
+
+        <Show when={tilt()}>
+          {(chosen) => (
+            <>
+              <div class="mt-6 grid gap-6 lg:grid-cols-3">
+                <label class="flex flex-col gap-1.5 text-sm">
+                  <span class="font-medium text-ink">Tilt</span>
+                  <select class="control" value={tiltId()} onChange={(event) => selectTilt(event.currentTarget.value)}>
+                    <For each={pricedTilts}>{(one) => <option value={one.id}>{one.label}</option>}</For>
+                  </select>
+                </label>
+
+                <label class="flex flex-col gap-1.5 text-sm">
+                  <span class="font-medium text-ink">Which premium you believe</span>
+                  <select
+                    class="control"
+                    value={premiumId()}
+                    onChange={(event) => setPremiumId(event.currentTarget.value)}
+                  >
+                    <For each={chosen().premia}>
+                      {(one) => (
+                        <option value={one.id}>
+                          {one.label} — {one.value.toFixed(2)} pp/yr
+                        </option>
+                      )}
+                    </For>
+                  </select>
+                  <Show when={premium()}>
+                    {(one) => (
+                      <span class="text-ink-muted">
+                        <span data-numeric>{one().interval}</span> against a detection floor of{" "}
+                        <span data-numeric>{one().detectionFloor}</span> pp/yr. {one().note}
+                      </span>
+                    )}
+                  </Show>
+                </label>
+
+                <Slider
+                  label={`Weight in ${chosen().fundTicker}, funded out of ${chosen().incumbentTicker}`}
+                  value={tiltWeight()}
+                  onInput={setTiltWeight}
+                  min={0}
+                  max={60}
+                  step={1}
+                  unit="% of portfolio"
+                  hint={`The research published its figures at ${chosen().publishedWeight * 100}%.`}
+                />
+              </div>
+
+              <Show when={verdict()}>
+                {(result) => (
+                  <>
+                    <div class="mt-10 flex flex-wrap gap-x-12 gap-y-8">
+                      <Figure
+                        label="Exposure actually bought"
+                        value={result().deliveredLoading.toFixed(3)}
+                        note={`${chosen().fundTicker} loading less ${chosen().incumbentTicker}'s. The incumbent is not exposure-free.`}
+                      />
+                      <Figure label="Incremental cost" value={result().incrementalCost.toFixed(3)} unit="pp/yr" />
+                      <Figure
+                        label="Portfolio edge"
+                        value={`${result().portfolioEdgeBasisPoints > 0 ? "+" : ""}${result().portfolioEdgeBasisPoints.toFixed(1)}`}
+                        unit="bp/yr"
+                        size="lg"
+                        tone={result().portfolioEdgeBasisPoints > 0 ? "positive" : "negative"}
+                      />
+                      <Figure
+                        label="Portfolio tracking error"
+                        value={result().portfolioTrackingErrorBasisPoints.toFixed(1)}
+                        unit="bp/yr"
+                        size="lg"
+                      />
+                      <Figure
+                        label="Growth contribution"
+                        value={`${result().growthContributionPercent > 0 ? "+" : ""}${(result().growthContributionPercent * 100).toFixed(1)}`}
+                        unit="bp/yr"
+                        tone={result().growthContributionPercent > 0 ? "positive" : "negative"}
+                        note="Geometric. This is what decides; the certainty equivalent reports beside it."
+                      />
+                      <Figure
+                        label="Certainty equivalent, γ=3"
+                        value={`${(result().certaintyEquivalentPercent * 100).toFixed(1)}`}
+                        unit="bp/yr"
+                      />
+                      <Figure
+                        label="Wealth after 30 years"
+                        value={`${result().terminalWealthMultiple30y.toFixed(3)}×`}
+                        note="Relative to not tilting at all."
+                      />
+                    </div>
+
+                    <div class="mt-8 flex flex-wrap items-center gap-4">
+                      <button
+                        type="button"
+                        class="control cursor-pointer"
+                        onClick={() =>
+                          update({
+                            edgeBp: Math.round(result().portfolioEdgeBasisPoints * 10) / 10,
+                            trackingErrorBp: Math.round(result().portfolioTrackingErrorBasisPoints),
+                            benchmark: "cheap-index",
+                          })
+                        }
+                      >
+                        Carry this edge and tracking error into the next section
+                      </button>
+                      <span class="text-sm text-ink-muted">
+                        Published at {chosen().publishedWeight * 100}%:{" "}
+                        <span data-numeric>
+                          {chosen().published.edgeBp} bp against {chosen().published.trackingErrorBp} bp
+                        </span>
+                        .
+                      </span>
+                    </div>
+
+                    <Callout variant="caveat" class="mt-8">
+                      <p>{chosen().caveat}</p>
+                    </Callout>
+                  </>
+                )}
+              </Show>
+            </>
+          )}
+        </Show>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
+
       <section aria-labelledby="edge" class="mt-14 border-t border-rule pt-8">
         <h2 id="edge" class="font-serif text-2xl tracking-[-0.01em]">
-          2. What you think it earns, and how much that moves
+          3. What you think it earns, and how much that moves
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
           Nothing on this site can tell you the first number. What it can tell you is what the pair implies — and the
@@ -552,7 +716,7 @@ export default function Lab(): JSX.Element {
 
       <section aria-labelledby="feel" class="mt-14 border-t border-rule pt-8">
         <h2 id="feel" class="font-serif text-2xl tracking-[-0.01em]">
-          3. What holding it would feel like
+          4. What holding it would feel like
         </h2>
         <p class="mt-2 max-w-measure text-base text-ink-muted">
           The same model, simulated rather than solved. A probability of being ahead at the end says nothing about the
