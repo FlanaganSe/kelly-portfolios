@@ -5,7 +5,7 @@ import { DataTable } from "~/components/DataTable";
 import { PageHeader } from "~/components/PageHeader";
 import { Prose } from "~/components/Prose";
 import { StatusChip } from "~/components/StatusChip";
-import { type ShelfCategory, type ShelfFund, shelf, shelfAsOf } from "~/content/shelf";
+import { findFund, type ShelfCategory, type ShelfFund, shelf, shelfAsOf } from "~/content/shelf";
 
 /**
  * The shelf: every product this repository has priced or regressed, in one table.
@@ -175,14 +175,21 @@ export default function Funds(): JSX.Element {
       <Prose class="mb-8">
         <p>
           Two columns do most of the work. <strong>Net cost</strong> is the fee less securities-lending income, and it
-          ranks funds differently from the fee alone: IEMG costs less to own than VWO at a 50% higher fee, and BND is
-          the dearest aggregate bond fund here because it is the only one that does not lend at all.{" "}
-          <strong>Alpha vs floor</strong> prints a fund's raw alpha only beside the smallest alpha its own window could
-          have detected. Where the second number is the larger one — which is nearly always — the first says nothing.
+          ranks funds differently from the fee alone. IEMG charges{" "}
+          <span data-numeric>{findFund("IEMG")?.expenseRatioBp}</span> bp against VWO's{" "}
+          <span data-numeric>{findFund("VWO")?.expenseRatioBp}</span>, and costs less to own:{" "}
+          <span data-numeric>{findFund("IEMG")?.netCostBp}</span> bp against{" "}
+          <span data-numeric>{findFund("VWO")?.netCostBp}</span>. BND is the dearest aggregate bond fund audited here
+          because it is the only one that does not lend at all.
         </p>
         <p>
-          A loading names its panel. The same emerging-market value fund reads +0.237 on its own panel and −0.074 on the
-          US one, so a loading quoted without its panel is a different number wearing the same label.
+          <strong>Alpha vs floor</strong> prints a fund's raw alpha only beside the smallest alpha its own window could
+          have detected. Where the second number is the larger one, which is nearly always, the first says nothing.
+        </p>
+        <p>
+          A loading names its panel, because the panel changes the number. Read either emerging-market value fund on the
+          US panel instead of its own and the sign flips, so a loading quoted without its panel is a different
+          measurement wearing the same label.
         </p>
       </Prose>
 
