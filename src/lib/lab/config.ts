@@ -6,59 +6,48 @@
  *
  * 1. **Round-tripping is lossless for anything the parser accepts.** `parseLabConfig`
  *    followed by `toSearchParams` returns the same configuration.
- * 2. **A malformed field falls back to the default and the rest of the link still
- *    loads.** A shared URL that half-works is more useful than an error page, and the
- *    interface shows what was dropped.
+ * 2. **A malformed field falls back to its default and the rest of the link still
+ *    loads.** A shared link that half-works is more useful than an error page, and the
+ *    interface shows what it dropped.
  *
- * Weights are held as percentages here, because that is what the reader types. The
- * engine takes fractions, and `toAllocations` is the only place the conversion happens.
+ * Weights are percentages here, because that is what a reader types.
  */
 
-import { toMonthIndex, toYearMonth } from "~/lib/backtest/calendar";
-import type { Allocation, MonthRange, RebalanceFrequency } from "~/lib/backtest/types";
+/** Which comparison the edge is measured against. The two may never be added. */
+export type LabBenchmark = "cheap-index" | "own-counterfactual";
 
 export interface LabHolding {
-  readonly symbol: string;
+  readonly ticker: string;
   /** Percent of capital. 15 is 15%. */
   readonly percent: number;
 }
 
 export interface LabConfig {
   readonly holdings: readonly LabHolding[];
-  readonly benchmark: string;
-  readonly rebalance: RebalanceFrequency;
-  readonly applyExpenses: boolean;
-  /** `null` means the full common history of the holdings. */
-  readonly from: string | null;
-  readonly to: string | null;
-  /** The starting investment, for the growth chart only. Affects no rate. */
-  readonly initial: number;
+  readonly benchmark: LabBenchmark;
+  /** Expected annual edge over the benchmark, basis points. May be negative. */
+  readonly edgeBp: number;
+  /** Annual standard deviation of the difference, basis points. Never negative. */
+  readonly trackingErrorBp: number;
+  readonly horizonYears: number;
+  /** Fixes the simulated paths, so a link shows the same picture to everyone. */
+  readonly seed: number;
 }
-
-export const DEFAULT_BENCHMARK = "VT";
 
 export const defaultLabConfig: LabConfig = {
   holdings: [],
-  benchmark: DEFAULT_BENCHMARK,
-  rebalance: "annually",
-  applyExpenses: true,
-  from: null,
-  to: null,
-  initial: 10_000,
+  benchmark: "cheap-index",
+  edgeBp: 46,
+  trackingErrorBp: 313,
+  horizonYears: 30,
+  seed: 1,
 };
 
-const REBALANCE_VALUES: readonly RebalanceFrequency[] = ["monthly", "quarterly", "annually", "never"];
-
-function isRebalance(value: string): value is RebalanceFrequency {
-  return (REBALANCE_VALUES as readonly string[]).includes(value);
-}
-
 const SYMBOL = /^[A-Z][A-Z0-9.-]{0,9}$/;
-const YEAR_MONTH = /^\d{4}-\d{2}$/;
 
-function normaliseSymbol(raw: string): string | null {
-  const symbol = raw.trim().toUpperCase();
-  return SYMBOL.test(symbol) ? symbol : null;
+function normaliseTicker(raw: string): string | null {
+  const ticker = raw.trim().toUpperCase();
+  return SYMBOL.test(ticker) ? ticker : null;
 }
 
 /** Two decimal places is the finest weight the interface offers. */
@@ -67,7 +56,7 @@ function roundPercent(value: number): number {
 }
 
 /**
- * `VTI:20,AVLV:15` → holdings. A line with an unreadable symbol or weight is dropped
+ * `VTI:20,AVLV:15` → holdings. A line with an unreadable ticker or weight is dropped
  * rather than defaulting to zero, so a typo cannot silently become a real position.
  */
 export function parseHoldings(raw: string): LabHolding[] {
@@ -76,56 +65,55 @@ export function parseHoldings(raw: string): LabHolding[] {
     if (part.trim() === "") {
       continue;
     }
-    const [symbolPart = "", percentPart = ""] = part.split(":");
-    const symbol = normaliseSymbol(symbolPart);
+    const [tickerPart = "", percentPart = ""] = part.split(":");
+    const ticker = normaliseTicker(tickerPart);
     // `Number("")` is 0, so an empty weight would otherwise become a real 0% line.
     const percent = percentPart.trim() === "" ? Number.NaN : Number(percentPart);
-    if (symbol === null || !Number.isFinite(percent) || percent < 0) {
+    if (ticker === null || !Number.isFinite(percent) || percent < 0) {
       continue;
     }
-    const existing = holdings.findIndex((one) => one.symbol === symbol);
+    const existing = holdings.findIndex((one) => one.ticker === ticker);
     if (existing >= 0) {
-      const previous = holdings[existing]?.percent ?? 0;
-      holdings[existing] = { symbol, percent: roundPercent(previous + percent) };
+      holdings[existing] = { ticker, percent: roundPercent((holdings[existing]?.percent ?? 0) + percent) };
       continue;
     }
-    holdings.push({ symbol, percent: roundPercent(percent) });
+    holdings.push({ ticker, percent: roundPercent(percent) });
   }
   return holdings;
 }
 
 export function serialiseHoldings(holdings: readonly LabHolding[]): string {
-  return holdings.map((one) => `${one.symbol}:${roundPercent(one.percent)}`).join(",");
+  return holdings.map((one) => `${one.ticker}:${roundPercent(one.percent)}`).join(",");
 }
 
-function parseMonth(raw: string | null): string | null {
-  if (raw === null || !YEAR_MONTH.test(raw)) {
-    return null;
+function numberOr(
+  raw: string | null,
+  fallback: number,
+  { min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY } = {}
+): number {
+  const parsed = Number(raw);
+  if (raw === null || raw.trim() === "" || !Number.isFinite(parsed) || parsed < min || parsed > max) {
+    return fallback;
   }
-  try {
-    toMonthIndex(raw);
-    return raw;
-  } catch {
-    return null;
-  }
+  return parsed;
 }
+
+const BENCHMARK_CODE: Readonly<Record<LabBenchmark, string>> = {
+  "cheap-index": "index",
+  "own-counterfactual": "self",
+};
 
 export function parseLabConfig(search: string | URLSearchParams): LabConfig {
   const params = typeof search === "string" ? new URLSearchParams(search) : search;
-  const rebalance = params.get("r") ?? "";
-  const initial = Number(params.get("v"));
-  const benchmark = normaliseSymbol(params.get("b") ?? "");
+  const benchmark = params.get("b") === BENCHMARK_CODE["own-counterfactual"] ? "own-counterfactual" : "cheap-index";
 
   return {
     holdings: parseHoldings(params.get("p") ?? ""),
-    benchmark: benchmark ?? defaultLabConfig.benchmark,
-    rebalance: isRebalance(rebalance) ? rebalance : defaultLabConfig.rebalance,
-    // Fees are charged unless the link says otherwise, so a truncated link is
-    // pessimistic rather than flattering.
-    applyExpenses: params.get("f") !== "0",
-    from: parseMonth(params.get("from")),
-    to: parseMonth(params.get("to")),
-    initial: Number.isFinite(initial) && initial > 0 ? initial : defaultLabConfig.initial,
+    benchmark,
+    edgeBp: numberOr(params.get("e"), defaultLabConfig.edgeBp, { min: -1000, max: 1000 }),
+    trackingErrorBp: numberOr(params.get("te"), defaultLabConfig.trackingErrorBp, { min: 0, max: 3000 }),
+    horizonYears: numberOr(params.get("h"), defaultLabConfig.horizonYears, { min: 1, max: 60 }),
+    seed: Math.round(numberOr(params.get("s"), defaultLabConfig.seed, { min: 1, max: 9999 })),
   };
 }
 
@@ -136,22 +124,19 @@ export function toSearchParams(config: LabConfig): URLSearchParams {
     params.set("p", serialiseHoldings(config.holdings));
   }
   if (config.benchmark !== defaultLabConfig.benchmark) {
-    params.set("b", config.benchmark);
+    params.set("b", BENCHMARK_CODE[config.benchmark]);
   }
-  if (config.rebalance !== defaultLabConfig.rebalance) {
-    params.set("r", config.rebalance);
+  if (config.edgeBp !== defaultLabConfig.edgeBp) {
+    params.set("e", String(config.edgeBp));
   }
-  if (!config.applyExpenses) {
-    params.set("f", "0");
+  if (config.trackingErrorBp !== defaultLabConfig.trackingErrorBp) {
+    params.set("te", String(config.trackingErrorBp));
   }
-  if (config.from !== null) {
-    params.set("from", config.from);
+  if (config.horizonYears !== defaultLabConfig.horizonYears) {
+    params.set("h", String(config.horizonYears));
   }
-  if (config.to !== null) {
-    params.set("to", config.to);
-  }
-  if (config.initial !== defaultLabConfig.initial) {
-    params.set("v", String(config.initial));
+  if (config.seed !== defaultLabConfig.seed) {
+    params.set("s", String(config.seed));
   }
   return params;
 }
@@ -161,8 +146,9 @@ export function toLabHref(config: LabConfig, path = "/lab"): string {
   return query === "" ? path : `${path}?${query}`;
 }
 
-export const totalPercent = (holdings: readonly LabHolding[]): number =>
-  roundPercent(holdings.reduce((sum, one) => sum + one.percent, 0));
+export function totalPercent(holdings: readonly LabHolding[]): number {
+  return roundPercent(holdings.reduce((sum, one) => sum + one.percent, 0));
+}
 
 /** Scales the weights to 100% and keeps the total exact by adjusting the last line. */
 export function normalise(holdings: readonly LabHolding[]): LabHolding[] {
@@ -170,32 +156,11 @@ export function normalise(holdings: readonly LabHolding[]): LabHolding[] {
   if (total <= 0 || holdings.length === 0) {
     return [...holdings];
   }
-  const scaled = holdings.map((one) => ({ symbol: one.symbol, percent: roundPercent((one.percent / total) * 100) }));
+  const scaled = holdings.map((one) => ({ ticker: one.ticker, percent: roundPercent((one.percent / total) * 100) }));
   const drift = roundPercent(100 - totalPercent(scaled));
   const last = scaled[scaled.length - 1];
   if (last !== undefined && drift !== 0) {
-    scaled[scaled.length - 1] = { symbol: last.symbol, percent: roundPercent(last.percent + drift) };
+    scaled[scaled.length - 1] = { ticker: last.ticker, percent: roundPercent(last.percent + drift) };
   }
   return scaled;
 }
-
-export function toAllocations(
-  holdings: readonly LabHolding[],
-  expenseRatioOf: (symbol: string) => number | undefined
-): Allocation[] {
-  return holdings.map((one) => {
-    const expenseRatio = expenseRatioOf(one.symbol);
-    return expenseRatio === undefined
-      ? { symbol: one.symbol, weight: one.percent / 100 }
-      : { symbol: one.symbol, weight: one.percent / 100, expenseRatio };
-  });
-}
-
-/** The window the config asks for, clipped to what the data can actually supply. */
-export function requestedRange(config: LabConfig, available: MonthRange): MonthRange {
-  const from = config.from === null ? available.start : Math.max(available.start, toMonthIndex(config.from));
-  const to = config.to === null ? available.end : Math.min(available.end, toMonthIndex(config.to));
-  return from > to ? available : { start: from, end: to };
-}
-
-export const monthLabel = toYearMonth;

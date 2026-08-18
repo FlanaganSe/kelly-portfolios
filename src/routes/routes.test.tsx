@@ -7,6 +7,7 @@ import { portfolios } from "~/content/portfolios";
 import { shelf } from "~/content/shelf";
 import FundDetail from "~/routes/fund-detail";
 import Funds from "~/routes/funds";
+import Lab from "~/routes/lab";
 import PortfolioDetail from "~/routes/portfolio-detail";
 import Portfolios from "~/routes/portfolios";
 import Research from "~/routes/research";
@@ -86,6 +87,32 @@ describe("the research library", () => {
     mount(`/research/${slug}`, "/research/:slug", ResearchDetail);
     expect(await screen.findByRole("heading", { level: 1, name })).toBeInTheDocument();
     expect(await screen.findByRole("heading", { level: 2, name: /evidence against/i })).toBeInTheDocument();
+  });
+});
+
+describe("the lab", () => {
+  it("opens empty and says why there is no backtest", async () => {
+    mount("/lab", "/lab", Lab);
+    expect(await screen.findByRole("heading", { level: 1, name: /patience/i })).toBeInTheDocument();
+    expect(document.body.textContent).toContain("There is no backtest here");
+    expect(document.body.textContent).toContain("Nothing held yet");
+  });
+
+  it("preloads a published portfolio from ?from=", async () => {
+    mount("/lab?from=evidence-led", "/lab", Lab);
+    const evidenceLed = portfolios.find((one) => one.id === "evidence-led");
+    for (const holding of evidenceLed?.holdings ?? []) {
+      expect(await screen.findByRole("link", { name: holding.ticker })).toBeInTheDocument();
+    }
+    // The weights of a published portfolio must arrive summing to exactly 100.
+    expect(document.body.textContent).toContain("100%");
+  });
+
+  it("reads the edge and tracking error out of the link", async () => {
+    mount("/lab?e=109&te=46&h=10", "/lab", Lab);
+    expect(await screen.findByRole("heading", { level: 2, name: /how much that moves/i })).toBeInTheDocument();
+    // 109 bp against 46 bp is settled inside a decade, and the page has to say so.
+    expect(document.body.textContent).toContain("100.0%");
   });
 });
 
