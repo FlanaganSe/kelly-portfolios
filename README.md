@@ -84,7 +84,7 @@ frozen specification and a ledger entry.
 | `/research`, `/research/:slug` | Ten strategy families, each asked the same ten questions — mechanism, evidence for, evidence against, failure modes, cost, overlap, role |
 | `/funds`, `/funds/:ticker` | The audited shelf: delivered exposure with the panel it was measured on, cost net of securities lending, wrapper arithmetic, and issuer-filed structure |
 | `/lab` | What an edge and a tracking error imply: the wait, the distribution, and how long you could sit behind |
-| `/portfolio` | What to hold, and the longest section is what is deliberately absent |
+| `/reference` | The construction this repository's own research signs off, and the longest section is what is deliberately absent |
 | `/edge-budget` | Your budget against your own counterfactual, grouped so the groups cannot be summed |
 | `/placement` | Which account each holding belongs in, computed from your bracket rather than asserted |
 | `/confidence` | How long an edge takes to become visible, and why tracking error decides that |
