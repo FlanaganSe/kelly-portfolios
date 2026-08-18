@@ -64,6 +64,11 @@ describe("the whole configuration", () => {
     expect(parsed.benchmark).toBe("cheap-index");
   });
 
+  it("round-trips the third benchmark, which is a claim of its own", () => {
+    expect(parseLabConfig("b=peer").benchmark).toBe("average-investor");
+    expect(toSearchParams({ ...defaultLabConfig, benchmark: "average-investor" }).get("b")).toBe("peer");
+  });
+
   it("keeps a negative edge, which is a real thing to want to see", () => {
     expect(parseLabConfig("e=-40").edgeBp).toBe(-40);
   });

@@ -134,6 +134,12 @@ describe("the lab", () => {
     expect(document.body.textContent).toContain("135.4");
   });
 
+  it("offers the bring-your-own-history panel and says nothing leaves the browser", async () => {
+    mount("/lab", "/lab", Lab);
+    expect(await screen.findByRole("heading", { level: 2, name: /bring your own history/i })).toBeInTheDocument();
+    expect(document.body.textContent).toMatch(/nothing is uploaded/i);
+  });
+
   it("reads the edge and tracking error out of the link", async () => {
     mount("/lab?e=109&te=46&h=10", "/lab", Lab);
     expect(await screen.findByRole("heading", { level: 2, name: /how much that moves/i })).toBeInTheDocument();

@@ -1,5 +1,5 @@
 import { createMemo, createSignal, For, type JSX, onCleanup, onMount, Show } from "solid-js";
-import { areaPath, linearScale, linePath, niceDomain, niceTicks } from "~/components/charts/scale";
+import { linearScale, linePath, niceDomain, niceTicks } from "~/components/charts/scale";
 import { DataTable } from "~/components/DataTable";
 
 /**

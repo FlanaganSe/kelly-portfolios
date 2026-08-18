@@ -5,6 +5,7 @@ import { Callout } from "~/components/Callout";
 import { FanChart } from "~/components/charts/FanChart";
 import { DataTable } from "~/components/DataTable";
 import { Figure } from "~/components/Figure";
+import { HistoryPanel } from "~/components/lab/HistoryPanel";
 import { NumberInput } from "~/components/NumberInput";
 import { OutperformanceChart, type OutperformanceSeries } from "~/components/OutperformanceChart";
 import { PageHeader } from "~/components/PageHeader";
@@ -18,6 +19,7 @@ import { pricedTilts, tiltById } from "~/content/tilts";
 import { horizonForConfidence, probabilityOfOutperformance } from "~/lib/horizon";
 import {
   defaultLabConfig,
+  type LabBenchmark,
   type LabConfig,
   type LabHolding,
   normalise,
@@ -59,12 +61,18 @@ interface Row {
 }
 
 /** Presets, so the sliders start from something measured rather than from a round number. */
+const BENCHMARK_OF_ROW: Readonly<Record<string, LabBenchmark>> = {
+  "own counterfactual": "own-counterfactual",
+  "stated index": "cheap-index",
+  "average investor": "average-investor",
+};
+
 const PRESETS = contractualRows.map((row) => ({
   id: row.id,
   label: row.label,
   edgeBp: row.edgeBp,
   trackingErrorBp: row.trackingErrorBp,
-  benchmark: row.benchmark === "own counterfactual" ? ("own-counterfactual" as const) : ("cheap-index" as const),
+  benchmark: BENCHMARK_OF_ROW[row.benchmark] ?? ("cheap-index" as LabBenchmark),
 }));
 
 function holdingsOf(portfolioId: string): LabHolding[] {
@@ -80,10 +88,11 @@ function pricedStart(portfolioId: string): Pick<LabConfig, "edgeBp" | "trackingE
   return widest === undefined ? null : { edgeBp: widest.edgeBp ?? 0, trackingErrorBp: widest.trackingErrorBp ?? 0 };
 }
 
-const BENCHMARK_LABEL = {
+const BENCHMARK_LABEL: Readonly<Record<LabBenchmark, string>> = {
   "cheap-index": "a cheap index fund",
   "own-counterfactual": "the portfolio you would otherwise have owned",
-} as const;
+  "average-investor": "the average investor",
+};
 
 export default function Lab(): JSX.Element {
   const [searchParams] = useSearchParams();
@@ -772,6 +781,23 @@ export default function Lab(): JSX.Element {
               </>
             }
           />
+        </div>
+      </section>
+
+      {/* ------------------------------------------------------------------ */}
+
+      <section aria-labelledby="history" class="mt-14 border-t border-rule pt-8">
+        <h2 id="history" class="font-serif text-2xl tracking-[-0.01em]">
+          5. Bring your own history
+        </h2>
+        <p class="mt-2 max-w-measure text-base text-ink-muted">
+          The one honest way to get a backtest out of this site: supply the returns yourself, from a source you are
+          entitled to use, and the engine will run them. Nothing is uploaded and nothing is stored — the paste stays in
+          this tab and disappears when you close it.
+        </p>
+
+        <div class="mt-8">
+          <HistoryPanel holdings={config().holdings} />
         </div>
       </section>
 

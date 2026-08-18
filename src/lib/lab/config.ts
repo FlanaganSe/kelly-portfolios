@@ -13,8 +13,14 @@
  * Weights are percentages here, because that is what a reader types.
  */
 
-/** Which comparison the edge is measured against. The two may never be added. */
-export type LabBenchmark = "cheap-index" | "own-counterfactual";
+/**
+ * Which comparison the edge is measured against.
+ *
+ * Three, not two, and no two of them may ever be added: a cheap index, the portfolio the
+ * reader would otherwise have owned, and the average investor are three different claims
+ * about three different reference portfolios.
+ */
+export type LabBenchmark = "cheap-index" | "own-counterfactual" | "average-investor";
 
 export interface LabHolding {
   readonly ticker: string;
@@ -101,15 +107,19 @@ function numberOr(
 const BENCHMARK_CODE: Readonly<Record<LabBenchmark, string>> = {
   "cheap-index": "index",
   "own-counterfactual": "self",
+  "average-investor": "peer",
 };
+
+function benchmarkFrom(code: string | null): LabBenchmark {
+  const found = (Object.entries(BENCHMARK_CODE) as [LabBenchmark, string][]).find(([, value]) => value === code);
+  return found?.[0] ?? defaultLabConfig.benchmark;
+}
 
 export function parseLabConfig(search: string | URLSearchParams): LabConfig {
   const params = typeof search === "string" ? new URLSearchParams(search) : search;
-  const benchmark = params.get("b") === BENCHMARK_CODE["own-counterfactual"] ? "own-counterfactual" : "cheap-index";
-
   return {
     holdings: parseHoldings(params.get("p") ?? ""),
-    benchmark,
+    benchmark: benchmarkFrom(params.get("b")),
     edgeBp: numberOr(params.get("e"), defaultLabConfig.edgeBp, { min: -1000, max: 1000 }),
     trackingErrorBp: numberOr(params.get("te"), defaultLabConfig.trackingErrorBp, { min: 0, max: 3000 }),
     horizonYears: numberOr(params.get("h"), defaultLabConfig.horizonYears, { min: 1, max: 60 }),

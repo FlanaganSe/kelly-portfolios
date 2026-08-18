@@ -54,7 +54,7 @@ const ORDER: readonly ShelfCategory[] = [
 ];
 
 function bp(value: number | null): JSX.Element {
-  return value === null ? <span class="text-ink-faint">—</span> : <>{value}</>;
+  return value === null ? <span class="text-ink-faint">—</span> : value;
 }
 
 /** The deepest loading a fund carries, which is what it is bought for. */
