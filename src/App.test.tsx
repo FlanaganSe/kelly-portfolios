@@ -32,3 +32,14 @@ describe("the application shell", () => {
     expect(toggle).toHaveAttribute("aria-expanded", "true");
   });
 });
+
+describe("legacy addresses", () => {
+  it("sends /portfolio to the reference construction rather than to the library", async () => {
+    window.history.pushState({}, "", "/portfolio");
+    render(() => <App />);
+    // One character apart from /portfolios; the redirect is the whole point.
+    await new Promise((resolve) => setTimeout(resolve, 50));
+    expect(window.location.pathname).toBe("/reference");
+    window.history.pushState({}, "", "/");
+  });
+});
