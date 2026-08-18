@@ -46,8 +46,8 @@ const ENGINE_ORDER: readonly ReturnEngine[] = ["cost-and-tax", "equity-beta", "v
 const ENGINE_VERDICT: Readonly<Record<string, string>> = {
   "cost-and-tax": "The sign is known before the fact. Everything else here is a bet.",
   "equity-beta": "Not an edge. It is the thing an edge is measured against.",
-  value: "The one factor premium that advanced on its own strength. Decades of dispersion for tens of basis points.",
-  momentum: "The largest gross premium measured here, and the one implementation destroys.",
+  value: "Decades of dispersion for tens of basis points of expected edge. Size it accordingly.",
+  momentum: "Real in the data and excluded on implementation: turnover takes 43% of the gross exposure.",
   trend: "A risk-reduction claim before it is a return claim. The correlation resolves; the mean does not.",
 };
 
@@ -95,7 +95,7 @@ export default function StartHere(): JSX.Element {
             to about <span data-numeric>{cheapIndex.edgeBp}</span> bp a year against{" "}
             <span data-numeric>{cheapIndex.trackingErrorBp}</span> bp of tracking error — a{" "}
             <span data-numeric>{formatPercent(cheapIndex.probability30yr)}</span> chance of being ahead after thirty
-            years, and about {cheapIndex.ninetyPercentAt} to be 90% sure. It is an upper bound on an upper bound.
+            years, and {cheapIndex.ninetyPercentAt} to be 90% sure. It is an upper bound on an upper bound.
           </p>
           <p>
             <strong>The two may never be added.</strong> They are different claims about different reference portfolios,
