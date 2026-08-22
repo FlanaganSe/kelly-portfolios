@@ -75,11 +75,23 @@ that module generates.
 
 ## Checks
 
-`pnpm typecheck`, `pnpm test` (413 tests, 31 files), `pnpm biome check .` and `pnpm build`
-are clean, and `pnpm test` now exits zero: a lazy route import in `src/App.test.tsx` was
-resolving after Vitest tore the environment down, so the suite passed every assertion and
-still failed the command. `research/`: `uv run mypy`, `uv run ruff check` and
-`uv run pytest` are clean.
+`pnpm typecheck`, `pnpm test` (452 tests, 31 files), `pnpm biome check .` and `pnpm build`
+are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` are clean.
+
+## What changed on 2026-08-22
+
+- **The index-relative edge budget was carrying a falsified line** and now reads 5.4 bp
+  against 313 bp of tracking error rather than 46 bp. Against a cheap index this
+  repository can demonstrate nothing; against the reader's own counterfactual it can
+  demonstrate ~109 bp with near-certainty, and that distance is the deliverable.
+- **Experiment results are committed.** `research/artifacts/*/summary.md` and
+  `manifest.json` are tracked, so a synthesis can link to a result instead of retyping it.
+- **`docs/the-plan.md` is gone.** It was an untracked orchestration prompt that fourteen
+  committed files cited. Its content is now `docs/charter.md`, the strategy universe in
+  `search-coverage.md` §2, and the named stress episodes in `evidence-base.md`.
+- **[Decision 0009](docs/decisions/0009-blocks-lifted-and-closures-rescoped.md)** unblocks
+  the construction tournament and funding-rule measurement, and requires that a verdict
+  not outrun the instrument that produced it.
 
 ## Unresolved
 
@@ -111,4 +123,6 @@ still failed the command. `research/`: `uv run mypy`, `uv run ruff check` and
   the product audit excludes and one that is `unresolved`. All three departures are stated
   on its own page and none is resolved.
 - No experiment has ever tested any of these constructions as a joint object. The
-  construction tournament has never run.
+  construction tournament still has not run, but it is no longer blocked
+  ([decision 0009](docs/decisions/0009-blocks-lifted-and-closures-rescoped.md)) and it
+  needs no new data. It is the first thing worth running.
