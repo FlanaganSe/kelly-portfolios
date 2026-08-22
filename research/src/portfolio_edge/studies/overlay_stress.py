@@ -1148,7 +1148,7 @@ def leave_out_gaps(
     groups: Mapping[str, Sequence[int]],
     periods_per_year: int = MONTHS_PER_YEAR,
 ) -> tuple[LeaveOutGap, ...]:
-    """``docs/the-plan.md``'s "test removing" clause, on the gap that decides.
+    """The charter's "test removing" clause, on the gap that decides.
 
     Each group is a set of row indices dropped before the gap is recomputed. Dropping the
     strongest crisis is the one that matters: a diversifier whose entire case is two good

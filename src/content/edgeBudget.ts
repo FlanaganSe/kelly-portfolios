@@ -5,7 +5,8 @@ import { asOf, type CertaintyClass, type Citation } from "~/content/types";
  * investor would otherwise have owned.
  *
  * It is not an edge over an index. Against a cheap index the honest number is about
- * 46 bp against 313 bp of tracking error — see `src/content/confidence.ts`. The two
+ * 5.4 bp against 313 bp of tracking error — a coin flip — because the value tilt and the
+ * measured rebalancing line nearly cancel. See `src/content/confidence.ts`. The two
  * benchmarks never aggregate.
  */
 

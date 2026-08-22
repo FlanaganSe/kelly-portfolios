@@ -87,11 +87,12 @@ at 15 bp against the *average investor*, and the two benchmarks may never be add
 
 ### Against a cheap index: no, at any horizon a human has
 
-Against **a stated cheap index**, the whole honest budget is about **46 bp/yr against
-313 bp of tracking error** — a thirty-year probability of being ahead of **0.79**, and
-roughly 74 years to 90% confidence. Read 46 bp as an **upper bound**, because its
-rebalancing line has since been measured negative on real data and its factor line's
-sign turns on a benchmark choice the budget never states.
+Against **a stated cheap index**, the whole honest budget is about **5.4 bp/yr against
+313 bp of tracking error** — a thirty-year probability of being ahead of **0.54**, which
+is a coin flip, and no horizon at which it becomes demonstrable. The budget's two
+probabilistic lines nearly cancel: a value tilt at +43.1 bp against a rebalancing line
+measured at −38.7 bp. Its range runs from −92 to +83 bp, so the sign is not robust, and
+the factor line's sign turns on a premium the budget never chooses.
 
 The arithmetic underneath is what matters, and it is not about markets. Because
 `P(outperform) = Phi(e sqrt(T) / s)` and `T(confidence) = (z s / e)**2`, the horizon
@@ -567,9 +568,8 @@ survives the protocol. **None has.**
    constraint on every investable conclusion
    ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)). Required
    contents in [evidence base](evidence-base.md) §4.
-3. ~~*Which benchmark may an edge budget's factor line book its capture against?*~~
-   **Closed: no capture term, so no benchmark.** A factor line prices a delivered loading
-   against a factor. What replaces it is narrower and still open: **whether a loading
+3. **A factor line books no capture, so it chooses no benchmark for one.** It prices a
+   delivered loading against a factor. What remains open is narrower: **whether a loading
    estimated on 36 to 72 months of a fund's history forecasts the next 36 to 72.**
 4. **What capital scale, tax model, leverage source, margin rules and liquidity reserve
    define implementability?**

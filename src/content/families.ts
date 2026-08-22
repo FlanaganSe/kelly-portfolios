@@ -111,7 +111,7 @@ export const families: readonly StrategyFamily[] = [
       value: "109 bp/yr",
       label: "Against the portfolio you would otherwise have owned",
       interval: "outer bound 4–270",
-      note: "About 99% confident inside twelve months at the assumed 46 bp of tracking error. Against a cheap index the same work is 46 bp against 313 bp, a 0.792 chance of being ahead after thirty years.",
+      note: "About 99% confident inside twelve months at the assumed 46 bp of tracking error. Against a cheap index the same work is 5.4 bp against 313 bp, a 0.538 chance of being ahead after thirty years.",
     },
     evidenceFor: [
       "A fund's cost is fee less securities lending, and the two rankings differ. IEMG costs less to own than VWO at a 50% higher fee; BND is the dearest aggregate bond fund audited because it is the only one that does not lend at all; SPY runs 9.45 bp because a unit investment trust cannot lend.",

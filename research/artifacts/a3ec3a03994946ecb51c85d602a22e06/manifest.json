@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "kind": "json",
+      "path": "a3ec3a03994946ecb51c85d602a22e06/result.json",
+      "sha256": "e95f8f40d2f22eb6b6578454227b91143a054e902651f7af2a554734c96614e7",
+      "size_bytes": 138617
+    },
+    {
+      "kind": "markdown",
+      "path": "a3ec3a03994946ecb51c85d602a22e06/summary.md",
+      "sha256": "15f220b04ca981a199057fed3e7b03319ef66ab13bf46ff0323407bc404da855",
+      "size_bytes": 8302
+    },
+    {
+      "kind": "parquet",
+      "path": "a3ec3a03994946ecb51c85d602a22e06/frames/marginal_results.parquet",
+      "sha256": "7fd8fe833961f2bac82be10b3eb0d4ade511f345000d83d6efc06c507b2d64d7",
+      "size_bytes": 6341
+    },
+    {
+      "kind": "parquet",
+      "path": "a3ec3a03994946ecb51c85d602a22e06/frames/portfolio_statistics.parquet",
+      "sha256": "57ea46426116e8f9796edd248ec4b1e9b115d7dba7c9d78b4e00007119379b4b",
+      "size_bytes": 18537
+    }
+  ],
+  "run_id": "a3ec3a03994946ecb51c85d602a22e06",
+  "spec_hash": "e9e564f39ebd335808482db79558ddd9fd7f955e1ae3ce4267e9184f8d4a7473",
+  "status": "rejected"
+}

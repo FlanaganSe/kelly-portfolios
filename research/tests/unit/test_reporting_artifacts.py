@@ -96,7 +96,7 @@ def test_no_partial_files_are_left_behind(tmp_path: Path) -> None:
     assert not list((tmp_path / "run6").glob("*.partial"))
 
 
-def test_default_artifact_root_is_the_gitignored_research_directory() -> None:
+def test_default_artifact_root_is_the_research_artifacts_directory() -> None:
     root = default_artifact_root()
     assert root.name == "artifacts"
     assert root.parent.name == "research"

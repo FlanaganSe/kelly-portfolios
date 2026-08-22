@@ -29,12 +29,10 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
    measured.** Effective breadth of **4.06** is available on paper from trend, BAB,
    short-term reversal and accruals, worth about four times trend alone. **Exactly one of
    those four can be bought**, and three of the seven newly tested families have no
-   registered vehicle of any kind. This page previously said "breadth is one engine";
-   a red team falsified that framing. At least four engines
-   clear the *overlay* bar and fail the *pro-rata* bar — trend, duration-hedged credit,
-   long/short commodities and catastrophe bonds — **and gold, added 2026-08-17, makes
-   five.** **This page previously said only trend has a financed retail wrapper; that is
-   now false.** WisdomTree's GDE stacks roughly a dollar of gold-futures notional on a
+   registered vehicle of any kind. **Five engines clear the *overlay* bar and fail the
+   *pro-rata* bar** — trend, duration-hedged credit, long/short commodities, catastrophe
+   bonds, and gold. Two have a financed retail wrapper, not one: WisdomTree's GDE stacks
+   roughly a dollar of gold-futures notional on a
    dollar of US equity for **0.20%/yr**, a seventh of trend's assumed fee, on $595m of
    assets since 2022. **Gold is the one candidate whose vehicle shelf does not bind — and
    it fails on return instead, which is a cleaner refusal than any this page has made.**
@@ -63,8 +61,8 @@ or a load-bearing constraint, and what a multi-engine portfolio could contain.
    and on return per unit of risk. **In USD over 1990–2025 it lost 1.57 pp/yr and drew down
    deeper.** The case for global equity is not that it raises expected return — on the only
    USD evidence here it does not — but that the US is the survivor and its record cannot be
-   bought in advance. **An earlier draft of this page claimed global was the largest certain
-   improvement available; building the frontier falsified that and the claim is withdrawn.**
+   bought in advance. **Global diversification is not the largest certain improvement
+   available; the candidate frontier in §6 is what falsifies that.**
 6. **The flat drawdown is real at the recommended weight, and three things about it were
    never stated.** Resampled 4,000 times, the overlay's drawdown is the deeper one in
    **6.9%** of histories at 30% notional — and in **78.7%** at 200%, so §7's `w = 2.00`
@@ -198,7 +196,7 @@ TSMOM), cash (`Rfree`). Excess of cash, 1985-01…2025-05, n = 485.
 | trend | 12.07% | 12.58% | 0.96 | −0.08 |
 
 **Credit and treasury correlate +0.83 — they are one engine, not two.** Counting them
-separately is the fake breadth `docs/the-plan.md` forbids.
+separately is fake breadth: two lines that share a failure mode are one engine.
 
 **The gold row was added on 2026-08-17 and is measured on this section's exact window**,
 1985-01…2025-05, 485 months, net of GLDM's published 0.10% fee, from the World Bank Pink
@@ -233,15 +231,12 @@ ownership was still illegal, carry a Sharpe of 1.56 and the remaining 120 carry 
 The 1985-2025 cell is the one to read, and there gold looks like commodities on return and
 much better on correlation. LBMA cross-check: 0.39 / +0.10 and 0.25 / −0.04.
 
-**Correction, 2026-08-16.** An earlier version of this page said commodities' stable +0.30
-correlation "disqualifies them once cost is charged". **That was wrong, and the error was
-comparing their Sharpe ratio against the correlation instead of against the threshold.**
-Equation (4)'s bar is `L rho sigma_p`, which at `L = 1.5` is `1.5 × 0.286 × 0.1559 =
-0.067`, not 0.286. Commodities' net Sharpe is **0.174 even at a 1.2% fee**, so they clear
-it by +0.107 and **pass at every exposure and fee tested**. What is true is weaker and
-different: their margin is roughly **five times smaller than trend's**, and the AQR series
-is excess-of-cash with **unpriced roll costs**, which is what would actually sink them.
-They are not rejected here; they are dominated.
+**Commodities are dominated, not rejected.** Equation (4)'s bar is `L rho sigma_p`, which
+at `L = 1.5` is `1.5 × 0.286 × 0.1559 = 0.067` — the threshold, not the correlation itself.
+Their net Sharpe is **0.174 even at a 1.2% fee**, so they clear it by +0.107 and **pass at
+every exposure and fee tested**. What is true is weaker: their margin is roughly **five
+times smaller than trend's**, and the AQR series is excess-of-cash with **unpriced roll
+costs**, which is what would actually sink them.
 
 ### 3a. Gold: it passes admission, it is dominated on return, and its shelf does not bind
 
@@ -369,19 +364,17 @@ directly. Inside an IRA the collectibles rate does not apply — both GLD and IA
 private letter rulings to that effect — but traditional-IRA distributions are ordinary
 income, so the shelter helps and does not make gold tax-favoured.
 
-**An earlier version of this paragraph added that "the physical route competes with trend
-for the same scarce shelter that §7 identifies as the binding constraint on the overlay
-weight". Both halves are now wrong and it is withdrawn.** §7 no longer identifies shelter as
-the binding constraint at all. And a bullion trust *distributes nothing*: the only recurring
-realisation is the gain on the gold it sells to pay its own 0.10% fee, so its shelter
-priority on §7.2's rule is a few basis points at most — the exact figure is `not found`,
-since no 10-K quantifies the gain component. **The physical route needs no shelter, which is
-the opposite of what this page said, and it is why GDE at a measured 1.31 pp/yr drag for the
-same investor and GLDM at near zero are not the same decision.**
+**The physical route needs no shelter**, and it does not compete with trend for it. §7 does
+not identify shelter as the binding constraint on the overlay weight, and a bullion trust
+*distributes nothing*: its only recurring realisation is the gain on the gold it sells to pay
+its own 0.10% fee, so its shelter priority on §7.2's rule is a few basis points at most — the
+exact figure is `not found`, since no 10-K quantifies the gain component. That is why GDE at
+a measured 1.31 pp/yr drag for the same investor and GLDM at near zero are not the same
+decision.
 
 ### The seven families this repository had never opened
 
-`docs/the-plan.md` §A lists about eighteen equity factor families. Five had been tested
+The [strategy universe](search-coverage.md#2-the-universe-and-how-much-of-it-has-been-searched) lists about eighteen equity factor families. Five had been tested
 (HML, RMW, CMA, UMD, SMB), and [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)
 closed factor work "on public data" on the strength of those five. **That was
 over-general, and the remaining families are now measured on the same free library.**
@@ -710,9 +703,8 @@ Sharpe ratio. At the recommended weight it is about **+0.16%/yr**, not zero.
 
 ## 6. Global versus US: the two datasets disagree, and the disagreement is the finding
 
-**This section previously claimed global diversification was the largest certain
-improvement available. Building the candidate frontier falsified that, and the claim is
-withdrawn.** What follows is what the evidence actually supports.
+**Global diversification is not the largest certain improvement available**; the candidate
+frontier below is what falsifies that. What follows is what the evidence supports.
 
 ### What the century of local-currency data says
 
@@ -797,7 +789,7 @@ Shiller's real total-return index rather than taken from his forward-return colu
 10-year forward returns which have not yet finished is using data from after the forecast
 date. Purging the training set to labels fully realised beforehand cuts the out-of-sample
 R² from +0.232 to +0.174 — the difference is look-ahead, and it is the reason
-`docs/the-plan.md` requires purging and embargo where labels overlap.
+Purging and embargo are required where labels overlap ([engine specification](portfolio-engine-specification.md)).
 
 **And +0.174 still cannot size a decision, because of what n is.** There are 1,040
 overlapping monthly observations and about **eight independent ten-year windows**. The
@@ -1079,9 +1071,8 @@ on anyway, and GDE converts an asset a long-only holder could have held untaxed 
 into an annual realisation. Any reader tempted to read "efficient core is tax-efficient" as a
 structural fact should read these two rows instead.
 
-**They are not the same structure, and the mechanism is not the one an earlier draft of this
-paragraph gave.** That draft attributed GDE's drag to §1256 marking gold futures to market on
-31 December. **Checked against the filings, that is wrong.** GDE holds its gold through a
+**They are not the same structure, and the mechanism is not §1256 marking gold futures to
+market on 31 December.** Checked against the filings: GDE holds its gold through a
 **Cayman Islands subsidiary** capped at 25% of total assets — forced by the §851(b)(2)
 qualifying-income rules, exactly as §3's DBMF/KMLM/CTA finding describes — and WisdomTree's
 own SAI states that *"Subpart F income and GILTI are treated as **ordinary income, regardless
@@ -1130,7 +1121,7 @@ about 59.9% ordinary income and 40.1% long-term capital gain.** The FY2025 figur
 is right; the generalisation backwards is not. The mechanism claim — a Cayman blocker plus
 capital-loss carryforwards — survives; its universality does not.
 
-### 6a.5 Survival, and the shelf-age claim this page had wrong
+### 6a.5 Survival, and how old the shelf actually is
 
 **The claim that "the entire shelf is younger than six years" is false and is withdrawn.**
 From the 2019Q4 census: **NTSX filed at $39.0m in 2019Q4** — inception **2018-08-02**, now
@@ -1174,7 +1165,7 @@ on 2026-08-31, filed on 497 on 2026-08-07 — **and it will appear in no N-PORT 
 2026Q3.** Every closure count on this page and in [Experiment 012](live-managed-futures.md)
 is therefore lagged by at least a quarter as well as being a lower bound.
 
-**The Return Stacked family is eight ETFs, not five**, and this page had listed five. Three
+**The Return Stacked family is eight ETFs.** Three
 were missed: **RSBY** (bonds and futures yield, −14.65%/yr since inception, shrinking 19.6%
 in two quarters — the one fund here whose numbers point at closure), **RSSX** (stocks and
 gold/bitcoin), and **RSIT** (international stocks and managed futures, inception 2026-05-06,
@@ -1478,9 +1469,9 @@ bind at the recommended weight.** Measured on the independent series over 1,091 
 is the argument for breadth over leverage: uncorrelated notional barely deepens the
 drawdown, correlated notional ruins it.
 
-**Read "flat" as scoped to this path and to modest weights, because resampling breaks it
-at the top of the range.** An earlier draft of this section said maximum drawdown is flat
-"across the entire range". Under a paired block bootstrap the overlay draws down deeper
+**Read "flat" as scoped to this path and to modest weights, and never as flat across the
+entire range, because resampling breaks it at the top.** Under a paired block bootstrap the
+overlay draws down deeper
 than equity in **6.9%** of histories at `w = 0.30`, **26.9%** at `w = 1.00` and **78.7%**
 at `w = 2.00` — **so the `w = 2.00` row above is a lucky draw from a distribution centred
 on −7.7%**, and the property is a property of small weights rather than of the whole
@@ -1605,9 +1596,9 @@ correlation of only +0.29 — the drawdown at `w = 1.00` is 11 pp deeper. **The 
 weight, the more of the recommendation rides on the one parameter the stress table never
 varied.**
 
-**Consequence: 30% stands, and every reason this page previously gave for it is
-withdrawn.** It is not "as much as the shelter allows" — the shelter allows far more and
-costs almost nothing. It is the largest weight this investor can reach without realising
+**Consequence: 30% stands, on none of the reasons originally given for it.** It is not "as
+much as the shelter allows" — the shelter allows far more and costs almost nothing. It is
+the largest weight this investor can reach without realising
 gain, it sits comfortably inside a drawdown ceiling of about 0.55, and it retains 18.7% of a
 growth optimum nobody should hold. **If a reader's taxable account has no embedded gain, the
 weight they may hold is 0.50, not 0.30, and not 2.14.**
@@ -1814,7 +1805,7 @@ width is the resolution statement and it is enormous — ±10 pp at the recommen
 
 ### 9.2 The crisis windows, which are not flat
 
-Peak-to-trough inside each episode `docs/the-plan.md` names, 60 bp financing charged.
+Peak-to-trough inside each [named stress episode](evidence-base.md#the-named-stress-episodes), 60 bp financing charged.
 
 | Window | n | `w = 0.00` | `w = 0.30` | `w = 1.00` |
 | --- | ---: | ---: | ---: | ---: |

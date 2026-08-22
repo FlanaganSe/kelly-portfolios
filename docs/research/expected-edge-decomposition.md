@@ -17,8 +17,8 @@ data. Retrieval date for every source: **2026-08-12**.
 ## Conclusion
 
 1. **Three benchmarks, and they never aggregate.** Against a **cheap index** the whole
-   honest budget is about **46 bp/yr against 313 bp of tracking error** — a 0.79
-   thirty-year probability of being ahead. Against the **investor's own plausible
+   honest budget is about **5.4 bp/yr against 313 bp of tracking error** — a 0.54
+   thirty-year probability of being ahead, which is a coin flip. Against the **investor's own plausible
    alternative** it is about **89 bp against ~41 bp** here, revised to **≈110 bp** by
    [structural and tax-aware edges](structural-and-tax-edges.md). Against the **average
    investor** it is 15 bp. Conflating them is the standard way this argument is inflated,
@@ -48,18 +48,28 @@ data. Retrieval date for every source: **2026-08-12**.
 | Tax-loss harvesting | own counterfactual | contractual, **conditional** | 0 | **30 bp** | 90 | 40 bp | no offsetting gains; no new money; a flat capital-gains rate |
 | Asset location | own counterfactual | contractual, **conditional** | 0 | **10 bp** | 21 | 10 bp | one account type, or one rate across asset classes |
 | Timing / behaviour gap avoided | **average investor** | probabilistic | 5 | **15 bp** | 60 | 150 bp | a decomposition attributing most of the gap to timing |
-| Rebalancing, net of diversification | stated index | probabilistic | 0 | **2.4 bp** | 18 | 27 bp | a drift gap above `gamma_star` — **which has since been measured** |
+| Rebalancing, net of diversification | stated index | probabilistic | −62.9 | **−38.7 bp** | 2.4 | 27 bp | **FIRED.** A drift gap above `gamma_star`, measured at ~35× on the deciding pair |
 | Securities-lending pass-through | stated index | contractual | 0.1 | **1 bp** | 3 | 2 bp | the fund report shows less, or the manager keeps the split |
 | Factor tilt | stated index | probabilistic | −29 | **43 bp** | 78 | 312 bp | the premium's sign; on the US-only post-publication figure the growth contribution is negative at every weight |
-| **Total vs the stated index** | | | **−29** | **46 bp** | **99** | **319 bp** | P(ahead at 30 yr) = **0.79** |
+| **Total vs the stated index** | | | **−92** | **5.4 bp** | **83** | **313 bp** | P(ahead at 30 yr) = **0.54** |
 | **Total vs own counterfactual** | | | **40** | **89 bp** | **170** | **41 bp** | revised to ≈110 bp by [structural edges](structural-and-tax-edges.md) |
 | **Total vs the average investor** | | | **5** | **15 bp** | **60** | **150 bp** | P(ahead at 30 yr) = **0.71** |
 
-**The stated-index total is an upper bound, not a central estimate.** Its rebalancing
-line has since been measured at **−38.7 bp/yr** on real data
-([Experiment 003](rebalancing-policy.md)), and its factor line's sign turns on a
-benchmark choice the budget never states. The figures are left as computed because they
-are regenerated and pinned by tests; the correction is in the reading.
+**Against a cheap index this budget is a coin flip, and that is the finding.** Two
+probabilistic lines carry it — a value tilt at +43.1 bp and a rebalancing line measured at
+**−38.7 bp/yr** over 420 months ([Experiment 003](rebalancing-policy.md)) — and they very
+nearly cancel. The range runs from −92 to +83, so the sign is not robust, and the factor
+line's own sign turns on a premium the budget does not choose.
+
+The rebalancing line carried the equal-drift closed form of **+2.4 bp** until 2026-08-22,
+which made the total read 46 bp. That line's falsifier had already fired. The stated
+reason for keeping it was that the figures were pinned by tests — which inverts the rule
+this workspace runs on, that a fixture disagreeing with a measurement is a finding rather
+than a number to preserve. Almost the whole of the old total was one falsified line.
+
+The practical consequence is not that the programme found less. It is that **the
+index-relative budget was never the deliverable**: the counterfactual row below is, it is
+contractual rather than statistical, and it is settled inside a year.
 
 **The 41 bp tracking error on the own-counterfactual total is an assumption**, built by
 combining the component tracking errors in quadrature. Those components sit inside the
@@ -302,7 +312,7 @@ The same 50 bp edge against different tracking errors, reaching 90%: **24 days**
 
 | Benchmark | Central edge | TE | 10 yr | 30 yr | 90% at |
 | --- | ---: | ---: | ---: | ---: | ---: |
-| Stated index | 46 bp | 313 bp | 0.681 | **0.792** | ~74 yr |
+| Stated index | 5.4 bp | 313 bp | 0.522 | **0.538** | beyond any useful horizon |
 | Average investor | 15 bp | 150 bp | 0.624 | **0.708** | ~164 yr |
 | Own counterfactual | 89 bp | 41 bp | ~1.00 | **~1.00** | ~4 months |
 
@@ -314,8 +324,8 @@ towards the first.
 Read the table the other way and it stops being about markets: against the 313 bp of
 tracking error the index-relative budget carries, thirty years can only *demonstrate* an
 edge of about 73 bp/yr at 90% confidence and fifty years 57 bp — against a central estimate
-of 46 bp. **No probabilistic line in this budget is demonstrable from an
-investor's own experience.** Evidence has to come from somewhere other than a track
+of 5.4 bp. **No probabilistic line in this budget is demonstrable from an
+investor's own experience**, and the gap is now more than an order of magnitude. Evidence has to come from somewhere other than a track
 record.
 
 ---
@@ -330,8 +340,8 @@ an upper bound. Every tax figure is US federal and jurisdiction-specific.
 
 **Open questions.**
 
-1. ~~*Which benchmark the factor line's capture term may be taken against.*~~ **Closed:
-   there is no capture term.** A capture fraction is an HML loading measured a second way
+1. **The factor line has no capture term, so it needs no benchmark for one.** A capture
+   fraction is an HML loading measured a second way
    ([Experiment 007](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one)),
    and a loading is taken against a factor rather than against a portfolio. What replaces
    it is open in a smaller way: **whether a loading estimated on 36 to 72 months of a
@@ -368,7 +378,7 @@ be retrieved are named on the pages that wanted them; the register is in
 2. **Every result carries a benchmark and a certainty class.** A number without both is
    not reportable.
 3. **Report probability of outperformance by horizon, never a point estimate of edge.**
-   "46 bp with a 0.79 thirty-year probability" is honest output; "+46 bp/yr" is not.
+   "5.4 bp with a 0.54 thirty-year probability" is honest output; "+5.4 bp/yr" is not.
 4. **Rank features by their effect on the budget.** Cost, tax and account selection is
    worth roughly 89 conditional basis points. Rebalancing policy is worth about 2.4
    probabilistic ones — less than the round-trip spread on a small-cap ETF. **The

@@ -108,7 +108,7 @@ SCALINGS: Final[tuple[Scaling, ...]] = ("leverage_matched", "unlevered")
 #: The recommendation under attack: 100% global equity plus a 30% financed trend overlay.
 RECOMMENDED_WEIGHT: Final = 0.30
 
-#: ``docs/the-plan.md`` § STRESS TESTING, every episode it names for which this panel
+#: The named stress episodes (docs/research/evidence-base.md), every one for which this panel
 #: could in principle hold data. 1998 is included because the plan names it.
 CRISIS_WINDOWS: Final[Mapping[str, tuple[str, str]]] = {
     "1929-32 great crash": ("1929-09", "1932-06"),

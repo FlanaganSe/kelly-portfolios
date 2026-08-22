@@ -21,7 +21,7 @@ randomness the generator seed is an explicit argument with a committed default.
   whose provenance this repository controls. Reads no market data.
 * :mod:`overlay_stress` — the same overlay attacked rather than priced: a joint stress
   surface over four correlated axes, a resampled test of the flat-drawdown result the
-  recommendation rests on, and the failure modes ``docs/the-plan.md`` names. Reads no
+  recommendation rests on, and the failure modes the charter names. Reads no
   market data; ``_overlay_stress_tables`` is the companion that touches the cache.
 * :mod:`gold_sleeve` — the arithmetic for the one candidate asset outside equity and
   cash this repository can reach: total return from a price level plus a stated carry,

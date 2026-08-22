@@ -219,9 +219,9 @@ reproducible.
 
 ### The bond leg — resolved 2026-08-17, and the source was already here
 
-This section previously read *"there is no investable bond total-return history in this
-repository"*. That was wrong in a way worth recording rather than quietly fixing: **two
-of the sources listed above already carried one.**
+**This repository does hold an investable bond total-return history, and it did before
+anyone went looking**: two of the sources listed above already carried one. Search
+`data-manifests/` before recording a source as absent.
 
 | Leg | Source | Coverage | Investable? | Status |
 | --- | --- | --- | --- | --- |
@@ -301,8 +301,8 @@ Four properties decide what may be quoted:
 
 ### Long-horizon and multi-country — acquired 2026-08-16
 
-Three sources this page previously listed as *failed acquisitions*. None of them was
-gone; all three had moved. Adapters, unit tests and manifests are in
+Three sources recorded here as *failed acquisitions* had merely moved. Adapters, unit
+tests and manifests are in
 `research/src/portfolio_edge/data/{macrohistory,shiller,goyal_welch}.py`.
 
 | Source | Coverage | sha256 (prefix) | What it is |
@@ -352,6 +352,29 @@ Regulations and Revenue Rulings cited in
 timescale of months and carry review triggers rather than a promise of currency.
 
 ---
+
+### The named stress episodes
+
+The episodes a stress test is expected to reach, and which instruments here can reach
+them. This list is the standing denominator: a stress result states which of these it
+covered and which it could not.
+
+**1929–1932 · 1973–1974 · the late-1970s inflation · 1987 · 1998 · 2000–2002 · 2008–2009 ·
+Q1 2020 · 2022**, plus recent sharp trend reversals.
+
+Coverage is uneven and the gaps are structural, not oversights. The French monthly files
+reach 1926 for US equity and 1990 for the regional legs. The rebuilt trend leg starts
+1934-07 because of a 96-month burn-in, so **no trend result reaches 1929–1932**. The gold
+panel is holdable only from 1975-01, so it reaches neither 1929–32 nor 1973–74 as an
+investable series. Fund-level Item B.5 begins 2019, so **no product result reaches
+anything before Q1 2020**.
+
+Two rules travel with the list. A synthetic stress is not a substitute for an episode and
+is labelled as one — and a univariate synthetic table may not be quoted as a worst case,
+because varying one axis at a time understates the fifth percentile by about 30%
+([capital efficiency §5b](capital-efficiency-and-breadth.md)). And a result should be
+re-read with its best decade, its strongest crisis, its best market and its best sleeve
+removed, one at a time.
 
 ## 3. What was tried and does not work
 

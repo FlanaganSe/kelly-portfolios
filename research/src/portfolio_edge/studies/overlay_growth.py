@@ -112,7 +112,7 @@ overlay beats simply levering the base to the same risk. At matched volatility
 
 Every figure this module produces must be read through (5). An overlay that raises
 growth over the *unlevered* base while lowering the portfolio's Sharpe ratio has
-bought its gain with leverage, and ``docs/the-plan.md`` requires that be labelled leveraged
+bought its gain with leverage, and the charter requires that be labelled leveraged
 beta rather than alpha.
 
 **What this module is not.** It is algebra about a stated model, in the tradition of
@@ -368,7 +368,7 @@ def _portfolio_volatility(inputs: OverlayInputs, weight: float) -> float:
 def matched_volatility_verdict(inputs: OverlayInputs, *, weight: float) -> OverlaySizing:
     """The overlay against the base levered to the same volatility — equation (5).
 
-    This is the control ``docs/the-plan.md`` makes mandatory: *"A strategy that beats
+    This is the control the charter makes mandatory: *"A strategy that beats
     VTI only by taking more equity beta must be labelled as leveraged beta, not
     alpha."* Because both portfolios are held at the same variance, the ``-V/2`` term
     is common and the comparison collapses to Sharpe ratios. ``growth_gain`` is
@@ -451,7 +451,7 @@ class MultiOverlay:
     the bracket is ``k``, the expression collapses to the single-sleeve value, and
     ``k`` copies of one strategy are one strategy.
 
-    The denominator's ``1 + (k - 1) rho_dd`` is why ``docs/the-plan.md`` insists on
+    The denominator's ``1 + (k - 1) rho_dd`` is why the charter insists on
     *effective* breadth rather than a count of tickers, and it is unforgiving: at
     ``rho_dd = 0.3``, ten sleeves buy ``10 / 3.7 = 2.7`` times one sleeve, not ten.
     **Correlation among the diversifiers, not their number, is what is being
@@ -545,7 +545,7 @@ def effective_breadth(*, count: int, mutual_correlation: float) -> float:
 
     The multiplier on the single-sleeve peak growth gain when every overlay has the
     same edge, volatility and mutual correlation. It equals ``k`` at zero correlation
-    and 1 at perfect correlation, and it is the quantity ``docs/the-plan.md`` means
+    and 1 at perfect correlation, and it is the quantity the charter means
     by effective breadth.
 
     It has no upper bound as ``rho_dd`` goes negative, which is a property of the

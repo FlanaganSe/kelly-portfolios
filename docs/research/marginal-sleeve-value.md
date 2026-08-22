@@ -98,7 +98,7 @@ at less than half its own 80%-power floor of **0.868 pp/yr**. The working is in
 [alternative sleeves audit §8.6](alternative-sleeves-audit.md); the two figures that matter
 are repeated here because this is the page whose cell they change.
 
-### What is NOT established, and the page previously overstated
+### What is NOT established
 
 Under pro-rata funding the credit is `sigma_p**2 (1 − beta)` per unit weight, so at
 `beta = 0` it equals **exactly `sigma_p**2`**:
@@ -111,10 +111,9 @@ Under pro-rata funding the credit is `sigma_p**2 (1 − beta)` per unit weight, 
 **At the frozen 10% reference weight the ceiling sits below the bar, so a perfect zero-beta
 asset would fail on the credit alone. At the specification's own 20% cap it does not.**
 
-This page previously concluded from the first column that *"the portfolio-level view is
-closed as a route to rescuing anything the standalone chain dismissed"*. **That closure is
-weight-dependent and does not survive this experiment's own cap**, and it is withdrawn as
-stated. Three limits on how much this design can settle, set out in
+**The portfolio-level view is not closed as a route to rescuing what the standalone chain
+dismissed.** That closure would be weight-dependent, and it does not survive this
+experiment's own cap. Three limits on how much this design can settle, set out in
 [search coverage](search-coverage.md) §1.1:
 
 - **The reference weight was frozen at 10% and the ceiling scales linearly in it.** The
@@ -266,10 +265,10 @@ statement about the base portfolio's equity share, not about the sleeves.
 
 ## Gold, tested
 
-This page previously recorded gold as untested and said its absence "biases the experiment
-toward finding no credit anywhere". **The bias was real, the direction was right, and the
-sentence it was defending is now falsified in its literal form and confirmed in its
-substance.** `as of 2026-08-17`, and **`exploratory` throughout** — no specification was
+Gold's absence from the frozen family did bias the experiment toward finding no credit
+anywhere. Tested, it clears admission comfortably and still fails on marginal value — so
+the bias was real and the conclusion it threatened survives. `as of 2026-08-17`, and
+**`exploratory` throughout** — no specification was
 frozen before these numbers were seen, so nothing here may be read as a twelfth entry in
 the Holm family.
 
@@ -343,8 +342,8 @@ The pegged window is reported and excluded, and **1975-01 — the first month th
 legal for the investor this repository models — is the window every verdict below is
 quoted on.** 1971-09 is reported beside it as context and is never the number to take away.
 
-**The distinction between those two starts is the largest single fact on this page, and
-this section previously led with the wrong one.**
+**The distinction between those two starts is the largest single fact on this page.**
+Quote the 1975-01 window; the earlier start is not a market price.
 
 | Window, net of GLDM's 0.10% | n | gold geometric | gold Sharpe | equity Sharpe |
 | --- | ---: | ---: | ---: | ---: |
@@ -419,7 +418,7 @@ On the holdable 1975-01 window the same figures at 10% depth are **−0.042 / +0
   −0.26%/month. **This is the one axis on which gold is unambiguously stronger than the
   sleeve this repository currently recommends.**
 
-Compounded inside each episode `docs/the-plan.md` names, Pink Sheet then LBMA:
+Compounded inside each [named stress episode](evidence-base.md#the-named-stress-episodes), Pink Sheet then LBMA:
 
 | Episode | n | equity | gold | within-window `rho` |
 | --- | ---: | ---: | ---: | ---: |
@@ -463,7 +462,7 @@ than gold. This page already records the same effect for the equity sleeves: it 
 statement about the base portfolio's equity share, not about the sleeve. **Both cells are
 also below the 0.30 bar.**
 
-**Read the first row against [the credit-ceiling table](#what-is-not-established-and-the-page-previously-overstated).**
+**Read the first row against [the credit-ceiling table](#what-is-not-established).**
 The ceiling at `beta = 0` is `sigma_p**2 · w`, and on the primary instrument gold's credit
 **is the ceiling, to three decimals**. This page's `cash_control` sat there too — but the
 control supplies nothing by construction, and gold is an asset someone can buy. **The

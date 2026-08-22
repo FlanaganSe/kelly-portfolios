@@ -326,21 +326,29 @@ REBALANCING_POLICY = EdgeComponent(
     ),
     benchmark=Benchmark.STATED_INDEX,
     certainty=Certainty.PROBABILISTIC,
-    low_bp=0.0,
-    central_bp=2.4,
-    high_bp=18.0,
+    low_bp=-62.9,
+    central_bp=-38.7,
+    high_bp=2.4,
     tracking_error_bp=27.0,
     conditions=(
-        "Requires that the components' true growth rates differ by less than the "
-        "portfolio's excess growth rate, and that turnover cost and tax stay below the "
-        "residual. Central is the 60/40 expected-log advantage at 30 years; high is its "
-        "median, which is larger because the mean is dragged down by runaway paths. The "
-        "tracking error is the effective annual figure that reproduces the exact "
-        "P = 0.691 at 30 years; the true noise is O(sqrt(T)), not O(T)."
+        "This line's own falsifier has fired and the central value is the measured "
+        "result, not the closed form. The equal-drift closed form gives +2.4 bp/yr and "
+        "is retained as `high` because it is the ceiling this line can reach: it "
+        "requires the components' true growth rates to differ by less than the "
+        "portfolio's excess growth rate. Over 1991-2025 they did not. US against "
+        "developed ex-US ran a drift gap of 4.34 pp/yr against a `gamma_star` of 12.5 "
+        "bp, a factor of 35, and the extended closed form predicts -70.5 bp/yr against "
+        "a realised -62.9. Central is the realised 60/30/10 portfolio figure over 420 "
+        "months; low is the worst realised pair. The tracking error is the effective "
+        "annual figure that reproduces P = 0.691 at 30 years; the true noise is "
+        "O(sqrt(T)), not O(T)."
     ),
     falsifier=(
-        "A drift gap above the excess growth rate; or realised turnover cost and tax "
-        "above the residual; or positive serial dependence in relative performance."
+        "FIRED. A drift gap above the excess growth rate, measured at ~35x on the "
+        "deciding pair (Experiment 003). The line is retained because the mechanism is "
+        "exact and the sign reverses when drifts converge -- on 1963-2020 sixteen-country "
+        "data the same arithmetic gives +17.9 bp/yr -- so this is a verdict about a "
+        "35-year window in which one region ran away, not about the mechanism."
     ),
 )
 

@@ -82,13 +82,13 @@ export const contractualRows: readonly ConfidenceRow[] = [
   {
     id: "vs-cheap-index",
     label: "The whole honest budget, against a cheap index",
-    edgeBp: 46.5,
+    edgeBp: 5.4,
     trackingErrorBp: 313,
     benchmark: "stated index",
-    probability10yr: 0.681,
-    probability30yr: 0.792,
-    ninetyPercentAt: "about 74 years",
-    note: "Read this as an upper bound on an upper bound: its rebalancing line has since been measured negative on real data, and its factor line's sign turns entirely on which HML premium is believed. The range around 46.5 bp runs from −28.7 to +98.5. It rose from 24.4 bp on 2026-08-17, when the factor line stopped multiplying a fund's loading by a capture fraction that is itself a loading.",
+    probability10yr: 0.522,
+    probability30yr: 0.538,
+    ninetyPercentAt: "far beyond any horizon worth stating",
+    note: "This is a coin flip, and saying so is the finding. The budget carries two probabilistic lines against a cheap index — a value tilt at +43.1 bp and a rebalancing line measured at −38.7 bp over 420 months — and they very nearly cancel. The range runs from −91.6 to +82.9, so the sign is not robust. Against this benchmark the repository can demonstrate nothing; what it can demonstrate is the contractual budget above, against the portfolio you would otherwise have owned.",
     source: recommendation,
   },
   {

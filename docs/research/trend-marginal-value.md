@@ -497,7 +497,7 @@ investable trend proxy "has one candidate and no fallback". **Both are now overs
   untested funds are not eleven fallbacks.** They are the population a re-specified experiment
   would draw from.
 
-### Fund-level facts that changed, and one this page had wrong
+### Fund-level facts, as of the latest census
 
 - **KMLM is under interim advisory agreements.** Krane Funds Advisors underwent a **change of
   control on 2026-06-23** — KFA Two Holdings acquired 50.1% from CICC USA — which assigned and

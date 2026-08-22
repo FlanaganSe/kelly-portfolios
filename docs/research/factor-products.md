@@ -566,202 +566,31 @@ Experiment 014 does not answer it.
 
 ## The US shelf as Experiment 002 framed it
 
-**Everything below is Experiment 002 and it is reproduced here exactly by Experiment 013.**
-It is kept because the comparator, the falsifier and the traps are stated here first and
-because it is the record of what a 2019Q4 frame sees. Read every count in this section as
-*"of the 44 products that census carried"*, not as *"of the US shelf"*.
-
-### What was run
+**Experiment 013 reproduces this experiment to zero difference in every figure**, so its
+results are not restated here; the corrected frame above is the live account. What the
+2019Q4 frame was, and what it saw:
 
 | Field | Value |
 | --- | --- |
-| Specification | [`exp_002_fund_exposure.yaml`](../../research/experiments/exp_002_fund_exposure.yaml), hash `b4c9a134e106…` |
-| Run kind | **exploratory**; does not consume the final holdout |
-| Ledger `run_id` | `fbe139abd9114abeb69e39fad8839f8e`. Every outcome, exposure, replication, correction and universe figure is **byte-identical** to the two earlier successful runs of the same hash; the differences are two added diagnostics |
-| Frame | SEC N-PORT **2019Q4**, 8,563 series. Follow-up 2025Q4, 12,552 series, used **only** to measure attrition |
-| Returns | N-PORT Item B.5 monthly total return per share class; 1,205 filings across 44 funds, already net of expenses and reinvested distributions |
-| Window | 2020-01…2025-12, **72 months**; nothing after 2025-12 was read |
-| Model | FF5 + UMD, French vintage pinned by raw sha256; cash from the **same French file as the factors**, so the intercept is interpretable as alpha |
-| Inference | Newey–West HAC at 6 lags; stationary block bootstrap, mean block **6 months frozen not tuned**, 10,000 resamples, resampling the return and the whole design jointly |
-| Seed | 20260812 |
+| Specification | [`exp_002_fund_exposure.yaml`](../../research/experiments/exp_002_fund_exposure.yaml), hash `b4c9a134e106…`, ledger `run_id` `fbe139abd9114abeb69e39fad8839f8e` |
+| Frame | SEC N-PORT **2019Q4**, 8,563 series; 2025Q4 read only to measure attrition |
+| Returns | N-PORT Item B.5 monthly total return per share class, 1,205 filings across 44 funds |
+| Window | 2020-01…2025-12, **72 months** |
+| Model | FF5 + UMD, French vintage pinned by sha256, cash from the same French file so the intercept is alpha |
+| Inference | Newey–West HAC at 6 lags; stationary block bootstrap, mean block 6 months frozen not tuned, 10,000 resamples, seed 20260812 |
+| Screen | 2,105 matched a mandate, 44 passed |
+| Outcome | 15 `exploratory`, 24 `rejected`, 5 `unresolved` |
 
 **The data path was gated before anything was believed.** Item B.5 reports `rtn1` as the
-*first* month of the reporting period; reading it backwards would shift every history by
-two months and leave every number looking plausible. So VTI, reconstructed from its own
+*first* month of the reporting period, so reading it backwards would shift every history
+by two months and leave every number looking plausible. VTI, reconstructed from its own
 filings, had to correlate at least 0.99 with the French market total return and show its
-worst month in 2020-03. It correlates **0.99926**, betas 0.9968 with R² 0.99852, worst
-month **2020-03 at −13.80%**.
+worst month in 2020-03. It correlates **0.99926**, beta 0.9968, R² 0.99852, worst month
+**2020-03 at −13.80%**. That gate still guards the corrected frame.
 
-### The screen: 2,105 to 44
-
-Frozen before any return was read, mechanical, with no "and peers" clause. Criteria apply
-in a fixed order and only the **first** failure is recorded, which is what makes the
-funnel add up.
-
-| Stage | Removed | Remaining | What went |
-| --- | ---: | ---: | --- |
-| 2019Q4 census | — | 8,563 | every series filing NPORT-P |
-| mandate regex | 6,458 | **2,105** | everything naming no factor mandate |
-| exclusion regex | 592 | 1,513 | international, global, income, allocation, emerging, dividend, bond, ESG, sector, leveraged, inverse |
-| **exchange-traded** | **1,374** | **139** | open-end mutual funds with no listed share class — including the three largest series in the frame |
-| minimum net assets ($1bn) | 92 | 47 | sub-billion ETFs |
-| maximum expense ratio (0.60%) | 1 | 46 | PDP at 0.62% |
-| inception cutoff (2016-12-31) | 1 | 45 | USMC |
-| mandate in the frozen map | 1 | **44** | ILCG, which changed objective inside the window |
-| complete return coverage | 0 | **44** | nothing; all 44 had all 72 months |
-
-**The exchange-traded criterion is by far the largest filter, and it is a decision about
-investability rather than quality.** Whatever this page concludes, it concludes about the
-*listed* shelf.
-
-Two structural facts about what survived. **The 44 are not 44 independent products** —
-IVW/SPYG, IVE/SPYV, IJK/MDYG, IJJ/MDYV, IJS/SLYV, IJT/SLYG each track one index under two
-sponsors, and IJH/SPMD and IJR/SPSM likewise: **sixteen funds are eight indices**, whose
-loadings agree to about 0.001 and which received the same status. **And the shelf is thin
-outside value and size**: 8 growth, 7 value, 5 mid-cap, 4 each small value, small growth,
-mid value and mid growth, 3 small-cap, 2 quality, 2 multifactor, and **1 momentum**. MTUM
-is the entire momentum shelf clearing a billion dollars and a 0.60% fee **inside this
-frame**; the corrected frame carries six momentum products.
-
-**One universe change is recorded rather than hidden.** The universe was rebuilt
-**before any return was examined** to add nine growth ETFs that had been failing the
-expense criterion only because nobody had looked their fees up — a gathering gap, not a
-screen result, and leaving it would have stripped growth mandates out systematically, a
-selection effect in exactly the direction that makes a value tilt look better. Six of the
-nine are in the final 44 and three of the six positive alphas are among them.
-
-### The exposure table
-
-OLS of the fund's monthly excess return on `Mkt-RF, SMB, HML, RMW, CMA, UMD`, HAC at 6
-lags, 72 observations. **Loading is sign-adjusted for the mandate** — a growth mandate is
-graded on a *negative* HML loading, marked `HML (−)`, because growth is the short leg of
-value and not an independent factor. **Shrunk** is the posterior mean under a fixed prior
-using each fund's own standard error. **Shortfall** is positive when the product lost more
-to its cheap replication than its fee premium explains.
-
-| Ticker | Mandate | ER % | Intended | Loading | 95% interval | Raw α | Shrunk | MDE₈₀ | Shortfall | Status |
-| --- | --- | ---: | --- | ---: | --- | ---: | ---: | ---: | ---: | --- |
-| VUG | growth | 0.03 | HML (−) | +0.284 | `[+0.207, +0.384]` | +2.25 | +1.23 | 3.19 | −4.19 | `exploratory` |
-| IWF | growth | 0.18 | HML (−) | +0.278 | `[+0.200, +0.378]` | +2.27 | +1.36 | 2.86 | −0.58 | `exploratory` |
-| IWY | growth | 0.20 | HML (−) | +0.302 | `[+0.207, +0.414]` | +3.09 | +1.45 | 3.74 | −1.39 | `exploratory` |
-| IJH | mid cap | 0.05 | SMB | +0.480 | `[+0.390, +0.582]` | −3.47 | −1.48 | 4.06 | −0.28 | `exploratory` |
-| SPMD | mid cap | 0.03 | SMB | +0.481 | `[+0.391, +0.582]` | −3.47 | −1.49 | 4.04 | −0.24 | `exploratory` |
-| VBR | small value | 0.05 | HML | +0.410 | `[+0.322, +0.480]` | −2.78 | −1.50 | 3.22 | −0.62 | `exploratory` |
-| IWN | small value | 0.24 | HML | +0.392 | `[+0.330, +0.464]` | −2.55 | −1.79 | 2.28 | +0.49 | `exploratory` |
-| IVE | value | 0.18 | HML | +0.302 | `[+0.175, +0.429]` | −2.27 | −0.95 | 4.13 | +0.19 | `exploratory` |
-| IUSV | value | 0.04 | HML | +0.310 | `[+0.184, +0.433]` | −2.18 | −0.93 | 4.07 | +0.06 | `exploratory` |
-| SPYV | value | 0.04 | HML | +0.303 | `[+0.175, +0.429]` | −2.14 | −0.89 | 4.14 | +0.23 | `exploratory` |
-| VLUE | value | 0.15 | HML | +0.393 | `[+0.269, +0.539]` | −2.40 | −0.66 | 5.71 | −0.32 | `exploratory` |
-| FTA | value | 0.58 | HML | +0.452 | `[+0.354, +0.553]` | −3.85 | −1.49 | 4.40 | −0.33 | `exploratory` |
-| IJJ / MDYV | mid value | 0.18 / 0.15 | HML | +0.411 | `[+0.287, +0.505]` | −2.96 / −2.90 | −0.91 / −0.89 | 5.26 | −0.56 / −0.57 | `exploratory` |
-| EZM | mid cap | 0.38 | SMB | +0.554 | `[+0.456, +0.677]` | −3.43 | −1.31 | 4.45 | −1.06 | `exploratory` |
-| IVW, IUSG, SPYG | growth | 0.18–0.04 | HML (−) | +0.207…+0.224 | contains 0.15 | +0.72…+1.06 | +0.34…+0.45 | ~4.0 | ≈0 | `unresolved` |
-| SPHQ | quality | 0.15 | RMW | +0.176 | `[+0.079, +0.296]` | −0.56 | −0.26 | 3.75 | −0.13 | `unresolved` |
-| JHMM | multifactor | 0.41 | HML | +0.212 | `[+0.127, +0.303]` | −3.60 | −1.66 | 3.78 | −0.11 | `unresolved` |
-| VB | small cap | 0.03 | SMB | +0.599 | `[+0.516, +0.684]` | −2.97 | −1.63 | 3.16 | **+2.89** | `rejected` (c) |
-| VTV | value | 0.03 | HML | +0.337 | `[+0.225, +0.471]` | −2.60 | −1.39 | 3.28 | **+2.57** | `rejected` (c) |
-| IJR / SPSM | small cap | 0.06 / 0.03 | SMB | +0.889 | `[+0.796, +0.953]` | −2.99 | −2.26 | 2.00 | +0.95 | `rejected` (c) |
-| IWD | value | 0.18 | HML | +0.350 | `[+0.228, +0.472]` | −3.63 | −2.10 | 2.99 | +0.63 | `rejected` (c) |
-| MTUM | momentum | 0.15 | UMD | +0.444 | `[+0.277, +0.562]` | −2.95 | −0.55 | 7.34 | +1.10 | `rejected` (c) |
-| QUAL | quality | 0.15 | RMW | +0.186 | `[+0.101, +0.247]` | −2.15 | −1.19 | 3.13 | +1.14 | `rejected` (c) |
-| TILT | multifactor | 0.25 | HML | +0.148 | `[+0.113, +0.171]` | −0.95 | −0.86 | **1.08** | −1.21 | `rejected` (a) |
-| IJK / MDYG / IJT / SLYG | mid & small growth | 0.16–0.18 | HML (−) | **−0.067** | contains 0 | −3.7…−4.3 | −1.7…−1.9 | ~4 | +1.4…+1.6 | `rejected` (a, c, d) |
-| VO, VOE, VOT, IWR, IWS, IWP, IWO, VBK, RPG, SLYV, FTC | various | | | | | | | | | `rejected` |
-
-**Four "growth" products delivered a positive HML loading.** IJK, IJT, SLYG and MDYG have
-sign-adjusted loadings of −0.067, meaning a raw HML loading of **+0.067**: graded against
-the short leg of value and tilted, weakly, towards value. That is an exposure-delivery
-failure and it is what clause (a) exists to catch.
-
-**Rolling loadings are stable almost everywhere.** Thirty-seven 36-month windows per fund;
-only RPG (twelve sign changes), VOT (two) and FTC (one) change sign at all. TILT's rolling
-loading moves over a range of 0.058 across six years, the tightest on the shelf.
-
-### Statistical alpha versus implementation value
-
-The specification forbids collapsing these. **A fund can be worth owning with zero alpha
-if it delivers a wanted exposure cheaply; a positive alpha over a short history is not
-evidence of skill.** Four cases make it concrete.
-
-- **VUG.** Shrunk alpha +1.23 and it beat its cheap replication by 4.19 pp/yr. Both
-  numbers are the same fact and neither is skill: because a fund is never part of the
-  basis that replicates it, **VUG's replication degenerates to VTI at weight 1.000**, so
-  its "shortfall" is the realised excess return of large-cap growth from 2020 to 2025.
-  *Statistical conclusion: none. Implementation conclusion: VUG delivered a −0.284 HML
-  loading stably at 3 bp.*
-- **TILT.** The only genuinely powered alpha here — HAC standard error **0.38 pp/yr**
-  against a median of 1.44, MDE₈₀ **1.08** against a median of 4.02, shrinkage factor
-  0.913 because it barely needs shrinking. Raw alpha −0.95 on a 0.25% fee, and it beat its
-  replication by 1.21. **`rejected` anyway on clause (a): HML loading +0.148 against a
-  0.15 threshold, a miss of 0.002**, on an interval that contains the threshold.
-- **IJH and SPMD.** Same index, loadings +0.480 and +0.481, alphas −3.47 both, fees 0.05%
-  and 0.03%. *Statistical conclusion: none — a −3.47 alpha against a 4.05 detection
-  threshold is an unmeasured quantity. Implementation conclusion: mid-cap exposure is
-  available at 3 bp with no measurable shortfall.*
-- **EZM, FTA, JHMM.** Fees of 0.38%, 0.58% and 0.41% — the three dearest funds not
-  rejected — with **negative** shortfalls. **A fee comparison is not a cost comparison**,
-  and this is the direction usually forgotten.
-
-The reverse case is the common one. **27 of 44 products have a positive shortfall and 22
-exceed the 0.50 pp/yr clause, while the largest fee premium any product carries over its
-own replicating basis is 0.55 pp/yr and the median is 0.12.** The biggest shortfalls — VB
-+2.89, VBK +2.84, VOT +2.60, VTV +2.57 — are five to a hundred times any fee difference.
-**Whatever separates these products from cheap broad funds over this window, it is not the
-expense ratio.**
-
-### The falsifier, and why a *t*-statistic is not part of it
-
-Verbatim, frozen before any return was read: a fund is rejected when **any** of (a) its
-intended loading is below 0.15; (b) that loading's sign flips between the fixed halves;
-(c) its tracking difference against a cheap broad fund plus a combination approximating
-its exposures is worse than its expense-ratio advantage by more than 0.50 pp/yr; or (d)
-its total realised cost of ownership exceeds 1.0 pp/yr above the broad-market comparator
-without a corresponding exposure. **"A t-statistic on residual alpha below 2 is NOT a
-falsifier: it usually means the sample cannot identify a small residual return, not that
-the fund is useless."**
-
-**A *t*-rule would not even be conservative here, which is what is usually missed: 26 of
-the 44 primary alphas already have |*t*| ≥ 2, and 24 of those 26 are negative.** Reading
-*t* as the verdict would not kill the shelf for being unmeasurable; it would convict most
-of it of a large negative residual that 72 months cannot separate from model misfit.
-
-Three boundary cases decide how the statuses read. **`unresolved` is a statement about the
-interval, `rejected` about the point estimate** — TILT at +0.148 `[+0.113, +0.171]` is
-`rejected` while IVW at +0.224 `[+0.141, +0.328]` is `unresolved`, both intervals
-containing the threshold and the point estimate breaking the tie in opposite directions.
-**Clause (b) fired once**, on FTC, whose loading is indistinguishable from zero anyway.
-**Clause (d) never fired alone** — all eight firings are on funds that had already fired
-(a) and (c), because (d) requires a missing exposure by construction.
-
-### The multiple-testing family
-
-**The family is 44 funds × 3 specifications = 132 alpha tests**, not the specification
-anyone chose to report: CAPM, FF3 and FF5+UMD are all estimated and all 132 *p*-values
-enter the correction, because a residual appearing in one specification and not the others
-is not a finding.
-
-| Correction | Rejections of 132 |
-| --- | ---: |
-| Uncorrected at 0.05 | 56 |
-| **Benjamini–Hochberg at 0.10** | **54** |
-| **Holm–Bonferroni** | **5** |
-| BH, family padded to every mandate-matching series × 3 = 6,315 | 2 |
-| Holm, padded family | **0** |
-
-**BH assumes independence and this family has almost none** — three nested specifications
-per fund, the same six factors, the same 72 months, eight pairs of funds on an identical
-index — so the artifact itself calls the BH count "an OPTIMISTIC bound and Holm the
-defensible one". **Holm leaves five tests, all negative, and IJR and SPSM are the same
-index, so five tests are three products.** Padding with *p* = 1 for the 6,183 never
-regressed cannot create a rejection and strictly tightens both corrections; it leaves 2
-and 0.
-
-**Exposure is the family that survives.** The intended-loading tests are a separate
-44-member family: 37 reject uncorrected and **38 under BH**. **That asymmetry — 38 of 44
-loadings against 5 of 132 alphas under a defensible correction — is the whole result in
-two numbers.** It is also a weaker claim than the falsifier's, which asks for a loading of
-0.15 rather than merely one distinguishable from zero.
-
+**Read every count in this section as "of the 44 products that census carried".** The
+comparator, the falsifier and the traps are stated once, for all five experiments, under
+[the comparator, shrinkage, and two traps](#the-comparator-shrinkage-and-two-traps).
 ---
 
 ## The ex-US shelf

@@ -271,7 +271,7 @@ const disciplined: PortfolioCandidate = {
   grossExposurePercent: 100,
   benchmark: {
     label: "The portfolio you would otherwise have owned",
-    why: "This is a different benchmark from an index, and the two may never be added. Against a cheap index the same discipline is worth about 46 bp against 313 bp of tracking error.",
+    why: "This is a different benchmark from an index, and the two may never be added. Against a cheap index the same discipline is worth about 5.4 bp against 313 bp of tracking error, which is indistinguishable from zero.",
   },
   priced: [
     {
@@ -365,7 +365,7 @@ const disciplined: PortfolioCandidate = {
       trackingErrorBp: 313,
       growthBp: null,
       horizonNote:
-        "P(ahead at 30 years) = 0.792; 0.681 at ten years; about 74 years to 90% confidence. This is an upper bound on an upper bound.",
+        "P(ahead at 30 years) = 0.538; 0.522 at ten years. There is no horizon at which this becomes demonstrable, because the edge and the noise grow together.",
       certainty: "risk-premium",
       status: null,
       source: decomposition,
@@ -377,7 +377,7 @@ const disciplined: PortfolioCandidate = {
   ],
   mayUnderperform: [
     "Every line but the 49 bp fee reduction is conditional. Some readers have none of the conditions.",
-    "Against a cheap index rather than your own past behaviour, the same work is 46 bp against 313 bp of tracking error, and 30 years is not long enough to demonstrate it.",
+    "Against a cheap index rather than your own past behaviour, the same work is 5.4 bp against 313 bp of tracking error, and no horizon is long enough to demonstrate it.",
   ],
   failureModes: [
     {

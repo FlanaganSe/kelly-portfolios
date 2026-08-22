@@ -19,25 +19,32 @@ described as market data.
 
 ## Where the research has got to
 
-`as of 2026-08-12`. Twelve experiment families across 33 ledgered executions of **15
-distinct specifications**. Fifteen is the number a later trial count starts from, not 33 —
-and it is an upper bound, because two of those specifications are one search.
+`as of 2026-08-22`. Seventeen experiment families across 41 ledgered runs of **21 distinct
+specifications**. Twenty-one is the number a later trial count starts from, not 41 — and it
+is an upper bound, because several of those specifications re-run an earlier falsifier on
+data it had already spent. Recount rather than trusting this sentence:
+`cd research && uv run python -m portfolio_edge.reporting.programme_status`.
 
 **No sleeve was promoted.** Hypotheses are `rejected` against falsifiers frozen before any
 result was seen: rebalancing as a source of return, and the CMA and RMW factor premia. Two
-factors reached `exploratory` on pooled cross-region evidence — value at +4.7 pp/yr and
-momentum at +7.3 — and both are gross, long-short and not investable.
+factors reached `exploratory` on pooled cross-region evidence — value at +4.74 pp/yr and
+momentum at +7.33 — and both are gross, long-short and not investable.
 
-**The one result worth stating plainly:** up to **roughly 110 basis points a year** is
+**The one result worth stating plainly:** up to **roughly 109 basis points a year** is
 available against the portfolio you would otherwise have owned — fund cost, fund structure,
 tax-lot method and account placement — because that edge is contractual rather than
 statistical. **It is conditional**: only the ~49 bp fee line requires nothing but currently
 holding an expensive fund, and for a reader already in cheap index funds in one tax-deferred
-account the honest figure is close to zero. Against a cheap index the whole honest budget is
-about **46 bp against 313 bp of tracking error — a 79.2% chance of being ahead after thirty
-years**, and about 74 years to be 90% sure. Tracking error, not edge size, is what decides
-that. (The 46 bp figure rose from 24.4 on 2026-08-17, when the factor line stopped
-multiplying a fund's loading by a capture fraction that is itself a loading.)
+account the honest figure is close to zero.
+
+**Against a cheap index, this repository can demonstrate nothing, and that is the second
+result worth stating plainly.** The budget there is **5.4 bp against 313 bp of tracking
+error — a 54% chance of being ahead after thirty years**, which is a coin flip, with a
+range from −92 to +83 bp. Two probabilistic lines nearly cancel: a value tilt at +43.1 bp
+and a rebalancing line measured at **−38.7 bp/yr**
+([Experiment 003](docs/research/rebalancing-policy.md)). Tracking error, not edge size,
+is what decides that: the same work is near-certain against your own counterfactual at
+41 bp of tracking error and undemonstrable against an index at 313.
 
 **And the null result is partly a property of where the search has looked.** Several of the
 instruments used here have measured detection floors above the effect size that would

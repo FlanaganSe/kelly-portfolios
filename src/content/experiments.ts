@@ -632,18 +632,18 @@ export const experiments: readonly Experiment[] = [
  * verifies these directly from `research/ledger.jsonl`.
  */
 export const ledgerSummary = {
-  entries: 93,
-  runs: 33,
-  distinctSpecifications: 15,
-  experimentFamilies: 12,
-  runsRecordingResultsViewed: 26,
+  entries: 116,
+  runs: 41,
+  distinctSpecifications: 21,
+  experimentFamilies: 17,
+  runsRecordingResultsViewed: 33,
   runsConsumingTheFinalHoldout: 0,
   terminalOutcomes: [
     {
       status: "unresolved" as const,
-      runs: 6,
+      runs: 9,
       which:
-        "Phase 1; Experiment 001; Experiment 007's superseded specification; Experiment 010, three executions of one specification",
+        "Phase 1; Experiment 001; Experiment 007's superseded specification; Experiment 010, three executions of one specification; Experiment 011; Experiment 012, two executions of one question",
     },
     {
       status: "rejected" as const,
@@ -653,18 +653,18 @@ export const ledgerSummary = {
     },
     {
       status: "exploratory" as const,
-      runs: 11,
+      runs: 15,
       which:
-        "Experiment 002, three executions of one specification; Experiments 005 and 006; Experiments 008 and 009, three runs each",
+        "Experiments 002, 008 and 009, three executions each; Experiments 005 and 006; Experiment 013, two executions; Experiments 014 and 015",
     },
   ],
   noTerminalStatus: {
-    runs: 7,
+    runs: 8,
     which:
-      "3 failed — a parser table-name error, a clause-(d) verification guard refusing a run, and a NaN that is not JSON-compliant — and 4 abandoned",
+      "3 failed — a parser table-name error, a clause-(d) verification guard refusing a run, and a NaN that is not JSON-compliant — and 5 abandoned",
   },
-  asOf: asOf("2026-08-12"),
-  note: "Fifteen, not thirty-three, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Fifteen is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent and the two are one search of ten sleeves.",
+  asOf: asOf("2026-08-22"),
+  note: "Twenty-one, not forty-one, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Twenty-one is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent, and because Experiments 013, 014 and 015 re-run an earlier falsifier on data it had already spent rather than asking a new question.",
   source: {
     label: "Portfolio edge research framework, the ledger counted rather than described",
     docPath: "docs/research/portfolio-edge-research-framework.md",

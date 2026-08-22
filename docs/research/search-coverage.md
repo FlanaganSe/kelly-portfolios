@@ -1,6 +1,6 @@
 # Where the search has looked, and why the null result is partly self-inflicted
 
-**Question.** Twelve experiment families have run and nothing is promoted. Is that a
+**Question.** Seventeen experiment families have run and nothing is promoted. Is that a
 finding about markets, or a finding about the search?
 
 **Decision it informs.** What round two tests, and which of the programme's existing
@@ -117,7 +117,7 @@ same way — and the study says so in its own text rather than leaving it to thi
 makes it worth recording here is that the measurement was taken **because the US answer
 might not have transferred**: HML is three times larger outside the United States, so
 assuming SMB behaved the same way would have been a search failure of exactly the kind
-[§2](#2-what-has-never-been-tested) catalogues. It did transfer, and that is now a
+[§2](#2-the-universe-and-how-much-of-it-has-been-searched) catalogues. It did transfer, and that is now a
 measurement rather than an assumption.
 
 **The consequence for round two is narrow and useful:** no further experiment on these
@@ -254,52 +254,62 @@ in this repository that used the 2019Q4 file alone, and it was the first one wri
 
 ---
 
-## 2. What has never been tested
+## 2. The universe, and how much of it has been searched
 
-The programme has run twelve experiment families on **three equity regions and cash**. It
-has never touched the following, and each is a place a whole-portfolio effect could live.
-**One row has now closed and is kept rather than deleted**, because how it closed — six
-sources called absent that were published, the last of them already sitting in
-`data-manifests/` — is the most transferable thing on this page.
+The denominator. Eight families were named at the outset; the programme has run
+seventeen experiment families, almost all of them inside two of the eight. This table is
+the honest ratio of searched to searchable, and it is the reason the null result is
+mostly a fact about coverage.
+
+| Family | Named at the outset | Searched | Status |
+| --- | --- | --- | --- |
+| **A. Equity factor premia** | value, momentum, quality, profitability, investment, size, size×quality, low beta, multifactor integration, shareholder yield and buybacks, earnings revisions, PEAD, accruals, net issuance, short- and long-term reversal, equal weighting, concentrated vs diluted factor portfolios, international and emerging implementations | HML, UMD, RMW, CMA, SMB on three regions; BAB, STR, LTR, buybacks, net issuance, QMJ, accruals full-sample and post-publication | **Partly.** Value and momentum `exploratory`; RMW and CMA unresolvable at this floor; SMB unsignable. Seven further families measured and every post-publication estimate sits below its own detection floor. **PEAD is published by neither French nor AQR and was never tested.** Earnings revisions, size×quality, integration-vs-sleeves, and simple-sort-vs-continuous-signal are untouched |
+| **B. Trend and managed futures** | signal speeds and ensembles, breadth across four asset classes, programs with and without equity-index futures, volatility scaling, direct models vs replication, single- vs multi-manager, crisis behaviour, whipsaw, inflation regimes, collateral yield, notional and vol target, tax | one vendor index, five then fifteen listed products, and 46 funds' filed net returns | **Deeply.** Three independent instruments agree on sign. Signal speed, ensembles and direct implementation are untested; every result is on someone else's signal |
+| **C. Cross-asset alternative risk premia** | cross-asset value, carry, momentum, defensive, factor momentum, macro momentum, curve and term premia, currency and commodity value/carry/momentum, credit, market-neutral multifactor, global macro, VRP, tail risk | AQR Century of Factor Premia at the aggregate level; VRP through PUT and BXM | **Barely.** Rejected **on cost** — gross long-shorts at 2–5% vol against a ~1.5% retail wrapper, needing ~5× notional — not on decay. No individual premium was tested on its own terms |
+| **D. Capital efficiency and portable alpha** | return stacking, financing, collateral, margin, portable alpha | eight wrappers audited from filings; the funding-rule algebra derived and measured | **Well, and the finding is the largest on the page**: the funding rule moves a sleeve's hurdle by ~2.44 pp/yr, containing nothing about the sleeve |
+| **E. Commodities, gold, inflation** | physical gold, gold futures, miners, diversified commodities, commodity trend/carry/value, inflation swaps, TIPS, breakevens, resource equities, collateral | gold on 618 holdable months and through two wrappers; commodities via AQR CLR; TIPS against nominals | **Partly.** Gold passes admission and is dominated; commodities pass and are dominated; TIPS are inside the nominal engine. **Commodity trend, carry and value as separate signals, miners, breakevens and resource equities are untouched** |
+| **F. Event-driven and structural** | merger arb, convertible arb, equity market neutral, closed-end discounts, spin-offs, index reconstitution, cat bonds, securities lending, volatility selling, put writing, covered calls, defensive overlays, dispersion, direct indexing | cat bonds, merger arb, closed-end funds, lending, direct indexing, dividend, REITs, buffer, bitcoin | **Partly.** Cat bonds are the only pass and are vehicle-constrained. **Convertible arb, equity market neutral, spin-offs, index reconstitution and dispersion were never mentioned** |
+| **G. Illiquid and private markets** | private equity, venture, private credit, direct lending, real estate, infrastructure, secondaries, interval and tender-offer funds | nothing | **Never started, and never recorded as skipped.** The largest untouched family. It needs the stale-pricing, smoothing, backfill, leverage, carry, dispersion, lockup and PME corrections the outset already listed |
+| **H. Exploratory** | ML stock selection, nonlinear interactions, alternative data, sentiment, insider and congressional trading, options-derived signals, crypto momentum/carry/value/network, capacity-limited microcap, concentrated systematic, tactical valuation, dynamic factor timing, country and industry momentum | spot bitcoin only | **Barely.** Thirteen of fourteen untouched. A higher evidence burden is not a reason not to look |
+
+**Two families carry almost the whole programme.** A and B account for fourteen of the
+seventeen experiment families. C, G and H — three of the eight — hold one tested item
+between them. A null over that distribution is a statement about where the light was
+pointed.
+
+### What has never been tested, across families
 
 | Never tested | Why it is absent | What it would need |
 | --- | --- | --- |
-| **Joint portfolio construction** — market weight, equal weight, inverse volatility, constrained minimum variance, linear-shrinkage minimum variance, ERC, compared on identical point-in-time inputs | Designed in the framework with comparators and falsifiers. Blocked by [decision 0004](../decisions/0004-no-sleeve-promoted.md) on the grounds that "step 6 combines sleeves and there are no promoted sleeves" | **Nothing.** The reasoning is circular: a construction tournament compares *weighting methods* on assets that already exist. It does not need a promoted sleeve |
-| **Any asset outside equity and cash** — investable bonds, TIPS, credit | **CLOSED 2026-08-17.** Gold left this row that day ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)); commodities were already held via AQR CLR; REITs left it with VNQ, SCHH and USRT tested from their own Form N-PORT returns ([alternative sleeves audit §5](alternative-sleeves-audit.md)); and **bonds, TIPS and credit left it last** ([§8](alternative-sleeves-audit.md)). The bond leg is now two series that are never spliced: Goyal–Welch `ltr` and `corpr`, **1,200 months of measured long-Treasury and long-corporate total return from 1926-01**, and eighteen bond and TIPS ETFs' own Item B.5 returns over **79 common months from 2019-09**. The `GS10` proxy is superseded as a measurement and the substitution is material: Experiment 010's bond cell moves from −0.328 to −0.136 pp/yr pro rata and from +0.258 to +0.450 financed. **Bitcoin and the buffer family were never in this row and should have been** — see the note below | Nothing further. **This row was a search failure and not a data failure, and the bond leg is the sixth and worst instance**: `ltr` and `corpr` were already downloaded, parsed and manifested in this repository, and no experiment had read them |
-| **Any equity market's history but the US at long horizon** | Still untested, but no longer blocked. The instrument was acquired on 2026-08-16: the Jordà–Schularick–Taylor panel gives 16 countries of annual nominal equity, bond, bill and housing returns with consumer prices, 1870–2020 ([evidence base §2](evidence-base.md)). What it already shows is that **−50.3% is nowhere near a bound**: 15 of 16 countries have a worse real annual drawdown than the US even inside the same 1963-onward window | An experiment, not an acquisition |
-| **Any conditional or dynamic allocation** — valuation-conditioned equity share, regime conditioning, trend applied to the portfolio rather than as a sleeve | Never proposed. The Goyal–Welch data built for exactly this had 404'd at the recorded URL — it had **moved, not disappeared**, and was landed on 2026-08-16 along with Shiller's CAPE file | An experiment, not an acquisition |
-| **Concentration** | Every sleeve tested is a diversifier or a tilt. **This row's stated reason was wrong and is corrected**: the equity-share corner and securities concentration are different corners, and the variance penalty for concentration is measured at **0.17 pp/yr at twenty-five names** ([capital efficiency §8](capital-efficiency-and-breadth.md)). The objective is close to *indifferent* above ~25 names; the real argument is return skewness, which `gamma_star` does not contain | A cross-sectional skewness test, which no detection floor here could resolve |
-| **Delivered exposure from a fund's holdings** | Named as the next experiment in the framework and not run. Every exposure figure here comes from a return regression | N-PORT holdings, already held |
-| **Leverage and financing** | Correctly deferred — it sizes an edge and there is no edge | Contract-level futures data |
-| **After-tax anything** | No experiment holds a tax lot, so none may price a realisation | Lot-level modelling |
+| **Joint portfolio construction** — market weight, equal weight, inverse volatility, constrained minimum variance, linear-shrinkage minimum variance and ERC compared on identical point-in-time inputs | It was designed in the framework with comparators and falsifiers, then blocked by [decision 0004](../decisions/0004-no-sleeve-promoted.md) because "step 6 combines sleeves and there are none" | **Nothing.** A construction tournament compares *weighting methods* on assets that already exist and needs no promoted sleeve. [Decision 0009](../decisions/0009-blocks-lifted-and-closures-rescoped.md) lifts the block |
+| **Leverage and financing as a research question** | Deferred on the grounds that it "sizes an edge and there is none" | **Nothing, and the deferral was the costly one.** Whether a sleeve *has* an edge depends on its funding rule, and the funding rule is what the deferral forbade. Gold's marginal contribution swings −0.395 → +0.182 pp/yr on the funding rule alone, against a 0.30 bar |
+| **Any conditional or dynamic allocation** — valuation-conditioned equity share, regime conditioning, trend applied to the portfolio rather than as a sleeve | Never proposed | An experiment. The Goyal–Welch and Shiller instruments are held |
+| **Concentration** | Every sleeve tested is a diversifier or a tilt. The variance penalty is measured at **0.17 pp/yr at twenty-five names**, so the objective is near-indifferent above ~25 and the real argument is return skewness, which `gamma_star` does not contain ([capital efficiency §8](capital-efficiency-and-breadth.md)) | A cross-sectional skewness test. No detection floor here resolves it |
+| **Whether a fund's 36–72-month loading forecasts the next 36–72** | Named as open on three pages and owned by none | **Nothing — this is the cheapest unrun experiment in the repository.** N-PORT Item B.5 gives 78 months across 109 funds and is already held. It is the gating condition on the value tilt in the framework's own design map |
+| **Delivered exposure from a fund's holdings** | Named as the next experiment and not run. Every exposure figure here comes from a return regression | N-PORT holdings, already held |
+| **Any equity market's history but the US at long horizon** | No longer blocked — the Jordà–Schularick–Taylor panel gives 16 countries, 1870–2020 ([evidence base §2](evidence-base.md)). It already shows **−50.3% is nowhere near a bound**: 15 of 16 countries did worse inside the same 1963-onward window | An experiment, not an acquisition |
+| **After-tax anything, at the lot level** | No experiment holds a tax lot, so none may price a realisation | Lot-level modelling |
 
-### The row that was missing from this table
+### The search failure that recurs
 
-**Until 2026-08-17 this table listed what the programme had not tested among things it
-had thought of, and the largest gap was in what it had not thought of.** The audit had
-covered 69 factor ETFs, 15 managed-futures ETFs, 8 capital-efficient overlays,
-catastrophe bonds, merger arbitrage, closed-end funds, option-income funds, commodities
-and gold — and had **never once mentioned SCHD**, the most widely recommended ETF in
-retail investing, nor REITs, nor the buffer family, nor spot bitcoin. The universe it
-searched came from `docs/the-plan.md` §F, and **every family §F names is exotic.** All
-four are now audited ([alternative sleeves audit §§4–7](alternative-sleeves-audit.md)),
-none is promoted, and the four fail for four different reasons — which is the evidence
-that the omission was costing information rather than merely looking careless.
+Six sources were recorded as unavailable and were published the whole time:
+Goyal–Welch, Shiller, gold, French's `RlEst` industry return, FRED's bitcoin price, and —
+worst — the bond total-return leg, which was **already downloaded, parsed, hashed and
+manifested in this repository** while every published bond figure came from a modelled
+`GS10` proxy.
 
-**Two of the four needed a source this table would have called absent, and neither was.**
-French's 49-industry file carries a documented real-estate equity total return from
-1926-07 and FRED carries a bitcoin price from 2014-12. **That is the fourth and fifth
-time a source recorded here as unavailable turned out to be published**, after
-Goyal–Welch, Shiller and gold.
+A seventh instance is not a data failure but an imagination one. The audit had covered 69
+factor ETFs, 15 managed-futures ETFs, 8 capital-efficient overlays, catastrophe bonds,
+merger arbitrage, closed-end funds, commodities and gold — and had never mentioned SCHD,
+REITs, the buffer family or spot bitcoin, because the list it was working from contained
+only exotic strategies. All four are now audited, none is promoted, and **the four fail
+for four different reasons**, which is the evidence that the omission cost information
+rather than merely looking careless.
 
-**The sixth, later the same day, is the one that should change behaviour.** The bond leg
-this table called absent is Goyal–Welch `ltr` and `corpr`, 1,200 months of measured
-long-Treasury and long-corporate total return from 1926-01 — and they were not merely
-published, they were **already downloaded, parsed, hashed and manifested here**, read by
-one page for one table while every bond figure the programme published came from a
-modelled `GS10` proxy. The rule in §5 item 4 stands and now has six instances behind it,
-with a stronger form: before pricing an acquisition, check whether the thing is
-published — **and before that, check whether it is already in `data-manifests/`.**
+**The rule, in its strongest form: before pricing an acquisition, check whether the thing
+is published — and before that, check `data-manifests/`. Then check the *reasoning* of
+any decision that appears to forbid a source**, because a rule written against one
+failure mode does not reach an asset that cannot exhibit it.
 
 ---
 

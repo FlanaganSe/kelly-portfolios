@@ -422,11 +422,10 @@ net contribution = bond notional × (bond excess return over cash − implied fi
 **The financing spread was measured here against the wrong benchmark, and the correction
 roughly halves the hurdle.** `as of 2026-08-16`.
 
-This page previously read: *Fleckenstein and Longstaff, on 6,943 daily observations of CME
-5-year Treasury note futures 1991–2018, "the average funding basis is 58.70 basis points"
-— positive in all 28 years, so a 90/60 fund needs 92.0 bp/yr of Treasury excess return
-before the overlay contributes.* **The 58.70 bp is real and it is not the number a fund
-pays.** Fleckenstein and Longstaff define the funding basis against the **term bilateral
+**Do not benchmark a fund's financing on Fleckenstein and Longstaff's 58.70 bp.** That
+figure — 6,943 daily observations of CME 5-year Treasury note futures, 1991–2018, positive
+in all 28 years — is real, and it is not the number a fund pays. They define the funding
+basis against the **term bilateral
 *special-collateral* repo rate on on-the-run 5-year notes**, and say why at p. 5062:
 *"5-year Treasury notes often can be financed at special repo rates that are substantially
 below general collateral repo rates."* That is a dealer's spread over its own cheapest
@@ -448,7 +447,7 @@ Against the benchmarks a fund actually finances at:
 
 | Financing input | 90/60 break-even |
 | --- | ---: |
-| 58.70 bp, as this page previously stated | 92.0 bp/yr |
+| 58.70 bp (special-collateral repo — **not a rate a fund pays**) | 92.0 bp/yr |
 | **15 bp (OIS, the right benchmark)** | **48.3 bp/yr** |
 | 33 bp (against bills) | 66.3 bp/yr |
 
@@ -483,8 +482,7 @@ years of data.**
 
 **NTSX's own record does not settle it either way.** From its own filed prospectus, for
 periods ending **2024-12-31**, since inception 2018-08-02: **11.58%/yr against 8.86% for the
-60/40 composite and 13.99% for the S&P 500 alone.** (This page previously gave 11.38 / 8.81 /
-13.35 with no date; the filed figures are above, `as of 2026-08-17`.) The 60/40 comparison
+60/40 composite and 13.99% for the S&P 500 alone**, `as of 2026-08-17`. The 60/40 comparison
 is **not risk-matched**, and outperforming a lower-risk portfolio in an equity bull market
 is precisely the trap
 [decision 0003](../decisions/0003-cheap-broad-market-control.md) exists to catch. It made

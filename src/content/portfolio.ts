@@ -579,7 +579,7 @@ export const whatThisIsNot: readonly { readonly claim: string; readonly detail: 
   {
     claim: "Not a claim of outperformance against an index",
     detail:
-      "Against a cheap index the whole honest budget is about 46 bp against 313 bp of tracking error — a 0.792 probability of being ahead after thirty years.",
+      "Against a cheap index the whole honest budget is about 5.4 bp against 313 bp of tracking error — a 0.538 probability of being ahead after thirty years, which is a coin flip.",
   },
   {
     claim: "Not net of everything",

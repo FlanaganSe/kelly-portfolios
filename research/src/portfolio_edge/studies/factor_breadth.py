@@ -2,7 +2,7 @@
 
 [Decision 0005](../../../../docs/decisions/0005-factor-premia-closed-on-public-data.md)
 closed factor work "on public data" on the strength of five families — HML, RMW, CMA,
-UMD, SMB. ``docs/the-plan.md`` §A lists roughly eighteen. Seven of the untested ones
+UMD, SMB — against the eighteen in :data:`EQUITY_FACTOR_FAMILIES`. Seven of the untested ones
 have free monthly data already reachable from the adapters in
 :mod:`portfolio_edge.data`: betting against beta, quality, short- and long-term
 reversal, accruals, net issuance, and the unlevered low-beta decile spread. This
@@ -77,6 +77,31 @@ __all__ = [
 ]
 
 MONTHS_PER_YEAR: Final = 12
+
+#: The equity factor families this programme set out to cover, transcribed from the
+#: working plan that named them so that the denominator of every breadth claim lives in
+#: the repository rather than in an untracked file. Five have been tested (value,
+#: momentum, profitability, investment, size); the rest are the gap this module scores.
+EQUITY_FACTOR_FAMILIES: Final[tuple[str, ...]] = (
+    "value",
+    "momentum",
+    "quality",
+    "profitability",
+    "investment / conservative growth",
+    "size",
+    "size conditioned on quality or value",
+    "low beta / defensive / low volatility",
+    "multifactor integration",
+    "shareholder yield and buybacks",
+    "earnings revisions",
+    "post-earnings-announcement drift",
+    "accruals",
+    "net issuance",
+    "short-term reversal",
+    "long-term reversal",
+    "equal weighting",
+    "international and emerging-market implementations",
+)
 
 #: One-sided 5% critical value and the 80%-power quantile, the same pair
 #: :mod:`portfolio_edge.experiments.exp_010_marginal_sleeve_value` uses, so every

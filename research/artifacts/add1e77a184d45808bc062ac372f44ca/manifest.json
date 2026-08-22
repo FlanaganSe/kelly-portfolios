@@ -1,0 +1,49 @@
+{
+  "files": [
+    {
+      "kind": "json",
+      "path": "add1e77a184d45808bc062ac372f44ca/result.json",
+      "sha256": "93478177b179b9516c3f527f92e4b6c8599d8d3419ddb6bfa2cfad678b6bd96d",
+      "size_bytes": 83312
+    },
+    {
+      "kind": "markdown",
+      "path": "add1e77a184d45808bc062ac372f44ca/summary.md",
+      "sha256": "ceb3e69f4dd0a5bf52dc2fbe64cd182b789b48d77672680408f07661e5f166ed",
+      "size_bytes": 8720
+    },
+    {
+      "kind": "parquet",
+      "path": "add1e77a184d45808bc062ac372f44ca/frames/era_diagnostics.parquet",
+      "sha256": "626f7eab79b377ac71a322b72efadb1e7a41c0b38baaa32141217c42c8fc9f30",
+      "size_bytes": 2947
+    },
+    {
+      "kind": "parquet",
+      "path": "add1e77a184d45808bc062ac372f44ca/frames/kappa_autocorrelation.parquet",
+      "sha256": "baa2c927a23b815999ddc50842372fbed0aea542e4a97f3170cc5074ff496536",
+      "size_bytes": 7134
+    },
+    {
+      "kind": "parquet",
+      "path": "add1e77a184d45808bc062ac372f44ca/frames/pair_theory.parquet",
+      "sha256": "f2090e9a16d319a2804255aa48cd38114385c79240782ac12aca325d5ed0b1c9",
+      "size_bytes": 16415
+    },
+    {
+      "kind": "parquet",
+      "path": "add1e77a184d45808bc062ac372f44ca/frames/paired_differences.parquet",
+      "sha256": "d584358023481c3a03492c1ded7f87c1c2bdf9c4a9fce8d1b1bb9e65c80717f8",
+      "size_bytes": 7345
+    },
+    {
+      "kind": "parquet",
+      "path": "add1e77a184d45808bc062ac372f44ca/frames/policy_comparison.parquet",
+      "sha256": "4991377c1db11ac3b2150fe0c8716ea49347832dc3ba06bdf11f19a67f8e3b18",
+      "size_bytes": 12803
+    }
+  ],
+  "run_id": "add1e77a184d45808bc062ac372f44ca",
+  "spec_hash": "fe521d2fbc0258027294e3eaebc402fdf74ee2543715adebb4bb8ed6a9ea4a72",
+  "status": "rejected"
+}

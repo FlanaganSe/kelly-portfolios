@@ -188,7 +188,7 @@ HEADLINE_CARRY: Final = CARRY_TIERS[1]
 #: is directly comparable to trend's.
 CRISIS_THRESHOLDS: Final = (0.05, 0.10, 0.20)
 
-#: The episodes ``docs/the-plan.md`` names that this panel can reach.
+#: The named stress episodes (docs/research/evidence-base.md) this panel can reach.
 CRISIS_WINDOWS: Final[Mapping[str, tuple[str, str]]] = {
     "1973-74": ("1973-01", "1974-12"),
     "late-1970s inflation": ("1977-01", "1980-03"),

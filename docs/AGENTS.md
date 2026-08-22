@@ -89,12 +89,47 @@ skills, whose bodies load on use; actions with real consequences are permissions
 prose; and formatting is a hook. **Rules that tooling can enforce should not be
 prose.**
 
+## Do not narrate the page's own history
+
+This is the rule the corpus has broken most, and it is expensive: a reader cannot tell a
+live claim from a dead one, so every figure has to be re-derived before it can be quoted.
+
+- **State the current position, not the delta from a previous draft.** "This page
+  previously said X; that is withdrawn" is a changelog. Write what is true and let Git
+  hold what was.
+- **Delete a superseded run; do not keep it beside its replacement.** If a re-run
+  reproduces an earlier experiment to zero difference, the earlier account is not evidence,
+  it is a second copy. Keep its specification, frame and provenance in a few lines and
+  delete the rest.
+- **A correction is a fact about the world, not about the repository.** "Do not benchmark
+  a fund's financing on 58.70 bp; that is special-collateral repo" is durable. "This page
+  used to say 58.70" is not.
+- **No `~~strikethrough~~` in a synthesis.** Remove the claim. A decision record may keep
+  one, because superseding in place is how an ADR works.
+
+The exception is a correction a reader could otherwise repeat — a trap, not a diary entry.
+Those belong in `AGENTS.md`'s trap list or in the code that now refuses the mistake.
+
+## What must never be transcribed
+
+Some facts have a generator, and a transcription of a generated fact is a copy that will
+go stale silently. Link or regenerate instead:
+
+| Fact | Its only source |
+| --- | --- |
+| Experiment counts, runs, specifications, statuses | `uv run python -m portfolio_edge.reporting.programme_status` |
+| A numerical fixture | The test that pins it |
+| A shipped figure | `src/content/`, which carries its status and date |
+
+`src/content/citations.test.ts` enforces the link half: every `docPath` and anchor the
+client cites must resolve, and every relative link and anchor in the corpus must resolve.
+`src/content/ledgerSummary.test.ts` enforces the count half against `research/ledger.jsonl`.
+
 ## Maintaining and retiring
 
 - When implementation settles a question, move the durable outcome into code,
   types, or tests, and cut the page down to any rationale still worth keeping.
-- Replace superseded claims in place and let Git hold the history. Split a page
-  only once it answers genuinely independent questions.
+- Split a page only once it answers genuinely independent questions.
 - Delete research that no longer supports a decision, an implementation, or an
   open question. Deleting is the normal end state, not a failure.
 - Recheck volatile claims when related code changes, before a decision leans on

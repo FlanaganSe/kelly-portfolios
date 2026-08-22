@@ -1,6 +1,6 @@
 # STATE
 
-`as of 2026-08-18` · branch `further-research`
+`as of 2026-08-22` · branch `further-research`
 
 ## Objective
 
@@ -75,9 +75,11 @@ that module generates.
 
 ## Checks
 
-`pnpm typecheck`, `pnpm test` (403 tests, 29 files), `pnpm biome check .` and `pnpm build`
-are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` are clean
-after the fixture change.
+`pnpm typecheck`, `pnpm test` (413 tests, 31 files), `pnpm biome check .` and `pnpm build`
+are clean, and `pnpm test` now exits zero: a lazy route import in `src/App.test.tsx` was
+resolving after Vitest tore the environment down, so the suite passed every assertion and
+still failed the command. `research/`: `uv run mypy`, `uv run ruff check` and
+`uv run pytest` are clean.
 
 ## Unresolved
 
@@ -96,6 +98,15 @@ after the fixture change.
   an accessible name, no route skips a heading level or carries a second `h1`, and no
   source file commits a layout to a width a 360px screen does not have. The last of those
   was verified by planting a violation and watching it fail.
+
+  What a browser would still have to check, and nothing here does: direct refresh of a
+  deep route against the static build, sticky elements, overflow and truncation, chart
+  readability, tooltip and focus behaviour, back/forward navigation, and console errors —
+  across desktop, laptop, tablet and small mobile. The five flows worth automating first
+  are open a portfolio → inspect its evidence → launch it in the lab; edit weights to an
+  invalid total and recover; change benchmark and period; reopen a shared lab
+  configuration and get the same portfolio back; and strategy → related portfolio →
+  back.
 - The stacked candidate departs from decision 0004 by being levered, and holds one fund
   the product audit excludes and one that is `unresolved`. All three departures are stated
   on its own page and none is resolved.

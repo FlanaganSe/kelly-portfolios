@@ -246,18 +246,26 @@ def test_every_budget_line_declares_a_mechanism_condition_and_falsifier() -> Non
 def test_budget_totals_by_benchmark_are_pinned() -> None:
     """The three totals, and the fact that they are never added together.
 
-    Against the index the honest central estimate is 46.5 bp with a range spanning zero.
+    Against the index the honest central estimate is 5.4 bp with a range spanning zero.
     Against the investor's own counterfactual it is 89 bp and almost all of it is
     contractual. The gap between those two rows is the practical finding of the study.
+
+    The index total was 46.5 bp until 2026-08-22, on a rebalancing line carrying the
+    equal-drift closed form of +2.4 bp/yr. That line's own falsifier had already fired --
+    Experiment 003 measured -38.7 bp/yr over 420 months, on a drift gap running 35x
+    `gamma_star` -- and the budget kept the closed form anyway, on the grounds that the
+    figures were pinned by this test. That inverted the rule the workspace runs on: a
+    fixture that disagrees with our own measurement is a finding, not a number to
+    preserve. Almost the whole of the old total was one falsified line.
     """
     index = budget_for(Benchmark.STATED_INDEX)
     assert index.components == 3
-    # 2.4 + 1.0 + 43.1, and sqrt(27**2 + 2**2 + 311.8**2), both derived here rather than
-    # recorded from the module, so a change to any component line fails this rather than
-    # silently restating itself.
-    assert index.central_bp == pytest.approx(2.4 + 1.0 + 43.1, rel=0.0, abs=1e-9)
-    assert index.low_bp == pytest.approx(0.0 + 0.1 - 28.8, rel=0.0, abs=1e-9)
-    assert index.high_bp == pytest.approx(18.0 + 3.0 + 77.5, rel=0.0, abs=1e-9)
+    # -38.7 + 1.0 + 43.1, and sqrt(27**2 + 2**2 + 311.8**2), both derived here rather
+    # than recorded from the module, so a change to any component line fails this rather
+    # than silently restating itself.
+    assert index.central_bp == pytest.approx(-38.7 + 1.0 + 43.1, rel=0.0, abs=1e-9)
+    assert index.low_bp == pytest.approx(-62.9 + 0.1 - 28.8, rel=0.0, abs=1e-9)
+    assert index.high_bp == pytest.approx(2.4 + 3.0 + 77.5, rel=0.0, abs=1e-9)
     assert index.tracking_error_bp == pytest.approx(
         math.sqrt(27.0**2 + 2.0**2 + 311.8**2), rel=1e-12
     )
@@ -275,7 +283,7 @@ def test_budget_totals_by_benchmark_are_pinned() -> None:
 @pytest.mark.parametrize(
     ("benchmark", "expected"),
     [
-        (Benchmark.STATED_INDEX, [0.6808, 0.7468, 0.7921, 0.8533]),
+        (Benchmark.STATED_INDEX, [0.5218, 0.5308, 0.5376, 0.5486]),
         (Benchmark.AVERAGE_INVESTOR, [0.6241, 0.6726, 0.7081, 0.7602]),
         (Benchmark.COUNTERFACTUAL_HOLDING, [1.0, 1.0, 1.0, 1.0]),
     ],
@@ -285,9 +293,12 @@ def test_attainable_probability_by_benchmark_and_horizon(
 ) -> None:
     """The deliverable, in one assertion.
 
-    Beating the index is a 79% proposition after thirty years and does not improve much
-    with waiting. Beating the portfolio the investor would otherwise have held is
-    effectively certain, because most of that edge is contractual rather than statistical.
+    Beating the index is a coin flip -- 53.8% after thirty years, 54.9% after fifty --
+    once the rebalancing line carries its measured value instead of its equal-drift
+    closed form. Waiting does not help, because the edge and the noise both grow. Beating
+    the portfolio the investor would otherwise have held is effectively certain, because
+    most of that edge is contractual rather than statistical. The distance between those
+    two rows is the whole practical finding of this repository.
     """
     total = budget_for(benchmark)
     actual = [total.probability_of_outperformance(h) for h in (10.0, 20.0, 30.0, 50.0)]
@@ -296,12 +307,17 @@ def test_attainable_probability_by_benchmark_and_horizon(
 
 
 def test_the_index_relative_budget_range_spans_zero() -> None:
-    """Low -28.7 bp, high +98.5 bp. A budget whose sign is not robust is not an edge."""
+    """Low -91.6 bp, high +82.9 bp. A budget whose sign is not robust is not an edge.
+
+    The horizon to 90% confidence is ~5,500 years. That is not a quantity anyone acts on;
+    it is the statement that a 5.4 bp central estimate against 313 bp of tracking error is
+    indistinguishable from zero, and it should read that way rather than as a number.
+    """
     index = budget_for(Benchmark.STATED_INDEX)
     assert index.low_bp < 0.0 < index.high_bp
     assert horizon_for_confidence(
         edge_bp=index.central_bp, tracking_error_bp=index.tracking_error_bp, confidence=0.90
-    ) == pytest.approx(74.4, rel=1e-2)
+    ) == pytest.approx(5516.9, rel=1e-3)
 
 
 def test_the_counterfactual_budget_reaches_high_confidence_within_months() -> None:
@@ -322,7 +338,9 @@ def test_deterministic_lines_dominate_the_counterfactual_budget() -> None:
     assert all(item.certainty is Certainty.DETERMINISTIC for item in counterfactual)
     index = [item for item in EDGE_BUDGET if item.benchmark is Benchmark.STATED_INDEX]
     probabilistic = [item for item in index if item.certainty is Certainty.PROBABILISTIC]
-    assert sum(item.central_bp for item in probabilistic) == pytest.approx(2.4 + 43.1, abs=1e-9)
+    assert sum(item.central_bp for item in probabilistic) == pytest.approx(
+        -38.7 + 43.1, abs=1e-9
+    )
 
 
 def test_rebalancing_earns_less_than_a_small_cap_round_trip_costs() -> None:

@@ -23,7 +23,7 @@ export const lessons: readonly Lesson[] = [
   {
     id: "which-market",
     title: "“The market” is two different benchmarks, and they never add",
-    body: "Beating a cheap index fund and beating the portfolio you would otherwise have owned are different claims about different reference portfolios. Cost and tax discipline is worth about 109 bp a year against the second and about 46 bp against the first, and adding them would double-count the same work. This repository's own code raises an error rather than summing lines measured against different benchmarks, because it made that mistake in four places before it did.",
+    body: "Beating a cheap index fund and beating the portfolio you would otherwise have owned are different claims about different reference portfolios. Cost and tax discipline is worth about 109 bp a year against the second and about 5 bp against the first, and adding them would double-count the same work. This repository's own code raises an error rather than summing lines measured against different benchmarks, because it made that mistake in four places before it did.",
     href: "/research/structural-and-tax",
     hrefLabel: "The contractual budget",
   },
@@ -37,7 +37,7 @@ export const lessons: readonly Lesson[] = [
   {
     id: "tracking-error-decides",
     title: "Tracking error, not the size of the edge, decides whether a lifetime is enough",
-    body: "Time to any confidence level scales with the square of tracking error over edge: T = (z·s/e)². The same 50 bp edge reaches 90% confidence in about 24 days at 10 bp of tracking error and in about 105 years at 400 bp. It is why a 109 bp contractual edge is 99% established inside a year while a 46 bp index-relative one needs about 245 years for the same confidence, and 74 even for 90%. The smaller number is not the reason.",
+    body: "Time to any confidence level scales with the square of tracking error over edge: T = (z·s/e)². The same 50 bp edge reaches 90% confidence in about 24 days at 10 bp of tracking error and in about 105 years at 400 bp. It is why a 109 bp contractual edge is 99% established inside a year while the index-relative budget is not demonstrable at any horizon. The smaller number is not the reason; the tracking error is.",
     href: "/lab",
     hrefLabel: "Try it in the lab",
   },

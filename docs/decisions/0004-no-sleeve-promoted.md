@@ -1,44 +1,36 @@
 # 0004 — No sleeve is promoted; the portfolio is the control alone
 
-Date: 2026-08-12. Status: accepted. Amended 2026-08-12 after Experiment 005, which
-updated the factor rows and left the decision unchanged; amended 2026-08-16 to record
-that the block on step 7 is circular for a derived reason; amended 2026-08-17 after
-Experiment 013, which found that the product row's supporting statistic was a property of
-Experiment 002's census frame and re-ran the audit on a frame that can see the shelf, and
-after Experiments 014 and 015, which measured how much of the US and ex-US audits' cost
-verdicts was their comparator.
-**The non-promotion itself has never changed.** Supersede rather than amend when the
-first sleeve is promoted.
+Date: 2026-08-12. Status: accepted. Amended 2026-08-12, 2026-08-16 and 2026-08-17 as
+Experiments 005, 013, 014 and 015 landed; **the non-promotion itself has never changed.**
+[Decision 0009](0009-blocks-lifted-and-closures-rescoped.md) lifts the step 6 and step 7
+blocks this record argues against itself about below, and leaves the non-promotion
+standing. Supersede rather than amend when the first sleeve is promoted.
 
 ## Context
 
-Six frozen experiments had run when this record was amended, across sixteen ledgered
-executions of seven distinct specifications, with 1,082 tests passing, 18 of them
-network-marked. That is a snapshot of the search at that moment and is deliberately
-not refreshed; the current count is
-[recounted from the ledger in the framework](../research/portfolio-edge-research-framework.md#the-ledger-counted-rather-than-described).
-The outcomes then, in the closed status vocabulary:
+A research programme with this much apparatus invites the assumption that the apparatus
+produced a portfolio. It has not.
 
-| Hypothesis | Status | The number that decides it |
-| --- | --- | --- |
-| Phase 1 ingestion gate | `unresolved` | HML and RMW standard deviations do not reproduce; variance ratios 0.940 and 1.104 |
-| HML, UMD, RMW premia persist post-publication (US) | `unresolved` | 16 of 20 cells hold a premium smaller than their window can detect at 80% power |
-| CMA premium persists post-publication | **`rejected`** | −1.39 pp/yr post-publication against +3.91 in-sample; +0.20 pp/yr pooled across three regions |
-| Pooling three regions signs the HML, RMW, CMA premia | **`exploratory` (HML), `rejected` (RMW, CMA)** | HML +4.74 pp/yr `[+1.46, +8.10]` pooled; RMW's +2.53 sits below its own measured 2.62 pp/yr detection threshold ([decision 0005](0005-factor-premia-closed-on-public-data.md)) |
-| Retail factor products deliver exposure worth buying | `exploratory` | **Restated 2026-08-17.** Experiment 002 reported 24 of 44 `rejected` with clause (c) firing on 22. Its frame was the 2019Q4 N-PORT census, which carries no fund with an August fiscal quarter-end and no fund that launched later, so it could see 44 of the 109 auditable US products. [Experiment 013](../research/factor-products.md#the-us-shelf-on-the-corrected-frame) re-ran it unchanged on the union of the 2019Q4 and 2025Q4 censuses: **48 of 109 `rejected`, clause (c) on 35, and 48 `exploratory`.** Among the 65 funds the corrected frame admits, clause (c) fires on 13 and the median shortfall is **−0.48 pp/yr** rather than +0.53. [Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured) then varied the comparator basis and nothing else: **47 of the 48 `exploratory` statuses survive**, the count reads 47 to 49 across bases that can express the exposures tested, and the nine systematic value and small-value products keep **73% of their shortfall magnitude** |
-| The same, on the ex-US shelf | `exploratory` | **Added 2026-08-17.** Experiment 009 reached 12 `exploratory`, 8 `rejected` and 5 `unresolved` over 25 products. [Experiment 015](../research/factor-products.md#what-the-ex-us-comparator-decided-measured) varied its comparator basis and nothing else, over seven bases with a placebo matched on column count to each expressive one: **only 8 of the 12 survive a basis that can express what they sell.** IMTM, FNDC, SCHC and DFIS lose `exploratory` to a cheaper fund in their own cell; 65% of the shortfall magnitude survives across the ten funds the small-value column reaches. **No emerging product reaches `exploratory` under any basis and none could** — all four verdicts are decided by the loading or its interval, which no comparator reads |
-| Rebalancing is a source of return | **`rejected`** | Every policy lost on all three cost bases; drift gap ran ~35× `gamma_star` |
-| A trend sleeve adds marginal value a simpler exposure cannot | **`rejected`** | A static + volatility-exposure replica delivers 44% of the benefit |
+**The per-hypothesis status table that used to sit here is deleted.** It was a snapshot
+that was deliberately not refreshed, and a decision record holding a stale copy of
+generated facts is a status journal wearing an ADR's clothes. The ledger is the only
+thing that knows what was run:
 
-Those are `rejected` against falsifiers frozen before any result was seen. Where a
-row is `unresolved`, the reason is that the available window cannot detect the effect
-it is looking for — not that the effect is absent, and for RMW and CMA that
-"cannot detect" has now been *measured* and made permanent on public data. **One
-factor, value, advanced to `exploratory` on the strength of a premium; it is the
-first thing in this programme to do so.** Nothing reached `walk-forward-tested`,
-`shadow-live` or `production-eligible`, and nothing could have: the fund-level data
-contract caps that work at `exploratory`
-([decision 0002](0002-no-research-grade-free-price-source.md)).
+```sh
+cd research && uv run python -m portfolio_edge.reporting.programme_status
+```
+
+The per-candidate reading is on the [design map](../research/portfolio-edge-research-framework.md#the-design-map);
+the instrument's limits are in [the evidence base](../research/evidence-base.md).
+
+What matters for this decision is the shape rather than the counts. Every terminal status
+is `rejected`, `unresolved`, or capped at `exploratory` by the fund-level data contract
+([decision 0002](0002-no-research-grade-free-price-source.md)). Nothing has reached
+`walk-forward-tested`, `shadow-live` or `production-eligible`, and nothing could have.
+Where a row is `unresolved` the window could not detect the effect — which is not the
+same as the effect being absent, and
+[decision 0009](0009-blocks-lifted-and-closures-rescoped.md) now requires that
+distinction to be carried in the verdict rather than in a footnote.
 
 Recording this is not bookkeeping. The failure mode of a research programme with this
 much apparatus is that a reader assumes the apparatus produced a portfolio.
@@ -231,8 +223,10 @@ here rather than left for a later reader to discover:
    detection question with a verdict. Freezing it as the latter would repeat the
    error [search coverage](../research/search-coverage.md) §1.2 exists to name.
 
-**Neither block is lifted by this record**, which is a non-promotion decision and not
-the place to authorise leverage. Both are recorded as contested with a derived reason,
-and the decision that lifts them supersedes this one.
+**Both blocks are lifted by [decision 0009](0009-blocks-lifted-and-closures-rescoped.md),
+and the non-promotion in this record is untouched by that.** The step 6 tournament may
+run, and the funding rule may be *measured* with overlay funding as a primary arm against
+a leverage-matched control. What 0009 does not do is authorise leverage in a recommended
+portfolio; the zero-leverage default and the non-promotion both stand.
 
 This record should be superseded, not amended, when the first sleeve is promoted.

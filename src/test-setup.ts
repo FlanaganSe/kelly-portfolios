@@ -1,7 +1,9 @@
 import "@testing-library/jest-dom/vitest";
 
-// jsdom has no matchMedia. The theme controller asks for one on mount.
-if (!window.matchMedia) {
+// A test that only reads files runs under the node environment, where there is
+// no window at all. Guard rather than assume jsdom.
+if (typeof window !== "undefined" && !window.matchMedia) {
+  // jsdom has no matchMedia. The theme controller asks for one on mount.
   window.matchMedia = ((query: string) => ({
     matches: false,
     media: query,

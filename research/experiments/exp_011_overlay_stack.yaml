@@ -200,7 +200,7 @@ benchmark:
     rationale: >
       The leverage-matched control is the one that decides. Comparing an overlay
       portfolio with UNLEVERED equity flatters it by exactly the amount the extra
-      risk earns, and `docs/the-plan.md` requires such a gain be labelled
+      risk earns, and the charter requires such a gain be labelled
       leveraged beta rather than alpha.
   secondary:
     id: equity_only

@@ -459,12 +459,12 @@ identity (C) are computed on this page.
 **Closed since 2026-08-12.** Two of the three open questions this page carried are
 answered by identity (C) rather than by a new measurement.
 
-- ~~*What benchmark an edge budget's factor line should use.*~~ **No benchmark.** A
-  delivered loading is taken against a factor, so a budget that prices its factor line
+- **An edge budget's factor line needs no benchmark.** A delivered loading is taken
+  against a factor, so a budget that prices its factor line
   from one needs no capture term and makes no benchmark choice. The only benchmark left is
   the fund being sold, and it enters as `h_incumbent`.
-- ~~*Whether the ratio is the right object at all.*~~ **Not for a budget.** The loading is,
-  and it is estimated on the same months from the same series with a standard error the
+- **The ratio is not the right object for a budget.** The loading is, and it is estimated
+  on the same months from the same series with a standard error the
   ratio cannot offer. The long-only excess in pp/yr remains the better *descriptive*
   summary, and it still needs no denominator.
 

@@ -1,6 +1,12 @@
 # 0005 — Profitability and investment premia are closed on public data
 
-Date: 2026-08-12. Status: accepted.
+Date: 2026-08-12. Status: accepted. Rescoped by
+[decision 0009](0009-blocks-lifted-and-closures-rescoped.md): the measured floors below
+are unchanged, but "closed, not paused" and "provably will not" overstated them. The
+honest claim is about an instrument — no re-pooling, re-weighting, re-windowing or
+re-blocking of these files can sign a premium below about 2.6 pp/yr at 80% power — and it
+does not forbid a different estimand, a conditional or panel design, a non-French
+construction, or a lower-variance estimator.
 
 ## Context
 

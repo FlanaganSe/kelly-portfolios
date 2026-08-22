@@ -83,7 +83,7 @@ ranking, a break-even rate. Anything that searches a weight space belongs in
   The application must display `exploratory` as `exploratory` and `unresolved` as
   `unresolved`, and `unresolved` is not a promotion.
 - **Nothing may be claimed to beat an index.** Against a cheap index the honest budget
-  is ~46 bp against 313 bp of tracking error. The application states that as plainly as
+  is ~5.4 bp against 313 bp of tracking error. The application states that as plainly as
   the recommendation page does, and in the same place as the 109 bp figure, never apart
   from it.
 - **The free-price-source ban holds.** [Decision 0002](0002-no-research-grade-free-price-source.md)

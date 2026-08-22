@@ -76,7 +76,7 @@ export const glossary: readonly GlossaryEntry[] = [
     short: "A Sharpe ratio marked down for how many strategies were tried before this one.",
     long: "Search enough variations and one will look good by chance. Deflation adjusts a Sharpe ratio for the number of trials, the length of the sample and the non-normality of the returns. The number of trials it needs is the number of distinct specifications searched, which is why the experiment ledger records every attempt including the failures.",
     whyYouCare:
-      "A backtest quoted without its search count is not evidence. Here the count starts at twelve distinct specifications, not twenty-three runs.",
+      "A backtest quoted without its search count is not evidence. Here the count starts at twenty-one distinct specifications, not forty-one runs.",
     source: framework,
   },
   {
@@ -114,7 +114,7 @@ export const glossary: readonly GlossaryEntry[] = [
     short: "The smallest true effect a window could have found, if one were there.",
     long: "It answers a different question from a p-value. A p-value asks whether a result could be zero; the minimum detectable effect asks whether the window could have found something worth having. When a measured premium is smaller than its own detection threshold, an interval that excludes zero is not evidence the window can carry.",
     whyYouCare:
-      "It is what closed two factors here permanently. The best pooled threshold in public factor data is 2.62 pp/yr, above this repository's own 2.0 materiality bar.",
+      "It is what closed two factors here on these files. The best pooled threshold in public factor data is 2.62 pp/yr, above this repository's own 2.0 materiality bar — so a premium below that cannot be signed by any re-pooling of them. That is a limit of the instrument, not a finding that the premium is zero.",
     source: {
       label: "0005 — Profitability and investment premia are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",

@@ -2,7 +2,8 @@
 
 **Question.** Which of the strategy universe's families can a retail investor actually
 own, at what cost, and does the net result clear admission? Two halves. The exotic half
-is `docs/the-plan.md` §F — a dozen families this repository had never examined. The
+is [the event-driven and structural universe](#the-universe-this-page-was-given) — a
+dozen families this repository had never examined. The
 **ordinary** half is the four categories a retail investor is most often pointed at and
 which this programme, having audited 69 factor ETFs, 15 managed-futures ETFs, 8
 capital-efficient overlays, catastrophe bonds, merger arbitrage, closed-end funds,
@@ -28,6 +29,24 @@ the fund facts, with a source URL and a read date on every one, are in
 [`data-manifests/retail_shelf/product_facts.json`](../../research/data-manifests/retail_shelf/product_facts.json).
 
 ---
+
+## The universe this page was given
+
+The event-driven and structural families the working plan named, transcribed here so the
+denominator of conclusion 12 lives in the repository rather than in an untracked working
+file:
+
+> merger arbitrage · convertible arbitrage · equity market neutral · closed-end fund
+> discounts · spin-offs · index reconstitution · reinsurance and catastrophe bonds ·
+> securities-lending revenue · volatility selling · put writing · covered calls ·
+> defensive option overlays · dispersion, if realistically accessible · tax-loss
+> harvesting and direct indexing
+
+Its instruction for this class was to model payoff asymmetry and expected shortfall
+explicitly wherever a strategy wins often and loses rarely and largely — which is the
+test §2 and §6 below actually apply. Private markets and the exploratory families were
+declared out of scope and are not transcribed.
+
 
 ## Conclusion
 
@@ -954,7 +973,8 @@ assumption underlies every number in §§4–6.
    them**: Goyal–Welch `ltr` and `corpr` are a hundred years of measured bond total
    returns that were already in this repository's cache and manifest, and every bond
    figure the programme has published was computed against a modelled proxy instead.
-12. **`docs/the-plan.md` §F's list is not the retail universe.** Every family it names is
-    exotic; the four families a retail investor is actually pointed at were absent from
-    it and from this repository entirely until 2026-08-17. **A universe assembled from
-    what is interesting is not a universe.**
+12. **The given universe is not the retail universe.** Every family
+    [it names](#the-universe-this-page-was-given) is exotic; the four families a retail
+    investor is actually pointed at were absent from it and from this repository entirely
+    until 2026-08-17. **A universe assembled from what is interesting is not a
+    universe.**

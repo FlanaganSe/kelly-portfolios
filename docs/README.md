@@ -1,145 +1,66 @@
 # Documentation
 
-An index, not a source of facts. Start at the root [`README.md`](../README.md) for setup
-and current status.
+A map, not a source of facts. Every number lives on the page that measured it; this file
+carries none, so that nothing here can go stale on its own. Start at the root
+[`README.md`](../README.md) for setup and current status.
 
-## Protocol
-
-- [Documentation and research protocol](AGENTS.md) — where a document belongs, the required
-  shape of a research synthesis, and how pages are retired. **Read it before adding, moving
-  or deleting anything here.**
+**[The documentation and research protocol](AGENTS.md)** — where a document belongs, the
+required shape of a synthesis, and how pages are retired. Read it before adding, moving or
+deleting anything here. **[The register](style.md)** is what the site may claim and how it
+may sound.
 
 ## Start here
 
-- **[Portfolio edge research framework](research/portfolio-edge-research-framework.md)** —
-  the canonical synthesis. Answers *whether a return source is real*: the direct answer to
-  "can you beat the market", the design map with every candidate's status and promotion
-  condition, what the prior literature does and does not establish, the ledger accounting,
-  and the research protocol.
-- **[The evidence base](research/evidence-base.md)** — the sources of truth. Every dataset
-  held, what it is pinned to, **what it can and cannot resolve at 80% power**, what was
-  tried and failed, and what a next round would have to acquire. **Check the resolution
-  table before proposing an experiment.**
-- **[Search coverage](research/search-coverage.md)** — where the search has looked, the
-  three design choices that make the null result partly self-inflicted, what has never been
-  tested at all, and **round two, ranked**.
-- **[The recommended portfolio](research/portfolio-recommendation.md)** — the named funds,
-  weights and account placement the evidence supports, with the certainty class behind every
-  line. Answers *what to hold*; promotes nothing.
+| Page | Answers |
+| --- | --- |
+| [Charter](charter.md) | What this programme is for, the reference investor it is sized against, the benchmarks, the objective, and the conditions under which it would be finished. |
+| [Research framework](research/portfolio-edge-research-framework.md) | Can you beat the market? The design map, every candidate's status, and the research protocol. |
+| [The evidence base](research/evidence-base.md) | What each instrument can and cannot resolve. **Check its resolution table before proposing an experiment.** |
+| [Search coverage](research/search-coverage.md) | The strategy universe and how much of it has been searched, what has never been tested, and round two, ranked. |
+| [The recommended portfolio](research/portfolio-recommendation.md) | What to hold, in which account, at what confidence. Promotes nothing. |
 
-## The evidence
+## Where an edge can come from
 
-### Where an edge can come from
+| Page | Answers |
+| --- | --- |
+| [Expected edge decomposition](research/expected-edge-decomposition.md) | The three benchmarks that never aggregate, the budget against each, and why tracking error rather than edge size decides whether a lifetime is enough. |
+| [Structural and tax-aware edges](research/structural-and-tax-edges.md) | What else is contractual for a US investor: fund structure, the foreign tax credit, §1256, the deferral hurdle, direct indexing, and the core beta shelf audited on cost rather than on fee. |
+| [Setting the equity share](research/setting-the-equity-share.md) | The largest decision in the portfolio, split into the part that is arithmetic and the part that is preference. Sets no split. |
+| [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) | What the funding rule is worth, how many distinct return engines survive cost, the candidate frontier, and the stress surface underneath the overlay weight. |
 
-- [Where outperformance can come from](research/expected-edge-decomposition.md) — the three
-  benchmarks that never aggregate, the budget against each, and the horizon arithmetic that
-  makes tracking error rather than edge size decide whether a lifetime is enough. Also why
-  the behaviour gap may be displayed and never added.
-- [Structural and tax-aware edges](research/structural-and-tax-edges.md) — what else is
-  contractual for a US investor, sized against one stated reference portfolio: fund
-  structure, the foreign tax credit that inverts standard placement advice, §1256 and
-  capital efficiency, the deferral hurdle, direct indexing, and **the core beta shelf
-  audited on cost rather than on fee** — 25 funds and 110 Form N-CEN filings, where the fee
-  ranking and the cost ranking turn out to be different rankings.
-- [Setting the equity share](research/setting-the-equity-share.md) — the largest decision in
-  the portfolio, split into the part that is arithmetic and the part that is preference.
-  Shows that the objective plus the zero-leverage rule returns a corner solution, so the
-  bonds come from the constraint. **Sets no split.**
+## The experiments
 
-### The experiments
-
-- [Fama–French factor reproduction](research/fama-french-reproduction.md) — the Phase 1
-  ingestion gate, `unresolved`: which published table was reproduced from which vintage, the
-  two cells that do not, and the systematic 3–5% volatility band that follows.
-- [Factor persistence and decay](research/factor-persistence.md) — Experiments 001, 005 and
-  006, plus the size study. What HML, UMD, RMW and CMA did before and after publication
-  across frozen eras in three regions, **the measured effective sample size that pooling
-  correlated regions actually buys**, why profitability and investment are closed on the
-  public files, and — measured rather than transferred — **why SMB cannot be signed on any
-  panel, ex-US included**.
-- [The long-only capture fraction](research/long-only-capture.md) — Experiment 007. What
-  fraction of a long-short premium a long-only tilt delivers, measured from the portfolios
-  the factor is assembled from. **Five defensible benchmarks disagree by 0.846**, so the
-  rejection is of the premise that there is one number — and the fraction turns out to be
-  **an HML loading rather than a multiplier**, so it may never multiply one. Also the first
-  test of size as a premium — since extended to SMB on all three panels in
-  [factor persistence](research/factor-persistence.md#size-on-the-three-panels--a-study-not-an-experiment).
-- [Investable factor products](research/factor-products.md) — Experiments 002, 009, 013, 014 and 015.
-  Which of 134 audited ETFs deliver the exposure they advertise, on both the US and the
-  ex-US shelf, why a 72-month N-PORT window decides nothing about alpha, and why an ex-US
-  loading without its panel named is not a number. Every ex-US product at `exploratory` is
-  now decomposed into **all five legs**, which is what shows a small-value fund selling its
-  value exposure wrapped in an unpriceable size one. **The US half was re-run on a corrected
-  census frame**: the 2019Q4 file carries no fund with an August fiscal year, so it could
-  see 44 of the 109 auditable US products, and on the frame that sees all of them the
-  cost verdict reverses for the funds it had been missing.
-- [Rebalancing](research/rebalancing-policy.md) — the closed-form theory and Experiment 003,
-  the first confirmatory run. The excess-growth identity reproduces to a tenth of a basis
-  point, its 68.27% win-probability floor does not survive real drift gaps, and every policy
-  lost to buy-and-hold.
-- [Trend: the index, the products, and a clause that was ambiguously specified](research/trend-marginal-value.md)
-  — Experiments 004 and 008. What a trend sleeve adds against a risk-matched comparator, why
-  a static-plus-volatility replica fires the falsifier, and the audit of the five listed
-  managed-futures ETFs of which one delivers the exposure.
-- [Live managed futures](research/live-managed-futures.md) — Experiment 012. The trend leg
-  rebuilt from 46 real funds' net Form N-PORT returns instead of a vendor index: what
-  managed-futures investors actually earned, 52% attrition in the opening cohort, and the
-  measurement that the vendor series **understated** rather than overstated the funds over
-  the only window where both exist.
-- [Marginal sleeve value](research/marginal-sleeve-value.md) — Experiments 010 and 010b.
-  What a sleeve is worth *inside* a portfolio, split into a standalone term and a
-  diversification credit whose ceiling is the base portfolio's own variance. Carries the
-  cash control that produced decision 0008 — and the weight-dependence that reopens its own
-  headline.
-- [The alternative sleeves audit](research/alternative-sleeves-audit.md) — which families a
-  retail investor can actually own, at what all-in cost, and whether the net result clears
-  admission. The exotic half: catastrophe bonds pass at ρ ≈ 0.10 with one
-  sixteen-month-old vehicle, put-writing is rejected on live-only alpha of −0.09 to
-  −0.88%/yr at ρ 0.86–0.95, and the "since 1986" put-write record is a backtest before
-  2007. The ordinary half, added 2026-08-17: SCHD is a value-and-quality tilt whose record
-  is 87% its loadings, REITs give 112% of the downside for 80% of the upside, buffer funds
-  sell twice as much upside as they buy downside, and spot bitcoin clears the admission
-  threshold on an input that has no defensible estimate. **Fixed income, added the same
-  day**: SCHP costs a net 2.99 bp against TIP's 17.92 for a +0.9997 correlated exposure,
-  the bond leg is now measured back to 1926 and investable back to 2019, and TIPS are
-  **rejected** — +0.76 to +0.85 correlated with the nominal funds they would sit beside,
-  and *more* equity-correlated and *less* stable than nominal on identical months.
-- [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) — what the
-  funding rule is worth (`a_p - sigma_p**2`, containing nothing about the sleeve), why the
-  realised growth optimum on levered equity is unholdable at a -99.3% drawdown, how many
-  distinct return engines actually exist once cost is charged (one), the candidate frontier
-  against a leverage-matched control, and why the global-versus-US question is unresolved:
-  the century of local-currency data and the only USD series available disagree in opposite
-  directions. Also carries the joint stress surface that replaces the univariate table, and
-  the destruction test of the flat-drawdown result the overlay weight rests on — it
-  survives resampling at 30% notional, fails at 200%, is worse in four of nine crisis
-  windows, and breaks on a correlation that turns positive inside equity drawdowns only.
-- [Numerical engine specification](research/portfolio-engine-specification.md) — the
-  algorithms, closed-form fixtures and conditioning requirements underneath any allocation
-  feature, and where the optimiser should run.
+| Page | Covers |
+| --- | --- |
+| [Fama–French reproduction](research/fama-french-reproduction.md) | The Phase 1 ingestion gate, and the systematic volatility band that follows from the cells it cannot reproduce. |
+| [Factor persistence and decay](research/factor-persistence.md) | Experiments 001, 005 and 006. What HML, UMD, RMW and CMA did before and after publication across three regions, and why SMB cannot be signed on any panel. |
+| [The long-only capture fraction](research/long-only-capture.md) | Experiment 007. Why the capture fraction turns out to be a loading rather than a multiplier, so it may never multiply one. |
+| [Investable factor products](research/factor-products.md) | Experiments 002, 009, 013, 014 and 015. Which audited ETFs deliver the exposure they advertise, on both shelves, and why the census frame decided the rest. |
+| [Rebalancing](research/rebalancing-policy.md) | Experiment 003. The excess-growth identity reproduces exactly; the premise behind it does not survive real drift gaps. |
+| [Trend](research/trend-marginal-value.md) | Experiments 004 and 008. What a trend sleeve adds against a risk-matched comparator, and the audit of the listed managed-futures ETFs. |
+| [Live managed futures](research/live-managed-futures.md) | Experiment 012. The trend leg rebuilt from real funds' filed net returns instead of a vendor index. |
+| [Marginal sleeve value](research/marginal-sleeve-value.md) | Experiments 010 and 010b. What a sleeve is worth *inside* a portfolio, split into a standalone term and a diversification credit. |
+| [The alternative sleeves audit](research/alternative-sleeves-audit.md) | Which families a retail investor can actually own, at what all-in cost, and whether the net result clears admission. |
+| [Numerical engine specification](research/portfolio-engine-specification.md) | The algorithms, fixtures and conditioning requirements underneath any allocation feature, and where an optimiser would run. |
 
 ## Decisions
 
-- [0001 — Contained Python research workspace](decisions/0001-contained-python-research-workspace.md)
-  — why portfolio research runs in `research/` under `uv`, and what that costs.
-- [0002 — No research-grade free price source](decisions/0002-no-research-grade-free-price-source.md)
-  — every free price feed was tested and none carries a total-return contract, so fund-level
-  work is exploratory until a source is licensed.
-- [0003 — The cheap broad-market portfolio is the control](decisions/0003-cheap-broad-market-control.md)
-  — what every candidate is measured against, and the four comparators a result must report.
-- [0004 — No sleeve is promoted](decisions/0004-no-sleeve-promoted.md) — the outcome of each
-  frozen hypothesis, why leverage stays at zero, and the per-candidate conditions that would
-  change it. Its context block is a snapshot; the current ledger count is in the
-  [framework](research/portfolio-edge-research-framework.md#the-ledger-counted-rather-than-described).
-- [0005 — Profitability and investment premia are closed on public data](decisions/0005-factor-premia-closed-on-public-data.md)
-  — the measured floor on what public factor data can detect, and the four conditions that
-  would reopen either.
-- [0006 — A named-fund reference portfolio without promotion](decisions/0006-reference-portfolio-without-promotion.md)
-  — why a concrete construction may be published, and the four constraints that keep it from
-  becoming a promotion.
-- [0007 — The application may render research findings](decisions/0007-application-may-render-research.md)
-  — why the ban was lifted, and the four constraints that replace it.
-- [0008 — Geometric growth decides; the certainty equivalent reports beside it](decisions/0008-growth-decides-crra-reports.md)
-  — the CRRA metric pays a sleeve for de-risking, measured at +0.809 pp/yr on a control that
-  supplies nothing.
-</content>
+| Record | Decides |
+| --- | --- |
+| [0001](decisions/0001-contained-python-research-workspace.md) | Portfolio research runs in `research/` under `uv`, and what that costs. |
+| [0002](decisions/0002-no-research-grade-free-price-source.md) | No free price feed carries a total-return contract, so fund-level work is exploratory until a source is licensed. |
+| [0003](decisions/0003-cheap-broad-market-control.md) | The cheap broad-market portfolio is the control, and the comparators a result must report. |
+| [0004](decisions/0004-no-sleeve-promoted.md) | No sleeve is promoted; leverage stays at zero; the per-candidate conditions that would change it. |
+| [0005](decisions/0005-factor-premia-closed-on-public-data.md) | Profitability and investment premia are closed on public data, and the conditions that would reopen either. |
+| [0006](decisions/0006-reference-portfolio-without-promotion.md) | A named-fund reference portfolio may be published, under four constraints that keep it from becoming a promotion. |
+| [0007](decisions/0007-application-may-render-research.md) | The application may render a research finding, under four constraints. |
+| [0008](decisions/0008-growth-decides-crra-reports.md) | Geometric growth decides; the certainty equivalent reports beside it. |
+| [0009](decisions/0009-blocks-lifted-and-closures-rescoped.md) | The blocked steps are unblocked, a verdict may not outrun its instrument, and a closure carries its scope. |
+
+## Counts and statuses
+
+Do not transcribe them. The ledger is the only thing that knows what was run:
+
+```sh
+cd research && uv run python -m portfolio_edge.reporting.programme_status
+```

@@ -66,8 +66,9 @@ experiment page does not.
 ## What this does not change
 
 - **No sleeve is promoted.** Decision 0004 stands in full, including zero leverage,
-  rebalancing as risk control only, and the fifteen `exploratory` products being usable
-  as implementation proxies and for nothing else.
+  rebalancing as risk control only, and the `exploratory` products being usable as
+  implementation proxies and for nothing else — forty-eight on the US shelf and twelve
+  ex-US, of which eight survive a fair comparator.
 - ~~**No number from `research/` may appear in the shipped application as a finding**~~
   **Amended by [decision 0007](0007-application-may-render-research.md):** the
   application may render a finding provided its status, date, interval and source
@@ -100,7 +101,7 @@ sharply different questions is the correct split; a third page on the same quest
 would not be.
 
 **Let the page state a probability of beating the market.** Rejected. Against a cheap
-index the honest budget is ~46 bp against 313 bp of tracking error and a 0.792
+index the honest budget is ~5.4 bp against 313 bp of tracking error and a 0.538
 thirty-year probability, which is not a claim worth making and is trivially
 misreadable as one that is.
 

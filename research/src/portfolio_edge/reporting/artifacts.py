@@ -1,8 +1,15 @@
 """Write result artifacts and hash every file.
 
-Artifacts live in ``research/artifacts/<run_id>/`` and are gitignored. Only
-manifests and compact summaries are ever committed, so the hashes returned here
-are the durable record: the ledger keeps them, the bytes may be regenerated.
+Artifacts live in ``research/artifacts/<run_id>/``. ``summary.md`` and
+``manifest.json`` are committed; ``frames/`` and ``result.json`` are not, because
+they are large and regenerable. The hashes returned here are the durable record:
+the ledger keeps them, the bytes may be regenerated.
+
+This split is load-bearing. Until 2026-08-22 the whole directory was ignored, so a
+fresh clone held the ledger -- what was run -- and no results at all. Every measured
+number reached a reader only by being retyped into ``docs/research/``, which is why
+that corpus grew into an archive. A result's numbers belong in its summary; prose
+cites the summary rather than retyping it.
 
 Nothing is overwritten. A run identifier is unique, so an existing directory
 means either a reused identifier or a rerun pretending to be the first run, and

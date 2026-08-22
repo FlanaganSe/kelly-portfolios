@@ -25,6 +25,8 @@ describe("the application shell", () => {
 
   it("gives the collapsed section menu an expanded state a screen reader can read", async () => {
     render(() => <App />);
+    // The route is lazy. Wait for it, or its import resolves after teardown.
+    await screen.findByRole("heading", { level: 1 });
     const toggle = await screen.findByRole("button", { name: /sections/i });
     expect(toggle).toHaveAttribute("aria-expanded", "false");
     expect(toggle).toHaveAttribute("aria-controls", "sections");
@@ -38,7 +40,9 @@ describe("legacy addresses", () => {
     window.history.pushState({}, "", "/portfolio");
     render(() => <App />);
     // One character apart from /portfolios; the redirect is the whole point.
-    await new Promise((resolve) => setTimeout(resolve, 50));
+    // Awaiting the destination's heading also lets its lazy import settle before
+    // the environment tears down.
+    expect(await screen.findByRole("heading", { level: 1 })).toHaveTextContent("The reference construction");
     expect(window.location.pathname).toBe("/reference");
     window.history.pushState({}, "", "/");
   });
