@@ -201,7 +201,7 @@ audit's five clause (c) rejections have never had this treatment and are owed it
 was assumed to contain, and it is the only entry in this section whose correction has
 already been run and has already changed a published conclusion.**
 
-[Experiment 002](factor-products.md#the-us-shelf-as-experiment-002-framed-it) screened the
+[Experiment 002](factor-products.md#the-2019q4-frame-and-the-gate-that-still-guards-the-corrected-one) screened the
 SEC's **2019Q4** Form N-PORT data set — every fund that filed for the quarter — and took
 its frame at the start of the window on the correct general principle that screening
 today's listings selects on survival. Nobody checked what that file contains.

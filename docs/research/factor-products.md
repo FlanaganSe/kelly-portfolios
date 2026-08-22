@@ -11,7 +11,7 @@ outcomes, and whether any factor premium exists — that is
 
 **Five experiments over two shelves: the first three corrected the frame of the last, and
 the last two corrected its comparator.**
-[Experiment 002](#the-us-shelf-as-experiment-002-framed-it) audited the US shelf against
+[Experiment 002](#the-2019q4-frame-and-the-gate-that-still-guards-the-corrected-one) audited the US shelf against
 the **2019Q4 census alone**. [Experiment 009](#the-ex-us-shelf) audited the ex-US and
 emerging shelf against the **union of the 2019Q4 and 2025Q4 censuses**, because a
 2019Q4-only frame "would have excluded exactly the products the question is about".
@@ -564,33 +564,24 @@ Experiment 014 does not answer it.
 
 ---
 
-## The US shelf as Experiment 002 framed it
+## The 2019Q4 frame, and the gate that still guards the corrected one
 
-**Experiment 013 reproduces this experiment to zero difference in every figure**, so its
-results are not restated here; the corrected frame above is the live account. What the
-2019Q4 frame was, and what it saw:
+Experiment 013 reproduces Experiment 002 to zero difference in every loading, alpha,
+shortfall and status, so only its frame and its gate are kept here. It ran on the SEC
+N-PORT **2019Q4** census (8,563 series), matched 2,105 mandates, passed 44 funds, and
+reached 15 `exploratory`, 24 `rejected` and 5 `unresolved` over 2020-01…2025-12.
+Specification [`exp_002_fund_exposure.yaml`](../../research/experiments/exp_002_fund_exposure.yaml),
+hash `b4c9a134e106…`, run `fbe139abd9114abeb69e39fad8839f8e`; full result table in that
+run's [summary](../../research/artifacts/fbe139abd9114abeb69e39fad8839f8e/summary.md).
 
-| Field | Value |
-| --- | --- |
-| Specification | [`exp_002_fund_exposure.yaml`](../../research/experiments/exp_002_fund_exposure.yaml), hash `b4c9a134e106…`, ledger `run_id` `fbe139abd9114abeb69e39fad8839f8e` |
-| Frame | SEC N-PORT **2019Q4**, 8,563 series; 2025Q4 read only to measure attrition |
-| Returns | N-PORT Item B.5 monthly total return per share class, 1,205 filings across 44 funds |
-| Window | 2020-01…2025-12, **72 months** |
-| Model | FF5 + UMD, French vintage pinned by sha256, cash from the same French file so the intercept is alpha |
-| Inference | Newey–West HAC at 6 lags; stationary block bootstrap, mean block 6 months frozen not tuned, 10,000 resamples, seed 20260812 |
-| Screen | 2,105 matched a mandate, 44 passed |
-| Outcome | 15 `exploratory`, 24 `rejected`, 5 `unresolved` |
+**The data path was gated before anything was believed, and that gate is the durable
+part.** Item B.5 reports `rtn1` as the *first* month of the reporting period, so reading
+it backwards would shift every history by two months and leave every number looking
+plausible. VTI, reconstructed from its own filings, had to correlate at least 0.99 with
+the French market total return and show its worst month in 2020-03. It correlates
+**0.99926**, beta 0.9968, R² 0.99852, worst month **2020-03 at −13.80%**. That gate still
+guards the corrected frame.
 
-**The data path was gated before anything was believed.** Item B.5 reports `rtn1` as the
-*first* month of the reporting period, so reading it backwards would shift every history
-by two months and leave every number looking plausible. VTI, reconstructed from its own
-filings, had to correlate at least 0.99 with the French market total return and show its
-worst month in 2020-03. It correlates **0.99926**, beta 0.9968, R² 0.99852, worst month
-**2020-03 at −13.80%**. That gate still guards the corrected frame.
-
-**Read every count in this section as "of the 44 products that census carried".** The
-comparator, the falsifier and the traps are stated once, for all five experiments, under
-[the comparator, shrinkage, and two traps](#the-comparator-shrinkage-and-two-traps).
 ---
 
 ## The ex-US shelf

@@ -240,137 +240,38 @@ costs**, which is what would actually sink them.
 
 ### 3a. Gold: it passes admission, it is dominated on return, and its shelf does not bind
 
-Two facts belong here rather than only on the marginal-sleeve page, because this section's
-argument is about *engines* and *vehicles* and gold changes both.
+Gold is the second candidate engine with a financed retail wrapper, so it belongs in this
+census. The full study — 618 holdable months, both funding rules, the vehicle shelf and the
+tax comparison — is
+[marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested). What this page
+needs from it:
 
-**Every figure here is the 1975-01…2026-06 window**, 618 months — the only one in which a
-US person could legally own the asset. Forty months of illegal ownership over
-1971-09…1974-12, in which gold earned 54.5%/yr while equity lost 9.8%/yr, carry about 40%
-of the full-sample Sharpe ratio, so the longer window is context and never the number to
-quote.
+- **It passes admission at every exposure**, net Sharpe 0.181–0.187 at `|rho| < 0.04`,
+  margin +0.176. On the correlation axis it is *safer* than trend: crisis-conditional
+  correlation **+0.084** on the holdable window, against the **+0.20** at which §5b's
+  boundary kills the trend overlay, and it returns +0.85 to +0.95%/mo inside equity
+  drawdowns while equity averages −0.26.
+- **Its standalone Sharpe of 0.18 against equity's 0.59 is what disqualifies it**, and that
+  is a cleaner refusal than any other candidate here: its correlation, its cost, its data
+  and its vehicle are all better than trend's.
+- **The funding rule flips its sign**, which is this page's own point made by a second
+  asset: per unit notional, **+2.74 pure overlay, +1.53 through GDE's `delta = 0.182`,
+  −3.95 pro rata**. Same metal, opposite sign, decided by the ticker.
+- **Equation (5) takes it back.** At GDE's own `w = 0.8363` the portfolio Sharpe is
+  0.487–0.525 against the unlevered base's 0.586, so the matched-volatility control rejects
+  it outright.
+- **Beside trend it adds rather than substitutes** — mutual `rho` +0.072 to +0.141,
+  effective breadth 1.00 → 1.87 — but the return increment is **+0.09 to +0.10 pp/yr against
+  an MDE₈₀ of 1.68**, so the addition is not measurable on this panel.
+- **The vehicle shelf does not bind**, which is what makes it the useful control for §3's
+  claim: GLDM is physical at 0.10% and GDE is a genuine overlay at 0.20% on $595m since
+  2022. Where every other candidate engine fails on availability, gold fails on return.
 
-**It passes equation (4) at every exposure, and the margin is not carried by the cost
-assumption.**
-
-| | net Sharpe | `rho` | threshold at `L = 1` | margin |
-| --- | ---: | ---: | ---: | ---: |
-| **gold, 1975-01…end** | 0.187 / **0.181** | −0.024 / +0.034 | −0.0038 / +0.0052 | +0.191 / **+0.176** |
-| *gold, 1971-09…end, context* | *0.313 / 0.298* | *−0.031 / +0.019* | *−0.0050 / +0.0030* | *+0.318 / +0.295* |
-
-Equation (4)'s documented misuse does not apply here: `|rho|` is under 0.04, far inside the
-`|rho| <= 0.5` range where the first-order condition is a usable test.
-
-**And the funding rule is what decides, exactly as §1 and §6a say it should.** Per unit of
-gold notional on that window, charging 40 bp of futures financing and GDE's 0.20% converted
-to 23.9 bp of notional, against a funding-rule gap of **+6.69 pp/yr**:
-
-| Funding rule | per unit notional | at `w = 0.10` | at GDE's own `w = 0.8363` |
-| --- | ---: | ---: | ---: |
-| pure overlay (1) | +2.563 / **+2.740** | +0.256 / +0.274 | +2.144 / +2.292 |
-| **GDE as measured (7), `delta = 0.182`** | +1.347 / **+1.525** | +0.135 / +0.152 | +1.127 / +1.275 |
-| pro rata (2) | −4.126 / **−3.949** | −0.413 / −0.395 | −3.450 / −3.302 |
-
-**The sign of gold's marginal contribution is decided by the ticker, and this is the
-cleanest instance of §6a's thesis on the shelf.** GLDM gives −0.40; GDE gives +0.15 at the
-same weight. **Same metal, same window, same cost assumptions, opposite sign.**
-
-**Equation (5) then takes most of it back, and that is the finding.** Realised over the same
-618 months, against the base levered to matched volatility:
-
-| Portfolio | geometric | volatility | Sharpe | **vs leverage-matched** | MDE₈₀ |
-| --- | ---: | ---: | ---: | ---: | ---: |
-| equity only, 1.00× | 12.78% | 15.56% | **0.586** | — | — |
-| pure overlay, `w = 0.10` | 13.06 / 13.07% | 15.60 / 15.73% | 0.600 / 0.597 | **+0.224 / +0.182** | 0.63 / 0.73 |
-| **GDE as measured** | 13.04 / 12.85% | 18.70 / 20.75% | **0.525 / 0.487** | **−1.133 / −2.048** | 5.77 / 6.67 |
-
-**At a small weight the overlay-funded contribution is positive and below its own detection
-floor. At the weight GDE actually runs, the portfolio's Sharpe ratio falls below the
-unlevered base's and the matched-volatility control rejects it.** Gold's standalone Sharpe
-of 0.18 is a third of equity's, so past a small weight the overlay is buying growth with
-volatility, and equation (5) exists to catch precisely that. **And §6a.4's measured 1.53
-pp/yr after-tax drag on GDE exceeds every positive cell in both tables.**
-
-**Its crisis-conditional correlation is the one number that clears §7's own falsifier.**
-Conclusion 7 above makes the recommendation conditional on trend's correlation to equity
-*inside equity drawdowns* staying below **+0.20**, and §9.3 shows what +0.30 costs.
-Measured on the identical definition — equity at least 10% below its running peak, 294 of
-658 months — **gold's crisis correlation is −0.011 / +0.072, and +0.084 on the holdable
-window.** Its mean return inside those months is **+0.85 to +0.95%/month** against equity's
-−0.26%. **On the axis this page identifies as the top-ranked threat to its own
-recommendation, gold is measurably safer than the sleeve the recommendation names.**
-
-**Beside trend, gold adds rather than substitutes — and it is the first engine to do so
-that anyone can buy.** On 605 joint months, 1975-01…2025-05, against the trend leg **built
-here** rather than a vendor series:
-
-| Set | k | mutual `rho` | **effective breadth** |
-| --- | ---: | ---: | ---: |
-| trend alone | 1 | — | 1.00 |
-| **trend + gold** | 2 | **+0.141 / +0.072** | **1.75 / 1.87** |
-| trend + BAB + STR + accruals | 4 | ≤ +0.18 | 4.06 — **three of the four cannot be bought** |
-
-| Portfolio | Sharpe | **vs leverage-matched** | MDE₈₀ | max drawdown |
-| --- | ---: | ---: | ---: | ---: |
-| equity only | 0.568 | — | — | −50.3% |
-| **+ 30% trend** | 0.643 | **+1.198** | 1.45 | −44.8% |
-| **+ 30% trend + 10% gold** | 0.649 / 0.647 | **+1.298 / +1.285** | 1.67 / 1.68 | **−43.5 / −43.7%** |
-| + 30% trend + 30% gold | 0.641 / 0.633 | +1.230 / +1.118 | 2.60 / 2.76 | **−41.0 / −41.6%** |
-
-**The increment is +0.09 to +0.10 pp/yr against an MDE₈₀ of 1.68**, and the drawdown moves
-further than the return does — 3.8 pp at a 30% gold overlay, where the return gap is
-*lower* than at 10%. **The best return weight and the best drawdown weight are different
-weights and neither difference clears its floor.** Both legs' crisis-conditional
-correlations sit far below conclusion 7's **+0.20** falsifier: trend −0.239, gold −0.042 /
-+0.084 over the same 217 crisis months. **A second overlay that is near-uncorrelated with
-the first *and* has a near-zero crisis correlation is worth more than its standalone Sharpe
-suggests — and gold's standalone Sharpe of 0.13 is still what disqualifies it.**
-
-**And gold is the counter-example to this section's structural claim.** §3 concludes that
-"the fund shelf binds before the evidence does": three of the seven factor families have no
-vehicle of any kind and the one BAB fund is $362m. **For gold it does not bind, in either
-direction.**
-
-| Route | Vehicle | Fee | Size / inception | Funding rule |
-| --- | --- | ---: | --- | --- |
-| Physical | GLD / IAU / GLDM / SGOL | 0.40 / 0.25 / **0.10** / 0.17% | decades old, tens of $bn | **pro rata** — GLD's 10-K: *"The Trust does not hold or employ any derivative securities"* |
-| **Stacked on equity** | **WisdomTree GDE** | **0.20%** | **$595.1m**, inception 2022-03-17 | **overlay** — *"approximately equal exposure to U.S.-listed gold futures contracts and U.S. equity securities"*; its 2026-05-31 N-PORT measures 85.7% equity + 88.1% gold notional |
-| Stacked on stocks and bonds | First Trust ESBG | 0.95% | **$2.2m**, inception 2025-11-18 | overlay, ~210% notional in three sleeves. A sub-$3m fund; treat closure as likely |
-| Stacked, gold + bitcoin | Return Stacked RSSX | 0.67% | $66.3m, inception 2025-05-29 | overlay, but the stacked dollar is a **risk-parity blend of gold and bitcoin** and cannot be dialled to pure gold |
-
-All figures retrieved 2026-08-17 from the funds' own SEC filings. **GDE is the second
-financed retail wrapper this repository has found for any candidate engine, after trend —
-and at 0.20% it is a seventh of trend's assumed 1.45% fee.** With this page's own ≤40 bp
-gold-futures financing bound from [structural and tax-aware
-edges](structural-and-tax-edges.md), the all-in overlay cost is about **0.60%/yr against
-trend's 2.05%.**
-
-**None of that promotes gold, and the reason is on the return side, not the vehicle side.**
-It is **dominated exactly as commodities are** — same Sharpe on §3's window, better
-correlation, no measurable edge under either funding rule. Its standalone Sharpe of 0.18 is
-the single number every result above reduces to, and it is the one a longer window could
-change.
-
-**One thing gold changes that commodities do not.** The AQR commodity series is
-excess-of-cash with **unpriced roll costs**, which is what §3 says would actually sink it.
-Gold has no roll cost in the physical wrapper, its carry is a published fee, and its total
-return is *exactly* price return minus that fee because bullion pays no distribution and
-has no corporate action. **It is the one candidate here whose cost side is measured rather
-than assumed** — and it still does not clear the bar that matters.
-
-**The tax side is worse than equity's and decides placement.** A bullion ETF is taxed as a
-collectible: **28% plus 3.8% NIIT** against 20% plus 3.8% for equity, verified from IRS
-Pub. 550 and from GLD's, IAU's, GLDM's and SGOL's own 10-Ks, each of which states it
-directly. Inside an IRA the collectibles rate does not apply — both GLD and IAU hold IRS
-private letter rulings to that effect — but traditional-IRA distributions are ordinary
-income, so the shelter helps and does not make gold tax-favoured.
-
-**The physical route needs no shelter**, and it does not compete with trend for it. §7 does
-not identify shelter as the binding constraint on the overlay weight, and a bullion trust
-*distributes nothing*: its only recurring realisation is the gain on the gold it sells to pay
-its own 0.10% fee, so its shelter priority on §7.2's rule is a few basis points at most — the
-exact figure is `not found`, since no 10-K quantifies the gain component. That is why GDE at
-a measured 1.31 pp/yr drag for the same investor and GLDM at near zero are not the same
-decision.
+**And it does not restore the drawdown property.** §7b: 50% trend alone reaches −40.99%
+maximum drawdown against 30% trend plus 30% gold at −40.96%, at **less gross exposure
+(1.50 against 1.60)** and a much lower resampled `P(deeper)` — **14.2% against 21.9%**. Gold
+alone at 10% notional runs 29.5%. **Financed notional does not confer the flat drawdown on
+this panel; the diversifier does.**
 
 ### The seven families this repository had never opened
 
@@ -565,60 +466,38 @@ most flattered number on this page** — see the limits below.
 
 ---
 
-## 5a. Stress: the risk everyone names is not the risk that binds
+## 5a. Stress, one axis at a time: the risk everyone names is not the risk that binds
 
 Analytic, from `overlay_growth.py`. Base a global equity portfolio at `a_p = 5.0%`,
 `sigma_p = 15.5%`; overlay 25% of trend notional at a **gross excess return of 4.0%** —
 already a two-thirds haircut to the measured 12.07% — 12.6% volatility, 59 bp financing and
-86 bp fee. Growth in pp/yr, reported against **both** the unlevered base and the
-leverage-matched control.
+86 bp fee. Growth in pp/yr against the leverage-matched control:
 
-| Scenario | `a_net` | vs unlevered | **vs leverage-matched** |
-| --- | ---: | ---: | ---: |
-| central case | +2.55% | +0.63 | **+0.62** |
-| correlation rises to 0.00 | +2.55% | +0.59 | +0.54 |
-| correlation rises to +0.20 | +2.55% | +0.49 | +0.34 |
-| **correlation rises to +0.50** (crowded unwind) | +2.55% | +0.34 | **+0.06** |
-| fee doubles to 1.72% | +1.69% | +0.41 | +0.40 |
-| trend vol doubles to 25% | +2.55% | +0.52 | +0.40 |
-| **held taxable** (2.09 pp drag) | +0.46% | +0.10 | +0.09 |
-| trend excess halved to 2.0% | +0.55% | +0.13 | +0.12 |
-| **financing +300 bp** | −0.45% | **−0.12** | **−0.13** |
-| **trend excess to zero** (a five-year drought) | −1.45% | **−0.37** | **−0.38** |
-| financing +500 bp | −2.45% | −0.62 | −0.63 |
-| trend excess −2% *and* correlation +0.30 | −3.45% | −1.06 | −1.26 |
+| Scenario | vs leverage-matched |
+| --- | ---: |
+| central case | **+0.62** |
+| correlation rises to +0.20 | +0.34 |
+| **correlation rises to +0.50** (crowded unwind) | **+0.06** |
+| fee doubles to 1.72% | +0.40 |
+| trend vol doubles to 25% | +0.40 |
+| **held taxable** (2.09 pp drag) | +0.09 |
+| **financing +300 bp** | **−0.13** |
+| **trend excess to zero** (a five-year drought) | **−0.38** |
+| trend excess −2% *and* correlation +0.30 | −1.26 |
 
 **Read the ordering, because it is not the intuitive one.** The overlay survives its
 correlation turning from −0.08 all the way to **+0.50** — the crowded-unwind scenario people
 name first — and still contributes. What breaks it is arithmetic on the *mean*: a financing
-spike of 300 bp, or a five-year stretch with no trend return at all. **The second of those
-is not a tail scenario; it is roughly what happened between 2012 and 2019.**
+spike of 300 bp, or a five-year stretch with no trend return at all. **The second is not a
+tail scenario; it is roughly what happened between 2012 and 2019.**
 
-Two further readings. The leverage-matched column tracks the unlevered column almost exactly
-except at `rho = +0.50`, which is the evidence that this construction is **not disguised
-leveraged beta** — at 25% notional and near-zero correlation it adds little volatility to
-match. And the taxable row confirms the placement constraint: +0.63 becomes +0.10.
+The leverage-matched column tracks the unlevered one almost exactly except at `rho = +0.50`,
+which is the evidence that this construction is **not disguised leveraged beta**.
 
-**This table is univariate and that is a defect, not a simplification.** §5b replaces it as
-the thing to quote. Its one modestly-joint cell is already the worst row here, and the joint
-object shows why: moving one axis at a time understates the *tail* by about a factor of
-two while barely moving the failure rate.
-
-The break-even the sleeve must clear, by correlation, shows the same thing from the other
-side — and shows how much the funding rule is carrying:
-
-| `rho` | overlay bar | pro-rata bar |
-| ---: | ---: | ---: |
-| −0.20 | −0.39% | +2.21% |
-| −0.08 | −0.16% | +2.44% |
-| 0.00 | 0.00% | +2.60% |
-| +0.50 | +0.98% | +3.57% |
-
-**Even at a correlation of +0.50 the overlay bar is below 1%, while the pro-rata bar is
-above 3.5%.** The analytic central case of +0.63 pp/yr also agrees with the empirical
-+0.68 pp/yr measured at the 7.7 pp haircut in §5, by two routes that share no arithmetic.
-
----
+**Quote §5b rather than this table.** Varying one axis at a time understates the joint tail
+by about a factor of two while barely moving the failure rate, which is a defect rather than
+a simplification — and it is why a univariate stress table may not be presented as a worst
+case anywhere here.
 
 ## 5b. The joint surface: dependence moves the tail, not the failure rate
 
@@ -1721,10 +1600,9 @@ account — which is the one gold conclusion that costs nothing to act on.
 
 ## 8. Concentration: the variance argument is weak and the skewness argument is the real one
 
-[Search coverage](search-coverage.md) §2 records that "the objective wants concentration
-and the programme has only tested dilution", on the grounds that growth-optimal sizing
-returns a corner solution. **That conflates two different corners**, and the concentration
-one is now measured rather than asserted.
+"The objective wants concentration" is sometimes read off the fact that growth-optimal
+sizing returns a corner solution. **That conflates two different corners** — the equity
+share and the number of names — and the concentration one is measurable.
 
 For `N` equicorrelated names at single-stock volatility `sigma` and pairwise correlation
 `rho`, equal-weighted, the excess growth rate is exactly
@@ -1775,27 +1653,21 @@ Regenerate with `uv run python -m portfolio_edge.studies.overlay_stress`.
 ### 9.1 The drawdown, resampled
 
 Circular block bootstrap, 24-month blocks, 4,000 **paired** resamples, seed 20260816,
-60 bp financing charged. The statistic is `mdd(w) − mdd(0)`: **positive means the overlay
-drew down less** than unlevered equity on the same resampled history.
-
-| `w` | observed | mean | 95% interval | **`P`(overlay deeper)** |
-| ---: | ---: | ---: | --- | ---: |
-| 0.25 | +0.91% | +3.62% | `[−0.98%, +9.95%]` | **6.5%** |
-| **0.30** | **+0.92%** | +4.18% | `[−1.18%, +11.60%]` | **6.9%** |
-| 0.50 | +0.88% | +5.83% | `[−2.37%, +17.80%]` | 9.6% |
-| 1.00 | +0.56% | +5.69% | `[−7.65%, +22.98%]` | 26.9% |
-| 2.00 | **−2.05%** | −7.69% | `[−28.01%, +12.55%]` | **78.7%** |
+60 bp financing charged. The statistic is `mdd(w) − mdd(0)`: positive means the overlay
+drew down less than unlevered equity on the same resampled history. **The full ladder is
+§7.4's**, which extends this one with six further rungs; the readings that matter here:
 
 **The flat-drawdown property is not an artefact of one path at the recommended weight, and
-it is at 3.0× gross.** At `w = 0.30` there is a 6.9% chance the overlay's drawdown is the
-deeper one, and the interval barely crosses zero. At `w = 2.00` it is 78.7% and the
-observed −2.05% is the *good* end of a distribution centred on −7.69%. §7's `w = 2.00` row
-is therefore a lucky path, and the one place the published ladder should not be quoted.
+it holds at 3.0× gross.** At `w = 0.30` there is a **6.9%** chance the overlay's drawdown is
+the deeper one and the interval barely crosses zero. At `w = 2.00` it is **78.7%**, and the
+observed −2.05% is the *good* end of a distribution centred on −7.69% — so §7's `w = 2.00`
+row is a lucky path and is the one place the published ladder should not be quoted.
 
 **No minimum detectable effect is quoted here and none exists.** Maximum drawdown is an
 order statistic of a path, not a mean, so the MDE machinery does not apply; the interval
-width is the resolution statement and it is enormous — ±10 pp at the recommended weight.
-**Anyone reading the −49.3% and −50.3% cells as a 1.0 pp difference is reading noise.**
+width is the resolution statement and it is enormous — **±10 pp at the recommended weight**.
+Anyone reading the −49.3% and −50.3% cells as a 1.0 pp difference is reading noise, and this
+is why a maximum drawdown is reported with a resampled interval or not at all.
 
 ### 9.2 The crisis windows, which are not flat
 
@@ -2080,77 +1952,43 @@ informs a decision.
 
 ## Consequence for this repository
 
-0. **The 7.7 pp/yr survivorship-and-backfill haircut this page applies to the vendor
-   series is not supported over the only window where it can be measured — and the sign
-   is the other way.** Regressing the vendor series on 46 live funds over the same 78
-   months gives the vendor an alpha of **−1.36 pp/yr** (*t* = −0.39) and a
-   volatility-matched difference of **−2.62 pp/yr, 95% CI [−10.91, +5.68]**. **+7.7 sits
-   above that interval.** Three things this does not license, and they are the reason the
-   haircut is retained rather than dropped: the measurable window is 2019–2025 while the
-   haircut is applied to a mean living in 1985–2011, where no fund return exists; the
-   7.7 bound was measured on hedge-fund CTA *databases*, not on registered funds; and the
-   vendor's 12.11 pp/yr post-publication decay is untouched by any of it.
-1. **The zero-leverage rule's cost is now a number, not an assumption**, and
-   [decision 0004](../decisions/0004-no-sleeve-promoted.md) records that its block on step 7
-   is circular for that reason. **Neither block is lifted here.**
-2. **Any future marginal-sleeve experiment must state its funding rule**, because the rule
-   is worth more than the sleeve.
-3. **Global diversification is a distributional argument, not a return argument**, and any
-   page that states it must carry the USD counter-evidence in the same breath.
-4. **A trend sleeve is a risk-reduction claim, not a return claim**, and must be judged on
+Rules this page derived that travel beyond it. Its own verdicts are in the Conclusion and
+are not repeated here.
+
+1. **Any marginal-sleeve experiment must state its funding rule**, because the rule is
+   worth more than the sleeve: `a_p − sigma_p**2` is +2.44 pp/yr for a 100%-equity base and
+   contains no term about the sleeve. Every arm reports against a **leverage-matched**
+   control, since an overlay that raises growth while lowering Sharpe bought its gain with
+   beta.
+2. **A wrapper is scored on `delta = (1 − b) / d`, never on gross notional**, and a fee is
+   converted to `fee / d` before it meets a hurdle. Gross notional is a risk-targeting
+   artefact: RSST swung 4.18× to 4.01× in one quarter without changing what it holds. A
+   wrapper whose base leg is not the reader's own gets a refusal rather than a number.
+3. **A tax drag is compared with the fund it displaces, at the holder's own rates, never
+   with zero.** Subtracting the plain equity fund inside the wrapper turns RSST's 0.32 pp/yr
+   into 4.5 bp, and California's lack of a preferential capital-gain rate almost exactly
+   cancels a lower federal bracket rather than compounding it.
+4. **A name pattern is not a census.** The "no fund older than six years" error came from
+   matching today's vocabulary against a 2019 census in which NTSX was called something
+   else. Every screen over the fund universe records its pattern and its known blind spots,
+   as [`shelf_census.json`](../../research/data-manifests/wrapper_shelf/shelf_census.json)
+   now does.
+5. **N-PORT notionals are denominated in the contract's currency.** Summing them across a
+   global futures book is a category error, and it is invisible because the result looks
+   like a plausible number. Only a book verified as single-currency may be totalled.
+6. **A univariate stress table is not a worst case**, and a **maximum drawdown is reported
+   with a resampled interval or not at all** — the interval at the recommended weight is
+   ±10 pp, wider than every difference the ladder invites a reader to compare.
+7. **A weight above 0.30 needs its own resampled drawdown probability before it is
+   proposed.** The knee between 0.58 and 0.60 could not have been seen in any published
+   table.
+8. **Global diversification is a distributional argument, not a return argument**, and any
+   page stating it carries the USD counter-evidence in the same breath.
+9. **A trend sleeve is a risk-reduction claim, not a return claim**, and is judged on
    mechanism rather than on relative performance.
-5. **Credit is rejected as a separate engine** (it correlates +0.835 with treasuries and is
-   the same engine), and **the alternative risk premia are rejected on cost**.
-   **Commodities are not rejected — they pass admission and are dominated**, at roughly a
-   fifth of trend's margin and with unpriced roll costs in the only series held.
-   **Gold is in the same position and for a better-measured reason**: identical Sharpe to
-   commodities on the 1985-2025 window at a correlation of −0.09 rather than +0.29, a
-   crisis-conditional correlation of at worst **+0.084** against the **+0.20** that breaks
-   conclusion 7, a cost side that is a published fee rather than an unpriced roll, a
-   **0.20%** overlay wrapper — and a marginal growth under pro-rata funding of **+0.04 to
-   −0.42 pp/yr** against a 0.30 bar. **It passes admission, it is dominated, and it is not
-   promoted.** §3a.
-6. **A univariate stress table may not be quoted as a worst case again.** §5b measures what
-   it costs: the failure rate is almost unchanged and the fifth percentile is 30% worse.
-   Any future stress must vary its axes jointly and state the copula.
-7. **Maximum drawdown must be reported with a resampled interval or not at all.** The
-   ±10 pp interval in §9.1 is wider than every difference §7's ladder invites a reader to
-   compare. The same rule the resolution table already imposes on means now applies to the
-   one order statistic this repository's recommendation rests on.
-8. **The recommendation stands, with three monitorable falsifiers rather than one.** Hold
-   it while **(a)** the forward trend excess return stays above ~2%/yr gross, **(b)** the
-   correlation to equity *inside equity drawdowns* stays below about +0.20, and **(c)** the
-   wrapper carries no drawdown-triggered de-risking rule. **The review interval must not be
-   five years**: §9.4 shows five years cannot resolve the effect and that a bad five-year
-   review predicts a good next five. Review on (a)–(c), not on realised performance.
-   **Falsifier (c) is now answered rather than open — no fund audited carries such a rule
-   (§6a.7) — and it should be rechecked on prospectus amendment, which is the one event that
-   can change it.**
-9. **A wrapper may not be scored from its gross notional, and no page here may quote one as
-   if it were exposure.** The deciding quantity is `delta = (1 − b) / d` from
-   [`wrapper_economics.py`](../../research/src/portfolio_edge/studies/wrapper_economics.py),
-   and a fee must be converted to `fee / d` before it is compared with a hurdle. A wrapper
-   whose base leg is not the reader's own base — RSSB's global equity against a US base,
-   RSBT's bonds, GDMN's gold miners — gets a refusal rather than a `delta`.
-10. **A name pattern is not a census.** The "no fund older than six years" error came from
-    matching today's vocabulary against a 2019 census in which NTSX was called something
-    else. Every screen this repository runs over the fund universe must record its pattern
-    and its known blind spots, as
-    [`shelf_census.json`](../../research/data-manifests/wrapper_shelf/shelf_census.json)
-    now does.
-11. **N-PORT notionals are denominated in the contract's currency.** Summing them across a
-    global futures book is a category error, and it is invisible because the result looks
-    like a plausible number. Only a book verified as single-currency may be totalled from
-    the structured data set.
-12. **A tax drag may not be compared with zero. It is compared with the fund it displaces,
-    at the holder's own rates.** §7.2 shows both halves matter: subtracting the plain equity
-    fund inside the wrapper turns RSST's 0.32 pp/yr into **4.5 bp**, and California's lack of
-    a preferential capital-gain rate almost exactly cancels a lower federal bracket rather
-    than compounding it. **The 2.09 pp/yr that set the overlay weight failed both tests
-    simultaneously**, and it stood in four places on two pages for as long as it did because
-    no page ever asked what the alternative holding paid.
-13. **A weight above 0.30 needs its own resampled drawdown probability before it may be
-    proposed.** §7.4 supplies six new rungs and finds a knee between 0.58 and 0.60 that no
-    published table could have shown. **The flat drawdown is a property of trend at weights
-    below ~0.55** — a bond overlay is a coin flip at 0.30 (§7a) and a gold overlay is worse
-    than that at 0.10 (§7b). **Financed notional does not confer it; the diversifier does.**
+10. **Review on the mechanism, not on realised performance, and not at five years.** Five
+    years cannot resolve the effect, and a bad five-year review predicts a *good* next five:
+    over 972 overlapping windows the five years after a bad review average +0.44 pp/yr.
+    Monitor instead: forward trend excess above ~2%/yr gross, correlation to equity inside
+    equity drawdowns below about +0.20, and no drawdown-triggered de-risking rule in the
+    wrapper.
