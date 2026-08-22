@@ -1341,7 +1341,7 @@ tested, and it is still not enough to promote anything.
    corrected one — 35 of 109, and 13 of the 65 funds the frame correction admits.** The general point stands — a fee
    comparison is not a cost comparison, and the largest shortfalls are five to a hundred
    times any fee difference — but it must not be quoted as a property of the shelf.
-6. **The listed factor shelf is thicker than this page said, and more duplicated.** The US
+6. **The listed factor shelf is thicker than a narrow census shows, and more duplicated.** The US
    shelf carries 109 auditable products, not 44. Eleven index families are sold two or
    three times over, covering 29 of them, so the count of *products* still overstates the
    count of *choices*. **Momentum is no longer one fund**: it has six — MTUM, SPMO, XSMO,

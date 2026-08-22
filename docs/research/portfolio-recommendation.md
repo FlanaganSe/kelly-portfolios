@@ -48,8 +48,8 @@ California investor and says so.**
    worth half of that**, +21 bp, because the swap adds portfolio variance; over thirty years
    that compounds to **6.6% more terminal wealth**. On the US-only post-publication premium
    the growth contribution is **negative at every weight**, and on a `γ = 3` certainty
-   equivalent so is almost every corner. **Bigger than this page said, still small, and
-   still undemonstrable: its 30-year MDE₈₀ is 142 bp against a 43 bp edge.**
+   equivalent so is almost every corner. **Small, and undemonstrable: its 30-year MDE₈₀ is
+   142 bp against a 43 bp edge.**
 4. **The equity/bond split is the investor's to set and nothing here can set it.** It is the
    largest single decision in the portfolio and the only one the evidence is silent on.
 5. **One account-placement result is not the textbook one:** at a 15% or 18.8% qualified
