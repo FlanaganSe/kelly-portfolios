@@ -600,7 +600,7 @@ no procedure recovers that automatically.
 
 1. **No optimiser ships.** Anything that searches a weight space belongs in `research/`
    with a frozen specification and a ledger entry. The client-side optimiser this section
-   used to argue against has been deleted; its defects are kept in the
+   this section once argued against has been deleted; its defects are kept in the
    [engine specification](portfolio-engine-specification.md) as reasons, not as a
    description of code that still exists.
 2. **Steps 1–5 of the original build order are done.** What remains is portfolio

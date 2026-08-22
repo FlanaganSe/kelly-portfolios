@@ -89,8 +89,11 @@ fee, transaction-cost, slippage or financing assumption anywhere; its Definition
 Sources and Disclosures tabs carry their content as embedded pictures rather than cells,
 and the text recovered from them documents the volatility model and the universe while
 saying nothing about costs. **Every figure below is gross of the vendor's own trading costs
-by omission**, on top of survivorship and backfill distortion bounded at 7.7 pp/yr on
-comparable CTA data — larger than the strategy's entire gross premium.
+by omission**, on top of survivorship and backfill distortion put at 7.7 pp/yr on
+comparable hedge-fund CTA databases — larger than the strategy's entire gross premium.
+**Read that 7.7 as a scenario, not as a bias estimate for this series**: on the only
+window where it can be checked against registered funds it points the other way
+([Experiment 012](live-managed-futures.md)).
 
 ### What was compared
 
@@ -234,7 +237,7 @@ fires the falsifier, from +1.510 to +0.586, without changing the verdict.
 | **Kim, Tse and Wald: remove the volatility scaling** | **Not runnable, and it is the single most informative test of this strategy** — removing it collapses the published pooled *t* from 4.34 to 1.68. The published series is an aggregate of 58 already-scaled instrument positions and cannot be unwound |
 | **Huang et al.'s bootstrap** | An asset-level predictive-regression test on the underlying instruments, not on a portfolio return series. Their finding stands as prior evidence and is neither confirmed nor rebutted here |
 | **Re-cost the vendor series from its own trades** | The trades are not observable and the workbook states no cost basis |
-| **Correct for survivorship and backfill** | Not estimable from one series. The published magnitude on comparable CTA data is 7.7 pp/yr, Sharpe 0.73 → 0.09 |
+| **Correct for survivorship and backfill** | Not estimable from one series. The published magnitude on comparable CTA data is 7.7 pp/yr, Sharpe 0.73 → 0.09 — **but that bound is measured on hedge-fund CTA databases, and on the only window where it can be checked against registered funds it points the other way**: over 78 joint months the vendor series earned **2.62 pp/yr less** than 46 live funds at matched volatility, 95% `[−10.91, +5.68]` ([Experiment 012](live-managed-futures.md)) |
 
 The lookback sensitivity must be read narrowly for the same reason: it moves *this
 experiment's* estimator, which sizes the risk match. **It cannot touch the sleeve's own
@@ -445,10 +448,10 @@ Experiment 008 used, screened with the **same frozen mandate and exclusion patte
 Provenance in
 [`data-manifests/wrapper_shelf/shelf_census.json`](../../research/data-manifests/wrapper_shelf/shelf_census.json).
 
-**Experiment 008's sentence "the listed managed-futures shelf is five products" was true when
-it was written and is no longer true.** Fifteen exchange-listed series now carry a diversified
-managed-futures mandate. The frozen screen still admits exactly five — **and it is the
-inception cutoff doing it, not quality.**
+**The listed managed-futures shelf is fifteen products, not the five Experiment 008
+screened.** Fifteen exchange-listed series now carry a diversified managed-futures mandate.
+The frozen screen still admits exactly five — **and it is the inception cutoff doing it, not
+quality.**
 
 | Ticker | Fund | Net assets 2026Q2 | vs 2025Q4 | In Exp 008? |
 | --- | --- | ---: | ---: | --- |
@@ -611,7 +614,7 @@ specification quality, not of conduct.** The rule that would have prevented it:
 status becomes **`unresolved`** — exactly what its own write-up said it would. **`unresolved`
 is not a promotion.** The vendor's cost basis is still unestablished, the post-publication
 interval still contains zero and still fails Holm, the standalone Sharpe still fell 1.34 →
-0.18, the survivorship distortion on comparable CTA data is still 7.7 pp/yr, and
+0.18, the survivorship distortion on comparable *hedge-fund* CTA data is 7.7 pp/yr — a scenario rather than a bias estimate for registered funds, which measure the other way ([Experiment 012](live-managed-futures.md)) — and
 `vendor-series-evaluation` still caps the result at `exploratory`. **Nothing about a trend
 sleeve becomes investable because a clause was read the other way.** Experiment 004's frozen
 specification and recorded status are untouched; this is a second, differently-specified
@@ -620,15 +623,15 @@ one run.**
 
 ---
 
-## Two errors this page corrects
+## Two transfers a reader will be tempted to repeat
 
-Both were transfers of a verdict to a population it was never measured on.
+Both take a verdict to a population it was never measured on.
 
-1. **Experiment 004's verdict was repeated as though it applied to KMLM, DBMF and CTA.** It
-   evaluated an index. Experiment 008 tests them and reaches a *different* answer for DBMF
-   — the one that is an explicit replication strategy, and therefore the one Experiment
-   004's own 44%-replica finding should have made most interesting rather than least.
-2. **Hedge-fund CTA fee evidence was applied to exchange-traded funds.** Bhardwaj, Gorton
+1. **Experiment 004's verdict does not apply to KMLM, DBMF or CTA.** It evaluated an index.
+   Experiment 008 tests the products and reaches a *different* answer for DBMF — the one
+   that is an explicit replication strategy, and therefore the one Experiment 004's own
+   44%-replica finding should have made most interesting rather than least.
+2. **Hedge-fund CTA fee evidence does not reach exchange-traded funds.** Bhardwaj, Gorton
    and Rouwenhorst measure 1994–2012 CTAs whose **fee income was around 4% of assets**. The
    funds here charge **0.66% to 0.98%**, read from their own SEC-filed prospectus fee
    tables. A four-point fee load does not transfer to an 0.85% one, and that study is used

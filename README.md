@@ -19,11 +19,16 @@ described as market data.
 
 ## Where the research has got to
 
-`as of 2026-08-22`. Seventeen experiment families across 41 ledgered runs of **21 distinct
-specifications**. Twenty-one is the number a later trial count starts from, not 41 — and it
-is an upper bound, because several of those specifications re-run an earlier falsifier on
-data it had already spent. Recount rather than trusting this sentence:
-`cd research && uv run python -m portfolio_edge.reporting.programme_status`.
+The counts are generated, not written here, because a number narrated in three places is
+a number that will be wrong in at least one:
+
+```sh
+cd research && uv run python -m portfolio_edge.reporting.programme_status
+```
+
+Read the distinct-specification count rather than the run count as the number a later
+trial correction starts from, and read it as an upper bound: specifications share data,
+universes and eras, so their test statistics are dependent.
 
 **No sleeve was promoted.** Hypotheses are `rejected` against falsifiers frozen before any
 result was seen: rebalancing as a source of return, and the CMA and RMW factor premia. Two

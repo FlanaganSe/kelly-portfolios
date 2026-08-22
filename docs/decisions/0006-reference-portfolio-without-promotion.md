@@ -27,7 +27,7 @@ literal one is now visible:
 - The absence has already caused a specific error. Experiment 004's index verdict was
   repeated to the project owner as though it applied to KMLM, DBMF and CTA, which were
   never tested. That error is recorded on
-  [its own page](../research/trend-marginal-value.md#two-errors-this-page-corrects). A
+  [its own page](../research/trend-marginal-value.md#two-transfers-a-reader-will-be-tempted-to-repeat). A
   page that names products and states exactly what was measured on each is the
   structural fix.
 

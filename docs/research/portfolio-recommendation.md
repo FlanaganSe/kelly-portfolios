@@ -37,13 +37,12 @@ California investor and says so.**
    zero.** Its largest new component is decaying while being measured, and the ~46 bp
    tracking error behind the "99% in twelve months" claim is an assumption rather than a
    measurement.
-3. **Every tilt is smaller, slower, and not signable within a lifetime — and the figure
-   this page published for the value tilt was wrong twice over, both times downward.** The
-   **+15 bp/yr against 140 bp** previously quoted multiplied a fund's HML loading by a
-   long-only capture fraction, which is
-   [the same quantity measured a second way](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one),
-   and used **VBR's** +0.410 rather than the +0.537 of AVUV, a fund the corrected census
-   frame admitted after that figure was written. The best case for a 20%-of-portfolio
+3. **Every tilt is smaller, slower, and not signable within a lifetime.** Price a factor
+   line as `weight × (fund loading − incumbent loading) × premium − cost`: a loading and a
+   long-only capture fraction are
+   [the same quantity measured two ways](long-only-capture.md#the-correction-a-capture-fraction-is-a-loading-so-it-may-not-multiply-one),
+   so their product discounts one exposure twice, and the incumbent to price against is the
+   fund actually being sold. The best case for a 20%-of-portfolio
    small-value tilt is **+43 bp/yr against 312 bp of tracking error** — a 0.78 probability
    of being ahead after thirty years and **86 years** to 90% confidence. **On growth it is
    worth half of that**, +21 bp, because the swap adds portfolio variance; over thirty years
@@ -67,27 +66,26 @@ California investor and says so.**
    recorded, so splitting the international sleeve is cheaper before any placement
    argument.** And **VTI against VOO is 1.78 bp/yr of lending and nothing else** — a
    0.52 probability of being ahead after thirty years.
-7. **"Managed futures is the one sleeve whose account decides its sign" is withdrawn. It
-   was a fact about DBMF, not about the exposure, and it is smaller than it looked even
-   there.** 2.09 pp/yr of distribution tax drag against an 0.85% fee, and zero in a shelter
+7. **The account decides DBMF's sign and does not decide the exposure's.** A distribution
+   drag is a property of a product, not of what it holds. DBMF carries
+   2.09 pp/yr against an 0.85% fee, and zero in a shelter
    — **but a dollar of the same trend notional obtained through the return-stacked wrapper
    RSST carries 0.32 pp/yr**, on each fund's own SEC-standardised after-tax table
    ([capital efficiency §6a.4](capital-efficiency-and-breadth.md)). **And 0.32 is still the
    wrong comparison**: RSST is bought *instead of* the plain equity fund it contains, which
    pays 26.7 bp of its own, so **the incremental cost of holding the overlay in a taxable
    account is 4.5 bp per dollar — 1.3 bp of portfolio return at a 30% overlay**
-   ([§7.2](capital-efficiency-and-breadth.md)). **The account decides DBMF's sign. It does
-   not decide RSST's, and no weight or placement on this page may be justified by that
-   claim again.**
-8. **The overlay weight was a corner solution against that constraint, and it survives its
-   removal for a different reason.** Re-derived without it, the growth optimum is **3.04
+   ([§7.2](capital-efficiency-and-breadth.md)). **No weight or placement here rests on a
+   gross drag compared with zero.**
+8. **The overlay weight is set by drawdown, not by shelter capacity.** The growth optimum
+   is **3.04
    units of notional, 2.14 after twenty years of shrinkage** — and is refused, on the same
    grounds as this repository's 2.2× levered-equity optimum. What binds is the **resampled
    drawdown, which doubles between `w = 0.58` and `w = 0.60`**, giving a ceiling near
    **0.55**; and, for an investor whose taxable account carries unrealised gain they will
-   not realise, the capital that can be moved at all. **The recommended weight does not
-   move. Every reason previously given for it does.**
-9. **The wrapper was a single point of failure and is no longer one.** The equity-plus-trend
+   not realise, the capital that can be moved at all. **A tax-shelter argument cannot
+   size an overlay: at these rates it is worth 1.3 bp/yr of portfolio return.**
+9. **The wrapper is no longer a single point of failure.** The equity-plus-trend
    overlay shelf is four live funds and a JPMorgan entrant at 0.59%, and the listed
    managed-futures shelf has gone from five products to fifteen with BlackRock, Fidelity,
    Invesco and Man Group among the entrants. **None of the newcomers has been tested against
@@ -213,10 +211,10 @@ move the bond row. Their lending income and waiver terms were not read
 HTTP 403. A spread is paid once and a fee for thirty years — and **SPY has the tightest
 spread on the shelf, at zero, and the highest cost of ownership on it.**
 
-### Use VEA + VWO rather than VXUS, and not only for the reason this page used to give
+### Use VEA + VWO rather than VXUS
 
-**The split is cheaper before any placement argument.** VXUS costs **0.05%** — not the
-0.03% this repository had recorded — against a 75/25 blend of VEA and VWO at 0.0375%, so
+**The split is cheaper before any placement argument.** VXUS costs **0.05%** against a
+75/25 blend of VEA and VWO at 0.0375%, so
 splitting saves **1.25 bp/yr on the international sleeve, 0.50 bp of equity**, and lending
 is a wash (VXUS 3.57 bp against the blend's 3.56). On net cost the split is **0.19 bp
 against VXUS's 1.43**. The placement gain is separate and smaller than the framing implied:
@@ -341,10 +339,11 @@ belong here because they move what a reader should hold.
   contract price. The family's only disclosed rate is RSBA's merger-arbitrage swap at
   **OBFR + 6.64%**, up from OBFR + 3.00% one quarter earlier.
 
-**And this page's claim that "none of it is six years old" was wrong and is withdrawn.**
-NTSX appears in the 2019Q4 census — as "WisdomTree 90/60 U.S. Balanced Fund" — and is eight
-years old; PIMCO has run StocksPLUS since the 1980s. What survives is narrower: **RSST itself
-is under three years old.**
+**The shelf is older than a name-pattern screen suggests.** NTSX appears in the 2019Q4
+census — as "WisdomTree 90/60 U.S. Balanced Fund" — and is eight years old; PIMCO has run
+StocksPLUS since the 1980s. A screen that matches today's vocabulary against a 2019 census
+reads a rename as a launch. What survives is narrower: **RSST itself is under three years
+old.**
 
 **It is still not promoted, for three reasons that are not about the arithmetic.** The
 trend leg rests on a vendor series stating no cost basis anywhere, against a bias bound
@@ -560,10 +559,10 @@ probability below is an **upper bound**: the machinery treats `e` as known.
 
 \* **assumed**, not measured, and the components are not independent.
 
-### The value tilt, recomputed
+### The value tilt, and the two ways this chain goes wrong
 
-**The 15.2 bp this page published on 2026-08-12 is withdrawn, and both of its errors ran in
-the same direction.** It came from `0.20 × 0.410 × 0.520 × 4.74 − 0.20 × 0.25`, in which
+A chain of the form `0.20 × 0.410 × 0.520 × 4.74 − 0.20 × 0.25` understates a value tilt by
+roughly a factor of two, and both of its errors run in the same direction:
 
 - **`0.410 × 0.520` discounts one exposure twice.** A capture fraction *is* an HML loading:
   the size-neutral 0.520 decomposes exactly into a loading of 0.4891 plus a 0.0313 residue,
@@ -916,8 +915,8 @@ answer.**
 
 **Three of those have been promoted from "would refine the answer" to "set it".** The
 annual contribution rate, the embedded gain in each taxable lot, and **whether the 401(k)
-menu can hold anything but a broad index** now jointly decide the overlay weight, because
-the constraint that used to decide it — tax-shelter capacity — is withdrawn
+menu can hold anything but a broad index** jointly decide the overlay weight, now that
+tax-shelter capacity is measured at 1.3 bp/yr and does not bind
 ([capital efficiency §7.3](capital-efficiency-and-breadth.md)). None of the three was ever
 asked for by any page here, and without them **an overlay weight is a guess about an account
 rather than a judgement about a strategy.**

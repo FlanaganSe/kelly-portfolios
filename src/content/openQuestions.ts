@@ -228,16 +228,6 @@ export const openQuestions: readonly OpenQuestion[] = [
     source: framework,
   },
   {
-    id: "framework-11-capture-benchmark",
-    group: "framework-open-decision",
-    question: "Which benchmark may an edge budget's factor line book its capture against?",
-    whyItIsOpen:
-      "The capture fraction itself is measured — 0.520 size-neutral, 0.958 against the market, a 0.846 range across five defensible benchmarks. What is open is which of those a budget with no separate size line is entitled to use, because the gap between them is a size premium and booking it under value counts it twice. The answer moves the line by a factor of two and a half, and decides its sign.",
-    whatWouldSettleIt:
-      "A decision about whether the budget carries a separate size line, argued before the number is looked at.",
-    source: framework,
-  },
-  {
     id: "fund-delivered-capture",
     group: "framework-open-decision",
     question: "What is a real fund's delivered capture?",

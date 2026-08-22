@@ -259,10 +259,9 @@ not always, and DBMF is the case in hand: it launched 2019-05 and its feed begin
 
 ## Consequence for this repository
 
-1. **The 7.7 pp/yr CTA bias haircut may no longer be quoted as though it applied to the AQR
-   TSMOM series against live funds.** Where it appears in
-   [capital efficiency and breadth](capital-efficiency-and-breadth.md) it must carry this
-   measurement beside it: on the only window where the comparison is possible, the
+1. **The 7.7 pp/yr CTA bias haircut is a scenario, not a bias estimate for this series.**
+   It is measured on hedge-fund CTA databases, and wherever it is quoted against the AQR
+   TSMOM series it carries this measurement beside it: on the only window where the comparison is possible, the
    vendor-less-live difference is **−2.62 pp/yr with a 95% interval of [−10.91, +5.68]**.
 2. **Experiment 011's `unresolved` verdict stands, but its stated reason is superseded.**
    The verdict was attributed to the vendor series being unmeasurable. It is measurable, and

@@ -11,17 +11,17 @@ assumption with a measurement. Out of scope: whether any tilt is worth holding, 
 needs the whole of `premium × delivered loading − cost`.
 
 **Status: `rejected`, and the rejection is the finding.** What is rejected is not the
-capture fraction. It is the premise that there *is* one — and, since 2026-08-17, the
-premise that it may multiply anything.
+capture fraction. It is the premise that there *is* one, and the premise that it may
+multiply anything.
 
 ---
 
 ## The correction: a capture fraction is a loading, so it may not multiply one
 
-**This page was read as supplying a multiplier and it does not supply one.** Every chain
-of the form `loading × capture × premium` in this repository discounted the same
-long-only exposure twice. The error is now settled by computation rather than by
-argument, and it is worth about a factor of two.
+**This page does not supply a multiplier.** A chain of the form
+`loading × capture × premium` discounts the same long-only exposure twice, and the
+double-discount is worth about a factor of two. That is settled by computation rather than
+by argument, and the computation is below.
 
 **The algebra.** Regress the very spread this page measures, `L − B`, on the very factors
 this repository uses:
@@ -377,16 +377,13 @@ funds an investor would actually buy.**
 
 ## What this does to `premium × delivered loading − cost`
 
-**The chain has no missing middle term, and this page's earlier answer that it did is
-withdrawn.** The version published here on 2026-08-12 read
-
-> | Product | Delivered HML loading | Capture used | On the pooled +4.74 | On the US-only +1.57 |
-> | VBR small value | 0.410 | 0.520 size-neutral | 1.01 pp/yr | 0.34 pp/yr |
-
-and concluded that the choice of capture definition moved the gross factor line by a
-factor of two and a half. Identity (C) says that table multiplied a delivered exposure by
-a delivered exposure. **The correct chain has three terms and not four**, and it is
+**The chain has three terms, not four**, and it is
 `weight × (h_fund − h_incumbent) × premium − cost`.
+
+A four-term chain — `weight × loading × capture × premium` — reads as though the choice of
+capture definition moved the gross factor line by a factor of two and a half. Identity (C)
+says such a chain multiplies a delivered exposure by a delivered exposure. There is no
+missing middle term to choose.
 
 Restated with the incumbent named — VTI, HML loading **+0.0247** over 2020-01…2025-12 —
 and against Experiment 005's pooled post-publication +4.74 and the US-only +1.57:
@@ -456,8 +453,8 @@ the funds' own filings, above. The pooled premium and the fund loadings in the c
 are **quoted** from Experiments 005 and 013, not recomputed here; only VTI's loading and
 identity (C) are computed on this page.
 
-**Closed since 2026-08-12.** Two of the three open questions this page carried are
-answered by identity (C) rather than by a new measurement.
+**Two questions identity (C) answers without a new measurement**, and which no longer need
+asking:
 
 - **An edge budget's factor line needs no benchmark.** A delivered loading is taken
   against a factor, so a budget that prices its factor line
@@ -531,14 +528,12 @@ computes only VTI's own loadings, identity (C), and the arithmetic over both.
 | Superseded run | `0d37fe33c09a4d379fd9b8a2507a76de`, `unresolved`, spec `265ebd1232e4…` |
 | Bootstrap | joint stationary block on numerator and denominator together, 10,000 resamples, frozen 12-month mean block |
 
-**The superseded run is on the ledger and stays there.** The first specification declared
-its reconstruction tolerances by a hand-wave rather than by propagating the rounding, and
-clause (0) fired on the momentum identity. The correction re-derives one uniform bound from
-the files' printed precision and the number of terms, **and from no observed quantity**.
-The output of the first run, including every capture fraction, **had been seen** when the
-correction was written; that is recorded in the specification's own correction record, and
-the falsifier, its clauses, the 0.40, the 0.30 threshold, the definitions, the eras and the
-seed did not change.
+**A reconstruction tolerance is derived from the files' printed precision and the number
+of terms, never declared.** The superseded run on the ledger declared its tolerances by a
+hand-wave and clause (0) fired on the momentum identity; the replacement derives one
+uniform bound **from no observed quantity**. Its outputs had already been seen when the
+correction was written, which is why the falsifier, its clauses, the 0.40, the 0.30
+threshold, the definitions, the eras and the seed were all left untouched.
 
 Input file hashes and coverage are in [the evidence base](evidence-base.md) §2. Returns are
 decimal, converted by an explicit recorded transform; premia are `12 × monthly arithmetic

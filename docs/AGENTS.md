@@ -67,27 +67,41 @@ the numbers are correct and only the framing is wrong.
   "cannot" need the instrument, the window and the parameters that decide them stated
   in the same sentence. [Search coverage](research/search-coverage.md) is the standing
   audit of where that has slipped.
+- **A verdict may not be stronger than the instrument that produced it.** If a bar sits
+  below the design's own minimum detectable effect, the honest status is `unresolved`
+  and the MDE goes in the same sentence
+  ([decision 0009](decisions/0009-blocks-lifted-and-closures-rescoped.md)).
+
+### Write a finding, not a ban
+
+The corpus's second-most-expensive habit, after narrating its own history. A rule stated
+as a prohibition outlives the evidence that justified it, propagates into always-on files
+and shipped copy, and then quietly forecloses work nobody re-examined. It has already
+happened: six data sources were recorded as unavailable while published, two decision
+records exist only to loosen an earlier one, and every marginal-sleeve verdict here was
+taken against a hurdle inflated by a rule adopted for prudence.
+
+So write **what was measured, on what, and what would change it**. Reserve "never" for
+arithmetic — where it is genuinely absolute, the code raises and the prose can point at
+the exception rather than repeat it. Before adding a prohibition, check whether the honest
+version is a scoped finding; before obeying one, check whether its reasoning reaches your
+case.
 
 ## Why the always-on instruction files are short
 
 `AGENTS.md`, `CLAUDE.md` and this file are loaded on every request, so they carry only
-what an agent cannot infer from the repository. The evidence is
-[Gloaguen et al., arXiv:2602.11988](https://arxiv.org/abs/2602.11988) (ETH Zurich SRI
-Lab, February 2026), who evaluated coding agents with and without repository context
-files: *"providing context files does not generally improve task success rates, while
-increasing inference cost by over 20% on average"*, and *"repository overviews,
-although popular and recommended by model providers, are not helpful."* Two
-qualifications carry as much weight as the headline — *"instructions in the context
-files are well followed"*, so what you put there will be obeyed; and the authors
-conclude that context files earn their place *"for specifying non-standard coding
-practices"*.
+what an agent cannot infer from the repository.
+[Gloaguen et al., arXiv:2602.11988](https://arxiv.org/abs/2602.11988) found that context
+files do not generally improve task success while adding over 20% to inference cost, that
+repository overviews in particular do not help — and, the qualification that matters here,
+that *"instructions in the context files are well followed"*. What you put there will be
+obeyed, which is the argument for putting little there and for stating it carefully.
 
-The consequence is a split rather than a shorter file: non-inferable facts and traps
-go in `AGENTS.md`; this protocol lives here and under `.claude/rules/` with `paths:`
-frontmatter, so it loads only when Markdown is touched; multi-step procedures are
-skills, whose bodies load on use; actions with real consequences are permissions, not
-prose; and formatting is a hook. **Rules that tooling can enforce should not be
-prose.**
+The consequence is a split rather than one shorter file: non-inferable facts and traps go
+in `AGENTS.md`; this protocol lives here and under `.claude/rules/` with `paths:`
+frontmatter, so it loads only when Markdown is touched; multi-step procedures are skills,
+whose bodies load on use; actions with real consequences are permissions, not prose; and
+formatting is a hook. **Rules that tooling can enforce should not be prose.**
 
 ## Do not narrate the page's own history
 
@@ -120,6 +134,13 @@ go stale silently. Link or regenerate instead:
 | Experiment counts, runs, specifications, statuses | `uv run python -m portfolio_edge.reporting.programme_status` |
 | A numerical fixture | The test that pins it |
 | A shipped figure | `src/content/`, which carries its status and date |
+| An experiment's own result numbers | `research/artifacts/<run_id>/summary.md`, committed since 2026-08-22 |
+
+That last row is new and it changes what a synthesis is for. Until the summaries were
+committed, a fresh clone held the ledger — what was run — and no results at all, so every
+measured number reached a reader only by being retyped here. That is why this corpus grew
+to 168,000 words. **A synthesis now carries the argument, the decisive numbers, and the
+scope; the full result table lives in the run's own summary and is linked, not copied.**
 
 `src/content/citations.test.ts` enforces the link half: every `docPath` and anchor the
 client cites must resolve, and every relative link and anchor in the corpus must resolve.

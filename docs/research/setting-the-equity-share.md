@@ -360,10 +360,9 @@ with sample length**, so no number here may be compared against a drawdown from 
 window. And **bonds shortened the drawdown but did not remove it**: the 90/10 rung is
 −45.5%, 4.8 points better than all-equity.
 
-The third used to read *"this is one sample of one country, and this repository has not
-measured the others"*. **It has now measured them, and the result is worse than the warning
-was.** [Jordà–Schularick–Taylor R6](evidence-base.md) supplies annual **real** total returns
-for sixteen countries, 1870–2020:
+**The third limitation is measured, and it is worse than a warning about one country
+would suggest.** [Jordà–Schularick–Taylor R6](evidence-base.md) supplies annual **real**
+total returns for sixteen countries, 1870–2020:
 
 | | worst | median | best | **where the US ranks** |
 | --- | --- | --- | --- | --- |

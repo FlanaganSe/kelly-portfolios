@@ -1088,10 +1088,9 @@ comparison with the physical wrapper, which defers what GDE cannot.
 **A dollar of managed-futures notional costs 0.32 pp/yr of distribution tax through RSST and
 2.09 through DBMF.** [The recommendation](portfolio-recommendation.md) calls managed futures
 *"the one sleeve whose account decides its sign"* on the strength of the 2.09. **That is true
-of the pro-rata vehicle and is not true of the overlay one**, and §7's shelter constraint —
-the thing that used to set the weight — **is withdrawn rather than weakened.** §7.2 restates
-both figures at one real investor's own rates and subtracts the plain equity fund the
-wrapper displaces: **the incremental cost of holding the overlay in a taxable account is
+of the pro-rata vehicle and not of the overlay one**, so a shelter constraint cannot size the
+overlay. §7.2 states both figures at one real investor's own rates and subtracts the plain
+equity fund the wrapper displaces: **the incremental cost of holding the overlay in a taxable account is
 4.5 bp per dollar of RSST and 1.3 bp of portfolio return at the recommended weight**, against
 143.9 and 43.2 for DBMF. **The account decides DBMF's sign and does not decide RSST's.**
 
@@ -1123,8 +1122,8 @@ capital-loss carryforwards — survives; its universality does not.
 
 ### 6a.5 Survival, and how old the shelf actually is
 
-**The claim that "the entire shelf is younger than six years" is false and is withdrawn.**
-From the 2019Q4 census: **NTSX filed at $39.0m in 2019Q4** — inception **2018-08-02**, now
+**The shelf is older than a name-pattern screen shows, and the screen is why.** Matching
+today's vocabulary against a 2019 census reads a rename as a launch. From the 2019Q4 census: **NTSX filed at $39.0m in 2019Q4** — inception **2018-08-02**, now
 eight years old and $1,203.6m — and the **entire PIMCO StocksPLUS family was already there**,
 several of its funds above $1bn, on a strategy PIMCO has run since the 1980s. Capital
 efficiency is not a post-2020 fashion; the *retail ETF* expression of it is.
@@ -1288,27 +1287,22 @@ market, since the industry has proved willing to wrap five different ones in two
 
 ---
 
-## 7. The weight, re-derived after the constraint that set it was withdrawn
+## 7. What sets the overlay weight
 
-**What this section used to say, and why it no longer holds.** The recommended 15–25% was
-chosen by judgement; a red team asked what the model says, found the sizing question has
-**no interior solution**, and concluded that the weight was set by the account. The chain
-was: the sleeve's distribution tax drag is **2.09 pp/yr**, so it must live in a shelter; the
-shelter holds roughly 30% of the portfolio; so the overlay is capped at what the shelter can
-carry. **§6a.4 withdrew the 2.09.** It is a fact about DBMF, not about the exposure — the
-same dollar of trend notional through RSST carries **0.32 pp/yr** on each fund's own
-SEC-standardised table. **The constraint that set the weight is gone, and everything below
-is the re-derivation without it.**
+**The overlay is held at `w = 0.30`, and the binding constraint is drawdown rather than
+tax.** The growth optimum is **2.1 to 3.0 units of notional** and is refused as unholdable.
+The tax constraint does not bind at any weight under discussion: worked at the reference
+investor's own rates it is **1.3 bp/yr of portfolio return at `w = 0.30`**. What binds
+first is **drawdown, at about `w = 0.50`**, on the resampling §9 uses; underneath it sits
+the taxable account's embedded gains, which happen to bind in the same place.
 
-**The conclusion first, because three of the four numbers move and the recommendation does
-not.** The growth optimum is **2.1 to 3.0 units of notional** and is refused. The tax
-constraint **does not bind at any weight under discussion**: worked at a real investor's own
-rates it is **1.3 bp/yr of portfolio return at `w = 0.30`**, not the 31 bp the account rule
-implied. What binds is **drawdown, and it binds at about `w = 0.50`** on the resampling this
-page's own destruction test uses. Beneath that sits a constraint the old reasoning never
-named and which happens to bind at the same place: **the taxable account's embedded gains.**
-**30% is retained, and the reason this page gave for it has been wrong since it was
-written.**
+**A tax drag is compared with the fund it displaces, at the holder's own rates, never with
+zero.** That is the trap this section exists to record. A 2.09 pp/yr distribution drag is a
+fact about DBMF, not about trend exposure — the same dollar of trend notional through RSST
+carries **0.32 pp/yr** on each fund's own SEC-standardised table, and netting against the
+equity fund inside the wrapper takes it to 4.5 bp. Sizing an overlay to what a shelter can
+carry, on the gross drag of one product, is how a weight acquires a reason that does not
+survive its first audit.
 
 ### 7.1 The growth optimum, through the wrapper rather than through an idealisation
 
@@ -1414,7 +1408,7 @@ distribution drag at this investor's rates is `1.10% × 24.3% = 26.7 bp/yr`, whi
 **1.3 basis points is not a constraint on anything.** It sits against a marginal
 contribution this page measures at **+1.50 pp/yr** at the same weight — a ratio of about one
 to a hundred, and two orders of magnitude below the ±10 pp resolution §9.1 puts on the
-drawdown claim. **The tax-shelter constraint on the overlay weight is withdrawn.** At the
+drawdown claim, so **a tax shelter cannot size this overlay.** At the
 SEC's own top federal rates the same subtraction gives 5.8 bp for RSST against 182.8 for
 DBMF, so this is not an artefact of the investor's bracket.
 
@@ -1549,10 +1543,10 @@ there.**
 2. **Capital that can be moved without realising a gain**, §7.3. For the stated investor
    that is $120k of $400k and it caps `w` at 0.30 today. It lifts with contributions, which
    are `not found`.
-3. **Fund closure and methodology change.** The claim that "no fund is six years old" was
-   wrong and is withdrawn — **NTSX is eight and PIMCO's StocksPLUS family predates the
-   ETF** (§6a.5). What survives is narrower and still binding: **RSST itself is under three
-   years old**, and two governance events landed on this shelf inside one audit (§6a.6).
+3. **Fund closure and methodology change.** The shelf is not uniformly young — **NTSX is
+   eight and PIMCO's StocksPLUS family predates the ETF** (§6a.5). What binds is narrower:
+   **RSST itself is under three years old**, and two governance events landed on this shelf
+   inside one audit (§6a.6).
 4. **Undisclosed financing.** §7.1's bottom row, and §5b's 97 bp boundary against a family
    whose one disclosed rate is 664 bp and doubled in a quarter.
 5. **Model risk the shrinkage does not cover** — `sigma_d` and `rho` are treated as

@@ -886,7 +886,7 @@ seed 20260909.
    equity sleeve's credit is negative against `balanced_60_40`. **Judged marginally, an
    equity tilt inside an equity portfolio is worth *less* than the standalone chain said,
    not more.**
-2. **The portfolio-level closure is withdrawn as previously stated and replaced by a
+2. **The portfolio-level closure is narrower than it reads, and is restated as a
    re-specification.** The ceiling at the 20% cap exceeds the bar; a first-order derivative
    is not the portfolio view; and pro-rata funding is the least favourable rule for a
    diversifier. [Search coverage](search-coverage.md) §5 sets out what the successor must

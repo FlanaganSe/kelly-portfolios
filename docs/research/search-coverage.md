@@ -400,8 +400,8 @@ low-beta asset" clause is now satisfied and has already been exercised* — gold
 `beta = +0.000` and fails anyway, so the successor gains nothing by adding it again as a
 headline sleeve; it should be a **calibration row beside `cash_control`**, marking where a
 real asset sits on the ceiling. *Second, the funding rule matters more than the leg, and this
-is now measured rather than argued.* This item previously proposed named-leg funding as the
-primary arm. **Make it the financed overlay instead.** Re-running gold under overlay
+is now measured rather than argued.* **The primary arm is the financed overlay, not the
+named leg.** Re-running gold under overlay
 funding **changes the sign of its marginal contribution, from −0.395 to +0.182 pp/yr**
 against the leverage-matched control at the same reference weight — a swing of 0.58 pp/yr
 from the funding rule alone, on a bar of 0.30. [Capital efficiency

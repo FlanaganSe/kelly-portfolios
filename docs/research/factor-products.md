@@ -1344,10 +1344,10 @@ tested, and it is still not enough to promote anything.
    **−0.092 and −0.074** on the US one, so the wrong panel would flip the sign of the only
    evidence this repository has that an emerging value tilt is purchasable at all.
 5. **The edge budget's fund-cost line survives, and its supporting statistic does not.**
-   It books 49 bp against an investor's own counterfactual, untouched here. What this page
-   used to add was *"for most of this shelf the gap to a cheap replication is larger than
-   the fee"*, on 22 of 44. **On the corrected frame that is a minority: 35 of 109, and 13
-   of the 65 funds the frame correction admits.** The general point stands — a fee
+   It books 49 bp against an investor's own counterfactual, untouched here. The statistic
+   that does not survive is *"for most of this shelf the gap to a cheap replication is
+   larger than the fee"*: it was 22 of 44 on the narrow frame and is **a minority on the
+   corrected one — 35 of 109, and 13 of the 65 funds the frame correction admits.** The general point stands — a fee
    comparison is not a cost comparison, and the largest shortfalls are five to a hundred
    times any fee difference — but it must not be quoted as a property of the shelf.
 6. **The listed factor shelf is thicker than this page said, and more duplicated.** The US
