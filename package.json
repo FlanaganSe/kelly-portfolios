@@ -13,18 +13,8 @@
     "prepare": "git config core.hooksPath scripts/githooks && chmod +x scripts/githooks/*"
   },
   "dependencies": {
-    "@aws-lambda-powertools/logger": "^2.30.2",
-    "@aws-lambda-powertools/metrics": "^2.30.2",
-    "@aws-sdk/client-dynamodb": "^3.975.0",
-    "@aws-sdk/client-s3": "^3.975.0",
-    "@aws-sdk/client-secrets-manager": "^3.975.0",
-    "@aws-sdk/client-sqs": "^3.975.0",
-    "@aws-sdk/client-timestream-query": "^3.975.0",
-    "@aws-sdk/client-timestream-write": "^3.975.0",
-    "@aws-sdk/lib-dynamodb": "^3.975.0",
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.4",
-    "aws-lambda": "^1.0.7",
     "solid-js": "^1.9.11"
   },
   "devDependencies": {
@@ -34,7 +24,6 @@
     "@solidjs/testing-library": "^0.8.10",
     "@tailwindcss/vite": "~4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
-    "@types/aws-lambda": "^8.10.160",
     "@types/node": "^22",
     "jsdom": "^30.0.1",
     "playwright": "^1.62.1",
