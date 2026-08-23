@@ -1,5 +1,6 @@
 import { type Component, Match, Switch } from "solid-js";
-import { nextTheme, type ThemeSetting, useTheme } from "~/lib/theme";
+import { nextTheme, type ThemeSetting } from "~/lib/theme";
+import { useTheme } from "~/lib/theme.solid";
 
 const settingLabel: Record<ThemeSetting, string> = {
   system: "match the system",

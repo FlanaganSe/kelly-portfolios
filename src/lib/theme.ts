@@ -4,9 +4,10 @@
  * `system` is the absence of a `data-theme` attribute, which is what the CSS in
  * `styles.css` treats as "follow `prefers-color-scheme`". Choosing light or dark
  * stamps the attribute and wins over the media query in both directions.
+ *
+ * Nothing in this module imports a framework, so the Astro shell's inline toggle and
+ * any island can share one implementation of the cycle.
  */
-
-import { createSignal, onCleanup, onMount } from "solid-js";
 
 export const THEME_SETTINGS = ["system", "light", "dark"] as const;
 
@@ -40,7 +41,8 @@ export function resolveTheme(setting: ThemeSetting, prefersDark: boolean): "ligh
   return prefersDark ? "dark" : "light";
 }
 
-function applyTheme(setting: ThemeSetting): void {
+/** Stamps the attribute and stores the choice. Safe to call before hydration. */
+export function applyTheme(setting: ThemeSetting): void {
   const root = document.documentElement;
   if (setting === "system") {
     root.removeAttribute("data-theme");
@@ -53,32 +55,4 @@ function applyTheme(setting: ThemeSetting): void {
   } catch {
     // A blocked storage API costs persistence, not the toggle.
   }
-}
-
-/** Reactive theme setting plus the resolved light/dark it produces. */
-export function useTheme() {
-  const [setting, setSetting] = createSignal<ThemeSetting>("system");
-  const [prefersDark, setPrefersDark] = createSignal(false);
-
-  onMount(() => {
-    setSetting(readStoredTheme());
-
-    const query = window.matchMedia("(prefers-color-scheme: dark)");
-    setPrefersDark(query.matches);
-    const onChange = (event: MediaQueryListEvent) => setPrefersDark(event.matches);
-    query.addEventListener("change", onChange);
-    onCleanup(() => query.removeEventListener("change", onChange));
-  });
-
-  const set = (next: ThemeSetting) => {
-    setSetting(next);
-    applyTheme(next);
-  };
-
-  return {
-    setting,
-    resolved: () => resolveTheme(setting(), prefersDark()),
-    set,
-    cycle: () => set(nextTheme(setting())),
-  };
 }

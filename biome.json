@@ -6,7 +6,7 @@
       "scripts/**/*.{js,ts}",
       "infra/**/*.{js,ts}",
       "functions/**/*.{js,ts}",
-      "*.{js,jsx,ts,tsx}"
+      "*.{js,jsx,mjs,ts,tsx}"
     ],
     "ignoreUnknown": true
   },

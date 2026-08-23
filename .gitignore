@@ -3,6 +3,10 @@
 
 /build/
 dist
+dist-legacy
+
+# Astro's generated types and content-collection cache.
+.astro/
 
 # IDE/Editor
 .vscode/settings.json

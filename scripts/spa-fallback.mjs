@@ -9,6 +9,6 @@
 import { copyFile } from "node:fs/promises";
 import path from "node:path";
 
-const dist = path.resolve(import.meta.dirname, "..", "dist");
+const dist = path.resolve(import.meta.dirname, "..", process.argv[2] ?? "dist");
 await copyFile(path.join(dist, "index.html"), path.join(dist, "404.html"));
-process.stdout.write("wrote dist/404.html\n");
+process.stdout.write(`wrote ${path.relative(process.cwd(), path.join(dist, "404.html"))}\n`);
