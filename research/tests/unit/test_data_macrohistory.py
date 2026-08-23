@@ -55,6 +55,7 @@ def test_the_panel_pivots_to_one_table_per_variable_with_countries_as_columns(
         "bond_total_return",
         "bill_rate",
         "housing_total_return",
+        "exchange_rate_usd",
         "consumer_prices",
     ]
     assert parsed.countries == ("CAN", "DEU", "JPN", "PRT", "USA")
@@ -221,3 +222,44 @@ def test_real_total_return_propagates_a_hole_rather_than_bridging_it() -> None:
 def test_real_total_return_refuses_misaligned_inputs() -> None:
     with pytest.raises(ValueError, match="aligned on the same periods"):
         macrohistory.real_total_return([None, 0.1], [100.0])
+
+
+def test_the_exchange_rate_is_local_currency_per_dollar(
+    parsed: macrohistory.JstFile,
+) -> None:
+    """The direction assertion that made ``xrusd`` landable at all.
+
+    The US column must be exactly 1.0 in every year — a dollar costs a dollar — and
+    Japan must read in the hundreds rather than the hundredths. If a future release
+    inverts the column, or a parser change picks up a different one, this fails before
+    any currency return is computed from it.
+    """
+    table = parsed.table("exchange_rate_usd")
+
+    assert table.units == "local_currency_per_usd"
+    american = [_cell(table, year, "USA") for year in table.periods]
+    assert {value for value in american if value is not None} == {1.0}
+
+    # 180 yen per dollar in 1946, not 0.0056 dollars per yen.
+    assert _cell(table, "1946", "JPN") == pytest.approx(180.0)
+
+    warnings = " ".join(table.warnings)
+    assert "A RISE IS A STRONGER DOLLAR" in warnings
+    assert "xrusd[t-1] / xrusd[t] - 1" in warnings
+
+
+def test_the_german_redenomination_years_are_flagged_not_silently_usable(
+    parsed: macrohistory.JstFile,
+) -> None:
+    """1922-1924 in this column is currency-reform arithmetic, and the table says so."""
+    table = parsed.table("exchange_rate_usd")
+
+    germany_1922 = _cell(table, "1922", "DEU")
+    germany_1923 = _cell(table, "1923", "DEU")
+    assert germany_1922 is not None and germany_1923 is not None
+    # The implied one-year "currency return", xrusd[t-1]/xrusd[t] - 1, is -100%. Nobody
+    # experienced that as a tradeable loss inside 1923; it is the chaining of the
+    # hyperinflation into post-reform units.
+    assert germany_1922 / germany_1923 - 1.0 < -0.99
+
+    assert any("SPLICED THROUGH CURRENCY REFORMS" in w for w in table.warnings)

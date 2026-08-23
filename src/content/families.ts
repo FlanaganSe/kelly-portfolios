@@ -253,7 +253,7 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "IDMO at 25 bp is the cheapest audited route and is what causes IMTM at 30 bp to be rejected. MTUM is rejected on its shortfall against a cheap fitted combination.",
+      "IDMO at 25 bp — 22.59 bp net of securities lending — is the cheapest audited route and is what causes IMTM at 30 bp to be rejected. MTUM is rejected on its shortfall against a cheap fitted combination and on 116%/yr of turnover. On the US side SPMO is the better product on every knowable dimension (13 bp, 44% turnover, 12.93 bp net cost) and is still rejected: at a 5% weight it changes portfolio return by about +0.02% a year, and its active leg is +0.626 correlated with IDMO's.",
     cost: "25 bp of fee and roughly 1.7 pp/yr of trading at 105% turnover. In a taxable account the turnover meets the 162 bp/yr realisation hurdle head-on.",
     overlap:
       "Momentum is distinct from value — the two are negatively correlated — which is the strongest argument for holding it. It overlaps with trend conceptually and not statistically: trend is time-series, momentum is cross-sectional.",
@@ -281,7 +281,7 @@ export const families: readonly StrategyFamily[] = [
       value: "+1.312 pp/yr",
       label: "Marginal growth of a 15% sleeve against a risk-matched cash comparator, 432 months",
       interval: "certainty equivalent +1.342 [+0.759, +1.916]",
-      note: "Against a global equity core rather than cash, a 10% sleeve measures +0.258 pp/yr against a frozen 0.30 bar and is rejected.",
+      note: "Against a global equity core rather than cash, a 10% sleeve measures +0.258 pp/yr against a frozen 0.30 bar — which sits below that design's own 0.58 pp/yr detection floor, so the sleeve is unresolved there rather than refuted.",
     },
     evidenceFor: [
       "The correlation holds three ways: −0.07 in the construction built here, −0.11 across 46 live funds, −0.08 from the vendor index. Inside crisis months it is −0.59, with a downside beta of −0.67.",
@@ -311,7 +311,7 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "DBMF is the only managed-futures ETF whose loading on the vendor index has been measured here: +0.671 [+0.513, +0.829] against a frozen 0.50 bar. CTA, KMLM, FMF and WTMF are all rejected against the same bar. RSST delivers the exposure as notional rather than capital, and its own loading has never been measured.",
+      "DBMF clears the frozen 0.50 bar on the vendor index at +0.671 [+0.513, +0.829]; CTA, KMLM, FMF and WTMF are all rejected against it. Every one of those five was fitted on its own filed history, so the five windows run from 46 to 78 months and the numbers are not rankable as published — on the 46 months all five share, FMF rises from +0.303 to +0.476 and passes CTA. RSST delivers the exposure as notional rather than capital, and its own loading, measured from its filings, is +0.681 [+0.406, +0.955] on 31 months.",
     cost: "85 bp for DBMF and 99 bp all-in for RSST, plus a distribution tax drag of 2.09 pp/yr and 0.32 pp/yr respectively. Once the equity each displaces is subtracted, that is 143.9 bp against 4.5 bp — the wrapper, not the strategy, decides the tax outcome.",
     overlap:
       "Nothing else here. Trend is the one engine uncorrelated with equity, which is why its diversification credit survives even when its mean does not.",
@@ -368,14 +368,14 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "Compute delta = (1 − b) / d for the fund and convert its fee to fee / d before comparing anything. RSST reads −0.07, RSSB −0.00, NTSX 0.144, GDE 0.182, and a standalone managed-futures fund 1.000. A wrapper whose base leg is not your own base gets a refusal, not a number.",
-    cost: "99 bp all-in for RSST with no waiver and no recoupment clause. The financing cost is undisclosed and is the largest unpriced term in the whole family.",
+      "Compute delta = (1 − b) / d for the fund and convert its fee to fee / d before comparing anything. CTAP reads −0.027, RSST −0.07, MATE −0.159, RSSB −0.00, NTSX 0.144, GDE 0.182, and both a standalone managed-futures fund and SDMF 1.000. Read the whole filing: for MATE and CTAP alike, the largest line is the base ETF and a completing index future sits beside it, and taking the ETF alone puts a sound wrapper in the range where a wrapper is worse than selling equity. A wrapper whose base leg is not your own base gets a refusal, not a number.",
+    cost: "99 bp all-in for RSST with no waiver and no recoupment clause. The fee table is the wrong instrument twice over: financing is undisclosed for the cleared-futures wrappers, and CTAP's headline 10 bp net is a fee reduction expiring 2026-12-04 that omits the 0.75% charged inside the total-return swap on its affiliated reference fund — about 81 bp all-in today and 99 bp after.",
     overlap:
       "Capital efficiency is not a return engine. It is a funding decision applied to whatever engine you already chose, and it is the reason a trend sleeve is cheaper to hold inside a stacked fund than beside one.",
     roleInPortfolio:
       "It changes how a sleeve is paid for, never whether the sleeve is worth owning. Answer that question first.",
     portfolios: ["candidate"],
-    tickers: ["RSST", "RSSB", "NTSX", "GDE"],
+    tickers: ["RSST", "MATE", "CTAP", "RSSB", "NTSX", "GDE"],
     sources: [capital],
     asOf: READ,
   },
@@ -434,27 +434,28 @@ export const families: readonly StrategyFamily[] = [
     claim:
       "Term, credit, insurance, volatility and merger spreads are separate return engines worth adding to an equity portfolio.",
     inPractice:
-      "Almost all of it fails, and mostly on cost or on benchmark rather than on the premium. The recurring error is booking a distinct risk premium as an edge over an equity index: that is a benchmark switch, not a return source.",
+      "Most of it fails, and mostly on cost or on benchmark rather than on the premium. The recurring error is booking a distinct risk premium as an edge over an equity index: that is a benchmark switch, not a return source. One family did better than its label suggested once the duration was taken out of it.",
     mechanism:
-      "Each of these earns compensation for bearing a risk somebody else wants to shed. That is real pay for real risk — the question is whether the vehicle available to a retail holder keeps enough of it.",
+      "Each of these earns compensation for bearing a risk somebody else wants to shed. That is real pay for real risk — the question is whether the vehicle available to a retail holder keeps enough of it, and whether the instrument that measured it was measuring the right thing.",
     certainty: "different-benchmark",
-    status: "rejected",
+    status: "unresolved",
     statusReason:
-      "Family by family the falsifiers fired: put-writing on live-only alpha, credit on its correlation to Treasuries, REITs and dividend funds on dominance, TIPS on correlation, buffered products on the option arithmetic. Catastrophe bonds pass the correlation test and fail on the vehicle.",
+      "Several falsifiers fired — put-writing on live-only alpha, REITs and dividend funds on dominance, TIPS on correlation, buffered products on the option arithmetic. But the credit rejection turned out to be about the instrument: the unhedged corporate leg correlates +0.826 with Treasuries and the duration-hedged spread correlates +0.016 with them, over 1,068 months. A family cannot be called rejected when its strongest member was measured with the wrong series.",
     headline: {
-      value: "−0.09 to −0.88 %/yr",
-      label: "Live-only alpha of put-writing at correlation 0.86–0.95",
-      note: "Its up-beta is 0.45 against a down-beta of 0.86, and the record before 2007 is a backtest.",
+      value: "+0.016",
+      label: "Duration-hedged credit's correlation to long Treasuries, 1,068 months",
+      note: "The unhedged corporate leg that produced the earlier rejection correlates +0.826 over the same source. Same asset class, different instrument, opposite conclusion.",
     },
     evidenceFor: [
+      "Duration-hedged credit earned +2.13%/yr over cash at 4.12% volatility and a −20.7% drawdown, against long Treasuries' +2.10% at 8.37% and −59.1% on identical months. Same return, half the risk, and it correlates +0.016 with them.",
+      "Half in each loses nothing through 2008-09 and 23% rather than 41% through the late 1970s, because the two legs fail in different states.",
       "Catastrophe bonds pass the correlation screen at about 0.10 to equity.",
-      "Merger arbitrage is borderline rather than refuted: MERFX earned +2.06%/yr over cash across ten years, +0.30% across five.",
     ],
     evidenceAgainst: [
-      "Credit is not a second engine: its correlation to Treasuries is +0.835. TIPS correlate +0.76 to +0.85 with the nominal bond funds beside them and +0.131 to equity, against nominal bonds' −0.076.",
-      "REITs give 112% of the downside for 80% of the upside. SCHD and VNQ are both dominated on Sharpe at correlations of +0.82 and +0.84.",
-      "The only catastrophe-bond vehicle is 16 months old at $85.8m, costs 2.00%, and its premium multiple has fallen from 4.54× to 2.40×.",
-      "Gold's Sharpe is 0.18 against equity's 0.59 since 1975, and its diversification credit at the ceiling still fails the growth bar.",
+      "Duration-hedged credit is a premium, not a hedge: its mean in the worst decile of equity months is −0.24% and it lost 13.1% through the GFC while Treasuries gained 13.4%. At 4.12% volatility a 10% sleeve contributes about 21 bp/yr, inside the 0.58 pp/yr detection floor.",
+      "The hedged-credit series ends in 2014-12, so it has never been measured through March 2020 — a liquidity event in exactly that instrument — or through 2022.",
+      "REITs give 112% of the downside for 80% of the upside. SCHD and VNQ are both dominated on Sharpe at correlations of +0.82 and +0.84. TIPS correlate +0.76 to +0.85 with the nominal bond funds beside them.",
+      "Merger arbitrage returned 2.92% to 4.29%/yr over ten years to 2026-06-30 across MNA, MERFX and MERIX — total, not excess, over a decade when cash was a large part of it.",
     ],
     failureModes: [
       {
@@ -465,19 +466,138 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "The wrapper eats the premium",
         detail:
-          "Alternative risk premia earn 0.3–1.0%/yr gross post-2019 at 2–5% volatility, against a retail wrapper costing about 1.5%.",
+          "Alternative risk premia earn 0.3–1.0%/yr gross post-2019 at 2–5% volatility, against a retail wrapper costing about 1.5%. QAI, the survivor, returned 3.93%/yr over ten years to 2026-06-30 at a 0.88% net fee.",
+      },
+      {
+        title: "The instrument decides the verdict",
+        detail:
+          "Credit was rejected here on a correlation of +0.835 to Treasuries, measured on a corporate index carrying roughly twenty years of duration. Hedge the duration out and the correlation is +0.016. A rejection is only as good as the series that produced it.",
       },
     ],
-    implementation: "None promoted. The audited vehicles are listed with their measured correlations and costs.",
+    implementation:
+      "None promoted. Duration-hedged credit is the one candidate whose next step is a decision rather than another screen, and it is a substitution inside the defensive allocation rather than a new satellite.",
     cost: "0.13% to 2.00% depending on the sleeve, against gross premia that are frequently smaller than the fee.",
     overlap:
-      "The recurring finding is that these sleeves overlap far more than their labels suggest. Credit is Treasuries plus equity; TIPS are nominal bonds plus an inflation basis; dividend funds are value with a screen.",
+      "The recurring finding is that these sleeves overlap far more than their labels suggest. TIPS are nominal bonds plus an inflation basis; dividend funds are value with a screen; long/short commodities are the commodity leg of a trend programme. The exception is credit once its duration is hedged out, which overlaps nothing else measured here.",
     roleInPortfolio:
-      "None supported. The bar a new sleeve has to clear is 0.30 pp/yr of marginal growth, and ten candidates failed it.",
+      "One candidate admitted, as a substitution. Duration-hedged credit belongs beside — not instead of — the Treasury leg of whatever defensive allocation the investor holds, because the two correlate +0.016 and fail in different states. Everything else remains unresolved rather than refuted: ten candidates were measured against a 0.30 pp/yr bar and every estimate lies inside that design's own 0.58 pp/yr detection floor.",
     portfolios: [],
     tickers: ["SCHD", "VNQ", "TIP", "SCHP"],
     sources: [alternatives, marginal, decomposition],
     asOf: READ,
+  },
+  {
+    slug: "crypto",
+    name: "Crypto",
+    claim: "Bitcoin is an uncorrelated store of value that improves a portfolio at a small weight.",
+    inPractice:
+      "It is not uncorrelated and it is not a hedge. In the worst decile of equity months since 2015 bitcoin's mean return was −7.51% and it was positive in one month out of thirteen. A holding is defensible at 1–2% as a declared speculation you want to own; it is not defensible as the diversifier it is usually sold as.",
+    mechanism:
+      "There is no cash-flow claim and there is no payer. A bond pays because a borrower is obliged, an equity pays because a firm earns, a catastrophe bond pays because an insurer needs capacity. Bitcoin's expected return is entirely the claim that a future buyer will pay more. What can be defended is narrower: fixed supply, settlement without a counterparty, and a payoff that is not a claim on any government's solvency. Those are properties, not premia.",
+    certainty: "different-benchmark",
+    status: "rejected",
+    statusReason:
+      "Rejected as a diversifier, which is the claim tested, and not as an asset anybody may own. The rejection rests on a measured up-beta of 1.526 and down-beta of 1.616 with no resolvable convexity, a correlation to equity that has risen rather than fallen, and a lower-tail mean worse than the equity it would be funded by selling.",
+    headline: {
+      value: "−7.51%",
+      label: "Mean monthly return in the worst decile of equity months, 2015-02…2026-06",
+      note: "Positive in 1 of those 13 months. Equity's own mean in the same months was −7.96%, so a bitcoin sleeve barely improved on the equity sold to fund it, while cash improved on it by 0.80% per 10% swapped.",
+    },
+    evidenceFor: [
+      "Its measured alpha over the window is +4.46% per month — economically enormous, and at HAC t = 1.44 statistically nothing.",
+      "A 1–2% position that goes to zero costs 1–2%, is uncorrelated with the investor's human capital, and is easier to hold than a portfolio the investor resents. Holdability is in the objective.",
+      "Staking ETPs are now live and material — Grayscale's ether trusts recognised $18.8m and $16.9m of staking income in the first half of 2026 against zero in 2025, under the Rev. Proc. 2025-31 safe harbour. That is the first contractual payer this family has had. It is also not bitcoin.",
+    ],
+    evidenceAgainst: [
+      "Up-beta 1.526, down-beta 1.616, convexity indistinguishable from zero. A 2% sleeve is, to first order, 3% more equity plus a large idiosyncratic risk.",
+      "Correlation to equity is +0.342 over 137 months and +0.531 over the most recent 81 — outside the 0.5 boundary at which the repository's own admission arithmetic stops being usable, and moving the wrong way.",
+      "−10.5% through Q1 2020 and −58.3% through 2022, when equity fell 25.3%. Maximum drawdown −75.9% over a window in which equity's was −25.3%.",
+      "In the first half of 2026 it fell 33.2% while US equity returned +9.9% — the sample's own final six months, and the same result again.",
+      "It is the only candidate measured whose sleeve made the portfolio's drawdown deeper at every weight tested: −29.2% against a base of −24.8% at a 10% weight.",
+    ],
+    failureModes: [
+      {
+        title: "A high beta wearing a diversifier's label",
+        detail:
+          "The full-sample correlation of +0.342 is the least alarming statistic available. What decides a portfolio is the lower tail, and there the correlation is +0.251 with a mean of −7.51%.",
+      },
+      {
+        title: "The sample is the best years in the asset's history",
+        detail:
+          "137 months containing a +60%/yr realised return still cannot distinguish bitcoin from the S&P 500 at matched volatility: the measured gap is +0.10 pp/yr against a detection floor of 15.58 pp/yr.",
+      },
+      {
+        title: "The vehicle and the venue are not the asset",
+        detail:
+          "The series measured here is one exchange's daily print, not the CME CF rate an ETP prices against. Custody failure, sponsor failure and a change in tax characterisation are risks with no analogue in a bond fund.",
+      },
+    ],
+    implementation:
+      "Spot ETPs are 1933-Act grantor trusts, not 1940-Act funds: no K-1, and the 28% collectibles rate that applies to physically-backed gold trusts is not the default treatment here. Check the fee, any waiver expiry and the reference rate on the issuer's page before transacting.",
+    cost: "The sponsor fee is the smallest term. The cost that matters is the drawdown an investor has to sit through to earn the mean.",
+    overlap:
+      "Substantially overlaps equity, which is the finding. At a 2% weight it duplicates roughly 3% of equity beta, obtainable more cheaply and with a shallower drawdown by holding more equity.",
+    roleInPortfolio:
+      "At most 1–2%, funded from a speculation budget rather than from the defensive sleeve, held in taxable so the loss-harvesting option survives, and labelled a speculation. Zero is equally defensible. Above about 5% it is a leveraged equity position with extra steps.",
+    portfolios: [],
+    tickers: [],
+    sources: [alternatives, capital],
+    asOf: asOf("2026-08-22"),
+  },
+  {
+    slug: "tail-hedging",
+    name: "Tail hedging and long volatility",
+    claim: "An explicit hedge pays off in a crash by more than it costs in the years between.",
+    inPractice:
+      "The bleed is measured and it is large: roughly twelve percentage points a year against the index on the cleanest available comparison. Swapping a tenth of an equity holding into T-bills added back 0.92% in the average worst-decile month, for no fee and no drawdown. Nothing on the option shelf beats that net of its own cost.",
+    mechanism:
+      "A long put is the short side of the variance risk premium. Index options are persistently rich relative to subsequent realised volatility because somebody is paid to bear crash risk — and the tail-hedge fund's investor is the one paying. The strategy is negative expected return by construction; the case for it can only ever be that convexity at the right moment is worth the premium, which is a claim about the path.",
+    certainty: "risk-premium",
+    status: "rejected",
+    statusReason:
+      "Rejected on measured cost against measured benefit, not on the existence of the premium — the premium is real, and the holder is on the paying side of it. The supporting measurement is that no engine on this repository's panel shows statistically resolvable convexity at all, so the payoff shape being bought is not one the data can find.",
+    headline: {
+      value: "−7.15%/yr",
+      label: "TAIL's NAV return since inception 2017-04-06, as of 2026-06-30",
+      note: "−49.59% cumulative. On the cleanest same-window comparison, CAOS returned +3.00%/yr over ten years to 2026-07-31 against SPY's +14.93%.",
+    },
+    evidenceFor: [
+      "The convexity is real when it fires: a long put is the one payoff that accelerates as equity falls, which no asset on the measured panel does.",
+    ],
+    evidenceAgainst: [
+      "Not one of eight candidate engines shows resolvable convexity. Fitting engine = a + b·equity + k·min(equity, 0), the largest |t| on k outside BAB is 1.37, and BAB's significant k is the wrong sign at +3.49.",
+      "VIX futures were in steep contango across the whole visible curve on 2026-08-21 — spot 15.13 against 17.50 for September. VIXY returned −46.56%/yr and UVXY −71.37%/yr over ten years to 2026-07-31.",
+      "The cap-and-buffer package is worth −2.4 to −4.1 pp/yr priced from 1,183 overlapping twelve-month returns, and the funds' realised −4.1 lands inside that range from disjoint data.",
+      "BTAL, the non-option version, returned −3.63%/yr since inception against the S&P 500's +15.41%, at a 1.65% gross expense ratio whose 0.45% headline excludes the dividend and brokerage cost of the short book.",
+    ],
+    failureModes: [
+      {
+        title: "The hedge has to be monetised at the bottom",
+        detail:
+          "A convex payoff only helps if it is sold into the crash and recycled into the asset that fell. That is the moment an investor is least able to act, and no fund does it for them.",
+      },
+      {
+        title: "Roll cost is not a fee and does not appear as one",
+        detail:
+          "A constant-maturity VIX index pays the front-to-second spread every cycle. At the August 2026 curve that is on the order of 9% of the front month per roll, which is why the ten-year numbers look the way they do.",
+      },
+      {
+        title: "Most of the wrapper is something you can buy for three basis points",
+        detail:
+          "TAIL is about 91% ten-year Treasuries and about 5% options. The Treasury part is available at 3 bp; the part the 59 bp buys is the part with negative expected return.",
+      },
+    ],
+    implementation:
+      "Not recommended. The substitutes measured to work better are a larger short-Treasury and cash allocation, the trend overlay already held, and not owning the concave things.",
+    cost: "0.25% to 1.65% in stated fees, on top of a premium paid to the seller every month the crash does not arrive.",
+    overlap:
+      "It is the mirror image of put-writing, which this repository has separately rejected. Holding both is paying a spread to take no position.",
+    roleInPortfolio:
+      "None. The investor's requirement — better in black swans without excessive long-term drawdowns — is met on this evidence by cash, by short duration, and by trend, in that order of certainty.",
+    portfolios: [],
+    tickers: [],
+    sources: [alternatives, capital, marginal],
+    asOf: asOf("2026-08-22"),
   },
   {
     slug: "rebalancing",

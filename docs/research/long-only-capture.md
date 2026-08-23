@@ -397,7 +397,7 @@ and against Experiment 005's pooled post-publication +4.74 and the US-only +1.57
 
 Cost is deliberately not subtracted here: the net figures, at three weights and with
 growth and the certainty equivalent beside them, belong in
-[the recommendation](portfolio-recommendation.md#5-what-each-tilt-costs-in-confidence-terms)
+[the recommendation](portfolio-recommendation.md#optional-factor-tilts)
 where the weight is set.
 
 Two things follow, and neither is the pair this page originally drew. **The gross factor

@@ -11,6 +11,7 @@ import { StatusChip } from "~/components/StatusChip";
 import { families } from "~/content/families";
 import { portfolios } from "~/content/portfolios";
 import { type FactorLoading, findFund, fundingRuleGapPpYr } from "~/content/shelf";
+import { windowSummary } from "~/lib/loadings";
 import NotFound from "~/routes/not-found";
 
 /**
@@ -54,10 +55,9 @@ function loadingColumns() {
     },
     { key: "panel", header: "Panel", cell: (row: FactorLoading) => PANEL_LABEL[row.panel] },
     {
-      key: "months",
-      header: "Months",
-      numeric: true,
-      cell: (row: FactorLoading) => (row.months === null ? "—" : String(row.months)),
+      key: "window",
+      header: "Window",
+      cell: (row: FactorLoading) => windowSummary(row.window),
     },
   ];
 }
@@ -149,8 +149,11 @@ export default function FundDetail(): JSX.Element {
                   rows={found().loadings}
                   footnote={
                     <>
-                      Every loading names its panel. The same fund can read a different sign on a different panel, and
-                      the US panel would put sixteen of twenty-five ex-US funds below the bar rather than five.
+                      Every loading names its panel and its window. The same fund can read a different sign on a
+                      different panel, and the US panel would put sixteen of twenty-five ex-US funds below the bar
+                      rather than five. Two loadings fitted on different months are not on a common scale: on the 36
+                      months the US value shelf shares, VTV's HML rises from +0.337 to +0.520 and the published ordering
+                      comes apart.
                     </>
                   }
                 />

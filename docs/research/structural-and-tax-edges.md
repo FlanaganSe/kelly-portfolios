@@ -5,18 +5,22 @@ contractual edge of about 89 bp/yr against the investor's own plausible alternat
 What else belongs in that class, how large is it, and does it double-count what is
 already booked?
 
-**Decision it informs.** Whether the contractual budget should be revised, and which
-account a real investor's international sleeve belongs in.
+**Decision it informs.** Whether the contractual budget should be revised, which account a
+real investor's international sleeve belongs in, and — in
+[§8](#8-the-investors-plan-eight-funds-three-accounts-and-a-ranking-that-does-not-move) —
+where one stated investor's eight named funds actually go.
 
-**Scope.** US federal individual investor, `as of 2026-08-12`. State income tax is
-excluded and additive wherever it exists. **This is not personalised advice** — it is a
+**Scope.** US federal individual investor, `as of 2026-08-12` for §§1–7 and `2026-08-22`
+for §8. State income tax is excluded and additive wherever it exists. **This is not personalised advice** — it is a
 sizing exercise for a class of edge, and every figure is a function of stated inputs a
 different investor should restate. Non-US investors differ on every line.
 
 Everything numerical regenerates from
 [`studies/tax_structure.py`](../../research/src/portfolio_edge/studies/tax_structure.py)
-and is pinned in `research/tests/unit/test_studies_tax_structure.py`. No market data, no
-randomness, no forecast.
+and [`studies/investor_placement.py`](../../research/src/portfolio_edge/studies/investor_placement.py),
+pinned in `research/tests/unit/test_studies_tax_structure.py` and
+`research/tests/unit/test_studies_investor_placement.py`. No market data, no randomness, no
+forecast.
 
 ---
 
@@ -34,12 +38,16 @@ randomness, no forecast.
    summing to a **horizon-free 162 bp/yr**. It is deliberately **not booked**, because
    crediting yourself for not doing something nobody proposed is how these budgets get
    inflated. It is the price of turnover in a taxable account.
-3. **The foreign tax credit inverts standard asset-location advice for exactly one
-   sleeve, at exactly two brackets.** The break-even qualified-dividend rate is 10.5% for
-   developed markets — below every positive US rate — but **21.5% for emerging markets**,
-   which falls *between* the 18.8% and 23.8% brackets. **A US investor at 15% or 18.8%
-   should hold emerging-market equity in the taxable account and US equity in the
-   shelter.**
+3. **The foreign tax credit does invert standard asset-location advice — and then the
+   funds' own filings invert it back.** The credit is paid and permanently lost inside a
+   traditional account and a Roth alike, which on an assumed 100%-qualified sleeve puts the
+   emerging-market break-even at **21.5%**, between two live US brackets, so an investor at
+   15% or 18.8% would hold emerging-market equity in taxable. **The sponsors file qualified
+   fractions of 25% to 45%**, and the ordinary-rate remainder more than reverses it:
+   [§8](#8-the-investors-plan-eight-funds-three-accounts-and-a-ranking-that-does-not-move)
+   ranks named funds and puts **both emerging funds above US equity at every live US
+   rate**. The related open input — two withholding figures that appeared to disagree —
+   is closed: they were the same fact on two denominators and reconcile to four figures.
 4. **Capital efficiency is the most substantive structural candidate and the only one
    whose sign this repository cannot check.** A 90/60 return-stacked fund needs
    **92 bp/yr** of Treasury excess return over cash before its overlay contributes
@@ -65,12 +73,23 @@ randomness, no forecast.
    commitment on the shelf. The only recoupable waiver anywhere on it is **Schwab's SCHF
    and SCHE**, disclosed in Form N-CEN Item C.8 since fiscal 2022 and **in no document a
    shareholder reads**.
+8. **Applied to one real investor with all three account types, the fill order is stable
+   and the prize is small.** **VTI — the cheapest, broadest fund in the portfolio — is last
+   in the shelter queue at every rate**, and every international fund outranks every US
+   equity fund. But the honest value against a control the investor could actually have
+   executed is **+2 to +7 bp/yr**, not the +38 to +55 an earlier draft published; that
+   figure summed three benchmarks, booked a hurdle as a saving, and rested mostly on a
+   wrapper accrual no shareholder was taxed on. **The binding constraint is not the tax
+   code but the employer plan's fund menu**, which below a rollover share of 0.55 evicts
+   the two highest-yielding funds from the shelter and forces the lowest-priority one in.
 
-**One caution on the whole page.** Every figure is sized for **one stated reference
-investor** — US top bracket, 30-year horizon, liquidation at the end; 60% US equity, 14%
-developed ex-US, 6% emerging, 20% taxable bonds; 40% of the portfolio in tax-advantaged
-capacity. Quoting a per-sleeve number as a portfolio number is the commonest way a tax
-figure is inflated, and every lever here has a different base.
+**One caution on the whole page.** §§1–7 are sized for **one stated reference investor** —
+US top bracket, 30-year horizon, liquidation at the end; 60% US equity, 14% developed ex-US,
+6% emerging, 20% taxable bonds; 40% of the portfolio in tax-advantaged capacity. **§8 is a
+different investor** — equal thirds of Roth, traditional and taxable, no bonds, named funds
+— and it is stated across a bracket range rather than at one rate. Quoting a per-sleeve
+number as a portfolio number is the commonest way a tax figure is inflated, and every lever
+here has a different base.
 
 ---
 
@@ -136,8 +155,12 @@ falls below every positive rate and the emerging one falls *between* two live ra
 
 - **At 23.8% the ranking survives but the margin does not** — emerging's advantage over
   US equity falls from 22.1 bp to **2.1 bp**. Treat it as a tie.
-- **At 15% or 18.8% the ranking inverts.** Emerging drops to 10.45 bp of priority against
-  US equity's 16.50.
+- **At 15% or 18.8% the ranking inverts** *on this table's assumption*: emerging drops to
+  10.45 bp of priority against US equity's 16.50. **The assumption is that every equity
+  sleeve is 100% qualified, and it is wrong for emerging markets by a factor of three.**
+  See the two subsections below; the fund-level answer in
+  [§8](#8-the-investors-plan-eight-funds-three-accounts-and-a-ranking-that-does-not-move)
+  runs the other way at every rate.
 - **Bonds dominate by a factor of four at every rate**, so the uncontested half of the
   conventional rule is uncontested here too. Note the 189.7 uses the top ordinary rate
   and must be restated with the investor's own — at 22% it is about 102 bp, and still
@@ -148,40 +171,77 @@ falls below every positive rate and the emerging one falls *between* two live ra
 
 **Two limits.** Below **$300 of creditable foreign tax ($600 joint)** the credit is
 claimed without Form 1116 and without the §904 limitation — a threshold reached at about
-$190,153 of developed-market holdings, and neither figure is indexed. And **one of the two
-omissions that used to cut against the emerging inversion is now measured at zero**: a
-shelter also shelters capital-gain distributions, and [§6.3](#63-capital-gain-distributions-zero-everywhere-including-the-unit-trust)
-finds every emerging ETF on the shelf distributed **0.00** of realised gain in each of
-five fiscal years. What remains is that a taxable international position is a better
-loss-harvesting candidate, still unquantified.
+$190,153 of developed-market holdings, and neither figure is indexed. And a shelter also
+shelters **capital-gain distributions**, which this table omits: on the cheap shelf that
+omission is worth zero, because [§6.3](#63-capital-gain-distributions-zero-everywhere-including-the-unit-trust)
+finds every fund distributed **0.00** of realised gain in five fiscal years — but it is not
+zero off that shelf. [§8.2](#82-the-inputs-from-the-funds-own-filings) measures a
+105%-turnover international momentum fund distributing **2.14% of net assets** of capital
+gain in one December, which nearly doubles its priority. What remains unquantified is that
+a taxable international position is a better loss-harvesting candidate.
 
-### The withholding rate is the input this whole section rests on, and five funds disagree with it
+### The withholding rate: the open input is closed, and the two figures never disagreed
 
-`as of 2026-08-17`, and this is now **the largest open input on the page**. The 6.068% and
-9.853% above come from *one sponsor's shareholder worksheet*, whose denominator is total
-ordinary dividends distributed. **Eleven funds from five sponsors file the underlying pair
-directly** — foreign taxes paid and foreign source income earned, in the N-CSR tax note:
+`as of 2026-08-22`. This section used to record eleven funds filing a `foreign taxes paid ÷
+foreign source income` ratio of 5.99–7.61% developed and 9.12–14.23% emerging against the
+6.068% and 9.853% used above, and to call the gap **the largest open input on the page**.
+**It is not a disagreement. It is two denominators**, and they reconcile exactly.
 
-| Sleeve | Fund and fiscal year end | Foreign taxes paid ÷ foreign source income |
-| --- | --- | ---: |
-| **Developed ex-US** | SPDW 2025-09-30 · IDEV 2025-07-31 · IEFA 2025-07-31 · SCHF 2025-08-31 · VEA 2025-12-31 | 5.99% · 6.23% · 6.84% · 7.60% · **7.61%** |
-| **Emerging** | SPEM 2025-09-30 · AVEM 2025-08-31 · VWO 2025-10-31 · IEMG 2025-08-31 · SCHE 2025-08-31 · EEM 2025-08-31 | 9.12% · 12.50% · **12.59%** · 13.33% · 14.22% · 14.23% |
+A sponsor's shareholder worksheet states foreign tax as a share of the **dividend**; a
+fund's N-CSR tax note states it as a share of **foreign source income**; and foreign source
+income is 77% to 100% of the dividend, never all of it. Vanguard's own worksheet gives VEA
+foreign source income of **79.6488% of Box 1a**, and
 
-**The developed input is inside the filed range and the emerging one is below all but one
-fund of it.** At VWO's own filed 12.59% the forfeiture rises from 20.00 to
-**25.56 bp/yr** and the break-even from 21.51% to **27.48%** — above every US qualified
-rate, so the inversion would cover **23.8% as well**, and the "treat it as a tie" line
-below would become a third inversion.
+```
+6.068% ÷ 79.6488% = 7.618%
+```
 
-**The input is not changed here, and the reason is a denominator that was not settled.**
-Whether a filing's "foreign source income earned" is stated gross of the withheld tax —
-which is what §853 makes the shareholder report — or net of it decides the arithmetic. On
-the conservative net reading VWO's rate is 11.18% and the break-even 24.40%, **still above
-23.8%**. So the direction is the same on both readings and the existing table understates
-the emerging forfeiture; what is not established is by how much. **Nothing in the
-recommendation moves either way**, because a larger forfeiture only strengthens the
-result already recorded. Resolving it needs a Form 1099-DIV or the fund's own tax
-supplement reconciled to Box 1a, and it is a review trigger.
+which is the 7.61% VEA's own N-CSR files. Same fact, two bases.
+
+**The gross-versus-net question the old text could not settle is settled, from three
+sponsors, arithmetically rather than by reading.** Vanguard's worksheet footnote defines
+Box 1a as *"ordinary cash dividends paid by the Fund, short-term capital gains paid by the
+Fund, and foreign taxes paid"* — gross by construction. iShares' 2025 distribution summary
+gives IEMG cash of **$1.848602** plus foreign tax of **$0.196929** equal to Box 1a of
+**$2.045531** per share, to the cent. Avantis' 2025 ICI file gives AVES **$1.8479** plus
+**$0.246250712** equal to **$2.094150712**, to the cent.
+
+**Consequence: the inputs above do not move, and the trap is now named.** Multiplying a
+fund's whole dividend yield by a filed foreign-source ratio overstates the withholding by
+up to a quarter. Any later work quoting a withholding rate states which of the two bases it
+is on.
+
+### The qualified fraction is the input this section actually rests on, and it was assumed
+
+`as of 2026-08-22`, and this is the correction that **reverses the finding above**.
+
+The table's priority for a foreign sleeve collapses to `(q − w) y` only because the sleeve
+is taken to be **100% qualified**. A qualified dividend is taxed at `q`; the rest is
+ordinary income, taxed 17 pp higher at the top bracket. The sponsors file the fraction and
+it is nowhere near one:
+
+| Fund | Qualified dividend income, filed | Source |
+| --- | ---: | --- |
+| VEA | **66.27%** of Box 1a | Vanguard 2025 foreign tax credit worksheet |
+| VWO | **34.63%** of Box 1a | the same worksheet |
+| IEMG | **34.82%** | iShares 2025 QDI summary |
+| AVES | **44.48%** | Avantis 2025 tax centre |
+| IDMO | **25%** of ordinary income dividends | Invesco N-CSR, FY ended 2025-10-31 |
+| DFIV | **100%** of ordinary income distributions | Dimensional N-CSR, FY ended 2025-10-31 |
+
+Emerging markets is low for a statutory reason: [§1(h)(11)(C)](https://www.law.cornell.edu/uscode/text/26/1)
+qualifies a foreign corporation only if it is eligible for a comprehensive US tax treaty or
+its stock is readily tradable in the US, and several large emerging markets are neither.
+IDMO's 25% is a **turnover** effect — [§1(h)(11)(B)(iii)](https://www.law.cornell.edu/uscode/text/26/1)
+requires the fund to hold the stock more than 60 days in the 121-day window around the
+ex-dividend date, and IDMO's portfolio turnover is 105%.
+
+**Restoring the filed fraction destroys the emerging inversion.** At the 15% qualified rate
+an emerging fund's US tax is no longer `0.15 y` but roughly `0.35 × 0.15 y + 0.65 × 0.24 y`,
+which is 39% higher, and the sleeve moves back above US equity. [§8](#8-the-investors-plan-eight-funds-three-accounts-and-a-ranking-that-does-not-move)
+runs it at fund level: **both emerging funds outrank US equity for shelter capacity at every
+live US rate.** The inversion was an artifact of an assumed input, not a property of the
+funds — which is the same lesson as the paragraph above, in the opposite direction.
 
 **Splitting the international sleeve is worth 1.33 bp/yr of equity at most.** The
 recommendation holds VEA + VWO rather than one total-international fund *because*
@@ -193,7 +253,7 @@ holding 30% of equity after bonds, and it is **exactly zero** when the shelter h
 everything or when the qualified rate is 0%. A single fund's priority is the *weight
 average* of the two it replaces, because taxable cost and forfeited withholding are both
 linear in yield at these rates. **The fee difference is separate and larger than it looks;
-[the recommendation](portfolio-recommendation.md#12-the-holdings) prices the whole trade.**
+[the recommendation](portfolio-recommendation.md#current-answer) prices the whole trade.**
 
 **Double count: not additive.** This is a **correction** to the 10 bp location line,
 whose sources do not model foreign withholding at all. Booking it as a new positive line
@@ -238,30 +298,22 @@ and this is the *fund* realising gains rather than the *investor* realising loss
 
 **Falsifier, already firing, and now with adoption measured rather than inferred.** The SEC
 granted its first ETF-share-class order on 2025-11-17 and its listing shows **94 granted
-orders as of 2026-08-11**, covering roughly ninety fund families, with only two
-applications still noticed and unordered. An order is permission, not a share class, so
-the decision-relevant quantity is how many funds have actually added one. Counting Form
-497K documents whose text contains the phrase `"ETF Class"` on EDGAR full-text search,
-`as of 2026-08-17`: **2 documents in the ten and a half months before the first order and
-89 in the nine months after, from 14 registrants** — Dimensional (47 across three),
-TCW, Hotchkis & Wiley, Thornburg, Fidelity, Nuveen, Calamos and Guinness Atkinson.
-**Every one is an active or systematic manager**, which is what makes it bind: the cheap
-index sponsors already have ETFs, and the funds converting are precisely the
-counterfactual the 23 bp is measured against. Vanguard remains the proof of concept —
-VFIAX and VTSAX show zero capital gains for a decade because they share a portfolio with
-VOO and VTI.
+orders as of 2026-08-11**. An order is permission, not a share class, so the
+decision-relevant quantity is adoption, and it has three tiers. **Filings**: Form 497K
+documents containing `"ETF Class"` went from **2 in the ten and a half months before the
+first order to 89 in the nine months after, from 14 registrants**, `as of 2026-08-17`.
+**Launches**: nine funds from six managers, Dimensional first on 2026-03-20 and the first
+S&P 500 one — **DLCU**, the ETF class of its $14.09bn U.S. Large Company Portfolio at 0.06%
+net — on **2026-08-05**. **Silence**: Schwab, BlackRock, JPMorgan, T. Rowe Price, Goldman,
+Morgan Stanley and Fidelity's index range all hold orders and have filed nothing.
 
-**A filing is not a launch, though, and on launches the count is much smaller: nine funds
-from six managers.** Dimensional listed the first on 2026-03-20 and the first S&P 500 one —
-**DLCU**, the ETF class of its $14.09bn U.S. Large Company Portfolio at 0.06% net — on
-**2026-08-05**, twelve days before this was read. **Schwab, BlackRock, JPMorgan, T. Rowe
-Price, Goldman, Morgan Stanley and Fidelity's index range all hold orders and have filed
-nothing**; Fidelity's amended Rule 18f-3 plan of 2026-05-14 lists an ETF class for two
-fixed-income funds and for no index fund. **So the 23 bp is decaying with a measured
-mechanism and a short fuse rather than a fast one — but the fuse is lit, and if FXAIX or
-SWPPX sprouts a class the line moves quickly.** The opposite risk also exists — a 2021
-Senate Finance discussion draft proposed to repeal the RIC exception outright; never
-enacted, no successor found.
+**Every registrant that has filed is an active or systematic manager**, which is what makes
+it bind: the cheap index sponsors already have ETFs, and the funds converting are precisely
+the counterfactual the 23 bp is measured against. Vanguard remains the proof of concept —
+VFIAX and VTSAX show zero capital gains for a decade because they share a portfolio with
+VOO and VTI. **So the fuse is lit but slow, and if FXAIX or SWPPX sprouts a class the line
+moves quickly.** The opposite risk also exists — a 2021 Senate Finance discussion draft
+proposed to repeal the RIC exception outright; never enacted, no successor found.
 
 ---
 
@@ -274,13 +326,13 @@ long-only equity holding it is **−31 bp/yr**, because the rate is higher *and*
 mark-to-market destroys the deferral §4 prices. Which is the counterfactual decides the
 sign, and nothing about the statute settles it.
 
-**And the 60/40 split did not reach shareholders of any fund checked.** From N-CSR
-tax-character tables: **DBMF distributed 100% ordinary income in 2024 and 2025; KMLM 100%
-in FY2026; CTA 100% in FY2025; NTSX reports a single "Ordinary Income" column.**
-**One of those does not generalise: CTA's FY2024 distribution was about 59.9% ordinary and
-40.1% long-term capital gain**, so the split did reach shareholders of one fund in one year
-(`as of 2026-08-17`). The mechanism below is unaffected; its universality is not. Three
-mechanisms stack: a Cayman subsidiary converts commodity gains to ordinary income
+**The claim that the 60/40 split reaches no shareholder does not hold, and two funds now
+falsify it.** From N-CSR tax-character tables: **DBMF distributed 100% ordinary income in
+2024 and 2025; KMLM 100% in FY2026; CTA 100% in FY2025**. But **CTA's FY2024 distribution
+was 59.9% ordinary and 40.1% long-term capital gain**, and **RSST's fiscal year to
+2026-01-31 was 74.3% long-term capital gain — $2,648,642 against $915,484 of ordinary
+income** (`as of 2026-08-22`). So the split does reach shareholders, in some funds in some
+years, and which ones cannot be predicted from the structure. Three mechanisms stack: a Cayman subsidiary converts commodity gains to ordinary income
 **asymmetrically** (DBMF's prospectus: *"any annual net loss of the Subsidiary will not be
 recognized and will not carry forward"*), forced by §851(b)(2); capital-loss
 carryforwards absorb the long-term half; and §1256(f)(2) cannot rescue income that is
@@ -622,7 +674,7 @@ decides a fund choice.
 against **the fund's own net assets** rather than against an index, so adding them is not
 the benchmark switch [`aggregate()`](../../research/src/portfolio_edge/studies/outperformance_horizon.py)
 refuses. The fee is the current 497K table
-([dated per fund](portfolio-recommendation.md#12-the-holdings)); lending is the **median**
+([dated per fund](portfolio-recommendation.md#current-answer)); lending is the **median**
 over every fiscal year on file, from N-CEN Item C.6.g over Item C.2.
 
 | Category | Cheapest to own → dearest, bp/yr net | | |
@@ -693,7 +745,7 @@ own index to within a few basis points a year** — median differences of +0.03 
 positive ex-US medians are **not skill**: a net-return index deducts withholding at the
 maximum non-treaty rate, which the funds reclaim under treaty, and iShares says so in its
 own prospectus footnote. Index-construction differences swamp everything else, which is
-the same wall [Experiment 009's withholding bound](factor-products.md#the-drag-that-could-not-be-measured)
+the same wall [Experiment 009's withholding bound](factor-products.md#scope-and-uncertainty)
 hit from the other side.
 
 The 497K "Average Annual Total Returns" tables agree, on the longest window filed. Fund
@@ -854,12 +906,13 @@ $2bn at or below 0.10%** in any of the six categories.
 **Account type is mostly a forecast, not a structure.** Traditional and Roth are
 algebraically identical whenever the contribution and withdrawal rates are equal, so the
 entire difference is the rate change — a saver falling from 32% to 22% gains exactly
-14.71% of terminal wealth. **Predicting your own marginal rate thirty years out is a
-forecast**, so this is probabilistic and does not belong in a contractual budget. What *is*
-structural, from the same algebra: **a tax-deferred balance is not the investor's money**
-— at a 24% withdrawal rate, $100,000 of traditional IRA is $76,000 of investor wealth, so
-an allocation stated on nominal balances misstates true equity exposure. §1's ranking is
-per dollar of *capacity* precisely to sidestep that.
+14.71% of terminal wealth. What *is* structural, from the same algebra: **a tax-deferred
+balance is not the investor's money** — at a 24% withdrawal rate, $100,000 of traditional
+IRA is $76,000 of investor wealth, so an allocation stated on nominal balances misstates
+true equity exposure. §1's ranking is per dollar of *capacity* precisely to sidestep that.
+**[§8.5a](#85a-where-the-wrapper-goes-inside-the-shelter) prices the choice between the two shelters** — about 2 bp/yr at
+stated inputs, against 21 to 38 for the taxable-versus-sheltered decision — and names the
+one part of it that is not a forecast.
 
 **The HSA is the one genuine structural exception** — the only US account untaxed at all
 three points, with payroll contributions escaping FICA. Not booked, because its value is a
@@ -901,6 +954,407 @@ losing 10.2 bp/yr — because an avoided mistake is not a return source.
 
 ---
 
+## 8. The investor's plan: eight funds, three accounts, and a ranking that does not move
+
+**Scope.** One stated investor, `as of 2026-08-22`: roughly equal nominal thirds of Roth,
+traditional and taxable; long horizon; no near-term withdrawal need; US-based. Holdings
+**US 65%** — 30% in a stacked US-equity-plus-managed-futures ETF, 20% VTI, 15% AVLV — and
+**international 35%** — 10% DFIV, 10% VEA, 5% IDMO, 5% IEMG, 5% AVES. **No bonds**, which
+removes the one placement decision every source agrees on and makes the foreign-withholding
+and wrapper lines binding. **The tax-deferred third is a mix of a rollover IRA and an employer plan**, and that menu
+constraint turns out to bind harder than anything in the tax code — see
+[§8.5](#85-the-plan-and-the-employer-plans-menu). Contributions run **5–15%/yr** of the
+portfolio. Everything below regenerates from
+[`studies/investor_placement.py`](../../research/src/portfolio_edge/studies/investor_placement.py)
+and is pinned in `research/tests/unit/test_studies_investor_placement.py`. **Not
+personalised advice**; every figure is a function of stated inputs a different investor
+should restate.
+
+### 8.1 The bracket is not selected, and one column is unreachable
+
+Rev. Proc. 2025-32 §3.03 puts the 2026 20% long-term rate above **$613,700** of taxable
+income filing jointly and **$545,500** filing single, while the §1411 threshold is an
+unindexed **$250,000 / $200,000** of modified AGI. **A taxpayer at the 20% rate is
+therefore always past the surtax**, so 20% without 3.8% is not a live combination and does
+not appear below. The three columns that are live are **23.8% / 40.8%**, **18.8% / 35.8%**
+and **15% / 24%** qualified/ordinary. State income tax is excluded and additive; it
+compresses every gap below without reordering them.
+
+### 8.2 The inputs, from the funds' own filings
+
+Each yield is the fund's whole annual taxable distribution as a fraction of net assets —
+Form 1099-DIV Box 1a **grossed up for the creditable foreign tax** the §853 election makes
+the shareholder report, plus Box 2a where a fund distributes long-term gain. Only IDMO has a
+non-zero Box 2a. Splitting each yield into what is taxed at the capital-gain rate and what
+is taxed at the ordinary rate is the whole of the fund-level correction.
+
+| Fund | Weight | Fee | Taxable distribution | At capital-gain rates | Creditable foreign tax | Filing |
+| --- | ---: | ---: | ---: | ---: | ---: | --- |
+| **RSST** *(recognised)* | 30% | 99 bp | **9.273%** | 10.5% | 0 | Tidal Trust II N-CSR, FYE 2026-01-31 |
+| **RSST** *(distributed)* | 30% | 99 bp | 1.285% | 85.7% | 0 | the same filing |
+| **VTI** | 20% | 3 bp | 1.067% | 100% *(assumed)* | 0 | Vanguard fund-yield endpoint, 2026-07-31 |
+| **AVLV** | 15% | 15 bp | 1.770% | 100% *(assumed)* | 0 | American Century ETF Trust N-CSR, FYE 2025-08-31 |
+| **DFIV** | 10% | 27 bp | 4.033% | **100%** *(filed)* | 0.323% | Dimensional ETF Trust N-CSR, FYE 2025-10-31 |
+| **VEA** | 10% | 3 bp | 2.387% | **66.3%** *(filed)* | 0.145% | Vanguard 2025 FTC worksheet |
+| **IDMO** | 5% | 25 bp | **4.403%** | **25.6%** | 0.123% | Invesco ETF Trust II N-CSR, FYE 2025-10-31 |
+| **IEMG** | 5% | 9 bp | 2.545% | **34.8%** *(filed)* | 0.245% | iShares 2025 QDI and distribution summaries |
+| **AVES** | 5% | 36 bp | 3.910% | **44.5%** *(filed)* | 0.460% | Avantis 2025 tax centre and ICI file |
+
+Two rows need their own sentence.
+
+**IDMO is not a 2.3%-yield momentum fund for tax purposes.** Its N-CSR designates **25%**
+qualified dividend income against **105% portfolio turnover**; it carried **$32,959,121 of
+undistributed ordinary income and $11,582,181 of undistributed long-term gain** on
+$2,081,578,000 of net assets at 2025-10-31, and paid them out on **2025-12-22 as $0.68417
+of short-term and $0.27579 of long-term gain per share**. Adding those to the dividend
+takes its taxable distribution to **4.40% of net assets with only 25.6% at capital-gain
+rates** — the heaviest tax bill per dollar of any long-only fund in the portfolio. **The in-kind
+redemption shield in [§2](#2-fund-structure--the-one-large-additive-line) does not survive
+105% turnover**, and the five zero-capital-gain fiscal years in its Financial Highlights
+are a fiscal-calendar artifact: the December distribution falls in the next fiscal year.
+
+**AVES and IEMG are the emerging pair, and their filed qualified fractions are what reverse
+[§1](#1-foreign-tax-credit-forfeiture--the-result-that-changes-an-allocation).** 44.5% and
+34.8%, against the 100% §1's sleeve table assumes.
+
+### 8.3 The wrapper is the largest line, and its size turns on one unsettled fact
+
+The stacked fund routes its managed-futures leg through a **wholly-owned Cayman subsidiary
+capped at 25% of total assets at each quarter-end**. That is not a §1256 story and must not
+be told as one: §1256 is statutory and reaches all three candidate wrappers identically —
+**RSST's 2026-04-27 summary prospectus contains the string `1256` zero times** and MATE's
+prospectus quotes the rule verbatim, so what distinguishes MATE is *disclosure*, not
+treatment. The mechanism that bites is the controlled foreign corporation, and the trust
+says so itself:
+
+> "As wholly-owned controlled foreign corporations, the Subsidiaries' net income and
+> capital gains, if any, **will be included each year in the Funds' investment company
+> taxable income**."
+
+J.P. Morgan's SAI states the two consequences: subpart F income *"is generally treated as
+ordinary income, regardless of the character of the Subsidiary's underlying income"*, and a
+subsidiary's loss *"cannot be carried forward"*. **So the wrapper converts return into
+currently-recognised ordinary income, and the conversion is asymmetric** — gains are
+recognised, losses are trapped inside the CFC.
+
+**The audited numbers show that conversion accumulating.** RSST's undistributed ordinary
+income on a tax basis went from **$3,964,528 at 2025-01-31 to $29,468,239 at 2026-01-31**,
+against net assets of $282,674,000 and $344,251,000 — **from 1.40% to 8.56% of net assets in
+one year**, while the fund distributed $915,484 of ordinary income. About **8.43% of mean
+net assets was recognised and not paid out**. Per share, the fund has distributed $0.53
+since its 2023-09-05 inception and is carrying roughly **$2.53 a share of queued ordinary
+income**, nearly five times everything it has ever paid.
+
+| Reading | What it counts | Drag at 23.8% / 40.8% |
+| --- | --- | ---: |
+| **Distributed** | the $0.32 a share shareholders were actually taxed on, 74.3% long-term | **33.7 bp/yr** |
+| **Recognised** | the 9.27% of net assets the fund recognised, 89.5% ordinary | **361.8 bp/yr** |
+
+The distributed reading is corroborated independently: the fund's own prospectus reports
+**17.17% a year before tax against 16.85% after taxes on distributions** since inception —
+a 32 bp/yr gap. **The recognised reading is ten times larger, and the difference is a queue
+that has been audited but not yet distributed.** The same N-CSR reserves the right to
+*"retain income or capital gains and pay excise tax"*, so whether and when it is paid out is
+**not settled here**, and FY2026 was a 19.94% total-return year that will not repeat
+annually. **The review trigger is the fund's next December distribution.**
+
+**What is settled either way: the wrapper does not belong in the taxable account.** It is
+first in the queue on the recognised reading by a factor of two and a half over anything
+else, and still ahead of only VTI on the distributed one — but on the distributed reading
+it is the *marginal* holding, so 13.3% of the portfolio spills into taxable. The two
+readings therefore disagree about the *plan*, not about the direction.
+
+### 8.4 The ranking, at three brackets
+
+`priority = (recurring tax if held in taxable) − (irrecoverable withholding if sheltered)`,
+in bp/yr per dollar of shelter capacity. Wrapper on the recognised basis.
+
+| Fund | 23.8% | 18.8% | 15% |
+| --- | ---: | ---: | ---: |
+| **RSST** | **361.78** | **315.42** | **213.79** |
+| **IDMO** | **148.22** | **126.20** | **83.25** |
+| **AVES** | 83.98 | 64.43 | 32.21 |
+| **IEMG** | 64.27 | 51.55 | 28.60 |
+| **DFIV** | 63.73 | 43.56 | 28.23 |
+| **VEA** | 56.01 | 44.07 | 28.56 |
+| **AVLV** | 42.13 | 33.28 | 26.55 |
+| **VTI** | **25.39** | **20.06** | **16.00** |
+
+Four results, none of which is the maxim.
+
+1. **VTI is last at every rate.** The cheapest, broadest, lowest-turnover fund in the
+   portfolio is the one that belongs in the taxable account, because its 1.07% fully
+   qualified yield is the smallest tax bill per dollar of shelter it would consume.
+2. **Every international fund outranks every US equity fund at every rate.** "Hold
+   international in taxable to capture the credit" is wrong here at all three brackets, and
+   the credit is not close to deciding it: sheltering the whole 35% international sleeve
+   destroys **8.81 bp/yr** of credit permanently and buys far more than that back.
+3. **IDMO is second, and it is 5% of the portfolio.** A momentum fund at 25% qualified and
+   105% turnover carries more tax per dollar than a 4.0%-yield emerging value fund. Nothing
+   about its size or its label suggests it should be a placement priority.
+4. **The order barely moves across the bracket range.** Only IEMG, DFIV and VEA change
+   places with each other, and they are within 0.4 bp of one another at 15%.
+
+### 8.5 The plan, and the employer plan's menu
+
+Shelter capacity is **66.7%** of the portfolio — but not all of it is usable capacity. **The
+tax-deferred third is a mix of a rollover IRA and an employer 401(k)/403(b)**, and an
+employer plan has a fixed lineup: a broad US index fund, a developed ex-US one, an emerging
+one, and nothing else this portfolio holds. **No employer plan offers a return-stacked ETF,
+a Dimensional or Avantis systematic fund, or a single-factor momentum ETF.** Write `f` for
+the share of the tax-deferred third that sits in the rollover IRA. `f` **has not been
+measured**, so everything below is reported across its range.
+
+Three claims on the same capacity, resolved in this order: the employer plan **must** be
+filled and can only be filled from `{VTI, VEA, IEMG}`; the wrapper takes open-menu capacity
+next ([§8.6](#86-what-the-plan-is-worth-under-four-rules-that-bound-it) shows why that
+survives the wrapper's unresolved input); everything else fills the remainder by priority.
+
+| | `f = 0` *(all employer plan)* | `f = 0.5` | `f = 1` *(all rollover)* |
+| --- | --- | --- | --- |
+| **Employer plan** | VTI 18.3, VEA 10, IEMG 5 | VEA 10, IEMG 5, VTI 1.7 | — |
+| **Rollover IRA** | — | wrapper 16.7 | wrapper 30, IDMO 3.3 |
+| **Roth** | **wrapper 30**, IDMO 3.3 | wrapper 13.3, IDMO 5, AVES 5, DFIV 10 | IDMO 1.7, AVES 5, IEMG 5, DFIV 10, VEA 10, AVLV 1.7 |
+| **Taxable** | **AVLV 15, DFIV 10, AVES 5**, IDMO 1.7, VTI 1.7 | **AVLV 15, VTI 18.3** | **VTI 20, AVLV 13.3** |
+
+**The menu binds below `f = 0.55`, and the threshold is derived rather than asserted.** The
+unconstrained plan already shelters VEA and IEMG — 15% of the portfolio — so while the
+employer plan is no larger than that it can be filled with exactly those two and costs
+nothing. `1 − 0.15/0.333 = 0.55`. Above it the constraint is free; below it every extra point
+of employer plan forces one more point of a low-priority index fund into the shelter and
+evicts a high-priority fund from it.
+
+**At `f = 0` the two highest-yielding funds in the portfolio are evicted.** DFIV (4.03%
+yield, 100% qualified) and AVES (3.91%, 44.5% qualified) go to the taxable account while
+**VTI — last in the queue at every rate — is forced into the shelter at 18.3%**. That is the
+exact inverse of §8.4's ranking, imposed by a fund menu rather than by any tax fact. Against
+the same plan at `f = 1` it costs **9.09 bp/yr at 23.8%, 6.56 at 18.8% and 3.33 at 15%** —
+and **identically on both readings of the wrapper**, because the wrapper is sheltered either
+way and what the menu reorders is the equity queue behind it.
+
+**The wrapper never has to leave the shelter, at any `f`** — the Roth alone is 33.3% against
+its 30%. But the margin is **3.3 points**, so this is a coincidence of the stated weights
+rather than a structural fact: a wrapper allocation above 33.3% would spill into the taxable
+account at `f = 0`, and at that point the wrapper weight itself is the thing to reconsider,
+not the placement.
+
+The split of IDMO and AVLV across two accounts is an artifact of exact thirds, not a
+recommendation to hold one fund in two places; round it whichever way is operationally
+simpler, because the funds either side of each boundary differ by a few basis points. A
+joint solution with the rebalancing work puts taxable at **VTI 19.00, AVLV 14.00, VEA 0.33**
+at `f = 1`, which costs **0.28 bp/yr** and buys a 1 pp headroom band; that is a better
+rounding than this one and the two models reproduce each other's per-fund priorities to
+within 0.01 bp.
+
+### 8.5a Where the wrapper goes inside the shelter
+
+**The wrapper goes in the tax-deferred account when `f` allows it and the Roth when it does
+not, and the usual reason given for that is wrong.** The argument that "the traditional
+converts everything to ordinary income anyway, so the wrapper's conversion costs nothing
+there" is true and is **not a discriminator**: the recurring cost of a shelter is the
+forfeited foreign credit and nothing else, and for the wrapper that is zero in a Roth too.
+What decides it is three things that are not the drag:
+
+- **The Roth's premium is proportional to expected return**, and the managed-futures leg is
+  the least-established expected return in the portfolio — no measured loading, no measured
+  alpha, not promoted ([decision 0004](../decisions/0004-no-sleeve-promoted.md)). Spending
+  the best shelter on it is the wrong bet, and **at `f = 0` the investor has no choice but
+  to make it**, which is a second and separate cost of a captive traditional account.
+- **Required minimum distributions force the traditional and never the Roth.** The IRS
+  states that *"withdrawals from Roth IRAs and Designated Roth accounts (401(k) or 403(b))
+  are not required until after the death of the account owner"*, while a traditional balance
+  must begin distributing at 73. The traditional is the right home for the sleeve the
+  investor expects to be trimming; a trend overlay after a strong trend year is exactly that
+  sleeve.
+- **The traditional makes the government a partner in the outcome.** At a withdrawal rate
+  `t` the investor bears `(1 − t)` of the sleeve's dispersion as well as its mean. Putting
+  the most uncertain sleeve where that sharing happens is a risk decision and it points the
+  same way.
+
+**And the naive rule points the other way, which is why it has to be run rather than
+recited.** "Shelter the highest drag" is a statement about *which shelter*, and it puts the
+wrapper in the Roth. The drag is the wrong instrument for that question: it is identical in
+both. The same confusion is available one level up —
+[§3](#3-section-1256-and-capital-efficiency-handled-honestly) finds gold's overlay wrapper
+carrying the heaviest distribution drag on the capital-efficient shelf while having the
+weakest case for being held at all, so drag alone would buy it scarce shelter it has not
+earned.
+
+**Roth versus traditional is worth about 2 bp/yr, and it is a forecast.** Writing `R` and
+`T` for the nominal balances, the difference between putting growth factor `A` in the Roth
+and `B` in the traditional, and the reverse, is exactly `(R − T(1 − t))(A − B)`: the
+after-tax size gap between the accounts times the growth gap between the sleeves. At equal
+nominal thirds, a 24% withdrawal rate, 30 years, a 30% sleeve swapped and a 1 pp/yr
+expected-return gap, that is **1.96 bp/yr** — an order of magnitude below the
+taxable-versus-sheltered decision, and it needs two numbers nobody has. It is also not free:
+holding the same after-tax allocation, the "gain" is more exposure, not more edge.
+
+### 8.6 What the plan is worth, under four rules that bound it
+
+A location number is easy to inflate and the four ways of doing it are all available here,
+so the rules are stated before the figure rather than after it.
+
+1. **The control has to be feasible.** Pro-rata placement of the same eight funds is *not*
+   available to an investor whose shelter is partly a captive employer plan, because the
+   wrapper and the systematic funds cannot go in there at all. Measuring against it compares
+   the plan with something nobody could have done. The control used below is what a
+   *default-choosing* investor with the same accounts would actually do: fill the employer
+   plan with the biggest, most familiar index funds, then hold everything else pro rata.
+2. **Income recognised inside a fund and not distributed is not a saving to anybody yet.**
+   The wrapper's recognised basis rests on exactly that, so it is reported beside the booked
+   figure and **never added to it**.
+3. **A hurdle avoided is not a saving.**
+   [§4](#4-deferred-unrealised-gain--the-largest-number-here) says in terms that deferral is
+   *"a hurdle, not a saving"* and that crediting yourself for not doing something nobody
+   proposed is how these budgets get inflated. Rebalancing inside the shelter is worth
+   **zero** as a line, and is reported below as a hurdle not paid.
+4. **Lot selection and never selling are mutually exclusive.** Lot-selection discipline pays
+   only when you sell, and rule 3's whole content is that this investor does not sell in the
+   taxable account. Booking both is booking one dollar twice, so **the lot-selection line is
+   zero here**.
+
+**Booked, against the feasible control, on the audited distributed basis**, in bp/yr of the
+whole portfolio:
+
+| Qualified rate | `f = 0` | `f = 0.5` | `f = 1` |
+| --- | ---: | ---: | ---: |
+| **23.8%** | **−2.04** | **+6.66** | **+5.41** |
+| **18.8%** | −1.04 | +5.22 | +4.24 |
+| **15%** | −0.40 | +2.56 | +2.04 |
+
+**So the defensible booked figure is +2 to +7 bp/yr**, and at `f = 0` it is *negative*: with
+a wholly captive tax-deferred third, forcing the wrapper into the Roth costs more on the
+audited basis than the plan's fund ordering saves. The sign flips at **`f ≈ 0.02 to 0.05`**,
+so any rollover balance worth more than a twentieth of the tax-deferred third is enough. The
+`f = 0.5` column beats `f = 1` because the captive employer plan hurts the *naive* investor
+more than it hurts a deliberate one — the gap widens before the constraint relaxes.
+
+`location_edge()` **refuses to return a component when the value is negative**, and says so
+in the exception. That guard is the finding made unpublishable-by-accident, in the same
+spirit as `aggregate()`'s refusal to sum across benchmarks.
+
+**Conditional and not booked**: if the wrapper's recognised income is distributed at the
+rate it is being recognised, the plan gains a further **+19.3 to +49.2 bp/yr** depending on
+`f` and bracket — largest at `f = 0`, because that is where the naive investor is worst
+placed. **This page books none of it.** The review's charge was that the headline quoted it
+without carrying its conditionality, and the charge is accepted.
+
+**The unresolved accrual does not stall the decision, and this is why.** Ask not "how big is
+it" but "does the decision need to know":
+
+| At 23.8% | if the audited basis is right | if the accrual is distributed |
+| --- | ---: | ---: |
+| **Shelter the wrapper** | costs **1.12 bp/yr** (`f = 1`), **8.54** (`f = 0`) | — |
+| **Follow the audited-basis ranking instead** | — | costs **42.62 bp/yr** (`f = 1`), **89.88** (`f = 0`) |
+
+The asymmetry is **ten to one at every `f` and every bracket**, so **sheltering the wrapper
+is right under either reading** and the measurement can stay unresolved without stalling the
+plan. That is worth more than the drag it costs, and it is the reason the wrapper's queue is
+an open question rather than a blocker.
+
+**Rebalancing: a hurdle avoided, reported as a hurdle.** The entire international sleeve and
+the entire trend overlay sit inside the shelter, so every trade on those two legs realises
+nothing. **One direction is constrained** — selling US equity to buy international — because
+at `f = 1` only 1.7% of AVLV sits in the shelter beside the wrapper. That needs roughly
+**2 points of the portfolio a year**. **Contributions of 5–15%/yr cover it 2.5 to 7.5 times
+over**, so the taxable account never has to sell and §4's deferral is never broken. That is
+the hurdle not being paid; **it is not an edge and it is not booked**.
+
+**Contributions: the dollar-limited accounts first, then taxable at whatever is furthest
+below target.** 2026 limits, from IRS Notice 2025-67: §402(g) elective deferral **$24,500**,
+age-50 catch-up **$8,000**, ages 60–63 **$11,250**, IRA **$7,500** with a **$1,100**
+catch-up. **One constraint bites and it is easy to miss**: the Roth IRA contribution phases
+out between **$242,000 and $252,000** of modified AGI filing jointly, and the §1411 surtax
+starts at an unindexed **$250,000**. Any investor in the 18.8% or 23.8% column is at or past
+the phase-out, so their Roth capacity comes from a designated Roth account in an employer
+plan or from a conversion — **not from a direct contribution**, and a plan that assumes
+otherwise will not execute. At 5–15%/yr of the portfolio the contribution stream is also
+large enough to *migrate* the placement over a few years without realising anything, which
+is the cheapest way to reach this plan from any starting point.
+
+### 8.7 How much of the ~109 bp budget this investor can capture
+
+**Every line below is against one named benchmark and lines against different benchmarks are
+not added.** [`docs/charter.md`](../charter.md) forbids it outright and
+[`aggregate()`](../../research/src/portfolio_edge/studies/outperformance_horizon.py) raises
+on it; the earlier draft summed three.
+
+**Benchmark: the investor's own counterfactual** — the same eight funds, placed the way a
+default-choosing investor with the same accounts would place them.
+
+| Line | bp/yr | Certainty class |
+| --- | ---: | --- |
+| **Asset location, eight funds, three accounts** | **+2.0 to +6.7** at `f ≥ 0.05`; **−0.4 to −2.0** at `f = 0` | **deterministic** — arithmetic on filed figures, given `f` |
+| Roth versus traditional | +2.0 | **probabilistic** — needs a future marginal rate and a return gap |
+| Lot selection | **0** | withdrawn: mutually exclusive with never selling |
+| Rebalancing deferral | **0** | withdrawn: a hurdle avoided, not a saving (§4) |
+| **Booked total, this benchmark** | **+2 to +7 deterministic, +2 probabilistic** | |
+| *Conditional, not booked* | *+19 to +49 if the wrapper's accrual is distributed* | **unresolved** |
+
+**Benchmark: a cheap index.** The fee gap and the fund-structure line live here. Neither is
+sized for this investor — the fee gap depends on what these eight funds replaced, which was
+not stated — and **neither may be added to the table above**. For the record on the second:
+seven of the eight funds filed **zero** capital-gain distributions, so §2's +23 bp has
+nothing to buy; **IDMO is the exception and it runs the wrong way**, at −3.9 bp/yr of the
+portfolio if held in taxable and **zero under the plan**, which shelters it.
+
+**Benchmark: typical investor behaviour.** Nothing here is measured against it.
+
+**So the defensible answer is +2 to +7 bp/yr, not a third to a half of the ~109 bp budget.**
+The budget's two largest lines are simply unavailable: the **23 bp fund-structure** line is
+measured against an *active mutual fund* counterfactual this investor does not have, and the
+**30 bp harvesting** line needs direct security ownership that funds do not give. **The good
+news and the bad news are the same fact** — a portfolio already built from cheap ETFs has
+little implementation edge left to collect, which is exactly what
+[the recommendation](portfolio-recommendation.md#what-is-relatively-dependable) says about
+an investor already holding cheap index funds. The conditional +19 to +49 is real and may
+arrive; it is not a budget until the wrapper's next December distribution settles it.
+
+### 8.8 What was assumed, and what would change the plan
+
+**Assumed rather than filed**, each flagged in the module's own source field:
+
+- **Qualified fractions of 1.00 for VTI and AVLV.** Both sponsors publish per-fund
+  percentages and neither was retrieved. A *lower* fraction raises a fund's priority, so
+  assuming 1.00 is the choice that most favours the taxable placement the plan gives them —
+  conservative in the direction it is uncertain. The threshold is sharp and worth stating:
+  **at 0.54, AVLV overtakes VEA** and the last international dollar leaves the shelter. Both
+  are large, low-turnover, US-domiciled funds, so a fraction near 1.00 is likely; it is not
+  verified.
+- **The wrapper's queued ordinary income has no qualified designation.** Only the $404,096
+  actually designated is credited at capital-gain rates. A larger designation would lower
+  the 361.8 bp, not the ranking.
+- **The wrapper is priced on RSST's filings.** MATE and JPFP are too new to have filed a
+  tax-character table — MATE has one N-CSRS to 2026-02-28 and JPFP listed on 2026-05-27 —
+  and all three run the same 25%-capped Cayman CFC. **The placement conclusion is identical
+  for all three**, so the wrapper choice can be made on fee and structure without reopening
+  this section.
+
+- **The rollover share `f` of the tax-deferred third has not been measured**, and it is the
+  input the plan is most sensitive to — it moves the booked line from −2.0 to +6.7 bp/yr and
+  decides whether DFIV and AVES can be sheltered at all. **Ask for it before executing.** So
+  has the employer plan's actual lineup: `{VTI, VEA, IEMG}` is a typical menu, not a filed
+  one, and a plan offering a cheap international value or small-value fund would relax the
+  constraint materially.
+- **Contributions are 5–15%/yr of the portfolio.** The midpoint is used where a single value
+  is needed; the range is what is reported. At every point in it, new money covers the one
+  constrained rebalancing direction more than twice over, so no conclusion here turns on
+  where in the range the investor sits.
+
+**Yields mix windows**: two are sponsor forecasts effective 2026-07-31, three are audited
+fiscal-year ratios ending in 2025, and none is point-in-time. A yield is the input a
+location ranking is most sensitive to after `f`.
+
+**Four review triggers.** The wrapper's next December distribution, which decides the
+conditional +19-to-+49 line. IDMO's next fiscal year, which decides whether its capital-gain
+flush is a feature of the mandate or one year. Any change in the investor's bracket that
+crosses $250,000 of modified AGI, which moves two columns at once — the surtax and the Roth
+IRA phase-out. And **any rollover into or out of the employer plan**, which moves `f` and is
+the cheapest lever on this page: consolidating an old employer balance into the rollover IRA
+buys the whole `f = 0` to `f = 0.5` improvement for the cost of a form.
+
+---
+
 ## The ledger
 
 | Lever | bp/yr, portfolio | Range | Additive to the 89 bp? |
@@ -914,6 +1368,9 @@ losing 10.2 bp/yr — because an avoided mistake is not a return source.
 | Municipal bonds | 0.0 | 0 to +222 | inactive; the shelter covers the bonds |
 | §1256 60/40 treatment | 0.0 | 0 to +51 | no futures sleeve; leverage is zero |
 | Traditional vs Roth, and the HSA | 0.0 | — | **probabilistic**, or a dollar limit |
+| Asset location at fund level, one stated investor (§8) | **+2 to +7** | −2.0 to +6.7 | **replaces** the 10 bp location line for that investor; measured against a *feasible* control |
+| Same, conditional on the wrapper's accrual being distributed (§8.6) | *not booked* | +19 to +49 | **unresolved**; reported, never added |
+| Rebalancing kept inside the shelter (§8.6) | **0.0** | — | **withdrawn** — a hurdle avoided is not a saving (§4) |
 | Charitable gift, NUA, tax-gain harvesting | 0.0 | 0 to +48 | each needs a circumstance, not a decision |
 | Wash sale into an IRA; non-qualified dividends | 0.0 | 0 to +119 | errors avoided are not returns |
 | **Additive total** | **+28.0** | 0 to +94 | |
@@ -954,12 +1411,12 @@ measured advantage, except constant rates, which cuts both ways.
    exist and 89 Form 497K documents now name an "ETF Class", but no SEC document
    quantifies the benefit and the operative conditions live in each applicant's 40-APP
    application, which was not read.
-4. **The effective foreign withholding rate, and its denominator.** Eleven funds file a
-   ratio of foreign taxes paid to foreign source income that runs 5.99–7.61% developed and
-   9.12–14.23% emerging, against the 6.068% and 9.853% §1 uses from one sponsor's
-   shareholder worksheet. **Whether "foreign source income earned" is filed gross or net of
-   the withheld tax decides the reconciliation**, and on both readings the emerging
-   break-even exceeds 23.8%. **The largest open input on this page.**
+4. **Whether a capital-efficient wrapper's queued ordinary income is distributed, and
+   when.** RSST recognised about 8.4% of net assets of ordinary income in the year to
+   2026-01-31 and paid out 0.3%, leaving 8.56% of net assets undistributed on a tax basis.
+   That single input moves [§8](#8-the-investors-plan-eight-funds-three-accounts-and-a-ranking-that-does-not-move)'s
+   placement value from 6.5 to 38 bp/yr. **The largest open input on this page**, and the
+   one that replaced the withholding denominator, now closed in §1.
 5. **The value of lot-selection discipline for a retail buy-and-hold investor.** The only
    measurement is a simulation on a turning-over separate account.
 6. **Schwab's four funds' spreads and premium/discount**, and **BKAG's lending, waiver
@@ -992,10 +1449,13 @@ registered in [the evidence base](evidence-base.md) §3.
 3. **The tax boundary must be a dated, versioned input.** `TaxRegime` in
    `tax_structure.py` is the shape — a labelled, jurisdiction-stamped, dated set of rates
    that refuses to construct without them. Nothing hardcodes a rate again.
-4. **Asset location must be computed, not asserted.** The rule "shelter the higher-yielding
-   asset" is right for bonds by a factor of four and wrong for emerging-market equity at
-   two of the four US dividend rates. Any location feature runs the ranking and states the
-   bracket it assumed.
+4. **Asset location must be computed, not asserted, and at the fund rather than the
+   sleeve.** The rule "shelter the higher-yielding asset" is right for bonds by a factor of
+   four; on a generic sleeve it looked wrong for emerging-market equity at two US rates, and
+   at fund level it is wrong in the other direction, because the sponsors file qualified
+   fractions of 25% to 45%. **A location ranking that assumes a qualified fraction has
+   assumed its own answer.** Any location feature runs the ranking, states the bracket, and
+   states which withholding denominator it is on.
 5. **Do not build a capital-efficiency feature, and do not close the question either.**
    §3's four conditions are what would reopen it.
 6. **Recheck the fund-structure line before it is used.** A page whose largest new line has

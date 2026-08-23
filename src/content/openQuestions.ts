@@ -11,7 +11,7 @@ import { asOf, type Citation } from "~/content/types";
 const recommendation: Citation = {
   label: "The recommended portfolio",
   docPath: "docs/research/portfolio-recommendation.md",
-  anchor: "6-what-would-change-this",
+  anchor: "what-would-change-the-position",
 };
 
 const framework: Citation = {
@@ -277,7 +277,7 @@ export const missingInvestorPolicyInputs: readonly string[] = [
 export const missingInputsSource: Citation = {
   label: "The recommended portfolio, the investor-policy inputs still missing",
   docPath: "docs/research/portfolio-recommendation.md",
-  anchor: "the-investor-policy-inputs-still-missing",
+  anchor: "what-would-change-the-position",
 };
 
 export const openQuestionsAsOf = asOf("2026-08-12");

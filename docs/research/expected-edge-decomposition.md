@@ -177,7 +177,7 @@ with every term measured:
 | Term | Value | Source |
 | --- | --- | --- |
 | weight | 20% of portfolio | the reference construction |
-| `h_fund` | AVUV +0.537 `[+0.43, +0.64]` | [Experiment 013](factor-products.md#what-the-corrected-frame-finds) |
+| `h_fund` | AVUV +0.537 `[+0.43, +0.64]` | [Experiment 013](factor-products.md#the-us-shelf-on-the-corrected-frame) |
 | `h_incumbent` | VTI +0.0247 | computed on the same 72 months |
 | premium | pooled post-publication HML +4.74 `[+1.46, +8.10]` | [Experiment 005](factor-persistence.md) |
 | incremental cost | 0.271 pp/yr — 22 bp of fee, 5 bp of turnover at `k = 1.7` | the funds' own 497K and 485BPOS |
@@ -191,7 +191,7 @@ a more volatile fund pays for its arithmetic edge out of `V/2`. And on the US-on
 post-publication premium of +1.57 the growth contribution is negative at every weight —
 that premium's own interval is `[−2.28, +5.54]`, and it survives no multiple-testing
 correction ([Experiment 001](factor-persistence.md)). See
-[the recommendation §5](portfolio-recommendation.md#5-what-each-tilt-costs-in-confidence-terms).
+[the recommendation](portfolio-recommendation.md#optional-factor-tilts).
 
 ### 1.2 What is rejected, and why
 

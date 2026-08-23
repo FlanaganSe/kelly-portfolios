@@ -18,11 +18,38 @@ For the major decisions:
 - [Valuation and the allocation](research/valuation-and-the-allocation.md): what an August
   2026 CAPE of 41 licenses — a wider drawdown assumption, not a timing rule — and why the
   US/international spread is a differently identified question from the US level.
+- [Current regime and pricing](research/current-regime-and-pricing.md): which of the
+  portfolio's engines are cheap and which are expensive *today*, each level beside its own
+  historical percentile — and which conditioning variables have ever predicted anything.
+  Credit is at the tightest quality spread since 1990 and is the one engine whose entry
+  price has an out-of-sample record; long real yields are at the top of theirs; nothing
+  tested predicts equity returns out of sample.
+- [Currency and the international sleeve](research/currency-and-the-international-sleeve.md):
+  whether the unhedged foreign-currency position inside the 35% international allocation is
+  compensated — the mean is unresolvable, the variance reduction is not, and the account it
+  would have to live in is decided by tax rather than by the measurement.
 - [Structural and tax edges](research/structural-and-tax-edges.md): implementation gains
   that are conditional on accounts, taxes, holdings, and behavior.
+- [Harvesting and direct indexing](research/harvesting-and-direct-indexing.md): what
+  tax-loss harvesting is actually worth once §1211(b)'s $3,000 cap decides how much of the
+  loss can ever be deducted, why a step-up and a liquidation give answers 14 bp apart, and
+  why the free route — harvesting between two similar funds — beats a 9 bp direct-indexed
+  account below about 2.5% of the account a year in realised gains.
 - [Factors](research/factor-persistence.md), [delivered loading](research/long-only-capture.md),
   and [products](research/factor-products.md): the evidence chain from research premium to
   investable exposure.
+- [Loading comparability and wrapper exposure](research/loading-comparability-and-wrapper-exposure.md):
+  why two published loadings usually cannot be ranked against each other — every one was
+  fitted on the months its own fund had filed — what the US value and managed-futures
+  shelves look like refitted on matched windows, and the first measurement of a stacked
+  wrapper's delivered trend exposure, taken from the fund's own SEC filings rather than
+  from a price feed.
+- [Four tilts the recommendation never priced](research/untested-tilt-candidates.md): AVDV,
+  AVUV, MTUM and QVAL scored against the portfolio actually held rather than against each
+  other — why the negative delivered return found for large-cap international value turns
+  out to be a property of the measurement window rather than of capitalisation, why a
+  116%-turnover momentum fund is nonetheless more tax-efficient than a total-market index
+  fund, and what each candidate is worth as a plain change in yearly portfolio return.
 - [Trend and managed futures](research/trend-marginal-value.md) and
   [live-fund evidence](research/live-managed-futures.md): the strongest current diversifier
   candidate and its unresolved implementation risks.
@@ -30,7 +57,9 @@ For the major decisions:
   same signal applied to the base portfolio instead — a different funding rule, a different
   tax outcome, and largely the same bet as a trend overlay.
 - [Rebalancing](research/rebalancing-policy.md): useful exposure control, with no stable
-  return bonus established.
+  return bonus established — and the operating half, covering the capital-versus-notional
+  unit trap, the exact condition under which a portfolio target can be restored without
+  selling in a taxable account, the recommended policy, and how many lines to hold.
 - [Other diversifiers](research/alternative-sleeves-audit.md) and
   [capital efficiency](research/capital-efficiency-and-breadth.md): candidate mechanisms,
   access, financing, and failure modes — including the cross-engine stress table, the
@@ -47,6 +76,21 @@ For the major decisions:
   portfolios scored against three benchmarks — which differences this data can resolve,
   which it cannot, and how many years an investor would have to hold each one before
   finding out.
+- [The final construction, tested](research/final-construction-test.md): the recommended
+  portfolio put through the same tournament as a single object rather than sleeve by sleeve —
+  what it is worth against a leverage-matched cheap index and against the three constructions
+  it was chosen over, why only one of those comparisons is resolvable and why that one is
+  measuring leverage, what every fund on the tilt shelf actually costs once Form N-CEN's
+  securities-lending income is netted off the fee, and why RPV and SPMO are both rejected.
+- [The trend weight under acknowledged ignorance](research/trend-weight-under-uncertainty.md):
+  the tournament's number-one next test — the forward trend premium as a weighted range on one
+  stated basis, the regret surface over weight and premium against two benchmarks that give
+  opposite answers, why a minimax rule relocates the prior rather than removing it, and the two
+  arms of the asymmetry that decide the size.
+- [Adversarial review](research/adversarial-review.md): a red team on the August 2026
+  session — which of its conclusions survive their own detection floors, where a forward
+  premium was compared on the wrong basis, and what the resolvable edge is worth against
+  a savings rate.
 
 ## What should we research next?
 

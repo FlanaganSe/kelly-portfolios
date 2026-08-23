@@ -29,7 +29,7 @@ places the comparator turned out to decide the answer:
   these 72 months", not "this product is badly run".
 - **The composition of that combination is itself a choice, and how much it decides is
   measured — on both shelves, with opposite answers.**
-  [Experiment 014](../research/factor-products.md#what-the-comparator-decided-measured)
+  [Experiment 014](../research/factor-products.md#the-comparator)
   re-scored all 109 US products under six bases and changed nothing else. The clause (c)
   count moves from 35 to 26 and the `exploratory` count from 48 to 49 under a complete cheap
   style grid — but **two placebo bases, which add as many columns while adding no new
@@ -38,7 +38,7 @@ places the comparator turned out to decide the answer:
   needs a placebo comparator beside it**, or a movement in the count cannot be attributed to
   what the added funds express.
 - **That placebo result does not generalise, and the ex-US shelf is what proves it.**
-  [Experiment 015](../research/factor-products.md#what-the-ex-us-comparator-decided-measured)
+  [Experiment 015](../research/factor-products.md#the-comparator)
   re-scored all 25 ex-US products under seven bases, **pairing each expressive basis with a
   placebo matched on column count**, which is stronger than Experiment 014's single pairing.
   The placebos moved **0, 0 and 1** verdicts against their partners' **1, 0 and 4** — the

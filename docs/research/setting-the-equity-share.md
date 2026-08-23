@@ -16,7 +16,7 @@ Annuities, which change the problem rather than the parameter.
 [`studies/equity_share.py`](../../research/src/portfolio_edge/studies/equity_share.py) and
 is pinned in `research/tests/unit/test_studies_equity_share.py`; conclusion 8's figures come
 from [`studies/fixed_income_shelf.py`](../../research/src/portfolio_edge/studies/fixed_income_shelf.py)
-and are set out in [alternative sleeves audit §8](alternative-sleeves-audit.md).
+and are set out in the [alternative sleeves audit](alternative-sleeves-audit.md#6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips).
 
 ---
 
@@ -70,7 +70,7 @@ and are set out in [alternative sleeves audit §8](alternative-sleeves-audit.md)
    that would settle it cannot be reached: **no TIPS return exists before 2003**, which is
    entirely inside the period when the nominal bond's correlation had already flipped
    negative. Full working in
-   [alternative sleeves audit §8.4](alternative-sleeves-audit.md); the practical reading is
+   [alternative sleeves audit](alternative-sleeves-audit.md#6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips); the practical reading is
    that **point 7's regime dependence has no fixed-income remedy on any evidence held here.**
 9. **Status.** §§1–3 are **arithmetic** — closed forms, exact given their inputs, and not
    evidence about any market. §§5–7 are **`exploratory` at best**: one sample, one country,

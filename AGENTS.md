@@ -1,155 +1,100 @@
 # Repository working agreement
 
-Canonical instructions for coding agents. `CLAUDE.md` imports this file; do not
-duplicate rules there or in tool-specific configuration. `docs/AGENTS.md` adds the
-documentation and research protocol for everything under `docs/`.
+Canonical instructions for coding agents. `CLAUDE.md` imports this file. Read `README.md`,
+[`docs/charter.md`](docs/charter.md), the files being changed, and `docs/AGENTS.md` before
+changing documentation.
 
-Every line here is loaded on every request, so this file carries only what an agent
-cannot infer from the code and cannot be told by a test. Read `README.md`,
-[`docs/charter.md`](docs/charter.md) for what the programme is trying to do, and the
-files you are changing.
+## Repository boundaries
 
-## What this repository is
+This is an early-stage position-sizing and asset-allocation research application. The
+Python workspace under `research/` produces evidence; the SolidJS client is the only
+deployed code and imports no Python. Treat code, configuration, data manifests, frozen
+specifications, and run artifacts as evidence of current behavior. Treat prose as an
+interpretation that may be revised.
 
-An early-stage research application for position sizing and asset allocation.
-Only the SolidJS client is in version control. Treat code, configuration, and CI as
-evidence of current behavior; treat product copy and prose as intent until a test
-or an implementation supports it.
+Research is open by default. An empirical conclusion is scoped to its data, instrument,
+window, estimand, and benchmark; it is not a prohibition on a new measurement. Promotion
+or publication gates must state their scope and what evidence would change the decision.
 
-## How to read a rule here
+## Non-obvious traps
 
-**A finding is not a prohibition.** Most of what follows was learned by making a mistake
-once, and the honest form of each is a scoped claim with an instrument and a window
-attached. Where a rule really is absolute, it is arithmetic and the code raises. Where it
-is empirical, it names what would change it.
-
-This distinction is not decoration. Rules written here as absolutes have already
-suppressed work that should have run: six data sources were recorded as unavailable while
-published, and every marginal-sleeve verdict in the repository was taken against a hurdle
-inflated by a rule adopted for prudence
-([decision 0009](docs/decisions/0009-blocks-lifted-and-closures-rescoped.md)).
-
-**So: check the reasoning of any rule that appears to forbid a source, a method or a
-comparison, before treating it as a bar.** A rule written against one failure mode does
-not reach a case that cannot exhibit it — decision 0002 bans free price feeds because
-they drop distributions and mishandle corporate actions, and neither failure mode exists
-for an asset that pays nothing. And before recording a source as absent, check that it is
-not published, then check `research/data-manifests/`, where the last one was already
-sitting.
-
-## Traps
-
-- `sst.config.ts` imports `./infra/*` and deploys handlers from `functions/`.
-  Neither directory is in Git. Do not "repair" the build by deleting those imports.
-- `scripts/mean-variance.py` is an unwired reference implementation, not a shipped
-  code path. Its client-side twin was named for Kelly, maximised a mean-variance
-  utility, was imported by no route, and has been deleted.
-- `scripts/seed-database.ts` emits an unseeded random walk. Its output is synthetic
-  and not reproducible; never describe it as market data.
-- A research number in the client must carry status, `as of` date, interval and source,
-  and must come from `src/content/`
-  ([decision 0007](docs/decisions/0007-application-may-render-research.md)). A number
-  hardcoded in a route or a component is a defect.
-- **A factor loading and a long-only capture fraction are the same quantity measured two
-  ways, so their product discounts one exposure twice.** A factor line is
-  `weight × (fund loading − incumbent loading) × premium − cost`. This one is arithmetic:
-  `studies/value_tilt.sleeve_edge` and `src/lib/tilt.ts` both raise rather than accept a
-  capture argument ([long-only capture](docs/research/long-only-capture.md)).
-- **A cheap index, the reader's own counterfactual and the average investor are three
-  different benchmarks, and lines measured against different ones do not sum.**
-  `aggregate()` in `studies/outperformance_horizon.py` raises rather than summing them.
-  Comparing across benchmarks is fine and often necessary; adding is the error
-  ([edge decomposition](docs/research/expected-edge-decomposition.md)).
-- `research/` is a separate Python workspace with its own toolchain and `README.md`. It
-  is not deployed and the client does not import it. Its current state is generated, not
-  transcribed: `cd research && uv run python -m portfolio_edge.reporting.programme_status`.
-- **The client ships no return series, and that is a data-licensing position rather than
-  a principle.** No fund history here is research-grade
-  ([decision 0002](docs/decisions/0002-no-research-grade-free-price-source.md)), no
-  per-fund loading vector is committed, and the redistribution terms on the public factor
-  libraries **were not verifiable offline** — nobody has checked them with a network
-  connection, and at least one series held here (the World Bank gold price) is CC BY 4.0
-  and redistributable. The lab is forward-looking because of that gap, not because a
-  backtest would be wrong in principle. `src/lib/backtest/` runs data the *reader*
-  supplies. If the licence question is settled, this changes.
+- `sst.config.ts` imports `./infra/*` and deploys handlers from `functions/`; neither is in
+  Git. Do not make the build green by deleting those imports.
+- `scripts/mean-variance.py` is an unwired reference implementation, not shipped behavior.
+- `scripts/seed-database.ts` emits an unseeded synthetic random walk, not market data.
+- A client research figure belongs in `src/content/` and carries status, date or period,
+  interval where applicable, and source ([decision 0007](docs/decisions/0007-application-may-render-research.md)).
+- A factor loading and a long-only capture fraction measure the same exposure. Do not
+  multiply them. The factor line is `weight × (fund loading − incumbent loading) × premium
+  − cost`; code raises on a capture argument.
+- A cheap index, the investor's counterfactual, and the average investor are different
+  benchmarks. Compare them, but do not add results measured against different benchmarks;
+  `aggregate()` raises on that error.
+- No research-grade fund return series or per-fund loading vector is committed. The client
+  backtest runs data supplied by the reader. This is the current data/licensing state, not
+  a principle against backtesting; reassess it when source contracts change.
 
 ## Commands
 
-Two independent toolchains. Run the checks for the half you touched.
-
-**Client.** Node 22 and pnpm 10. `pnpm install` installs the pre-push hook through
-`prepare`; `pnpm setup` is a built-in pnpm command and will not run repository
-scripts.
+Client: Node 22 and pnpm 10.
 
 ```sh
-pnpm dev            # Vite dev server
-pnpm biome check    # lint and format
-pnpm typecheck      # tsc --noEmit
+pnpm biome check
+pnpm typecheck
 pnpm test
-pnpm build          # production bundle
+pnpm build
 ```
 
-**Research workspace.** `uv`, with Python 3.12 pinned in `research/.python-version`.
+Research: Python 3.12 and `uv`.
 
 ```sh
 cd research
 uv sync --extra dev
-uv run pytest              # offline by default
-uv run pytest -m network   # hits a primary data source
-uv run mypy                # strict
+uv run pytest
+uv run pytest -m network   # primary-source network tests
+uv run mypy
 uv run ruff check
+uv run python -m portfolio_edge.reporting.programme_status
 ```
 
-Run the narrowest relevant check while iterating and all of the relevant half's
-checks before handoff. CI runs the client's checks on Node 22 and does not yet run
-the research workspace. If a check cannot run, or a failure predates your change, say so
-precisely instead of reporting a clean run.
+Run narrow checks while iterating and all checks for the half changed before handoff. CI
+currently covers only the client. Report any check that could not run or any pre-existing
+failure precisely.
 
-## Where computation lives
+## Research integrity
 
-Optimization math belongs in `research/`, which has a test runner, closed-form
-fixtures, and an experiment ledger. **No optimiser ships**: anything that searches a
-weight space goes there, with a frozen specification and a ledger entry. That is a
-process rule and stands on its own; the browser-solver survey that originally justified
-it is dated and no longer load-bearing.
+- Optimisation and weight-space searches run in `research/`, with a specification and an
+  experiment-ledger entry. The client may port closed-form arithmetic tested against
+  generated fixtures.
+- Preserve source provenance and availability timing. A hash identifies the bytes used; it
+  does not establish that the source is valid or point-in-time.
+- Ledger hypothesis-bearing, data-dependent analytical attempts, including abandoned and
+  failed ones. Setup and smoke-test failures need not inflate the research trial count.
+- Put costs inside an executable trading rule when making implementation claims.
+- Before interpreting a null, compare the effect of interest with the design's resolution.
+- If a fixture and implementation disagree, investigate the fixture, implementation,
+  units, tolerance, and conditioning independently; correct the defective piece and record
+  the evidence. Do not loosen a tolerance merely to obtain a pass.
+- Keep assumptions separate from evidence and conclusions no broader than the claim tested.
 
-The client may carry closed-form arithmetic `research/` has already run, as a port
-in `src/lib/` tested against fixtures that workspace generates. Regenerate them
-with `uv run python -m portfolio_edge.reporting.client_fixtures`. If a port
-disagrees with a fixture, the port is wrong — never loosen the tolerance.
+Use the tiered exploration, evaluation, and promotion protocol in `docs/AGENTS.md`. The
+full confirmatory battery is not a prerequisite for exploratory measurement.
 
-## Boundaries
+## Engineering and documentation
 
-- Do not ask for permission or approval. Adding dependencies, creating files and
-  directories, installing tooling, running commands, and expanding scope to finish
-  the task are all pre-approved. Choose sensibly, act, and report what you did.
-  The exceptions are the denials in `.claude/settings.json` and anything that
-  would destroy unrecoverable data or touch personal or financial accounts.
-- The client has no environment variables and needs none. It calls no API and
-  stores no keys. If that changes, secrets go in `.env.local`, a `.env.example`
-  records the public contract, and real values are never committed.
+- Keep domain logic in small typed functions under `src/lib/` or `src/utils/`, following
+  the established module boundary; keep it out of components.
+- Biome and `tsconfig.json` define client style and strictness.
+- Optimisation-math changes need tests for constraints, numerical edges, units,
+  annualisation, and at least one independently computed fixture.
+- Update documentation with behavior, keep each fact in one canonical place, and delete
+  superseded narrative. `docs/AGENTS.md` defines the documentation protocol.
 
-## Engineering
+Do not ask for approval for ordinary in-scope work. Dependencies, files, tooling, and
+commands are pre-approved. The exceptions are destructive or unrecoverable actions,
+personal or financial accounts, and denials in `.claude/settings.json`. The client has no
+environment variables; if that changes, document public names in `.env.example`, keep real
+values in `.env.local`, and never commit secrets.
 
-- Keep domain logic in small typed functions under `src/utils/`, not in components.
-- Biome and `tsconfig.json` enforce style, strictness and import paths. Document any
-  deliberate exception beside it.
-- Changes to optimization math require tests covering constraints, numerical edge
-  cases, units and annualization, and at least one fixture computed independently
-  of the implementation under test.
-- For financial methodology, record assumptions and keep evidence separate from
-  inference.
-
-## Documentation
-
-Update documentation in the same change as the behavior it describes. Keep each
-fact in one canonical place and link to it from anywhere else. Prefer deleting
-superseded text over archiving it. `docs/AGENTS.md` has the full protocol, which
-you must read before adding, moving, or deleting anything under `docs/`.
-
-## Keeping this file useful
-
-Add a rule only when it is non-obvious from the repository, applies broadly, and
-cannot be enforced by tooling instead. State it as what was learned and what would
-change it, not as a ban. Delete rules the repository has made obsolete. A longer file
-is a worse file.
+Keep this file limited to non-inferable, repository-wide constraints. Prefer code or tests
+for enforceable rules and scoped findings for empirical lessons.

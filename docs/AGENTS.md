@@ -1,169 +1,73 @@
 # Documentation and research protocol
 
-Scope: everything under `docs/`, plus `README.md` and any Markdown you add
-elsewhere. The root `AGENTS.md` holds the repository-wide rules.
+Scope: Markdown throughout the repository. Root [`AGENTS.md`](../AGENTS.md) holds the
+repository-wide working agreement.
 
-This project will accumulate a large amount of research. The failure mode is not
-missing documents; it is many overlapping documents that disagree, so no reader —
-human or agent — can tell which one is true. Every rule below exists to prevent
-that.
+## Purpose
 
-## Before you write a document
+Documentation should help a reader make or revisit a decision. It is not a second result
+store. Detailed run output belongs in committed `research/artifacts/*/summary.md` files;
+syntheses explain what the results mean, where they apply, and what remains unknown.
 
-1. Search `docs/` and the codebase for the question and its vocabulary. A near
-   match means update that page, not add a sibling.
-2. Name the decision the document informs, and what is out of scope.
-3. Choose the cheapest durable home, in this order:
-   - **Types or code** for an exact interface.
-   - **A test** for an executable example or a numerical fixture.
-   - **A comment** for a non-obvious reason at the point it applies.
-   - **A document** only when the reader needs context that no code can carry.
+Research is open by default. An earlier null, rejection, or decision does not prohibit a
+new source, estimand, model, comparison, or exploratory measurement. Constraints on a
+published claim should name their evidence, scope, owner, and a review or reopening trigger.
 
-Do not restate in prose what the code already states. Do not create a page to
-record that work happened; that is what Git history is for.
+## Before writing
 
-## Where things go
+1. Search for the question and update its canonical page when one exists.
+2. State the decision informed and what is out of scope.
+3. Put exact contracts in types/tests, local rationale in comments, run results in generated
+   artifacts, and only durable interpretation in prose.
+4. Link generated facts instead of transcribing them. In particular, experiment counts come
+   from `uv run python -m portfolio_edge.reporting.programme_status` and result tables from
+   the run artifact.
 
-| Location | Holds | Rule |
-| --- | --- | --- |
-| `README.md` | How to run the project and its current state | The only Markdown at the repository root besides agent files. Stays short. |
-| `docs/README.md` | Index of durable pages | A map, never a source of facts. Update it in the same change that adds, moves, or removes a page. |
-| `docs/research/` | One synthesis per question | Follows the shape below. |
-| `docs/decisions/` | One choice worth defending later | `NNNN-slug.md` with context, decision, alternatives, consequences. Supersede with a newer record and link both ways. Create the directory with the first real record, not in advance. |
+## Research pages
 
-Do not commit plans, chat transcripts, generated execution prompts, status
-journals, roadmaps, superseded drafts, or an `archive/` tree. If it would be stale
-in a month and nothing links to it, it does not belong here.
+A useful synthesis is as short as its evidence permits and normally contains:
 
-## Shape of a research synthesis
+- a direct current conclusion;
+- verified findings, interpretation or assumptions, and open questions kept distinct;
+- scope: instrument, sample/window, benchmark, units, costs, and material limitations;
+- source links and `as of YYYY-MM-DD` for volatile facts;
+- the consequence for the decision and the next informative test, if any;
+- links to specifications, manifests, code, and run artifacts needed to reproduce details.
 
-Use a descriptive filename; prefix an ISO date only when the page is a snapshot of
-something that will change. Keep it no longer than its evidence requires, and
-include:
+A null is only informative relative to the instrument's resolution. State the minimum
+detectable effect when power is material. A conclusion should not outrun its design:
+`unresolved` is a useful result, and “not detected here” is not “does not exist.”
 
-- the question and the decision it informs;
-- the conclusion near the top, stated directly;
-- findings separated into verified facts, assumptions, and open questions;
-- links to primary sources next to the claims they support, preferring the
-  vendor, the paper, or the code over a summary of it;
-- `as of YYYY-MM-DD` on any fact likely to change;
-- reproducibility details when relevant: data source and retrieval date, units,
-  periods, parameters, software versions, random seed, and limitations;
-- the concrete consequence for this repository.
+Use three evidence levels rather than one universal ritual:
 
-Do not store copied articles, search-result dumps, reasoning transcripts, or
-several near-identical summaries. Keep large raw data outside Git and commit a
-small manifest describing its provenance and how to retrieve it.
+- **Explore:** establish the mechanism, provenance, rough magnitude, relevant costs, and
+  explicit limits. Record hypothesis-bearing analytical choices in the ledger. Exploration
+  can guide the next test but cannot support a shipped or promoted claim.
+- **Evaluate:** freeze the decision-relevant specification, benchmark, primary outcome,
+  costs, inference, and the hostile tests appropriate to the design before inspecting the
+  result.
+- **Promote:** add independent or forward evidence, implementation validation, and a
+  decision-specific review of risks, taxes, liquidity, and holdability. The required
+  evidence depends on the claim; explain applicability instead of mechanically deferring a
+  fixed checklist.
 
-### Say what a result is scoped to
+## Information architecture
 
-Two failure modes have already happened here and both survive proofreading, because
-the numbers are correct and only the framing is wrong.
-
-- **A null result from an underpowered instrument is not evidence of absence.** Check
-  [the resolution table](research/evidence-base.md) before proposing an experiment,
-  and state the minimum detectable effect beside any result that did not find one.
-- **A closure is scoped to the design that produced it.** "Closed", "permanently" and
-  "cannot" need the instrument, the window and the parameters that decide them stated
-  in the same sentence. [Search coverage](research/search-coverage.md) is the standing
-  audit of where that has slipped.
-- **A verdict may not be stronger than the instrument that produced it.** If a bar sits
-  below the design's own minimum detectable effect, the honest status is `unresolved`
-  and the MDE goes in the same sentence
-  ([decision 0009](decisions/0009-blocks-lifted-and-closures-rescoped.md)).
-
-### Write a finding, not a ban
-
-The corpus's second-most-expensive habit, after narrating its own history. A rule stated
-as a prohibition outlives the evidence that justified it, propagates into always-on files
-and shipped copy, and then quietly forecloses work nobody re-examined. It has already
-happened: six data sources were recorded as unavailable while published, two decision
-records exist only to loosen an earlier one, and every marginal-sleeve verdict here was
-taken against a hurdle inflated by a rule adopted for prudence.
-
-So write **what was measured, on what, and what would change it**. Reserve "never" for
-arithmetic — where it is genuinely absolute, the code raises and the prose can point at
-the exception rather than repeat it. Before adding a prohibition, check whether the honest
-version is a scoped finding; before obeying one, check whether its reasoning reaches your
-case.
-
-## Why the always-on instruction files are short
-
-`AGENTS.md`, `CLAUDE.md` and this file are loaded on every request, so they carry only
-what an agent cannot infer from the repository.
-[Gloaguen et al., arXiv:2602.11988](https://arxiv.org/abs/2602.11988) found that context
-files do not generally improve task success while adding over 20% to inference cost, that
-repository overviews in particular do not help — and, the qualification that matters here,
-that *"instructions in the context files are well followed"*. What you put there will be
-obeyed, which is the argument for putting little there and for stating it carefully.
-
-The consequence is a split rather than one shorter file: non-inferable facts and traps go
-in `AGENTS.md`; this protocol lives here and under `.claude/rules/` with `paths:`
-frontmatter, so it loads only when Markdown is touched; multi-step procedures are skills,
-whose bodies load on use; actions with real consequences are permissions, not prose; and
-formatting is a hook. **Rules that tooling can enforce should not be prose.**
-
-## Do not narrate the page's own history
-
-This is the rule the corpus has broken most, and it is expensive: a reader cannot tell a
-live claim from a dead one, so every figure has to be re-derived before it can be quoted.
-
-- **State the current position, not the delta from a previous draft.** "This page
-  previously said X; that is withdrawn" is a changelog. Write what is true and let Git
-  hold what was.
-- **Delete a superseded run; do not keep it beside its replacement.** If a re-run
-  reproduces an earlier experiment to zero difference, the earlier account is not evidence,
-  it is a second copy. Keep its specification, frame and provenance in a few lines and
-  delete the rest.
-- **A correction is a fact about the world, not about the repository.** "Do not benchmark
-  a fund's financing on 58.70 bp; that is special-collateral repo" is durable. "This page
-  used to say 58.70" is not.
-- **No `~~strikethrough~~` in a synthesis.** Remove the claim. A decision record may keep
-  one, because superseding in place is how an ADR works.
-
-The exception is a correction a reader could otherwise repeat — a trap, not a diary entry.
-Those belong in `AGENTS.md`'s trap list or in the code that now refuses the mistake.
-
-## What must never be transcribed
-
-Some facts have a generator, and a transcription of a generated fact is a copy that will
-go stale silently. Link or regenerate instead:
-
-| Fact | Its only source |
+| Location | Purpose |
 | --- | --- |
-| Experiment counts, runs, specifications, statuses | `uv run python -m portfolio_edge.reporting.programme_status` |
-| A numerical fixture | The test that pins it |
-| A shipped figure | `src/content/`, which carries its status and date |
-| An experiment's own result numbers | `research/artifacts/<run_id>/summary.md`, committed since 2026-08-22 |
+| `README.md` | Short project orientation, setup, and current-state pointers |
+| `docs/README.md` | Reading paths and canonical page map; no duplicated findings |
+| `docs/charter.md` | Research objective, reference scenario, and decision principles |
+| `docs/research/` | One current synthesis per question |
+| `docs/decisions/` | Rationale for durable choices; status and supersession explicit |
+| `research/artifacts/*/summary.md` | Generated, detailed run results |
 
-That last row is new and it changes what a synthesis is for. Until the summaries were
-committed, a fresh clone held the ledger — what was run — and no results at all, so every
-measured number reached a reader only by being retyped here. That is why this corpus grew
-to 168,000 words. **A synthesis now carries the argument, the decisive numbers, and the
-scope; the full result table lives in the run's own summary and is linked, not copied.**
+Delete stale and duplicated prose rather than archive it. Git holds history. Do not add
+plans, transcripts, status journals, copied articles, or search dumps. When moving or
+deleting a page, update `docs/README.md` and all inbound links in the same change.
 
-`src/content/citations.test.ts` enforces the link half: every `docPath` and anchor the
-client cites must resolve, and every relative link and anchor in the corpus must resolve.
-`src/content/ledgerSummary.test.ts` enforces the count half against `research/ledger.jsonl`.
+## Before handoff
 
-## Maintaining and retiring
-
-- When implementation settles a question, move the durable outcome into code,
-  types, or tests, and cut the page down to any rationale still worth keeping.
-- Split a page only once it answers genuinely independent questions.
-- Delete research that no longer supports a decision, an implementation, or an
-  open question. Deleting is the normal end state, not a failure.
-- Recheck volatile claims when related code changes, before a decision leans on
-  them, or when a stated review date passes. Never add `last updated` churn when
-  the substance did not change.
-
-## Every change to `docs/`
-
-Leave the surrounding material better than you found it. When you touch a page,
-remove or merge nearby text that is stale, contradicted, or redundant, and say in
-your summary what you removed and why. Before handoff, check that links resolve
-and that commands, dates, names, and claims match the source they describe.
-Delete placeholders and empty scaffolding rather than committing them.
-
-Run `/docs-audit` when documentation feels heavy, before a large piece of work
-lands, or whenever you notice two pages answering the same question.
+Check relative links and anchors, volatile dates, names, commands, and claims against their
+sources. Remove nearby repetition while touching a page. Run the narrow documentation and
+content tests, plus the checks for any code or research workspace changed.

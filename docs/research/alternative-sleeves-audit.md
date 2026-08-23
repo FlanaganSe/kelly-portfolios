@@ -1,980 +1,1005 @@
-# The alternative sleeves: which ones a retail investor can actually own
+# Alternative sleeves: which engines are distinct, and which are an expensive cash
 
-**Question.** Which of the strategy universe's families can a retail investor actually
-own, at what cost, and does the net result clear admission? Two halves. The exotic half
-is [the event-driven and structural universe](#the-universe-this-page-was-given) — a
-dozen families this repository had never examined. The
-**ordinary** half is the four categories a retail investor is most often pointed at and
-which this programme, having audited 69 factor ETFs, 15 managed-futures ETFs, 8
-capital-efficient overlays, catastrophe bonds, merger arbitrage, closed-end funds,
-option-income funds, commodities and gold, had **never once touched**: dividend and
-dividend-growth funds, REITs, buffer / defined-outcome funds, spot bitcoin, and — added
-2026-08-17 — **fixed income**, which had no investable total-return history here at all.
+**Question.** The candidate portfolio holds equity beta, equity factor tilts and one
+managed-futures overlay — two or three distinct return engines. The investor is explicit
+that they want more: *"creative funds, assets that don't correlate, assets that perform
+better in black swan events without excessive long-term drawdowns, crypto, anything."*
+Which further mechanisms are economically distinct, accessible to a US retail investor at
+a cost that leaves something over, and worth a weight?
 
-**Decision it informs.** Whether the "one engine" finding in
-[capital efficiency and breadth](capital-efficiency-and-breadth.md) is a fact about
-markets or about the fund shelf — and, for the four ordinary families, whether the most
-recommended products in retail investing survive the bar everything else here faced.
+**Current answer.** Two genuinely new engines, and one free improvement that is worth more
+than either. **Duration-hedged credit** is the largest change: this repository rejected
+credit on a +0.835 correlation to Treasuries measured with twenty years of duration
+attached, and once the duration is hedged out the correlation is **+0.016** over 1,068
+months, at the same return as long Treasuries for half the volatility and a third of the
+drawdown. **Catastrophe risk** is the only mechanism screened whose payer is not a financial
+market and whose trigger is a hurricane; its access problem has been solved and a pricing
+problem has replaced it. And **a larger cash and short-Treasury allocation is the cheapest
+tail hedge on this panel** — it beats almost everything sold as one. Everything else is
+already owned, an expensive form of cash, or an equity beta with a different name.
 
-**Out of scope.** Private markets (§G) and the exploratory families (§H). Nothing here
-is promoted; [decision 0002](../decisions/0002-no-research-grade-free-price-source.md)
-caps product work at `exploratory`.
+Two answers the investor asked for directly. **Crypto: at most 1–2%, and only as a
+declared speculation, never as a diversifier** — in the worst decile of equity months
+since 2015 bitcoin's mean return was **−7.51%** and it was positive in **1 of 13** of them.
+**Explicit tail hedges: no.** The bleed is measured at roughly 12 percentage points a year
+against the index, and the convexity it buys is not statistically resolvable in any asset
+on this panel.
 
-`as of 2026-08-17`. Every figure is from an SEC filing, an issuer document with its
-retrieval date, or a computation performed here. **Where a source could not be reached
-it says "not found" rather than an estimate.** The computations for §§4–7 are in
-[`studies/retail_shelf.py`](../../research/src/portfolio_edge/studies/retail_shelf.py)
-and [`_retail_shelf_tables.py`](../../research/src/portfolio_edge/studies/_retail_shelf_tables.py);
-the fund facts, with a source URL and a read date on every one, are in
-[`data-manifests/retail_shelf/product_facts.json`](../../research/data-manifests/retail_shelf/product_facts.json).
+**Decision it informs.** What to add to the construction, at what weight, in which
+account, and what evidence would move each weight.
 
----
+**Out of scope.** The equity share ([setting the equity share](setting-the-equity-share.md)),
+the trend overlay's own sizing ([trend](trend-marginal-value.md),
+[live funds](live-managed-futures.md)), and the current construction as a whole
+([recommendation](portfolio-recommendation.md)).
 
-## The universe this page was given
-
-The event-driven and structural families the working plan named, transcribed here so the
-denominator of conclusion 12 lives in the repository rather than in an untracked working
-file:
-
-> merger arbitrage · convertible arbitrage · equity market neutral · closed-end fund
-> discounts · spin-offs · index reconstitution · reinsurance and catastrophe bonds ·
-> securities-lending revenue · volatility selling · put writing · covered calls ·
-> defensive option overlays · dispersion, if realistically accessible · tax-loss
-> harvesting and direct indexing
-
-Its instruction for this class was to model payoff asymmetry and expected shortfall
-explicitly wherever a strategy wins often and loses rarely and largely — which is the
-test §2 and §6 below actually apply. Private markets and the exploratory families were
-declared out of scope and are not transcribed.
-
-
-## Conclusion
-
-**Of twelve families now audited, one passes and it is constrained by its vehicle. None
-of the five ordinary ones does — and they fail by five different mechanisms, which is
-the part worth reading.**
-
-| Family | Best retail vehicle | All-in cost | Sharpe | ρ to equity | Instrument | MDE₈₀ | Verdict |
-| --- | --- | ---: | ---: | ---: | --- | ---: | --- |
-| **Catastrophe bonds** | Brookmont ILS ETF | 1.58% cap / **2.00% actual** | not measurable | ~0.10 | (4) | — | **passes — IRA only** |
-| Merger arbitrage | MERFX I / ARB | 1.26% / 0.76% | not measurable | low, rises in crashes | (4) | — | **borderline** |
-| Volatility risk premium | JEPI / XYLD / QYLD | 0.35–0.60% | 0.47–0.72 | **0.86–0.95** | **(5)** | — | **rejected**, alpha −0.09 to −0.88 |
-| Closed-end fund discounts | FCEF | **3.69%** | not measurable | high | **(5)** | — | **rejected**, under-evidenced |
-| Securities lending | embedded in any fund | — | — | 1.0 | — | — | **not a sleeve** |
-| Direct indexing | Frec 0.09% / $20k | 0.09–0.40% | — | **≈1.0 by design** | — | — | **category error** |
-| **Dividend / dividend growth** | **SCHD** | **0.06%** + **0.51 pp/yr tax** | **0.643** | **+0.820** | **(5)** | **10.93** | **dominated**, not rejected — §4 |
-| *same family, worst case* | NOBL | 0.35% | 0.440 | +0.875 | (5) | 8.19 | **rejected** — a resolved −4.94 pp/yr against the pedestal |
-| *same family, the interesting one* | DIVO | 0.56% + **1.05 pp/yr tax** | 0.725 | +0.907 | (5) | 7.09 | **unresolved**, and its tax cost exceeds two-thirds of its measured edge |
-| **REITs** | **VNQ** | **0.13%** + **0.61 pp/yr tax** | **0.157** | **+0.839** | **(5)** | **9.82** | **dominated** — and the payoff shape is put-writing's — §5 |
-| **Buffer / defined outcome** | **BUFR** | **0.95%** | 0.722 | **+0.966** | **(5)** | 3.73 | **rejected on the option arithmetic** — §6 |
-| *same family, priceable* | PJUL / POCT | 0.79% | 0.747 / 0.806 | +0.940 / +0.936 | (5) | 6.64 / 6.01 | **rejected**: −5.9 to −7.5 pp/yr structural cost |
-| **Spot bitcoin** | **IBIT / FBTC** | **0.25%** | **0.995** | **+0.342** | **(4)** | **15.58** | **`unresolved`** — it clears the bar and the bar decides nothing — §7 |
-| **Nominal Treasuries** | **GOVT / VGIT** | **0.03–0.05%** | −0.45 / −0.36 | **+0.277 / +0.274** | **(4)** | 20.56 | **`unresolved`** — the only leg that clears any bar, and only financed and below its floor — §8 |
-| **TIPS** | **SCHP** | **0.03%**, net **2.99 bp** | −0.025 | **+0.623** | **(5)** | **14.89** | **`rejected`** — ρ +0.85 to the aggregate leg it would sit beside, and **more** equity-correlated and **less** stable than nominal — §8 |
-| **Standalone credit** | LQD / VCIT / HYG | 0.14 / 0.03 / **0.49%** | −0.13 / −0.05 / +0.20 | **+0.702 / +0.693 / +0.844** | **(5)** | 12.23 / 11.87 / **6.74** | **`rejected`** — ρ +0.57 to equity on 275 months and resolved negative gaps on all three funds — §8 |
-
-**Instrument (4)** is the admission condition `S_d > L rho sigma_p`. **Instrument (5)**
-is the matched-volatility control, where the variance terms cancel and the higher Sharpe
-ratio wins outright. Which one applies is decided by the correlation and not by hand:
-[`overlay_growth.py`](../../research/src/portfolio_edge/studies/overlay_growth.py)'s
-first misuse warning puts the boundary at `|rho| = 0.5`, and `choose_instrument` in
-`retail_shelf.py` enforces it. **Dividend funds, REITs and buffer funds all sit between
-+0.82 and +0.97 and are therefore scored by (5) and by (5) only** — equation (4) is not
-reported for them at all, because at that correlation it is a small difference of large
-numbers and it is exactly what made put-writing read as a pass while its alpha was
-−0.09%/yr. **Bitcoin sits at +0.34 and is scored by (4)**, with (5) beside it.
+`as of 2026-08-22` for product facts; each carries its own source and read date. The
+measured tables regenerate from
+[`studies/_stress_dependence_tables.py`](../../research/src/portfolio_edge/studies/_stress_dependence_tables.py)
+and the arithmetic is pinned in
+`research/tests/unit/test_studies_stress_dependence.py`. **Everything measured here is
+`exploratory`**: no specification was frozen before the numbers were seen, the stress
+windows were chosen by eye from [the standing episode list](evidence-base.md), and four
+of the legs are AQR vendor series their author reconstructs on every release. The stress
+windows and the tail quantile are hypothesis-bearing analytical choices and **owe a
+ledger entry**; the module and its tests are committed so the choice is inspectable.
 
 ---
 
-## 1. Catastrophe bonds — the one that passes, and the access wall
+## 1. What the data says before any product is named
 
-**Only one genuinely self-directed vehicle exists.** Stone Ridge's website states SRRIX
-has "no individual investor minimums or accreditation requirements". **The prospectuses
-say otherwise**: SRRIX requires **$15,000,000** and SHRIX Class I **$25,000,000**, both
-available only through a registered investment adviser that has "completed an
-educational program provided by the Adviser". A $400k self-directed investor cannot buy
-either.
+### 1.1 The panel
 
-What is left is the **Brookmont Catastrophic Bond ETF**: inception **2025-04-01**, net
-assets **$85.8m at 2026-08-13**, holding 200+ 144A cat bonds directly. Gross expense
-**2.65%**, contractual cap **1.58% through 2027-04-30 with three-year recoupment**, and
-an **audited 2.00% actual** in its first period.
+Eight candidate engines against US equity, each on its own longest window, every leg an
+**excess return over cash** so the rows are comparable. The base is Ken French `Mkt-RF`
+and cash is the same file's `RF`; over 1926-07…2026-06 that base returned **+6.86%/yr**
+excess at 18.38% volatility, Sharpe 0.45, with a maximum drawdown of **−84.6%** relative
+to cash.
 
-**The premium has halved and it is measured, not asserted.** Artemis deal-directory
-primary-market averages:
-
-| | 2023 | 2024 | 2025 | **2026 YTD** |
-| --- | ---: | ---: | ---: | ---: |
-| Multiple (spread ÷ expected loss) | **4.54×** | 3.71× | 3.00× | **2.40×** |
-| Spread above expected loss | 6.94 pp | 6.44 | 4.73 | **3.98 pp** |
-
-Quarterly the swing is starker — Q3 2023 **6.87×** to Q3 2026 **2.27×**. **The 2026
-multiple sits below the 2014–2016 soft-market range.** Net of the ETF's fee the forward
-excess over cash is **+2.0% to +2.4%/yr**, against roughly +5.4% on 2023 vintages.
-
-**Two findings matter more than the premium, and both are about behaviour and tax.**
-
-**The record everyone quotes is the hard market, and nobody earned it.** SRRIX's
-time-weighted ten-year figure is **7.92%/yr**. Its net assets ran $5.98bn (FY2018) →
-$1.01bn (FY2022) → $1.52bn (2026-04-30), so the money arrived before the losses and left
-before the recovery. Approximating annual profit as beginning-of-year assets times the
-year's return, the **aggregate dollar earned roughly 1.8%/yr against T-bills at
-2.1%/yr** — about cash, for a decade, net of a 2.35% fee. Excluding the post-Ian hard
-market, SHRIX's FY2016–FY2022 Sharpe was **0.18** and SRRIX's was **−0.45**.
-
-**Tax decides the account.** Distributions are essentially 100% ordinary income (SRRIX
-FY2025: $236.2m, no long-term gain). SHRIX's own SEC-standardised table, ten years to
-2025-12-31: **6.44% before tax, 3.27% after taxes on distributions** — roughly half the
-edge, and the pre-tax excess over cash of +4.26%/yr falls to about **+1.98%/yr** after
-tax. **This sleeve goes in a shelter or it does not go anywhere.**
-
-**Status: `exploratory`, monitor rather than allocate.** It clears the admission bar at a
-correlation near 0.10, and its only accessible vehicle is sixteen months old, holds
-$86m, charges a fee consuming 40–50% of the gross premium, and carries a waiver expiring
-2027-04-30 with recoupment. The premium halved while the vehicle was being launched.
-
----
-
-## 2. The volatility risk premium — rejected, and the usual claim is backfilled
-
-**The folk claim that put-writing beat the S&P with two-thirds the volatility "since
-1986" rests on a hypothetical backtest for its first two decades.** From Cboe's own
-methodology documents: PUT has a base date of 1988-06-01 and a **launch date of
-2007-06-20**; BXM's base is 1986-06-30 and its launch **2002-04**. Cboe's disclaimer:
-values before launch "are calculated using a theoretical approach involving back-testing
-historical data."
-
-Regressions on the **live-only** history, monthly against Ken French `Mkt-RF`:
-
-| Index | Live window | Sharpe | **Market Sharpe** | Beta | **Alpha %/yr** | *t* | ρ |
+| Engine | Window | Months | Geo/yr | Vol/yr | Sharpe | Max DD vs cash | ρ to equity |
 | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| **PUT** | 2007-02…2026-06 | 0.548 | **0.646** | 0.584 | **−0.09** | −0.07 | **0.863** |
-| **BXM** | 2002-05…2026-06 | 0.470 | **0.633** | 0.610 | **−0.88** | −0.82 | **0.874** |
-| BXMD | 2015-09…2026-06 | 0.722 | 0.826 | 0.727 | −0.72 | −0.59 | 0.946 |
+| Long Treasury | 1926-07…2025-12 | 1194 | +1.91% | 8.42% | +0.27 | −59.1% | +0.076 |
+| Corporate, unhedged | 1926-07…2025-12 | 1194 | +2.47% | 7.63% | +0.36 | −52.1% | +0.214 |
+| **Credit, duration-hedged** | 1926-07…2014-12 | 1062 | +2.13% | **4.12%** | **+0.53** | **−20.7%** | +0.234 |
+| Commodities, long-only | 1926-07…2025-05 | 1187 | +3.73% | 15.89% | +0.31 | −82.0% | +0.297 |
+| Trend (AQR TSMOM) | 1985-01…2026-05 | 497 | +12.10% | 12.49% | +0.98 | −27.9% | −0.079 |
+| Gold | 1975-02…2026-06 | 617 | +1.75% | 16.24% | +0.18 | **−91.2%** | −0.019 |
+| Betting-against-beta | 1930-12…2026-05 | 1146 | +7.37% | 11.15% | +0.70 | −54.6% | −0.139 |
+| Bitcoin | 2015-02…2026-06 | 137 | +60.03% | 71.48% | +1.00 | −75.9% | +0.342 |
 
-**Its standalone Sharpe is below the market's over the same window**, so substituting it
-for equity lowers portfolio Sharpe. And the payoff shape is the mechanism, measured
-directly: **up-market beta 0.45, down-market beta 0.86.** You get 45% of the upside and
-86% of the downside.
+Sources and their traps: long Treasury and unhedged corporate are Goyal–Welch `ltr` and
+`corpr` less `Rfree`; **duration-hedged credit is AQR `CORP_XS`**, defined as the corporate
+total return less a *duration-matched* government return and therefore the only true
+credit-spread series held — it may never be summed with the Treasury leg and it ends in
+2014-12; commodities are AQR's equal-weight long-run excess series; trend is AQR `TSMOM`,
+**a vendor series that states no fee, transaction cost, slippage or financing basis
+anywhere**; gold is the World Bank Pink Sheet less cash and an assumed 25 bp carry, from
+1975-01 because private US bullion ownership was illegal before 1974-12-31; bitcoin is
+FRED `CBBTCUSD`, one venue's daily print rather than the CME CF rate an ETP prices
+against. Provenance and licence for each is in [the evidence base](evidence-base.md).
 
-**The genuine premium is real, small, and bundled.** Israelov and Nielsen (*FAJ* 71(6),
-2015) decompose an ATM overwrite into 3.5% passive equity, **1.9% short volatility at a
-Sharpe near 1.0**, and 0.5% of uncompensated equity timing they call "material,
-uncompensated, and unnecessary". **The 1.9% is on full notional, and every retail
-product charges its fee on full notional** — a 0.60% fee takes a third of it. Global X's
-own filings show the overlay P&L was **−$302m for XYLD and −$1.54bn for QYLD** in FY2025.
+Two rows deserve a second look. **Duration-hedged credit has the best Sharpe and by far the
+shallowest drawdown of any long-only engine here** — 0.53 at 4.12% volatility, against
+equity's 0.42 over identical months. And **trend's headline Sharpe of 0.98 is gross of
+everything**; this repository's own live-fund panel measures what the funds actually paid
+([live managed futures](live-managed-futures.md)), and the last 78 months of the same
+vendor series returned +1.95%/yr, not +12%.
 
-**This family is where equation (4) breaks**, and the module now says so: applied
-mechanically, PUT's 0.548 Sharpe clears a 0.20 bar and reads as a pass. At ρ = 0.86 the
-marginal contribution is essentially the alpha, which is **−0.09%/yr with *t* = −0.07**.
-See [`overlay_growth.py`](../../research/src/portfolio_edge/studies/overlay_growth.py).
+### 1.2 There are two kinds of shock, and no single asset covers both
 
----
+Cumulative excess return inside each of the standing named episodes. `—` means the panel
+does not reach the window; `*` marks partial coverage, so the number beside it is not the
+episode.
 
-## 3. Merger arbitrage, closed-end funds, securities lending, direct indexing
+| Episode | Equity | Treasury | Corp. unhedged | Credit hedged | Commodity | Trend | Gold | BAB | Bitcoin |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1929-32 crash | −84.6% | +7.8% | +2.6% | +5.7% | −72.3% | — | — | −30.6%* | — |
+| 1937-38 | −49.6% | −0.0% | +2.3% | +2.4% | −24.3% | — | — | −6.7% | — |
+| 1973-74 | −53.1% | −17.3% | −21.1% | −6.9% | **+143.9%** | — | — | −13.5% | — |
+| Late-1970s inflation | +5.0% | **−40.5%** | −41.4% | −3.2% | +6.9% | — | **+90.0%** | +74.4% | — |
+| 1987 crash | −31.0% | +1.3% | +0.5% | −0.4% | +4.8% | −2.7% | +0.0% | −8.8% | — |
+| 1998 LTCM | −13.0% | +7.0% | +3.1% | −1.8% | −7.3% | +11.6% | −2.4% | −4.9% | — |
+| 2000-02 dot-com | −50.0% | +23.3% | +26.4% | +10.8% | +5.5% | +64.8% | +0.8% | +179.6% | — |
+| 2008-09 GFC | −51.4% | +13.4% | −5.7% | **−13.1%** | −38.7% | +29.6% | +21.8% | **−31.6%** | — |
+| 2020 Q1 covid | −20.5% | +19.2% | +4.0% | — | −24.4% | +12.3% | +7.2% | −9.4% | −10.5% |
+| 2022 rate shock | −25.3% | −13.6% | −19.2% | — | +10.5% | **+34.2%** | −6.8% | −2.5% | **−58.3%** |
 
-**Merger arbitrage is borderline and the passive vehicle is not.** MERFX Class I earned
-**+2.06%/yr over cash across ten years** at roughly 3% volatility, but only
-**+0.30%/yr over the last five**. **MNA, the passive ETF, earned nothing over T-bills in
-a decade** — 2.17%/yr against a 2.18% bill — while turning over **317%** a year, and lost
-**8.62% in Q1 2020**, the quarter equities fell about 20%. The hedged vehicles earn less
-and hedge harder; the cheap one carries the crisis beta.
+Read down the columns and the shocks separate cleanly:
 
-**Closed-end fund discounts fail on fees.** The one vehicle that could be priced, FCEF,
-charges **3.69% all in** — 0.85% management plus **2.84% of acquired fund fees** — and
-beat its own CEF benchmark by **+0.29 pp/yr** since 2016 while trailing the Russell 3000
-by 7.23 pp/yr. A 3.69% fee needs about 4%/yr of gross discount alpha to break even
-against cash. Recorded as **under-evidenced**: PCEF, CEFS and the academic magnitudes
-could not be reached this session.
+- **Growth and deflation shocks** — 1929-32, 1987, 1998, 2000-02, 2008-09, 2020 Q1.
+  Treasuries pay in every one. Commodities lose in four of six.
+- **Inflation and rate shocks** — 1973-74, the late 1970s, 2022. Treasuries lose in all
+  three, by up to 40%. Commodities and gold pay.
+- **Trend is the only engine positive in both kinds**, and it has no data before 1985, so
+  it has never been observed through an inflation shock larger than 2022.
+- **Credit's hedged spread is the mildest loser in the growth shocks and nearly immune to
+  the inflation ones** — −3.2% through five years of the late 1970s against the Treasury
+  leg's −40.5%. That is the whole point of hedging the duration out.
+- **BAB is a trap.** Its full-sample correlation to equity is −0.139, which reads as a
+  diversifier. It lost 30.6% through 1929-32 and **31.6% through the GFC**, because its
+  mechanism is selling leverage to people who cannot borrow, and a crisis is exactly when
+  leverage is withdrawn. This matters here because the investor already holds equity factor
+  tilts that lean the same way.
 
-**Securities lending is a fund-selection detail, and a measurable one.** From N-CEN
-filings, net revenue accruing to shareholders as basis points of net assets: **VOO 0.07,
-VTI 1.02, VBR 2.53, VB 3.10, VXF 10.43**, and iShares' ICLN 8.81. It is a rounding error
-on a broad-market holding and **worth ~3–10 bp on a small-cap or completion tilt** —
-which is one fund-selection decision, not a sleeve.
+### 1.3 In the lower tail, almost every candidate is a worse cash
 
-**Direct indexing is a category error in this ledger.** It tracks the index by
-construction, so ρ ≈ 1.0 and the only independent risk it adds is tracking error. Its
-"alpha" is a reduction in the tax drag on equity already held — **a cost line, not a
-return stream**, and it belongs beside the expense ratio. The independent decay estimates
-were **not sourced**; Frec's "up to 40% of the initial investment harvested" is the
-issuer's own hypothetical simulation and its disclaimer says so.
+The black-swan question stated as an estimand. Split months by the base's own return, take
+the worst decile, and ask what the engine did. `offset at 10%` is what swapping a tenth of
+the equity base into the engine adds back in the average worst-decile month; `same for
+cash` is the identical swap into T-bills, on the identical months.
 
----
-
-## 4. Dividend and dividend growth — a value-and-quality tilt with a small tax bill
-
-**The measurement.** Form N-PORT Item B.5, each fund's own filed monthly total return,
-net of its own fees, against **VTI's Item B.5 return** rather than a gross factor —
-comparing a net fund against a gross academic series would flatter every sleeve by the
-control's fee. Roughly 80 months, 2019-08…2026-05, which is every month public N-PORT
-reporting exists.
-
-| Fund | fee | excess %/yr | vol | Sharpe | ρ to VTI | **unlevered growth gap** | **matched gap (5)** | 95% CI | **MDE₈₀** |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: |
-| **SCHD** | 0.06% | 10.71 | 16.67 | **0.643** | +0.820 | **−1.39** | **−1.02** | [−9.64, +7.59] | **10.93** |
-| VYM | 0.04% | 9.49 | 15.55 | 0.610 | +0.879 | −2.04 | −1.14 | [−8.28, +5.99] | 9.05 |
-| DGRO | 0.08% | 9.89 | 15.37 | 0.643 | +0.932 | −1.57 | −0.58 | [−5.31, +4.15] | 6.00 |
-| VIG | 0.04% | 9.36 | 14.59 | 0.642 | +0.943 | −2.03 | −0.61 | [−4.34, +3.12] | 4.73 |
-| **NOBL** | 0.35% | 7.35 | 16.71 | **0.440** | +0.875 | **−5.11** | −4.51 | [−10.96, +1.95] | 8.19 |
-| **DIVO** | 0.56% | 10.02 | 13.82 | **0.725** | +0.907 | −0.74 | **+1.52** | [−4.07, +7.11] | 7.09 |
-| *VTI, the base* | 0.03% | 11.62 | 17.00 | **0.684** | 1.000 | — | — | — | — |
-
-**Not one gap is resolved.** Every point estimate sits inside its own 80%-power floor,
-and for SCHD the floor is **10.93 pp/yr against a −1.02 pp/yr estimate** — a factor of
-eleven. **This window cannot tell SCHD apart from VTI and it never could have.** Every
-sentence below is about mechanism, not about a measured difference.
-
-**SCHD's record is its loadings.** FF5 plus momentum, HAC standard errors, 81 months.
-Every alpha is a distance from **VTI's own alpha in the identical regression**, because
-a cheap total-market fund does not score zero against a gross six-factor model — it pays
-a fee and the model misfits. That pedestal is **−0.43 pp/yr** here and **−0.55 pp/yr**
-on the window [the evidence base](evidence-base.md) records.
-
-| Fund | alpha %/yr | **vs VTI** | *t* | MDE₈₀ | Mkt | SMB | HML | RMW | CMA | Mom | R² |
+| Engine | Months | n low | Equity mean | Engine mean | Hit rate | Worst | Offset at 10% | **Same for cash** | ρ low | ρ high | ρ full |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **SCHD** | −0.80 | **−0.36** | −0.32 | 6.15 | +0.769 | +0.203 | **+0.246** | **+0.301** | **+0.312** | −0.011 | **0.874** |
-| VYM | −1.64 | −1.20 | −1.36 | 2.99 | +0.806 | +0.031 | +0.302 | +0.136 | +0.258 | +0.007 | 0.949 |
-| VIG | −2.20 | −1.77 | −1.63 | 3.36 | +0.825 | −0.029 | +0.053 | +0.269 | +0.139 | +0.057 | 0.928 |
-| **NOBL** | **−5.38** | **−4.94** | **−2.62** | **5.10** | +0.810 | +0.154 | +0.128 | **+0.424** | +0.267 | −0.025 | 0.876 |
-| DIVO | −0.24 | +0.19 | −0.16 | 3.72 | +0.746 | −0.032 | +0.094 | +0.173 | +0.242 | +0.050 | 0.898 |
-| *VTI* | −0.43 | 0.00 | −2.29 | 0.47 | +0.996 | −0.004 | +0.022 | +0.030 | +0.001 | +0.000 | 0.999 |
+| Long Treasury | 1194 | 119 | −9.23% | +0.16% | 53% | −11.2% | +0.94% | **+0.92%** | +0.023 | +0.098 | +0.076 |
+| Corporate, unhedged | 1194 | 119 | −9.23% | −0.44% | 48% | −9.8% | +0.88% | **+0.92%** | +0.019 | +0.163 | +0.214 |
+| Credit, duration-hedged | 1062 | 106 | −9.38% | −0.24% | 54% | −9.5% | +0.91% | **+0.94%** | +0.027 | +0.196 | +0.234 |
+| Commodities | 1187 | 118 | −9.26% | −1.84% | 36% | −20.9% | +0.74% | **+0.93%** | +0.326 | +0.343 | +0.297 |
+| **Trend** | 497 | 49 | −8.24% | **+2.59%** | **69%** | −10.5% | **+1.08%** | +0.82% | +0.024 | −0.190 | −0.079 |
+| Gold | 617 | 61 | −8.03% | +1.21% | 56% | −17.9% | +0.92% | +0.80% | +0.190 | −0.150 | −0.019 |
+| BAB | 1146 | 114 | −9.00% | +0.62% | 56% | −12.7% | +0.96% | +0.90% | **+0.324** | −0.264 | −0.139 |
+| **Bitcoin** | 137 | 13 | −7.96% | **−7.51%** | **8%** | −37.7% | **+0.05%** | +0.80% | +0.251 | +0.263 | +0.342 |
 
-**SCHD is 0.77 of the market plus a value, profitability and conservative-investment
-tilt, and after that there is −0.36 pp/yr left over that the window cannot sign.** The
-three tilts are the ones [decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md)
-already says public data cannot sign a premium for, and the ones the
-[product audit](factor-products.md) already prices more cheaply. **NOBL is the one
-resolved result in the family and it is negative**: −4.94 pp/yr against the pedestal
-with a floor of 5.10, on the largest RMW loading in the table and the highest fee.
+Four readings, and the third is the one that should change a portfolio:
 
-**The tax penalty is real, it is a fifth of what the framing suggests, and it is
-qualified rather than ordinary.** From each fund's own SEC-standardised table — highest
-federal individual rates, no state tax — five-year `before tax` minus
-`after taxes on distributions`, with the control taken at the **same period end** so
-nothing is compared across the 2024/2025 line:
+1. **Trend is the only engine that materially beats cash in the lower tail** — +1.08%
+   against +0.82%, 26 bp a month of genuine protection, delivered in 69% of those months
+   rather than by one enormous outlier.
+2. **Long Treasuries buy two basis points a month over T-bills.** +0.94% against +0.92%.
+   The entire crisis-hedging case for twenty-year duration, on a century of data,
+   is 2 bp per worst-decile month — bought with 8.42% of annual volatility, a −59.1%
+   drawdown, and a −40.5% loss through the late 1970s that cash did not have.
+3. **Gold buys twelve basis points a month over T-bills**, at 16.24% volatility and a
+   −91.2% peak-to-trough. This is the same conclusion as
+   [marginal sleeve value](marginal-sleeve-value.md) reached by a different route, and it
+   is why gold keeps failing: it is not that gold does not diversify, it is that cash
+   diversifies nearly as well for nothing.
+4. **Commodities and bitcoin are worse than cash in the lower tail**, and bitcoin is worse
+   by 75 bp a month. Two assets frequently sold as diversifiers are, on this measurement,
+   negative-value tail hedges.
 
-| Fund | period end | drag | VTI, same period | **incremental** | qualified share of distributions |
-| --- | --- | ---: | ---: | ---: | --- |
-| **SCHD** | 2024-12-31 | 0.93 | 0.42 | **+0.51** | **100%**, DRD 98.60% |
-| VYM | 2025-12-31 | 0.78 | 0.39 | +0.39 | 97.9% |
-| DGRO | 2024-12-31 | 0.63 | 0.42 | +0.21 | effectively 100% |
-| VIG | 2025-12-31 | 0.49 | 0.39 | +0.10 | 100% |
-| NOBL | 2024-12-31 | 0.55 | 0.42 | +0.13 | **not found** |
-| **DIVO** | 2025-12-31 | **1.44** | 0.39 | **+1.05** | **41.04%** |
+Conditioning on the base's own magnitude truncates its variance, so ρ low and ρ high are
+biased toward zero and are comparable with each other, never with ρ full.
 
-**Over ten years, period-matched, SCHD trailed the broad market by 1.47 pp/yr before
-tax and 1.85 pp/yr after taxes on distributions** — 11.03% against VTI's 12.50%, and
-10.17% against 12.02%, both tables ending 2024-12-31. **Those are annualised returns and
-they carry no second moment**, so they cannot be turned into a ten-year Sharpe
-comparison; no monthly history exists before public N-PORT begins in 2019, and the
-difference in the funds' volatilities is exactly what would decide it.
+### 1.4 Nothing on this panel is convex, and the only measured convexity has the wrong sign
 
-**The brief this audit was written against expected "forced income realisation in a
-taxable account" to be a cost with no matching return, and it is — but the number is
-+0.51 pp/yr for SCHD, not a percent or two, and the reason is that SCHD's distribution
-is 100% qualified dividend income.** Its own annual report shows $2,469,946,295 of
-ordinary income for the year to 2025-08-31, all of it designated qualified, on
-$72,622m of net assets — a **3.40% distribution yield taxed at the qualified rate**.
-At the stated investor's own rates (24%/15% federal plus California's 9.3%) that is a
-shelter priority of **82.6 bp/yr against VTI's 25.0**, +57.6 bp incremental, which would
-place it fourth in [the recommendation's queue](portfolio-recommendation.md) — above
-developed ex-US equity and above RSST. **And that queue's own warning is the operative
-one: priority ranks what a sheltered dollar saves and says nothing about whether the
-asset should be held.** SCHD's marginal contribution is unmeasurable, so it is a sleeve
-that would consume shelter it has not earned, which is exactly the ordering error the
-queue was written to catch.
+Fit `engine = α + β·equity + κ·min(equity, 0)` with Newey-West standard errors. **κ is the
+convexity**: negative κ means the engine's slope against equity falls when equity falls,
+which is what "performs better in a crash than a linear exposure would" means as an
+estimand. α is the per-month price of the shape.
 
-**DIVO is the one that nearly survives, and it is the covered-call family in a dividend
-wrapper.** Its matched-volatility gap is **+1.52 pp/yr**, the only positive one here —
-and its incremental tax drag is **+1.05 pp/yr**, because only **41.04%** of its
-distributions are qualified. Amplify's own figures say the same thing from the other
-side: a **1.51% SEC yield against a 4.82% distribution rate**, with the issuer's footnote
-stating that the SEC yield "reflects the income earned from dividends – excluding option
-income". The gap is option premium and it is not qualified. **After tax, +1.52 becomes
-about +0.47, against an MDE₈₀ of 7.09.** Verdict `unresolved`, and the reason it is not
-`rejected` alongside the other option-income funds in §2 is that its up/down betas are
-**0.745 and 0.669** — mild genuine protection, the opposite ordering to PUT's 0.45/0.86.
+| Engine | Months | α/month | *t* | Up beta | Down beta | κ | *t* |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Long Treasury | 1194 | +0.069% | +0.71 | +0.058 | +0.009 | −0.049 | −1.24 |
+| Corporate, unhedged | 1194 | +0.060% | +0.60 | +0.115 | +0.060 | −0.056 | −1.37 |
+| Credit, duration-hedged | 1062 | +0.084% | +1.54 | +0.068 | +0.034 | −0.034 | −1.36 |
+| Commodities | 1187 | +0.365% | +1.69 | +0.223 | +0.291 | +0.068 | +0.62 |
+| Trend | 497 | **+0.914%** | **+3.09** | −0.018 | −0.105 | −0.088 | −0.49 |
+| Gold | 617 | +0.299% | +0.95 | −0.030 | −0.011 | +0.020 | +0.16 |
+| **BAB** | 1146 | +1.427% | +6.83 | **−0.264** | **+0.118** | **+0.381** | **+3.49** |
+| Bitcoin | 137 | +4.460% | +1.44 | **+1.526** | **+1.616** | +0.091 | +0.08 |
 
-**Nothing in this family protects on the downside.** Up-market and down-market beta from
-one regression, so the difference carries a standard error: SCHD **0.786 up, 0.807
-down**; VYM 0.753/0.850; NOBL 0.842/0.861. Dividend funds are lower-beta in both
-directions and no more defensive in one than the other.
+- **Not one engine has statistically resolvable convexity.** The largest |*t*| on κ among
+  the seven non-BAB rows is 1.37. What looks like crisis protection in §1.3 is a low beta
+  plus a positive mean, not a payoff that accelerates.
+- **Trend's crisis case is an alpha, not a shape.** α = +0.91%/month at *t* = 3.09 on a
+  vendor series with no costs in it; κ is indistinguishable from zero. That is consistent
+  with [the evidence base](evidence-base.md), where the crisis-conditional trend benefit
+  has ≈4.4 effective observations and cannot be resolved at all.
+- **BAB is measurably concave at *t* = 3.49**: β = −0.264 when equity rises and **+0.118
+  when it falls**. This is the sharpest available demonstration of the charter's rule that
+  low average correlation is only an admission signal.
+- **Bitcoin is a levered equity beta.** 1.53 up, 1.62 down, no convexity, and an α of
+  +4.46%/month whose *t* is 1.44 — economically enormous and statistically nothing.
 
-**Verdict: `dominated`, not `rejected`.** SCHD costs six basis points, delivers exactly
-the exposures it says it does, and over its measurable history trailed VTI by an amount
-this window cannot distinguish from zero. What is not in doubt is that its record is
-explained by HML, RMW and CMA at an R² of 0.874, and that the same exposures are
-available more cheaply — so it is a packaging decision rather than a return source. NOBL
-is `rejected`. DIVO is `unresolved`.
+### 1.5 What a sleeve is worth, at the weight anyone would actually hold
 
----
+Realised marginal growth of a pro-rata-funded sleeve (sell the equity base), which is
+[Experiment 010](marginal-sleeve-value.md)'s rule and the least favourable one for a
+diversifier. No trading cost is charged; the gold leg carries its 25 bp.
 
-## 5. REITs — partly a distinct asset class, and the distinct part has put-writing's shape
+| Engine | Months | 1% | 2% | 5% | 10% | Base max DD | Blend max DD at 10% |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| Trend | 497 | +0.060 | +0.120 | +0.296 | **+0.580** | −50.3% | −44.7% |
+| Gold | 617 | −0.038 | −0.076 | −0.195 | −0.404 | −50.3% | −45.1% |
+| Credit, duration-hedged | 1062 | −0.026 | −0.051 | −0.131 | −0.272 | −83.7% | −79.7% |
+| Commodities | 1187 | −0.009 | −0.018 | −0.048 | −0.107 | −83.7% | −83.5% |
+| Bitcoin | 137 | +0.647 | +1.292 | +3.215 | **+6.383** | −24.8% | **−29.2%** |
 
-**The prior this was written to test was that REITs are not a distinct asset class once
-you control for small-cap value and duration. Half of that is falsified.**
-
-| Fund | fee | excess %/yr | vol | Sharpe | ρ to VTI | **unlevered gap** | **matched gap (5)** | 95% CI | MDE₈₀ |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: |
-| **VNQ** | 0.13% | 3.05 | 19.46 | **0.157** | +0.839 | **−9.69** | **−8.90** | **[−16.64, −1.16]** | 9.82 |
-| SCHH | 0.07% | 1.20 | 19.90 | 0.060 | +0.828 | −12.23 | −11.03 | **[−19.91, −2.14]** | 11.27 |
-| USRT | 0.08% | 4.25 | 19.80 | 0.215 | +0.838 | −8.53 | −7.91 | [−16.01, +0.19] | 10.27 |
-
-**Two of the three intervals exclude zero** — the only such intervals anywhere in this
-audit — and both point estimates still sit just below their own 80%-power floor, so
-these are detections at less than 80% power and must be described as that. **A REIT fund
-carried a fifth of the market's Sharpe ratio at higher volatility over the only window
-that can be measured.**
-
-**The spanning test, run rather than asserted.** The duration leg is **TLT's own Item
-B.5 return** — an investable, net-of-fee long-Treasury total return on exactly the same
-months, which is the first time this repository has used anything but a modelled `GS10`
-proxy for duration.
-
-| Fund | model | alpha %/yr | *t* | MDE₈₀ | residual vol %/yr | R² | duration loading |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| VNQ | CAPM | −9.21 | −2.11 | 10.84 | 10.75 | 0.701 | — |
-| VNQ | FF3 | −9.37 | −2.65 | 8.81 | 10.07 | 0.737 | — |
-| **VNQ** | **FF3 + duration** | **−5.55** | −1.64 | 8.41 | **8.60** | **0.809** | **+0.406** |
-| SCHH | FF3 + duration | −7.60 | −1.71 | 11.08 | 9.52 | 0.772 | +0.391 |
-| USRT | FF3 + duration | −5.01 | −1.28 | 9.71 | 9.03 | 0.797 | +0.361 |
-
-**Duration is a real and material part of a REIT fund** — a loading of +0.36 to +0.41 on
-a long-Treasury ETF, worth 7 points of R² — and once it is in the model the REIT "alpha"
-stops being distinguishable from zero. **But the residual is not small.** VNQ keeps
-8.60 pp/yr of volatility that market, size, value and duration together do not explain,
-out of 19.46 total. **REITs are about four-fifths spanned and one-fifth not**, and
-calling them "not a distinct asset class" overstates what the regression says.
-
-**The long window, and why it does not settle it either.** The only free documented
-long real-estate equity return this search found is Ken French's `RlEst` industry
-portfolio, monthly from 1926-07. It is **not a REIT index** — it is SIC-coded
-real-estate operating companies, two firms in 1926 and 28 in 2025 — and the first thing
-to do with a proxy is measure it: **correlation +0.797 with VNQ over the 81 months both
-exist, at a tracking difference of 7.61 pp/yr.** That is far too loose to carry a
-verdict about REITs, and this paragraph is context rather than evidence.
-
-| Window | months | RlEst excess %/yr | vol | Sharpe | market Sharpe | FF3 alpha | *t* | MDE₈₀ | + duration loading |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| 1926-07…2025-12 | 1194 | 7.08 | 33.39 | 0.212 | 0.451 | −5.12 | −2.78 | 4.57 | +0.074 |
-| **1963-07…2025-12** | 750 | 5.43 | 26.27 | **0.207** | 0.462 | **−6.66** | **−3.31** | **5.00** | +0.070 |
-| 1990-01…2025-12 | 432 | 6.21 | 25.95 | 0.239 | 0.583 | −5.61 | −2.16 | 6.45 | −0.004 |
-
-**On this proxy the alpha is resolved and negative on every window** — the only resolved
-negative alpha this study produced with more than a hundred months behind it — and
-**adding duration changes nothing at all** over sixty years, which contradicts what the
-N-PORT window shows and is a warning that the +0.406 loading is a 2019–2026 fact about a
-rate cycle rather than a structural property.
-
-**What is genuinely new is the payoff shape, and it is the one §2 rejected.**
-
-| Fund | up beta | **down beta** | asymmetry | *t* |
-| --- | ---: | ---: | ---: | ---: |
-| **VNQ** | **0.800** | **1.123** | **+0.322** | +1.19 |
-| SCHH | 0.754 | 1.182 | +0.429 | +1.31 |
-| USRT | 0.766 | 1.192 | +0.426 | +1.34 |
-| *PUT index, from §2* | *0.45* | *0.86* | *+0.41* | — |
-
-**A REIT fund gave 80% of the market's upside and 112% of its downside.** That is the
-same asymmetry §2 measured on a put-writing index and rejected the whole
-volatility-risk-premium family for — with the difference that put-writing is *sold* as
-buying that shape in exchange for a premium, and a REIT fund is sold as
-diversification. The *t* statistics are 1.2 to 1.3, so the asymmetry is not resolved
-either; but the sign is the same in all three funds and it is the opposite of what a
-diversifier is supposed to do.
-
-**Tax makes it worse and by a measured amount.** VNQ's five-year distribution drag is
-**1.00 pp/yr against VTI's 0.39** at the same period end, +0.61 incremental, because
-REIT distributions are ordinary income: 75.5% ordinary and 24.5% return of capital in
-the year to 2026-01-31, no long-term gain at all. **Section 199A is not in that figure
-and it runs in the REITs' favour** — a REIT dividend eligible for the 20% deduction is
-taxed below the ordinary rate, the split was searched for in all three funds' annual
-reports and is **not found**, so +0.61 is an upper bound.
-
-**Verdict: `dominated`.** Cheap, liquid, genuinely only four-fifths spanned, and it
-bought a fifth of the market's Sharpe ratio while delivering a payoff shape this
-repository has already rejected once under a different name.
+Units are pp/yr of realised geometric growth. Read this against the design's own floor:
+[the evidence base](evidence-base.md) measures the marginal-sleeve instrument's MDE₈₀ at
+**≈0.58 pp/yr**, so every row except bitcoin's lies inside the noise, and bitcoin's row is
+137 months containing the largest bull market in the asset's history against a
+matched-volatility floor of 15.58 pp/yr. **The one thing in that table that is not noise is
+the last column**: a bitcoin sleeve is the only candidate here that made the portfolio's
+drawdown *deeper* at every weight tested.
 
 ---
 
-## 6. Buffer and defined outcome — the cap is the product, and it is priced here
+## 2. Candidate map
 
-**This is the largest and most heavily marketed of the four families and it is the one
-that can be settled without any fund data at all**, because its payoff is a contract and
-the terms are filed.
+Every mechanism screened, with who pays and why they keep paying, what the payoff looks
+like, and the verdict. **Access is separated from evidence throughout: a missing retail
+vehicle is an implementation finding, not proof that the return source is absent.**
 
-**What is actually bought.** A defined-outcome fund holds FLEX options on the reference
-asset's **price**. From Innovator's own 497K for PJUL, quoted rather than paraphrased:
-*"the Cap and Buffer will be provided on a price return basis … and the Fund will not
-receive the benefit of any dividends."* The buffer applies only over a **full** outcome
-period held start to finish. And across periods, from the same document: *"over multiple
-Outcome Periods, the Fund may have losses that exceed those of the Underlying ETF."*
+| Family | Who pays, and why they keep paying | Payoff shape | Distinct from what is held? | Verdict |
+| --- | --- | --- | --- | --- |
+| **Catastrophe bonds / ILS** | Insurers and reinsurers buy capital-markets capacity for peak perils they cannot retain. The payer is a balance sheet with a regulatory capital constraint, not a market participant with a view | Bond-like carry with a rare, severe, event-triggered loss; a short put on a hurricane | **Yes.** The only mechanism screened whose loss trigger is meteorological | **Admit, small.** §5 |
+| **Duration-hedged credit** | Investors who must hold rated paper and cannot bear mark-to-market or default risk pay a spread above a duration-matched Treasury | Carry with a left tail concentrated in the same default state as equity | **Partly.** ρ full +0.234, but 4.12% volatility and −20.7% drawdown against equity's −84.6% | **Admit.** §6 |
+| **Trend / managed futures** | Slow-moving capital, hedgers rolling risk, and behavioural under-reaction | Positive mean with near-zero beta; not measurably convex | Already held | **Held. Do not add a second.** §7 |
+| **Gold** | Nobody. It has no cash flow and no counterparty obligation; its return is a change in what others will pay | Fat-tailed real asset; hedges currency and inflation regimes, not equity crashes | Yes, but buys 12 bp/month over cash | **Optional, ≤5%, and only in place of cash.** §8 |
+| **Commodities, long-only** | Hedgers who want price certainty, when the curve is in backwardation and not otherwise | Inflation-shock payoff; loses in growth shocks | Yes, but negative in the equity lower tail | **Reject as a diversifier; consider only as an inflation hedge.** §8 |
+| **Long/short commodities (carry, momentum)** | Same hedgers, but the long-only version pays the roll instead of collecting it | Closer to trend than to spot commodities | Substantially overlaps the trend sleeve | **Reject on overlap.** §8 |
+| **Spot bitcoin** | Nobody. No cash-flow claim exists; expected return is entirely a claim about future adoption | Levered equity beta with an idiosyncratic regulatory and custody tail | **No.** β 1.53/1.62, ρ 0.342, worse than cash in the lower tail | **≤2%, as declared speculation.** §3 |
+| **Explicit tail hedges (long puts)** | The buyer pays the variance risk premium to the seller, every month, forever | Convex when it works, and it must be sized and monetised to work | It is the *opposite* side of a premium, so it is negative expected return by construction | **Reject.** §4 |
+| **Long volatility (VIX futures)** | Same, plus a roll paid into a persistently contangoed curve | Spike payoff destroyed by roll | Same | **Reject.** §4 |
+| **Volatility selling / put writing** | The investor is paid the premium above, and takes the crash | Negative skew; the crash *is* the product | Duplicates equity's own left tail | **Reject on overlap.** §9 |
+| **Buffered / defined-outcome** | The investor sells upside to buy a bounded downside, and pays a fee on top | Bounded both ways over a reset period | Replicable from a bond and two options | **Reject on price.** §4 |
+| **Merger arbitrage** | Sellers of deal risk want certainty before a deal closes | Small carry with a deal-break left tail that clusters with equity | Weakly | **Unresolved; too small to matter.** §9 |
+| **Alternative risk premia funds** | Various | Various | Various | **Reject on cost stack.** §9 |
+| **Nominal bonds / TIPS** | Investors buying certainty of nominal cash flows | Duration, with the sign of its equity correlation flipping by era | TIPS and nominals are **one engine**, ρ +0.76 to +0.85 | **Hold for liability and withdrawal reasons, not for breadth.** §6 |
+| **REITs, dividend funds, closed-end discounts, securities lending, direct indexing** | — | — | — | Screened in earlier rounds; see §9 |
 
-**The terms these funds have actually offered**, each figure from that outcome period's
-own filed summary prospectus:
+---
 
-| Fund | outcome periods | buffer | **mean cap** | median | min | max |
+## 3. Crypto: the investor asked, so here is the arithmetic
+
+**Verdict. At most 1–2% of the portfolio, funded from the speculation budget rather than
+from the defensive sleeve, held in a taxable account, and labelled a speculation rather
+than a diversifier. Zero is also defensible. Anything above about 5% is a leveraged equity
+position that the investor could obtain more cheaply and with a shallower drawdown by
+holding more equity.**
+
+**The mechanism, stated honestly.** There is no cash-flow claim. A bond pays a coupon
+because a borrower is contractually obliged; an equity pays because a firm earns; a cat
+bond pays because an insurer needs capacity. Bitcoin's expected return is entirely a claim
+that the future marginal buyer will pay more than today's. That is not a risk premium and
+it must not be written as one. What can be defended is narrower and worth stating: a fixed
+supply schedule, a settlement network with no counterparty, and a payoff that is not a
+claim on any government's solvency. Those are properties, not premia.
+
+**What is measured, on 137 months of FRED `CBBTCUSD`:**
+
+- **Equity beta 1.526 up and 1.616 down**, κ indistinguishable from zero. A 2% bitcoin
+  sleeve is, to first order, 3% more equity plus a large idiosyncratic risk.
+- **ρ to equity +0.342 over 137 months**, and the 81-month sub-window reads **+0.531**,
+  which is *outside* the 0.5 boundary at which the repository's own admission arithmetic
+  stops being usable ([evidence base](evidence-base.md)). Correlation has risen as the
+  asset has been financialised — the direction that removes the case.
+- **In the worst decile of equity months, mean −7.51%, positive in 1 of 13.** It has never
+  been observed doing anything else in an equity crisis. −10.5% through 2020 Q1 and
+  **−58.3% through 2022**, when equity fell 25.3%.
+- **Maximum drawdown −75.9%** on monthly data over a window in which equity's was −25.3%.
+- **Its measured α of +4.46%/month carries *t* = 1.44.** Against equity at matched
+  volatility the measured gap is **+0.10 pp/yr against a floor of 15.58 pp/yr**: 137 months
+  of the best returns in the asset's history cannot distinguish it from the S&P 500.
+- **And the most recent evidence is the same evidence again.** In the first half of 2026
+  bitcoin fell **−33.2%** while US equity returned **+9.9%** — measured on the same panel,
+  and independently corroborated by the CME CF BRRNY rate falling from $87,549 to $58,605
+  over the same six months (CF Benchmarks, read 2026-08-22). It has since recovered to
+  $77,338. A 33% fall against a rising equity market in the sample's final six months is
+  not a diversifier failing to help; it is an asset behaving as the beta measurement says
+  it does, with the idiosyncratic risk on top.
+
+**Why not zero, then.** Because the loss from a 1–2% position that goes to zero is 1–2%,
+the position is not correlated with the investor's human capital, and the investor has
+explicitly asked for it. A holding an investor wants and understands is easier to keep
+than a holding they resent, and holdability is in the objective. That is a
+behavioural-and-preference argument, not an evidence argument, and it should be written
+down as one.
+
+**Vehicle and account.** Spot ETPs are **1933-Act grantor trusts, not 1940-Act funds**: no
+K-1, gain and loss flow through as if the holder owned the coin, brokers report on 1099-B,
+and each sale of coin to pay the sponsor fee is a taxable disposition for the holder. **The
+28% collectibles rate that applies to a physically-backed gold trust is not asserted here** —
+IBIT's own prospectus tax section contains no collectibles discussion at all, and the IRS
+treats bitcoin as property that can be held as a capital asset. Fees and sizes from each
+trust's Q2-2026 Form 10-Q, net assets as of 2026-06-30, read 2026-08-22:
+
+| Ticker | Sponsor | Fee | Net assets 2026-06-30 | Prices against |
+| --- | --- | ---: | ---: | --- |
+| **BTC** (Grayscale Mini) | Grayscale | **0.15%** | $3.19bn | CoinDesk Bitcoin Benchmark Rate |
+| EZBC | Franklin Templeton | 0.19% | $335M | CME CF BRRNY |
+| BITB | Bitwise | 0.20% | $2.13bn | CME CF BRRNY |
+| HODL | VanEck | 0.20% — **full waiver expired 2026-07-31** | $959M | MarketVector |
+| ARKB | ARK 21Shares | 0.21% | $1.89bn | CME CF BRRNY |
+| **IBIT** | BlackRock | 0.25% | **$43.4bn** | CME CF BRRNY |
+| FBTC | Fidelity | 0.25% | $10.3bn | Fidelity Bitcoin Reference Rate |
+| GBTC | Grayscale | **1.50%** | $8.14bn | CoinDesk Bitcoin Benchmark Rate |
+
+**Only six of eleven US spot bitcoin ETPs price against the CME CF rate**, and the
+methodologies genuinely differ: at 4:00 p.m. ET on 2026-06-30 the same bitcoin was marked at
+$58,605 (BRRNY, an hour-long volume-weighted median across seven venues), $58,717 (Lukka
+Prime), $58,732 (CoinDesk) and $58,745 (Grayscale's single principal market) — **23.8 bp of
+dispersion at a single instant**, from audited filings. That is small, it is the benchmark
+working rather than failing, and it is the reason this repository's own FRED `CBBTCUSD` leg
+is labelled one venue's print rather than the asset.
+
+Hold it in **taxable**: it pays no income, so a tax-deferred account wastes shelter a bond
+would use, and a taxable holding preserves the loss-harvesting option that a 75% drawdown
+makes unusually valuable. **Avoid the crypto covered-call and "income" funds entirely** —
+their headline distribution rates run 27% to 73% against 30-day SEC yields of 0.3% to 3.8%,
+and at least one fund's most recent 19a-1 notice estimates the distribution as **100%
+return of capital**. That is your own money handed back with a tax form attached.
+
+**What would change this — and one condition has moved.** The three triggers were a
+correlation to equity back below +0.2 on a window containing a recession; **a cash-flow
+claim with a contractual payer**; or a realised equity bear market in which the asset does
+not fall harder than equity.
+
+The second has partially arrived, and not for bitcoin. **Rev. Proc. 2025-31** created a
+safe harbour letting a grantor trust stake proof-of-stake assets without losing trust
+classification, and staking ETPs are now live and material: Grayscale's ETHE and ETH stake
+about 82% and 83% of their ether and **recognised $18.8M and $16.9M of staking income in
+H1 2026 against $0 in 2025**, and BlackRock launched a separate staked trust (ETHB, 86.9%
+staked) rather than turning staking on inside ETHA. That is a genuine contractual payer —
+the protocol pays for validation — and it is the first thing in this family that is a yield
+rather than a price expectation. **It is also not bitcoin**, it carries slashing and
+validator risk, the sponsor takes a cut of the reward, and the income is ordinary. It is a
+reason to reopen the *ether* question with a real estimand, not a reason to raise a bitcoin
+weight.
+
+---
+
+## 4. Tail hedging: the bleed is measured, and the cheaper substitutes win
+
+**Verdict. Reject explicit tail hedges. The investor's stated requirement — "assets that
+perform better in black swan events without excessive long-term drawdowns" — is best met
+on this evidence by (a) a larger short-Treasury and cash allocation, (b) the trend overlay
+already held, and (c) not holding the levered and concave things in §1.4. An option-based
+hedge converts a diffuse long-term drawdown into a certain annual bleed, which is a
+different risk, not less of it.**
+
+**The mechanism, stated honestly.** A long put is the short side of the variance risk
+premium. Index options have been persistently rich relative to subsequent realised
+volatility because someone is being paid to bear crash risk — and a tail-hedge fund's
+investor is the one paying. The strategy is therefore **negative expected return by
+construction**, and the case for it can only ever be that a convex payoff at the right
+moment is worth more than the premium. That is a claim about the *path*, and it requires
+the holder to monetise the hedge at the bottom, which is the moment they are least likely
+to.
+
+**The bleed, from issuer-published standardised returns.**
+
+| Fund | Structure | Fee | Window | Annualised NAV return | Same-issuer benchmark |
+| --- | --- | ---: | --- | ---: | --- |
+| **TAIL** (Cambria Tail Risk) | 1940-Act ETF; ~91% 10-year Treasuries, ~5% long OTM SPX puts | 0.59% | since inception 2017-04-06, as of 2026-06-30 | **−7.15%/yr, −49.59% cumulative** | SPY 10-yr 15.35%/yr (SSGA factsheet, same date; the windows differ by 0.77 yr) |
+| **CAOS** (Alpha Architect Tail Risk) | 1940-Act ETF; protective SPX/SPY puts, put spreads, box-spread collateral | 0.63% gross = net | 10 years to 2026-07-31 | **+3.00%/yr** | SPY +14.93%/yr, identical window, both issuer-published |
+
+Read 2026-08-22 from the [TAIL factsheet PDF](https://cambriafunds.com/assets/docs/TAIL-FactSheet.pdf),
+the [Alpha Architect CAOS page](https://funds.alphaarchitect.com/caos/) and the
+[SSGA SPY page](https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy).
+Two cautions that belong with the numbers: **do not use the figures rendered on
+`cambriafunds.com/tail`** — that page is JavaScript-hydrated and returns numbers
+irreconcilable with the issuer's own PDF; and **CAOS's ten-year record is inherited** from
+the Arin Large Cap Theta mutual fund, a differently-mandated, higher-turnover predecessor,
+with only about 3.4 years of it as the current ETF
+([497K](https://www.sec.gov/Archives/edgar/data/1592900/000182912623001899/easeries-caos_497k.htm)).
+
+**The bleed is roughly 12 pp/yr against the index on the honest comparison (CAOS, identical
+window, both figures issuer-published) and worse on the pure hedge.** To first order a 10%
+TAIL sleeve funded pro rata would have cost about **2.2 pp/yr** of portfolio growth over its
+life — `0.10 × (−7.15 − 15.35)` — which is roughly four times the entire measured marginal
+value of the trend overlay at the same weight in §1.5. That is arithmetic on two annualised
+returns over slightly different windows, not a backtest.
+
+One point in TAIL's favour, because it changes what the number means without changing the
+verdict: **TAIL is about 91% ten-year Treasuries and only about 5% options**, so its
+−7.15%/yr is not all option bleed — a large part of it is the worst bond market in forty
+years, and §1.2 already shows that Treasuries lost 13.6% through 2022. The option leg's own
+cost is nearer the adviser's stated spend of roughly 1% of assets a month on puts. That
+makes TAIL a *worse* proposition rather than a better one for this investor: the Treasury
+part they can buy for 3 bp, and the part they are paying 59 bp to obtain is the part with
+negative expected return.
+
+**Long volatility is worse, and the reason is arithmetic.** VIX futures were in steep
+contango across the whole visible curve on the last settlement before this page was
+written: spot VIX 15.13 against 17.50 for September and 19.15 for October
+([Cboe VIX futures](https://www.cboe.com/tradable_products/vix/vix_futures/), read
+2026-08-22; the page carries no timestamp, so these are most likely the 2026-08-21
+settlements). A constant-one-month index rolling M1→M2 pays roughly that spread every
+cycle. The consequence is in the issuer-published returns: **VIXY −46.56%/yr over ten
+years and UVXY −71.37%/yr**, NAV as of 2026-07-31
+([ProShares](https://www.proshares.com/our-etfs/strategic/vixy)). These are also
+**commodity pools, not 1940-Act funds, and they issue K-1s**; VXX is an **unsecured
+Barclays note** maturing 2048, callable by the issuer at its sole discretion, and subject
+to UK bail-in powers, with a tax treatment its own prospectus calls uncertain
+([424B2](https://www.sec.gov/Archives/edgar/data/312070/000095010324010593/dp215108_424b2-vxxvxzps.htm),
+read 2026-08-22). None of this belongs in a long-horizon portfolio.
+
+**Buffered and defined-outcome funds are the same trade at a worse price.** This repository
+has already priced the cap-and-buffer package from 1,183 overlapping twelve-month price
+returns and found it worth **−2.4 to −4.1 pp/yr**, with the funds' realised −4.1 landing
+inside that range from disjoint data ([evidence base](evidence-base.md)). Current shelf
+facts are consistent: the July buffer series carries a **0.79% fee** for a 9% buffer
+against an 18.14% cap, and the 100%-protection two-year funds cap at 13.61% and 18.32%
+([Innovator factsheets](https://www.innovatoretfs.com/pdf/BJUL_Factsheet.pdf), read
+2026-08-22). Two structural notes worth keeping: **Innovator's benchmark on its own
+factsheets is the S&P 500 price-return index**, which omits dividends and flatters the
+comparison; and because the FLEX options are written on **SPY and VOO rather than on a
+broad-based index**, they are generally *not* §1256 contracts and get no 60/40 treatment —
+unlike TAIL's and XTR's listed SPX options. Innovator has been an indirect wholly-owned
+Goldman Sachs subsidiary since 2026-04-01
+([497](https://www.sec.gov/Archives/edgar/data/1415726/000121390026038588/ea0284508-01_497.htm)),
+which is a counterparty-and-continuity fact rather than a pricing one.
+
+**What the investor should hold instead, and why it is not a compromise.** §1.3 measures
+it: in the worst decile of equity months, swapping 10% of equity into T-bills adds back
+**+0.92%** in the average month, at zero fee, zero drawdown and zero path risk. Long
+Treasuries add +0.94% — two basis points more — and charge 8.42% of volatility and a −59%
+drawdown for the privilege. Trend adds +1.08%. No option structure on the current shelf
+offers a lower-tail offset larger than those *net of its bleed*, and the two that come
+closest do it by holding Treasuries and spending 1% of assets a month on options.
+
+**One structural defensive worth naming so it is not re-screened.** BTAL (AGF U.S. Market
+Neutral Anti-Beta) is the non-option version of the same idea, and it is BAB's short side.
+Its **gross expense ratio is 1.65% and its net is 1.40%** — the 0.45% "adjusted" figure
+excludes dividend and brokerage expense on short positions, which is where the cost
+actually is — and its since-inception NAV return is **−3.63%/yr against the S&P 500's
++15.41%** ([AGF factsheet](https://www.agf.com/agf-files/us/regulatory-documents/fact-sheets/agf-btal-ann-en.pdf),
+as of 2026-07-31, read 2026-08-22). It also changed from index-tracking to active in
+2022-02. §1.4 explains the shape: the anti-beta leg is BAB's mirror, and BAB's measured
+concavity is *t* = 3.49. Reject.
+
+---
+
+## 5. Catastrophe bonds: the vehicle problem is solved and a price problem has replaced it
+
+**Verdict. Admit the mechanism; hold at 0–3% or wait. This is the only candidate on the
+page whose loss trigger is meteorological rather than financial, and the access finding
+has genuinely changed — a 1940-Act ETF now exists with daily liquidity at 1.58% net. But
+the risk spread has compressed by roughly half since 2023, and the net-of-fee record of
+actual retail vehicles over nine years is about one percentage point a year over cash.
+The reopening condition is a number, and it is stated below.**
+
+**The mechanism, and why it is the best one on this page.** An insurer or reinsurer with a
+concentrated peak-peril exposure — Florida wind, California quake — cannot retain it under
+its own regulatory capital rules and cannot always cede it to the traditional reinsurance
+market at an acceptable price. It sells the risk to capital markets through a special-purpose
+vehicle: the investor's principal sits in Treasury money-market collateral, the investor
+receives that collateral yield **plus** an insurance risk spread, and loses principal if a
+defined event occurs. **The payer is a balance sheet with a statutory capital constraint, and
+the loss trigger is a hurricane.** Nothing else screened here has a return whose driver is
+outside financial markets entirely.
+
+**What it has actually paid, and the two indices are not interchangeable.**
+
+| Year | Swiss Re Global Cat Bond TR (cat bonds only, gross) | Eurekahedge ILS Advisers (fund NAVs, net of fees) |
+| --- | ---: | ---: |
+| 2017 | unverified | **−5.57%** |
+| 2018 | unverified | −3.92% |
+| 2019 | unverified | +0.92% |
+| 2020 | unverified | +3.51% |
+| 2021 | unverified | +0.85% |
+| 2022 | **−2.16%** — first negative year in the index's history | −2.16% |
+| 2023 | **+19.69%** (record) | +13.89% |
+| 2024 | +17.29% | +13.10% |
+| 2025 | +11.40% | +11.32% |
+| 2026 to date | +4.12% (H1) | +5.02% (through July) |
+
+Swiss Re figures as reported by [Artemis](https://www.artemis.bm/) and, for 2022, from
+Swiss Re's *ILS Market Insights* March 2023; ILS Advisers from Artemis. Read 2026-08-22.
+Swiss Re's pages return HTTP 403 and were not fetched directly.
+
+**Compound the second column and the case gets much quieter. The ILS Advisers fund index
+returned +3.31%/yr geometric over 2017–2025** — nine years that include the three best in
+the market's history — against a US T-bill rate that averaged something close to 2.3% over
+the same span. **That is roughly one percentage point a year over cash, net of fees, from
+the actual vehicles.** The gap between the two columns is the cost-and-implementation gap
+that this entire page keeps rediscovering: Swiss Re ran 17.29% in 2024 against 12–15% for
+most managed funds.
+
+**The 2022 week is the shape of the risk.** The Swiss Re index was −0.35% at the half-year
+and then fell **−9.65% in the single week to 2022-09-30** on Hurricane Ian. SHRIX's worst
+quarter is Q3 2022 at −10.29%. This is not a smooth carry.
+
+**Cascading loss is the failure mode that a correlation cannot see.** Roughly **36% of the
+outstanding market is annual-aggregate structure** ($22.78bn against $40.23bn occurrence),
+where each qualifying event erodes the retention beneath the attachment point, so a season
+of moderate events leaves a bond exposed to a later event it would have survived standalone.
+The 2024–25 sequence is the clean illustration: Helene and Milton eroded aggregate retentions
+in autumn 2024, and the January 2025 Palisades and Eaton wildfires landed **inside the same
+annual risk period** for Allstate's Sanders Re programme — two tranches were marked down
+about 50% **purely on the increased probability of attaching over the remaining risk period,
+with no payout having occurred**. Peak-peril concentration compounds it: explicitly
+named-storm buckets are 24.2% of outstanding and every bucket containing any US wind
+totals 56.1%, so "diversified across perils" is a weaker claim than it sounds.
+
+**The price. This is the part that decides the weight.**
+
+| | 2023 peak | Mid-2026 | Change |
+| --- | ---: | ---: | ---: |
+| Secondary risk spread | **11.31%** (2023-01-13) | **5.53%** (2026-07-31) | −51% |
+| Secondary spread ÷ expected loss | 4.90× | **2.21×** | **−55%** |
+| New-issue spread above expected loss | 6.94% FY2023 | 3.98% YTD, **3.74% in Q2 2026** | −43% |
+| New-issue multiple | 4.54× FY2023 | **2.40×** YTD | −47% |
+
+Artemis market data, read 2026-08-22. Q2 2026 was the first quarter below 4% spread-above-EL
+in twenty. The arithmetic that follows is simple and should be done before buying: a 5.53%
+risk spread against a 2.50% market-average expected loss leaves about **3.0 percentage
+points of gross expected compensation**, from which a retail vehicle takes **1.58% to
+2.36%**. What is left is roughly one point a year of expected excess over the collateral
+yield — which is exactly what the fund index has delivered — for an asset that can lose 10%
+in a week.
+
+**Access, which is the part that has changed.**
+
+| Vehicle | Structure | Fee | Minimum | Liquidity | Net assets |
+| --- | --- | ---: | ---: | --- | ---: |
+| **ILS** (Brookmont Catastrophic Bond ETF) | 1940-Act **ETF**, active, non-diversified; inception 2025-04-01 | **2.65% gross / 1.58% net**, capped to 2027-04-30 | none | daily | $88.2M (2026-08-20) |
+| SHRIX / SHRMX (Stone Ridge High Yield Reinsurance) | **open-end mutual fund**, daily redemption | 1.73% (I) / 1.88% (M) | $25M (I) / **$250k (M)** | daily | $4.44bn (2026-04-30) |
+| XILSX (Victory Pioneer ILS) | interval fund, Rule 23c-3 | 1.94% | $1M | quarterly, 10% offered | ~$822M |
+| SRRIX (Stone Ridge Reinsurance Risk Premium) | interval fund | 2.36% | **$15M** | quarterly, 5% + 2% discretionary | $1.52bn (2026-04-30) |
+| CNRLX (City National Rochdale Select Strategies) | interval fund | 1.00% gross / **0.99% net** | $1M | quarterly, 5% | $234.5M (2026-01-31) |
+
+Read 2026-08-22 from SEC filings and issuer pages. **Four corrections to the usual account
+of this shelf, each of which changes a conclusion.** SHRIX is *not* an interval fund — it is
+an open-end mutual fund with daily redemption, which removes the liquidity objection
+entirely for an investor who can meet the $250k Class M minimum. **SRRIX is not a cat bond
+fund**: at 2026-04-30 it held **19.4% event-linked bonds and 65.2% private quota-share
+paper**, so comparing its 2.36% with an ETF's fee is not like for like. **CNRLX's 0.99% is
+materially understated** — its own prospectus says the Neuberger Berman segregated accounts
+have fees "not reflected in the fee table," and they never appear as acquired-fund expense.
+And none of these funds imposes an accredited-investor or qualified-purchaser test; the
+gate is minimum size, not investor status.
+
+**On the ETF specifically**, which is the vehicle that makes this reachable at all: it holds
+144A cat bonds inside a 1940-Act wrapper because **Rule 144A securities are not automatically
+illiquid** — a board-approved liquidity risk management program classifies each holding
+against the 15%-of-net-assets illiquid cap, and at 2025-12-31 144A paper was **85.4% of net
+assets with 100% of holdings at Level 2 and no Level 3 at any point in 2025**. That is a
+defensible answer to the obvious objection. Two cautions remain: it **trailed its own stated
+benchmark by 430 bp** over its first nine months (+5.87% against the Swiss Re index's
++10.17%), and its **tailored shareholder report shows costs actually paid of 2.00%
+annualised**, not the 1.58% cap.
+
+**Where it belongs and what would change the verdict.** Tax-deferred, without exception:
+the return is almost entirely ordinary income and short-term gain. **The reopening condition
+is the spread-to-expected-loss multiple.** At 2.21× secondary and 2.40× new issue this is
+the least attractive entry the market has recorded in the period observed here. At **3.5× or
+above**, with the retail fee unchanged, the arithmetic gives roughly two and a half points a
+year over collateral for genuinely non-financial risk, and the weight should rise. That is
+a monitoring boundary, it is publicly observable weekly, and it is the reason to keep this
+family open rather than screen it again from scratch.
+
+---
+
+## 6. Duration-hedged credit: the rejection was about the instrument, not the mechanism
+
+**Verdict. Admit. This is the largest single change this page makes. The earlier finding
+that "credit is not a second engine, its correlation to Treasuries is +0.835" is
+reproduced here at +0.826 — and it is a property of the *unhedged* corporate leg. The
+duration-hedged credit spread correlates +0.016 with long Treasuries over 1,068 months.
+It is a separate engine, and it was rejected because the instrument that measured it had
+twenty years of duration bolted to the front.**
+
+**The mechanism.** Insurers, pension funds, banks and rating-constrained mandates must hold
+investment-grade paper and cannot bear either default loss or mark-to-market volatility in
+it. They pay a spread above a duration-matched Treasury for that. The payer is a balance
+sheet with a regulatory or actuarial constraint, which is why the premium has survived a
+century of publication: the buyer is not choosing to bear the risk cheaply, they are
+required not to bear it at all.
+
+**What is measured.** AQR's `CORP_XS`, defined as the corporate bond total return less a
+duration-matched government return estimated by rolling empirical-duration regressions,
+1926-01…2014-12. On the 1,062 months it shares with the equity and Treasury legs:
+
+| | Geo/yr | Vol/yr | Sharpe | Max DD | ρ to equity | ρ to Treasury |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| **PJUL** | 9, 2018–2026 | 15.0% | **11.98%** | 12.09% | 7.80% | 17.42% |
-| **POCT** | 7, 2019–2025 | 15.0% | **12.83%** | 11.81% | 9.16% | 20.72% |
+| Long Treasury | +2.10% | 8.37% | +0.29 | −59.1% | +0.094 | 1 |
+| **Duration-hedged credit** | **+2.13%** | **4.12%** | **+0.53** | **−20.7%** | +0.234 | **+0.016** |
+| Equity | +6.28% | 18.71% | +0.42 | −84.6% | 1 | — |
 
-**Neither fund has ever offered a cap as wide as its buffer.** Pricing that against the
-realised distribution of twelve-month S&P **price** returns — Goyal–Welch's `CRSP_SPvwx`,
-the CRSP value-weighted return excluding dividends, which is the correct input and the
-one a comparison against a total-return index silently gets wrong:
+**Identical return to long Treasuries, at half the volatility and a third of the
+drawdown.** It is also nearly distinct from everything else on the panel: ρ −0.082 to
+trend, +0.064 to commodities, −0.050 to gold.
 
-| Terms | window | protection received | upside sold | net option value | forgone dividend | fee | **total vs holding the index** |
-| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| PJUL: buffer 15%, cap 11.98% | 1926-07…2025-12 | 3.01 | 5.76 | **−2.74** | 3.99 | 0.79 | **−7.53** |
-| PJUL | 1990-01…2025-12 | 1.97 | 4.84 | **−2.87** | 2.26 | 0.79 | **−5.92** |
-| PJUL | 2010-01…2025-12 | 0.88 | 4.96 | **−4.09** | 2.17 | 0.79 | **−7.04** |
-| POCT: buffer 15%, cap 12.83% | 1926-07…2025-12 | 3.01 | 5.39 | **−2.37** | 3.99 | 0.79 | **−7.16** |
-| POCT | 1990-01…2025-12 | 1.97 | 4.44 | **−2.47** | 2.26 | 0.79 | **−5.52** |
-| POCT | 2010-01…2025-12 | 0.88 | 4.48 | **−3.61** | 2.17 | 0.79 | **−6.56** |
+**The honest counterweight, because this is a `risk-premium` and not a hedge.** Its mean in
+the worst decile of equity months is **−0.24%**, its lower-tail offset at 10% weight is
++0.91% against cash's +0.94%, and it lost **13.1% through the GFC** while Treasuries gained
+13.4%. Credit's left tail is the same corporate-default state that kills equity. Add it for
+*return breadth*, never for crisis protection.
 
-**The option package alone loses money before any fee is charged**, by 2.4 to 4.1 pp/yr:
-the upside sold is worth roughly twice the protection received, on every window. Add the
-dividend the wrapper cannot pass through and the fee, and the structure costs **5.5 to
-7.5 pp/yr against simply holding the thing it references.** Over 1183 overlapping
-twelve-month windows since 1926-07, **44.9% of price returns exceeded PJUL's mean cap**,
-30.6% were negative at all, and only 11.1% fell through the 15% buffer entirely. **The
-cap binds four times as often as the buffer pays out.**
+**Which is why the recommendation is a substitution, not an addition.** Holding half the
+defensive sleeve in each is better than holding it all in long Treasuries on almost every
+axis measured:
 
-**Now the funds' own filed returns, which are a disjoint measurement.**
-
-| Fund | all-in cost | months | Sharpe | ρ | **unlevered growth gap** | **matched gap (5)** | MDE₈₀ | up beta | down beta |
+| Defensive sleeve, 1926-07…2014-12 | Geo/yr | Vol/yr | Sharpe | Max DD | 1929-32 | 1973-74 | Late 1970s | 2000-02 | **2008-09** |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| **BUFR** | **0.95%** | 68 | 0.722 | +0.966 | **−4.41** | −0.09 | 3.73 | 0.554 | 0.590 |
-| BUFD | 0.95% | 63 | 0.528 | +0.952 | −5.05 | −1.00 | 4.38 | 0.404 | 0.406 |
-| **PJUL** | **0.79%** | 74 | 0.747 | +0.940 | **−4.06** | **+1.91** | 6.64 | **0.482** | **0.431** |
-| **POCT** | 0.79% | 74 | 0.806 | +0.936 | **−4.15** | **+2.95** | 6.01 | **0.443** | **0.380** |
+| All long Treasury | +2.10% | 8.37% | +0.29 | −59.1% | +7.8% | −17.3% | **−40.5%** | +23.3% | +13.4% |
+| All duration-hedged credit | +2.13% | 4.12% | +0.53 | −20.7% | +5.7% | −6.9% | −3.2% | +10.8% | **−13.1%** |
+| **Half each** | **+2.23%** | **4.70%** | **+0.49** | **−27.1%** | +7.1% | −12.1% | −23.3% | +17.2% | **−0.0%** |
 
-**The realised growth shortfall of −4.06 to −4.41 pp/yr lands inside the −5.5 to −7.5
-pp/yr the option arithmetic predicts, and the two share no data.** One is a century of
-index price returns and a filed cap schedule; the other is six years of fund-reported
-total returns. That agreement is the finding, and the funds' six years were, if
-anything, favourable ones: two of PJUL's outcome periods carried caps well above its own
-historical mean and two equity drawdowns arrived inside the window.
+The blend is flat through the GFC and loses 23% rather than 41% through the late 1970s,
+because the two legs fail in different states and correlate +0.016. That is what breadth
+is supposed to look like, and it is available inside the allocation the investor already
+intends to make.
 
-**Three things run the other way and are recorded rather than buried.**
+**The scale problem, stated plainly.** At 4.12% volatility a 10% sleeve contributes about
+21 bp/yr of gross excess return, which is inside this repository's 0.58 pp/yr detection
+floor. **This engine cannot be made to matter at a satellite weight.** It matters as a
+*replacement* for defensive assets already held, or not at all. Levering it to Treasury
+volatility (2.03×) doubles the return to +4.20%/yr at the same Sharpe — and takes the
+drawdown to −39.2% and the GFC loss to −26.6%, which is the whole point of not doing that.
 
-*The asymmetry is the right way round.* PJUL's up beta is 0.482 and its down beta 0.431;
-POCT's are 0.443 and 0.380. That is the **opposite** ordering to put-writing's 0.45/0.86
-— these funds really do give up less on the downside than the upside. The asymmetry is
-not resolved (*t* of −0.82 and −0.78), but the sign is right in both funds and it is a
-genuine structural difference from §2's family.
+**What would change this.** The series ends in 2014-12, so **it has never been measured
+through 2020 or 2022** — the two episodes in which a hedged-credit sleeve's behaviour would
+be most informative, since March 2020 was a liquidity event in exactly this instrument.
+Acquiring a duration-hedged credit series that reaches 2026 is the single most decision-
+relevant acquisition this page identifies. It also has no net-of-cost version: `CORP_XS` is
+a vendor construction, gross of fee, spread and financing, and the retail wrapper's real
+cost is what decides whether +2.13% survives.
 
-*The tax treatment is unusually good.* PJUL's and POCT's own prospectus tables report a
-five-year `after taxes on distributions` return **equal to their before-tax return** — a
-distribution drag of exactly **0.00** against VTI's 0.42, because a FLEX-option fund
-distributes almost nothing. They need no shelter at any weight, which in
-[the recommendation's queue](portfolio-recommendation.md) is the position a bullion
-trust occupies.
+### 6b. Retail access, and the conditions the sleeve would be bought into
 
-*Equation (5) says PJUL and POCT beat VTI.* Their matched-volatility gaps are **+1.91
-and +2.95 pp/yr**. This is where the two comparisons in §4's table earn their place:
-matched volatility means levering an 8% instrument to 17%, and what is being levered is
-a **capped** payoff, so a 2× position sells the upside at half the index move. At the
-weight anyone actually holds — one for one — the same funds lost **4.06 and 4.15
-pp/yr of growth**, and growth is what
-[decision 0008](../decisions/0008-growth-decides-crra-reports.md) makes deciding. Both
-matched gaps are also well inside their own floors of 6.64 and 6.01.
+**The vehicle exists, it is cheap, and it does exactly what the series describes.** The
+iShares rate-hedged funds are fund-of-funds: they hold the underlying credit ETF and
+overlay centrally-cleared interest-rate swaps at the 1, 2, 3, 5, 7, 10, 15, 20 and 30-year
+points, weighted to the underlying's composition and **rebalanced daily**
+([iShares product brief](https://www.ishares.com/us/literature/product-brief/ishares-interest-rate-hedged-etf-hygh-lqdh-embh-igbh-product-brief-en-us.pdf),
+read 2026-08-22). ProShares does the same job with short Treasury futures and states an
+explicit **target duration of zero**
+([ProShares HYHG](https://www.proshares.com/our-etfs/strategic/hyhg)).
 
-**Verdict: `rejected`, on the option arithmetic rather than on the record.** The record
-is unresolved in both directions; the arithmetic is not, and it is confirmed by the
-record to within the record's resolution. Two of the four cost terms — the forgone
-dividend of 2.2 to 4.0 pp/yr and the fee of 0.79 to 0.95 — are certain, recurring, and
-independent of what markets do.
+| Ticker | What it hedges | Gross ER | **Net ER** | Effective duration | OAS | 30-day SEC yield | Net assets |
+| --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| **IGBH** | Long-term IG corporate (IGLB) | 0.39% | **0.14%** | **0.02 yr** | 91.8 bp | 5.21% | $237.3M |
+| **LQDH** | IG corporate (LQD) | 0.44% | **0.24%** | **0.10 yr** | 81.4 bp | 4.65% | $545.7M |
+| HYGH | High yield (HYG) | 1.12% | 0.52% | **−1.14 yr** | 236.3 bp | 5.97% | $618.8M |
+| IGHG | IG, ProShares, bonds held directly | 0.30% | 0.30% | 0.42 yr | — | 5.29% | $341.9M |
+| HYHG | High yield, ProShares, bonds directly | 0.50% | 0.50% | −0.09 yr | — | 6.97% | $200.2M |
 
----
+Fees and durations as of 2026-08-20/21 from the iShares and ProShares product pages, read
+2026-08-22. **The net figures depend on contractual waivers that expire 2027-02-28**; the
+waiver sets total expenses equal to the underlying ETF's acquired-fund fee plus 10 bp
+(LQDH, IGBH) or 5 bp (HYGH). If a waiver lapses the cost roughly doubles, and at a 2.13%/yr
+gross premium that is not a rounding error.
 
-## 7. Spot bitcoin — it clears the bar, and the bar establishes nothing
+**The category is shrinking, which is an implementation finding and should be recorded as
+one.** iShares **liquidated AGRH**, the rate-hedged aggregate fund, effective 2026-08-17
+(board approval 2026-06-12, trading halted 2026-08-13;
+[prospectus supplement](https://www.ishares.com/us/literature/prospectus/p-ishares-us-etf-trust-hedged-index-10-31.pdf)),
+and EMBH is no longer on the iShares screener. No new entrant was found in 2024–2026.
+**A category that is losing funds while its mechanism is intact is a liquidity and
+continuity risk, not a verdict on the premium.**
 
-**Start with what does not exist.** IBIT and FBTC are Delaware statutory trusts
-registered under the Securities Act. From IBIT's own 10-K: *"The Trust is not registered
-as an investment company for purposes of U.S. federal securities laws … Consequently,
-the owners of Shares do not have the regulatory protections provided to investors in
-registered investment companies."* Their complete EDGAR filing histories contain
-**no N-PORT, N-CSR or N-CEN of any kind**. **There is therefore no fund-reported monthly
-total return for spot bitcoin anywhere**, which is the source every other verdict in this
-audit rests on, and the audit has to reach for a price series instead.
+**A second, cleaner instrument for the same idea: AAA CLO tranches.** These reach near-zero
+duration *natively* — they float over SOFR — rather than by overlaying a derivative on a
+fixed-rate bond, so there is no swap carry, no daily rebalance, and no waiver to lapse.
 
-The one it reaches for is FRED's `CBBTCUSD`, and what it is matters:
+| Ticker | What it holds | ER | Effective duration | 30-day SEC yield | AUM |
+| --- | --- | ---: | ---: | ---: | ---: |
+| **JAAA** | AAA CLO tranches (99.2% AAA) | **0.20%** | **0.06 yr** | 4.77% | **$28.4bn** |
+| JBBB | BBB+ to B− CLO tranches | 0.47% | 0.09 yr | — | $1.3bn |
+| CLOI | IG CLO tranches, VanEck/PineBridge | 0.36% | unverified | 5.03% | $1.53bn |
+| CLOZ | BBB+ to B− CLO, Eldridge | 0.50% | unverified | — | $802M |
 
-- **Source Coinbase, one venue**, daily including weekends, and the series' only
-  documentation of its observation convention is the sentence *"All data is as of 5 PM
-  PST."*
-- **It is not the index either trust prices its net asset value against**, and the two
-  trusts do not even use the same one: IBIT uses the **CME CF Bitcoin Reference Rate –
-  New York Variant** (CF Benchmarks Ltd., FCA-regulated, a 3–4 p.m. ET volume-weighted
-  median across eight venues); FBTC uses the **Fidelity Bitcoin Reference Rate**, whose
-  methodology is written by an affiliate of its own sponsor. Neither is published free.
-- **Coinbase prohibits redistribution**, so its bytes stay in the uncommitted cache and
-  only the hash is manifested — the same posture as the ICE BofA and LBMA series.
-- [Decision 0002](../decisions/0002-no-research-grade-free-price-source.md) does not
-  forbid it, and the reason is the one the gold acquisition established: that decision
-  bans free price feeds because they drop distributions and mishandle corporate actions,
-  and **bitcoin pays no distribution and has no corporate action.** Both trusts' 10-Ks
-  confirm the first directly. Everything else about it is exploratory.
+[Janus Henderson factsheets](https://cdn.janushenderson.com/webdocs/FactSheet_JAAA_ETF_2026_06_exp_2026_10.pdf),
+data as of 2026-06-30; VanEck and Eldridge pages read 2026-08-22.
+**The failure mode is different from corporate credit and must not be assumed away.** A
+AAA CLO tranche is structured credit over leveraged loans; its risk is the correlation of
+loan defaults and the behaviour of the structure's tests, not a single issuer's balance
+sheet. JAAA launched in 2020-10, **so no CLO ETF here has a March 2020 record**, and March
+2020 is precisely the liquidity event that would test it. Treat this as a candidate with an
+excellent instrument and a short history — the mirror image of the corporate series, which
+has a long history and a stale instrument.
 
-**The measurement**, 137 months, 2015-02…2026-06, month-end, excess of the French cash
-rate:
+**And the conditions it would be bought into are the least favourable part of the case.**
+As of 2026-08-20/21, read from FRED and Treasury.gov on 2026-08-22:
 
-| Base | months | window | BTC excess %/yr | vol %/yr | BTC Sharpe | **ρ** | base Sharpe |
-| --- | ---: | --- | ---: | ---: | ---: | ---: | ---: |
-| **French `Mkt-RF`** | **137** | 2015-02…2026-06 | **71.14** | **71.48** | **0.995** | **+0.342** | 0.799 |
-| VTI, net | 81 | 2019-07…2026-03 | 43.87 | 63.60 | 0.690 | +0.531 | 0.684 |
+| | Level |
+| --- | ---: |
+| 3-month CMT | 3.88% |
+| 10-year nominal CMT | 4.74% |
+| 30-year nominal CMT | 5.27% |
+| **10-year TIPS real yield** | **2.40%** |
+| **30-year TIPS real yield** | **3.00%** |
+| 10-year breakeven | 2.34% |
+| **ICE BofA US IG corporate OAS** | **82 bp** |
+| **ICE BofA US high-yield OAS** | **275 bp** |
 
-**At `|rho| = 0.342` equation (4) is the right instrument and it passes decisively.**
+Two consequences, and they point in opposite directions.
 
-| Exposure `L` | threshold `L rho sigma_p` | BTC Sharpe | margin | clears | usable |
-| ---: | ---: | ---: | ---: | --- | --- |
-| 1.00 | +0.0534 | 0.995 | **+0.942** | yes | **yes** |
-| 1.50 | +0.0800 | 0.995 | **+0.915** | yes | **yes** |
+**Against the credit sleeve: 82 bp is a tight spread.** The +2.13%/yr measured over 1,062
+months was earned across the full range of spread regimes including 1932 and 2008. Buying
+the engine at 82 bp of gross spread, before expected default loss and before a 14–24 bp
+wrapper, is buying it near the bottom of its own distribution. This does not refute the
+engine; it says the entry point is poor and the position should be small, or built over
+time, or sized to the spread.
 
-**That is a pass, it is stated as one, and it is the least informative number on this
-page.** Four things it does not establish, in order of how much they matter.
+**For the defensive allocation generally: a 2.40% ten-year real yield and a 3.00% thirty-year
+real yield are the strongest contractual terms available to this investor anywhere on this
+page.** A TIPS held to maturity at 3.00% real is a *contractual* line — the certainty class
+the repository reserves for statutes and accounting identities — against gold's measured
++1.75%/yr with a −91% drawdown and no coupon at all. When the risk-free real yield is 3%,
+the hurdle every sleeve on this page has to clear rises with it, and the honest consequence
+is that **more of the answer to "what should I add" is now "a better-constructed defensive
+allocation" than it was when real yields were negative.**
 
-**First, and decisively: the admission rule takes an expected excess return as an input,
-and for bitcoin that input has no defensible estimate.** Every figure above substitutes
-the realised mean of the last eleven years for a forecast. The threshold inverted is the
-only forward-looking statement available: equation (4) clears whenever the forward
-excess return exceeds `L rho sigma_p sigma_d`, which at this correlation and volatility
-is **3.81%/yr at `L = 1` and 5.72%/yr at `L = 1.5`** — below the equity premium, and low
-*because* the correlation is low. **Whether bitcoin's forward excess return exceeds
-5.72%/yr is the entire question and nothing in this repository can answer it.** A sleeve
-whose expected return cannot be estimated is not the same thing as a sleeve whose
-expected return is zero, and the honest verdict is `unresolved` rather than either.
+### 6c. TIPS and nominal bonds are one engine, and that is not an argument against holding TIPS
 
-**Second, the correlation is not stable and it moved the wrong way.** +0.342 over 137
-months against the market factor; **+0.531 over the 81 months a net fund control
-exists** — across the boundary at which equation (4) stops being usable at all. The
-longer window is the one that can resolve a correlation and is the one quoted; the
-shorter one is a warning that the input the pass depends on is drifting toward the
-region where the pass would be inadmissible.
+Two facts that are frequently confused. **TIPS and nominal Treasury funds are not two
+engines**: they correlate **+0.761 to +0.851** across eighteen bond and TIPS ETFs' filed
+monthly returns and +0.798 on the modelled long series, against the 0.75 threshold
+[capital efficiency](capital-efficiency-and-breadth.md) uses, so counting both toward
+breadth is double counting. **But their equity relationship genuinely differs in sign** —
+TIPS **+0.131** against nominals' **−0.076** on identical months, a gap of 3.5 standard
+errors — and nominal bonds' correlation to equity is decisively era-dependent, spanning
+**0.802 across twelve 60-month blocks**, positive in seven and negative in five. Full
+working and provenance in [the evidence base](evidence-base.md).
 
-**Third, equation (5) says nothing at all.** Over the 81 months both series exist, the
-matched-volatility gap against VTI is **+0.10 pp/yr, 95% interval [−12.18, +12.38], with
-an MDE₈₀ of 15.58.** **Bitcoin's risk-adjusted return over that window is
-indistinguishable from the S&P's, and the window could not have detected a fifteen-point
-annual difference.** Its Sharpe of 0.690 against VTI's 0.684 is a coincidence of two
-noisy estimates, not a result.
-
-**Fourth, holdability.** Over the same 137 months bitcoin's worst month-end drawdown was
-**−75.4%** against US equity's −24.8%. Equation (4) is a first-order condition on a
-twice-differentiable objective and **contains no drawdown term at all**. The
-[levered-equity result](capital-efficiency-and-breadth.md) is the same lesson from the
-other direction: the growth optimum on a century of US equity is 2.2×, and it is refused
-because it drew down 99.3% and spent 24.7 years under water. Here the plug-in
-growth-optimal overlay notional is **1.318 units, 1.199 after shrinking for eleven years
-of estimation error** — and the shrinkage barely moves it, because
-`f* = S²T / (S²T + 1)` does almost nothing when the plug-in Sharpe is near 1.0, which is
-precisely when it ought to do most.
-
-**The vehicles, from their own filings.** IBIT: 0.25% sponsor fee, initial 0.12% waiver
-on the first $5bn **expired 2025-01-10**, 734,261 BTC and $43.4bn of net assets at
-2026-06-30, custody at Coinbase Custody with Anchorage as an additional custodian.
-FBTC: 0.25% charged on bitcoin holdings rather than dollar net assets, waiver expired
-2024-07-31, 174,383 BTC and $10.3bn at the same date, custody at Fidelity Digital
-Assets — **an affiliate of its own sponsor**, and a different concentration risk rather
-than a smaller one. Neither trust distributes anything; both pay the sponsor's fee by
-selling or delivering bitcoin, which is a taxable event for holders that no distribution
-statement reports. **Whether the 28% collectibles rate applies is `not found`** — the
-words "collectible" and "28%" appear nowhere in either trust's tax discussion, and
-EDGAR full-text search over IBIT's entire filing history returns zero hits. The filings
-say only that bitcoin is property that may be held as a capital asset and that the
-treatment "is uncertain" and may change with retroactive effect. **Do not attribute a
-collectibles position to these filings, in either direction.**
-
-**Verdict: `unresolved`.** It clears the admission threshold by a wide margin on the
-only window able to score it; the threshold's input is unestimable; the correlation that
-produces the low bar is drifting upward; the matched-volatility control resolves
-nothing; and the asset drew down three-quarters of its value inside the measured
-window. **Refusing to run the test would have been an omission. Reporting the pass
-without the four paragraphs above would be worse.**
+The consequence is a **liability** argument rather than a breadth argument, and it is
+stronger at today's real yields than it has been in twenty years: an investor whose future
+spending is in real terms is matched by a real bond, and the era-dependence above is exactly
+the risk that a nominal bond leaves on the table. Hold TIPS because they match the
+liability, size the defensive sleeve as one engine, and take the diversification from §6's
+credit leg instead — which is where it actually is.
 
 ---
 
-## 8. Fixed income — the shelf is cheap, the exposure is one engine, and TIPS are not a second one
+## 7. Trend beyond the one already held: the mechanism is unchanged, the price is not
 
-**This section closes the last open row of "any asset outside equity and cash"**
-([search coverage](search-coverage.md)). It was the same kind of failure as gold and
-REITs: the long measured bond leg was **already in this repository's cache and
-manifests** and no experiment had read it, and the investable leg was one N-PORT query
-away. Computations are in
-[`studies/fixed_income_shelf.py`](../../research/src/portfolio_edge/studies/fixed_income_shelf.py)
-and
-[`_fixed_income_tables.py`](../../research/src/portfolio_edge/studies/_fixed_income_tables.py);
-fee facts with an accession on every figure are in
-[`data-manifests/fixed_income_shelf/product_facts.json`](../../research/data-manifests/fixed_income_shelf/product_facts.json)
-and the N-CEN provenance beside it.
+**Verdict. Do not add a second trend engine — it would be the same engine twice. But the
+delivery cost of the one already held has fallen by roughly an order of magnitude, and
+that is a live implementation finding worth acting on.** The evidence on trend itself is
+owned by [trend](trend-marginal-value.md) and [live managed futures](live-managed-futures.md)
+and is not restated here; §1.3 and §1.4 above add only that its crisis case is an alpha of
++0.91%/month (*t* = 3.09) with **no statistically resolvable convexity**, and that it is
+the single engine on this panel that materially beats cash in the lower tail.
 
-### 8.1 The shelf on total cost, and SCHP specifically
+**What has appeared on the shelf since the last audit** (all read 2026-08-22 from issuer
+pages; verify fee, waiver expiry and AUM before transacting):
 
-Eighteen bond and TIPS funds, on the same basis the core-beta audit used: the 497K fee
-table, Form N-CEN Item C.6 securities-lending income accruing to shareholders, and Item
-C.8 waiver and recoupment flags. Sixteen fee tables were read here; BND's and AGG's are
-already in the core-beta audit. **No fund on this shelf has a waiver, an expense
-limitation or an acquired-fund-fees line**, so net equals gross everywhere and there is
-no recoupment overhang — checked by searching all sixteen documents for `waiv`,
-`recoup`, `recaptur`, `restat`, `contractually agreed`, `expense limitation` and
-`until at least`, with every hit boilerplate in the performance section.
+| Ticker | What it is | Fee | AUM | Inception | Note |
+| --- | --- | ---: | ---: | --- | --- |
+| **CTAP** | Simplify US Equity PLUS Managed Futures — 100% notional US large-cap **plus** 100% notional systematic managed futures | **0.28% gross / 0.10% net**, waiver through 2026-12-04 | $157.9M | 2025-12-08 | A financed trend overlay at ten basis points |
+| **SDMF** | Simplify DBi CTA Managed Futures Index ETF | **0.35%** | $39.2M | 2026-02-17 | Cheapest standalone managed-futures ETF found |
+| **JPFP** | JPMorgan Managed Futures Plus | 0.59% | unverified | 2026-05-28 | New entrant; AUM and structure unverified |
+| **RSIT** | Return Stacked International Stocks & Managed Futures | 0.98% | $68.5M | 2026-05-06 | The ex-US twin of RSST |
+| RSST | Return Stacked US Stocks & Managed Futures | 0.99% | $505.0M | 2023-09-05 | The incumbent comparison |
+| DBMF | iMGP DBi Managed Futures Strategy | 0.85% | $4.00bn | 2019-05-07 | The replication fund [Experiment 008](trend-marginal-value.md) found delivers the index's exposure |
+| KMLM | KraneShares Mount Lucas Managed Futures | 0.90% | $392.7M | 2020-12-01 | |
+| CTA | Simplify Managed Futures Strategy | 0.75% | $1.63bn | 2022-03-07 | |
 
-| ticker | exposure | fee bp | lending bp (median) | **net cost bp** | prospectus |
-| --- | --- | ---: | ---: | ---: | --- |
-| **SCHP** | broad US TIPS, WAM 7.1y, duration 6.3y | **3** | 0.01 | **2.99** | 2026-04-28 |
-| STIP | 0–5y US TIPS | 3 | 0.06 | 2.94 | 2026-02-27 |
-| VTIP | 0–5y US TIPS | 3 | does not lend | 3.00 | 2026-01-28 |
-| SPIP | broad US TIPS | 12 | 0.61 | 11.39 | 2025-10-31 |
-| **TIP** | broad US TIPS | **18** | 0.08 | **17.92** | 2026-02-27 |
-| LTPZ | 15+y US TIPS | 20 | does not lend | 20.00 | 2025-10-31 |
-| SCHO / VGSH | 1–3y Treasury | 3 | 0.00 / does not lend | 3.00 | 2026-04-28 / 2025-12-19 |
-| SCHR / VGIT | 3–10y Treasury | 3 | 0.05 / does not lend | 2.95 / 3.00 | 2026-04-28 / 2025-12-19 |
-| VGLT | 10–25y Treasury | 3 | does not lend | 3.00 | 2025-12-19 |
-| GOVT | 1–30y Treasury | 5 | 0.05 | 4.95 | 2026-02-27 |
-| TLT | 20+y Treasury | 15 | 0.00 | 15.00 | 2026-06-29 |
-| BND / AGG | US aggregate | *not read here* | does not lend / 0.26 | — | — |
-| VCIT | 5–10y IG corporate | 3 | does not lend | 3.00 | 2025-12-19 |
-| LQD | IG corporate | 14 | 1.94 | 12.06 | 2026-06-29 |
-| **HYG** | US high yield | **49** | **9.19** | **39.81** | 2026-06-29 |
+Sources: [Simplify fund pages](https://www.simplify.us/etfs),
+[Return Stacked prospectus 2026-04-27](https://www.returnstackedetfs.com/wp-content/uploads/pdf/return-PRO.pdf),
+[iMGP](https://www.imgp.com/us/fund/US53700T8273-imgp-dbi-managed-futures-strategy-etf/),
+[KraneShares](https://kraneshares.com/kmlm).
 
-**The answer on SCHP is that it is the right vehicle and the wrong question.** At a net
-2.99 bp it is the cheapest broad TIPS fund on the shelf and **TIP charges six times as
-much for the same asset** — 17.92 bp against 2.99, on exposures whose monthly returns
-correlate **+1.000 to three decimal places** over the seventy-nine months the shelf
-shares. A 15 bp difference on identical risk is the largest certain quantity anywhere in
-this section, and it is also the only one: everything below concerns whether the exposure belongs in the portfolio at
-all, and none of it depends on which of these two wrappers is used.
+**Why the fee matters more than it looks.** The trend sleeve's measured marginal value at
+10% weight is **+0.580 pp/yr gross**, which is exactly the design's own detection floor.
+A 99 bp wrapper consumes 10 bp of that at a 10% weight; a 10 bp wrapper consumes 1 bp.
+That does not make the sleeve resolvable — it is still inside the floor — but it removes
+the one term in the arithmetic that was **known** to be working against it. The
+financed-overlay funds ask a more favourable portfolio question than a pro-rata sale
+of the core, which is the point [capital efficiency](capital-efficiency-and-breadth.md)
+makes about funding rules.
 
-BND and AGG carry no fee here because they are already in the **core-beta shelf**'s
-cost audit ([portfolio recommendation](portfolio-recommendation.md)) and re-reading their
-fee tables would put the same fact in two places. Their N-CEN lending is reported above
-because the fixed-income manifest holds it: **BND answers Item C.6.a "No" in every year
-on file**, AGG earns a median 0.26 bp.
+**Three cautions that travel with the whole category.** These wrappers hold futures through
+a **Cayman controlled foreign corporation** to keep the income RIC-qualifying, which is
+what lets them issue a 1099 rather than a K-1 — CTA, KMLM, SDMF and CTAP all state "K-1:
+No" on their own pages, and the Return Stacked funds are 1940-Act RICs (their 1099 status
+is an inference from that, not an issuer statement). **No issuer in this set discloses a
+numeric financing cost**; the only hard figure available is the Return Stacked funds'
+interest-expense ratio of under 0.005% of average net assets for the year ended 2026-01-31,
+which reflects derivative-embedded rather than borrowed financing. And CTAP's 10 bp is a
+**waiver expiring 2026-12-04**, not a fee.
 
-**Securities lending is negligible for governments and material for credit.** SCHP earns
-0.01 bp a year from lending; HYG earns a median 9.19 bp, which is a fifth of its fee.
-The pattern is the one the core-beta audit found and it runs the same way: the cheaper
-the collateral is to borrow, the less the fund makes lending it.
-
-**Not found, and recorded rather than estimated.** No fund on this shelf publishes a
-portfolio **real yield**, in its 497K or its annual report. Only SCHP publishes an
-effective duration for its own portfolio; for VTIP, TIP, STIP, SPIP and LTPZ the only
-maturity figure published is the **target index's**, which is not the fund's, and it is
-labelled as the index's wherever it appears. Section 8.5 therefore prices the exposure
-from the Treasury's own real curve rather than from a fund's portfolio yield.
-
-### 8.2 The bond leg, and how far back it now reaches
-
-Two series, never spliced, and neither is a substitute for the other.
-
-| leg | source | coverage | months | investable? | fee |
-| --- | --- | --- | ---: | --- | --- |
-| **long Treasury `ltr`** | Goyal–Welch, measured total return | 1926-01…2025-12 | **1,200** | no | gross |
-| **long IG corporate `corpr`** | Goyal–Welch, measured total return | 1926-01…2025-12 | **1,200** | no | gross |
-| **standalone credit `corpr − ltr`** | derived from the two above | 1926-01…2025-12 | 1,200 | no | gross |
-| the eighteen funds above | Form N-PORT Item B.5 | 2019-07…2026-05 | **79 common** | **yes** | net of the fund's own |
-| the `GS10` proxy everything used before | **modelled** from a yield | 1963-07…2026-06 in excess of French `RF` | 756 | no | none |
-
-**`ltr` and `corpr` were in this repository the whole time.** They are columns of the
-Goyal–Welch predictor file, which was landed on 2026-08-16 and manifested, and which
-[capital efficiency §3](capital-efficiency-and-breadth.md) already reads for its
-multi-asset panel. No experiment had used them as a bond leg, and every diversification
-result in the programme was computed against a modelled `GS10` proxy instead. **That is
-the sixth source recorded here as absent that turned out to be published, and the first
-that had already been downloaded.**
-
-**The proxy and the measured series are not interchangeable, and the size of the gap is
-measurable.** On the 750 months both cover, 1963-07…2025-12, they correlate **+0.663**;
-the proxy runs at **6.73%/yr** of volatility against `ltr`'s **10.11%**, and **1.63%/yr**
-of excess return against **2.47%**. `GS10` is a ten-year point and `ltr` is a roughly
-twenty-year index, so most of that is an exposure difference rather than an error in
-either — but a page that says "bonds" and means one of them has not said which.
-
-**What the investable window can and cannot resolve.** Seventy-nine months, 2019-09 to
-2026-03, is the whole of it, and it is a bond bear market: **fifteen of the eighteen funds
-have a negative excess return over it**, the exceptions being the two 0–5 year TIPS funds
-and high yield, and the minimum detectable effect on a matched-volatility gap runs
-**6.7 to 21.0 pp/yr**. It resolves nothing about returns. It
-resolves correlations to two decimal places, which is the same asymmetry
-[the evidence base](evidence-base.md) records everywhere else.
-
-### 8.3 One engine, and TIPS are inside it
-
-| pair | ρ, 79 investable months | reading |
-| --- | ---: | --- |
-| SCHP / BND | **+0.851** | one engine |
-| SCHP / VGIT | +0.776 | one engine |
-| SCHP / GOVT | +0.761 | one engine |
-| SCHP / TLT | +0.705 | mostly one engine |
-| LTPZ / VGLT | +0.846 | one engine |
-| VTIP / SCHO | +0.585 | partly distinct, and both are near-cash |
-| LQD / VGIT | +0.743 | mostly one engine |
-| modelled 10y TIPS / modelled 10y nominal, 275 months 2003-02…2025-12 | **+0.798** | one engine |
-
-**Counting a TIPS sleeve beside a nominal bond sleeve is the same fake breadth that
-counting credit beside Treasuries was.** [Capital efficiency §3](capital-efficiency-and-breadth.md)
-already rejects the second at ρ = +0.83; the first is +0.76 to +0.85 on investable funds
-and +0.80 on a modelled series with three and a half times the history.
-
-### 8.4 The question that decides: is TIPS' correlation to equity stable where nominal bonds' is not?
-
-The rationale for a TIPS sleeve is that it responds to a different state variable, so its
-correlation to equity should be stable where the nominal bond's is famously not.
-**Measured, that is false in this window, and false in the direction opposite to the
-one the rationale predicts.**
-
-Correlation to the US market excess return, non-overlapping 60-month blocks, block length
-fixed before the series were seen.
-
-| series | window | months | full ρ | blocks | span | sd |
-| --- | --- | ---: | ---: | --- | ---: | ---: |
-| long Treasury `ltr` | 1963-07…2025-12 | 750 | +0.097 | +0.18 +0.36 +0.35 +0.42 +0.28 +0.49 +0.42 **−0.30 −0.32 −0.27 −0.30 −0.09** | **0.802** | 0.330 |
-| 10y nominal, modelled | 1963-07…2026-06 | 756 | +0.136 | +0.34 +0.51 +0.34 +0.34 +0.24 +0.37 +0.31 **−0.17 −0.14 −0.22 −0.18 +0.03** | 0.734 | 0.264 |
-| standalone credit | 1963-07…2025-12 | 750 | +0.307 | +0.23 +0.04 +0.40 −0.03 −0.21 −0.28 −0.17 **+0.52 +0.67 +0.49 +0.63 +0.69** | 0.974 | 0.364 |
-| **10y TIPS, modelled** | **2003-02…2026-06** | **279** | +0.131 | −0.14 +0.09 +0.02 +0.34 | 0.481 | 0.200 |
-
-**The nominal bond's sign flip is measured and it is large.** Seven consecutive positive
-blocks then five consecutive negative ones, a span of **0.802**; put compactly, ρ =
-**+0.352** over 1963-07…1998-06 and **−0.206** over 1998-07…2025-12 on `ltr`, and +0.322
-and −0.106 on the modelled ten-year. **That break date was chosen by eye from the block
-table and is reported as descriptive** — the blocks are the pre-specified statistic and
-the split only restates them. The pattern is the same shape as the trend/Treasury result a
-concurrent audit found: **the bond has breadth in the era it has no return and return in
-the era it has no breadth.** It is the strongest single argument against a fixed-income
-sleeve in this repository.
-
-**TIPS cannot be tested against it, and where they can be tested they are worse.** The
-security did not exist before 1997 and the Treasury's real curve begins 2003-01, so
-there is **no observation of a TIPS return in the era when nominal bonds' correlation to
-equity was positive**. That is a hard limit, not a gap in the search. On the only window
-where both exist:
-
-| series, identical months and identical block edges, 275 months 2003-02…2025-12 | ρ to equity | SE | blocks | span | sd |
-| --- | ---: | ---: | --- | ---: | ---: |
-| long Treasury `ltr` | **−0.176** | 0.059 | −0.19 −0.29 −0.32 −0.09 | **0.229** | **0.103** |
-| 10y nominal, modelled | **−0.076** | 0.060 | −0.12 −0.21 −0.18 +0.04 | 0.254 | 0.114 |
-| **10y TIPS, modelled** | **+0.131** | 0.060 | −0.14 +0.09 +0.02 +0.34 | **0.481** | **0.200** |
-| long IG corporate `corpr` | +0.190 | 0.058 | −0.01 +0.10 −0.03 +0.38 | 0.411 | 0.190 |
-| standalone credit | +0.569 | 0.041 | +0.57 +0.51 +0.62 +0.69 | 0.183 | 0.078 |
-
-**TIPS are more equity-correlated than nominal Treasuries and their correlation is less
-stable, on the same months, by a factor of two on both counts.** The gap in the
-full-sample correlation, +0.131 against −0.076, is **3.5 standard errors** wide. The
-investable funds say the same thing at a wider duration range and with volatility held
-roughly equal: **SCHP +0.623 at 5.71%/yr of volatility against GOVT +0.277 at 5.34% and
-VGIT +0.274 at 4.94%**, and at the short end **STIP +0.571 and VTIP +0.566 against SCHO
-+0.144 and VGSH +0.166**. It is not a duration artefact; it appears at both ends of the
-curve at matched volatility.
-
-Three qualifications, none of which rescues the hypothesis. The TIPS series is
-**modelled** from FRED `FII10` and carries the Treasury's own documented **2008-12-01
-methodology break**, when the real curve moved to most-recently-auctioned issues as knot
-points. Its one modelling choice, the reference-CPI lag, is immaterial: moving it from
-the statutory three months to zero moves the correlation to equity from +0.131 to
-+0.138. And the real yield was **negative in 45 of 283 months**, which the repository's
-existing par-bond helper refuses to price — that guard is correct for a nominal Treasury
-and had to be replaced by a documented limit for an indexed one.
-
-### 8.5 The exposure, not the wrapper: what a TIPS buyer is actually buying
-
-| quantity | value | as of | source |
-| --- | ---: | --- | --- |
-| 10-year **real** constant-maturity yield | **2.35%/yr** | 2026-07 | FRED `FII10`, the monthly average of Treasury's daily par real curve |
-| 10-year **nominal** constant-maturity yield | 4.60%/yr | 2026-07 | FRED `GS10` |
-| 10-year **breakeven** inflation | **2.28%/yr** | 2026-08-17 | FRED `T10YIE` |
-| the same breakeven from the two monthly averages | 2.25%/yr | 2026-07 | derived |
-
-**A TIPS buyer is buying a real 2.35%/yr and selling the inflation forecast.** Holding
-the ten-year TIPS instead of the ten-year note wins if and only if realised inflation
-exceeds **2.28%/yr** over ten years. It is a swap of one risk for another at a
-market-set price, **not a higher expected return** — and the breakeven is not a forecast
-either, because it contains an inflation risk premium and a TIPS liquidity premium of
-unknown and time-varying sign. Nothing here predicts with it.
-
-Treasury's own definition, read from
-[the daily real yield curve page](https://home.treasury.gov/resource-center/data-chart-center/interest-rates/TextView?type=daily_treasury_real_yield_curve)
-on 2026-08-17: *"Par real yields on Treasury Inflation Protected Securities (TIPS) at
-'constant maturity' are interpolated by the U.S. Treasury from Treasury's daily par real
-yield curve."* The reference index is set by
-[31 CFR 356](https://www.ecfr.gov/current/title-31/part-356) — *"the monthly
-non-seasonally adjusted U.S. City Average All Items Consumer Price Index for All Urban
-Consumers"*, applied with a three-month lag (*"Ref CPI April 1, 1996 = 154.40, the
-non-seasonally adjusted CPI-U for January 1996"*), read from eCFR on 2026-08-17.
-
-### 8.6 Does any fixed-income sleeve clear its bar? No
-
-Scored against `global_equity_core` on Experiment 010's own 420-month sample, first-order
-at the 10% reference weight. The pipeline reproduces that experiment's credit ceiling —
-`sigma_p**2` = **2.171 pp/yr** per unit weight — which is what licenses the comparison.
-
-| bond leg | β to core | credit @10% | **pro rata @10%** | overlay @10%, unfinanced | overlay @10%, financed | MDE₈₀ |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| **modelled** `GS10` — Experiment 010's own leg | −0.018 | +0.221 | **−0.328** | +0.258 | +0.183 | 0.795 |
-| **measured** long Treasury `ltr` | −0.092 | +0.237 | **−0.136** | **+0.450** | +0.375 | 0.868 |
-| **measured** long IG corporate `corpr` | +0.117 | +0.192 | −0.147 | +0.439 | +0.364 | 0.727 |
-| **measured** standalone credit | +0.209 | +0.172 | −0.597 | −0.011 | −0.086 | 0.538 |
-
-**Under the funding rule the zero-leverage constraint actually permits — pro rata — no
-bond leg comes close.** The best is −0.136 pp/yr against a +0.30 bar.
-
-**Under financed overlay funding two legs clear the bar and neither is resolved.** The
-measured Treasury leg reads **+0.450 pp/yr unfinanced and +0.375 after a 60 bp borrow
-spread and a 15 bp fee**, against its own 80%-power floor of **0.868**. An estimate half
-its detection floor is a statement about the window. The same is true of corporates at
-+0.364 against 0.727. **`unresolved`, not a pass** — and the honest control does not
-rescue it either. Equation (5) at that weight puts the overlay portfolio's Sharpe ratio
-at **0.578 against the base's 0.545** — a gap of 0.033 which, multiplied by the portfolio's
-own volatility, is the same +0.450 pp/yr already shown to sit at half its detection floor.
-The control agrees with the marginal; neither resolves anything.
-
-**The measured leg does move Experiment 010's cell, materially, and in the sleeve's
-favour.** Pro rata, from −0.328 to −0.136; overlay, from +0.258 to +0.450. That is a
-finding about the proxy, not about bonds: the modelled series understates both the excess
-return (+2.54 against +4.30) and the volatility (6.19 against 9.73) of the exposure it
-stands in for, and its credit ceiling is lower because its beta to the core is closer to
-zero from the wrong side.
-
-On the investable window every fund fails equation (5) against VTI and only six of
-eighteen gaps are resolved — LTPZ −16.88, BND −17.29, AGG −17.26, LQD −14.32, VCIT
-−12.86 and HYG −8.70, all against floors of 6.7 to 16.2 pp/yr. **SCHP reads −12.48 pp/yr
-with a 95% interval of `[−24.22, −0.74]` against a floor of 14.89** — an interval that
-excludes zero at less than 80% power, the same shape as VNQ and SCHH in §5, and it must
-be described as that rather than as a detection.
-
-**Verdict: `unresolved` for a Treasury or aggregate sleeve, `rejected` for a separate
-TIPS sleeve.** The TIPS rejection does not rest on the return window at all, which
-cannot resolve anything; it rests on two things the window *can* resolve. TIPS are +0.76
-to +0.85 correlated with the nominal bond funds they would sit beside, so they are not a
-second engine. And their correlation to equity is **higher** and **less stable** than
-nominal Treasuries' on identical months, which is the opposite of the property the sleeve
-is held for.
+**Where the sleeve belongs.** Tax-deferred. Managed-futures funds distribute
+short-term gains and interest income, and a financed stack distributes both legs.
 
 ---
 
-## Verified, assumed, open
+## 8. Gold and commodities: right about the state, wrong about the state that hurts
 
-**Verified.** Every fee, minimum, return, cap, buffer and distribution figure above is
-from a named SEC filing or index file. The PUT/BXM regressions, every §§4–7 moment,
-regression, piecewise beta, matched-volatility gap and cap valuation were computed here
-rather than quoted. The cat bond multiples are from the Artemis deal directory.
+**Verdict on gold. Optional, at most 5%, and only as a replacement for cash or bonds —
+never funded by selling equity. A financed wrapper changes the funding question and does
+not change the expected return. The finance-free version of the argument is in §1.3: gold
+buys twelve basis points a month of lower-tail protection over T-bills, at 16.24%
+volatility and a −91.2% peak-to-trough.**
 
-**Assumed, and both assumptions are load-bearing.** That modelled expected loss — a
-vendor cat-model output, and the optimistic input — is the right subtrahend for a cat
-bond's gross excess return. And that a **fund-reported** Item B.5 return is comparable
-across filers: Form N-PORT General Instruction G lets each filer use its own
-methodology, so two funds' returns are not guaranteed to be computed alike. That
-assumption underlies every number in §§4–6.
+**Verdict on long-only commodities. Reject as a diversifier; consider only if the investor
+has a specific inflation liability.** Their mean in the worst decile of equity months is
+**−1.84%**, positive in only 36% of them, with ρ low **+0.326** — they fall *with* equity
+in equity crises and pay only in the inflation shocks (1973-74 **+143.9%**, 2022 +10.5%).
+That is a real and valuable property, but it is a hedge against a different state, and the
+investor should not buy it believing it is a crash hedge.
 
-**Open, and each is a real gap.**
+**Does a financed wrapper change the gold answer?** No, and it is worth being precise about
+why. GDE (WisdomTree Efficient Gold Plus Equity Strategy Fund) holds US large-cap equity
+plus US-listed gold futures, at **0.20%** with **$496.0M** of net assets, inception
+2022-03-17
+([factsheet](https://www.wisdomtree.com/-/media/us-media-files/documents/resource-library/fund-fact-sheets/asset-allocation/en-us_capital-efficient-etfs_gde.pdf),
+data as of 2026-06-30, read 2026-08-22). Its own
+[summary prospectus](https://www.sec.gov/Archives/edgar/data/1350487/000121465925018663/gde497k1225.htm)
+dated 2026-01-01 says "approximately equal exposure" to the two legs, rebalanced quarterly,
+with the gold leg run through a **Cayman subsidiary capped at 25% of total assets at each
+fiscal quarter-end** to preserve RIC source-of-income qualification — so the "90/90"
+marketing shorthand is not the prospectus language, and **whether §1256 60/40 treatment
+reaches the shareholder is unverified**: gains realised inside a wholly-owned controlled
+foreign corporation are generally not passed through with that character, and the
+prospectus is silent. What the wrapper changes is the **funding rule**, and
+[the marginal-sleeve work](marginal-sleeve-value.md) has already measured that the funding
+rule flips gold's sign: −0.404 pp/yr at 10% funded pro rata against +0.18 to +0.22 financed.
+What it does not change is that both estimates sit inside the design's 0.63–1.04 pp/yr
+detection floor, or that gold's excess return over half a century has been **+1.75%/yr at
+a Sharpe of 0.18**. **A cheaper wrapper for an uncertain expected return is a cheaper
+wrapper, not a better expected return.** GDE also converts a grantor-trust holding taxed at
+the 28% collectibles rate into a 1940-Act fund that is not — which is a genuine tax
+improvement and should be scored as one, in the tax work rather than here.
 
-- Mitchell and Pulvino's piecewise betas, the CEF discount literature's alpha
-  magnitudes, and the direct-indexing decay estimates were all **searched for and not
-  reached** (403s and rate limits), so three verdicts rest on vehicle economics alone.
-  Section 1256 character breakdowns for the option-income funds were not sourced.
-  Whether a US person may hold a UCITS cat bond fund was not established and the PFIC
-  treatment is reasoning rather than a citation.
-- **The qualified-dividend, Section 199A and dividends-received split for VNQ, SCHH and
-  USRT is not found** in any of the three funds' annual reports; it lives in each
-  issuer's year-end tax-character statement, which was not retrieved. **This runs in the
-  REITs' favour**, so §5's tax figures are upper bounds.
-- **NOBL's qualified share is not found.** ProShares' N-CSR states only that the fund
-  "designated up to the maximum amount".
-- **SCHD's published 30-day SEC yield and trailing distribution yield are not found**:
-  Schwab's fund pages returned HTTP 403 to an automated client and bot protection was
-  not circumvented. The 3.40% used in §4 is **computed here** from the fund's own filed
-  distribution total and net assets, and is labelled as computed everywhere it appears.
-- **FT Vest's starting caps for the twelve funds inside BUFR and BUFD are not
-  retrieved**, so no cap-pricing figure in §6 is attributed to BUFR; its buffer level
-  (10%, not 15%) and its 0.95% all-in cost are.
-- **There is no ten-year monthly return history for any fund here.** Public N-PORT
-  begins with periods ending 2019-09-30. A ten-year realised volatility for SCHD, and
-  therefore a ten-year Sharpe comparison against VTI, cannot be built from any primary
-  source this repository holds. The ten-year figures in §4 are annualised returns from
-  the funds' own prospectus tables and carry no second moment.
-- **No TIPS return exists for the era that would decide the question in §8.4.** The
-  security dates from 1997 and the Treasury's real curve from 2003-01, so there is no
-  observation of a TIPS return in the era when nominal bonds' correlation to equity was
-  positive. **This is a hard limit and no search can close it**, which is why §8's TIPS
-  verdict rests on the correlation to the nominal leg and on the same-window comparison
-  rather than on an era test that cannot be run.
-- **No fund on the fixed-income shelf publishes a portfolio real yield**, and only SCHP
-  publishes its own effective duration; the other five TIPS funds publish only their
-  target index's maturity. §8.5 therefore prices the exposure from Treasury's own curve.
-- **The TIPS series in §8.4 is modelled** from a constant-maturity real yield, not a
-  measured index return, and it carries the Treasury's documented 2008-12-01 curve
-  methodology break. The measured legs `ltr` and `corpr` are index returns gross of any
-  fee and are **not investable**; the funds are investable and six years long. Nothing in
-  §8 splices the two.
-- **The measured window is one in which large-cap growth beat the market substantially**
-  — the same window that produced six positive shrunk alphas in the
-  [product audit](factor-products.md), all large-cap growth, none clearing its own
-  threshold. A value-tilted dividend fund trailing over it is partly a statement about
-  the decade, which is why the MDE₈₀ column exists and why not one gap in §4 is
-  resolved.
+**One thing the financed form does buy, and it is the honest case for it.** Because GDE's
+gold leg is notional, holding it does not require selling equity. §1.5 measures that a
+pro-rata gold sleeve costs −0.40 pp/yr at 10%; a notional one costs its financing rate and
+its fee instead. For an investor who wants gold's inflation-state payoff and does not want
+to reduce equity to get it, that is the correct instrument. The reason this page still caps
+it at 5% is §1.3: gold's crisis contribution over cash is 12 bp a month, and financing does
+not make that number larger.
+
+**Commodity vehicles carry a structural tax split worth naming once.** The broad commodity
+products divide into 1940-Act funds that hold futures through a Cayman subsidiary and issue
+a **1099**, and commodity pools that issue a **K-1**. That difference is larger than the
+fee difference between them for most investors, and it decides which account can hold the
+position at all. Confirm the current form on the issuer's page before transacting; the
+category has changed structure repeatedly.
+
+**The long/short version is not a separate idea.** A carry- and momentum-aware long/short
+commodity strategy is, mechanically, the commodity leg of a diversified trend programme —
+which the investor already owns inside the managed-futures overlay. **Reject on overlap,
+not on the premium.** The measured evidence agrees: the AQR long-only commodity series
+correlates −0.064 with TSMOM, which is exactly what you would expect if the trend programme
+is trading the same markets from both sides.
 
 ---
 
-## Consequence for this repository
+## 9. Screened and set aside, with the reason attached
 
-1. **"Breadth is one engine" was a statement about the fund shelf, not about markets.**
-   Cat bonds clear the admission bar at ρ ≈ 0.10 and have no financed wrapper; trend
-   clears it and has one. That is the binding constraint.
-2. **Catastrophe bonds enter the registry as `exploratory`, monitor rather than
-   allocate**, with a stated review trigger: the new-issue multiple recovering above
-   3.0× and the Brookmont vehicle reaching three years and $250m.
-3. **The volatility risk premium is `rejected`** on live-only alpha of −0.09 to
-   −0.88%/yr at ρ 0.86–0.95, and any future page quoting put-writing performance must
-   state that history before 2007 is a backtest.
-4. **A dollar-weighted return belongs beside every time-weighted one** for an
-   interval-fund sleeve. SRRIX's 7.92% and its investors' ~1.8% are the same decade.
-5. **Prefer a completion or small-cap fund whose securities-lending revenue accrues to
-   shareholders**: 10.43 bp on VXF against 0.07 on VOO is small, certain, and free.
-6. **The five ordinary families fail by five different mechanisms and none of the five
-   is "the premium is small".** Dividend funds are a value-and-quality tilt whose record
-   is 87% explained by its loadings, with a **+0.51 pp/yr** tax wedge that is *qualified*
-   rather than ordinary — a fifth of what the usual framing implies. REITs are
-   four-fifths spanned by market, size, value and duration and the remaining fifth
-   delivers **112% of the market's downside against 80% of its upside**. Buffer funds
-   sell more upside than they buy downside, by a factor of two, on every window since
-   1926. Bitcoin passes on arithmetic and fails on the absence of an input. Fixed income fails
-   on breadth: it is one engine with equity's correlation drifting through it.
-7. **The correlation decides the instrument, and that is now enforced in code.**
-   `choose_instrument` in
-   [`retail_shelf.py`](../../research/src/portfolio_edge/studies/retail_shelf.py) refuses
-   to describe equation (4)'s margin as a verdict above `|rho| = 0.5`. Every long-only
-   equity sleeve a retail investor is offered sits above that boundary, so **equation (4)
-   is the wrong instrument for most of the retail shelf** and the audit that used it
-   would have passed all three families.
-8. **A matched-volatility win is not a growth win, and for a capped payoff it is not
-   even a portfolio.** PJUL and POCT beat VTI by +1.91 and +2.95 pp/yr under equation (5)
-   and lost 4.06 and 4.15 pp/yr of growth at the weight anyone holds. Any future page
-   quoting a matched-volatility gap must quote the unlevered one beside it.
-9. **A TIPS sleeve is rejected, and not on its return.** SCHP is the cheapest broad TIPS
-   fund on the shelf at a net 2.99 bp and TIP charges six times that for a +0.9997
-   correlated exposure — but the vehicle question is the small one. TIPS correlate +0.76
-   to +0.85 with the nominal bond funds they would sit beside, so they are not a second
-   engine; and on identical months their correlation to equity is **+0.131 against the
-   nominal ten-year's −0.076** and their five-year-block dispersion is **twice** as
-   large. **The one property the sleeve is held for is the one it does not have here.**
-10. **`ltr` and `corpr` replace the `GS10` proxy as the repository's bond measurement,
-   and the substitution is material.** Experiment 010's bond cell moves from −0.328 to
-   −0.136 pp/yr pro rata and from +0.258 to +0.450 financed-overlay at the 10% reference
-   weight. The proxy understates the exposure's excess return by 1.76 pp/yr and its
-   volatility by 3.5 pp/yr. **Any page still quoting a `GS10`-derived bond figure should
-   say so in the same sentence**; [setting the equity share](setting-the-equity-share.md)
-   is the largest remaining one.
-11. **Two sources were recorded as absent here and were not.** French's 49-industry file
-   carries a documented real-estate equity total return from 1926-07, free, and FRED
-   carries a bitcoin price from 2014-12. Both are now held and manifested. **That is the
-   fourth and fifth time this has happened**, after Goyal–Welch, Shiller and gold; see
-   [search coverage](search-coverage.md) §5 item 4. **The sixth is worse than any of
-   them**: Goyal–Welch `ltr` and `corpr` are a hundred years of measured bond total
-   returns that were already in this repository's cache and manifest, and every bond
-   figure the programme has published was computed against a modelled proxy instead.
-12. **The given universe is not the retail universe.** Every family
-    [it names](#the-universe-this-page-was-given) is exotic; the four families a retail
-    investor is actually pointed at were absent from it and from this repository entirely
-    until 2026-08-17. **A universe assembled from what is interesting is not a
-    universe.**
+Each of these arrived with a mechanism. Each is set aside for a stated reason, and the
+reason is what a future round should attack.
+
+**Ideas the repository had not previously considered.** These are the ones worth arguing
+about.
+
+| Idea | Who pays, and why | Why it is set aside | What would reopen it |
+| --- | --- | --- | --- |
+| **Prepaying a mortgage, treated as a negative bond** | Nobody — it is the removal of a liability. The return is the after-tax mortgage rate, risk-free, with **negative duration** and zero market risk | Not set aside on evidence: it is very likely the **highest-Sharpe action available to a household carrying debt above the after-tax Treasury yield**, and it is invisible to every experiment here because the repository models an asset portfolio rather than a balance sheet. It is illiquid and it forecloses cheap fixed-rate leverage if the rate is low | The investor's actual mortgage rate, balance, and whether they itemise. This is an **investor input**, not a market question, and it belongs in the parameterisation work |
+| **Currency diversification of the cash sleeve** | Nobody. It is not a premium; it is the removal of a single-currency concentration in the one asset assumed to be safe | A US investor's liabilities are in dollars, so foreign-currency cash is a mismatch rather than a hedge, and unhedged FX adds volatility with no expected return. Defensible only against a *dollar-specific* purchasing-power shock, which is a scenario, not an estimand | A liability stream that is not dollar-denominated, or a study that prices a dollar-specific regime rather than assuming one |
+| **Life settlements and longevity risk** | Insurers and policyholders. The premium is compensation for mortality timing, which has no financial-market driver at all | Genuinely uncorrelated in mechanism, but the retail vehicles are interval funds with 2–3% cost stacks, and — the decisive objection — **their reported NAVs are appraisals, not prices**. An appraised NAV manufactures a low measured correlation whether or not the economics are uncorrelated | A vehicle marking to observable transactions, or an independent index of realised settlement returns |
+| **Litigation finance** | Claimants who cannot fund a case and want certainty. The return is legal-outcome risk plus an illiquidity premium | Same mechanism-good / measurement-bad shape as life settlements, plus duration uncertainty that makes an IRR unquotable | The same: an observable-price vehicle |
+| **Trade finance and receivables** | Corporates outside bank credit appetite | It is credit, and it correlates with credit in exactly the state that matters. Greensill is the worked example | Nothing likely. It duplicates §6 with worse liquidity |
+| **Farmland and timberland** | Tenants and mills, via rent and stumpage | The public vehicles are leveraged real-asset equities and trade with equity beta; the private ones are appraisal-marked | A holdings-based decomposition showing exposure that beta, value and duration cannot span |
+| **Local-currency EM sovereign debt** | Investors unwilling to hold the currency. Real rate plus a currency risk premium | It is the funding-currency crash trade with a sovereign wrapper; it sells the same crash insurance §4 says not to buy, so it belongs on the concave side of §1.4 | A crisis-conditional measurement on this panel. The repository holds no local-currency EM series |
+| **Municipal bonds** | The US Treasury, through §103. A statutory exemption, not a premium | Not a return engine at all. It is a **placement** decision whose answer is the muni/Treasury ratio against the investor's bracket | Belongs in [structural and tax edges](structural-and-tax-edges.md), not here |
+| **Series I savings bonds** | The Treasury, contractually | A liability match with a statutory purchase cap, so it cannot be sized to matter | A change in the cap |
+
+**Families screened in earlier rounds and left where they were.** The reasons below are
+scoped conclusions about instruments and vehicles, not statements that the mechanism is
+absent.
+
+- **Volatility selling and put writing.** The premium is real — it is the same premium §4
+  says not to pay. Rejected on **overlap**, not on the premium: it duplicates equity's own
+  left tail, and its measured live-only alpha ran −0.09 to −0.88%/yr at correlations of
+  0.86–0.95 to equity, with an up-beta of 0.45 against a down-beta of 0.86.
+- **Merger arbitrage.** The mechanism is genuine — sellers of deal risk pay for certainty
+  before a deal closes — and the vehicles are real, cheap enough, and liquid. They are also
+  too small to move a portfolio. Ten-year annualised NAV returns to 2026-06-30, all
+  issuer-published and all read 2026-08-22: **MNA +2.92%/yr at a 0.77% fee**
+  ([NYLI factsheet](https://www.nylim.com/assets/documents/index-nyli/mna-nyli-merger-arbitrage-etf-fs.pdf)),
+  **MERIX +4.29% and MERFX +3.98% at a 1.26%/1.55% net fee**
+  ([Virtus factsheet](https://www.virtus.com/assets/files/4yo/the-merger-fund-enhanced-fact-sheet-1412.pdf)),
+  and **ARB +4.25% since 2020-05** at 0.76%
+  ([AltShares factsheet](https://altshares.s3.amazonaws.com/arb/Fact_Sheet-ARB.pdf)).
+  Those are total returns over a decade whose average T-bill yield was itself a large part
+  of them, so the excess is a low single digit at best, and the left tail is a break-risk
+  loss that clusters with equity. **At any weight a retail investor would hold, the
+  contribution is well inside the 0.58 pp/yr detection floor: unresolved, and too small to
+  be worth resolving.** Two housekeeping facts: ARB and EVNT reorganise from AltShares
+  Trust into identically-named series of The Arbitrage Funds on or about 2026-09-25 at
+  identical fees
+  ([497](https://www.sec.gov/Archives/edgar/data/0001105076/000110465926087563/tm2618099d2_497.htm)),
+  and First Trust's MARB **stopped being a merger-arb fund on 2026-06-24**, becoming the
+  Equity Market Neutral ETF (NTRL) at a 0.95% fee
+  ([First Trust](https://www.ftportfolios.com/retail/etf/etfsummary.aspx?Ticker=NTRL)) —
+  a reminder that a strategy shelf is not a market ontology.
+  A stacked version exists, **RSBA** (100% US Treasuries + 100% merger arbitrage, 1.01%,
+  $52.3M, inception 2024-12-17), which is the only form in which this premium could
+  plausibly matter, because it does not compete with equity for capital.
+- **Alternative-risk-premia and multi-strategy funds.** The examined shelf earned 0.3–1.0%/yr
+  gross post-2019 at 2–5% volatility against a retail wrapper costing about 1.5%. **The cost
+  stack, not the premia, is the finding.** The survivor worth naming is QAI (NYLI Hedge
+  Multi-Strategy Tracker, 1.10% gross / **0.88% net**, $1.02bn, inception 2009-03-25), whose
+  ten-year NAV return to 2026-06-30 is **+3.93%/yr**
+  ([factsheet](https://www.nylim.com/assets/documents/index-nyli/qai-nyli-hedge-multi-strategy-tracker-etf-fs.pdf),
+  read 2026-08-22) — a decade of hedge-fund replication that did not beat its own cash leg
+  by much. Its index has held digital-asset ETPs at up to ±2.5% since 2026-05-01
+  ([497](https://www.sec.gov/Archives/edgar/data/1415995/000199937126009637/qai-497_042226.htm)),
+  which is a mandate change a holder should notice.
+- **REITs and dividend funds.** Dominated on Sharpe at correlations of +0.82 and +0.84;
+  REITs gave 112% of the downside for 80% of the upside. Not distinct engines by label.
+- **Closed-end fund discounts, securities lending, direct indexing.** Retained as
+  candidates with the same next questions as before: a point-in-time discount panel, better
+  N-CEN/N-PORT lending measures by fund and year, and after-fee modelling under the
+  investor's actual lots. None is a market-return engine; the last two are implementation
+  lines and belong with [the structural work](structural-and-tax-edges.md).
+- **Short-term reversal, accruals, net issuance, and other published anomalies.** Their
+  post-publication premia sit inside the public library's own detection floor, and no
+  adequate registered implementation exists on the audited shelf. **An implementation
+  finding on the second clause, an underpowered null on the first.**
+
+---
+
+## 10. Consequence for the portfolio
+
+### The ranked shortlist
+
+Weights are **scenario sizings for the reference investor**, not an optimiser output, and
+they are stated as ranges because the investor inputs that would narrow them — contribution
+and withdrawal path, embedded gains, account capacity, tolerable drawdown — are still
+missing. **Nothing here is promoted** — [decision 0004](../decisions/0004-no-sleeve-promoted.md)
+stands, nothing on this page is `production-eligible`, and no measurement here was frozen
+before its numbers were seen. What has changed is which candidates deserve a frozen
+specification next, and one of them changed because the instrument that rejected it was
+wrong.
+
+| # | What to add | Weight | Mechanism, in one line | The marginal case | Account |
+| ---: | --- | ---: | --- | --- | --- |
+| 1 | **Restructure the defensive sleeve: half duration-hedged credit or AAA CLO, half short-to-intermediate Treasuries or TIPS** | within the existing defensive allocation | Rating-constrained holders pay a spread; short duration removes the era-dependent rate bet | Same return as long Treasuries at half the volatility and a third of the drawdown; the two legs correlate **+0.016** and the blend is flat through 2008-09 and loses 23% rather than 41% through the late 1970s | Tax-deferred |
+| 2 | **Buy the trend exposure you already hold, more cheaply** | unchanged sizing | Unchanged | The sleeve's gross marginal value is +0.58 pp/yr at 10%; moving from a 99 bp wrapper to a 10–35 bp one returns roughly 6–9 bp of it, and removes the one term known to work against it | Tax-deferred |
+| 3 | **Raise the cash and short-Treasury allocation instead of buying a tail hedge** | +0 to +10% | Not a premium — an absence of exposure, plus a 3.88% bill yield and a 2.40% ten-year real yield | Measured: swapping 10% of equity into T-bills adds **+0.92%** in the average worst-decile equity month, at no fee and no drawdown. Long Treasuries add +0.94%. Nothing on the option shelf beats it net of bleed | Either; taxable if muni-equivalent yields favour it |
+| 4 | **Catastrophe bonds** | 0–3%, or wait | Insurers with statutory capital constraints buy peak-peril capacity; the trigger is a hurricane | The only non-financial risk driver screened. **But the spread-to-expected-loss multiple is 2.21× against 4.90× in 2023**, and the retail record is ≈1 pp/yr over cash across nine years net of fees. Size to the spread; reopen at **3.5×** | Tax-deferred, without exception |
+| 5 | **Spot bitcoin** | 0–2% | None. There is no cash-flow claim | A declared speculation the investor wants to own, at a size where total loss is survivable. **Not a diversifier**: β 1.53/1.62, −7.51% mean in the worst equity decile, and the only sleeve measured that deepened portfolio drawdown at every weight | Taxable, to keep the harvesting option |
+| 6 | **Gold, only if funded from cash rather than equity** | 0–5% | No payer; a monetary-regime and inflation-state payoff | Buys 12 bp a month of lower-tail protection over T-bills, at 16.24% volatility and a −91.2% drawdown. A financed wrapper changes the funding rule, not the expected return | Taxable if via a 1940-Act fund; a grantor trust carries the 28% collectibles rate |
+
+**Nothing above is a new return engine except items 1 and 4.** Items 2, 3, 5 and 6 are a
+cheaper wrapper, an absence of exposure, a declared speculation and an optional
+inflation-state hedge. Counting them as engines would be the error the charter names.
+
+### What was rejected, and on what grounds
+
+Grounds matter more than verdicts, because a rejection on cost reopens when the cost
+changes and a rejection on overlap never reopens at all.
+
+| Rejected | Grounds | Reopens when |
+| --- | --- | --- |
+| Explicit tail hedges, long volatility, buffered products | **Measured cost against measured benefit.** ~12 pp/yr of bleed; no engine on the panel shows resolvable convexity; VIX roll cost is arithmetic | Never on this design. Only a structural change in the variance risk premium's sign |
+| Volatility selling and put writing | **Overlap.** It duplicates equity's own left tail | Never |
+| Long/short commodities | **Overlap** with the commodity leg of the trend programme already held | If the trend sleeve is removed |
+| Long-only commodities as a diversifier | **Measured tail behaviour.** −1.84% mean and 36% hit rate in the worst equity decile, ρ low +0.326 | Never as a crash hedge. It remains a valid *inflation* hedge and is admitted as one |
+| BAB, low-volatility and anti-beta tilts as defensives | **Measured concavity**, *t* = +3.49: β −0.264 up, **+0.118 down** | Never. This is a property of the mechanism |
+| Merger arbitrage, alternative-risk-premia funds | **Scale and cost stack.** 2.9–4.3%/yr total over ten years, inside the detection floor at any holdable weight | If a stacked wrapper makes the premium additive rather than competitive with equity |
+| REITs, dividend funds, TIPS-as-a-second-engine | **Overlap and dominance**, measured in earlier rounds | On a holdings-based decomposition showing exposure the controls cannot span |
+| Life settlements, litigation finance, farmland | **Measurement, not mechanism.** Appraised NAVs manufacture a low correlation whether or not the economics are uncorrelated | A vehicle marking to observable transactions |
+
+### The three findings a reader should leave with
+
+1. **A rejection is only as good as the series that produced it.** Credit was rejected here
+   on a +0.835 correlation to Treasuries measured on an index carrying twenty years of
+   duration. Hedge the duration out and the correlation is **+0.016** over 1,068 months.
+   Same asset class, different instrument, opposite conclusion. Every other rejection on
+   this page should be read with that possibility in mind.
+2. **Shocks come in two kinds and no asset covers both.** Treasuries paid in every growth
+   and deflation shock and lost up to 40% in the inflation ones; commodities and gold did
+   the reverse; trend was positive in both but has no data before 1985. Breadth means
+   holding across *shock types*, not across ticker counts.
+3. **In the lower tail, cash is the benchmark almost nothing beats.** A 10% swap from equity
+   into T-bills adds +0.92% in the average worst-decile month. Long Treasuries add +0.94%,
+   gold +0.92%, BAB +0.96%, commodities +0.74% and bitcoin +0.05%. **Only trend, at +1.08%,
+   materially beats it** — and its case is a positive mean, not a convex shape.
+
+### What would change this page
+
+- **A duration-hedged credit series reaching 2026.** The one held ends 2014-12 and has
+  never seen March 2020 or 2022. This is the highest-value acquisition identified here.
+- **A cat bond spread-to-expected-loss multiple at or above 3.5×.** Publicly observable
+  weekly. It is a monitoring boundary, not a forecast.
+- **A CLO ETF with a liquidity-crisis record**, which none has, because the oldest launched
+  in 2020-10.
+- **Bitcoin's correlation to equity falling below +0.2 on a window containing a recession**,
+  or a realised equity bear market in which it does not fall harder than equity. 2020 and
+  2022 both went the other way.
+- **The investor's own inputs** — contribution and withdrawal path, embedded gains, account
+  capacity, tolerable drawdown and tracking error, and whether they carry a mortgage above
+  the after-tax Treasury yield. Every weight above is a range because those are missing, and
+  several would narrow more from one of those answers than from another experiment.
+- **A waiver lapse.** CTAP's 10 bp expires 2026-12-04; the iShares rate-hedged waivers expire
+  2027-02-28; the cat bond ETF's cap expires 2027-04-30. Three of the six recommendations
+  above rest on a fee that is contractually temporary.

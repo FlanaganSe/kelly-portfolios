@@ -25,11 +25,13 @@ import {
   placementAsOf,
   placementSource,
   priorityRule,
+  qualifiedFractionCorrection,
   shelterCandidates,
   statedOmissions,
   taxRegimes,
   usEquityCandidate,
   washSaleTrap,
+  withholdingDenominatorResolved,
 } from "~/content/placement";
 import { clamp } from "~/lib/format";
 import {
@@ -495,6 +497,29 @@ export default function Placement() {
           <p>{breakEvens.whyEmergingInverts}</p>
           <p>{breakEvens.zeroBracketTrap}</p>
         </Prose>
+
+        <Callout class="mt-6" variant="caveat" label="The qualified fraction">
+          <p>
+            <strong>{qualifiedFractionCorrection.headline}</strong>
+          </p>
+          <p>{qualifiedFractionCorrection.detail}</p>
+          <p>{qualifiedFractionCorrection.consequence}</p>
+          <p>
+            <SourceLink citation={qualifiedFractionCorrection.source} prefix /> · as of{" "}
+            {qualifiedFractionCorrection.asOf}
+          </p>
+        </Callout>
+
+        <Callout class="mt-6" variant="mechanism" label="Two denominators">
+          <p>
+            <strong>{withholdingDenominatorResolved.headline}</strong>
+          </p>
+          <p>{withholdingDenominatorResolved.detail}</p>
+          <ul class="list-disc space-y-2 pl-5">
+            <For each={withholdingDenominatorResolved.crossChecks}>{(check) => <li>{check}</li>}</For>
+          </ul>
+          <p>{withholdingDenominatorResolved.consequence}</p>
+        </Callout>
       </section>
 
       {/* --- Account by account --------------------------------------------- */}

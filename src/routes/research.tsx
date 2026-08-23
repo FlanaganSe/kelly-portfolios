@@ -35,6 +35,12 @@ const GROUPS: readonly Group[] = [
     slugs: ["value", "momentum", "trend", "quality", "alternatives"],
   },
   {
+    title: "Asked for by name, and measured",
+    blurb:
+      "Two things an investor is most likely to ask for. Both were put through the same questions as everything above, and neither survived as the thing it is usually sold as.",
+    slugs: ["crypto", "tail-hedging"],
+  },
+  {
     title: "Decisions about the portfolio itself",
     blurb: "Not engines. How the money is funded, how often it is moved, and how much of it is in equities at all.",
     slugs: ["capital-efficiency", "rebalancing", "equity-share"],

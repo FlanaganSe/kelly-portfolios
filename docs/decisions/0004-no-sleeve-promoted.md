@@ -1,10 +1,19 @@
 # 0004 — No sleeve is promoted; the portfolio is the control alone
 
+**Status:** current only as a dated publication conclusion, not as a research constraint.
+Candidate status belongs to the generated programme report and current syntheses. The
+zero-leverage portfolio is a reference recommendation conditional on missing investor and
+financing inputs; financed constructions remain open to measurement. See
+[decision 0010](0010-bars-carry-a-reopening-condition.md).
+
 Date: 2026-08-12. Status: accepted. Amended 2026-08-12, 2026-08-16 and 2026-08-17 as
 Experiments 005, 013, 014 and 015 landed; **the non-promotion itself has never changed.**
 [Decision 0009](0009-blocks-lifted-and-closures-rescoped.md) lifts the step 6 and step 7
 blocks this record argues against itself about below, and leaves the non-promotion
-standing. Supersede rather than amend when the first sleeve is promoted.
+standing. [Decision 0010](0010-bars-carry-a-reopening-condition.md) requires that a sleeve
+verdict name the funding rule that set its hurdle, and reads the promotion conditions below
+as gates on **promotion and publication only** — none of them bars measuring, costing or
+pricing a candidate. Supersede rather than amend when the first sleeve is promoted.
 
 ## Context
 

@@ -511,8 +511,9 @@ export default function Portfolio() {
             footnote={
               <>
                 Both ceilings are below the {diversificationCredit.materialityThreshold} bar, which was frozen before
-                anything was measured, along with the {diversificationCredit.referenceWeight} reference weight.{" "}
-                <SourceLink citation={diversificationCredit.source} prefix />
+                anything was measured, along with the {diversificationCredit.referenceWeight} reference weight. That bar
+                is a reference point rather than a derived threshold, and it sits below this design's own detection
+                floor. <SourceLink citation={diversificationCredit.source} prefix />
               </>
             }
           />

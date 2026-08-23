@@ -1,5 +1,12 @@
 # 0002 — No free price source is research-grade; fund experiments are exploratory
 
+**Status:** scoped historical finding. As of the audit recorded here, the examined free
+fund-price feeds did not support confirmatory **fund total-return** inference requiring a
+documented distribution and corporate-action contract. This is not a finding about every
+free source or every use case. Source reproduction, non-distributing assets, reader-supplied
+data, cross-checks, and differently contracted sources require their own fitness review.
+See [decision 0010](0010-bars-carry-a-reopening-condition.md).
+
 Date: 2026-08-12. Status: accepted.
 
 ## Context

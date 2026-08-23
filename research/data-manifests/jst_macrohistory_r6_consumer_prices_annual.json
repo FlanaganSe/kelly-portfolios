@@ -8,7 +8,7 @@
   "content_type": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
   "source_last_modified": "Wed, 10 Jul 2024 08:29:43 GMT",
   "source_etag": "\"76884a335991ece55366255bd629d312\"",
-  "parser_version": "macrohistory/1.0.0",
+  "parser_version": "macrohistory/1.1.0",
   "frequency": "annual",
   "units": "index_1990_eq_100",
   "source_units": "index_1990_eq_100",

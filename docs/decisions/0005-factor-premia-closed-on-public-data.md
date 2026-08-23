@@ -1,6 +1,12 @@
-# 0005 — Profitability and investment premia are closed on public data
+# 0005 — The public factor files cannot sign the profitability or investment premium
+
+**Status:** scoped instrument finding. The French-file designs, panels, windows, and
+estimands tested here lacked resolution for decision-material RMW and CMA effects. “Closed”
+does not reach alternative data, conditional models, different estimands, longer windows,
+or lower-variance designs. See [decision 0010](0010-bars-carry-a-reopening-condition.md).
 
 Date: 2026-08-12. Status: accepted. Rescoped by
+[decision 0010](0010-bars-carry-a-reopening-condition.md) and by
 [decision 0009](0009-blocks-lifted-and-closures-rescoped.md): the measured floors below
 are unchanged, but "closed, not paused" and "provably will not" overstated them. The
 honest claim is about an instrument — no re-pooling, re-weighting, re-windowing or
@@ -53,11 +59,13 @@ raises the floor below rather than lowering it.**
 
 ## Decision
 
-**No further experiment may be commissioned that attempts to sign the RMW or CMA
-premium from publicly available factor data.** Both are `rejected` and the question
-is closed, not paused.
+**The Ken French public files cannot sign the RMW or CMA premium, and no rearrangement
+of them will.** Both are `rejected` against the predeclared falsifier on these series over
+these windows under this construction. **This is a statement about an instrument, and it
+closes one route rather than the question** — clause 8 of
+[decision 0010](0010-bars-carry-a-reopening-condition.md).
 
-This decision also fixes the general statement the measurement supports:
+The general statement the measurement supports:
 
 > On the Ken French public factor files, across every independent region the library
 > distributes, **a post-publication premium between zero and about 2.6 percentage
@@ -74,20 +82,29 @@ factors and its volatility the largest.
 these series over these windows under this construction. It is **not** a claim that
 the profitability or investment premium is zero, and it must never be reported as
 one. The honest statement is that the publicly available evidence cannot sign the
-premium either way, and that adding more of the same evidence provably will not.
+premium either way, and that more of the same evidence will not either.
 
-**What it forbids.**
+**What the measurement reaches.**
 
-- No RMW or CMA sleeve, tilt, or product may be proposed on premium grounds.
-- No re-pooling, re-weighting, re-windowing or re-blocking of these files may be
-  offered as a new answer. The floor was measured under the frozen 12-month block
-  with 6- and 24-month neighbours and the Politis–White automatic length reported
-  for every cell, under equal and inverse-variance weights, and with and without the
-  US leg. None of those changed a verdict.
-- No product may be promoted because it *delivers* RMW or CMA exposure cheaply. The
-  chain a shareholder receives is `premium × delivered loading − cost`, and an
-  unsigned premium makes the product's own quality irrelevant to the decision
-  ([decision 0004](0004-no-sleeve-promoted.md)).
+- **Rearranging these files is answered, not forbidden.** Re-pooling, re-weighting,
+  re-windowing and re-blocking were all tried: the floor holds under the frozen 12-month
+  block with 6- and 24-month neighbours and the Politis–White automatic length reported
+  for every cell, under equal and inverse-variance weights, and with and without the US
+  leg. None changed a verdict. Offering one of those as a new answer is repeating a
+  measured result, which is why it is pointless rather than why it is prohibited.
+- **A product may not be promoted on RMW or CMA premium grounds**, because the chain a
+  shareholder receives is `premium × delivered loading − cost` and an unsigned premium
+  makes the product's own quality irrelevant to the decision
+  ([decision 0004](0004-no-sleeve-promoted.md)). This is a promotion gate. It does not stop
+  a sleeve, tilt or product from being **registered, measured, costed or priced**
+  ([decision 0010](0010-bars-carry-a-reopening-condition.md), clause 5).
+
+**What the measurement does not reach**, and therefore does not close: a different
+**estimand**; a conditional or panel design; a non-French construction on a different
+universe and a different vendor's accounting data; and a lower-variance estimator on these
+same files. The framework's own literature ledger records a published replication rate
+moving **21.1 points** on a change of estimand with no new data, so this is not a
+theoretical gap. Each needs a new frozen specification; none needs this record superseded.
 
 ## What would reopen it
 

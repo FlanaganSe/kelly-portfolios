@@ -4,17 +4,24 @@ import { asOf } from "~/content/types";
 /**
  * The fund shelf: every product this repository has actually priced or regressed.
  *
- * This is the canonical record for a ticker. Three rules, all of them the reason the
+ * This is the canonical record for a ticker. Four rules, all of them the reason the
  * file exists rather than a table inside a route:
  *
  * 1. **A loading names its panel.** The same fund reads +0.237 on the emerging panel
  *    and −0.074 on the US one, and a loading printed without its panel is a different
  *    number pretending to be the same one (`docs/research/factor-products.md`).
- * 2. **An alpha prints its pedestal and its detection floor.** The model misfits by
+ * 2. **A loading names its window, and the windows differ.** Every loading here was fitted
+ *    on the months that fund had filed, so VTV carries 72 and DFLV 36 — and on the 36
+ *    months they share, VTV's HML rises from +0.337 to +0.520 and the published ordering
+ *    of the US value shelf comes apart. The window is therefore part of the loading rather
+ *    than a note beside it, and there is no `months` field to read without it. Use
+ *    `rankLoadings` in `src/lib/loadings.ts`, which refuses a mixed-window set
+ *    (`docs/research/loading-comparability-and-wrapper-exposure.md`).
+ * 3. **An alpha prints its pedestal and its detection floor.** The model misfits by
  *    −0.55 pp/yr on the US shelf before any fund is examined, and the median alpha this
  *    instrument could detect is about 5 pp/yr against roughly 1.25 pp/yr of true
  *    dispersion. An alpha without those two numbers reads as a finding when it is noise.
- * 3. **Cost is `fee − securities lending`.** The two rankings are different rankings.
+ * 4. **Cost is `fee − securities lending`.** The two rankings are different rankings.
  *
  * Where a field is `null`, no experiment in this repository read it. That is not an
  * invitation to fill it in from memory.
@@ -40,14 +47,29 @@ export type ShelfCategory =
 /** Which regression panel a loading was measured on. Never omitted. */
 export type Panel = "us" | "developed-ex-us" | "emerging" | "aqr-tsmom";
 
+/**
+ * The months a loading was estimated on, `YYYY-MM` inclusive at both ends.
+ *
+ * A window is part of a loading's identity, not metadata about it: two loadings fitted on
+ * different months are answers to different questions, and the length is derived from the
+ * window rather than stored beside it so that the two cannot drift apart.
+ */
+export interface LoadingWindow {
+  readonly from: string;
+  readonly to: string;
+}
+
 export interface FactorLoading {
   readonly factor: "HML" | "SMB" | "RMW" | "CMA" | "UMD" | "TSMOM";
   readonly value: number;
   /** As printed by the owning page, e.g. `[+0.22, +0.46]`. `null` where none was given. */
   readonly interval: string | null;
   readonly panel: Panel;
-  /** Months of data behind the estimate. Every window here is shorter than one cycle. */
-  readonly months: number | null;
+  /**
+   * The estimation window. `null` only where no experiment recorded one — never omitted,
+   * and never inferred from a fund's age. Every window here is shorter than one cycle.
+   */
+  readonly window: LoadingWindow | null;
 }
 
 /**
@@ -57,7 +79,9 @@ export interface FactorLoading {
  * regression coefficients, and they must never be presented as evidence that the sleeve
  * inside the wrapper delivers anything. `notionalExposure` and `loadings` being separate
  * fields is how a route is stopped from printing "107% equity + 100% trend" where a
- * measured trend loading belongs.
+ * measured trend loading belongs. RSST now has both, and they say different things: the
+ * filing says it holds one dollar of trend notional per dollar of capital, and the
+ * regression says +0.681 of that arrived in the return.
  */
 export interface NotionalExposure {
   readonly kind: "us-equity" | "global-equity" | "equity" | "treasury-futures" | "gold-futures" | "trend";
@@ -72,7 +96,10 @@ export interface NotionalExposure {
  * A wrapper may not be scored from its gross notional. The deciding number is
  * `delta = (1 − b) / d` — the base sold per unit of diversifier notional obtained — and
  * `1 − delta` is the share of the +2.44 pp/yr funding-rule gap the wrapper keeps
- * (`docs/research/capital-efficiency-and-breadth.md` §§1, 6a). None of these fields says
+ * (`docs/research/capital-efficiency-and-breadth.md`, "A wrapper's structure enters exactly
+ * once"). The base leg is the sum of every instrument delivering the base, which on a stacked
+ * fund includes at least one index future — reading the largest holding alone is the error
+ * that page records. None of these fields says
  * anything about the sleeve; that is the whole point of keeping them out of `loadings`.
  */
 export interface WrapperFacts {
@@ -108,6 +135,19 @@ export interface IssuerRecord {
   readonly readOn: AsOf;
 }
 
+/**
+ * A recheck with a date on it, not a condition.
+ *
+ * Most of what is unknown on this shelf is unknown because no experiment has been run, and
+ * that has no due date. A few facts are unknown because a filing does not exist yet, and
+ * those expire. Only the second kind belongs here: `on` is the date by which the source
+ * should exist, and `what` says what to read and what the answer would change.
+ */
+export interface ReviewTrigger {
+  readonly on: AsOf;
+  readonly what: string;
+}
+
 export interface ShelfFund {
   readonly ticker: string;
   readonly name: string;
@@ -136,6 +176,8 @@ export interface ShelfFund {
   readonly caution: string | null;
   /** Present only on wrappers. Absent means the question was never asked of this fund. */
   readonly wrapper?: WrapperFacts;
+  /** Present where a fact is missing because a filing does not exist yet, and will. */
+  readonly reviewTrigger?: ReviewTrigger;
   /** Present only where a filing was read. An empty list would claim the fund holds nothing. */
   readonly notionalExposure?: readonly NotionalExposure[];
   /** Present where a primary filing was read directly. Absent means nobody looked. */
@@ -162,6 +204,14 @@ const capital: Citation = {
   docPath: "docs/research/capital-efficiency-and-breadth.md",
 };
 const trend: Citation = { label: "The marginal value of trend", docPath: "docs/research/trend-marginal-value.md" };
+const untestedTilts: Citation = {
+  label: "Four tilts the recommendation never priced",
+  docPath: "docs/research/untested-tilt-candidates.md",
+};
+const finalTest: Citation = {
+  label: "The final construction, tested",
+  docPath: "docs/research/final-construction-test.md",
+};
 
 const READ = asOf("2026-08-17");
 
@@ -183,7 +233,9 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: 1.84,
     netCostBp: 1.16,
     turnoverPercent: 3,
-    loadings: [{ factor: "HML", value: 0.0247, interval: null, panel: "us", months: 72 }],
+    loadings: [
+      { factor: "HML", value: 0.0247, interval: null, panel: "us", window: { from: "2020-01", to: "2025-12" } },
+    ],
     alphaPpYr: -0.547,
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: US_PEDESTAL,
@@ -264,10 +316,18 @@ export const shelf: readonly ShelfFund[] = [
     category: "us-value",
     mandate: "A cap-weighted US large-value index at 3 bp. A building block of the frozen comparator, not a tilt.",
     expenseRatioBp: 3,
-    securitiesLendingBp: null,
-    netCostBp: null,
-    turnoverPercent: null,
-    loadings: [{ factor: "HML", value: 0.337, interval: "[+0.225, +0.471]", panel: "us", months: 72 }],
+    securitiesLendingBp: 0.3,
+    netCostBp: 2.7,
+    turnoverPercent: 8,
+    loadings: [
+      {
+        factor: "HML",
+        value: 0.337,
+        interval: "[+0.225, +0.471]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+    ],
     alphaPpYr: -2.6,
     alphaDetectionFloorPpYr: 3.28,
     pedestalPpYr: US_PEDESTAL,
@@ -285,12 +345,18 @@ export const shelf: readonly ShelfFund[] = [
     category: "us-value",
     mandate: "A systematic US small-value tilt with a profitability screen. The deepest HML on the US small shelf.",
     expenseRatioBp: 25,
-    securitiesLendingBp: null,
-    netCostBp: null,
+    securitiesLendingBp: 0.46,
+    netCostBp: 24.54,
     turnoverPercent: 6,
     loadings: [
-      { factor: "HML", value: 0.537, interval: "[+0.43, +0.64]", panel: "us", months: 72 },
-      { factor: "SMB", value: 0.88, interval: null, panel: "us", months: 72 },
+      {
+        factor: "HML",
+        value: 0.537,
+        interval: "[+0.43, +0.64]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.88, interval: null, panel: "us", window: { from: "2020-01", to: "2025-12" } },
     ],
     alphaPpYr: 0.39,
     alphaDetectionFloorPpYr: 3.64,
@@ -299,9 +365,22 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The largest implementation shortfall on the shelf, −4.92 pp/yr on the frozen basis and −4.23 on a cheap style grid that can express small value: the best in-sample combination of VTI, VUG, VTV and VB could not get within four points a year of it.",
     caution:
-      "Its SMB leg of +0.88 is the largest of any US value product here and the size premium is not signable on any panel (+0.33 against a 2.47 pp/yr floor). At a 20% weight it buys +43.1 bp for 312 bp of tracking error and reaches 90% confidence in 86 years.",
+      "Its SMB leg of +0.88 is the largest of any US value product here and the size premium is not signable on any panel (+0.33 against a 2.47 pp/yr floor). At a 20% weight it buys +43.1 bp for 312 bp of tracking error and reaches 90% confidence in 86 years. Against a portfolio that already holds a US value line it adds nothing: its active leg over VTI is +0.455 correlated with the recommended portfolio's own, and 87% of what it delivers beyond VTV is size.",
+    issuer: {
+      notes: [
+        "0.25% total annual fund operating expenses and 6% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-12-31.",
+        "Five-year return before taxes 14.12% and after taxes on distributions 13.68% to 2024-12, a drag of 0.44 pp/yr against VTI's 0.42: parity.",
+        "Median net securities-lending income of 0.46 bp/yr across six fiscal years of Form N-CEN, 2020-08-31 to 2025-08-31, so its net cost is 24.54 bp. Lending barely moves it: US small value is not what short sellers borrow.",
+      ],
+      source: {
+        label: "Avantis U.S. Small Cap Value ETF, Form 497K dated 2025-12-31",
+        docPath: "docs/research/untested-tilt-candidates.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1710607/000171060725000416/acetftavuv497k.htm",
+      },
+      readOn: asOf("2026-08-23"),
+    },
     source: recommendation,
-    asOf: READ,
+    asOf: asOf("2026-08-23"),
   },
   {
     ticker: "DFUV",
@@ -313,8 +392,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 5,
     loadings: [
-      { factor: "HML", value: 0.515, interval: "[+0.35, +0.71]", panel: "us", months: 43 },
-      { factor: "SMB", value: 0.12, interval: null, panel: "us", months: 43 },
+      {
+        factor: "HML",
+        value: 0.515,
+        interval: "[+0.35, +0.71]",
+        panel: "us",
+        window: { from: "2022-06", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.12, interval: null, panel: "us", window: { from: "2022-06", to: "2025-12" } },
     ],
     alphaPpYr: -2.06,
     alphaDetectionFloorPpYr: 5.21,
@@ -336,8 +421,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 5,
     loadings: [
-      { factor: "HML", value: 0.637, interval: "[+0.42, +0.82]", panel: "us", months: 36 },
-      { factor: "SMB", value: -0.05, interval: null, panel: "us", months: 36 },
+      {
+        factor: "HML",
+        value: 0.637,
+        interval: "[+0.42, +0.82]",
+        panel: "us",
+        window: { from: "2023-01", to: "2025-12" },
+      },
+      { factor: "SMB", value: -0.05, interval: null, panel: "us", window: { from: "2023-01", to: "2025-12" } },
     ],
     alphaPpYr: -6.06,
     alphaDetectionFloorPpYr: 5.69,
@@ -360,8 +451,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 9,
     loadings: [
-      { factor: "HML", value: 0.442, interval: "[+0.34, +0.64]", panel: "us", months: 46 },
-      { factor: "SMB", value: 0.85, interval: null, panel: "us", months: 46 },
+      {
+        factor: "HML",
+        value: 0.442,
+        interval: "[+0.34, +0.64]",
+        panel: "us",
+        window: { from: "2022-03", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.85, interval: null, panel: "us", window: { from: "2022-03", to: "2025-12" } },
     ],
     alphaPpYr: 0.45,
     alphaDetectionFloorPpYr: 4.84,
@@ -383,8 +480,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 9,
     loadings: [
-      { factor: "HML", value: 0.433, interval: "[+0.37, +0.55]", panel: "us", months: 54 },
-      { factor: "SMB", value: 0.83, interval: null, panel: "us", months: 54 },
+      {
+        factor: "HML",
+        value: 0.433,
+        interval: "[+0.37, +0.55]",
+        panel: "us",
+        window: { from: "2021-07", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.83, interval: null, panel: "us", window: { from: "2021-07", to: "2025-12" } },
     ],
     alphaPpYr: 0.33,
     alphaDetectionFloorPpYr: 3.79,
@@ -402,23 +505,43 @@ export const shelf: readonly ShelfFund[] = [
     category: "us-value",
     mandate: "An index-reconstitution US value tilt — the deepest HML on the whole US shelf.",
     expenseRatioBp: 35,
-    securitiesLendingBp: null,
-    netCostBp: null,
+    securitiesLendingBp: 1.13,
+    netCostBp: 33.87,
     turnoverPercent: 42,
     loadings: [
-      { factor: "HML", value: 0.71, interval: "[+0.53, +0.83]", panel: "us", months: 72 },
-      { factor: "SMB", value: 0.2, interval: null, panel: "us", months: 72 },
+      {
+        factor: "HML",
+        value: 0.71,
+        interval: "[+0.53, +0.83]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.2, interval: null, panel: "us", window: { from: "2020-01", to: "2025-12" } },
     ],
     alphaPpYr: -2.8,
     alphaDetectionFloorPpYr: 6.5,
     pedestalPpYr: US_PEDESTAL,
-    status: "exploratory",
+    status: "rejected",
     verdict:
-      "HML +0.710 over the full 72-month window and a −0.95 pp/yr shortfall, on 72 months rather than the 36 to 54 most of this shelf has.",
+      "The deepest US value exposure on the shelf and still a subtraction. Over VTV on 78 months (2019-10\u20262026-03) it delivers HML +0.369 [+0.249, +0.490] and SMB +0.199, but also RMW \u22120.204 [\u22120.361, \u22120.047] and UMD \u22120.173 [\u22120.337, \u22120.008]: the value it buys is partly paid for by selling momentum. Net of a 33.87 bp cost and 42%/yr of turnover against VTV\u2019s 8%, replacing VTV with it at 15% changes portfolio return by about \u22120.10% a year, and it is negative under all four of this repository\u2019s premium scenarios.",
     caution:
-      "42%/yr of turnover, the highest of any US value product audited and fourteen times the incumbent's — its sort is an index reconstitution, which is exactly the case Experiment 007's 20–40% assumption was right about. 275 bp of tracking error at a 20% weight.",
-    source: recommendation,
-    asOf: READ,
+      "42%/yr of turnover, the highest of any US value product audited and five times the incumbent\u2019s \u2014 its sort is an index reconstitution, which is exactly the case Experiment 007\u2019s 20\u201340% assumption was right about. The tax objection, however, is false: its distribution drag is 0.62 pp/yr against VTV\u2019s 0.67 over the same five years. Its 106 constituents are weighted by value score rather than by capitalisation, so it is a concentrated active position wearing an index label.",
+    issuer: {
+      notes: [
+        "0.35% management fee, no other expenses, and 42% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-08-28.",
+        "Five-year return before taxes 7.99% and after taxes on distributions 7.37% to 2024-12, a drag of 0.62 pp/yr \u2014 below VTV\u2019s 0.67 over the same period.",
+        "Median net securities-lending income of 1.13 bp/yr across eight fiscal years of Form N-CEN, 2019-04-30 to 2026-04-30. The fiscal-2026 filing reports 26.65 bp, eight times any prior year, and is an outlier the median deliberately does not follow.",
+        "As of 2025-06-30 the underlying index held 106 constituents drawn from the S&P 500, weighted by value score, with market capitalisations from $5.9bn to $464.6bn.",
+      ],
+      source: {
+        label: "Invesco S&P 500 Pure Value ETF, Form 497K dated 2025-08-28",
+        docPath: "docs/research/final-construction-test.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1209466/000119312525190419/d56632d497k.htm",
+      },
+      readOn: asOf("2026-08-23"),
+    },
+    source: finalTest,
+    asOf: asOf("2026-08-23"),
   },
   {
     ticker: "VBR",
@@ -430,8 +553,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 25,
     loadings: [
-      { factor: "HML", value: 0.41, interval: "[+0.322, +0.480]", panel: "us", months: 72 },
-      { factor: "SMB", value: 0.56, interval: null, panel: "us", months: 72 },
+      {
+        factor: "HML",
+        value: 0.41,
+        interval: "[+0.322, +0.480]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.56, interval: null, panel: "us", window: { from: "2020-01", to: "2025-12" } },
     ],
     alphaPpYr: -2.78,
     alphaDetectionFloorPpYr: 3.22,
@@ -450,12 +579,18 @@ export const shelf: readonly ShelfFund[] = [
     category: "us-value",
     mandate: "A systematic US large-value tilt with a profitability screen and low turnover.",
     expenseRatioBp: 15,
-    securitiesLendingBp: null,
-    netCostBp: null,
+    securitiesLendingBp: 0.06,
+    netCostBp: 14.94,
     turnoverPercent: 7,
     loadings: [
-      { factor: "HML", value: 0.322, interval: "[+0.22, +0.46]", panel: "us", months: 51 },
-      { factor: "SMB", value: 0.12, interval: null, panel: "us", months: 51 },
+      {
+        factor: "HML",
+        value: 0.322,
+        interval: "[+0.22, +0.46]",
+        panel: "us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      { factor: "SMB", value: 0.12, interval: null, panel: "us", window: { from: "2021-10", to: "2025-12" } },
     ],
     alphaPpYr: -0.92,
     alphaDetectionFloorPpYr: 5.28,
@@ -469,6 +604,62 @@ export const shelf: readonly ShelfFund[] = [
     asOf: READ,
   },
   {
+    ticker: "QVAL",
+    name: "Alpha Architect U.S. Quantitative Value ETF",
+    category: "us-value",
+    mandate: "A concentrated systematic US value tilt, about fifty names, reconstituted quarterly.",
+    expenseRatioBp: 28,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: 332,
+    loadings: [
+      {
+        factor: "HML",
+        value: 0.503,
+        interval: "[+0.26, +0.74]",
+        panel: "us",
+        window: { from: "2021-10", to: "2026-03" },
+      },
+      {
+        factor: "SMB",
+        value: 0.409,
+        interval: "[+0.15, +0.67]",
+        panel: "us",
+        window: { from: "2021-10", to: "2026-03" },
+      },
+      {
+        factor: "RMW",
+        value: 0.396,
+        interval: "[+0.12, +0.67]",
+        panel: "us",
+        window: { from: "2021-10", to: "2026-03" },
+      },
+    ],
+    alphaPpYr: -0.96,
+    alphaDetectionFloorPpYr: 8.52,
+    pedestalPpYr: US_PEDESTAL,
+    status: "rejected",
+    verdict:
+      "A genuinely deep value tilt destroyed by its own trading. It files 332%/yr of portfolio turnover against VTI's 3%, which costs 3.54 to 5.86 pp/yr at the repository's 1.0-to-1.7 coefficient against a gross factor gain of about 1.1 pp/yr. At a 5% weight it is the only candidate whose portfolio effect this data can resolve, and it resolves to about -0.30% a year.",
+    caution:
+      "Its loadings are stated over its own filings and its incumbent's, not over the shelf's other value products: EDGAR lists no Form N-PORT for the quarter ending 2021-09-30, so its history has a three-month hole and only the 54 gapless months after it are usable. Its active leg is +0.754 correlated with AVUV's, so it duplicates a position rather than adding one.",
+    issuer: {
+      notes: [
+        "0.28% total annual fund operating expenses, management fee restated to the current rate, with no 12b-1 fee and no other expenses, per its summary prospectus dated 2026-02-01.",
+        "Portfolio turnover 332% of average portfolio value in the most recent fiscal year - the highest of any fund on this shelf by a factor of three.",
+        "Commenced operations 2014-10-21 against the Solactive GBS United States 1000 Index. Ten-year return before taxes 10.02% and after taxes on distributions 9.59% to 2025-12, a distribution drag of 0.43 pp/yr.",
+      ],
+      source: {
+        label: "Alpha Architect U.S. Quantitative Value ETF, Form 497K dated 2026-02-01",
+        docPath: "docs/research/untested-tilt-candidates.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1592900/000159290026000383/alphaarchitectusquantitati.htm",
+      },
+      readOn: asOf("2026-08-23"),
+    },
+    source: untestedTilts,
+    asOf: asOf("2026-08-23"),
+  },
+  {
     ticker: "AVSC",
     name: "Avantis U.S. Small Cap Equity ETF",
     category: "us-small",
@@ -478,8 +669,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 5,
     loadings: [
-      { factor: "SMB", value: 1.058, interval: "[+0.98, +1.11]", panel: "us", months: 47 },
-      { factor: "HML", value: 0.243, interval: null, panel: "us", months: 47 },
+      {
+        factor: "SMB",
+        value: 1.058,
+        interval: "[+0.98, +1.11]",
+        panel: "us",
+        window: { from: "2022-02", to: "2025-12" },
+      },
+      { factor: "HML", value: 0.243, interval: null, panel: "us", window: { from: "2022-02", to: "2025-12" } },
     ],
     alphaPpYr: 0.62,
     alphaDetectionFloorPpYr: 3.14,
@@ -501,8 +698,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 6,
     loadings: [
-      { factor: "SMB", value: 0.816, interval: "[+0.74, +0.91]", panel: "us", months: 54 },
-      { factor: "HML", value: 0.241, interval: null, panel: "us", months: 54 },
+      {
+        factor: "SMB",
+        value: 0.816,
+        interval: "[+0.74, +0.91]",
+        panel: "us",
+        window: { from: "2021-07", to: "2025-12" },
+      },
+      { factor: "HML", value: 0.241, interval: null, panel: "us", window: { from: "2021-07", to: "2025-12" } },
     ],
     alphaPpYr: -1.4,
     alphaDetectionFloorPpYr: 2.97,
@@ -522,7 +725,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "SMB", value: 0.599, interval: "[+0.516, +0.684]", panel: "us", months: 72 }],
+    loadings: [
+      {
+        factor: "SMB",
+        value: 0.599,
+        interval: "[+0.516, +0.684]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+    ],
     alphaPpYr: -2.97,
     alphaDetectionFloorPpYr: 3.16,
     pedestalPpYr: US_PEDESTAL,
@@ -531,8 +742,20 @@ export const shelf: readonly ShelfFund[] = [
       "Rejected on clause (c) at a +2.89 pp/yr shortfall, its cheap replication being 0.733 VTI plus 0.267 VTV. Its 2.72 bp round trip is nearly a year of expense ratio and is the binding constraint on rebalancing frequency.",
     caution:
       "Like VTV, it sits inside the basis it is scored against, so the rejection reads as 'small-cap is approximable', not as a defect.",
+    issuer: {
+      notes: [
+        'The name is verified, not inferred. Vanguard Index Funds\' supplement of 2026-07-29 enumerates all ten renamed funds and gives this one explicitly: "Vanguard Small-Cap Index Fund → Vanguard Morningstar Small-Cap Index Fund → Vanguard Morningstar Small-Cap ETF". The same table carries VTI and VBR.',
+        'Its target index was renamed on the same date, CRSP US Small Cap Index to Morningstar US Small Cap Index, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." The rename is a rebranding after Morningstar acquired CRSP; no loading on this shelf is affected by it.',
+      ],
+      source: {
+        label: "Vanguard Index Funds, 497 supplement dated 2026-07-29",
+        docPath: "docs/research/factor-products.md",
+        href: "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      },
+      readOn: asOf("2026-08-22"),
+    },
     source: products,
-    asOf: READ,
+    asOf: asOf("2026-08-22"),
   },
   // -------------------------------------------------------------------------
   // US momentum and quality. Momentum is excluded on turnover and on a 4.98 pp/yr
@@ -546,8 +769,16 @@ export const shelf: readonly ShelfFund[] = [
     expenseRatioBp: 15,
     securitiesLendingBp: null,
     netCostBp: null,
-    turnoverPercent: null,
-    loadings: [{ factor: "UMD", value: 0.444, interval: "[+0.277, +0.562]", panel: "us", months: 72 }],
+    turnoverPercent: 116,
+    loadings: [
+      {
+        factor: "UMD",
+        value: 0.444,
+        interval: "[+0.277, +0.562]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+    ],
     alphaPpYr: -2.95,
     alphaDetectionFloorPpYr: 7.34,
     pedestalPpYr: US_PEDESTAL,
@@ -555,30 +786,57 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Delivers UMD +0.444 and is rejected anyway on a +1.10 pp/yr shortfall to a cheap combination. That it was 'the entire momentum shelf' was a property of Experiment 002's census frame, not of the market.",
     caution:
-      "Its 7.34 pp/yr detection floor is the worst on the US shelf, so its −2.95 alpha means nothing either way. The sleeve stays excluded on the premium and on turnover, which the corrected frame did not touch.",
+      "Its 7.34 pp/yr detection floor is the worst on the US shelf, so its −2.95 alpha means nothing either way. Turnover is now measured and it is what decides the fund: 116%/yr against VTI's 3% costs 1.25 to 2.06 pp/yr, against a gross exposure gain of +1.78 pp/yr on a US momentum premium of +4.19 that is itself under a 7.27 pp/yr floor. The tax objection, by contrast, is false — its filed distribution drag is 11 bp/yr *below* VTI's.",
+    issuer: {
+      notes: [
+        "0.15% total annual fund operating expenses, no 12b-1 fee and no other expenses, per its summary prospectus dated 2025-11-28.",
+        "Portfolio turnover 116% of average portfolio value in the most recent fiscal year.",
+        "Five-year return before taxes 11.77% and after taxes on distributions 11.46% to 2024-12, a distribution drag of 0.31 pp/yr against VTI's 0.42 over the same period. The ETF in-kind redemption shield survives this fund's turnover on the distribution measure.",
+      ],
+      source: {
+        label: "iShares MSCI USA Momentum Factor ETF, Form 497K dated 2025-11-28",
+        docPath: "docs/research/untested-tilt-candidates.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1100663/000119312525302119/d28465d497k.htm",
+      },
+      readOn: asOf("2026-08-23"),
+    },
     source: products,
-    asOf: READ,
+    asOf: asOf("2026-08-23"),
   },
   {
     ticker: "SPMO",
     name: "Invesco S&P 500 Momentum ETF",
     category: "us-momentum",
-    mandate: "A US large-cap momentum tilt, and one of the four products the corrected census frame added.",
-    expenseRatioBp: null,
-    securitiesLendingBp: null,
-    netCostBp: null,
-    turnoverPercent: null,
-    loadings: [{ factor: "UMD", value: 0.414, interval: null, panel: "us", months: null }],
+    mandate: "A US large-cap momentum tilt, and the cheaper, lower-turnover way to buy US momentum than MTUM.",
+    expenseRatioBp: 13,
+    securitiesLendingBp: 0.07,
+    netCostBp: 12.93,
+    turnoverPercent: 44,
+    loadings: [{ factor: "UMD", value: 0.414, interval: null, panel: "us", window: null }],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: US_PEDESTAL,
-    status: "exploratory",
+    status: "rejected",
     verdict:
-      "Reaches exploratory on UMD +0.414 with a −4.53 pp/yr shortfall — the deepest of the four momentum products the corrected frame found. The page prints the loading and the shortfall and nothing else.",
+      "Its facts are now read and they favour it over MTUM on every knowable dimension — 13 bp against 15, 44%/yr of turnover against 116%, 12.93 bp of net cost, and a distribution tax drag of 0.37 pp/yr against VTI\u2019s 0.42. Over VTI it delivers UMD +0.395 [+0.281, +0.508] on 78 months (2019-10\u20262026-03). At a 5% weight it still changes portfolio return by about +0.02% a year, plausibly \u22120.14% to +0.18%.",
     caution:
-      "No fee, no window, no interval and no alpha were recorded for it here, so it cannot be compared with MTUM on cost. Momentum is excluded regardless: the pooled premium's detection floor is 4.98 pp/yr and its three regions are worth 1.33 effective regions.",
-    source: products,
-    asOf: READ,
+      "The published +0.414 carries NO WINDOW and must not be compared with any other fund\u2019s loading; the +0.395 above is fitted here on a stated window and is the delivered exposure over VTI, not the fund\u2019s own loading. The exposure it buys sits on a US momentum premium of +4.19 pp/yr against a 7.27 pp/yr detection floor, and its active leg is +0.626 correlated with IDMO\u2019s \u2014 a tighter overlap than MTUM\u2019s +0.554, so a portfolio already holding international momentum buys less than it looks.",
+    issuer: {
+      notes: [
+        "0.13% management fee, no other expenses, and 44% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-12-19.",
+        "Five-year return before taxes 19.23% and after taxes on distributions 18.86% to 2024-12, a drag of 0.37 pp/yr against VTI\u2019s 0.42.",
+        "Median net securities-lending income of 0.07 bp/yr across seven fiscal years of Form N-CEN, 2019-08-31 to 2025-08-31 \u2014 the lowest on this shelf, so its 13 bp fee is very nearly its net cost.",
+        "Approximately 100 constituents from the S&P 500, weighted by market capitalisation times momentum score, and the fund is non-diversified.",
+      ],
+      source: {
+        label: "Invesco S&P 500 Momentum ETF, Form 497K dated 2025-12-19",
+        docPath: "docs/research/final-construction-test.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1378872/000119312525325661/d54028d497k.htm",
+      },
+      readOn: asOf("2026-08-23"),
+    },
+    source: finalTest,
+    asOf: asOf("2026-08-23"),
   },
   {
     ticker: "QUAL",
@@ -589,7 +847,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "RMW", value: 0.186, interval: "[+0.101, +0.247]", panel: "us", months: 72 }],
+    loadings: [
+      {
+        factor: "RMW",
+        value: 0.186,
+        interval: "[+0.101, +0.247]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+    ],
     alphaPpYr: -2.15,
     alphaDetectionFloorPpYr: 3.13,
     pedestalPpYr: US_PEDESTAL,
@@ -609,7 +875,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "RMW", value: 0.176, interval: "[+0.079, +0.296]", panel: "us", months: 72 }],
+    loadings: [
+      {
+        factor: "RMW",
+        value: 0.176,
+        interval: "[+0.079, +0.296]",
+        panel: "us",
+        window: { from: "2020-01", to: "2025-12" },
+      },
+    ],
     alphaPpYr: -0.56,
     alphaDetectionFloorPpYr: 3.75,
     pedestalPpYr: US_PEDESTAL,
@@ -629,7 +903,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "RMW", value: 0.179, interval: "[+0.03, +0.29]", panel: "us", months: 46 }],
+    loadings: [
+      {
+        factor: "RMW",
+        value: 0.179,
+        interval: "[+0.03, +0.29]",
+        panel: "us",
+        window: { from: "2022-03", to: "2025-12" },
+      },
+    ],
     alphaPpYr: -1.43,
     alphaDetectionFloorPpYr: 4.46,
     pedestalPpYr: US_PEDESTAL,
@@ -654,8 +936,14 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: -0.3,
     turnoverPercent: 4,
     loadings: [
-      { factor: "HML", value: 0.015, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "UMD", value: 0.006, interval: null, panel: "developed-ex-us", months: null },
+      {
+        factor: "HML",
+        value: 0.015,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      { factor: "UMD", value: 0.006, interval: null, panel: "developed-ex-us", window: null },
     ],
     alphaPpYr: -0.31,
     alphaDetectionFloorPpYr: null,
@@ -737,11 +1025,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 6,
     loadings: [
-      { factor: "HML", value: 0.662, interval: "[+0.53, +0.85]", panel: "developed-ex-us", months: 51 },
-      { factor: "SMB", value: -0.114, interval: null, panel: "developed-ex-us", months: 51 },
-      { factor: "RMW", value: -0.001, interval: null, panel: "developed-ex-us", months: 51 },
-      { factor: "CMA", value: -0.122, interval: null, panel: "developed-ex-us", months: 51 },
-      { factor: "UMD", value: 0.016, interval: null, panel: "developed-ex-us", months: 51 },
+      {
+        factor: "HML",
+        value: 0.662,
+        interval: "[+0.53, +0.85]",
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: -0.114,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: -0.001,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: -0.122,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: 0.016,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
     ],
     alphaPpYr: -4.11,
     alphaDetectionFloorPpYr: 3.52,
@@ -751,8 +1069,20 @@ export const shelf: readonly ShelfFund[] = [
       "The strongest tilt this repository has priced: at an 8% substitution out of VEA it is the only line whose edge, +27.1 bp, sits above its own 30-year detection floor of 21.6 bp.",
     caution:
       "Its own alpha is −4.11 pp/yr against a 3.52 pp/yr floor — measurably negative, and one of four ex-US large-value funds reading −2.2 to −4.1. Charging that alpha takes the same tilt from +27.1 bp to −8.2 bp.",
+    issuer: {
+      notes: [
+        "$19.32bn of net assets at 2026-04-30 from its own Form N-PORT, which marks the filing not final. Size is the one risk this fund does not carry.",
+        "0.27% total annual fund operating expenses — a 0.25% management fee plus 0.02% of other expenses — with no waiver and no expense cap, per its summary prospectus dated 2026-02-28.",
+      ],
+      source: {
+        label: "Dimensional International Value ETF, Form N-PORT for 2026-04-30",
+        docPath: "docs/research/portfolio-recommendation.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1816125/000100472626005680/primary_doc.xml",
+      },
+      readOn: asOf("2026-08-22"),
+    },
     source: recommendation,
-    asOf: READ,
+    asOf: asOf("2026-08-22"),
   },
   {
     ticker: "AVIV",
@@ -764,11 +1094,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 11,
     loadings: [
-      { factor: "HML", value: 0.489, interval: "[+0.36, +0.63]", panel: "developed-ex-us", months: 51 },
-      { factor: "SMB", value: -0.285, interval: "[−0.47, −0.13]", panel: "developed-ex-us", months: 51 },
-      { factor: "RMW", value: -0.031, interval: null, panel: "developed-ex-us", months: 51 },
-      { factor: "CMA", value: -0.182, interval: null, panel: "developed-ex-us", months: 51 },
-      { factor: "UMD", value: -0.109, interval: null, panel: "developed-ex-us", months: 51 },
+      {
+        factor: "HML",
+        value: 0.489,
+        interval: "[+0.36, +0.63]",
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: -0.285,
+        interval: "[−0.47, −0.13]",
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: -0.031,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: -0.182,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: -0.109,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2021-10", to: "2025-12" },
+      },
     ],
     alphaPpYr: -3.13,
     alphaDetectionFloorPpYr: 1.81,
@@ -791,11 +1151,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 16,
     loadings: [
-      { factor: "HML", value: 0.475, interval: "[+0.33, +0.60]", panel: "developed-ex-us", months: 77 },
-      { factor: "SMB", value: -0.121, interval: "[−0.32, +0.07]", panel: "developed-ex-us", months: 77 },
-      { factor: "RMW", value: 0.053, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "CMA", value: 0.02, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "UMD", value: -0.083, interval: null, panel: "developed-ex-us", months: 77 },
+      {
+        factor: "HML",
+        value: 0.475,
+        interval: "[+0.33, +0.60]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: -0.121,
+        interval: "[−0.32, +0.07]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: 0.053,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: 0.02,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: -0.083,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
     ],
     alphaPpYr: -2.53,
     alphaDetectionFloorPpYr: 2.63,
@@ -818,11 +1208,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 23,
     loadings: [
-      { factor: "HML", value: 0.368, interval: "[+0.26, +0.49]", panel: "developed-ex-us", months: 77 },
-      { factor: "SMB", value: -0.16, interval: "[−0.31, −0.06]", panel: "developed-ex-us", months: 77 },
-      { factor: "RMW", value: -0.006, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "CMA", value: 0.17, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "UMD", value: -0.069, interval: null, panel: "developed-ex-us", months: 77 },
+      {
+        factor: "HML",
+        value: 0.368,
+        interval: "[+0.26, +0.49]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: -0.16,
+        interval: "[−0.31, −0.06]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: -0.006,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: 0.17,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: -0.069,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
     ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 2.22,
@@ -841,15 +1261,45 @@ export const shelf: readonly ShelfFund[] = [
     category: "intl-small-value",
     mandate: "A developed ex-US small-value tilt. The only fund that can express that cell in any comparator here.",
     expenseRatioBp: 36,
-    securitiesLendingBp: null,
-    netCostBp: null,
+    securitiesLendingBp: 5.97,
+    netCostBp: 30.03,
     turnoverPercent: 4,
     loadings: [
-      { factor: "HML", value: 0.51, interval: "[+0.32, +0.78]", panel: "developed-ex-us", months: 75 },
-      { factor: "SMB", value: 0.671, interval: "[+0.46, +0.84]", panel: "developed-ex-us", months: 75 },
-      { factor: "RMW", value: 0.386, interval: "[+0.12, +0.65]", panel: "developed-ex-us", months: 75 },
-      { factor: "CMA", value: -0.114, interval: null, panel: "developed-ex-us", months: 75 },
-      { factor: "UMD", value: 0.008, interval: null, panel: "developed-ex-us", months: 75 },
+      {
+        factor: "HML",
+        value: 0.51,
+        interval: "[+0.32, +0.78]",
+        panel: "developed-ex-us",
+        window: { from: "2019-10", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: 0.671,
+        interval: "[+0.46, +0.84]",
+        panel: "developed-ex-us",
+        window: { from: "2019-10", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: 0.386,
+        interval: "[+0.12, +0.65]",
+        panel: "developed-ex-us",
+        window: { from: "2019-10", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: -0.114,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-10", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: 0.008,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-10", to: "2025-12" },
+      },
     ],
     alphaPpYr: 2.47,
     alphaDetectionFloorPpYr: 3.96,
@@ -858,9 +1308,22 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Keeps a −4.58 pp/yr shortfall under all seven bases, including the ones containing itself, because no other column can express developed-ex-US small value. It files 4%/yr of turnover, the lowest of any factor product in either audit.",
     caution:
-      "The only value fund on the shelf carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 [−1.44, +2.44], and RMW +0.386 on a rejected factor. It is fourth or fifth of five on growth per unit of tracking error in every window. The two owning pages print different alphas for it — +2.47 on the common 45-month window and +0.55 on the ex-US audit page — against the same 3.96 floor; the figure here is the former.",
-    source: recommendation,
-    asOf: READ,
+      "The only value fund on the shelf carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 [−1.44, +2.44], and RMW +0.386 on a rejected factor. It is fourth or fifth of five on growth per unit of tracking error in every window. Its alpha is a window artefact: +2.47 on 45 months, +0.55 on 75 and +1.84 on 55, against floors of 3.96 to 4.64. None of the three is evidence and no verdict may rest on one.",
+    issuer: {
+      notes: [
+        "0.36% total annual fund operating expenses and 4% portfolio turnover in the most recent fiscal year — the lowest turnover of any factor product on this shelf — per its summary prospectus dated 2025-12-31.",
+        "Five-year return before taxes 6.35% and after taxes on distributions 5.57% to 2024-12, a drag of 0.78 pp/yr against VXUS's 0.79 over the same period: parity with the fund it would displace.",
+        "Median net securities-lending income of 5.97 bp/yr across six fiscal years of Form N-CEN, 2020-08-31 to 2025-08-31, so its net cost is 30.03 bp rather than 36 \u2014 the largest fee-to-cost gap of any tilt on this shelf.",
+      ],
+      source: {
+        label: "Avantis International Small Cap Value ETF, Form 497K dated 2025-12-31",
+        docPath: "docs/research/untested-tilt-candidates.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1710607/000171060725000402/acetftavdv497k.htm",
+      },
+      readOn: asOf("2026-08-23"),
+    },
+    source: untestedTilts,
+    asOf: asOf("2026-08-23"),
   },
   {
     ticker: "DISV",
@@ -872,11 +1335,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 8,
     loadings: [
-      { factor: "HML", value: 0.495, interval: "[+0.36, +0.64]", panel: "developed-ex-us", months: 45 },
-      { factor: "SMB", value: 0.431, interval: "[+0.23, +0.65]", panel: "developed-ex-us", months: 45 },
-      { factor: "RMW", value: 0.049, interval: null, panel: "developed-ex-us", months: 45 },
-      { factor: "CMA", value: -0.005, interval: null, panel: "developed-ex-us", months: 45 },
-      { factor: "UMD", value: -0.088, interval: null, panel: "developed-ex-us", months: 45 },
+      {
+        factor: "HML",
+        value: 0.495,
+        interval: "[+0.36, +0.64]",
+        panel: "developed-ex-us",
+        window: { from: "2022-04", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: 0.431,
+        interval: "[+0.23, +0.65]",
+        panel: "developed-ex-us",
+        window: { from: "2022-04", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: 0.049,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2022-04", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: -0.005,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2022-04", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: -0.088,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2022-04", to: "2025-12" },
+      },
     ],
     alphaPpYr: -0.21,
     alphaDetectionFloorPpYr: 3.98,
@@ -899,11 +1392,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: 18,
     loadings: [
-      { factor: "HML", value: -0.032, interval: "[−0.16, +0.14]", panel: "developed-ex-us", months: 77 },
-      { factor: "SMB", value: 0.551, interval: "[+0.43, +0.64]", panel: "developed-ex-us", months: 77 },
-      { factor: "RMW", value: 0.041, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "CMA", value: 0.036, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "UMD", value: -0.024, interval: null, panel: "developed-ex-us", months: 77 },
+      {
+        factor: "HML",
+        value: -0.032,
+        interval: "[−0.16, +0.14]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: 0.551,
+        interval: "[+0.43, +0.64]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: 0.041,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: 0.036,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "UMD",
+        value: -0.024,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
     ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 2.43,
@@ -925,7 +1448,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "SMB", value: 0.856, interval: null, panel: "developed-ex-us", months: 78 }],
+    loadings: [
+      {
+        factor: "SMB",
+        value: 0.856,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-07", to: "2025-12" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 2.5,
     pedestalPpYr: DEVELOPED_PEDESTAL,
@@ -943,15 +1474,45 @@ export const shelf: readonly ShelfFund[] = [
     category: "intl-momentum",
     mandate: "A developed ex-US momentum tilt, on the one momentum premium that clears its own detection floor.",
     expenseRatioBp: 25,
-    securitiesLendingBp: null,
-    netCostBp: null,
+    securitiesLendingBp: 2.41,
+    netCostBp: 22.59,
     turnoverPercent: 105,
     loadings: [
-      { factor: "UMD", value: 0.54, interval: "[+0.39, +0.71]", panel: "developed-ex-us", months: 77 },
-      { factor: "HML", value: 0.218, interval: "[−0.13, +0.52]", panel: "developed-ex-us", months: 77 },
-      { factor: "SMB", value: -0.164, interval: "[−0.34, +0.04]", panel: "developed-ex-us", months: 77 },
-      { factor: "RMW", value: 0.04, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "CMA", value: -0.394, interval: "[−0.72, −0.06]", panel: "developed-ex-us", months: 77 },
+      {
+        factor: "UMD",
+        value: 0.54,
+        interval: "[+0.39, +0.71]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "HML",
+        value: 0.218,
+        interval: "[−0.13, +0.52]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: -0.164,
+        interval: "[−0.34, +0.04]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: 0.04,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: -0.394,
+        interval: "[−0.72, −0.06]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
     ],
     alphaPpYr: 0.11,
     alphaDetectionFloorPpYr: 5.34,
@@ -974,11 +1535,41 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: null,
     loadings: [
-      { factor: "UMD", value: 0.505, interval: "[+0.44, +0.59]", panel: "developed-ex-us", months: 77 },
-      { factor: "HML", value: 0.088, interval: "[−0.04, +0.21]", panel: "developed-ex-us", months: 77 },
-      { factor: "SMB", value: -0.306, interval: "[−0.44, −0.16]", panel: "developed-ex-us", months: 77 },
-      { factor: "RMW", value: -0.012, interval: null, panel: "developed-ex-us", months: 77 },
-      { factor: "CMA", value: -0.241, interval: null, panel: "developed-ex-us", months: 77 },
+      {
+        factor: "UMD",
+        value: 0.505,
+        interval: "[+0.44, +0.59]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "HML",
+        value: 0.088,
+        interval: "[−0.04, +0.21]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "SMB",
+        value: -0.306,
+        interval: "[−0.44, −0.16]",
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "RMW",
+        value: -0.012,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
+      {
+        factor: "CMA",
+        value: -0.241,
+        interval: null,
+        panel: "developed-ex-us",
+        window: { from: "2019-08", to: "2025-12" },
+      },
     ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 3.81,
@@ -1043,13 +1634,13 @@ export const shelf: readonly ShelfFund[] = [
     name: "Avantis Emerging Markets Value ETF",
     category: "emerging-value",
     mandate: "An emerging-market value tilt, in the region with the largest measured HML premium.",
-    expenseRatioBp: null,
-    securitiesLendingBp: null,
-    netCostBp: null,
+    expenseRatioBp: 36,
+    securitiesLendingBp: 6.79,
+    netCostBp: 29.21,
     turnoverPercent: null,
     loadings: [
-      { factor: "HML", value: 0.237, interval: null, panel: "emerging", months: 51 },
-      { factor: "HML", value: -0.074, interval: null, panel: "us", months: 51 },
+      { factor: "HML", value: 0.237, interval: null, panel: "emerging", window: { from: "2021-10", to: "2025-12" } },
+      { factor: "HML", value: -0.074, interval: null, panel: "us", window: { from: "2021-10", to: "2025-12" } },
     ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 4.48,
@@ -1058,9 +1649,21 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Unresolved on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to exploratory, because clause (a) reads the loading and unresolved reads its interval and neither reads the basis.",
     caution:
-      "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. No fee, no turnover, no net cost and no tax figure for AVES appears anywhere in this repository. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
+      "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. At 36 bp it costs 27 bp a year more than IEMG's 9 bp, which is the incremental cost the tilt has to clear before its loading matters — and its loading is the one this shelf cannot sign. Its net cost is 29.21 bp: 36 bp less a median 6.79 bp of securities lending across four fiscal years of Form N-CEN, 2022-08-31 to 2025-08-31. Turnover and every tax figure for AVES remain unread. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
+    issuer: {
+      notes: [
+        "36 bp, gross equal to net, with no fee waiver and no expense cap — so unlike IEMG's contractual 9 bp cap there is nothing here to expire and nothing to be recouped.",
+        "$1.5B of net assets and inception 2021-09-28, against the MSCI Emerging Markets IMI Value Index. No closure, liquidation or adviser change is disclosed.",
+      ],
+      source: {
+        label: "Avantis Emerging Markets Value ETF quarterly fact sheet, as of 2026-06-30",
+        docPath: "docs/research/factor-products.md",
+        href: "https://res.avantisinvestors.com/docs/avantis-emerging-markets-value-aves-etf-fact-sheet.pdf",
+      },
+      readOn: asOf("2026-08-22"),
+    },
     source: products,
-    asOf: READ,
+    asOf: asOf("2026-08-22"),
   },
   {
     ticker: "DFEV",
@@ -1072,8 +1675,8 @@ export const shelf: readonly ShelfFund[] = [
     netCostBp: null,
     turnoverPercent: null,
     loadings: [
-      { factor: "HML", value: 0.267, interval: null, panel: "emerging", months: 44 },
-      { factor: "HML", value: -0.092, interval: null, panel: "us", months: 44 },
+      { factor: "HML", value: 0.267, interval: null, panel: "emerging", window: { from: "2022-05", to: "2025-12" } },
+      { factor: "HML", value: -0.092, interval: null, panel: "us", window: { from: "2022-05", to: "2025-12" } },
     ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 3.23,
@@ -1144,7 +1747,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "TSMOM", value: 0.671, interval: "[+0.513, +0.829]", panel: "aqr-tsmom", months: 54 }],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: 0.671,
+        interval: "[+0.513, +0.829]",
+        panel: "aqr-tsmom",
+        window: { from: "2021-07", to: "2025-12" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 10.93,
     pedestalPpYr: null,
@@ -1166,6 +1777,36 @@ export const shelf: readonly ShelfFund[] = [
     asOf: READ,
   },
   {
+    ticker: "SDMF",
+    name: "Simplify DBi CTA Managed Futures Index ETF",
+    category: "managed-futures",
+    mandate: "A passive index replication of managed futures. Reported as a stacked wrapper; it is not one.",
+    expenseRatioBp: 35,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Audited as a candidate wrapper and it is not in that category at all. Its 2026-03-31 N-PORT holds no equity ETF, no equity index future and no equity of any kind: 89.5% of net assets in Treasury bills, 4.4% in a money fund, and four total return swaps on DBi managed-futures indices. b is zero, so delta is 1.000 and it keeps none of the +2.44 pp/yr funding-rule gap — the same arithmetic as DBMF, KMLM or any standalone trend fund. 0.20% management plus 0.15% acquired-fund fees is 0.35% with no waiver.",
+    caution:
+      "$4.38m of net assets at 2026-03-31 makes it the smallest fund on this shelf, below even JPFP, and it did not exist at 2025-12-31. Its whole diversifier leg is bilateral swap exposure, and its Cayman subsidiary held 22.50% of total assets against the 25% RIC cap. Bought at a 30% weight it would pay the full funding-rule gap that the wrappers exist to avoid, so its 35 bp is cheap for the wrong product rather than cheap for the right one.",
+    wrapper: {
+      delta: 1,
+      fundingCapturePercent: 0,
+      allInCostBp: 35,
+      grossNotionalPerDollar: 1,
+      distributionTaxDragPpYr: null,
+      incrementalTaxDragBp: null,
+      structureAsOf: asOf("2026-03-31"),
+    },
+    source: trend,
+    asOf: asOf("2026-08-22"),
+  },
+  {
     ticker: "CTA",
     name: "Simplify Managed Futures Strategy ETF",
     category: "managed-futures",
@@ -1174,7 +1815,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "TSMOM", value: 0.475, interval: "[+0.058, +0.991]", panel: "aqr-tsmom", months: 46 }],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: 0.475,
+        interval: "[+0.058, +0.991]",
+        panel: "aqr-tsmom",
+        window: { from: "2022-03", to: "2025-12" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 13.14,
     pedestalPpYr: null,
@@ -1204,7 +1853,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "TSMOM", value: 0.245, interval: "[−0.148, +0.446]", panel: "aqr-tsmom", months: 60 }],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: 0.245,
+        interval: "[−0.148, +0.446]",
+        panel: "aqr-tsmom",
+        window: { from: "2021-01", to: "2025-12" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 16.49,
     pedestalPpYr: null,
@@ -1233,7 +1890,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "TSMOM", value: 0.303, interval: "[+0.183, +0.420]", panel: "aqr-tsmom", months: 78 }],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: 0.303,
+        interval: "[+0.183, +0.420]",
+        panel: "aqr-tsmom",
+        window: { from: "2019-07", to: "2025-12" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 6.64,
     pedestalPpYr: null,
@@ -1263,7 +1928,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [{ factor: "TSMOM", value: 0.099, interval: "[+0.003, +0.201]", panel: "aqr-tsmom", months: 76 }],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: 0.099,
+        interval: "[+0.003, +0.201]",
+        panel: "aqr-tsmom",
+        window: { from: "2019-09", to: "2025-12" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: 8.94,
     pedestalPpYr: null,
@@ -1284,10 +1957,18 @@ export const shelf: readonly ShelfFund[] = [
     asOf: READ,
   },
   // -------------------------------------------------------------------------
-  // Capital-efficient wrappers. Every one of these has an empty `loadings` list and
-  // a null alpha, and that is the most important fact on the entry: what is verified
-  // is structure and cost from filings, never that the sleeve inside delivers
-  // anything. No loading has ever been measured for any wrapper on this shelf.
+  // Capital-efficient wrappers. Every one of these has a null alpha, and that is still
+  // the most important fact on the entry: what is verified is structure and cost from
+  // filings, never that the sleeve inside earns anything.
+  //
+  // Two of them now carry a loading. A fund's own monthly total return is filed in
+  // Item B.5 of Form N-PORT, so a wrapper old enough to have filed can be regressed like
+  // any other fund, and RSST and RSSB have been
+  // (`docs/research/loading-comparability-and-wrapper-exposure.md`). The rest still carry
+  // an empty list because they are three to eight months old, not because the measurement
+  // is impossible. A loading is exposure delivered; it is not evidence that the exposure
+  // pays, and `notionalExposure` remains a separate field for the separate question of
+  // what the fund holds.
   // -------------------------------------------------------------------------
   {
     ticker: "RSST",
@@ -1298,15 +1979,23 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: 0.681,
+        interval: "[+0.406, +0.955]",
+        panel: "aqr-tsmom",
+        window: { from: "2023-10", to: "2026-04" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "What is established is structure and cost, both from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross notional to deliver ~100% of risk exposure. delta is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% notional weight.",
+      "It delivers the trend exposure it sells, and this is the first measurement of it: TSMOM +0.681 [+0.406, +0.955] over 31 filed months to 2026-04, beside an equity beta of +0.979 [+0.763, +1.195] — one dollar of equity and about seven tenths of a dollar of trend, per dollar of capital, against a filed notional of one and one. Regressed on DBMF instead of on the vendor index it reads +0.857 [+0.719, +0.995]. Structure and cost are from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross notional to deliver ~100% of risk exposure. delta is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% notional weight.",
     caution:
-      "Its loading on any trend benchmark has never been measured — stated three separate times in the owning pages. There is no alpha, no return, no Sharpe and no drawdown for the fund itself, and every trend number in this repository belongs to the AQR index or to DBMF. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the sleeve exists for. Under three years old.",
+      "The trend loading above rests on 31 filed months, which is roughly one market regime. Its 95% interval runs from +0.406 to +0.955, so this window cannot tell one dollar of delivered trend from four fifths of one, and the smallest loading it could have detected at 80% power is 0.392. It is exposure delivered, not a return earned: there is still no alpha, no Sharpe and no drawdown measured for the fund. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the sleeve exists for. Under three years old.",
     wrapper: {
       delta: -0.07,
       fundingCapturePercent: 100,
@@ -1338,6 +2027,61 @@ export const shelf: readonly ShelfFund[] = [
     asOf: READ,
   },
   {
+    ticker: "CTAP",
+    name: "Simplify US Equity PLUS Managed Futures Strategy ETF",
+    category: "capital-efficient",
+    mandate:
+      "US equity plus one dollar of an affiliated trend fund, delivered by total return swap rather than by futures.",
+    expenseRatioBp: 28,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: "exploratory",
+    verdict:
+      "The tightest delta on the wrapper shelf, and the fee table that least resembles what the fund costs. Its 2026-03-31 N-PORT reads iShares Core S&P 500 at 70.41% of net assets plus a long E-mini S&P 500 future at 32.23% — 102.64% equity — against 95.17% of total-return-swap notional on CTA plus 3.71% of CTA held outright, 98.88% of trend. delta is −0.027, it keeps the whole +2.44 pp/yr funding-rule gap, its sleeve hurdle is 0.00, and 18.79% sits in T-bills as collateral. Net assets went $4.47m at 2025-12-31 to $123.41m at 2026-03-31 to $157.88m on 2026-08-21.",
+    caution:
+      "The 0.10% is real, contractual and expiring, and it is not what the trend dollar costs. A total return swap pays the reference fund's return net of that fund's fees, and Acquired Fund Fees and Expenses reaches direct holdings rather than a swap reference — so CTA's own 0.75%, which carries no waiver, rides inside 95.17% of net assets and appears nowhere in this fee table. All-in is about 0.81%/yr today and about 0.99% once the waiver lapses on 2026-12-04, against RSST's 0.99% and MATE's 0.97%. Three further asymmetries, none of them in a fee table: 82.48% of net assets is bilateral swap exposure to Bank of America and 12.70% to Citibank, rather than to a clearing house; the trend leg is an affiliated fund and the prospectus concedes the conflict; and a swap is not a §1256 contract, so the 60/40 split that reaches RSST's and MATE's futures does not reach 95% of this fund's diversifier. Eight months old, and it lost a portfolio manager on 2026-08-07. Its trend loading is unmeasured because it has three filed monthly returns, not because a wrapper cannot be regressed — RSST's was measured on 31.",
+    wrapper: {
+      delta: -0.027,
+      fundingCapturePercent: 100,
+      allInCostBp: 81,
+      grossNotionalPerDollar: 2.015,
+      distributionTaxDragPpYr: null,
+      incrementalTaxDragBp: null,
+      structureAsOf: asOf("2026-03-31"),
+    },
+    notionalExposure: [
+      { kind: "us-equity", perDollarOfCapital: 1.0264 },
+      { kind: "trend", perDollarOfCapital: 0.9888 },
+    ],
+    reviewTrigger: {
+      on: asOf("2026-12-04"),
+      what: "Two dates, and the near one is a filing. Its next Form N-PORT, for the quarter ending 2026-06-30, is due 2026-08-29: reread the base leg and the swap notional and recompute delta. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified wrapper on the shelf and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
+    },
+    issuer: {
+      notes: [
+        "Inception 2025-12-08, so eight months live at 2026-08-22, and $157,883,998.76 of net assets on 2026-08-21 — larger than MATE and JPFP together, and the fastest asset growth on this shelf.",
+        'Its own words fix both legs: "The Fund uses derivatives to overlay the Managed Futures Strategy on top of the US Equity Strategy such that for each one dollar invested, the Fund has one dollar of US equity exposure and one dollar of CTA futures exposure."',
+        'The trend leg is an affiliated fund reached by swap: "The Fund primarily executes the Managed Futures Strategy indirectly by investing in a total return swap on the Simplify Managed Futures Strategy ETF ("CTA"), which is a US domiciled exchange-traded fund managed by the adviser." The prospectus concedes the conflict: "The adviser is subject to an indirect conflict of interest in allocating the Fund\'s assets to a swap linked to CTA, as CTA is an affiliated fund that may underperform other futures-based funds."',
+        'The fee table reads 0.25% management plus 0.03% acquired-fund fees for 0.28% gross, less an 0.18% waiver, for 0.10% net. The waiver is a fee reduction and not an expense cap: "The Fund\'s adviser has contractually agreed, through at least December 4, 2026, to reduce its management fees to 0.07% of the Fund\'s average daily net assets. This agreement may be terminated only by the Simplify Exchange Traded Funds\' Board of Trustees." The words "recoup" and "recapture" do not appear anywhere in the statutory prospectus, so there is nothing to be clawed back — the risk here is the expiry, not a recoupment.',
+        "It runs no Cayman subsidiary of its own — Form N-PORT reports zero assets invested in a controlled foreign corporation — because its commodity exposure sits inside CTA, which has one. The 25% RIC cap therefore binds CTA rather than this fund.",
+        "Every swap files its financing leg as SOFR plus a spread of 0.00000000, which makes CTAP the only wrapper on this shelf whose financing spread is disclosed at all. Termination dates are 2049-12-31, so the swaps are evergreen rather than rolling.",
+      ],
+      source: {
+        label: "Simplify US Equity PLUS Managed Futures Strategy ETF, 497K dated 2025-12-05",
+        docPath: "docs/research/capital-efficiency-and-breadth.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1810747/000182912625009650/simplifyetf_497k.htm",
+      },
+      readOn: asOf("2026-08-22"),
+    },
+    source: capital,
+    asOf: asOf("2026-08-22"),
+  },
+  {
     ticker: "RSSB",
     name: "Return Stacked Global Stocks & Bonds ETF",
     category: "capital-efficient",
@@ -1346,7 +2090,15 @@ export const shelf: readonly ShelfFund[] = [
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
-    loadings: [],
+    loadings: [
+      {
+        factor: "TSMOM",
+        value: -0.101,
+        interval: "[−0.358, +0.155]",
+        panel: "aqr-tsmom",
+        window: { from: "2023-12", to: "2026-04" },
+      },
+    ],
     alphaPpYr: null,
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: null,
@@ -1354,7 +2106,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The clean read, and it verifies the marketing exactly: two equity ETFs at 90.53% of net assets plus one equity-index future at 9.54% is 100.07% equity, and four Treasury futures total 100.33%. The two legs use different N-PORT asset categories, so nothing is commingled and delta is −0.0007 at 0.39% all-in with no waiver.",
     caution:
-      "Rejected as a second overlay and as a replacement. A bond overlay does not inherit trend's flat drawdown: resampled, it is the deeper drawdown in 49.7% of histories at 30% notional and 70.0% at 100%, against trend's 6.9%; at matched 1.6× gross, 60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single delta scores it for a US-based reader.",
+      "Its own trend loading is −0.101 [−0.358, +0.155] on 29 filed months — the negative control that makes RSST's +0.681 readable, since the same sponsor, the same wrapper and the same regression return nothing where there is no trend book. Rejected as a second overlay and as a replacement. A bond overlay does not inherit trend's flat drawdown: resampled, it is the deeper drawdown in 49.7% of histories at 30% notional and 70.0% at 100%, against trend's 6.9%; at matched 1.6× gross, 60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single delta scores it for a US-based reader.",
     wrapper: {
       delta: -0.0007,
       fundingCapturePercent: 100,
@@ -1455,8 +2207,8 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "MATE",
     name: "Man Active Trend Enhanced ETF",
     category: "capital-efficient",
-    mandate: "An equity ETF base with a futures top-up and a trend overlay. Two mentions in the whole repository.",
-    expenseRatioBp: null,
+    mandate: "A US equity base completed with S&P futures, plus a diversified trend overlay financed on top.",
+    expenseRatioBp: 97,
     securitiesLendingBp: null,
     netCostBp: null,
     turnoverPercent: null,
@@ -1464,38 +2216,41 @@ export const shelf: readonly ShelfFund[] = [
     alphaPpYr: null,
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: null,
-    status: null,
+    status: "exploratory",
     verdict:
-      "Almost nothing is measured. What the repository has is: an equity ETF leg at 49.8% of net assets plus a futures top-up and a trend sleeve, $36.3m at 2026-02-28, new, an overlay rather than pro rata, and not in Experiment 008. Its fee is not found and so is its all-in cost. No delta was computed, no loading measured, no tax drag, no survival data, no test of any kind.",
+      "Measured from the holdings, and the gap this row used to describe is closed. Its 2026-05-31 N-PORT reads iShares Core S&P 500 at 50.30% of net assets plus one long E-mini S&P 500 future at 65.57% — 115.87% US equity, not the 49.8% base leg recorded here before — against a filed 100% trend target, so delta is −0.159, it keeps the whole +2.44 pp/yr funding-rule gap, and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. Net assets $39.41m, T-bill collateral 29.54%, and the derivative book runs 404.5% of net assets in gross notional (284.2% futures, 120.3% FX forwards) to deliver it. The 2026-02-28 filing reads the same way at 111.56% equity and delta −0.116. All-in 0.97%, no waiver.",
     caution:
-      "This is the largest gap in the candidate portfolio, and the missing delta is why. A 49.8% base leg sits in the range where a wrapper is *worse* than selling equity outright — the worked warning is that 40% equity with 30% trend gives delta = 2.0, and HOLD is the audited instance of that failure at delta = 0.333, costing 0.81 pp/yr. A gross-notional figure cannot distinguish that case from the good one. MATE may be in that category and this repository has not checked. The 49.8% below is the only leg filed here; the futures and trend legs are not found, so the list is incomplete by construction.",
+      "The 65.57% E-mini line is not separable into base completion and the trend book's own equity position, because the trend book trades equity-index futures too and no filing tags a contract by sleeve. 115.87% is the filed US-equity total, not a contractual base leg; the contractual floor is the prospectus's 100%, where delta is 0.00. Both reads keep the whole gap, so the conclusion survives the ambiguity and the exact delta does not. Beyond that: eight months old at $39.41m, which is closure territory; the Cayman subsidiary held 21.09% of total assets at 2026-05-31 and 22.12% three months earlier against a 25% cap that costs RIC status if breached and not cured; no loading on any trend benchmark, no return, no Sharpe and no drawdown has been measured for it, and with six filed monthly returns none can be — the constraint is its age, not the source; and it has no SEC-standardised after-tax table because it has not completed a calendar year, so its distribution tax drag is unknown rather than small.",
     wrapper: {
-      delta: null,
-      fundingCapturePercent: null,
-      allInCostBp: null,
-      grossNotionalPerDollar: null,
+      delta: -0.159,
+      fundingCapturePercent: 100,
+      allInCostBp: 97,
+      grossNotionalPerDollar: 2.159,
       distributionTaxDragPpYr: null,
       incrementalTaxDragBp: null,
-      structureAsOf: asOf("2026-02-28"),
+      structureAsOf: asOf("2026-05-31"),
     },
-    notionalExposure: [{ kind: "equity", perDollarOfCapital: 0.498 }],
+    notionalExposure: [
+      { kind: "us-equity", perDollarOfCapital: 1.1587 },
+      { kind: "trend", perDollarOfCapital: 1.0 },
+    ],
     issuer: {
       notes: [
-        "Man Active Trend Enhanced ETF — a Man Group fund sub-advised by AHL Partners, not a Return Stacked product and not merger arbitrage. Inception 2025-12-16, so eight months live at 2026-08-17.",
-        '97 bp all-in, with Other Expenses and acquired-fund fees "based on estimated amounts for the current fiscal year" rather than incurred. No waiver. A 12b-1 plan of up to 25 bp is adopted but dormant.',
-        "It targets 100% exposure to each of its trend-following and equity strategies through a wholly-owned Cayman subsidiary, MATE Cayman Holdings, LLC, under the same 25% cap.",
-        "It is the only wrapper on this shelf whose prospectus states the §1256 treatment outright: contracts marked to market annually, 60% long-term and 40% short-term, which forces recognition of unrealised gains at year end. In a taxable account that is phantom income, and it is the opposite of the deferral the wrapper argument elsewhere depends on.",
-        "Net assets are not published on any Man Group page that was read. Third-party figures exist and are not quoted here.",
+        "Man Active Trend Enhanced ETF — a Man Group fund sub-advised by AHL Partners, not a Return Stacked product and not merger arbitrage. Inception 2025-12-16, so eight months live at 2026-08-22.",
+        '97 bp all-in: a 0.95% unitary fee plus 0.02% of acquired-fund fees, both "based on estimated amounts for the current fiscal year" rather than incurred. No waiver. A 12b-1 plan of up to 25 bp is adopted but dormant.',
+        'Its own words fix the diversifier leg the delta divides by: "The Fund will target a 100% exposure to each of its Trend-Following Strategy and Equity Strategy."',
+        'The Cayman subsidiary carries commodities only, not the whole trend book — "The Fund intends to gain exposure to the commodities futures markets by investing through a wholly-owned subsidiary" — and the fund "intends to manage the exposure to the Subsidiary so that the Fund\'s investments in the Subsidiary do not exceed 25% of the total assets at the end of any quarter."',
+        'It states the §1256 treatment outright: the fund is "required, for federal income tax purposes, to mark to market and recognize as income for each taxable year its net unrealized gains and losses as of the end of such year on certain regulated futures contracts", and that gain is "generally 60% long-term and 40% short-term". That forces recognition of unrealised gains at year end, which in a taxable account is phantom income.',
       ],
       source: {
         label: "Man Active Trend Enhanced ETF, 485BPOS effective 2025-12-13",
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/2065379/000119312525316292/d98016d485bpos.htm",
       },
-      readOn: asOf("2026-08-17"),
+      readOn: asOf("2026-08-22"),
     },
     source: capital,
-    asOf: READ,
+    asOf: asOf("2026-08-22"),
   },
   {
     ticker: "JPFP",
@@ -1512,9 +2267,17 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "When this repository last read it, it had not commenced operations (497K of 2026-04-15), and a 0.59% unitary fee with no waiver and no recoupment was the only fact that existed. It has since listed — see the filings block below — but no holdings, loading or record have been examined here, so its stack still rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else.",
+      "Still unmeasurable, and now for a filing-level reason rather than an unexamined one: no Form N-PORT exists for it. Its series is S000101300 in the SEC's own ticker map, and none of the 24 N-PORT filings the J.P. Morgan Exchange-Traded Fund Trust made for the 2026-05-31 period carries that series. It commenced 2026-05-27, so its first holdings filing belongs to the quarter ending 2026-06-30 or 2026-07-31 and is due 2026-08-29 or 2026-09-29. Until one is filed there is no base leg, no diversifier leg and therefore no delta; its stack rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else. Checked 2026-08-22.",
     caution:
-      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. It is named in three places as a standing review trigger, not as a holding. No delta, no loading, no record.",
+      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. Three months live at $17.07m makes it the smallest fund on this shelf and the likeliest to close. It also carries one tax cost the other wrappers do not disclose: it expects to create and redeem in cash, which forfeits the in-kind shield on its equity leg as well as its overlay. No delta, no loading, no record — and no Form N-PORT, so all three wait on the same filing.",
+    /**
+     * The dated review trigger. This is the only entry on the shelf whose structure is
+     * unknown for a reason that expires, so the recheck has a date rather than a condition.
+     */
+    reviewTrigger: {
+      on: asOf("2026-09-29"),
+      what: "Read JPFP's first Form N-PORT — its series is S000101300, and the filing is due 2026-08-29 if its first reporting period ends 2026-06-30 or 2026-09-29 if it ends 2026-07-31 — and compute delta from the base leg and the diversifier leg the way MATE's was computed, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. If delta comes back at or below zero, JPFP keeps the whole funding-rule gap at 59 bp against RSST's 99 and MATE's 97, and it reorders the wrapper cost ranking outright. That still would not make it holdable at a 30% weight: at $17.07m it would be the smallest fund on this shelf with three months of record, so a negative delta buys it a place in the comparison, not the allocation. If no filing has appeared by 2026-09-29, that is itself the finding and the next date is the following quarter.",
+    },
     wrapper: {
       delta: null,
       fundingCapturePercent: null,
@@ -1526,20 +2289,22 @@ export const shelf: readonly ShelfFund[] = [
     },
     issuer: {
       notes: [
-        "It has since commenced. Performance inception 2026-05-27, so two months live at 2026-08-17, with $17.07m of net assets on its 2026-06-30 fact sheet — the smallest fund on this shelf and the one with the highest closure risk.",
-        "59 bp unitary, no waiver: 40 bp cheaper than RSST for a structurally similar product, which is why it is a standing review trigger in the research rather than a footnote.",
+        "It has since commenced. Performance inception 2026-05-27, so three months live at 2026-08-22, with $17.07m of net assets on its 2026-06-30 fact sheet — the smallest fund on this shelf and the one with the highest closure risk. No later issuer figure was reachable: the J.P. Morgan product page renders its data client-side and returned none.",
+        "59 bp unitary, no waiver, no recoupment: 40 bp cheaper than RSST for a structurally similar product, which is why it is a standing review trigger in the research rather than a footnote.",
         'It says only that it "seeks to provide full exposure to each of the Managed Futures Strategy and the U.S. Equity Strategy, simultaneously" and that "aggregate notional exposure will exceed its net assets". Unlike RSST, RSSB and MATE it publishes no numeric per-dollar breakdown anywhere, so none is stated here.',
-        "The commodity leg runs through Managed Futures Plus Fund CS Ltd., a wholly-owned Cayman subsidiary, capped at 25% of assets.",
+        'The commodity leg runs through Managed Futures Plus Fund CS Ltd., a wholly-owned Cayman subsidiary, and the fund gains commodity exposure "by investing up to 25% of the Fund\'s assets" in it.',
+        'It discloses a tax cost the other two candidates do not: "the Fund expects to generally effect its creations and redemptions entirely or partially in cash, rather than primarily for in-kind securities. Therefore, it will be required to sell portfolio securities and subsequently recognize a gain on such sales that the Fund might not have recognized if it were to distribute portfolio securities in kind."',
+        "Its registration statement never states the §1256 mark-to-market rule for the fund's own regulated futures contracts; the single mention of §1256 in the whole filing is inside the §988(a)(1)(B) foreign-currency election. The rule applies regardless, so this is a disclosure difference from MATE and not an exposure difference.",
       ],
       source: {
         label: "JPMorgan Managed Futures Plus ETF, 485BPOS filed 2026-04-15",
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/1485894/000119312526156138/d63821d485bpos.htm",
       },
-      readOn: asOf("2026-08-17"),
+      readOn: asOf("2026-08-22"),
     },
     source: capital,
-    asOf: READ,
+    asOf: asOf("2026-08-22"),
   },
   {
     ticker: "SCHD",

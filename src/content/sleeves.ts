@@ -482,7 +482,7 @@ export interface CreditRow {
 export const diversificationCredit = {
   heading: "Why there is no trend, momentum or managed-futures sleeve",
   headline:
-    "The credit a sleeve earns for not moving with the portfolio has a ceiling, and the ceiling sits below the bar. That is arithmetic, not a disappointing result.",
+    "The credit a sleeve earns for not moving with the portfolio has a ceiling, and the ceiling is the base portfolio's own variance. That part is arithmetic. The 0.30 pp/yr bar it was compared against is not: it is a reference point nobody has derived, and it sits below this instrument's own 0.58 pp/yr detection floor.",
   mechanism:
     "Fund a sleeve pro rata out of the portfolio you already hold, and its diversification credit is the portfolio's variance times one minus the sleeve's beta. Set the beta to zero and the credit is exactly the portfolio's variance. That number belongs to the base portfolio. No sleeve can raise it.",
   referenceWeight: "10%",
@@ -530,7 +530,7 @@ export const diversificationCredit = {
   aboveTheCeiling:
     "Five sleeves earn more than the ceiling — the four funded long-short overlays and a modelled Treasury proxy — and every one of them does it with a negative beta rather than a zero one. All five pay for it in the standalone return term instead.",
   trendReading:
-    "Trend's own beta to the core is −0.132, worth +0.246 pp/yr at a 10% weight against a total marginal growth contribution of +0.258. So essentially all of what trend contributes is credit rather than return it earned standing alone. It misses the 0.30 bar, its interval runs from −0.545 to +1.069, and its Holm-adjusted p is 1.0000. Nothing in the family of ten survives Holm at 0.05; the best adjusted p anywhere is long-only US momentum's 0.1890, and it fails the bar too at +0.269.",
+    "Trend's own beta to the core is −0.132, worth +0.246 pp/yr at a 10% weight against a total marginal growth contribution of +0.258. So essentially all of what trend contributes is credit rather than return it earned standing alone. Its interval runs from −0.545 to +1.069 and its Holm-adjusted p is 1.0000. Read both with the instrument in view: every one of the ten estimates lies inside the design's own ±0.58 pp/yr detection floor, and family-wise control at 0.05 belongs to a confirmatory stage rather than to a first search. Trend and long-only US momentum are therefore unresolved here, not refuted.",
   fragility:
     "The sleeves whose value is a credit earned it in one crisis. Every negative-beta sleeve collapses in the second half of the sample and every one loses its best year to 2008. Trend goes from +1.243 pp/yr over 1991–2008 to −0.823 over 2009–2025, and doubling the cost assumption alone takes its full-period figure to −0.009.",
   deRisking: {
@@ -553,7 +553,7 @@ export const diversificationCredit = {
         label: "The de-risking reward",
         value: "+0.809",
         unit: "pp/yr",
-        note: "The difference, and 2.7× the 0.30 materiality threshold, for a sleeve that supplies nothing.",
+        note: "The difference, and 2.7× the 0.30 pp/yr reference point, for a sleeve that supplies nothing.",
       },
     ] as const satisfies readonly KeyNumber[],
     source: {
@@ -563,11 +563,11 @@ export const diversificationCredit = {
   },
   caveat:
     "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold has since been tested and it lands exactly on the ceiling: its beta to the equity core measures zero, so it takes the whole credit and still loses 0.10 pp/yr. Per unit of weight the credit is 2.17 pp/yr against a standalone shortfall of 2.95, so the most the credit can ever pay is 74% of the gap — and because both scale with the weight, holding more does not close it.",
-  status: "rejected" as EvidenceStatus,
+  status: "unresolved" as EvidenceStatus,
   statusNote:
-    "A falsifier written down before the result fired. Two specifications judged the same data, one on a certainty equivalent and one on growth; growth decides, and that is what moved the family from unresolved to rejected. Every input is a paper portfolio, a vendor series or a model. None of it is investable, and none of it says trend is worthless.",
+    "A falsifier written down before the result fired, on two specifications judging the same data — one on a certainty equivalent, one on growth. Growth decides. Six of the ten sleeve verdicts have since been restated unresolved, because the only clauses that fired on them were a bar below this design's own detection floor and a family-wise correction that belongs to a confirmatory stage; the four that fired a sign or boundary clause stand, scoped to pro-rata funding at a 10% weight. Every input is a paper portfolio, a vendor series or a model. None of it is investable, none of it promotes anything, and none of it says trend is worthless.",
   source: marginalValue,
-  asOf: asOf("2026-08-12"),
+  asOf: asOf("2026-08-22"),
 } as const;
 
 // ---------------------------------------------------------------------------

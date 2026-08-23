@@ -1,0 +1,32 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_ir3tib01usm156n",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=IR3TIB01USM156N",
+  "retrieved_utc": "2026-08-23T05:13:21Z",
+  "sha256_raw": "3a51abf105c27499ec6b28cf5edec386274d578e7da66df4c82ae7d0b4cef23b",
+  "sha256_normalized": "2c8b4898215ab523226cccc474d7ecd99746a00ea091465d96c67b2272504a52",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "monthly",
+  "units": "decimal_per_year",
+  "source_units": "percent_per_year",
+  "unit_transform": "value / 100",
+  "first_observation": "1964-06-01",
+  "last_observation": "2026-06-01",
+  "rows": 745,
+  "availability_policy": "A monthly average of daily fixings, published by the OECD with a lag of a month or more. The value for month M is not available during month M, and the OECD's own publication lag is longer than FRED's. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "Not point-in-time. The OECD rebuilds the Main Economic Indicators database on each release and FRED serves the current vintage; several members of this family also END EARLY because the underlying national fixing was discontinued or the OECD stopped collecting it, so a coverage end date here is a fact about the statistical programme rather than about the market. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "1 observations were the FRED missing token '.' and became missing values, not zeros: ['2020-04-01']",
+    "values are an annualised rate expressed as a decimal after dividing the published percent by 100, on a money-market basis, which is actual/360 in every currency here except GBP, where it is actual/365 basis. This is a rate, not a period return: converting it to a monthly or daily return requires an explicit, recorded compounding or day-count assumption that this parser does not make.",
+    "series definition: OECD Main Economic Indicators, three-month or ninety-day interbank offered rate, monthly, as redistributed by FRED. Registered because the cost of hedging a currency is the INTERBANK differential, not the Treasury-bill differential: a currency forward is priced off the money-market curve, and substituting a bill rate on one side of the difference imports that country's bill-to-interbank spread into the answer. Every rate in this family is the same measurement in a different currency, which is why they may be differenced against IR3TIB01USM156N and against nothing else. Measured 2026-08-22: monthly, 1964-06 to 2026-06, 744 observations.",
+    "release timing: A monthly average of daily fixings, published by the OECD with a lag of a month or more. The value for month M is not available during month M, and the OECD's own publication lag is longer than FRED's.",
+    "revision behaviour: Not point-in-time. The OECD rebuilds the Main Economic Indicators database on each release and FRED serves the current vintage; several members of this family also END EARLY because the underlying national fixing was discontinued or the OECD stopped collecting it, so a coverage end date here is a fact about the statistical programme rather than about the market.",
+    "transformation applied by the source: none (level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: 3.0 months (construction: interbank_offered_rate). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable."
+  ]
+}

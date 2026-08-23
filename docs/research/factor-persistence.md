@@ -31,18 +31,15 @@ been tested. **It froze no specification and is `exploratory`.**
 | --- | --- | --- |
 | **HML** | **`exploratory`** | Pooled **+4.74 pp/yr** post-publication across three regions, joint 90% `[+1.46, +8.10]`, positive in all three, surviving its own best calendar year (+3.96) and Holm at 0.036. **No post-publication cell in Experiment 001 survived any correction** |
 | **UMD** | **`exploratory`** | Pooled **+7.33 pp/yr**, `[+3.92, +10.31]`, positive in all three, surviving its best year (+6.65) and Holm at 0.0016. **But its detection threshold is 4.98 pp/yr, the worst here**, its regions are the least independent measured anywhere (1.33 effective, ρ̄ = 0.66), and **they crash together** — all three lost their worst calendar year in 2009 |
-| **RMW** | **`rejected`** | Pooled **+2.53 pp/yr** against its window's own minimum detectable effect of **2.62** — the premium is below the smallest one this window could resolve. Adding two regions did not fix it |
-| **CMA** | **`rejected`** | −1.39 pp/yr in the US, +0.20 pooled, against a 3.41 detection threshold |
+| **RMW** | **`unresolved` by this design** | Pooled **+2.53 pp/yr** against its window's own minimum detectable effect of **2.62** — the premium is below the smallest one this window could resolve. Adding two regions did not fix it |
+| **CMA** | **`unresolved` by this design** | −1.39 pp/yr in the US, +0.20 pooled, against a 3.41 detection threshold |
 | **SMB** | **not signable, on any panel** | Pooled **+0.33 pp/yr**, joint 90% `[−1.32, +2.06]`, against a **2.47** detection floor — the sharpest size instrument here. Developed ex-US **+0.49** `[−1.44, +2.44]` against 2.83; emerging −0.05; US +0.29 post-Banz. **Measured rather than transferred**, because HML is three times larger abroad and nothing said SMB would not be ([§Size](#size-on-the-three-panels--a-study-not-an-experiment)) |
 
-**`rejected` under branch (b) has a precise meaning and it is not "the premium is
-zero".** Every independent region the public library distributes was added, the effective
-sample size that bought was measured, and the result still cannot resolve a premium at
-the 2.0 pp/yr materiality threshold. See
-[decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md) — and
-[search coverage](search-coverage.md) §1.2 for the argument that this closure is stated
-more strongly than the evidence supports, since one of its own reopening conditions is
-simply the passage of about a decade.
+The frozen ledger records which preregistered branch fired; the current claim-level
+interpretation is **unresolved by this design**, not “the premium is zero.” The public
+regional files did not supply enough effective information at the stated materiality point.
+Different data, estimands, conditional models, longer windows, or lower-variance designs
+remain open ([decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md)).
 
 **Neither advance is a discovery of a premium.** Each is a measurement that the premium
 is larger than the threshold its pooled window can see: HML's window could detect only
@@ -385,7 +382,7 @@ regions; and the Carhart alternative date gives +6.71, changing no status.
 
 **The question this answers.** A developed-ex-US small-value fund carries an SMB loading
 near +0.5 to +0.7 beside its HML loading
-([factor products](factor-products.md#what-the-value-funds-also-buy)). Whether that leg is
+([factor products](factor-products.md#what-is-decision-relevant)). Whether that leg is
 an exposure worth paying for depends on whether the **ex-US** size premium can be signed,
 and this repository has only ever tested the **US** one — as a quintile and decile spread
 over `Portfolios_Formed_on_ME`, not as SMB
@@ -438,7 +435,7 @@ comparison the same pooling gives HML **+4.74 against 3.35**, which is why one i
 - **Not evidence that the size premium is zero.** The pooled floor of 2.47 sits *above* the
   2.0 pp/yr materiality threshold, so this is branch (b): nothing was found *and* nothing
   material could have been. Read it beside
-  [the resolution table](evidence-base.md#1-the-resolution-table--read-this-before-proposing-an-experiment).
+  [the resolution table](evidence-base.md#1-resolution-of-the-instruments-already-tested).
 - **Not a formal rejection.** No falsifier was frozen for SMB, no multiple-testing family
   contains it, and no clause fired. It is a measurement, and its consequence is a
   restriction on how a *loading* may be priced, not a status for a factor.
@@ -599,7 +596,7 @@ true correction**, which is why Holm is reported beside them throughout.
    exposure to a premium that three regions and 384 joint months cannot sign, so it enters
    a growth calculation as variance and nothing else. This is what makes a large-value fund
    beat a small-value one on both shelves
-   ([portfolio recommendation §5](portfolio-recommendation.md#5-what-each-tilt-costs-in-confidence-terms)),
+   ([portfolio recommendation](portfolio-recommendation.md#optional-factor-tilts)),
    and it is a restriction on how a loading is used rather than a status for a factor.
 
 ## Reproduce it

@@ -47,11 +47,13 @@ __all__ = [
     "Construction",
     "FredParseError",
     "FredSeries",
+    "QuoteConvention",
     "SeriesNotInterchangeableError",
     "UnknownSeriesError",
     "build_manifest",
     "check_interchangeable",
     "download",
+    "foreign_currency_return",
     "get_series",
     "parse",
     "require_interchangeable",
@@ -68,6 +70,15 @@ LICENSE_OR_TERMS_URL: Final = "https://fred.stlouisfed.org/legal/"
 #: FRED writes missing observations as a bare full stop.
 FRED_MISSING_TOKEN: Final = "."
 
+#: Which way round an exchange rate is quoted. There is no convention that holds
+#: across the H.10 release — ``DEXJPUS`` is yen per dollar and ``DEXUSUK`` is
+#: dollars per pound — and a single inverted series flips the sign of a currency
+#: result without changing anything a reader would notice. So the direction is a
+#: typed field on the series rather than a comment, and
+#: :func:`foreign_currency_return` is the only supported way to turn a level into
+#: a return.
+QuoteConvention = Literal["foreign_per_usd", "usd_per_foreign"]
+
 Construction = Literal[
     "secondary_market_discount_rate",
     "constant_maturity_yield",
@@ -75,6 +86,9 @@ Construction = Literal[
     "market_yield_at_constant_maturity",
     "index_level",
     "exchange_reference_price",
+    "noon_buying_rate",
+    "trade_weighted_index",
+    "interbank_offered_rate",
     "real_yield_at_constant_maturity",
     "breakeven_inflation_spread",
 ]
@@ -121,6 +135,15 @@ class FredSeries:
         release_timing: When an observation for a period becomes available. This,
             not the download time, bounds look-ahead.
         revision_behavior: Whether published values change afterwards.
+        currency: The currency the measurement belongs to, ISO 4217. Defaults to
+            ``USD`` because every series registered before 2026-08 was a US one.
+            Foreign interest rates entered the registry with the currency
+            question, and without this field a three-month euro-area interbank
+            rate and a three-month US one differ in no attribute the registry
+            records — which is exactly the silent substitution the rest of this
+            module exists to prevent.
+        quote_convention: For an exchange rate only, which way round it is
+            quoted. ``None`` for everything that is not a rate of exchange.
     """
 
     series_id: str
@@ -137,6 +160,8 @@ class FredSeries:
     seasonal_adjustment: str
     release_timing: str
     revision_behavior: str
+    currency: str = "USD"
+    quote_convention: QuoteConvention | None = None
 
     @property
     def url(self) -> str:
@@ -148,6 +173,164 @@ def series_url(series_id: str) -> str:
 
 
 _PERCENT_TO_DECIMAL: Final = "value / 100"
+
+_H10_AVAILABILITY: Final = (
+    "H.10 noon buying rates are certified by the Federal Reserve Bank of New "
+    "York for customs purposes and published the following business day. A "
+    "month-end observation is the last BUSINESS day of the month, not the last "
+    "calendar day, and a US holiday that is not a foreign one leaves a gap."
+)
+
+_H10_REVISION: Final = (
+    "Not point-in-time. The H.10 release republishes its full history and FRED "
+    "serves the current vintage only; corrections overwrite in place. Rates are "
+    "rarely revised in practice."
+)
+
+_H10_NOON_RATE: Final = (
+    "A NOON BUYING RATE IN NEW YORK, one quote a day for cable transfers, not a "
+    "traded close and not a WM/Reuters 4pm London fix. An index or a fund prices "
+    "against the 4pm London fix; the two differ by hours of trading, so a "
+    "currency return computed here is close to but not identical with the one "
+    "inside any product's NAV."
+)
+
+_OECD_INTERBANK_DEFINITION: Final = (
+    "OECD Main Economic Indicators, three-month or ninety-day interbank offered "
+    "rate, monthly, as redistributed by FRED. Registered because the cost of "
+    "hedging a currency is the INTERBANK differential, not the Treasury-bill "
+    "differential: a currency forward is priced off the money-market curve, and "
+    "substituting a bill rate on one side of the difference imports that "
+    "country's bill-to-interbank spread into the answer. Every rate in this "
+    "family is the same measurement in a different currency, which is why they "
+    "may be differenced against IR3TIB01USM156N and against nothing else."
+)
+
+_OECD_INTERBANK_AVAILABILITY: Final = (
+    "A monthly average of daily fixings, published by the OECD with a lag of a "
+    "month or more. The value for month M is not available during month M, and "
+    "the OECD's own publication lag is longer than FRED's."
+)
+
+_OECD_INTERBANK_REVISION: Final = (
+    "Not point-in-time. The OECD rebuilds the Main Economic Indicators database "
+    "on each release and FRED serves the current vintage; several members of "
+    "this family also END EARLY because the underlying national fixing was "
+    "discontinued or the OECD stopped collecting it, so a coverage end date "
+    "here is a fact about the statistical programme rather than about the "
+    "market."
+)
+
+
+#: How each quote convention reads in prose, so the direction appears in the definition
+#: text a reader sees and not only in a typed field they might not look at.
+_DIRECTION_PROSE: Final[dict[str, str]] = {
+    "foreign_per_usd": "FOREIGN CURRENCY PER US DOLLAR",
+    "usd_per_foreign": "US DOLLARS PER UNIT OF FOREIGN CURRENCY",
+}
+
+
+def _spot_rate(
+    series_id: str,
+    *,
+    title: str,
+    currency: str,
+    quote_convention: QuoteConvention,
+    coverage: str,
+    notes: str = "",
+) -> FredSeries:
+    """One H.10 bilateral spot rate.
+
+    A factory rather than twenty-six literals because these are genuinely one
+    measurement repeated in different currencies, and the two things that vary
+    between them and can silently corrupt a result — the quote direction and the
+    coverage window — are the two arguments the caller must supply.
+    """
+    return FredSeries(
+        series_id=series_id,
+        title=title,
+        definition=(
+            f"{title}. Federal Reserve H.10, noon buying rate in New York City "
+            f"for cable transfers. {coverage} {_H10_NOON_RATE} "
+            f"QUOTED AS {_DIRECTION_PROSE[quote_convention]}"
+            f" — the H.10 has no single convention and this family contains both. "
+            f"{notes}"
+        ).strip(),
+        frequency="daily",
+        source_units=(
+            f"{currency.lower()}_per_usd"
+            if quote_convention == "foreign_per_usd"
+            else f"usd_per_{currency.lower()}"
+        ),
+        units=(
+            f"{currency.lower()}_per_usd"
+            if quote_convention == "foreign_per_usd"
+            else f"usd_per_{currency.lower()}"
+        ),
+        unit_transform="identity",
+        transformation="none (rate of exchange, as published)",
+        maturity_months=None,
+        construction="noon_buying_rate",
+        day_count="not applicable (a rate of exchange, not an interest rate)",
+        seasonal_adjustment="not seasonally adjusted",
+        release_timing=_H10_AVAILABILITY,
+        revision_behavior=_H10_REVISION,
+        currency=currency,
+        quote_convention=quote_convention,
+    )
+
+
+def _oecd_interbank_rate(
+    series_id: str, *, country: str, currency: str, coverage: str
+) -> FredSeries:
+    """One country's three-month interbank offered rate, monthly."""
+    return FredSeries(
+        series_id=series_id,
+        title=(
+            "Interest Rates: 3-Month or 90-Day Rates and Yields: Interbank "
+            f"Rates: Total for {country}"
+        ),
+        definition=f"{_OECD_INTERBANK_DEFINITION} Measured 2026-08-22: {coverage}",
+        frequency="monthly",
+        source_units="percent_per_year",
+        units="decimal_per_year",
+        unit_transform=_PERCENT_TO_DECIMAL,
+        transformation="none (level, as published)",
+        maturity_months=3.0,
+        construction="interbank_offered_rate",
+        day_count="money-market basis, which is actual/360 in every currency "
+        "here except GBP, where it is actual/365",
+        seasonal_adjustment="not seasonally adjusted",
+        release_timing=_OECD_INTERBANK_AVAILABILITY,
+        revision_behavior=_OECD_INTERBANK_REVISION,
+        currency=currency,
+    )
+
+
+def foreign_currency_return(
+    series: FredSeries, previous_level: float, current_level: float
+) -> float:
+    """The return, to a US dollar investor, of holding one unit of the foreign currency.
+
+    The one function in this module that reads a quote convention, and the only
+    supported way to turn two exchange-rate levels into a return. Written here
+    rather than at each call site because the H.10 quotes some pairs each way
+    round, and an inverted ratio changes the sign of every currency result while
+    changing nothing a reader would notice.
+    """
+    if series.quote_convention is None:
+        raise ValueError(
+            f"{series.series_id} is not an exchange rate; it has no quote convention"
+        )
+    if previous_level <= 0.0 or current_level <= 0.0:
+        raise ValueError(
+            f"{series.series_id}: an exchange rate of {previous_level} -> "
+            f"{current_level} is not a rate; check for a missing observation"
+        )
+    if series.quote_convention == "foreign_per_usd":
+        return previous_level / current_level - 1.0
+    return current_level / previous_level - 1.0
+
 
 SERIES: Final[dict[str, FredSeries]] = {
     series.series_id: series
@@ -530,6 +713,338 @@ SERIES: Final[dict[str, FredSeries]] = {
                 "and LBMA series."
             ),
         ),
+        # --- H.10 bilateral spot rates -------------------------------------
+        # The developed-market currencies a US investor is long through VEA and
+        # DFIV, and the emerging-market ones IEMG and AVES carry. Registered
+        # 2026-08-22 for the currency-hedging question; coverage measured the
+        # same day off the CSV endpoint.
+        _spot_rate(
+            "DEXJPUS",
+            title="Japanese Yen to U.S. Dollar Spot Exchange Rate",
+            currency="JPY",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1971-01-04 to 2026-08-14, 14,509 observations.",
+        ),
+        _spot_rate(
+            "DEXUSUK",
+            title="U.S. Dollars to U.K. Pound Sterling Spot Exchange Rate",
+            currency="GBP",
+            quote_convention="usd_per_foreign",
+            coverage="Daily, 1971-01-04 to 2026-08-14, 14,509 observations.",
+        ),
+        _spot_rate(
+            "DEXSZUS",
+            title="Swiss Francs to U.S. Dollar Spot Exchange Rate",
+            currency="CHF",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1971-01-04 to 2026-08-14, 14,509 observations.",
+            notes=(
+                "Carries the 2015-01-15 removal of the 1.20 EUR/CHF floor, a "
+                "single day on which the franc moved about 20% against the "
+                "dollar. Any volatility estimated through that date is a "
+                "measurement of a policy break as much as of a market."
+            ),
+        ),
+        _spot_rate(
+            "DEXCAUS",
+            title="Canadian Dollars to U.S. Dollar Spot Exchange Rate",
+            currency="CAD",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1971-01-04 to 2026-08-14, 14,509 observations.",
+        ),
+        _spot_rate(
+            "DEXUSAL",
+            title="U.S. Dollars to Australian Dollar Spot Exchange Rate",
+            currency="AUD",
+            quote_convention="usd_per_foreign",
+            coverage="Daily, 1971-01-04 to 2026-08-14, 14,509 observations.",
+        ),
+        _spot_rate(
+            "DEXUSEU",
+            title="U.S. Dollars to Euro Spot Exchange Rate",
+            currency="EUR",
+            quote_convention="usd_per_foreign",
+            coverage="Daily, 1999-01-04 to 2026-08-14, 7,204 observations.",
+            notes=(
+                "STARTS AT THE EURO'S LAUNCH. There is no euro before "
+                "1999-01-04 and this repository holds no legacy-currency splice, "
+                "so a currency panel containing the euro cannot begin earlier "
+                "without an analytical choice that is not made here."
+            ),
+        ),
+        _spot_rate(
+            "DEXSDUS",
+            title="Swedish Kronor to U.S. Dollar Spot Exchange Rate",
+            currency="SEK",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1971-01-04 to 2026-08-14, 14,509 observations.",
+        ),
+        _spot_rate(
+            "DEXHKUS",
+            title="Hong Kong Dollars to U.S. Dollar Spot Exchange Rate",
+            currency="HKD",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1981-01-02 to 2026-08-14, 11,900 observations.",
+            notes=(
+                "PEGGED to the US dollar since 1983 inside a band the HKMA "
+                "defends. Its currency return is near zero by construction and "
+                "its volatility is not an estimate of anything a floating "
+                "currency does; the hedging question does not arise for it."
+            ),
+        ),
+        _spot_rate(
+            "DEXSIUS",
+            title="Singapore Dollars to U.S. Dollar Spot Exchange Rate",
+            currency="SGD",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1981-01-02 to 2026-08-14, 11,900 observations.",
+            notes=(
+                "MANAGED against an undisclosed trade-weighted basket by the "
+                "MAS, which runs monetary policy through the exchange rate "
+                "rather than through an interest rate."
+            ),
+        ),
+        _spot_rate(
+            "DEXCHUS",
+            title="Chinese Yuan Renminbi to U.S. Dollar Spot Exchange Rate",
+            currency="CNY",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1981-01-02 to 2026-08-14, 11,900 observations.",
+            notes=(
+                "MANAGED, and for 1994-2005 and 2008-2010 effectively FIXED. A "
+                "volatility or correlation estimated across those years measures "
+                "a policy, and the onshore CNY quoted here is not the offshore "
+                "CNH a foreign investor would actually transact or hedge in."
+            ),
+        ),
+        _spot_rate(
+            "DEXINUS",
+            title="Indian Rupees to U.S. Dollar Spot Exchange Rate",
+            currency="INR",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1973-01-02 to 2026-08-14, 13,988 observations.",
+        ),
+        _spot_rate(
+            "DEXTAUS",
+            title="Taiwan Dollars to U.S. Dollar Spot Exchange Rate",
+            currency="TWD",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1983-10-03 to 2026-08-14, 11,184 observations.",
+        ),
+        _spot_rate(
+            "DEXKOUS",
+            title="South Korean Won to U.S. Dollar Spot Exchange Rate",
+            currency="KRW",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1981-04-13 to 2026-08-14, 11,829 observations.",
+        ),
+        _spot_rate(
+            "DEXBZUS",
+            title="Brazilian Reals to U.S. Dollar Spot Exchange Rate",
+            currency="BRL",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1995-01-02 to 2026-08-14, 8,249 observations.",
+            notes=(
+                "STARTS AT THE REAL'S INTRODUCTION in 1994 and therefore omits "
+                "every earlier Brazilian currency and redenomination. The "
+                "1999 float and the 2002 election crisis are both inside it."
+            ),
+        ),
+        _spot_rate(
+            "DEXSFUS",
+            title="South African Rand to U.S. Dollar Spot Exchange Rate",
+            currency="ZAR",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1980-01-02 to 2026-08-14, 12,162 observations.",
+        ),
+        _spot_rate(
+            "DEXMXUS",
+            title="Mexican Pesos to U.S. Dollar Spot Exchange Rate",
+            currency="MXN",
+            quote_convention="foreign_per_usd",
+            coverage="Daily, 1993-11-08 to 2026-08-14, 8,549 observations.",
+            notes=(
+                "STARTS WEEKS BEFORE the December 1994 devaluation and inside "
+                "the 1993 redenomination. The first fourteen months of this "
+                "series are one of the largest currency losses in the panel."
+            ),
+        ),
+        # --- Fed trade-weighted dollar indices ------------------------------
+        FredSeries(
+            series_id="DTWEXAFEGS",
+            title="Nominal Advanced Foreign Economies U.S. Dollar Index",
+            definition=(
+                "The Federal Reserve's nominal trade-weighted index of the US "
+                "dollar against a subset of advanced foreign economies, goods "
+                "and services trade weights, published in the H.10 release. "
+                "Measured 2026-08-22: daily, 2006-01-02 to 2026-08-14, 5,379 "
+                "observations, index 2006-01-02 = 100. A RISE IS A STRONGER "
+                "DOLLAR, so the return to holding the basket of foreign "
+                "currencies is level[t-1] / level[t] - 1. "
+                "REGISTERED AS A CROSS-CHECK ON A CAP-WEIGHTED BASKET, NOT AS A "
+                "SUBSTITUTE FOR ONE: the weights are bilateral GOODS AND "
+                "SERVICES TRADE shares, which is not how a developed-ex-US "
+                "equity index is weighted. Canada is the United States' largest "
+                "trading partner and a small share of developed-ex-US equity "
+                "market capitalisation, and Japan is the reverse, so this index "
+                "and an equity-weighted currency basket are different objects "
+                "that happen to move together."
+            ),
+            frequency="daily",
+            source_units="index_2006_01_02_eq_100",
+            units="index_2006_01_02_eq_100",
+            unit_transform="identity",
+            transformation="none (index level, as published)",
+            maturity_months=None,
+            construction="trade_weighted_index",
+            day_count="not applicable (an index level, not a rate)",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing=_H10_AVAILABILITY,
+            revision_behavior=(
+                "Not point-in-time, and the WEIGHTS ARE REVISED ANNUALLY from "
+                "updated trade data, which rewrites recent history. The whole "
+                "index family was restructured in January 2019, when the Board "
+                "replaced the Major/OITP split with the Broad/AFE/EME split; "
+                "this series is a product of that restructuring and its "
+                "pre-2019 values are a backfill computed under the new scheme, "
+                "not what anyone published at the time."
+            ),
+        ),
+        FredSeries(
+            series_id="DTWEXM",
+            title=(
+                "Nominal Major Currencies U.S. Dollar Index (Goods Only) "
+                "(DISCONTINUED)"
+            ),
+            definition=(
+                "The Federal Reserve's former nominal major-currencies dollar "
+                "index, goods-only trade weights, DISCONTINUED at the January "
+                "2019 restructuring and last published 2019-12-31. Measured "
+                "2026-08-22: daily, 1973-01-02 to 2019-12-31, 12,260 "
+                "observations, index March 1973 = 100. A RISE IS A STRONGER "
+                "DOLLAR. Registered for one reason: it is the only free daily "
+                "developed-currency series in this repository that reaches back "
+                "to the collapse of Bretton Woods, and the currency question "
+                "needs the longest window it can defend. It ENDS IN 2019 and so "
+                "sees neither 2020 nor 2022 nor 2025; DTWEXAFEGS covers those "
+                "and the two overlap 2006-2019 but are NOT the same index and "
+                "must not be chained without saying so."
+            ),
+            frequency="daily",
+            source_units="index_1973_03_eq_100",
+            units="index_1973_03_eq_100",
+            unit_transform="identity",
+            transformation="none (index level, as published)",
+            maturity_months=None,
+            construction="trade_weighted_index",
+            day_count="not applicable (an index level, not a rate)",
+            seasonal_adjustment="not seasonally adjusted",
+            release_timing=_H10_AVAILABILITY,
+            revision_behavior=(
+                "Discontinued, so the history no longer changes. While it was "
+                "live its weights were revised annually and rewrote recent "
+                "history in the same way DTWEXAFEGS's do."
+            ),
+        ),
+        # --- OECD three-month interbank rates -------------------------------
+        # The carry leg. These are differenced against IR3TIB01USM156N and
+        # against nothing else; see _OECD_INTERBANK_DEFINITION.
+        _oecd_interbank_rate(
+            "IR3TIB01USM156N",
+            country="United States",
+            currency="USD",
+            coverage="monthly, 1964-06 to 2026-06, 744 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01DEM156N",
+            country="Germany",
+            currency="EUR",
+            coverage=(
+                "monthly, 1960-01 to 2026-06, 797 observations. CURRENCY IS "
+                "RECORDED AS EUR BECAUSE THAT IS WHAT IT IS AFTER 1999: the "
+                "series is a Deutsche Mark interbank rate before 1999 and a "
+                "euro one after, spliced by the source, and it is used here as "
+                "the euro-area rate for the whole window."
+            ),
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01JPM156N",
+            country="Japan",
+            currency="JPY",
+            coverage=(
+                "monthly, 2002-04 to 2026-05, 289 observations. THE SHORTEST "
+                "MEMBER OF THE FAMILY BY TWENTY YEARS, and it is the binding "
+                "constraint on any panel that needs all of them at once."
+            ),
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01GBM156N",
+            country="United Kingdom",
+            currency="GBP",
+            coverage=(
+                "monthly, 1957-01 to 2026-01, 828 observations. ENDS 2026-01 "
+                "while its siblings run to June; a panel that intersects on "
+                "dates will lose five months to this series alone."
+            ),
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01CHM156N",
+            country="Switzerland",
+            currency="CHF",
+            coverage="monthly, 1999-07 to 2026-06, 323 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01CAM156N",
+            country="Canada",
+            currency="CAD",
+            coverage="monthly, 1956-01 to 2026-06, 845 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01AUM156N",
+            country="Australia",
+            currency="AUD",
+            coverage="monthly, 1968-01 to 2026-06, 701 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01SEM156N",
+            country="Sweden",
+            currency="SEK",
+            coverage="monthly, 1982-01 to 2026-06, 533 observations.",
+        ),
+        # The four emerging-market currencies for which the same OECD interbank
+        # measurement exists. Brazil and India do NOT have one — FRED serves
+        # only discount rates for them, and India's ends 2022-07 — so an
+        # emerging-market carry basket built here is necessarily incomplete and
+        # any page using it must say which currencies are missing from it.
+        _oecd_interbank_rate(
+            "IR3TIB01KRM156N",
+            country="Korea",
+            currency="KRW",
+            coverage="monthly, 1991-01 to 2026-06, 425 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01MXM156N",
+            country="Mexico",
+            currency="MXN",
+            coverage="monthly, 1997-01 to 2026-06, 353 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01ZAM156N",
+            country="South Africa",
+            currency="ZAR",
+            coverage="monthly, 1980-12 to 2026-06, 546 observations.",
+        ),
+        _oecd_interbank_rate(
+            "IR3TIB01CNM156N",
+            country="China",
+            currency="CNY",
+            coverage=(
+                "monthly, 1997-06 to 2026-05, 347 observations. AN ONSHORE "
+                "ADMINISTERED RATE for most of its history, not a freely traded "
+                "one, and it prices onshore CNY rather than the offshore CNH a "
+                "foreign investor would hedge in."
+            ),
+        ),
     )
 }
 
@@ -556,6 +1071,16 @@ def check_interchangeable(left_id: str, right_id: str) -> tuple[str, ...]:
     left = get_series(left_id)
     right = get_series(right_id)
     differences: list[str] = []
+    if left.currency != right.currency:
+        differences.append(
+            f"currency differs: {left.series_id}={left.currency}, "
+            f"{right.series_id}={right.currency}"
+        )
+    if left.quote_convention != right.quote_convention:
+        differences.append(
+            f"quote convention differs: {left.series_id}={left.quote_convention}, "
+            f"{right.series_id}={right.quote_convention}"
+        )
     if left.maturity_months != right.maturity_months:
         differences.append(
             f"maturity differs: {left.series_id}={left.maturity_months} months, "
@@ -610,6 +1135,7 @@ class CashRateRequirement:
     maturity_months: float | None
     frequency: Frequency
     construction: Construction
+    currency: str = "USD"
 
 
 def resolve_cash_rate(requirement: CashRateRequirement) -> FredSeries:
@@ -626,6 +1152,7 @@ def resolve_cash_rate(requirement: CashRateRequirement) -> FredSeries:
         if series.maturity_months == requirement.maturity_months
         and series.frequency == requirement.frequency
         and series.construction == requirement.construction
+        and series.currency == requirement.currency
     ]
     if len(matches) == 1:
         return matches[0]

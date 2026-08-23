@@ -1,13 +1,11 @@
 # The evidence base: what this repository can measure, and what it cannot
 
-**Question.** What sources of truth does this repository actually hold, what can each
-one resolve, and what is foreclosed until something is acquired?
+**Question.** What sources does this repository hold, what can each resolve, and what new
+instrument is needed when the current one cannot answer a decision-relevant question?
 
-**Decision it informs.** What a new experiment may be commissioned to ask. A question
-whose answer sits below the measured resolution of every instrument here should not be
-asked again until the instrument changes — that is the mistake
-[decision 0005](../decisions/0005-factor-premia-closed-on-public-data.md) exists to stop
-repeating.
+**Decision it informs.** Which instrument fits a proposed question. A question below the
+measured resolution of every current instrument remains open. Repeating the same design is
+unlikely to help, but a new source, estimand, model, window, or lower-variance design may.
 
 **Out of scope.** Whether any return source is real
 ([framework](portfolio-edge-research-framework.md)); what to hold
@@ -19,11 +17,21 @@ if a hash moves.
 
 ---
 
-## 1. The resolution table — read this before proposing an experiment
+## 1. Resolution of the instruments already tested
+
 
 For each question the repository has asked, the smallest effect its instrument could
-detect at 80% power, against the effect size that would matter. **Where the floor
-exceeds the bar, a null result carries almost no information.**
+detect at 80% power, against the effect size that would matter. **Where the floor exceeds
+that effect, a null carries little information about the decision. This is a design prompt,
+not a prohibition on research.**
+
+**The bar column is a reporting reference point, not a rejection threshold.** The two
+constants in it — 2.0 pp/yr materiality and the 0.30 pp/yr sleeve bar — are derived nowhere,
+and until they are they may not be the operative clause of a falsifier frozen after
+2026-08-22 ([decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md), clause 4).
+A new specification derives its bar from its own design and states its relation to this
+floor **before** freezing. A confirmatory design should change when its threshold is below
+its floor; an exploratory screen may still measure the effect if the limitation is explicit.
 
 | Question | Instrument | Measured floor (MDE₈₀) | Bar that matters | Can it answer? |
 | --- | --- | ---: | ---: | --- |
@@ -40,7 +48,7 @@ exceeds the bar, a null result carries almost no information.**
 | Fund alpha, ex-US shelf | N-PORT, 27–78 months | median 3.23 pp/yr | ≈1.25 pp/yr | **no** |
 | Fund alpha, managed futures | N-PORT, 46–78 months | median **12.75** pp/yr | ≈1.25 pp/yr | **no**, by ~10× |
 | Rebalancing policy difference | 420 months, 3 sleeves | — | 0.25 pp/yr | **yes** — the effect is large and negative |
-| Marginal sleeve growth at 10% weight | 420 months | ≈0.58 pp/yr typical | 0.30 pp/yr | **no** — see [search coverage](search-coverage.md) |
+| Marginal sleeve growth at 10% weight | 420 months | ≈0.58 pp/yr typical | 0.30 pp/yr | **no** — all ten sleeve estimates lie inside ±0.58, so six verdicts are [restated `unresolved`](marginal-sleeve-value.md#the-sleeve-table); see [search coverage](search-coverage.md) |
 | Crisis-conditional trend benefit | 53 crisis months | ≈4.4 effective observations | — | **no** |
 | Financed 50% trend overlay, vendor leg | 485 months | 2.82 pp/yr | 0.30 pp/yr | gap +4.79, but the leg's decay exceeds its break-even |
 | Same, **live fund leg** | N-PORT, 78 months | **4.76** pp/yr | 0.30 pp/yr | **no** — the window, not the series, now binds |
@@ -71,6 +79,8 @@ exceeds the bar, a null result carries almost no information.**
 | **TIPS against the nominal bond leg — one engine or two?** | 79 investable months; 275 modelled | SE ≈ 0.032 and 0.022 on ρ ≈ 0.8 | 0.75, the threshold [capital efficiency §3](capital-efficiency-and-breadth.md) uses | **yes** — +0.761 to +0.851 on funds, +0.798 modelled. **One engine** |
 | **TIPS' correlation to equity against nominal's, identical months** | 275 months | SE ≈ 0.060 on each | the sign difference | **yes** — **+0.131 against −0.076**, a gap of 3.5 SE, and TIPS' five-year-block dispersion is 0.200 against 0.114 |
 | **Is nominal bonds' correlation to equity era-dependent?** | 750 months, twelve 60-month blocks | block SE ≈ 0.13 at ρ ≈ 0 | a sign change | **yes, decisively** — span **0.802** across the twelve blocks, seven positive then five negative. The compact form, **+0.352 to 1998-06 and −0.206 after**, splits on a date chosen by eye and is descriptive |
+| **Equity timing rule (10-month SMA) against a beta-matched control** | 1,190 months, one region | **3.03** pp/yr | 0.30 pp/yr | **no**, by ~4× — measured **+0.74** `[−1.38, +2.87]`, and the beta-matched active Sharpe fails deflation at 14.8 effective trials (DSR 0.33) and at 10,000 (0.04) |
+| Same rule, **pooled over 16 countries** at annual frequency | 148 years, JST | **0.99** pp/yr | 0.30 pp/yr | **yes, narrowly** — measured **+0.97**, HAC *t* = 2.74, so power against the effect found is about 70%. Annual, pretax, and not investable |
 
 Three entries in that table are the whole shape of the programme's results. **Exposure is
 measurable and alpha is not** — 96 of 109 US funds reject a zero intended loading under
@@ -315,6 +325,15 @@ tests and manifests are in
 **The panel is 16 countries, not the 18 the landing page advertises.** Canada and Ireland
 appear in JST for their macro series only and carry no equity, bond, bill or housing
 return at all.
+
+**Shiller's `P` is a monthly average of daily closes, and that disqualifies the file for
+any rule that trades on serial correlation.** Measured on the same 1,124 months against Ken
+French's month-end total returns: AC(1) **+0.274 against +0.103**, and a 10-month
+moving-average timing rule's beta-matched gap reads **+2.71 pp/yr (HAC *t* = 2.87) on
+Shiller against +0.88 (*t* = 0.78) on French**
+([timing rules](timing-rules-on-the-equity-sleeve.md)). The averaging manufactures the
+autocorrelation the rule monetises, so it turns a null into a significant result. Use it
+for valuation levels, dividends and the long CPI, not for a trading rule.
 
 Four properties decide what may be quoted from these, and each is attached to the
 manifests as a warning rather than left in prose:

@@ -75,8 +75,9 @@ that module generates.
 
 ## Checks
 
-`pnpm typecheck`, `pnpm test` (452 tests, 31 files), `pnpm biome check .` and `pnpm build`
-are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` are clean.
+`pnpm typecheck`, `pnpm test` (473 tests, 31 files), `pnpm biome check .` and `pnpm build`
+are clean. `research/`: `uv run mypy` (216 files), `uv run ruff check` and `uv run pytest`
+(3,056 tests) are clean.
 
 ## What changed on 2026-08-22
 
@@ -92,6 +93,17 @@ are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` a
 - **[Decision 0009](docs/decisions/0009-blocks-lifted-and-closures-rescoped.md)** unblocks
   the construction tournament and funding-rule measurement, and requires that a verdict
   not outrun the instrument that produced it.
+- **[Decision 0010](docs/decisions/0010-bars-carry-a-reopening-condition.md) carries that
+  out on the corpus rather than only on future work.** A bar with no reopening condition is
+  read as a finding; measurement is never gated, only promotion and publication; the
+  eleven-step protocol is the promotion bar and a screening pass states what it deferred;
+  the 2.0 and 0.30 pp/yr constants become reporting reference points until derived; and
+  **six of Experiment 010b's ten sleeve verdicts are restated `unresolved`** — every
+  estimate in that family lies inside the design's own ±0.58 pp/yr floor. The four that
+  fired a sign or boundary clause stand, scoped to pro-rata funding at a 10% weight. The
+  ledger, the frozen falsifiers and the specification hashes are untouched, and no candidate
+  is promoted by any of it. 0005 is rescoped in place: its prohibition list is replaced by
+  what its measurement actually reaches.
 
 ## Unresolved
 
@@ -100,9 +112,6 @@ are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` a
   if a licensed source appears.
 - `src/content/portfolio.ts` (`funds`) and `src/content/shelf.ts` overlap on eight
   tickers. A test pins their cost fields together; they should eventually be one record.
-- VB's fund name follows the 2026-07-29 Morningstar rename pattern, which the source
-  records for VTI and VBR but not for VB. It matches the pre-existing content layer and is
-  pinned by a test, but it is an inference.
 - No browser automation is available in this environment, so there are no true
   end-to-end tests. The route and flow tests drive real controls in jsdom, which catches
   state and content regressions but not layout or paint. `src/routes/layout.test.tsx`
@@ -119,10 +128,62 @@ are clean. `research/`: `uv run mypy`, `uv run ruff check` and `uv run pytest` a
   invalid total and recover; change benchmark and period; reopen a shared lab
   configuration and get the same portfolio back; and strategy → related portfolio →
   back.
+- Six candidates re-enter the search as unresolved questions rather than closed ones —
+  emerging and developed-ex-US small value, US and emerging long-only and overlay momentum,
+  and the AQR trend leg. None is supported. The re-specified marginal-sleeve experiment,
+  with a ceiling-derived bar, is what would settle them and has not run.
 - The stacked candidate departs from decision 0004 by being levered, and holds one fund
   the product audit excludes and one that is `unresolved`. All three departures are stated
   on its own page and none is resolved.
-- No experiment has ever tested any of these constructions as a joint object. The
-  construction tournament still has not run, but it is no longer blocked
-  ([decision 0009](docs/decisions/0009-blocks-lifted-and-closures-rescoped.md)) and it
-  needs no new data. It is the first thing worth running.
+## The construction tournament ran, and a units error had been deciding its headline
+
+**Experiment 016 (plus 016b, 016c, 016d) compared twenty-five constructions over 427
+months.** Three clear their own detection floor; every stacked arm is `unresolved`, and the
+proposal needs **64 years** to be distinguished from levering a cheap index at 1.32×. The
+wrapper choice is not a real question: RSST, MATE and JPFP span 0.15 pp/yr against floors of
+3.18–3.33, and the ordering reverses inside the undisclosed financing band.
+
+**The tournament's original finding 11 — that the overlay subtracts at the forward premium —
+is withdrawn.** It cut the trend leg 84% while leaving equity at its realised mean, which is
+a fitted comparator deciding a verdict. Experiment 016d sweeps both premia: **the sign is set
+by the equity premium, not the trend premium**, because a leverage-matched benchmark holds
+132% equity notional against the candidate's 67%. The restated finding is stronger than the
+one it replaced.
+
+**The 1.80 pp/yr forward trend premium was never measured.** It is the 2012–2025 subsample's
+own geometric mean less a fee — `1.80 + 1.50 + ½×13.23²/100 = 4.17%`, recovering that era's
+measured 4.17% exactly — carried on a gross arithmetic axis and double-counted. Decision
+0004 records it in one sentence with no window, estimator, series or interval.
+
+**Trend can be tested outside the 1990 window, and nobody had.** An independent 4-asset book
+over 1929–2025 reads Sharpe 0.58 (*t* = 5.48); a 36-leg JST book over 1880–2020 reads 0.43
+(*t* = 6.59). Both are above break-even. The post-2008 decay is real, independently
+confirmed, and not resolvable.
+
+## Sixteen new or rewritten syntheses
+
+`construction-tournament`, `stacking-and-effective-breadth`, `leverage-and-the-notional-budget`,
+`valuation-and-the-allocation`, `timing-rules-on-the-equity-sleeve`,
+`currency-and-the-international-sleeve`, `trend-weight-under-uncertainty` and
+`adversarial-review` are new; `alternative-sleeves-audit`, `capital-efficiency-and-breadth`,
+`structural-and-tax-edges`, `rebalancing-policy`, `evidence-base`, `portfolio-recommendation`,
+`trend-marginal-value` and `docs/README.md` are rewritten or extended.
+
+Findings that changed a decision rather than adding to one:
+
+- **MATE's `delta` is −0.159 and CTAP's is −0.027.** The shelf's warning that MATE's base leg
+  sat "in the danger zone" was a reading error: the completing index future is on the same
+  filing as the base ETF. The same available mistake was caught twice, two quarters apart.
+- **CTAP's 0.10% net fee is a mirage** — a waiver expiring 2026-12-04 that omits the 0.75%
+  charged inside a total-return swap on an affiliated fund. All-in ≈0.81% now, ≈0.99% after.
+  SDMF is not a wrapper at all (`b = 0`, `delta = 1.000`).
+- **Duration-hedged credit is a distinct engine.** The +0.83 correlation that closed the
+  question belongs to the *unhedged* leg; the hedged excess reads **+0.016 over 1,068 months**.
+- **`P(stack ahead) → Φ(z₁/√ρ)`.** At the ρ = 0.435 measured among this portfolio's own value
+  tilts, an unlimited stack of 55% sleeves reaches 0.576. Effective breadth is 3.71, not 8.
+- **The published MDEs used i.i.d. inference beside HAC intervals.** On matched inference the
+  tilt floor is 0.72 not 0.47, and the horizon 30 years not 13.
+- **Currency's mean is unresolvable on 150 years of annual data**; its variance effect is ~20%
+  of sleeve volatility and precise.
+- **The emerging-market placement inversion was an artifact** of assuming fully qualified
+  dividends; the filed fractions reverse it.

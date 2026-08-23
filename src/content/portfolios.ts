@@ -663,7 +663,7 @@ const candidate: PortfolioCandidate = {
     "It buys four engines rather than one, and the two value tilts inside it are the same ones the evidence-led portfolio holds.",
   ],
   mayUnderperform: [
-    "Three of its eight lines have no measured factor exposure of any kind. RSST's loading on any trend benchmark has never been measured here — the statement appears three separate times in the research.",
+    "Three of its eight lines have no measured factor exposure of any kind. RSST is no longer one of them — its trend loading is +0.681 [+0.406, +0.955] on 31 filed months — but 31 months is roughly one market regime, and that interval cannot tell a dollar of delivered trend from four fifths of one.",
     "Trend's mean does not resolve. Post-publication the sleeve measures +0.883 pp/yr with an interval containing zero, failing Holm correction, and the standalone index's Sharpe fell from 1.34 to 0.18 across three eras.",
     "Momentum is excluded by this repository's own audit. IDMO files 105%/yr of turnover, which takes 43% of the gross exposure in cost, and momentum's pooled detection floor of 4.98 pp/yr is the worst measured here.",
     "AVES is unresolved, and no comparator however expressive can move an emerging-market value product to exploratory on the windows available.",
@@ -692,7 +692,7 @@ const candidate: PortfolioCandidate = {
     {
       title: "The three stacked wrappers are not interchangeable",
       detail:
-        "RSST, MATE and JPFP look like the same product and are not. RSST costs 99 bp, has 35 months of record and publishes an explicit dollar-for-dollar target. MATE costs 97 bp, has eight months, quotes its Other Expenses as estimates, and is the only one whose prospectus states §1256 mark-to-market outright — 60/40 treatment with unrealised gains recognised at year end, which is phantom income in a taxable account and the opposite of the deferral the wrapper case elsewhere rests on. JPFP costs 59 bp, which would change the ranking, and has two months of record and $17.07m of assets. All three run a Cayman subsidiary capped at 25% of assets, and this repository has measured a trend loading for none of them.",
+        "RSST, MATE, CTAP and JPFP look like the same product and are not — though not for the reason this line used to give. On the funding rule the three with filed holdings are the same class: RSST −0.07, MATE −0.159, CTAP −0.027, all keeping the whole gap. Nor does the fee table separate them. CTAP advertises 0.10% net against RSST's 0.99%, but its trend leg is a total return swap on CTA, an affiliated fund charging 0.75% with no waiver, and a swap reference is not reached by acquired-fund fees — so it is about 0.81% all-in today and about 0.99% when its waiver lapses on 2026-12-04. What is left is age, size, counterparty and evidence: RSST has 35 months and $415m of filed net assets; CTAP has eight months, $157.88m, 82.48% of net assets of bilateral swap exposure to one bank and a disclosed affiliated-fund conflict; MATE has eight months and $39.41m; JPFP has three months, $17.07m and no N-PORT at all. RSST is also the only one old enough to regress: its trend loading is +0.681 [+0.406, +0.955] on 31 filed months, and the other three have three to eight months of filings, which is not a measurement problem but an age one.",
     },
     {
       title: "It is levered, and this repository does not permit that",
@@ -709,7 +709,7 @@ const candidate: PortfolioCandidate = {
   placement:
     "The obvious rule — shelter the highest tax drag — is exactly backwards here. It puts DBMF and GDE at the front and RSST near the back, when RSST is the one whose marginal contribution clears its own detection floor and the one that needs the shelter least.",
   evidenceSummary:
-    "Two lines are exploratory, one is unresolved, one is rejected on the repository's own bar, and the largest holding has never been measured at all. The construction's case rests on a funding identity that is closed-form and solid, applied to a sleeve whose return this evidence cannot sign.",
+    "Two lines are exploratory, one is unresolved, one is rejected on the repository's own bar, and the largest holding has 31 months of exposure evidence and no return evidence. The construction's case rests on a funding identity that is closed-form and solid, applied to a sleeve that demonstrably delivers its exposure and whose return this evidence still cannot sign.",
   suggestedChanges: [
     {
       change: "Drop IDMO and put the 5% back into VEA.",
@@ -724,7 +724,7 @@ const candidate: PortfolioCandidate = {
     {
       change: "Take the 30% wrapper line to RSST specifically, or leave it out.",
       because:
-        "Of the three, only RSST has a verified structure, a published dollar-for-dollar target, a computed delta of −0.07 and a measured tax drag. MATE has eight months, estimated expenses, no delta, and states §1256 mark-to-market outright — phantom income in a taxable account. JPFP has two months and $17.07m. None of the three has a measured trend loading.",
+        "RSST, MATE and CTAP all file a negative delta, so structure no longer separates them, and once CTAP's swap layer is counted neither does cost. Survival, counterparty and evidence do. RSST has 35 months, $415m of filed net assets, exchange-cleared futures and a measured distribution tax drag. CTAP is the closest challenger at about 0.81% all-in and the tightest delta on the shelf, but it is eight months old, its cost case expires on 2026-12-04, and 82.48% of its net assets is bilateral exposure to Bank of America. MATE has eight months and $39.41m. JPFP has three months, $17.07m and no N-PORT, so its delta cannot be computed until one is filed — due 2026-08-29 or 2026-09-29. RSST is the only one of the four with a measured trend loading, +0.681 [+0.406, +0.955] on 31 filed months, because it is the only one old enough; none belongs in a taxable account.",
     },
     {
       change: "Move AVLV to 20% and DFIV to 8%, the weights they were priced at.",

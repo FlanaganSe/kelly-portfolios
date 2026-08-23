@@ -1,9 +1,16 @@
 # 0009 — The blocked steps are unblocked, and a closure must carry its instrument
 
+**Status:** superseded as live research governance by
+[decision 0010](0010-bars-carry-a-reopening-condition.md). Retained as the historical record
+of the specification and interpretation corrections it documents.
+
 Date: 2026-08-22. Status: accepted. Amends
 [0004](0004-no-sleeve-promoted.md) (the step 6 and step 7 blocks) and
 [0005](0005-factor-premia-closed-on-public-data.md) (the scope of its closure).
 The non-promotion in 0004 and the measured floors in 0005 are unchanged.
+**Items 1 and 7 are carried out by [decision 0010](0010-bars-carry-a-reopening-condition.md)**,
+which restates the affected verdicts, demotes the two constants, and sets the rule that a bar
+without a reopening condition is a finding.
 
 ## Context
 
@@ -99,7 +106,9 @@ Check the reasoning of any rule that appears to forbid a source, a method or a
 comparison, before treating it as a bar.
 
 **7. The two constants are now open questions, not settings.** The 2.0 pp/yr materiality
-threshold and the 0.30 pp/yr sleeve bar must be derived or replaced. Search coverage §5
+threshold and the 0.30 pp/yr sleeve bar must be derived or replaced. Until they are, they are
+reporting reference points and may not be the operative clause of a new falsifier
+([decision 0010](0010-bars-carry-a-reopening-condition.md), clause 4). Search coverage §5
 already proposes deriving the sleeve bar from `sigma_p**2 w`, which is the arithmetic
 ceiling on a diversification credit rather than a round number.
 
@@ -122,9 +131,13 @@ item 1.
 
 ## Consequences
 
-- **Seven `rejected` sleeve verdicts are known to be stronger than their instrument.**
-  They are not silently restated. Each is reported with its MDE beside it until the
-  re-specified experiment runs, and no page may quote one as evidence of absence.
+- **Sleeve verdicts stronger than their instrument are restated rather than annotated.**
+  Every one of Experiment 010b's ten sleeves has a point estimate inside the design's own
+  ±0.58 pp/yr floor, so none of them was resolvable.
+  [Decision 0010](0010-bars-carry-a-reopening-condition.md) clause 3 moves the six whose only
+  firing clauses were the sub-floor bar or Holm to `unresolved`, and leaves the four that
+  fired a sign or boundary clause as `rejected`. Each is reported with its floor beside it,
+  and no page may quote one as evidence of absence.
 - **The re-specified marginal-sleeve experiment is round two's first item**, with the
   whole weight grid to the cap, a bar derived from `sigma_p**2 w`, overlay funding
   primary, and a leverage-matched control on every arm.

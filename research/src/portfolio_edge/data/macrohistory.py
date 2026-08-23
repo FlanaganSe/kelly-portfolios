@@ -25,15 +25,33 @@ definitions rather than paraphrasing them:
     bill_rate   Bill rate, nominal
     housing_tr  Housing total return, nominal
     cpi         Consumer prices (index, 1990 = 100)
+    xrusd       Exchange rate, LOCAL CURRENCY UNITS PER US DOLLAR
 
 **Every return here is nominal and in local currency**, annual, and measured
 year-end to year-end. Real returns are obtained by deflating with ``cpi``; see
 :func:`real_total_return`, which is the only transformation this module offers
 and which exists so that the deflation is written down once instead of at each
-call site. The file also carries ``xrusd`` (local currency per USD). It is
-deliberately **not** landed: this repository has not verified its direction
-against an independent source, and a currency conversion applied in the wrong
-direction is invisible in the output.
+call site.
+
+``xrusd`` was held back from earlier releases of this module because a currency
+conversion applied in the wrong direction is invisible in the output. Its
+direction was verified on 2026-08-22 against FRED's daily noon rates at the last
+business day of 1985, 1999, 2008, 2015 and 2020, which are an independent source
+with an explicitly stated direction:
+
+    JPN 2020  JST 103.63   FRED DEXJPUS 103.19   (yen per USD)
+    CHE 2020  JST 0.8806   FRED DEXSZUS 0.8841   (francs per USD)
+    CAN 2020  JST 1.2856   FRED DEXCAUS 1.2753   (C$ per USD)
+    GBR 2020  JST 0.7452   FRED DEXUSUK 1.3662 -> 0.7320  (pounds per USD)
+    AUS 2020  JST 1.2984   FRED DEXUSAL 0.7709 -> 1.2972  (A$ per USD)
+
+The direction is confirmed and the level agrees to better than half a per cent
+in every pair except GBP 2020, which differs by 1.8%. So ``xrusd`` is a
+*year-end* rate but not the same year-end print FRED publishes, and a single
+year's currency return computed from it can be wrong by a point or two. Over a
+decade the errors telescope — only the endpoints survive — so a decade or
+full-sample figure is far more reliable than any one year, and this module says
+so in the table's warnings rather than in a footnote nobody reads.
 
 Known biases, from the source's own documentation
 -------------------------------------------------
@@ -121,7 +139,7 @@ __all__ = [
 
 #: Bump on any change to parsing behaviour: sheet selection, panel pivoting,
 #: period labelling, unit handling or missing-value treatment.
-PARSER_VERSION: Final = "macrohistory/1.0.0"
+PARSER_VERSION: Final = "macrohistory/1.1.0"
 
 LICENSE_OR_TERMS_URL: Final = "https://creativecommons.org/licenses/by-nc-sa/4.0/"
 
@@ -257,6 +275,45 @@ _CANADA_IRELAND: Final = (
     "the landing page advertises."
 )
 
+_XRUSD_DIRECTION: Final = (
+    "DIRECTION: LOCAL CURRENCY UNITS PER US DOLLAR. A RISE IS A STRONGER DOLLAR. "
+    "Japan 2020 is 103.63 yen per dollar and the United Kingdom 2020 is 0.745 "
+    "pounds per dollar, not 1.34 dollars per pound. The dollar return to a US "
+    "person holding a local asset is therefore xrusd[t-1] / xrusd[t] - 1, an "
+    "INVERSE ratio; writing it the other way round flips the sign of every "
+    "currency result and is invisible in the output. USA is 1.0 in every year, "
+    "which is the cheapest available assertion that the direction has not been "
+    "silently reversed."
+)
+
+_XRUSD_YEAR_END: Final = (
+    "A YEAR-END RATE, but not the same year-end print an FX feed publishes. "
+    "Verified 2026-08-22 against FRED daily noon rates at the last business day "
+    "of 1985, 1999, 2008, 2015 and 2020 for JPY, GBP, CHF, CAD, AUD and SEK: the "
+    "levels agree to better than 0.5% in every pair except GBP 2020, which "
+    "differs by 1.8%. A ONE-YEAR currency return from this column can therefore "
+    "be wrong by a point or two; a decade or full-sample figure telescopes and "
+    "keeps only the endpoints, so it is far more reliable than any single year."
+)
+
+_XRUSD_REDENOMINATION: Final = (
+    "SPLICED THROUGH CURRENCY REFORMS. Germany 1900 is 4.2e-12 marks per dollar "
+    "because the series is chained back through the 1923 hyperinflation and the "
+    "1948 reform in units of the surviving currency. A 'currency return' computed "
+    "across a redenomination year is redenomination arithmetic, not a return "
+    "anyone could have realised, and Germany 1922-1924 must be excluded or "
+    "reported separately for the same reason eq_tr must be."
+)
+
+_XRUSD_EURO: Final = (
+    "AFTER 1999 THE EURO MEMBERS ARE ONE CURRENCY. Austria, Belgium, Finland, "
+    "France, Germany, Ireland, Italy, the Netherlands, Portugal and Spain each "
+    "carry their own xrusd after 1999, but each is the fixed legacy conversion "
+    "rate times a single EUR/USD rate. Treating them as ten independent "
+    "currencies overstates the diversification of a currency basket by a factor "
+    "that grows with how many of them are in it."
+)
+
 _VARIABLES: Final = (
     JstVariable(
         column="eq_tr",
@@ -360,6 +417,20 @@ _VARIABLES: Final = (
             "interpolated, typically under wartime rent controls; "
             "housing_capgain_ipolated = 1 marks 5 more.",
             _NOT_INVESTABLE,
+        ),
+    ),
+    JstVariable(
+        column="xrusd",
+        table_id="exchange_rate_usd",
+        definition="Exchange rate, LOCAL CURRENCY UNITS PER US DOLLAR (LCU/USD)",
+        source_units="local_currency_per_usd",
+        units="local_currency_per_usd",
+        unit_transform="identity",
+        notes=(
+            _XRUSD_DIRECTION,
+            _XRUSD_YEAR_END,
+            _XRUSD_REDENOMINATION,
+            _XRUSD_EURO,
         ),
     ),
     JstVariable(

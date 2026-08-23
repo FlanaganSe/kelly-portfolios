@@ -632,11 +632,11 @@ export const experiments: readonly Experiment[] = [
  * verifies these directly from `research/ledger.jsonl`.
  */
 export const ledgerSummary = {
-  entries: 128,
-  runs: 45,
-  distinctSpecifications: 25,
-  experimentFamilies: 21,
-  runsRecordingResultsViewed: 37,
+  entries: 131,
+  runs: 46,
+  distinctSpecifications: 26,
+  experimentFamilies: 22,
+  runsRecordingResultsViewed: 38,
   runsConsumingTheFinalHoldout: 0,
   terminalOutcomes: [
     {
@@ -653,9 +653,9 @@ export const ledgerSummary = {
     },
     {
       status: "exploratory" as const,
-      runs: 19,
+      runs: 20,
       which:
-        "Experiments 002, 008 and 009, three executions each; Experiments 005 and 006; Experiment 013, two executions; Experiments 014 and 015; Experiment 016 and its three follow-ons, 016b, 016c and 016d",
+        "Experiments 002, 008 and 009, three executions each; Experiments 005 and 006; Experiment 013, two executions; Experiments 014 and 015; Experiment 016 and its four follow-ons, 016b, 016c, 016d and 016e",
     },
   ],
   noTerminalStatus: {
@@ -663,8 +663,8 @@ export const ledgerSummary = {
     which:
       "3 failed — a parser table-name error, a clause-(d) verification guard refusing a run, and a NaN that is not JSON-compliant — and 5 abandoned",
   },
-  asOf: asOf("2026-08-22"),
-  note: "Twenty-five, not forty-five, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Twenty-five is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent, because Experiments 013, 014 and 015 re-run an earlier falsifier on data it had already spent rather than asking a new question, and because Experiments 016b, 016c and 016d re-score 016's arms on the identical panel — 016b adding four arms chosen after seeing its results, and 016c and 016d changing no arm at all and only sweeping an input.",
+  asOf: asOf("2026-08-23"),
+  note: "Twenty-six, not forty-six, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Twenty-six is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent, because Experiments 013, 014 and 015 re-run an earlier falsifier on data it had already spent rather than asking a new question, and because Experiments 016b, 016c, 016d and 016e re-score 016's arms on the identical panel — 016b and 016e adding arms chosen after seeing its results, and 016c and 016d changing no arm at all and only sweeping an input.",
   source: {
     label: "Portfolio edge research framework, the ledger counted rather than described",
     docPath: "docs/research/portfolio-edge-research-framework.md",

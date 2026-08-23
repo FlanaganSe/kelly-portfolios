@@ -623,15 +623,27 @@ one run.**
 
 ---
 
-## Two transfers a reader will be tempted to repeat
+## Three transfers a reader will be tempted to repeat
 
-Both take a verdict to a population it was never measured on.
+Each takes a verdict to a population it was never measured on.
 
-1. **Experiment 004's verdict does not apply to KMLM, DBMF or CTA.** It evaluated an index.
+1. **Nothing here is about a timing rule on the investor's own equity.** A 10-month moving
+   average or a 12-month absolute-momentum switch on the base portfolio shares this page's
+   *signal* and none of its economics: it is long/flat rather than long/short, one market
+   rather than fifty, and funded by selling the base portfolio rather than financed as
+   notional — which is why it realises capital gains that no overlay pays. That question
+   has its own page and its own answer:
+   [timing rules on the equity sleeve](timing-rules-on-the-equity-sleeve.md). Two results
+   there bear directly on this one. The equity timing rule's active return **loads +0.156
+   to +0.232 on this index with a negative alpha**, so the two are substantially the same
+   bet held twice; and the same rule reads **+0.88 pp/yr on Ken French's month-end prices
+   and +2.71 on Shiller's monthly *averages* over identical months**, which is a warning
+   about any trend evidence built on averaged price data.
+2. **Experiment 004's verdict does not apply to KMLM, DBMF or CTA.** It evaluated an index.
    Experiment 008 tests the products and reaches a *different* answer for DBMF — the one
    that is an explicit replication strategy, and therefore the one Experiment 004's own
    44%-replica finding should have made most interesting rather than least.
-2. **Hedge-fund CTA fee evidence does not reach exchange-traded funds.** Bhardwaj, Gorton
+3. **Hedge-fund CTA fee evidence does not reach exchange-traded funds.** Bhardwaj, Gorton
    and Rouwenhorst measure 1994–2012 CTAs whose **fee income was around 4% of assets**. The
    funds here charge **0.66% to 0.98%**, read from their own SEC-filed prospectus fee
    tables. A four-point fee load does not transfer to an 0.85% one, and that study is used

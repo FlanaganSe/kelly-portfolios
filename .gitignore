@@ -47,3 +47,4 @@ research/*.egg-info/
 # docs/charter.md, docs/research/search-coverage.md and docs/research/evidence-base.md.
 docs/the-plan.md
 docs/*-plan.md
+.claude/scratch/
