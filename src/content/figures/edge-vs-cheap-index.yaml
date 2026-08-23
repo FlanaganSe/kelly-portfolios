@@ -1,0 +1,16 @@
+label: Edge over a cheap index, against its tracking error
+value: "5.4"
+unit: bp/yr against 313 bp
+interval: "[−91.6, +82.9]"
+status: unresolved
+certainty: different-benchmark
+asOf: "2026-08-17"
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: conclusion
+note: >-
+  A coin flip, and saying so is the finding. The interval crosses zero, so even the
+  sign is not settled. This figure answers a different question from the roughly
+  109 bp measured against the portfolio you would otherwise hold, and the two may
+  never be added.

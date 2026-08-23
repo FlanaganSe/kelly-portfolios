@@ -1,0 +1,37 @@
+---
+/**
+ * A rule and a label. Not a coloured box, and never an emoji.
+ *
+ * Each kind answers one step of the page spine: `do-this` is the action, `mechanism`
+ * is why the effect should exist at all, `caveat` is what would break the claim,
+ * `change-your-mind` is the falsifier, `open-question` is what the work has not settled.
+ */
+const KINDS = {
+  "do-this": { label: "Do this", rule: "var(--accent)" },
+  mechanism: { label: "Why it works", rule: "var(--rule-strong)" },
+  caveat: { label: "Caveat", rule: "var(--tone-caution)" },
+  "change-your-mind": { label: "What would change our mind", rule: "var(--rule-strong)" },
+  "open-question": { label: "Open question", rule: "var(--accent)" },
+} as const;
+
+export type CalloutKind = keyof typeof KINDS;
+
+interface Props {
+  kind: CalloutKind;
+  /** Overrides the default label. Keep it to a few words. */
+  label?: string;
+  class?: string;
+}
+
+const { kind, label, class: className } = Astro.props;
+
+const meta = KINDS[kind];
+if (!meta) {
+  throw new Error(`<Callout kind="${kind}"> is unknown. Use one of: ${Object.keys(KINDS).join(", ")}.`);
+}
+---
+
+<aside class:list={["my-6 max-w-measure border-l-2 pl-4", className]} style={`border-color: ${meta.rule}`}>
+  <p class="eyebrow mb-1.5">{label ?? meta.label}</p>
+  <div class="text-base text-ink-muted [&>*+*]:mt-3"><slot /></div>
+</aside>

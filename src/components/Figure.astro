@@ -1,0 +1,70 @@
+---
+/**
+ * One figure, looked up by id from the `figures` collection.
+ *
+ * No number is ever typed into a paragraph. A page names a record; the record carries
+ * the value as the source printed it, plus the interval, the window, the evidence
+ * status, an `as of` date and a link back to the file that owns the fact.
+ *
+ *     <Figure id="stacking-sleeve-correlation" />
+ *
+ * A missing id throws at build time rather than rendering an empty box, because a
+ * silently absent figure is the one failure a reader cannot detect.
+ */
+import { getCollection, getEntry } from "astro:content";
+import { citationHref } from "~/lib/citation";
+import { statusMeta } from "~/content/types";
+
+interface Props {
+  id: string;
+  size?: "sm" | "md" | "lg";
+  /** Print the evidence status. The figure keeps its source and date either way. */
+  showStatus?: boolean;
+  class?: string;
+}
+
+const { id, size = "md", showStatus = true, class: className } = Astro.props;
+
+const entry = await getEntry("figures", id);
+if (!entry) {
+  const known = (await getCollection("figures")).map((f) => f.id).sort();
+  throw new Error(
+    `<Figure id="${id}"> has no record. Add src/content/figures/${id}.yaml, ` +
+      `or use one of the ${known.length} that exist: ${known.join(", ")}.`
+  );
+}
+
+const figure = entry.data;
+const valueSize = { sm: "text-xl", md: "text-2xl", lg: "text-3xl" }[size];
+const status = statusMeta[figure.status];
+const href = citationHref({ docPath: figure.source.docPath, anchor: figure.source.anchor });
+---
+
+<figure class:list={["flex flex-col gap-1", className]}>
+  <figcaption class="eyebrow">{figure.label}</figcaption>
+
+  <div class="flex items-baseline gap-1.5">
+    <span data-numeric class:list={["font-sans font-semibold tracking-[-0.02em] text-ink", valueSize]}>
+      {figure.value}
+    </span>
+    {figure.unit && <span class="text-sm text-ink-muted">{figure.unit}</span>}
+  </div>
+
+  {
+    figure.interval && (
+      <div data-numeric class="text-sm text-ink-muted">
+        <span class="sr-only">Interval </span>
+        {figure.interval}
+      </div>
+    )
+  }
+
+  {figure.note && <p class="max-w-[42ch] text-sm text-ink-muted">{figure.note}</p>}
+
+  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs text-ink-faint">
+    {showStatus && <span title={status.gloss}>{status.label}</span>}
+    {figure.period && <span data-numeric>{figure.period}</span>}
+    <span data-numeric>as of {figure.asOf}</span>
+    <a href={href} class="link" rel="noopener noreferrer">{figure.source.label}</a>
+  </div>
+</figure>

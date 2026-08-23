@@ -63,6 +63,11 @@ function loadRules() {
  */
 function proseOf(text, ext) {
   let s = text
+  // An .astro file opens with a `---` fenced script, and .md/.mdx open with YAML
+  // frontmatter. Both fences are syntax rather than the Markdown horizontal rule the
+  // typography rule hunts, and neither body is reader-facing prose.
+  if (ext === '.astro' || ext === '.md' || ext === '.mdx')
+    s = s.replace(/^---\r?\n[\s\S]*?\r?\n---\r?\n/, '')
   s = s.replace(/```[\s\S]*?```/g, '')
   s = s.replace(/`[^`\n]*`/g, '')
   s = s.replace(/^\s*(import|export)\s.*$/gm, '')

@@ -1,0 +1,151 @@
+---
+/**
+ * The shell every page renders inside: head, masthead, navigation, footer.
+ *
+ * `styles.css` is imported here and nowhere else, so the design system loads once and
+ * the pre-paint theme script below can rely on it being the only source of colour.
+ */
+import ThemeToggle from "~/components/ThemeToggle.astro";
+import { CORPUS_AS_OF, isCurrent, NAV_ITEMS, REPO_URL, SITE_DESCRIPTION, SITE_NAME, SITE_URL } from "~/lib/site";
+import "~/styles.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Suppress the site name suffix when the page title already carries it. */
+  bareTitle?: boolean;
+}
+
+const { title, description = SITE_DESCRIPTION, bareTitle = false } = Astro.props;
+
+const pageTitle = bareTitle ? title : `${title} · ${SITE_NAME}`;
+const canonical = new URL(Astro.url.pathname.replace(/\/+$/, "") || "/", SITE_URL).href;
+const pathname = Astro.url.pathname;
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: SITE_URL,
+  description: SITE_DESCRIPTION,
+  inLanguage: "en",
+  license: `${REPO_URL}/blob/main/README.md`,
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: SITE_URL,
+  },
+};
+
+const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141311" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    {/* Applies the stored theme before first paint. Anything other than "light" or
+        "dark" means "follow the system", which is the CSS default. Inline and
+        unbundled on purpose: a deferred module would paint the wrong theme first. */}
+    <script is:inline>
+      try {
+        var t = localStorage.getItem("pe-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (_) {}
+    </script>
+  </head>
+
+  <body>
+    <div class="flex min-h-screen flex-col bg-paper text-ink">
+      <a
+        href="#main"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-[3px] focus:bg-raised focus:px-3 focus:py-2 focus:text-sm"
+      >
+        Skip to content
+      </a>
+
+      <header class="border-b border-rule">
+        <div class="mx-auto w-full max-w-page px-5 sm:px-8">
+          <div class="flex items-center justify-between gap-4 py-4">
+            <a href="/" class="font-serif text-xl tracking-[-0.01em] text-ink transition-colors hover:text-accent">
+              {SITE_NAME}
+            </a>
+            <div class="flex items-center gap-2">
+              <span data-numeric class="hidden text-xs text-ink-faint sm:inline">as of {CORPUS_AS_OF}</span>
+              <ThemeToggle />
+            </div>
+          </div>
+
+          <nav aria-label="Sections">
+            <ul class="flex flex-wrap gap-x-6 border-t border-rule pb-2 lg:border-t-0 lg:pb-0">
+              {
+                NAV_ITEMS.map((item) => {
+                  const current = isCurrent(item.href, pathname);
+                  return (
+                    <li>
+                      <a
+                        href={item.href}
+                        aria-current={current ? "page" : undefined}
+                        class:list={[
+                          navLink,
+                          current
+                            ? "border-accent font-medium text-ink"
+                            : "border-transparent text-ink-muted hover:border-rule-strong hover:text-ink",
+                        ]}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      {/* `data-pagefind-body` scopes the search index to the page's own words. Without
+          it Pagefind indexes the masthead and footer on every page and every query
+          matches everything. */}
+      <main id="main" data-pagefind-body class="mx-auto w-full max-w-page flex-1 px-5 py-12 sm:px-8 sm:py-16">
+        <slot />
+      </main>
+
+      <footer class="mt-16 border-t border-rule">
+        <div
+          class="mx-auto flex w-full max-w-page flex-col gap-3 px-5 py-8 text-sm text-ink-muted sm:flex-row sm:items-baseline sm:justify-between sm:px-8"
+        >
+          <p class="max-w-measure">Nothing here is advice, and no sleeve in the underlying research is promoted.</p>
+          <p class="flex items-baseline gap-4 whitespace-nowrap">
+            <a href={REPO_URL} rel="noopener noreferrer" class="link">GitHub</a>
+            <span data-numeric class="text-ink-faint">Research as of {CORPUS_AS_OF}</span>
+          </p>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

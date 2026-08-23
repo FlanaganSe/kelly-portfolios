@@ -1,0 +1,11 @@
+label: Where an unlimited stack of 55% sleeves stops
+value: "0.576"
+status: exploratory
+asOf: "2026-08-17"
+source:
+  label: Stacking and effective breadth
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: conclusion
+note: >-
+  The ceiling is arithmetic once the correlation is fixed. Buying more sleeves at a
+  correlation of 0.435 cannot carry the odds past this, however many you buy.

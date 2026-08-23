@@ -1,0 +1,96 @@
+---
+/**
+ * How sure we are, in one word and one mark.
+ *
+ * The mark is monochrome intensity: solid for `settled`, solid with a range whisker
+ * for `probably`, a hatched half for `might`, an empty outline for `cant-tell`. A
+ * confidence reading that depended on hue would be unreadable to a colour-blind
+ * reader, wrong on a printout, and would smuggle in a good/bad judgement the evidence
+ * does not make.
+ */
+import { hatchSegments, isRungLevel, type RungLevel, rungMeta } from "~/lib/rungs";
+
+interface Props {
+  level: RungLevel;
+  /** Print the one-line gloss beside the label. */
+  showGloss?: boolean;
+  class?: string;
+}
+
+const { level, showGloss = false, class: className } = Astro.props;
+
+if (!isRungLevel(level)) {
+  throw new Error(`<Rung level="${level}"> is not one of settled, probably, might, cant-tell.`);
+}
+
+const meta = rungMeta[level];
+
+const W = 26;
+const H = 9;
+const HALF = W / 2;
+---
+
+<span class:list={["inline-flex flex-wrap items-baseline gap-x-2 gap-y-1", className]}>
+  <span
+    class="inline-flex items-center gap-1.5 whitespace-nowrap font-sans text-2xs font-semibold uppercase tracking-[0.07em] text-ink"
+    title={meta.gloss}
+  >
+    <span class="sr-only">Confidence: </span>
+    <svg
+      viewBox={`0 0 ${W} ${H}`}
+      width={W}
+      height={H}
+      aria-hidden="true"
+      class="shrink-0 self-center text-ink"
+      style="overflow: visible"
+    >
+      {meta.mark === "solid" && <rect x="0" y="0" width={W} height={H} fill="currentColor" />}
+
+      {
+        meta.mark === "solid-range" && (
+          <>
+            <rect x="0" y="0" width={HALF} height={H} fill="currentColor" />
+            <line x1={HALF} y1={H / 2} x2={W} y2={H / 2} stroke="currentColor" stroke-width="1" />
+            <line x1={W - 0.5} y1="0.5" x2={W - 0.5} y2={H - 0.5} stroke="currentColor" stroke-width="1" />
+          </>
+        )
+      }
+
+      {
+        meta.mark === "hatched-half" && (
+          <>
+            {hatchSegments(HALF, H).map(([x1, y1, x2, y2]) => (
+              <line x1={x1} y1={y1} x2={x2} y2={y2} stroke="currentColor" stroke-width="0.9" />
+            ))}
+            <rect
+              x="0.45"
+              y="0.45"
+              width={W - 0.9}
+              height={H - 0.9}
+              fill="none"
+              stroke="currentColor"
+              stroke-width="0.9"
+            />
+          </>
+        )
+      }
+
+      {
+        meta.mark === "outline" && (
+          <rect
+            x="0.45"
+            y="0.45"
+            width={W - 0.9}
+            height={H - 0.9}
+            fill="none"
+            stroke="currentColor"
+            stroke-width="0.9"
+            stroke-dasharray="2 2"
+          />
+        )
+      }
+    </svg>
+    {meta.label}
+  </span>
+  {showGloss && <span class="text-sm text-ink-muted">{meta.gloss}</span>}
+</span>

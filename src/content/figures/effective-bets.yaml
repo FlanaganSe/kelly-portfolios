@@ -1,0 +1,12 @@
+label: Independent bets inside eight tickers
+value: "3.71"
+unit: effective bets
+status: exploratory
+asOf: "2026-08-17"
+source:
+  label: Stacking and effective breadth
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: 4-the-candidates-true-breadth-and-the-joint-probability
+note: >-
+  Eight holdings are five active positions, and those five overlap enough to count as
+  fewer than four separate wagers.

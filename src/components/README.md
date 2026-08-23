@@ -4,6 +4,46 @@ The component set every content page is built from. Use these rather than
 hand-rolling markup, so a number looks the same on every page and a status never
 gets glossed differently in two places.
 
+## Astro components, which are what new pages use
+
+Three `.astro` components ship no JavaScript and are the ones a page should reach for.
+The Solid components documented further down belong to the client-routed application
+being ported from, and a new page should not import them.
+
+### `Figure`
+
+`{ id, size?: "sm" | "md" | "lg", showStatus?, class? }`. Looks the figure up by id in
+the `figures` collection and throws at build time if no record exists, listing the ids
+that do. Records live in `src/content/figures/<id>.yaml`; the id is the filename stem.
+
+```astro
+import Figure from "~/components/Figure.astro";
+<Figure id="edge-vs-cheap-index" />
+```
+
+A record carries `label`, `value` (always a string), `status`, `asOf` and a `source`
+with `label` and `docPath`, and may carry `unit`, `interval`, `certainty`, `period`,
+`anchor` and `note`. The schema checks that `docPath` names a real file and that
+`anchor` is a real heading inside it, so a renamed section fails `pnpm build`.
+
+### `Rung`
+
+`{ level: "settled" | "probably" | "might" | "cant-tell", showGloss?, class? }`. Prints
+the word and a monochrome mark: solid, solid with a range whisker, a hatched half, an
+empty outline. Never coloured, and never red or green. Labels and glosses are in
+[`src/lib/rungs.ts`](../lib/rungs.ts).
+
+### `Callout`
+
+`{ kind, label?, class? }` where kind is one of `do-this`, `mechanism`, `caveat`,
+`change-your-mind`, `open-question`. A left rule and a label, with the body in a slot.
+
+### The house rule these three follow
+
+`node tools/prose-lint.mjs` reads `.astro` templates as prose and treats a bare `!` as
+an exclamation mark. Write a positive prop and test it directly rather than negating
+one in a template expression.
+
 Types come from [`src/content/types.ts`](../content/types.ts). Nothing here
 hardcodes a number, and nothing here reformats one: `value` and `interval` are
 strings because the sign, the precision and the interval are part of the fact.

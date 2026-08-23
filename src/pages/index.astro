@@ -1,0 +1,112 @@
+---
+/**
+ * Smoke test for the shell, not the real homepage.
+ *
+ * It exists so that phase 1 can prove the layout, the figures collection, the rung
+ * mark and the callout all render together on a static page. The editorial pass
+ * replaces every word of it.
+ */
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import Rung from "~/components/Rung.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base title="Do the certain things first">
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Do the certain things first</h1>
+
+    <p>
+      Three parts of a portfolio pay you whatever the market does. Keep the fee low, put each
+      holding in the account that taxes it least, and stop paying a fund manager to hand you a
+      capital gain in December. That work is worth roughly 109 basis points a year against the
+      portfolio a typical saver already holds, and you would know inside a year whether you got it.
+    </p>
+
+    <p>
+      Everything after that is a wager. This site tells you which is which.
+    </p>
+  </div>
+
+  <div class="mt-10 grid gap-8 sm:grid-cols-3">
+    <Figure id="structural-budget" />
+    <Figure id="edge-vs-cheap-index" />
+    <Figure id="effective-bets" />
+  </div>
+
+  <div class="prose mt-12">
+    <h2>How sure we are, in four words</h2>
+
+    <p>
+      Every claim on this site carries one of four rungs. The mark beside the word is drawn in ink
+      alone, at four intensities, so it survives a printout and a colour-blind reader. Nothing here
+      is ever green for good news.
+    </p>
+  </div>
+
+  <div class="mt-6 flex flex-col gap-3">
+    <Rung level="settled" showGloss />
+    <Rung level="probably" showGloss />
+    <Rung level="might" showGloss />
+    <Rung level="cant-tell" showGloss />
+  </div>
+
+  <Callout kind="do-this">
+    <p>
+      Open your plan statement and read one number: the expense ratio on the fund holding most of
+      your money. Under 10 basis points, skip to the next section. Over 50, you have found the
+      largest reliable gain available to you today.
+    </p>
+  </Callout>
+
+  <div class="prose mt-12">
+    <h2>Where the money actually comes from</h2>
+
+    <p>
+      The three benchmarks below answer different questions, and their results may never be added
+      together. A saving measured against your own current holdings says nothing about whether you
+      beat an index fund.
+    </p>
+  </div>
+
+  <div class="mt-6 overflow-x-auto">
+    <table class="w-full max-w-measure border-collapse text-sm">
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <th class="eyebrow py-2 pr-4">Compared with</th>
+          <th class="eyebrow py-2 pr-4 text-right">Edge</th>
+          <th class="eyebrow py-2 pr-4 text-right">Spread</th>
+          <th class="eyebrow py-2">How sure</th>
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        <tr class="border-b border-rule">
+          <td class="py-2 pr-4">The portfolio you hold now</td>
+          <td data-numeric class="py-2 pr-4 text-right">109 bp/yr</td>
+          <td data-numeric class="py-2 pr-4 text-right">41 bp</td>
+          <td class="py-2"><Rung level="settled" /></td>
+        </tr>
+        <tr class="border-b border-rule">
+          <td class="py-2 pr-4">A cheap total-market index</td>
+          <td data-numeric class="py-2 pr-4 text-right">5.4 bp/yr</td>
+          <td data-numeric class="py-2 pr-4 text-right">313 bp</td>
+          <td class="py-2"><Rung level="cant-tell" /></td>
+        </tr>
+        <tr>
+          <td class="py-2 pr-4">The average investor's behaviour</td>
+          <td data-numeric class="py-2 pr-4 text-right">15 bp/yr</td>
+          <td data-numeric class="py-2 pr-4 text-right">150 bp</td>
+          <td class="py-2"><Rung level="might" /></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <Callout kind="change-your-mind">
+    <p>
+      A fund shelf that cut its published edge below 20 basis points a year, or a decade of live
+      returns in which the tilted sleeves trailed the index by more than their stated spread, would
+      move the second row from a coin flip to a rejection.
+    </p>
+  </Callout>
+</Base>

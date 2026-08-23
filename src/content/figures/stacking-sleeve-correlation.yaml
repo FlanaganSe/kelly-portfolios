@@ -1,0 +1,14 @@
+label: Correlation between the candidate's own value sleeves
+value: "0.435"
+status: exploratory
+certainty: risk-premium
+asOf: "2026-08-17"
+period: 422 months, 1990-11 to 2025-12
+source:
+  label: Stacking and effective breadth
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: correlation-measured
+note: >-
+  Modelled excess returns, not fund returns: each sleeve is its measured delivered
+  loading applied to its own region's French factors. The standard error on a single
+  correlation near zero is 0.049, so the figure is good to about two decimal places.

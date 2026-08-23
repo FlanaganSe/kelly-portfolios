@@ -13,16 +13,25 @@
  * UI code imports from here. UI code does not hardcode a number.
  */
 
-/** The repository's closed status vocabulary. It is never collapsed into "works". */
-export type EvidenceStatus =
-  | "exploratory"
-  | "source-reproduced"
-  | "independently-reproduced"
-  | "walk-forward-tested"
-  | "shadow-live"
-  | "production-eligible"
-  | "rejected"
-  | "unresolved";
+/**
+ * The repository's closed status vocabulary. It is never collapsed into "works".
+ *
+ * Held as a tuple rather than a bare union so a schema can validate against it
+ * without retyping the members. The type is derived from the tuple, so the two
+ * cannot drift.
+ */
+export const EVIDENCE_STATUSES = [
+  "exploratory",
+  "source-reproduced",
+  "independently-reproduced",
+  "walk-forward-tested",
+  "shadow-live",
+  "production-eligible",
+  "rejected",
+  "unresolved",
+] as const;
+
+export type EvidenceStatus = (typeof EVIDENCE_STATUSES)[number];
 
 /** How a status or class should read, not how good it is. */
 export type Tone = "positive" | "caution" | "negative" | "neutral";
@@ -81,7 +90,14 @@ export const statusMeta = {
  * What kind of thing a line of return is, which decides how it may be described.
  * A risk premium may never be called an edge.
  */
-export type CertaintyClass = "contractual" | "risk-premium" | "nothing-better-exists" | "different-benchmark";
+export const CERTAINTY_CLASSES = [
+  "contractual",
+  "risk-premium",
+  "nothing-better-exists",
+  "different-benchmark",
+] as const;
+
+export type CertaintyClass = (typeof CERTAINTY_CLASSES)[number];
 
 export interface CertaintyMeta {
   readonly label: string;
