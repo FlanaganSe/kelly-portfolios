@@ -26,12 +26,15 @@
 #    Every trend figure here is gross of the vendor's internal trading costs BY
 #    OMISSION. Nothing here replicates trend following.
 #
-# 4. TWO OF THE THREE STACKED FUNDS PUBLISH NO NOTIONAL BREAKDOWN.
-#    Only RSST's structure is read off a filing (N-PORT 2026-04-30). MATE's only
-#    filed leg is a 49.8% equity position that CONTRADICTS the 100% its
-#    prospectus text claims, and JPFP publishes no numeric breakdown at all.
-#    Their arms are therefore priced on prospectus PROSE, are labelled
-#    `structure_assumed`, and carry an arm at the one filed number as well.
+# 4. ONE OF THE THREE STACKED FUNDS HAS FILED NOTHING.
+#    RSST's structure is read off Form N-PORT of 2026-04-30 and MATE's off Form
+#    N-PORT of 2026-05-31. JPFP commenced operations on 2026-05-27, has filed no
+#    Form N-PORT, and its first is due 2026-08-29 or 2026-09-29, so its arm is
+#    priced on prospectus PROSE and is labelled `structure_assumed`. Reading a
+#    stacked fund's base leg off its largest holding is the error that made an
+#    earlier draft of this file price MATE at 0.498 of equity: the base leg is
+#    the sum of EVERY instrument that delivers the base, and on these products at
+#    least one of them is an index future.
 #
 # 5. THE SPECIFICATION WAS FROZEN AND HASHED BEFORE THE EXPERIMENT MODULE RAN.
 #    The minimum detectable effect table in
@@ -92,9 +95,11 @@ falsifier: >
   For each contestant, against each named benchmark separately:
   (a) `rejected` if the after-cost growth gap point estimate is at or below zero
   on the full joint window;
-  (b) `rejected` if the gap is positive against the unlevered control while the
-  leverage-matched control attains an equal or higher Sharpe ratio, because the
-  gain is then leveraged beta rather than a construction effect;
+  (b) `rejected` if the arm's gross notional exceeds 1.0, its gap is positive
+  against the unlevered control, and the leverage-matched control attains an
+  equal or higher Sharpe ratio, because the gain is then leveraged beta rather
+  than a construction effect. The clause is restricted to levered arms because
+  an unlevered arm has no leverage to which a gain could be attributed;
   (c) `unresolved` if the gap is positive but smaller in absolute value than the
   minimum detectable effect at 80% power computed from that arm's own paired
   difference series, which must be reported in the same sentence;
@@ -373,21 +378,24 @@ cost_model:
     IDMO: 25
     AVES: 30
     RSST: 99
-    MATE: 99
-    MATE_FILED: 99
+    MATE: 97
+    MATE_FLOOR: 97
     JPFP: 59
     TREND: 85
     CASH: 0
   expense_ratio_source: >
-    Every figure except AVES and MATE is the `expenseRatioBp` recorded in
-    `src/content/shelf.ts` as of 2026-08-17, each traced there to the fund's own
-    fee table. AVES and MATE record `null`: NO FEE FOR EITHER FUND APPEARS
-    ANYWHERE IN THIS REPOSITORY. Their entries above are declared ASSUMPTIONS
-    and are swept in `parameters.assumed_fee_grid`. AVES is assumed at 30 bp, the
-    midpoint of the audited emerging and ex-US value shelf; MATE is assumed to
-    cost what RSST costs, on the ground that it is the same structure with a
-    Cayman subsidiary and a smaller asset base. Neither assumption is evidence
-    and both are swept.
+    Every figure except AVES is the `expenseRatioBp` recorded in
+    `src/content/shelf.ts`, each traced there to the fund's own fee table. AVES
+    records `null`: NO FEE FOR IT APPEARS ANYWHERE IN THIS REPOSITORY. Its 30 bp
+    above is a declared ASSUMPTION, the midpoint of the audited emerging and
+    ex-US value shelf, and it is swept in `parameters.assumed_fee_grid`. No
+    wrapper here discloses a financing cost and the zero is accurate rather than
+    an omission: RSST files 0.00% of interest expense, MATE's and JPFP's unitary
+    fees exclude interest expense, and futures financing is paid inside the
+    contract's basis rather than as an expense item. That is why this
+    specification charges the basis separately in
+    `equity_index_futures_basis_annual_percent` rather than trusting a fee table
+    to contain it.
   securities_lending: >
     NOT credited. `shelf.ts` records net lending income for VTI, VEA, VXUS and
     IEMG only, which would credit the control and the cheap legs and charge
@@ -422,7 +430,7 @@ cost_model:
     AVLV: us_equity
     RSST: us_equity
     MATE: us_equity
-    MATE_FILED: us_equity
+    MATE_FLOOR: us_equity
     JPFP: us_equity
     TREND: us_equity
     CASH: us_equity
@@ -454,7 +462,7 @@ cost_model:
     IEMG: null
     RSST: null
     MATE: null
-    MATE_FILED: null
+    MATE_FLOOR: null
     JPFP: null
     TREND: null
     CASH: null
@@ -726,36 +734,51 @@ parameters:
         distribution_tax_drag_pp_yr: 0.32
         incremental_tax_drag_bp: 4.5
       - ticker: MATE
-        expression: 1.000 * us_mkt + 1.000 * trend
+        expression: 1.1587 * us_mkt + 1.000 * trend
         assumes: >
-          THE PROSPECTUS PROSE, NOT A FILING. It says the fund "targets 100%
-          exposure to each of its trend-following and equity strategies". The
-          only leg actually filed is an equity ETF position at 49.8% of net
-          assets, which is not the same claim. `mate_filed_leg` runs the filed
-          number instead.
+          Form N-PORT of 2026-05-31: an S&P 500 ETF at 50.30% of net assets plus
+          a long E-mini S&P 500 future at 65.57%, giving a base leg of 115.87%
+          and delta -0.159, so the wrapper keeps the whole funding-rule gap. The
+          S&P 500 is mapped to the total US market, as RSST's leg is.
         error: >
-          If MATE's real structure resembles its one filed leg, its delta is near
-          the range where a wrapper is WORSE than selling equity outright: 40%
-          equity with 30% trend gives delta 2.0, and HOLD is the audited instance
-          of that failure at delta 0.333 costing 0.81 pp/yr. A gross-notional
-          figure cannot distinguish that case from the good one, and this
-          repository has never computed MATE's delta. Its fee is assumed.
-        futures_notional_for_financing: 0.502
-        structure_assumed: true
+          The index future is NOT separable into base completion and the trend
+          book's own equity position, because both sleeves trade equity-index
+          futures and no filing tags a contract by sleeve. The contractual floor
+          is the prospectus target of 100%, at delta 0.00, and
+          `proposal_mate_prospectus_floor` runs that instead. Gross notional on a
+          volatility-targeted trend book is an artefact of the risk target rather
+          than an exposure: MATE's whole derivative book ran 339% of net assets
+          in February and 405% in May while its stated targets did not move. No
+          SEC-standardised after-tax table exists for it, because it has not
+          completed a calendar year.
+        futures_notional_for_financing: 0.6557
+        structure_assumed: false
       - ticker: JPFP
-        expression: 1.000 * us_mkt + 1.000 * trend
+        expression: 1.072 * us_mkt + 1.000 * trend
         assumes: >
-          THE PROSPECTUS PROSE, NOT A FILING. It says only that it "seeks to
-          provide full exposure to each of the Managed Futures Strategy and the
-          U.S. Equity Strategy, simultaneously" and that "aggregate notional
-          exposure will exceed its net assets". Unlike RSST, RSSB and MATE it
-          publishes no numeric per-dollar breakdown anywhere.
+          THE PROSPECTUS PROSE, NOT A FILING. JPFP commenced operations on
+          2026-05-27 with $17.07m of net assets and has filed no Form N-PORT;
+          its series S000101300 appears in none of the 24 filings its trust made
+          for the 2026-05-31 period, and its first holdings filing is due
+          2026-08-29 or 2026-09-29. Its registration statement says only that it
+          "seeks to provide full exposure to each of the Managed Futures
+          Strategy and the U.S. Equity Strategy, simultaneously" and that
+          "aggregate notional exposure will exceed its net assets". THE
+          STRUCTURE ABOVE IS RSST'S, COPIED. That is the least arbitrary
+          assumption available: it makes the JPFP arm differ from the RSST arm
+          by its 40 bp fee and by nothing else. It is an assumption, not a
+          measurement.
         error: >
-          Everything except the 59 bp unitary fee is assumed. JPFP's entire
-          advantage in this tournament is 40 bp of fee against RSST, and 40 bp is
-          two orders of magnitude below this design's resolution for a stacked
-          arm. The arm exists to show that, not to rank the fund.
-        futures_notional_for_financing: 0.500
+          Everything except the 59 bp unitary fee is assumed, including the
+          0.331 futures share below, which is RSST's. "Not filed, with a date
+          attached" is the honest state of this fund and no number here changes
+          it. JPFP's entire measurable advantage in this tournament is 40 bp of
+          fee against RSST, which at a 30% weight is 12 bp/yr on the portfolio
+          by construction: two orders of magnitude below this design's
+          resolution for a stacked arm. The arm exists to show that, not to rank
+          the fund. It also expects to create and redeem in cash, which forfeits
+          the in-kind tax shield on its equity leg as well as its overlay.
+        futures_notional_for_financing: 0.331
         structure_assumed: true
 
   contestants:
@@ -774,11 +797,17 @@ parameters:
       role: candidate
       weights: {JPFP: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
       benchmark: control_capweight_levered
-    proposal_mate_filed_leg:
+    proposal_mate_prospectus_floor:
       role: hostile variant
-      weights: {MATE_FILED: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      weights: {MATE_FLOOR: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
       benchmark: control_capweight_levered
-      note: MATE priced at its one filed leg, 0.498 equity, instead of its prospectus prose.
+      note: >
+        MATE priced at its prospectus contractual floor of 100% equity (delta
+        0.00) rather than at the 115.87% its 2026-05-31 filing shows (delta
+        -0.159), because the filed index future cannot be separated into base
+        completion and the trend book's own equity position. BOTH READINGS KEEP
+        THE WHOLE FUNDING-RULE GAP, so the pair exists to show that the
+        conclusion is robust where the point estimate is not.
     proposal_no_trend:
       role: decomposition
       weights: {VTI: 0.50, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
@@ -813,6 +842,24 @@ parameters:
       weights: {VTI: 0.40, AVLV: 0.20, VEA: 0.22, DFIV: 0.08, IEMG: 0.10}
       benchmark: control_capweight
       note: The `evidence-led` candidate in `src/content/portfolios.ts`, at the weights its tilts were priced at.
+    fund_overlay_216:
+      role: funding rule
+      weights: {VTI: 0.65, VXUS: 0.35, TREND: 0.216}
+      benchmark: control_capweight_levered
+      note: >
+        The same overlay at the variance-minimising trend notional the breadth
+        study derives, 21.6%, rather than at the 30% the investor proposes. It is
+        here so that the trend-weight dimension is spanned at 21.6, 30 and 50
+        rather than asserted at one point.
+    proposal_rsst_216:
+      role: candidate
+      weights: {RSST: 0.216, VTI: 0.284, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+      note: >
+        The proposal with the wrapper cut to the weight that delivers 21.6% of
+        trend notional, the freed capital going to plain US beta. US equity
+        notional falls from 67.2% to 66.6%, which is the price of holding the
+        trend weight rather than the equity weight fixed.
     fund_overlay_30:
       role: funding rule
       weights: {VTI: 0.65, VXUS: 0.35, TREND: 0.30}
@@ -939,13 +986,26 @@ parameters:
 
   assumed_fee_grid:
     AVES: [0.15, 0.30, 0.60]
-    MATE: [0.59, 0.99, 1.50]
     rationale: >
-      Neither fee appears in this repository. The grid brackets the plausible
-      range and the headline uses the middle point, labelled as an assumption
-      everywhere it appears.
+      AVES's fee appears nowhere in this repository. The grid brackets the
+      plausible range and the headline uses the middle point, labelled as an
+      assumption everywhere it appears.
 
   underperformance_horizons_years: [10, 30]
+  years_to_distinguish:
+    definition: >
+      The holding period at which this design's own detection floor falls to the
+      arm's estimated gap: `years = (2.801585 * sigma_gap / gap)**2`, the
+      inversion of the minimum-detectable-effect formula. It answers the question
+      an investor actually faces, which is not "which construction has the larger
+      expected value" but "how long would I have to hold this before I could tell
+      whether it worked".
+    reporting: >
+      Reported beside every gap. WHERE IT EXCEEDS A HUMAN INVESTING HORIZON THAT
+      IS A HEADLINE FINDING AND NOT A CAVEAT: it means the ranking is a ranking of
+      expected values whose differences are unobservable to the person holding
+      them, which reframes the decision from "which is best" to "which is
+      best-supported and cheapest to be wrong about".
   crra_gamma: 3
   bootstrap_block_months: 12
   bootstrap_block_robustness_months: [6, 24]
@@ -1054,8 +1114,9 @@ hostile_tests:
     ranking again. DFIV's -3.80 is the number most capable of reversing the
     proposal, and the headline arms do not charge it.
   - >
-    Price MATE at its one filed leg rather than at its prospectus prose, and
-    report both arms side by side.
+    Price MATE at its prospectus contractual floor of 100% equity rather than at
+    the 115.87% its filing shows, and report both arms side by side, because the
+    filed index future is not separable by sleeve.
   - >
     Sweep a 0-to-12 pp/yr haircut on the trend leg's arithmetic mean and report
     where every trend-bearing arm stops paying, against each benchmark
@@ -1077,6 +1138,15 @@ hostile_tests:
   - >
     Report the minimum detectable effect beside every gap and mark any gap below
     it unresolved rather than positive.
+  - >
+    Report the years required to distinguish each arm from its benchmark at 80%
+    power, and treat a figure beyond a human investing horizon as a finding.
+  - >
+    Report the growth wedge between `fund_overlay_30` and `fund_prorata_30`,
+    which hold the same trend notional and differ only in whether the base was
+    sold to pay for it. Under substitution the portfolio's edge is a weighted
+    AVERAGE of its sleeves and under a financed overlay it is a SUM; this pair is
+    that distinction realised on growth rather than asserted.
   - >
     Report the identical-portfolio pair `fund_prorata_30` and `fund_cash_30` with
     their two different benchmarks, so that a reader can see a funding rule

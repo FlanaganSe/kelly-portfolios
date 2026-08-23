@@ -44,6 +44,7 @@ SPEC_NAMES = (
     "exp_013_us_products_union_frame",
     "exp_014_replication_basis",
     "exp_015_exus_replication_basis",
+    "exp_016_construction_tournament",
     "phase1_ff_reproduction",
 )
 
