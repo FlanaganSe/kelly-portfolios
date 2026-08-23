@@ -38,7 +38,10 @@ empty outline. Never coloured, and never red or green. Labels and glosses are in
 `{ kind, label?, class? }` where kind is one of `do-this`, `mechanism`, `caveat`,
 `change-your-mind`, `open-question`. A left rule and a label, with the body in a slot.
 
-### The house rule these three follow
+### Two house rules these three follow
+
+An internal `href` ends in a slash. The build emits one URL form, and a link missing the
+slash is a redirect the reader pays for.
 
 `node tools/prose-lint.mjs` reads `.astro` templates as prose and treats a bare `!` as
 an exclamation mark. Write a positive prop and test it directly rather than negating

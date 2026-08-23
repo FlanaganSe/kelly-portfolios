@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "astro dev",
     "dev:legacy": "vite",
-    "build": "astro build && pagefind --site dist",
+    "build": "astro build",
     "build:legacy": "vite build --outDir dist-legacy && node scripts/spa-fallback.mjs dist-legacy",
     "preview": "astro preview",
     "typecheck": "astro sync && tsc --noEmit",
@@ -23,6 +23,9 @@
     "@solidjs/meta": "^0.29.4",
     "@solidjs/router": "^0.15.4",
     "astro": "7.2.4",
+    "astro-og-canvas": "0.13.0",
+    "astro-pagefind": "2.0.1",
+    "canvaskit-wasm": "^0.42.0",
     "solid-js": "^1.9.15"
   },
   "devDependencies": {
@@ -34,7 +37,6 @@
     "@testing-library/jest-dom": "^6.9.1",
     "@types/node": "^22",
     "jsdom": "^30.0.1",
-    "pagefind": "1.5.2",
     "playwright": "^1.62.1",
     "sst": "3.17.38",
     "tailwindcss": "^4.1.18",

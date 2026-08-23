@@ -24,6 +24,11 @@ or publication gates must state their scope and what evidence would change the d
   builds it into `dist-legacy/` and nothing publishes it.
 - Content-collection schemas run only during `astro build`. `astro check` does not evaluate
   them, so `pnpm build` is the gate that catches a figure citing a heading that has moved.
+- Internal links carry a trailing slash. The build emits `<route>/index.html` under
+  `trailingSlash: "always"`, and a link without the slash costs the reader a redirect.
+- `compressHTML: true` is pinned. Astro 7's `'jsx'` default strips whitespace between
+  inline elements, which deletes the space after a closing `</code>` or `</em>` that a
+  newline follows. Reproduced on this repository, not inherited from a changelog.
 - `sst.config.ts` imports `./infra/*` and deploys handlers from `functions/`; neither is in
   Git. Do not make the build green by deleting those imports.
 - `scripts/mean-variance.py` is an unwired reference implementation, not shipped behavior.

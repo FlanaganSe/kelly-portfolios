@@ -86,6 +86,27 @@ Return to `Settings`, then `Pages`. Once the DNS check passes, tick `Enforce HTT
 certificate is issued by Let's Encrypt and usually appears within an hour of the records
 propagating. The tick box stays greyed out until then.
 
+## The trailing slash is the host's job
+
+The build emits one URL form and one only: `trailingSlash: "always"` with directory
+format, so every page is written as `<route>/index.html` and every internal link carries
+the slash. What the setting does not do is redirect. On a static build it governs the dev
+server and on-demand routes, so a reader who types `kellyportfolios.com/start` reaches the
+host, not Astro, and the host decides whether that is a redirect or a second copy of the
+page. Two indexed URLs for one document is the failure being avoided.
+
+GitHub Pages issues a 301 from `/start` to `/start/` when `/start/index.html` exists, which
+is the behaviour this configuration depends on. Check it once, at step 2, before the DNS
+change:
+
+```sh
+curl -sI https://flanaganse.github.io/kelly-portfolios/start | head -3
+```
+
+A `301` with a `location` ending in a slash is correct. A `200` means both forms serve the
+same page, and the fix is a redirect rule at whatever host is in use rather than a change
+in the Astro config.
+
 ## Verifying
 
 ```sh
