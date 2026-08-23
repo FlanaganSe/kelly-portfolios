@@ -48,7 +48,7 @@ import math
 import re
 import sys
 from collections.abc import Mapping, Sequence
-from dataclasses import dataclass, field
+from dataclasses import dataclass, field, replace
 from pathlib import Path
 from typing import Final
 
@@ -644,6 +644,15 @@ class MappingShift:
     value_haircut_pp_yr: float = 0.0
     charge_measured_alpha: bool = False
     fee_override_bp: Mapping[str, float] = field(default_factory=dict)
+    financing_basis_annual_percent: float | None = None
+    """Replaces the equity-index-futures basis everywhere it is charged.
+
+    Nobody discloses a cleared-futures wrapper's financing cost and nobody
+    structurally can, because it lives in the contract's basis rather than in the
+    income statement. It is therefore the one load-bearing cost in this
+    tournament that is unobservable rather than merely unmeasured, and the arm
+    ordering has to be reported across a band of it rather than at a point.
+    """
 
     @property
     def is_central(self) -> bool:
@@ -655,6 +664,7 @@ class MappingShift:
             and self.value_haircut_pp_yr == 0.0
             and not self.charge_measured_alpha
             and not self.fee_override_bp
+            and self.financing_basis_annual_percent is None
         )
 
     def label(self) -> str:
@@ -675,7 +685,17 @@ class MappingShift:
             parts.append("alpha-charged")
         for ticker, fee in sorted(self.fee_override_bp.items()):
             parts.append(f"{ticker}fee{fee:.0f}")
+        if self.financing_basis_annual_percent is not None:
+            parts.append(f"financing{self.financing_basis_annual_percent:.2f}")
         return ",".join(parts)
+
+    def applied_to(self, costs: CostSettings) -> CostSettings:
+        """The cost settings this shift implies. Identity unless it overrides financing."""
+        if self.financing_basis_annual_percent is None:
+            return costs
+        return replace(
+            costs, equity_futures_basis=self.financing_basis_annual_percent / 100.0
+        )
 
 
 _VALUE_LEGS: Final = frozenset({"us_hml", "dxus_hml", "em_hml"})
@@ -697,6 +717,7 @@ def fund_excess_matrix(
     with the perturbation ``shift`` applied to the coefficients and to the two
     haircut legs before anything is summed.
     """
+    costs = shift.applied_to(costs)
     columns: list[FloatArray] = []
     for ticker in tickers:
         try:
@@ -1455,6 +1476,7 @@ def _path_for(
     reapply_every: int,
 ) -> tuple[PortfolioPath, int, tuple[float, ...]]:
     """Simulate one contestant, returning its path and its first scored month."""
+    costs = shift.applied_to(costs)
     columns = np.asarray([ticker_index[t] for t in contestant.tickers], dtype=np.intp)
     excess = excess_all[:, columns]
     if not contestant.is_estimated:
@@ -1832,6 +1854,19 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
             }
             outcomes[name].era_gaps = existing
 
+    financing_band = _financing_band(
+        parameters=parameters,
+        panel=panel,
+        mappings=mappings,
+        costs=costs,
+        contestants=contestants,
+        tickers=tickers,
+        ticker_index=ticker_index,
+        minimum_months=minimum_months,
+        reapply_every=reapply_every,
+        walk_start=walk_start,
+    )
+
     # One window every arm can be read on. The walk-forward arms cannot be scored
     # before 2000-11, and a weighting-method gap measured on 307 months must not
     # be put in the same column as a constant-weight gap measured on 427.
@@ -1936,6 +1971,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
         "arms": [outcomes[name].to_json() for name in contestants],
         "ranking_by_gap": [o.name for o in ranked],
         "funding_wedge": _funding_wedge(outcomes, contestants),
+        "financing_basis_band": financing_band,
         "regret_basis": (
             "max_regret_pp_yr is `best arm's growth - this arm's growth`, maximised over "
             "the 27-point mapping-perturbation grid and measured on the walk-forward "
@@ -2052,6 +2088,79 @@ def _growth_at(
         if contestant.is_estimated:
             estimated.add(name)
     return GridPoint(scored=scored, common=common, estimated=frozenset(estimated))
+
+
+def _financing_band(
+    *,
+    parameters: Mapping[str, JsonValue],
+    panel: BasisPanel,
+    mappings: Mapping[str, FundMapping],
+    costs: CostSettings,
+    contestants: Mapping[str, Contestant],
+    tickers: Sequence[str],
+    ticker_index: Mapping[str, int],
+    minimum_months: int,
+    reapply_every: int,
+    walk_start: int,
+) -> dict[str, JsonValue]:
+    """Re-rank every arm across a band of the unobservable financing cost.
+
+    A cleared-futures wrapper's financing lives in the contract's basis rather
+    than in its income statement, so no filing discloses it and no filing can.
+    It is the one load-bearing cost here that is unobservable rather than merely
+    unmeasured, which means an ordering quoted at a point estimate of it is not
+    an ordering. This reports whether the ordering survives the band.
+    """
+    block = parameters.get("financing_basis_band")
+    if not isinstance(block, Mapping):
+        return {"declared": False}
+    grid = _numbers(_at(block, "annual_percent", where="financing_basis_band"), where="grid")
+    watch = tuple(
+        str(name)
+        for name in _sequence(_at(block, "watch_arms", where="financing_basis_band"), where="watch")
+    )
+    missing = [name for name in watch if name not in contestants]
+    if missing:
+        raise ConstructionTournamentError(f"financing_basis_band watches unknown arms {missing}")
+
+    gaps: dict[str, JsonValue] = {}
+    orderings: list[tuple[str, ...]] = []
+    watched_orderings: list[tuple[str, ...]] = []
+    for basis in grid:
+        point = _growth_at(
+            MappingShift(financing_basis_annual_percent=basis),
+            panel=panel,
+            mappings=mappings,
+            costs=costs,
+            contestants=contestants,
+            tickers=tickers,
+            ticker_index=ticker_index,
+            minimum_months=minimum_months,
+            reapply_every=reapply_every,
+            walk_start=walk_start,
+        )
+        table = point.gaps(contestants)
+        gaps[f"{basis:.2f}%"] = dict(table)
+        orderings.append(tuple(sorted(table, key=lambda name: -table[name])))
+        watched = {name: table[name] for name in watch}
+        watched_orderings.append(tuple(sorted(watched, key=lambda name: -watched[name])))
+
+    return {
+        "declared": True,
+        "what_this_is": (
+            "The equity-index-futures basis swept across a band, with every arm re-scored "
+            "at each point. Financing is charged to the leverage-matched control on the "
+            "same terms as to every wrapper, so a rise in the basis does not move all arms "
+            "in the same direction: it moves each one in proportion to its own futures "
+            "notional, and the levered control carries more of that than any wrapper does."
+        ),
+        "grid_annual_percent": list(grid),
+        "gaps_pp_yr": gaps,
+        "ordering_over_all_arms_is_stable": len(set(orderings)) == 1,
+        "watched_arms": list(watch),
+        "watched_ordering_is_stable": len(set(watched_orderings)) == 1,
+        "watched_orderings": [list(order) for order in watched_orderings],
+    }
 
 
 def _funding_wedge(

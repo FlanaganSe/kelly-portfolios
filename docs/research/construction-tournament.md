@@ -3,16 +3,21 @@
 **Question.** Compared as whole portfolios rather than sleeve by sleeve, does the proposed
 stacked, tilted construction beat a cheap cap-weighted control — and can this data tell?
 
-**Current answer.** The tilts can be resolved and the stack cannot. Charging every cost
-inside the rule, the proposal's factor tilts beat the cheap cap-weighted control by
-**+0.79 pp/yr [+0.30, +1.32]** against a **0.47 pp/yr** detection floor, and they are
-positive in all five predeclared sub-periods. The 30% stacked trend wrapper adds
-**+2.49 pp/yr** against a leverage-matched control — but against a **3.33 pp/yr** floor,
-which makes it `unresolved`, and **an investor would have to hold it for 64 years** before
-this design could tell it apart from simply levering the index. The three stacked wrappers
-span **0.15 pp/yr**, which is 5% of their own floor: RSST, MATE and JPFP are not
-distinguishable here and the tournament should not be read as ranking them. Nothing is
-promoted; [decision 0004](../decisions/0004-no-sleeve-promoted.md)'s non-promotion stands.
+**Current answer.** The tilts can be resolved and the stack cannot, and the reason is a
+holding period rather than a p-value. Charging every cost inside the rule, the proposal's
+factor tilts beat the cheap cap-weighted control by **+0.79 pp/yr [+0.30, +1.32]** against a
+**0.47 pp/yr** detection floor, and are positive in all five predeclared sub-periods —
+**13 years** to tell them apart from the control. The 30% stacked trend wrapper adds
+**+2.49 pp/yr** against a leverage-matched control, but against a **3.33 pp/yr** floor:
+`unresolved`, and **64 years of holding** before this design could distinguish it from simply
+levering the index. A pure 30% trend overlay needs **244 years**; at 21.6%, **1,033**.
+
+Three further results say the stacked question is not merely underpowered but underdetermined.
+The three wrappers span **0.15 pp/yr**, 5% of their own floor. Their *ordering reverses*
+inside the 0.98%–2.31% band of futures financing that no filing discloses and none
+structurally can. And the whole trend contribution rests on AQR's realised 10.98 pp/yr: at the
+1.80 pp/yr forward premium this repository actually holds, the overlay **subtracts**. Nothing
+is promoted; [decision 0004](../decisions/0004-no-sleeve-promoted.md)'s non-promotion stands.
 
 Evidence: [Experiment 016](../../research/experiments/exp_016_construction_tournament.yaml)
 (spec `17e2cef1…`, run
@@ -22,8 +27,12 @@ and its follow-on
 (spec `705445e2…`, run
 [`c49f8587…`](../../research/artifacts/c49f8587590d46cc9bf5ba8e389cbd0b/summary.md), 25 arms),
 which adds four arms proposed **after** 016's results were seen and reproduces every shared
-arm's point estimate exactly. Both are `exploratory`; this is a screening pass and cannot
-promote anything.
+arm's point estimate exactly, and
+[016c](../../research/experiments/exp_016c_financing_band.yaml)
+(spec `f6b61e0d…`, run
+[`7c36a759…`](../../research/artifacts/7c36a759190441b99c082d5d39966390/summary.md)),
+which changes no arm and sweeps the one load-bearing cost nobody can observe. All three are
+`exploratory`; this is a screening pass and cannot promote anything.
 
 ## The one thing to read first
 
@@ -134,10 +143,14 @@ costs **0.82**. Every one of those numbers is far inside every floor involved, s
 a disagreement the data resolves; it is a disagreement about the trend weight, which returns
 to finding 6.
 
-**8. A 10 bp wrapper instead of a 99 bp one is worth +0.28 pp/yr, and it is the only figure
-here that is knowable in advance.** `proposal_ten_bp_wrapper` returns +2.77 against the
-proposal's +2.49, matching the `0.30 × 0.89 = 26.7 bp` arithmetic. It is 8% of the arm's own
-detection floor. No product on the audited shelf has been verified to charge it.
+**8. A 10 bp wrapper instead of a 99 bp one is worth +0.28 pp/yr, and no such product
+exists.** `proposal_ten_bp_wrapper` returns +2.77 against the proposal's +2.49, matching the
+`0.30 × 0.89 = 26.7 bp` arithmetic, and it is 8% of the arm's own detection floor. **Read it
+as a sensitivity bound, not as an option.** The 0.10% net that prompted the arm was a fee
+reduction expiring 2026-12-04 which omits 0.75% charged inside a total-return swap on an
+affiliated fund; all-in it is roughly 0.81% today and 0.99% after. The live wrapper fee
+spread is about 18 bp now and about zero in December, so **cost does not separate the
+wrappers either**.
 
 **9. Enlarging the family removed the only resolvable stacked result.** In 016,
 `stacked_heavy_50` cleared its floor at Benjamini–Hochberg adjusted p = 0.081. In 016b, with
@@ -147,7 +160,37 @@ one stacked arm that looked resolvable was resolvable only at a particular famil
 which is what a screening pass on twenty-odd correlated constructions should be expected to
 produce.
 
-**10. Linear shrinkage went all the way to its target at every rebalance.** The Ledoit–Wolf
+**10. The wrapper ordering does not survive the financing band, so it is not a finding.**
+A cleared-futures wrapper's financing is paid inside the contract's basis and never appears
+as an expense-table line; RSST files 0.00% of interest expense and that zero is accurate
+rather than an omission. Separate work here puts the break-even financing band for a trend
+overlay at **0.98%–2.31%/yr**, which brackets its own 1.80% forward premium estimate. Swept
+across that band with nothing else changed, every wrapper arm's gap *rises* — because the
+leverage-matched control carries more futures notional (0.3216) than any wrapper does, so a
+higher basis charges the benchmark hardest — but **their order changes**:
+
+| Futures basis | RSST | MATE | JPFP | MATE floor | 10 bp wrapper | 50% stacked |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 0.62% (the point estimate) | +2.49 | +2.64 | +2.61 | +2.29 | +2.77 | +4.47 |
+| 0.98% (band low) | +2.56 | +2.67 | +2.69 | +2.34 | +2.84 | +4.52 |
+| 1.65% | +2.69 | +2.74 | +2.82 | +2.44 | +2.98 | +4.61 |
+| 2.31% (band high) | +2.83 | +2.81 | +2.96 | +2.54 | +3.11 | +4.70 |
+
+MATE ranks second of the six at 0.62%, third from 0.98%, and fourth — below RSST — at 2.31%.
+The MATE-versus-RSST ordering flips between 1.65% and 2.00%, inside the band. **An ordering
+that a term nobody can observe reverses is not an ordering**, and the wrapper ranking in the
+table above must not be read as one.
+
+**11. At the forward trend premium this repository actually holds, the overlay subtracts.**
+The proposal stops beating its leverage-matched control once the trend leg loses **8.02 pp/yr**
+of arithmetic mean. AQR's TSMOM returned **10.98 pp/yr** of arithmetic excess over the frozen
+window. The repository's own forward trend premium is **1.80 pp/yr**, which is a haircut of
+**9.18 pp/yr** — past the 8.02 break-even. So every positive trend number in this tournament
+is a statement about TSMOM's realised 1990–2026 mean, and **substituting the forward premium
+this repository believes turns the proposal's trend contribution negative.** That, and not
+the statistics, is why the trend weight is unresolved.
+
+**12. Linear shrinkage went all the way to its target at every rebalance.** The Ledoit–Wolf
 intensity is 1.000 at all 26 estimations: over 120 or more months, the sample covariance of
 seven near-collinear equity sleeves carries so little independent information that the
 constant-correlation target wins outright. Relatedly, minimum variance fitted **in sample on
@@ -198,6 +241,10 @@ against 2.6%.
 
 ## Scope and limitations
 
+- **Not relied on:** the 0.58→0.60 equity-share "drawdown cliff". No arm or interpretation
+  here uses it, which matters because it has since been localised to 0.58→0.59, shown to
+  vanish without a 60 bp financing spread, and identified as an episode-identity switch
+  rather than a risk gradient.
 - **Instrument:** basis-mapped constructions, not funds. Loadings from
   `src/content/shelf.ts` as of 2026-08-17, measured over 44–77 month fund windows and applied
   to 427 months. Market betas of 1.000 are assumed and were never measured.
@@ -247,8 +294,9 @@ tournament is clear:
 - the choice among RSST, MATE and JPFP should be made on the things that are actually
   known — filed structure, fee, age, size, survival and tax placement — because the return
   evidence cannot separate them and will not in this investor's lifetime; the largest
-  knowable difference available is the fee, and an 89 bp saving is worth 27 bp/yr with
-  certainty against a 333 bp/yr floor of uncertainty.
+  knowable difference available is the fee, and the live fee spread across the shelf is
+  about 18 bp today and about zero after 2026-12-04 — so on current products, cost does not
+  separate them either.
 
 The trend *weight* is the live question and this tournament does not settle it. A variance
 argument puts it near 21.6%; this growth argument runs monotonically to the top of the tested
@@ -264,9 +312,12 @@ It is a reason to test the trend leg harder, not a reason to hold more of it.
 ## Next informative tests
 
 1. **The trend weight, framed as regret rather than as an optimum.** The growth argument
-   returns a corner and the variance argument returns an interior point; the useful next
-   design is neither, but a regret surface over the trend weight against a stated prior on
-   TSMOM's mean, since that prior is the entire disagreement.
+   returns a corner, a variance argument returns 21.6% [10.3%, 32.8%] and a holdability-
+   constrained growth argument returns 15–25%. The useful next design is none of those: it
+   is a regret surface over the trend weight against a stated prior on TSMOM's mean, because
+   that prior is the entire disagreement. Finding 11 shows why — at the repository's own
+   1.80% forward premium the sign changes, and no amount of resampling the 1990–2026 window
+   speaks to that.
 2. **A defensive arm.** Substitute duration-hedged credit, short Treasuries and T-bills
    *within* a defensive allocation and let the tournament adjudicate, which a sleeve-by-sleeve
    test cannot. This needs a new frozen specification: Experiment 016's spec must not be

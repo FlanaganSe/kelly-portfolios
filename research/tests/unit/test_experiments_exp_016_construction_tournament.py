@@ -893,3 +893,55 @@ def test_the_identical_funding_pair_produces_the_identical_wealth_path(
     assert pro_rata["max_drawdown_pct"] == cash["max_drawdown_pct"]
     assert pro_rata["growth_gap_pp_yr"] != cash["growth_gap_pp_yr"]
     assert pro_rata["benchmark"] != cash["benchmark"]
+
+
+def test_a_financing_override_replaces_the_basis_everywhere_it_is_charged() -> None:
+    """The one load-bearing cost nobody can observe has to be sweepable."""
+    panel = _panel(24)
+    costs = _costs()
+    mappings = {"W": _mapping("W", {"us_mkt": 1.0, "trend": 1.0}, futures=0.5)}
+    plain = fund_excess_matrix(panel, mappings, costs, tickers=["W"], shift=MappingShift())
+    swept = fund_excess_matrix(
+        panel,
+        mappings,
+        costs,
+        tickers=["W"],
+        shift=MappingShift(financing_basis_annual_percent=2.31),
+    )
+    # 0.62% -> 2.31% on 0.5 of futures notional, charged monthly.
+    assert np.allclose((plain - swept), (0.0231 - 0.0062) * 0.5 / 12.0)
+
+
+def test_a_financing_override_reaches_portfolio_level_borrowing_too() -> None:
+    months = 12
+    panel = BasisPanel(
+        periods=tuple(f"2000-{i + 1:02d}" for i in range(months)),
+        series={"us_mkt": np.zeros(months, dtype=np.float64)},
+        cash=np.zeros(months, dtype=np.float64),
+        provenance=(),
+        findings=(),
+    )
+    mappings = {"A": _mapping("A", {"us_mkt": 1.0})}
+    costs = MappingShift(financing_basis_annual_percent=2.31).applied_to(_costs())
+    path = constant_weight_path(
+        panel, mappings, costs, tickers=["A"], targets=np.array([1.5])
+    )
+    assert path.total[0] == pytest.approx(-0.0231 * 0.5 / 12.0)
+
+
+def test_the_financing_band_specification_brackets_its_own_point_estimate() -> None:
+    """A band that does not contain the number it is testing is not a band."""
+    specification = load_specification(
+        SPEC_PATH.with_name("exp_016c_financing_band.yaml")
+    )
+    assert isinstance(specification.parameters, Mapping)
+    block = specification.parameters["financing_basis_band"]
+    assert isinstance(block, Mapping)
+    grid = [float(str(value)) for value in block["annual_percent"]]  # type: ignore[union-attr]
+    point = _cost_settings(specification).equity_futures_basis * 100.0
+    assert min(grid) <= point <= max(grid)
+    assert min(grid) == pytest.approx(point)
+    assert max(grid) == pytest.approx(2.31)
+    watch = [str(name) for name in block["watch_arms"]]  # type: ignore[union-attr]
+    contestants = _read_contestants(specification)
+    assert all(name in contestants for name in watch)
