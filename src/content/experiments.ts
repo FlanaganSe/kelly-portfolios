@@ -632,11 +632,11 @@ export const experiments: readonly Experiment[] = [
  * verifies these directly from `research/ledger.jsonl`.
  */
 export const ledgerSummary = {
-  entries: 116,
-  runs: 41,
-  distinctSpecifications: 21,
-  experimentFamilies: 17,
-  runsRecordingResultsViewed: 33,
+  entries: 122,
+  runs: 43,
+  distinctSpecifications: 23,
+  experimentFamilies: 19,
+  runsRecordingResultsViewed: 35,
   runsConsumingTheFinalHoldout: 0,
   terminalOutcomes: [
     {
@@ -653,9 +653,9 @@ export const ledgerSummary = {
     },
     {
       status: "exploratory" as const,
-      runs: 15,
+      runs: 17,
       which:
-        "Experiments 002, 008 and 009, three executions each; Experiments 005 and 006; Experiment 013, two executions; Experiments 014 and 015",
+        "Experiments 002, 008 and 009, three executions each; Experiments 005 and 006; Experiment 013, two executions; Experiments 014 and 015; Experiment 016 and its follow-on 016b",
     },
   ],
   noTerminalStatus: {
@@ -664,7 +664,7 @@ export const ledgerSummary = {
       "3 failed — a parser table-name error, a clause-(d) verification guard refusing a run, and a NaN that is not JSON-compliant — and 5 abandoned",
   },
   asOf: asOf("2026-08-22"),
-  note: "Twenty-one, not forty-one, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Twenty-one is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent, and because Experiments 013, 014 and 015 re-run an earlier falsifier on data it had already spent rather than asking a new question.",
+  note: "Twenty-three, not forty-three, is the number a deflated-Sharpe trial count starts from: repeated executions of one specification are not independent hypotheses. Twenty-three is itself an upper bound, because Experiment 010b re-judges data Experiment 010 had already spent, because Experiments 013, 014 and 015 re-run an earlier falsifier on data it had already spent rather than asking a new question, and because Experiment 016b re-scores 016's arms on the identical panel and adds four chosen after seeing its results.",
   source: {
     label: "Portfolio edge research framework, the ledger counted rather than described",
     docPath: "docs/research/portfolio-edge-research-framework.md",

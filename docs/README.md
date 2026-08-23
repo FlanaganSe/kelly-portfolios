@@ -1,66 +1,98 @@
 # Documentation
 
-A map, not a source of facts. Every number lives on the page that measured it; this file
-carries none, so that nothing here can go stale on its own. Start at the root
-[`README.md`](../README.md) for setup and current status.
+This is a reading map, not a second source of research facts. Detailed experiment output
+lives in committed run artifacts; each synthesis links its evidence.
 
-**[The documentation and research protocol](AGENTS.md)** — where a document belongs, the
-required shape of a synthesis, and how pages are retired. Read it before adding, moving or
-deleting anything here. **[The register](style.md)** is what the site may claim and how it
-may sound.
+## What should I believe now?
 
-## Start here
+Start with the [research framework](research/portfolio-edge-research-framework.md) for the
+short current position and evidence model, then read the
+[portfolio recommendation](research/portfolio-recommendation.md) as a provisional decision
+for the stated reference investor. The [edge decomposition](research/expected-edge-decomposition.md)
+keeps three different benchmarks from being mixed.
 
-| Page | Answers |
-| --- | --- |
-| [Charter](charter.md) | What this programme is for, the reference investor it is sized against, the benchmarks, the objective, and the conditions under which it would be finished. |
-| [Research framework](research/portfolio-edge-research-framework.md) | Can you beat the market? The design map, every candidate's status, and the research protocol. |
-| [The evidence base](research/evidence-base.md) | What each instrument can and cannot resolve. **Check its resolution table before proposing an experiment.** |
-| [Search coverage](research/search-coverage.md) | The strategy universe and how much of it has been searched, what has never been tested, and round two, ranked. |
-| [The recommended portfolio](research/portfolio-recommendation.md) | What to hold, in which account, at what confidence. Promotes nothing. |
+For the major decisions:
 
-## Where an edge can come from
+- [Equity share](research/setting-the-equity-share.md): what arithmetic can say and which
+  investor constraints decide the rest.
+- [Valuation and the allocation](research/valuation-and-the-allocation.md): what an August
+  2026 CAPE of 41 licenses — a wider drawdown assumption, not a timing rule — and why the
+  US/international spread is a differently identified question from the US level.
+- [Structural and tax edges](research/structural-and-tax-edges.md): implementation gains
+  that are conditional on accounts, taxes, holdings, and behavior.
+- [Factors](research/factor-persistence.md), [delivered loading](research/long-only-capture.md),
+  and [products](research/factor-products.md): the evidence chain from research premium to
+  investable exposure.
+- [Trend and managed futures](research/trend-marginal-value.md) and
+  [live-fund evidence](research/live-managed-futures.md): the strongest current diversifier
+  candidate and its unresolved implementation risks.
+- [Timing rules on the equity sleeve](research/timing-rules-on-the-equity-sleeve.md): the
+  same signal applied to the base portfolio instead — a different funding rule, a different
+  tax outcome, and largely the same bet as a trend overlay.
+- [Rebalancing](research/rebalancing-policy.md): useful exposure control, with no stable
+  return bonus established.
+- [Other diversifiers](research/alternative-sleeves-audit.md) and
+  [capital efficiency](research/capital-efficiency-and-breadth.md): candidate mechanisms,
+  access, financing, and failure modes — including the cross-engine stress table, the
+  verdicts on crypto and tail hedging, and why duration-hedged credit is a separate engine
+  when unhedged credit is not.
+- [Leverage and the notional budget](research/leverage-and-the-notional-budget.md): what
+  gross and net exposure a 30% stacked-fund line actually carries, what the growth objective
+  wants across the premium surface, what the embedded financing costs, and why the binding
+  constraint is holdability rather than drawdown.
+- [Stacking and effective breadth](research/stacking-and-effective-breadth.md): what a
+  pile of sleeves is worth once their excess returns are correlated, and how many
+  independent bets the proposed portfolio is actually making.
+- [The construction tournament](research/construction-tournament.md): twenty-five whole
+  portfolios scored against three benchmarks — which differences this data can resolve,
+  which it cannot, and how many years an investor would have to hold each one before
+  finding out.
 
-| Page | Answers |
-| --- | --- |
-| [Expected edge decomposition](research/expected-edge-decomposition.md) | The three benchmarks that never aggregate, the budget against each, and why tracking error rather than edge size decides whether a lifetime is enough. |
-| [Structural and tax-aware edges](research/structural-and-tax-edges.md) | What else is contractual for a US investor: fund structure, the foreign tax credit, §1256, the deferral hurdle, direct indexing, and the core beta shelf audited on cost rather than on fee. |
-| [Setting the equity share](research/setting-the-equity-share.md) | The largest decision in the portfolio, split into the part that is arithmetic and the part that is preference. Sets no split. |
-| [Capital efficiency and breadth](research/capital-efficiency-and-breadth.md) | What the funding rule is worth, how many distinct return engines survive cost, the candidate frontier, and the stress surface underneath the overlay weight. |
+## What should we research next?
 
-## The experiments
+Read [search coverage](research/search-coverage.md). It is the ranked agenda, not a
+permission boundary. Check the [evidence base](research/evidence-base.md) before designing
+the next test: it records source fitness, resolution, and limitations. A current instrument
+that cannot resolve the effect is a reason to acquire or design a better one, not to stop
+asking the question.
 
-| Page | Covers |
-| --- | --- |
-| [Fama–French reproduction](research/fama-french-reproduction.md) | The Phase 1 ingestion gate, and the systematic volatility band that follows from the cells it cannot reproduce. |
-| [Factor persistence and decay](research/factor-persistence.md) | Experiments 001, 005 and 006. What HML, UMD, RMW and CMA did before and after publication across three regions, and why SMB cannot be signed on any panel. |
-| [The long-only capture fraction](research/long-only-capture.md) | Experiment 007. Why the capture fraction turns out to be a loading rather than a multiplier, so it may never multiply one. |
-| [Investable factor products](research/factor-products.md) | Experiments 002, 009, 013, 014 and 015. Which audited ETFs deliver the exposure they advertise, on both shelves, and why the census frame decided the rest. |
-| [Rebalancing](research/rebalancing-policy.md) | Experiment 003. The excess-growth identity reproduces exactly; the premise behind it does not survive real drift gaps. |
-| [Trend](research/trend-marginal-value.md) | Experiments 004 and 008. What a trend sleeve adds against a risk-matched comparator, and the audit of the listed managed-futures ETFs. |
-| [Live managed futures](research/live-managed-futures.md) | Experiment 012. The trend leg rebuilt from real funds' filed net returns instead of a vendor index. |
-| [Marginal sleeve value](research/marginal-sleeve-value.md) | Experiments 010 and 010b. What a sleeve is worth *inside* a portfolio, split into a standalone term and a diversification credit. |
-| [The alternative sleeves audit](research/alternative-sleeves-audit.md) | Which families a retail investor can actually own, at what all-in cost, and whether the net result clears admission. |
-| [Numerical engine specification](research/portfolio-engine-specification.md) | The algorithms, fixtures and conditioning requirements underneath any allocation feature, and where an optimiser would run. |
+The highest-value open work is portfolio-level rather than another isolated sleeve screen:
+compare feasible diversifiers under a common set of investor constraints and explicit
+funding rules; measure crisis-conditional dependence; improve point-in-time live-fund
+coverage including dead funds; and parameterize the recommendation by investor inputs.
 
-## Decisions
+## How do I reproduce a result?
 
-| Record | Decides |
-| --- | --- |
-| [0001](decisions/0001-contained-python-research-workspace.md) | Portfolio research runs in `research/` under `uv`, and what that costs. |
-| [0002](decisions/0002-no-research-grade-free-price-source.md) | No free price feed carries a total-return contract, so fund-level work is exploratory until a source is licensed. |
-| [0003](decisions/0003-cheap-broad-market-control.md) | The cheap broad-market portfolio is the control, and the comparators a result must report. |
-| [0004](decisions/0004-no-sleeve-promoted.md) | No sleeve is promoted; leverage stays at zero; the per-candidate conditions that would change it. |
-| [0005](decisions/0005-factor-premia-closed-on-public-data.md) | Profitability and investment premia are closed on public data, and the conditions that would reopen either. |
-| [0006](decisions/0006-reference-portfolio-without-promotion.md) | A named-fund reference portfolio may be published, under four constraints that keep it from becoming a promotion. |
-| [0007](decisions/0007-application-may-render-research.md) | The application may render a research finding, under four constraints. |
-| [0008](decisions/0008-growth-decides-crra-reports.md) | Geometric growth decides; the certainty equivalent reports beside it. |
-| [0009](decisions/0009-blocks-lifted-and-closures-rescoped.md) | The blocked steps are unblocked, a verdict may not outrun its instrument, and a closure carries its scope. |
-
-## Counts and statuses
-
-Do not transcribe them. The ledger is the only thing that knows what was run:
+Follow the synthesis link to its `research/artifacts/*/summary.md`, then to the frozen YAML
+specification, manifests, and implementation. The [research workspace README](../research/README.md)
+contains commands and integrity requirements. Experiment counts and statuses are generated:
 
 ```sh
 cd research && uv run python -m portfolio_edge.reporting.programme_status
 ```
+
+## Governance and method
+
+- [Charter](charter.md): objective, reference scenario, benchmarks, and decision sufficiency.
+- [Documentation protocol](AGENTS.md): canonical homes and tiered evidence standards.
+- [Numerical engine](research/portfolio-engine-specification.md): mathematical architecture.
+- [Decision records](decisions/README.md): current and historical choices, with
+  supersession made explicit.
+
+## Complete file map
+
+Topical pages not already named above: [Fama–French reproduction](research/fama-french-reproduction.md),
+[marginal sleeve value](research/marginal-sleeve-value.md),
+[expected-edge decomposition](research/expected-edge-decomposition.md), and the
+[numerical engine](research/portfolio-engine-specification.md).
+
+Decision records: [0001](decisions/0001-contained-python-research-workspace.md),
+[0002](decisions/0002-no-research-grade-free-price-source.md),
+[0003](decisions/0003-cheap-broad-market-control.md),
+[0004](decisions/0004-no-sleeve-promoted.md),
+[0005](decisions/0005-factor-premia-closed-on-public-data.md),
+[0006](decisions/0006-reference-portfolio-without-promotion.md),
+[0007](decisions/0007-application-may-render-research.md),
+[0008](decisions/0008-growth-decides-crra-reports.md),
+[0009](decisions/0009-blocks-lifted-and-closures-rescoped.md), and
+[0010](decisions/0010-bars-carry-a-reopening-condition.md).
