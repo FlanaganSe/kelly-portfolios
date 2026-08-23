@@ -122,6 +122,8 @@ cd research && uv run python -m portfolio_edge.reporting.programme_status
 - [Numerical engine](research/portfolio-engine-specification.md): mathematical architecture.
 - [Decision records](decisions/README.md): current and historical choices, with
   supersession made explicit.
+- [Deploying](deploying.md): how the site is built and published, and the exact Route 53
+  records the apex needs.
 
 ## Complete file map
 

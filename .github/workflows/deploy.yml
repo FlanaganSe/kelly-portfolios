@@ -1,0 +1,63 @@
+# Why GitHub Pages rather than Cloudflare Pages.
+#
+# The constraint that decides it is the apex record. The domain's DNS is Route 53, and
+# Route 53's ALIAS only targets AWS resources — it has no CNAME flattening, so an apex
+# can point at a third-party host only through plain A records. Cloudflare Pages hands
+# out a `*.pages.dev` hostname and no stable addresses, so `kellyportfolios.com` could
+# not be pointed at it without moving the zone to Cloudflare. GitHub Pages publishes
+# four fixed apex A records, which Route 53 can hold as-is.
+#
+# It is also the smaller change of habit. The repository is already public on GitHub,
+# so nobody opens a new account, and deployment authenticates with the workflow's own
+# OIDC token — no API key, no long-lived secret, nothing to rotate.
+#
+# The pick is reversible: `pnpm build` emits a plain static bundle in `dist/`, so
+# swapping hosts later means changing the last two steps and the DNS records.
+#
+# Nothing here runs until the owner completes the manual steps in `docs/deploying.md`.
+name: Deploy
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# One deploy at a time, and never cancel one halfway: a cancelled Pages deployment can
+# leave the site serving a partial artifact.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      # `astro build` is the real gate on content collections: `astro check` does not
+      # validate them, so a figure citing a heading that no longer exists fails here
+      # and nowhere earlier.
+      - run: pnpm build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

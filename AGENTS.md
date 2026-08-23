@@ -18,6 +18,12 @@ or publication gates must state their scope and what evidence would change the d
 
 ## Non-obvious traps
 
+- Two applications share this tree. Astro owns `src/pages/`, `src/layouts/`, `src/content.config.ts`
+  and `src/content/figures/`, and is what deploys. The client-routed application under
+  `src/routes/` and `src/App.tsx` is the reference being ported from; `pnpm build:legacy`
+  builds it into `dist-legacy/` and nothing publishes it.
+- Content-collection schemas run only during `astro build`. `astro check` does not evaluate
+  them, so `pnpm build` is the gate that catches a figure citing a heading that has moved.
 - `sst.config.ts` imports `./infra/*` and deploys handlers from `functions/`; neither is in
   Git. Do not make the build green by deleting those imports.
 - `scripts/mean-variance.py` is an unwired reference implementation, not shipped behavior.
@@ -42,6 +48,7 @@ Client: Node 22 and pnpm 10.
 pnpm biome check
 pnpm typecheck
 pnpm test
+pnpm lint:prose   # the house voice, on reader-facing pages
 pnpm build
 ```
 
