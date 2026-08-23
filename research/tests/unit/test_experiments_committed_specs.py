@@ -47,6 +47,7 @@ SPEC_NAMES = (
     "exp_016_construction_tournament",
     "exp_016b_alternative_constructions",
     "exp_016c_financing_band",
+    "exp_016d_premium_surface",
     "phase1_ff_reproduction",
 )
 

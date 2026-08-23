@@ -642,6 +642,16 @@ class MappingShift:
     vxus_developed_share: float | None = None
     trend_haircut_pp_yr: float = 0.0
     value_haircut_pp_yr: float = 0.0
+    equity_haircut_pp_yr: float = 0.0
+    """Subtracted from every regional market leg, so that a forward-premium
+    substitution can be made CONSISTENTLY.
+
+    Replacing one premium with a forward estimate while leaving another at its
+    realised value is a fitted comparator deciding a verdict, which
+    `docs/research/search-coverage.md` already lists among the designs not worth
+    repeating. Whatever is done to the trend leg has to be doable to the equity
+    leg in the same sweep, and this is the parameter that makes it possible.
+    """
     charge_measured_alpha: bool = False
     fee_override_bp: Mapping[str, float] = field(default_factory=dict)
     financing_basis_annual_percent: float | None = None
@@ -662,6 +672,7 @@ class MappingShift:
             and self.vxus_developed_share is None
             and self.trend_haircut_pp_yr == 0.0
             and self.value_haircut_pp_yr == 0.0
+            and self.equity_haircut_pp_yr == 0.0
             and not self.charge_measured_alpha
             and not self.fee_override_bp
             and self.financing_basis_annual_percent is None
@@ -681,6 +692,8 @@ class MappingShift:
             parts.append(f"trendcut{self.trend_haircut_pp_yr:.1f}")
         if self.value_haircut_pp_yr:
             parts.append(f"valuecut{self.value_haircut_pp_yr:.1f}")
+        if self.equity_haircut_pp_yr:
+            parts.append(f"equitycut{self.equity_haircut_pp_yr:.1f}")
         if self.charge_measured_alpha:
             parts.append("alpha-charged")
         for ticker, fee in sorted(self.fee_override_bp.items()):
@@ -741,6 +754,8 @@ def fund_excess_matrix(
                 leg = leg - shift.trend_haircut_pp_yr / (100.0 * MONTHS_PER_YEAR)
             elif name in _VALUE_LEGS and shift.value_haircut_pp_yr:
                 leg = leg - shift.value_haircut_pp_yr / (100.0 * MONTHS_PER_YEAR)
+            elif name in _MARKET_LEGS and shift.equity_haircut_pp_yr:
+                leg = leg - shift.equity_haircut_pp_yr / (100.0 * MONTHS_PER_YEAR)
             total = total + coefficient * leg
 
         fee_bp = shift.fee_override_bp.get(ticker, mapping.expense_ratio_bp)
@@ -1854,6 +1869,19 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
             }
             outcomes[name].era_gaps = existing
 
+    premium_surface = _premium_surface(
+        parameters=parameters,
+        panel=panel,
+        mappings=mappings,
+        costs=costs,
+        contestants=contestants,
+        tickers=tickers,
+        ticker_index=ticker_index,
+        minimum_months=minimum_months,
+        reapply_every=reapply_every,
+        walk_start=walk_start,
+    )
+
     financing_band = _financing_band(
         parameters=parameters,
         panel=panel,
@@ -1972,6 +2000,8 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
         "ranking_by_gap": [o.name for o in ranked],
         "funding_wedge": _funding_wedge(outcomes, contestants),
         "financing_basis_band": financing_band,
+        "premium_surface": premium_surface,
+        "panel_moments": _panel_moments(panel),
         "regret_basis": (
             "max_regret_pp_yr is `best arm's growth - this arm's growth`, maximised over "
             "the 27-point mapping-perturbation grid and measured on the walk-forward "
@@ -2088,6 +2118,143 @@ def _growth_at(
         if contestant.is_estimated:
             estimated.add(name)
     return GridPoint(scored=scored, common=common, estimated=frozenset(estimated))
+
+
+def _panel_moments(panel: BasisPanel) -> dict[str, JsonValue]:
+    """Annualised arithmetic mean and volatility of every basis series.
+
+    Reported so that a haircut quoted as a fraction of a series' own mean can be
+    checked against the artifact instead of against a reader's memory. These are
+    REALISED moments of one window, not forecasts of anything.
+    """
+    rows: dict[str, JsonValue] = {}
+    for name in sorted(panel.series):
+        column = panel.column(name)
+        rows[name] = {
+            "arithmetic_mean_pp_yr": round(float(np.mean(column)) * MONTHS_PER_YEAR * 100.0, 4),
+            "volatility_pct": round(
+                float(np.std(column, ddof=1)) * math.sqrt(MONTHS_PER_YEAR) * 100.0, 4
+            ),
+        }
+    rows["cash"] = {
+        "arithmetic_mean_pp_yr": round(float(np.mean(panel.cash)) * MONTHS_PER_YEAR * 100.0, 4),
+        "volatility_pct": round(
+            float(np.std(panel.cash, ddof=1)) * math.sqrt(MONTHS_PER_YEAR) * 100.0, 4
+        ),
+    }
+    return rows
+
+
+def _premium_surface(
+    *,
+    parameters: Mapping[str, JsonValue],
+    panel: BasisPanel,
+    mappings: Mapping[str, FundMapping],
+    costs: CostSettings,
+    contestants: Mapping[str, Contestant],
+    tickers: Sequence[str],
+    ticker_index: Mapping[str, int],
+    minimum_months: int,
+    reapply_every: int,
+    walk_start: int,
+) -> dict[str, JsonValue]:
+    """The break-even trend premium as a function of the assumed equity premium.
+
+    Haircutting one premium towards a forward estimate while holding another at
+    its realised value lets the untouched input decide the verdict. This sweeps
+    both together: at each assumed equity premium it finds the trend haircut at
+    which each arm's gap crosses zero, and converts that haircut into the GROSS
+    TREND PREMIUM the arm requires. The realised trend mean it is subtracted from
+    is reported in ``panel_moments`` so the conversion can be checked.
+    """
+    block = parameters.get("premium_surface")
+    if not isinstance(block, Mapping):
+        return {"declared": False}
+    equity_cuts = _numbers(
+        _at(block, "equity_haircut_pp_yr", where="premium_surface"), where="equity"
+    )
+    trend_cuts = _numbers(
+        _at(block, "trend_haircut_pp_yr", where="premium_surface"), where="trend"
+    )
+    watch = tuple(
+        str(name)
+        for name in _sequence(_at(block, "watch_arms", where="premium_surface"), where="watch")
+    )
+    missing = [name for name in watch if name not in contestants]
+    if missing:
+        raise ConstructionTournamentError(f"premium_surface watches unknown arms {missing}")
+
+    realised_trend = float(np.mean(panel.column("trend"))) * MONTHS_PER_YEAR * 100.0
+    realised_equity = float(np.mean(panel.column("us_mkt"))) * MONTHS_PER_YEAR * 100.0
+
+    curves: dict[str, dict[str, list[tuple[float, float]]]] = {
+        name: {} for name in watch
+    }
+    grid: dict[str, JsonValue] = {}
+    for equity_cut in equity_cuts:
+        label = f"equity_{realised_equity - equity_cut:.2f}pp"
+        for trend_cut in trend_cuts:
+            point = _growth_at(
+                MappingShift(
+                    equity_haircut_pp_yr=equity_cut, trend_haircut_pp_yr=trend_cut
+                ),
+                panel=panel,
+                mappings=mappings,
+                costs=costs,
+                contestants=contestants,
+                tickers=tickers,
+                ticker_index=ticker_index,
+                minimum_months=minimum_months,
+                reapply_every=reapply_every,
+                walk_start=walk_start,
+            )
+            for name in watch:
+                curves[name].setdefault(label, []).append(
+                    (trend_cut, point.gap(name, contestants[name].benchmark))
+                )
+        grid[label] = {
+            "assumed_equity_premium_pp_yr": round(realised_equity - equity_cut, 4),
+            "equity_haircut_pp_yr": round(equity_cut, 4),
+        }
+
+    required: dict[str, JsonValue] = {}
+    for name in watch:
+        rows: dict[str, JsonValue] = {}
+        for label, points in curves[name].items():
+            break_even = _break_even(points)
+            rows[label] = {
+                "break_even_trend_haircut_pp_yr": (
+                    "beyond the swept grid" if break_even is None else round(break_even, 4)
+                ),
+                "required_gross_trend_premium_pp_yr": (
+                    "beyond the swept grid"
+                    if break_even is None
+                    else round(realised_trend - break_even, 4)
+                ),
+                "gap_at_zero_trend_haircut_pp_yr": round(points[0][1], 4),
+            }
+        required[name] = rows
+
+    return {
+        "declared": True,
+        "what_this_is": (
+            "The break-even GROSS trend premium each arm needs, as a function of the "
+            "equity premium assumed. Both premia are haircut in the same sweep, because "
+            "substituting a forward estimate for one while holding the other at its "
+            "realised value lets the untouched input decide the verdict."
+        ),
+        "realised_trend_arithmetic_mean_pp_yr": round(realised_trend, 4),
+        "realised_us_equity_arithmetic_mean_pp_yr": round(realised_equity, 4),
+        "conversion": (
+            "required gross trend premium = realised trend mean - break-even haircut. "
+            "The trend series is AQR's TSMOM: a vendor series, gross of its own trading "
+            "costs by omission and internally volatility-scaled. A premium quoted for a "
+            "retail managed-futures PRODUCT is a different object at a different risk "
+            "level, and the two may not be compared without a stated scaling."
+        ),
+        "equity_grid": grid,
+        "required_gross_trend_premium": required,
+    }
 
 
 def _financing_band(

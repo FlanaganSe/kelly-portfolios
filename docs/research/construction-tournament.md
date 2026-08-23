@@ -13,11 +13,12 @@ factor tilts beat the cheap cap-weighted control by **+0.79 pp/yr [+0.30, +1.32]
 levering the index. A pure 30% trend overlay needs **244 years**; at 21.6%, **1,033**.
 
 Three further results say the stacked question is not merely underpowered but underdetermined.
-The three wrappers span **0.15 pp/yr**, 5% of their own floor. Their *ordering reverses*
-inside the 0.98%–2.31% band of futures financing that no filing discloses and none
-structurally can. And the whole trend contribution rests on AQR's realised 10.98 pp/yr: at the
-1.80 pp/yr forward premium this repository actually holds, the overlay **subtracts**. Nothing
-is promoted; [decision 0004](../decisions/0004-no-sleeve-promoted.md)'s non-promotion stands.
+The three wrappers span **0.15 pp/yr**, 5% of their own floor. Their *ordering reverses* inside
+the 0.98%–2.31% band of futures financing that no filing discloses and none structurally can.
+And the sign of the overlay's contribution is decided by the **equity** premium assumed rather
+than the trend premium: at the panel's realised 9.83% it needs 2.96 pp/yr of gross trend to
+pay, and at decision 0004's own 5.00% it needs none at all. Nothing is promoted;
+[decision 0004](../decisions/0004-no-sleeve-promoted.md)'s non-promotion stands.
 
 Evidence: [Experiment 016](../../research/experiments/exp_016_construction_tournament.yaml)
 (spec `17e2cef1…`, run
@@ -31,8 +32,12 @@ arm's point estimate exactly, and
 [016c](../../research/experiments/exp_016c_financing_band.yaml)
 (spec `f6b61e0d…`, run
 [`7c36a759…`](../../research/artifacts/7c36a759190441b99c082d5d39966390/summary.md)),
-which changes no arm and sweeps the one load-bearing cost nobody can observe. All three are
-`exploratory`; this is a screening pass and cannot promote anything.
+which changes no arm and sweeps the one load-bearing cost nobody can observe, and
+[016d](../../research/experiments/exp_016d_premium_surface.yaml)
+(spec `5f558f61…`, run
+[`d347f95d…`](../../research/artifacts/d347f95d5cb44ccdba20017a2a425535/summary.md)),
+which exists to correct an error in this page and sweeps the equity and trend premia together.
+All four are `exploratory`; this is a screening pass and cannot promote anything.
 
 ## The one thing to read first
 
@@ -129,7 +134,12 @@ all of it and past it**: 10.99 pp/yr at a 10.3% trend notional, 12.04 at 21.6%, 
 the tested range, which means the growth argument returns a corner and therefore returns no
 optimum at all. The variance argument's 21.6% uses only the equity–trend correlation; the
 growth argument is a bet on TSMOM's gross mean. **They disagree because they are answering
-different questions, and the disagreement should not be averaged away.** Note that the
+different questions, and the disagreement should not be averaged away.** A caution that
+applies to this arm and not only to other people's: **a weight that sits at the edge of the
+swept grid reports the grid, not the data.** The same objection has been raised against a
+minimax weight that reads only the endpoints of a prior and tracks its ceiling almost
+one-for-one; it applies here in full, and it is why finding 6 is written as "no optimum" rather
+than as "more is better". Note that the
 leverage-matched control is exactly matched only to `proposal_rsst` at 1.3216× — the
 low-trend overlay arms are compared with a benchmark carrying more leverage than they do, so
 their *levels* are not fair leverage matches even though the *differences between them* are.
@@ -181,14 +191,65 @@ The MATE-versus-RSST ordering flips between 1.65% and 2.00%, inside the band. **
 that a term nobody can observe reverses is not an ordering**, and the wrapper ranking in the
 table above must not be read as one.
 
-**11. At the forward trend premium this repository actually holds, the overlay subtracts.**
-The proposal stops beating its leverage-matched control once the trend leg loses **8.02 pp/yr**
-of arithmetic mean. AQR's TSMOM returned **10.98 pp/yr** of arithmetic excess over the frozen
-window. The repository's own forward trend premium is **1.80 pp/yr**, which is a haircut of
-**9.18 pp/yr** — past the 8.02 break-even. So every positive trend number in this tournament
-is a statement about TSMOM's realised 1990–2026 mean, and **substituting the forward premium
-this repository believes turns the proposal's trend contribution negative.** That, and not
-the statistics, is why the trend weight is unresolved.
+**11. The sign of the overlay's contribution is set by the EQUITY premium assumed, not by
+the trend premium.** A forward-premium substitution applied to one leg and not the other is
+not a sensitivity: it lets the untouched input decide the verdict, and
+[search coverage](search-coverage.md) lists it among the designs not worth repeating.
+Haircutting trend from its realised 10.98 pp/yr to 1.80 while holding equity at its realised
+9.83 is an 84% cut to one input and none to the other, and the sign it produces is an artefact
+of that asymmetry rather than a property of the portfolio.
+
+[Experiment 016d](../../research/experiments/exp_016d_premium_surface.yaml) sweeps both premia
+in one grid. The required **gross** trend premium, by assumed US equity premium:
+
+| Assumed US equity premium | 9.83% (realised) | 7.83% | 5.83% | 5.00% | 3.83% | 1.50% |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| `proposal_rsst` | **+2.96** | +1.04 | −0.96 | none in grid | none in grid | none in grid |
+| `fund_overlay_30` | +6.38 | +4.20 | +2.01 | +1.10 | −0.18 | none in grid |
+| `fund_prorata_30` | +7.33 | +5.33 | +3.33 | +2.49 | +1.32 | −1.01 |
+| `stacked_heavy_50` | +2.20 | +1.10 | −0.03 | −0.51 | none in grid | none in grid |
+
+"None in grid" means the arm still beats its benchmark with the trend leg cut by the full
+12 pp/yr swept — i.e. at a *negative* trend premium. **At decision 0004's own 5.00% equity
+premium the proposal needs no trend premium at all**, and its gap at zero trend haircut rises
+from +2.49 (realised equity) to +3.92 (5.00%) to +5.02 (1.50%). The mechanism is the
+leverage-matched control itself: it holds 132% equity notional against the proposal's 67%, so
+cutting the equity premium charges the *benchmark* about twice as hard as the candidate. The
+same asymmetry that made a higher financing cost help the wrappers in finding 10 makes a lower
+equity premium help them here.
+
+**So the overlay's break-even is a statement about equities:** at realised equity it needs
+2.96 pp/yr of gross trend to pay, and at any equity premium a forward-looking investor would
+actually use, it needs little or nothing. What the tournament cannot do is tell you which
+equity premium to use — and that, not the trend premium, is the input the sign turns on.
+
+**11a. The 1.80 pp/yr is asserted, not measured, and is not the repository's belief about a
+forward premium.** It appears in
+[decision 0004](../decisions/0004-no-sleeve-promoted.md) as one sentence — "a
+post-publication trend excess return this repository measures at roughly 1.8 pp/yr" — with
+**no window, estimator, series or interval recorded anywhere**, and is consumed downstream as
+the constant `0.018`. It is asserted, not measured. It also describes a retail *product's*
+net excess return, while the haircut it was compared against applies to AQR's *gross*,
+volatility-scaled vendor series: different objects at different risk levels, compared without
+a scaling. Three defects, one sentence.
+
+**11b. Zero trend is the worse extreme in the state that decides the plan.** Declared in
+advance from another study's window, the panel's one flat-to-negative equity decade
+(1999-03..2009-02, 120 months) against both halves of its complement:
+
+| Arm | before (1990-11..1999-02) | **flat decade** | after (2009-03..2026-05) | full window |
+| --- | ---: | ---: | ---: | ---: |
+| `fund_overlay_30` | +1.87 | **+8.57** | −2.29 | +1.36 |
+| `proposal_rsst` | +3.37 | **+9.52** | −1.46 | +2.49 |
+| `stacked_heavy_50` | +6.90 | **+12.38** | −0.72 | +4.47 |
+| `proposal_no_trend` (tilts) | +0.62 | +1.63 | +0.44 | +0.79 |
+
+This instrument reproduces the asymmetry and finds it larger than a sign difference: the
+overlay's contribution in the flat decade is **about 9.5 pp/yr above its own complement**.
+Read finding 2 with this beside it. The post-2009 sub-period is the least favourable to the
+overlay *because equities compounded at an unrepeatable rate through it*, and an investor
+choosing zero trend on the strength of that sub-period is choosing the exposure that failed
+worst in the one decade the plan has to survive.
 
 **12. Linear shrinkage went all the way to its target at every rebalance.** The Ledoit–Wolf
 intensity is 1.000 at all 26 estimations: over 120 or more months, the sample covariance of
@@ -241,6 +302,10 @@ against 2.6%.
 
 ## Scope and limitations
 
+- **A claim-level correction is recorded in 016d's freeze note**, with the frozen artifacts
+  of 016, 016b and 016c unamended: a new specification and a restated claim is the route
+  [decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md) clause 4 requires,
+  and the audit trail belongs in the specification and the ledger rather than in this page.
 - **Not relied on:** the 0.58→0.60 equity-share "drawdown cliff". No arm or interpretation
   here uses it, which matters because it has since been localised to 0.58→0.59, shown to
   vanish without a 60 bp financing spread, and identified as an episode-identity switch
@@ -289,8 +354,13 @@ tournament is clear:
 - the tilt component is supported, cheap (10.0 bp), low-tracking-error (1.0%), positive in
   every era, and costs 0.49 pp/yr if its measured alphas turn out to be real;
 - the stacked-wrapper component is unsupported *by this instrument*, costs 30 bp/yr more,
-  contributes 6.1 percentage points of the 7.1 points of tracking error, is negative in the
-  post-2009 sub-period, and is indifferent between the three products on offer;
+  contributes 6.1 percentage points of the 7.1 points of tracking error, and is indifferent
+  between the three products on offer. **It is not, however, a component the evidence argues
+  for dropping.** Its post-2009 weakness is the mirror of an unrepeatable equity decade; in
+  the panel's one flat equity decade it was worth +8.6 pp/yr, about 9.5 above its own
+  complement; and at any equity premium below about 5.8% it requires no trend premium at all
+  to pay. Zero is an extreme too, and it is the extreme that fails in the state that decides
+  whether the plan survives;
 - the choice among RSST, MATE and JPFP should be made on the things that are actually
   known — filed structure, fee, age, size, survival and tax placement — because the return
   evidence cannot separate them and will not in this investor's lifetime; the largest
@@ -315,9 +385,9 @@ It is a reason to test the trend leg harder, not a reason to hold more of it.
    returns a corner, a variance argument returns 21.6% [10.3%, 32.8%] and a holdability-
    constrained growth argument returns 15–25%. The useful next design is none of those: it
    is a regret surface over the trend weight against a stated prior on TSMOM's mean, because
-   that prior is the entire disagreement. Finding 11 shows why — at the repository's own
-   1.80% forward premium the sign changes, and no amount of resampling the 1990–2026 window
-   speaks to that.
+   that prior is the entire disagreement. Finding 11 sharpens the target: the prior that
+   decides the sign is the **equity** premium, not the trend premium, and no amount of
+   resampling the 1990–2026 window speaks to either.
 2. **A defensive arm.** Substitute duration-hedged credit, short Treasuries and T-bills
    *within* a defensive allocation and let the tournament adjudicate, which a sleeve-by-sleeve
    test cannot. This needs a new frozen specification: Experiment 016's spec must not be
@@ -329,5 +399,8 @@ It is a reason to test the trend leg harder, not a reason to hold more of it.
 4. **A market-beta measurement for the mapped funds.** Every mapping assumes β = 1.000 and
    none was measured. It is the cheapest way to shrink the mapping error that clause (e) of
    the falsifier exists to police.
-5. **Loading stability.** The tilt finding applies 44–77 month loadings to 427 months. If
+5. **A provenance for the 1.80 pp/yr, or its withdrawal.** A constant with no window,
+   estimator, series or interval should not be reachable by `import`. Either measure it or
+   stop consuming it as `0.018`.
+6. **Loading stability.** The tilt finding applies 44–77 month loadings to 427 months. If
    loadings drift, +0.79 pp/yr is an upper bound on a quantity nobody has estimated.
