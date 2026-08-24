@@ -8,30 +8,33 @@
 #
 #   SITE_DOMAIN=kellyportfolios.com scripts/cloudfront/state.sh | jq .
 #
-# Finding the right distribution is most of the job, and two obvious ways to do it are
-# both wrong. `Origins.Items[0]` is `placeholder.sst.dev`, an SST leftover that sorts
-# ahead of the bucket; a deploy that trusts it derives the bucket name
-# `placeholder.sst.dev` and syncs an entire site into nowhere. The first distribution
-# whose aliases mention the domain is `E2UXACC7VKS53Z`, which has that one placeholder
-# origin and serves nothing. So the domain is followed instead: Route 53's alias record
-# names the CloudFront distribution that answers a request, and that is the one read.
-# The alias match is kept only as a fallback for a key without Route 53 permission.
+# Two things here are not the obvious thing, and both were learned the hard way.
 #
-# The field that decides a deploy is `ready`. Three things can make it false, and each
-# fails quietly rather than loudly:
+# Finding the distribution: not `Origins.Items[0]`, which is `placeholder.sst.dev` and
+# would have the deploy sync a whole site into a bucket of that name, and not the first
+# distribution whose aliases mention the domain either. Route 53's alias record names
+# the distribution that answers a request, so the domain is followed. The alias match
+# survives only as a fallback for a key without Route 53 permission.
 #
-#   `origin_kind: foreign`  The behaviour serving the site points at something that is
-#       not a bucket.
-#   `rewrites_directories: false`  A REST origin with nothing rewriting the URI serves
-#       `/` and misses on every other page.
-#   `spa_fallback: true`  A custom error response mapping 403 or 404 to `/index.html`
-#       answers every wrong URL with the home page and a 200.
+# Reading the origin: there isn't one to read. The distribution's single origin is a
+# placeholder that answers nothing, because SST's design decides the origin per request
+# inside a viewer-request function (`cf.updateRequestOrigin`). So the bucket the site is
+# served from is read back out of the published function's own source, which is the only
+# place it is true. `scripts/cloudfront/dump.sh` prints the whole arrangement.
 #
-# `scripts/cloudfront/repair.sh` fixes the last two. `docs/deploying.md` is the long
-# version.
+# `ready` is what the deploy gates on, and it wants all three:
+#   `function_is_ours`  the attached function is `directory-index.js` and not the one
+#       SST installed, which looks every path up in a five-key store and rewrites a miss
+#       to `/index.html` — the home page, with a 200, for every wrong URL.
+#   `bucket`            a bucket domain could be read out of that function.
+#   `honest_404`        403 and 404 from the origin become `/404.html` with a 404.
 set -euo pipefail
 
 domain="${SITE_DOMAIN:?SITE_DOMAIN is not set}"
+ours="kellyportfolios-directory-index"
+
+work=$(mktemp -d)
+trap 'rm -rf "$work"' EXIT
 
 distributions=$(aws cloudfront list-distributions --query 'DistributionList.Items' --output json)
 
@@ -39,10 +42,9 @@ distributions=$(aws cloudfront list-distributions --query 'DistributionList.Item
 # knowing when the answer below is surprising.
 {
   echo "distributions visible to this key:"
-  jq -r '.[] | "  \(.Id)  \(if .Enabled then "enabled " else "disabled" end)  \(.DomainName)  aliases=\((.Aliases.Items // []) | join(","))  default-origin=\(.DefaultCacheBehavior.TargetOriginId as $t | (.Origins.Items // [] | map(select(.Id == $t)) | first | .DomainName // "?"))"' <<<"$distributions"
+  jq -r '.[] | "  \(.Id)  \(if .Enabled then "enabled " else "disabled" end)  \(.DomainName)  aliases=\((.Aliases.Items // []) | join(","))"' <<<"$distributions"
 } >&2
 
-# Route 53 is the authority on which of them answers for the domain.
 target=""
 zone=$(aws route53 list-hosted-zones-by-name --dns-name "$domain" \
   --query "HostedZones[?Name=='${domain}.'].Id | [0]" --output text 2>/dev/null || true)
@@ -58,21 +60,11 @@ else
 fi
 
 selected_by="route53"
-distribution=$(jq -c --arg target "$target" '
-  [.[] | select(.DomainName == $target)] | first // empty
-' <<<"$distributions")
-
+distribution=$(jq -c --arg target "$target" '[.[] | select(.DomainName == $target)] | first // empty' <<<"$distributions")
 if [ -z "$distribution" ]; then
   selected_by="alias"
-  # Prefer a candidate that could actually serve the site over one that could not.
-  distribution=$(jq -c --arg domain "$domain" '
-    [.[] | select((.Aliases.Items // []) | index($domain))]
-    | (map(select(.DefaultCacheBehavior.TargetOriginId as $t
-        | (.Origins.Items // [] | map(select(.Id == $t)) | first | .DomainName // "")
-        | test("\\.s3[.-]"))) | first)
-      // first
-      // empty
-  ' <<<"$distributions")
+  distribution=$(jq -c --arg domain "$domain" \
+    '[.[] | select((.Aliases.Items // []) | index($domain))] | first // empty' <<<"$distributions")
 fi
 
 if [ -z "$distribution" ]; then
@@ -80,43 +72,50 @@ if [ -z "$distribution" ]; then
   exit 1
 fi
 
-state=$(jq -c --arg selected_by "$selected_by" '
-  .DefaultCacheBehavior.TargetOriginId as $target
-  | (.Origins.Items // [] | map(select(.Id == $target)) | first) as $origin
-  | ($origin.DomainName // "") as $host
-  # Website endpoint first: it also matches the REST pattern if tested the other way.
-  | (if   ($host | test("\\.s3-website[.-]"))                     then "website"
-     elif ($host | test("\\.s3[.-][a-z0-9.-]*amazonaws\\.com$"))  then "rest"
-     else "foreign" end) as $kind
-  | ((.DefaultCacheBehavior.FunctionAssociations.Items // [])
-     | map(select(.EventType == "viewer-request"))) as $viewer
-  | (.CustomErrorResponses.Items // []) as $errors
+attached=$(jq -r '
+  (.DefaultCacheBehavior.FunctionAssociations.Items // [])
+  | map(select(.EventType == "viewer-request")) | first | .FunctionARN // ""
+' <<<"$distribution")
+attached_name="${attached##*/}"
+
+# The bucket is a literal in our function and a variable in SST's, so this reads back
+# as empty for anything but the function this repository publishes.
+bucket_domain=""
+if [ "$attached_name" = "$ours" ]; then
+  if aws cloudfront get-function --name "$ours" --stage LIVE "$work/live.js" >/dev/null 2>&1; then
+    bucket_domain=$(grep -oE '[a-z0-9][a-z0-9.-]*\.s3[.-][a-z0-9.-]*amazonaws\.com' "$work/live.js" | head -1 || true)
+  fi
+fi
+
+state=$(jq -c \
+  --arg selected_by "$selected_by" \
+  --arg attached "$attached" \
+  --arg attached_name "$attached_name" \
+  --arg ours "$ours" \
+  --arg bucket_domain "$bucket_domain" '
+  (.CustomErrorResponses.Items // []) as $errors
   | {
-      distribution_id:      .Id,
-      selected_by:          $selected_by,
-      cloudfront_domain:    .DomainName,
-      aliases:              (.Aliases.Items // []),
-      origin_id:            $target,
-      origin_domain:        $host,
-      origin_kind:          $kind,
-      bucket:               (if $kind == "foreign" then ""
-                             else ($host
-                                   | sub("\\.s3-website[.-][a-z0-9-]+\\.amazonaws\\.com$"; "")
-                                   | sub("\\.s3[.-][a-z0-9-]*\\.?amazonaws\\.com$"; "")) end),
-      all_origins:          (.Origins.Items // [] | map({id: .Id, domain: .DomainName})),
-      viewer_functions:     ($viewer | map(.FunctionARN)),
-      rewrites_directories: ($kind == "website" or ($viewer | length) > 0),
-      spa_fallback:         ($errors | map(select(.ResponsePagePath == "/index.html")) | length > 0),
-      error_responses:      $errors,
-      default_root_object:  (.DefaultRootObject // "")
+      distribution_id:   .Id,
+      selected_by:       $selected_by,
+      cloudfront_domain: .DomainName,
+      aliases:           (.Aliases.Items // []),
+      placeholder_origin: (.Origins.Items // [] | map(.DomainName)),
+      attached_function: $attached_name,
+      function_is_ours:  ($attached_name == $ours and $attached_name != ""),
+      bucket_domain:     $bucket_domain,
+      bucket:            ($bucket_domain | sub("\\.s3[.-][a-z0-9-]*\\.?amazonaws\\.com$"; "")),
+      honest_404:        ([403, 404] | all(. as $code | $errors | any(
+                            .ErrorCode == $code and .ResponsePagePath == "/404.html" and .ResponseCode == "404"))),
+      spa_fallback:      ($errors | map(select(.ResponsePagePath == "/index.html")) | length > 0),
+      error_responses:   $errors
     }
-  | .ready = (.origin_kind != "foreign" and .rewrites_directories and (.spa_fallback | not))
+  | .ready = (.function_is_ours and .bucket != "" and .honest_404)
 ' <<<"$distribution")
 
 printf '%s\n' "$state"
 
 if [ -n "${GITHUB_OUTPUT:-}" ]; then
-  for key in distribution_id bucket origin_domain origin_kind rewrites_directories spa_fallback ready; do
+  for key in distribution_id bucket bucket_domain attached_function function_is_ours honest_404 ready; do
     printf '%s=%s\n' "$key" "$(jq -r --arg k "$key" '.[$k]' <<<"$state")" >> "$GITHUB_OUTPUT"
   done
 fi
@@ -128,18 +127,10 @@ if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
     jq -r '
       "| | |", "|---|---|",
       "| Distribution | `\(.distribution_id)` (\(.cloudfront_domain), found by \(.selected_by)) |",
-      "| Origin serving the site | `\(.origin_domain)` (\(.origin_kind)) |",
-      "| Bucket | `\(if .bucket == "" then "—" else .bucket end)` |",
-      "| Resolves directory indexes | **\(.rewrites_directories)** |",
-      "| Single-page-app fallback | **\(.spa_fallback)** |",
-      "| Ready to publish | **\(.ready)** |",
-      "",
-      "Every origin on the distribution:",
-      "",
-      (.all_origins[] | "- `\(.domain)`  _(\(.id))_"),
-      "",
-      (if .error_responses == [] then "No custom error responses."
-       else "Custom error responses:\n\n```json\n" + (.error_responses | tojson) + "\n```" end)
+      "| Viewer-request function | `\(if .attached_function == "" then "—" else .attached_function end)` |",
+      "| Bucket it serves from | `\(if .bucket == "" then "—" else .bucket end)` |",
+      "| A miss answers 404 | **\(.honest_404)** |",
+      "| Ready to publish | **\(.ready)** |"
     ' <<<"$state"
     echo ""
     if [ "$(jq -r .ready <<<"$state")" != "true" ]; then

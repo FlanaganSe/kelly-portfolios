@@ -10,30 +10,30 @@
 # moving to any other host later means changing the last two steps.
 #
 # ---------------------------------------------------------------------------
-# What the first run found, on 2026-08-24.
+# What the first runs found, on 2026-08-24.
 #
-# The distribution is SST's, built for the single-page client, and it is configured
-# for one in three ways that all fail quietly rather than loudly:
+# There is one distribution, `E2UXACC7VKS53Z`, and Route 53 points the domain at it. It
+# has a single origin, `placeholder.sst.dev`, which answers nothing, and no custom error
+# responses. None of that is broken: SST's design decides the origin per request inside a
+# viewer-request CloudFront Function, so the function is the entire routing behaviour of
+# the site and the origin list is a formality.
 #
-#   1. `placeholder.sst.dev` sits first in the origin list. A deploy that reads
-#      `Origins.Items[0]` — this one did — derives the bucket name
-#      `placeholder.sst.dev` and syncs the whole site into a bucket that does not
-#      exist. `scripts/cloudfront/state.sh` reads the origin that the default cache
-#      behaviour targets instead, which is the one that answers a request.
+# The function SST installed looks every path up in a CloudFront key-value store, one key
+# per file in the bucket — the store holds five — and rewrites anything it cannot find to
+# `/index.html`. That is correct for the client-routed bundle it was built for and wrong
+# for a build of thirty-odd pages: every wrong URL answers with the home page and a 200,
+# which is what `https://kellyportfolios.com/no-such-page/` still does.
 #
-#   2. A REST origin (`bucket.s3.region.amazonaws.com`) rather than the website
-#      endpoint. Only the website endpoint resolves `/start/` to `start/index.html`;
-#      a REST origin misses on every page but the root, because CloudFront's default
-#      root object applies to `/` alone and to no other directory.
+# So `Configure distribution` replaces that function with `scripts/cloudfront/directory-index.js`,
+# which derives `<route>/index.html` from the URL instead of consulting a store, and adds
+# the error responses that turn a genuine miss into `/404.html` with a 404. `publish`
+# refuses to upload until that has happened. `docs/deploying.md` is the long version, and
+# `scripts/cloudfront/dump.sh` prints the whole arrangement on demand.
 #
-#   3. `errorPage: "index.html"` in `sst.config.ts`, which is a custom error response
-#      mapping 403 and 404 to `/index.html` with a 200. Against a directory-format
-#      build that answers every wrong URL with the *home page* and a success status,
-#      so a typo looks like a working page and a crawler indexes a copy of the home
-#      page under each one.
-#
-# Points 2 and 3 are what the `Configure distribution` workflow fixes, and `publish`
-# refuses to upload until they are fixed. `docs/deploying.md` is the long version.
+# Two traps this workflow used to fall into are worth keeping in mind if it is rewritten:
+# `Origins.Items[0]` is the placeholder, so a deploy that derives the bucket from it syncs
+# a whole site into a bucket named `placeholder.sst.dev`; and the bucket is named nowhere
+# in the distribution, only inside the function, which is where `state.sh` reads it from.
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 name: Deploy
@@ -66,10 +66,10 @@ jobs:
     outputs:
       distribution_id: ${{ steps.find.outputs.distribution_id }}
       bucket: ${{ steps.find.outputs.bucket }}
-      origin_domain: ${{ steps.find.outputs.origin_domain }}
-      origin_kind: ${{ steps.find.outputs.origin_kind }}
-      rewrites_directories: ${{ steps.find.outputs.rewrites_directories }}
-      spa_fallback: ${{ steps.find.outputs.spa_fallback }}
+      bucket_domain: ${{ steps.find.outputs.bucket_domain }}
+      attached_function: ${{ steps.find.outputs.attached_function }}
+      function_is_ours: ${{ steps.find.outputs.function_is_ours }}
+      honest_404: ${{ steps.find.outputs.honest_404 }}
       ready: ${{ steps.find.outputs.ready }}
     steps:
       - uses: actions/checkout@v4
@@ -129,15 +129,13 @@ jobs:
       - name: Refuse to publish into a distribution that cannot serve the pages
         if: needs.discover.outputs.ready != 'true'
         run: |
-          origin='${{ needs.discover.outputs.origin_domain }}'
-          if [ '${{ needs.discover.outputs.origin_kind }}' = 'foreign' ]; then
-            echo "::error::The behaviour serving the site points at ${origin}, not at a bucket."
-          elif [ '${{ needs.discover.outputs.rewrites_directories }}' != 'true' ]; then
-            echo "::error::${origin} is a REST origin with nothing rewriting the URI."
-            echo "Every page except the root would 404."
+          if [ '${{ needs.discover.outputs.function_is_ours }}' != 'true' ]; then
+            echo "::error::The viewer-request function is '${{ needs.discover.outputs.attached_function }}', not ours."
+            echo "It resolves paths through a key-value store this deploy does not maintain."
+          elif [ -z '${{ needs.discover.outputs.bucket }}' ]; then
+            echo "::error::No bucket could be read out of the published function."
           else
-            echo "::error::A custom error response still maps a miss to /index.html."
-            echo "Every wrong URL would answer with the home page and a 200."
+            echo "::error::A miss does not answer 404. The custom error responses are not in place."
           fi
           echo "Run the Configure distribution workflow. See docs/deploying.md."
           exit 1

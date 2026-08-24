@@ -28,20 +28,30 @@ describe("single-page routing survives a refresh", () => {
 });
 
 /**
- * The viewer-request function decides what every URL on the site means, and it runs
- * somewhere no test can reach it, so it is exercised here as the bytes that get published.
+ * The viewer-request function decides what every URL on the site means and which origin
+ * answers it — the distribution's own origin is a placeholder that serves nothing — and it
+ * runs somewhere no test can reach. So it is exercised here as the bytes that get
+ * published, and again by `repair.sh` against CloudFront's own harness before anything
+ * points at it.
  */
 describe("the CloudFront function serves a directory-format build", () => {
   type QueryValue = { value: string; multiValue?: { value: string }[] };
-  type Request = { uri: string; querystring: Record<string, QueryValue> };
+  type Request = { uri: string; querystring: Record<string, QueryValue>; headers: Record<string, unknown> };
   type Redirect = { statusCode: number; headers: { location: { value: string } } };
   type Handler = (event: { request: Request }) => Request | Redirect;
+  type Origin = { domainName: string; originAccessControlConfig: { enabled: boolean; originType: string } };
 
   const source = read("scripts/cloudfront/directory-index.js");
-  const handler = new Function(`${source}\nreturn handler;`)() as Handler;
+  const origins: Origin[] = [];
+  // The `cloudfront` module is only importable inside CloudFront, so it arrives as an
+  // argument instead; nothing else about the source is changed.
+  const build = new Function("cf", `${source.replace(/^import[^\n]*\n/m, "")}\nreturn handler;`);
+  const handler = build({ updateRequestOrigin: (origin: Origin) => origins.push(origin) }) as Handler;
 
-  const request = (uri: string, querystring: Record<string, QueryValue> = {}) =>
-    handler({ request: { uri, querystring } });
+  const request = (uri: string, querystring: Record<string, QueryValue> = {}) => {
+    origins.length = 0;
+    return handler({ request: { uri, querystring, headers: {} } });
+  };
 
   it("resolves a directory to its index document", () => {
     expect(request("/")).toMatchObject({ uri: "/index.html" });
@@ -57,6 +67,7 @@ describe("the CloudFront function serves a directory-format build", () => {
       statusDescription: "Moved Permanently",
       headers: { location: { value: "/start/" } },
     });
+    expect(origins).toEqual([]);
   });
 
   it("keeps the query string across that redirect", () => {
@@ -73,6 +84,23 @@ describe("the CloudFront function serves a directory-format build", () => {
     expect(request("/_astro/page.CH4nk3d.js")).toMatchObject({ uri: "/_astro/page.CH4nk3d.js" });
     expect(request("/og/funds.png")).toMatchObject({ uri: "/og/funds.png" });
   });
+
+  it("points the request at the bucket, signed, on every path that reaches an origin", () => {
+    for (const uri of ["/", "/start/", "/robots.txt"]) {
+      request(uri);
+      expect(origins).toEqual([
+        {
+          domainName: expect.stringMatching(/^[a-z0-9.-]+\.s3\.[a-z0-9-]+\.amazonaws\.com$/),
+          originAccessControlConfig: {
+            enabled: true,
+            signingBehavior: "always",
+            signingProtocol: "sigv4",
+            originType: "s3",
+          },
+        },
+      ]);
+    }
+  });
 });
 
 /**
@@ -80,19 +108,30 @@ describe("the CloudFront function serves a directory-format build", () => {
  * loosen by accident, since the distribution it checks is edited by hand.
  */
 describe("the deploy will not publish into a distribution configured for the old client", () => {
-  const deploy = read(".github/workflows/deploy.yml");
-
   it("gates the upload on the discovered state", () => {
-    expect(deploy).toContain("needs.discover.outputs.ready != 'true'");
+    expect(read(".github/workflows/deploy.yml")).toContain("needs.discover.outputs.ready != 'true'");
   });
 
-  it("reads the origin the default cache behaviour targets, not the first one listed", () => {
-    expect(read("scripts/cloudfront/state.sh")).toContain(".DefaultCacheBehavior.TargetOriginId as $target");
+  it("follows Route 53 to the distribution rather than an alias or an origin list", () => {
+    const state = read("scripts/cloudfront/state.sh");
+    expect(state).toContain("list-resource-record-sets");
+    // And says which of the two it used, because the fallback picks a different answer.
+    expect(state).toContain("selected_by");
+  });
+
+  it("takes the bucket from the published function, which is the only place it is named", () => {
+    expect(read("scripts/cloudfront/state.sh")).toContain('get-function --name "$ours" --stage LIVE');
   });
 
   it("serves the built 404 page with a 404, not the home page with a 200", () => {
     const repair = read("scripts/cloudfront/repair.sh");
     expect(repair).toContain('ResponsePagePath: "/404.html", ResponseCode: "404"');
     expect(repair).not.toContain('ResponsePagePath: "/index.html"');
+  });
+
+  it("tests the function against CloudFront before publishing it", () => {
+    const repair = read("scripts/cloudfront/repair.sh");
+    expect(repair).toContain("test-function");
+    expect(repair.indexOf("test-function")).toBeLessThan(repair.indexOf("publish-function"));
   });
 });

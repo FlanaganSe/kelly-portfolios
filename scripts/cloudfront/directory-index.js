@@ -1,35 +1,61 @@
-// Serves a directory-format static build from a CloudFront REST origin.
+import cf from "cloudfront";
+
+// Serves the static build, and picks the origin it is served from.
 //
-// S3's REST API resolves keys, not directories. `/start/` is the key `start/`, which
-// does not exist, and CloudFront's default root object applies to `/` and to no other
-// directory, so without this every page but the home page misses. The S3 *website*
-// endpoint resolves `start/index.html` on its own, but it is HTTP-only and needs a
-// public bucket, which is a worse trade than eighteen lines of JavaScript.
+// The distribution has one origin, `placeholder.sst.dev`, which answers nothing. SST's
+// design puts the routing in this function instead: it calls `cf.updateRequestOrigin`
+// per request, so the origin is decided here and the distribution's own origin list is
+// a formality. The function it installed looked every path up in a CloudFront
+// key-value store, one key per file in the bucket, and rewrote anything it could not
+// find to `/index.html` — which is why every wrong URL used to answer with the home
+// page and a 200. That store held five keys. This build has several hundred files, and
+// keeping a key-value store in step with them on every deploy is a moving part with no
+// purpose: `<route>/index.html` is derivable from the URL.
 //
-// The build emits one URL form (`trailingSlash: "always"` with directory format), so
-// the slashless form is redirected rather than served as a second copy of the page.
-// Two indexed URLs for one document is the failure being avoided.
+// So: resolve the directory index, redirect the slashless form rather than serving a
+// second copy of the page at it, and let a genuine miss miss. The distribution's custom
+// error responses turn S3's 403 into `/404.html` with a 404.
 //
-// Runtime is `cloudfront-js-2.0`. `scripts/cloudfront/repair.sh` publishes it and
-// attaches it to the default cache behaviour on viewer request.
+// Runtime is `cloudfront-js-2.0`. `scripts/cloudfront/repair.sh` publishes it, tests it
+// against the live CloudFront test harness, and attaches it on viewer request.
+
+// Where the site is. `scripts/cloudfront/state.sh` reads this back out of the published
+// function so the deploy syncs into the bucket the function actually serves from,
+// rather than into one the repository merely believes in.
+const BUCKET = "portfolio-op-production-portfoliooptimizerassetsbucket-okwwseht.s3.us-east-1.amazonaws.com";
+
 function handler(event) {
   const request = event.request;
   const uri = request.uri;
 
   if (uri.endsWith("/")) {
     request.uri = `${uri}index.html`;
-    return request;
+  } else {
+    // A last segment with no dot in it is a page, not a file: `/start` -> `/start/`.
+    const last = uri.slice(uri.lastIndexOf("/") + 1);
+    if (!last.includes(".")) {
+      return {
+        statusCode: 301,
+        statusDescription: "Moved Permanently",
+        headers: { location: { value: `${uri}/${queryString(request.querystring)}` } },
+      };
+    }
   }
 
-  // A last segment with no dot in it is a page, not a file: `/start` -> `/start/`.
-  const last = uri.slice(uri.lastIndexOf("/") + 1);
-  if (!last.includes(".")) {
-    return {
-      statusCode: 301,
-      statusDescription: "Moved Permanently",
-      headers: { location: { value: `${uri}/${queryString(request.querystring)}` } },
-    };
-  }
+  // S3 has no use for these and they are not part of the signature. SST's function
+  // dropped them too.
+  delete request.headers.cookie;
+  delete request.cookies;
+
+  cf.updateRequestOrigin({
+    domainName: BUCKET,
+    originAccessControlConfig: {
+      enabled: true,
+      signingBehavior: "always",
+      signingProtocol: "sigv4",
+      originType: "s3",
+    },
+  });
 
   return request;
 }
