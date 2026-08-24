@@ -1,0 +1,74 @@
+# Make the distribution able to serve the pages, once.
+#
+# The distribution in front of kellyportfolios.com was created by SST for a
+# single-page client and is configured for one: a REST origin, which resolves keys and
+# not directories, and `errorPage: "index.html"`, which answers every miss with the
+# home page and a 200. Both are correct for a client-routed bundle and wrong for a
+# static build of 30-odd pages, so `Deploy` refuses to publish until they change.
+#
+# This is the change. It is manual on purpose — it edits live infrastructure that no
+# committed Pulumi program can rebuild — and it defaults to a dry run that writes
+# nothing and prints the diff it would apply. See `docs/deploying.md`.
+name: Configure distribution
+
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: "Write the change (unticked prints the diff and stops)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+env:
+  AWS_REGION: us-east-1
+  SITE_DOMAIN: kellyportfolios.com
+
+jobs:
+  configure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Before
+        run: scripts/cloudfront/state.sh > /dev/null
+        env:
+          STATE_HEADING: Before
+
+      - name: Attach the rewrite and stop answering misses with the home page
+        run: scripts/cloudfront/repair.sh ${{ inputs.apply && '--apply' || '' }}
+
+      # A configuration diff is a claim about behaviour, not a demonstration of it.
+      - name: What the live site does now
+        if: inputs.apply
+        run: |
+          set -euo pipefail
+          fail=0
+          for path in / /start/ /research/ /tools/how-long/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}${path}")
+            printf '%-20s %s\n' "$path" "$code"
+          done
+          missing=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}/this-page-does-not-exist/")
+          echo "a URL that cannot exist   $missing"
+          if [ "$missing" = "200" ]; then
+            echo "::error::A nonexistent URL still returns 200."
+            fail=1
+          fi
+          # The pages themselves are still the old single-page bundle until `Deploy`
+          # runs, so a 404 on one of them here is expected and is not checked.
+          exit $fail
+
+      - name: After
+        if: always()
+        run: scripts/cloudfront/state.sh > /dev/null
+        env:
+          STATE_HEADING: After
