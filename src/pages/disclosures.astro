@@ -1,4 +1,18 @@
 ---
+// The one fact on this page that cannot be derived from the repository: what the author
+// actually owns. It was briefly asserted here on an assumption nobody had checked, which
+// on a disclosures page is the exact failure the page exists to prevent.
+//
+// Replace the placeholder below with the true statement and delete the throw. Both
+// answers are publishable — "holds a portfolio resembling this one" and "holds none of
+// these funds" are each a complete disclosure. Silence is not.
+const AUTHOR_HOLDINGS = "";
+if (!AUTHOR_HOLDINGS) {
+  throw new Error(
+    "src/pages/disclosures.astro: AUTHOR_HOLDINGS is unset. State what the author owns, " +
+      "or state that he owns none of it. Do not publish this page without one of the two.",
+  );
+}
 /**
  * The conflict-of-interest statement, written as a verifiable negative.
  *
@@ -82,16 +96,13 @@ import { REPO_URL } from "~/lib/site";
     <p>Having no revenue removes one way of being wrong. It leaves the others alone, and these are the ones that
     apply here.</p>
 
-    <h3 id="holdings">The author holds a portfolio resembling this one</h3>
+    <h3 id="holdings">What the author owns</h3>
 
-    <p>Sean Flanagan holds a personal portfolio that resembles <a href="/portfolio/">the construction described on
-    this site</a>. That is a real financial interest in this argument being correct, and it is the disclosure on
-    this page that matters most.</p>
+    <p>{AUTHOR_HOLDINGS}</p>
 
-    <p>It cuts in an awkward direction. The research would be easier to write if the answer were "own three index
-    funds and stop reading", and the author would have to sell things to act on it. Read every page here knowing
-    that the person who wrote it already owns the thing being argued for. Exact holdings, amounts and account
-    balances are private and are not going to appear here.</p>
+    <p>Whatever that answer is, it belongs here, because a person who owns what they are
+    arguing for has a real financial interest in the argument being correct. Exact
+    amounts and account balances are private and are not going to appear on this page.</p>
 
     <h3 id="reputation">The author would like the work to be right</h3>
 
