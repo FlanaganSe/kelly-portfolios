@@ -70,8 +70,19 @@ For the major decisions:
   wants across the premium surface, what the embedded financing costs, and why the binding
   constraint is holdability rather than drawdown.
 - [Stacking and effective breadth](research/stacking-and-effective-breadth.md): what a
-  pile of sleeves is worth once their excess returns are correlated, and how many
-  independent bets the proposed portfolio is actually making.
+  pile of sleeves is worth once their excess returns are correlated, how many
+  independent bets the proposed portfolio is actually making, and — under
+  [Experiment 017](../research/experiments/exp_017_longonly_ladder.yaml) — how many
+  candidates a long-only optimiser holds out of a shelf of twelve, why it stops at three,
+  and why that count depends on the dispersion of the candidates' edges as much as on
+  their correlation.
+- [Live stacked fund records](research/live-stacked-fund-records.md): what the retail
+  return-stacking shelf has actually paid its investors, read from issuer-published
+  standardised returns rather than from a backtest — six of seven Return Stacked funds
+  behind the benchmark their own issuer prints, the trailing year in which trend reversed
+  that, the roughly 70 basis points the idea's leading advocate forecasts for it, NTSX as
+  the version of the idea that worked. It is also the page that says why none of these
+  issuer comparisons is matched on borrowing, and what each of them can therefore answer.
 - [The construction tournament](research/construction-tournament.md): twenty-five whole
   portfolios scored against three benchmarks — which differences this data can resolve,
   which it cannot, and how many years an investor would have to hold each one before

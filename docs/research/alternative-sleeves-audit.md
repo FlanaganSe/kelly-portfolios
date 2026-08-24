@@ -382,6 +382,38 @@ life — `0.10 × (−7.15 − 15.35)` — which is roughly four times the entir
 value of the trend overlay at the same weight in §1.5. That is arithmetic on two annualised
 returns over slightly different windows, not a backtest.
 
+**The calendar years say something the annualised figure cannot, and it is the decisive
+thing.** From TAIL's own prospectus bar chart and the issuer's return feed, read 2026-08-23:
+
+| 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2026 YTD |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| +2.33 | −13.99 | **+6.98** | −12.81 | **−13.15** | −12.98 | −9.98 | −8.33 |
+
+**TAIL made 6.98% in 2020, the year of a 33.9% peak-to-trough fall in the S&P 500. And it
+lost 13.15% in 2022, a year the S&P 500 returned −18.11%.** A put-buying programme
+collateralised with Treasuries loses on both legs when a bear market is a slow grind with
+rising rates rather than a volatility spike, and 2022 was the second kind.
+**A crash hedge that loses money in a bear market is a bet on the shape of the decline
+rather than a hedge.** On the same feed the fund's since-inception return to 2026-07-31 is
+**−7.30%/yr, −50.64% cumulative**, its trailing five years **−9.06%/yr**, and its assets
+**$147.6M** at 2026-08-21. *(TAIL's 2025 calendar return is deliberately absent: no primary
+source publishes it yet — the issuer shows trailing periods only and the next prospectus
+bar chart has not been filed. Cambria's own two sources also disagree by one day on the
+inception date, 2017-04-05 in the SEC 485BPOS against 2017-04-06 on the fund page.)*
+
+**And the distribution has the other tail too.** Simplify's **CYA**, launched
+**2021-09-14**, reported **−99.16% since inception** on the issuer's own site at
+2023-12-31, took a **1-for-20 reverse split effective after the close on 2024-02-09**
+([SEC 497](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=CYA&type=497),
+filed 2024-01-23) and was liquidated **"on or about March 14, 2024"** (SEC 497 filed
+2024-02-20). Its last filed net assets, in the Form N-PORT for 2023-12-29, were about
+**$2.16M**; no filing covers the final quarter, so the frequently repeated "$1.7M at
+liquidation" is unconfirmed and is not used here. **A total loss on a product sold as crash
+protection, over a period that contained a bear market.** CYA is also the seventh ticker in
+Simplify's run of alternative-strategy closures — SCY, SPQ, FIG, NXTV, EQLS and WUSA all
+last traded 2025-05-23, about fourteen and a half months after CYA — which is the
+survivorship point: **a shelf screened today shows the products that lived.**
+
 One point in TAIL's favour, because it changes what the number means without changing the
 verdict: **TAIL is about 91% ten-year Treasuries and only about 5% options**, so its
 −7.15%/yr is not all option bleed — a large part of it is the worst bond market in forty
