@@ -1,15 +1,22 @@
 ---
 /**
- * The confidence vocabulary, and the corrections log.
+ * The confidence vocabulary, and what a silence on this site means.
  *
- * This is the page that owns the distinction between the site's two horizons. Every
- * other page quotes only the first: `T = (z·s/e)²`, when your own account would show
- * the effect. The detection horizon — when a study could separate the effect from zero
- * at the design's own resolution — is printed here and labelled here, and the two are
- * never contrasted with each other.
+ * Three ideas and nothing else. The four words attached to every claim, and why the
+ * mark beside them is drawn in ink rather than in colour. How long you would have to
+ * hold something before your own account could answer the question, in words, with the
+ * arithmetic left to `/tools/how-long/`. And the three different things "nothing here"
+ * can mean, only one of which is a result.
+ *
+ * The corrections log used to be narrated again in full at the foot of this page. It
+ * lives at `/corrections/` and nowhere else; this page links to it and does not
+ * summarise it.
+ *
+ * The `TimeToKnow` dot plot used to sit under the horizon section. Its caption prints
+ * `T = (z·s/e)²`, and no formula belongs on a reader-facing page; the playable version
+ * at `/tools/how-long/` is where a reader who wants the arithmetic goes. Put the chart
+ * back only once that caption says the same thing in words.
  */
-import Breakout from "~/components/Breakout.astro";
-import TimeToKnow from "~/components/charts/TimeToKnow.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
@@ -19,22 +26,21 @@ import Base from "~/layouts/Base.astro";
 ---
 
 <Base
-  title="How sure we are, and how we have been wrong"
-  description="The four words attached to every claim here, what the phrase &lsquo;the smallest difference this test could see&rsquo; means, how long you would have to hold something before your own account could tell you, and eight errors this project found in its own published numbers."
+  title="How sure we are"
+  description="The four words attached to every claim on this site, why the mark beside them is never a colour, how long you would have to hold something before your own account could tell you it worked, and the three different things a silence here can mean."
 >
   <div class="prose">
     <Rail>Reading this site</Rail>
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How sure we are, and how we have been wrong</h1>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How sure we are</h1>
 
     <MarginNote label="The question">
       <p>
-        How much of this should I believe? Checked against <code>docs/research/</code> on
-        <span data-numeric>2026-08-23</span>.
+        How much of this should I believe? Checked on <span data-numeric>2026-08-23</span>.
       </p>
     </MarginNote>
 
-    <p>Two halves. The first explains the four words that sit beside every claim on this site. The second is a
-    list of things we published and later found to be wrong.</p>
+    <p>Three things. The four words that sit beside every claim here, how long you would have to hold something
+    before your own account could tell you it worked, and what it means when this site says nothing at all.</p>
 
   </div>
 
@@ -43,18 +49,22 @@ import Base from "~/layouts/Base.astro";
 
     <h2>The four words</h2>
 
-    <MarginNote label="Why four">
+    <p>Every claim here is labelled settled, probably, might, or we can't tell. Four rungs, not five and not
+    seven, because rungs a reader cannot tell apart are not rungs. Each one carries the same underlying question:
+    what is the chance this choice leaves you better off than the named alternative, over thirty years, after
+    costs and taxes.</p>
+
+    <MarginNote label="Why the mark is grey">
       <p>
-        Rungs a reader cannot tell apart are not rungs. The mark beside each word is drawn in ink alone, at four
-        intensities, so it survives a printout and a colour-blind reader. Nothing here is ever green for good
-        news.
+        Four intensities of one ink, so the mark survives a printout and a colour-blind reader. Nothing here is
+        ever green.
       </p>
     </MarginNote>
 
-    <p>Every claim here is labelled settled, probably, might, or we can't tell. Four rungs, not five and not
-    seven, because rungs a reader cannot tell apart are not rungs. Each word means a specific thing about the
-    evidence behind the sentence it sits in, and each one carries the same underlying question: what is the chance
-    this choice leaves you better off than the named alternative, over thirty years, after costs and taxes.</p>
+    <p>Nothing here is ever green for good news, and that is the more important half of the reason. A coloured
+    badge answers two questions with one mark: how sure we are, and whether what we found is welcome. Those are
+    separate axes. A settled claim can be settled bad news, and something we cannot tell you about might be the
+    best idea on the site. Collapse the two and the reader loses the one thing this scale exists to give them.</p>
 
     <h3>Settled</h3>
 
@@ -82,15 +92,8 @@ import Base from "~/layouts/Base.astro";
 
     <p>Roughly a 70% to 90% chance, and the sentence always carries the size and the range. The effect is larger
     than the smallest thing the test could have seen, the range stays on one side of zero, and it survives being
-    marked down for how many ideas we tried. One material gap remains, and the sentence after it names that
-    gap.</p>
-
-    <MarginNote label="What earns this rung">
-      <p>
-        Benjamini-Hochberg adjusted p = 0.010, positive in all five predeclared sub-periods, and no sign change
-        across a 27-point perturbation grid. One material gap remains, and the sentence beside it names the gap.
-      </p>
-    </MarginNote>
+    marked down for how many ideas we tried before this one. One material gap remains, and the sentence beside it
+    names that gap.</p>
 
     <p>The lean toward cheap and profitable companies lives here: <Figure id="tilt-edge" inline />. The gap: 86%
     of it is measured on data starting in November 1990, and nobody has ever run it on years the idea had not
@@ -100,10 +103,10 @@ import Base from "~/layouts/Base.astro";
 
     <p><Rung level="might" /></p>
 
-    <p>Roughly 50% to 75%. The evidence points one way and keeps pointing that way, but at least one thing is
-    wrong with the design. The effect is smaller than the smallest difference the test could see, or the window
-    is short, or nobody has run it on years the idea had not already seen, or it rests on an assumption a
-    reasonable person would argue with. A "might" always carries that smallest difference and a plan for settling
+    <p>Roughly 50% to 75%. The evidence points one way and keeps pointing that way, and at least one thing is
+    wrong with the design. The window is short, or the effect is smaller than the smallest difference the test
+    could see, or nobody has run it on years the idea had not already seen, or it rests on an assumption a
+    reasonable person would argue with. A might always carries that smallest difference and a plan for settling
     it. Otherwise it is a guess wearing a lab coat.</p>
 
     <h3>We can't tell</h3>
@@ -112,348 +115,105 @@ import Base from "~/layouts/Base.astro";
 
     <p>The range covers real help and real harm. We print the range and refuse to print a probability, because
     inventing one is the failure this whole scheme exists to prevent. This is the most common verdict on the
-    site.</p>
-
-    <MarginNote label="The most common verdict">
-      <p>
-        Unresolved is not rejected. The window could not have seen an effect of the size it was looking for, which
-        is neither a promotion nor a refutation.
-      </p>
-    </MarginNote>
-
-    <p>It must never be read as "no". Where a result leans, we say which way it leans. Where an effect of a given
-    size would have been visible, we say what that size was. "No evidence of an effect" and "evidence of no
-    effect" are different sentences and we are careful about which one we write.</p>
+    site, and it must never be read as no.</p>
 
     <p>One rule cuts across all four. Every probability here is a best case, because the arithmetic behind it
-    assumes we know exactly how large the advantage is. We don't. That assumption removes the biggest single
-    source of uncertainty in the calculation, so the real chance is lower than the printed one, and we cannot tell
-    you by how much.</p>
-
-  </div>
-
-  <div class="prose mt-14">
-    <Rail>Resolution</Rail>
-
-    <h2>The smallest difference this test could see</h2>
-
-    <p>Returns bounce around. Any difference you measure between two portfolios sits inside that bouncing, and
-    before running a test you can work out how large a difference would have to be before the data could reliably
-    pull it back out. Under that size, a real effect and no effect produce answers that look the same.</p>
-
-    <MarginNote label="Source">
-      <p>
-        <a href="/research/timing-rules-on-the-equity-sleeve/"
-          >Timing rules on the stock holdings</a
-        >, as of <span data-numeric>2026-08-23</span>. The range around the gap covers zero, so even the direction
-        is unsettled.
-      </p>
-    </MarginNote>
-
-    <p>The moving-average timing rule is the cleanest example on the site. It beat a properly matched control by
-    0.74 percentage points a year. The smallest gap that design could have detected was 3.03. The measurement is
-    real and the arithmetic is right, and the answer is still that we cannot see. Publishing "the rule adds 0.74"
-    would be reporting the width of our own ignorance as a finding.</p>
-
-    <MarginNote label="What it cost">
-      <p>
-        Applying this rule closed two factor rewards we thought we had measured, and moved six
-        verdicts from rejected to we can't tell. Publishing a gap smaller than the smallest one the test could see
-        would be reporting the width of our own ignorance as a finding.
-      </p>
-    </MarginNote>
-
-    <p>This is why so many pages here end in a shrug. It closed two factor rewards we thought we had measured. It
-    moved six verdicts from rejected to we can't tell. And it is why we can say that a century of
-    monthly US data cannot settle a question, which sounds like an excuse and is a measurement.</p>
+    assumes we know exactly how large the advantage is. We don't. The real chance is lower than the printed one,
+    and we cannot tell you by how much.</p>
 
   </div>
 
   <div class="prose mt-14">
     <Rail>Your own account</Rail>
 
-    <h2>How long before your own account could tell you</h2>
+    <h2>How long before you would know</h2>
 
-    <MarginNote label="The closed form">
+    <p>Two things decide whether your own account could ever settle a question. How much better you expect to do,
+    and how far the thing wanders from what you are comparing it against on the way. The wandering does most of
+    the damage, because it counts twice over. A portfolio that bounces around twice as much takes four times as
+    long to prove itself.</p>
+
+    <p>Take one fixed advantage and run it past two levels of wandering, and the wait comes out at
+    <Figure id="time-to-know-scaling" inline showUnit={false} />. Same edge, same arithmetic, and one of those is
+    a lunchtime while the other is longer than a life.</p>
+
+    <p>That is the contrast the site is built around. The fee, tax and account-placement savings are worth about
+    <Figure id="structural-budget" inline /> against the portfolio you would otherwise hold, and they hardly
+    wander at all, so you would know inside <Figure id="time-to-know-structural" inline showUnit={false} />. The
+    whole recommended portfolio, against a cheap index fund holding the same mix, is ahead by
+    <Figure id="central-edge" inline showUnit={false} /> and drifts by
+    <Figure id="tracking-error" inline showUnit={false} /> a year, so you would know in
+    <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
+
+    <p>Three and a half months and thirty-one years, one rule applied twice. None of which argues for doing
+    nothing. It argues for doing the certain things first, and for justifying everything else before you buy it,
+    because your own results are never going to be the evidence.</p>
+
+    <Callout kind="do-this">
       <p>
-        <code>T = (z·s/e)²</code> at <span data-numeric>z = Φ⁻¹(0.90)</span>, the same expression the client's own
-        horizon module runs. Forty times the noise is sixteen hundred times the wait.
+        Put your own two numbers in at <a href="/tools/how-long/">how long before you would know</a> and watch
+        the wait move. It is the fastest thirty seconds on this site.
       </p>
-    </MarginNote>
-
-    <p>Take the size of the advantage you are chasing. Take the year-to-year wobble between your portfolio and
-    whatever you are comparing it against, the number the rest of this site calls drift. Divide the second by the
-    first,
-    square it, and you have roughly the number of years you would have to hold before your own results could
-    separate the advantage from luck.</p>
-
-    <p>The squaring is the whole point. Double the wobble and you do not double the wait. You quadruple it.</p>
-
-    <p>Run the same 0.50 percentage points a year of advantage at two different noise levels and you get
-    <Figure id="time-to-know-scaling" inline showUnit={false} />. Same edge, same maths, one is a lunchtime and one is longer than
-    a life.</p>
-
-    <p>That produces the contrast this site is built around. The fee, tax and account-placement savings come to
-    about <Figure id="structural-budget" inline />. They drift by roughly 0.41% a year against the
-    portfolio you would otherwise hold, so you would know inside <Figure id="time-to-know-structural" inline showUnit={false} />.
-    Now run the identical arithmetic on the whole recommended portfolio, measured against a cheap index fund
-    holding the same mix. Its edge is <Figure id="central-edge" inline showUnit={false} /> and it drifts by
-    <Figure id="tracking-error" inline showUnit={false} /> a year, so you would know in <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
-
-    <p>Four months and thirty-one years, one rule applied twice. Between them sits the whole portfolio against an
-    index fund that borrows as much as it does, ahead by 2.20 percentage points a year and wobbling by 6.0%, which
-    comes out at
-    <Figure id="time-to-know-construction" inline showUnit={false} />.</p>
-
-    <p>Which is not an argument for doing nothing. It is an argument for doing the boring things first, and for
-    justifying everything else before you buy it, because your own results are never going to be the evidence.</p>
+    </Callout>
   </div>
 
-  <Breakout>
-    <TimeToKnow />
-  </Breakout>
-
   <div class="prose mt-14">
-    <Rail>The other question</Rail>
+    <Rail>Silence</Rail>
 
-    <h2>The other question, which sounds the same and is not</h2>
+    <h2>The three kinds of nothing</h2>
 
-    <MarginNote label="Why this matters">
+    <p>When this site reports nothing, it means one of three things, and only the third is a result.</p>
+
+    <h3>We never looked</h3>
+
+    <p>Plenty of ideas here carry no verdict because nobody has tested them. That is a hole in the work rather
+    than a judgement on the idea, and a page that has one says so.</p>
+
+    <h3>We looked and could not see</h3>
+
+    <MarginNote label="What the habit cost">
       <p>
-        An earlier draft of this site contrasted three and a half months from the first question with fifty-nine years from
-        the second and called it one comparison. It was not, and the mistake is the reason this section exists.
+        Holding every claim to the smallest gap its own test could see closed two rewards we thought we had
+        measured, and moved six verdicts from rejected to we can't tell.
       </p>
     </MarginNote>
 
-    <p>Everything above answers one question. When would your own account show it? A second question sits
-    underneath all of the research, and every horizon on this site belongs to one or the other.</p>
+    <p>Returns bounce around. Any difference you measure between two portfolios sits inside that bouncing, and
+    before running a test you can work out how large a difference would have to be before the data could pull it
+    back out. Under that size, a real effect and no effect produce answers that look the same.</p>
 
-    <p>When could a study separate the effect from zero at all?</p>
+    <p>The moving-average timing rule is the cleanest example here. It beat a properly matched control by
+    <Figure id="timing-rule-gap" inline />. The smallest gap that design could have detected was
+    <Figure id="timing-rule-floor" inline showUnit={false} />. The measurement is real and the arithmetic is
+    right, and the answer is still that we cannot see. Publishing the 0.74 as a finding would report the width of
+    our own ignorance.</p>
 
-    <p>The first question is about you: your holding period, your benchmark, and how far your own returns wander
-    from it. The second is about the design that produced the claim, and about how many months of data it has, how
-    noisy those months are, and how large an effect it could have resolved. A result can be quick to live with and
-    slow to prove. It can also run the other way.</p>
+    <p>This is why so many pages here end in a shrug, and it is why we can say that a century of monthly US data
+    cannot settle a question, which sounds like an excuse and is a measurement.</p>
 
-    <p>The recommended portfolio is the sharpest case on the site. Your own account would separate it from its
-    control that borrows as much in <Figure id="time-to-know-construction" inline showUnit={false} />. Separating the same gap from
-    zero, at the resolution this design actually has over its 427-month panel, would take
-    <Figure id="detection-horizon-construction" inline showUnit={false} />. Same portfolio, same data, two questions, and nearly
-    five times the answer.</p>
+    <h3>We looked and found something real pointing the other way</h3>
 
-    <p>The lean toward cheap and profitable companies runs the other way about. Against a cheap 65/35 index those
-    funds wander by only about a percentage point a year, so your own account would see the gap of
-    <Figure id="tilt-edge" inline showUnit={false} /> percentage points a year inside a few years. Getting a study
-    to say that gap differs from zero takes <Figure id="tilt-horizon" inline showUnit={false} />.</p>
+    <p>Only this one is a result, and it is worth more than the other two kinds put together. Bitcoin bought as
+    ballast moves <Figure id="crypto-up-down-beta" inline showUnit={false} />, so it falls harder than it rises,
+    which is the opposite of the shape a diversifier is bought for. That is not a failure to find an effect. It
+    is an effect, found, pointing the wrong way.</p>
 
-    <p>We print both, and we say which question each number answers. Contrasting three and a half months from the first
-    question with fifty-nine years from the second is the specific error this section exists to stop, and it is
-    one we have made.</p>
+    <p>No evidence of an effect and evidence of no effect are different sentences, and we are careful about which
+    one we write. Where a result leans, we say which way. Where an effect of a given size would have been
+    visible, we say what that size was.</p>
 
   </div>
 
   <div class="prose mt-14">
     <Rail>Corrections</Rail>
 
-    <h2>How we have been wrong</h2>
+    <h2>Where we have been wrong</h2>
 
-    <MarginNote label="What caught them">
-      <p>
-        Mostly the project auditing itself: an adversarial review, a re-derivation of arithmetic somebody had
-        already done once, a null-case test whose right answer was known before any data was seen. Two were caught
-        by reading a filing instead of a summary.
-      </p>
-    </MarginNote>
-
-    <p>Thirty-three errors have been found in this project's own published numbers and corrected in place. Nine are
-    worth your time, because each one moved a recommendation rather than a decimal.</p>
-
-    <h3>An expected return that was never measured</h3>
-
-    <p>For most of this project's life the pages here quoted a trend-following premium of
-    <Figure id="trend-premium-withdrawn" inline showUnit={false} /> percentage points a year and used it to size
-    a position.</p>
-
-    <p>Nobody had measured it. It was the 2012 to 2025 stretch's own average return with a 1.50% fee subtracted.
-    Then it was restated onto a different basis, on which the same history reads 4.17%, and the fee was charged a
-    second time by the model that consumed it. Three errors in one number: a 0.77 point variance drag, a fee
-    counted twice, and a point estimate used with no error bar, whose own 95% interval ran from −2.67 to +11.00
-    and contained the figure it was being used to overturn.</p>
-
-    <MarginNote label="How it was caught">
-      <p>
-        1.80 plus 1.50 plus half of 13.23 squared over 100 comes to 4.17, which is exactly the era's own
-        arithmetic mean. That is not a coincidence with an innocent explanation.
-      </p>
-    </MarginNote>
-
-    <p>An adversarial review found it by undoing the arithmetic. 1.80 plus 1.50 plus half of 13.23 squared over
-    100 comes to 4.17, which is exactly the era's own arithmetic mean, and that is not a coincidence with an
-    innocent explanation.</p>
-
-    <p>Correcting it flipped the sign of the recommendation. On one basis the trend add-on was subtracting 0.35
-    percentage points a year against the same portfolio without it. Corrected, it adds 0.34 against that same
-    comparison. The recommended trend weight moved from 20% to 25%. The estimated chance of giving up on it fell
-    from 42.3% to 17.2%. The number itself is gone, and nothing replaced it.</p>
-
-    <h3>Multiplying two measurements of the same thing</h3>
-
-    <p>To price a fund that leans toward cheap stocks you need to know how much cheap-stock exposure it really
-    delivers. We had two numbers for it. One was 0.410, measured off the fund's own returns. The other was 0.520,
-    the share of the textbook version an ordinary investor can actually get, taken from the literature. We
-    multiplied them, which gives <Figure id="capture-double-count" inline showUnit={false} />, and used the
-    product in five places.</p>
-
-    <MarginNote label="Now enforced in code">
-      <p>
-        The research code raises <code>CaptureDoubleCountError</code> rather than accepting a capture argument, so
-        the mistake cannot be made by hand again. The 0.40 sitting in the edge budget was deleted rather than
-        replaced.
-      </p>
-    </MarginNote>
-
-    <p>They are the same exposure, measured two ways. Work through the algebra and the second number turns out to
-    equal the first plus a small remainder, exact to 4.4 times ten to the minus sixteenth on our own files: 94% of
-    the measured 0.520 is that same 0.4891 coming back again. Multiplying them discounts the exposure twice, and
-    it produces a number smaller than the exposure delivered by every value fund we have audited, which should
-    have been the tell.</p>
-
-    <p>Before costs, that line had been understated by roughly a factor of two. The chain is now three terms: the
-    weight, times how much more of the thing the new fund delivers than the one it replaces, times the reward,
-    minus the cost. The code raises an exception rather than accepting a capture argument, so nobody can make the
-    mistake by hand again. The 0.40 sitting in the edge budget was deleted rather than replaced.</p>
-
-    <h3>Comparing a borrowed portfolio against one that borrowed nothing</h3>
-
-    <p>If your portfolio holds $1.32 of assets for every dollar you put in and the index you check it against
-    holds $1.00, you will beat that index in good years and trail it in bad ones, and neither result tells you
-    anything about how your portfolio is built. You take credit for the borrowing on the way up and blame the strategy for
-    it on the way down.</p>
-
-    <p>We did this. The trend route's worst loss was <Figure id="levered-comparison-drawdown" inline />, and its
-    return per unit of risk rose from 0.538 to 0.641 while the borrowed-stocks route's fell to 0.530. Two
-    different answers, and the total-exposure figure everyone quotes cannot tell the two routes apart.</p>
-
-    <p>The consequence is uncomfortable and we print it anyway. The single whole-portfolio comparison in the
-    entire project that clears the smallest gap its own test could see, the recommended portfolio against the
-    investor's original at −0.50 percentage points a year, is mostly measuring 5.4 points of borrowing rather than
-    anything about how the thing is built.</p>
-
-    <h3>The smallest visible gap and the range beside it, computed different ways</h3>
-
-    <p>The lean toward cheap and profitable companies is the strongest measurement here, so it is the one that
-    most needed checking. Beside its range we printed a smallest visible gap of 0.47 percentage points a year. The
-    range had been computed with error bars that allow for markets clustering, calm with calm and panic with
-    panic. That 0.47 had been computed with error bars that treat every month as a fresh coin flip.</p>
-
-    <MarginNote label="Both were stored">
-      <p>
-        <code>mde_80pc_power_pp_yr</code> and <code>mde_80pc_power_block_bootstrap_pp_yr</code> are both written to
-        the run artifact. Only the narrower one reached the page.
-      </p>
-    </MarginNote>
-
-    <p>Both numbers were sitting in the run's own output file. Only the narrower one got published.</p>
-
-    <p>On matched error bars the smallest visible gap is
-    <Figure id="detection-floor-restated" inline showUnit={false} /> percentage points a year. The result still
-    clears it, by 10% rather than by 68%. The data needed before a study could separate it from zero becomes
-    <Figure id="tilt-horizon" inline showUnit={false} />. The signal drops from 4.73 times the noise to 3.05,
-    landing exactly on the published bar for a result that was found by searching. And one arm of the tournament
-    stops clearing altogether.</p>
-
-    <h3>Adding up numbers measured against different starting points</h3>
-
-    <p>The asset-placement headline used to read +38 to +55 basis points a year. It is
-    <Figure id="placement-restated" inline />.</p>
-
-    <p>Four things were wrong at once. The range had been truncated, dropping the entire distributed reading,
-    worth 18 basis points. A rebalancing hurdle avoided had been booked as a saving, worth 14, on the same page
-    that says a hurdle avoided is not a saving. Lot selection and never selling had both been booked, and they are
-    mutually exclusive. And 94.7% of the top figure came from one holding's undistributed foreign accrual.</p>
-
-    <p>The arithmetic underneath was fine. An independent re-derivation reproduced every priority, the credit cap
-    and all twelve cells exactly. What was wrong was the addition. Some lines were measured against a cheap index
-    fund and some against the portfolio you would otherwise own, and those are different questions with different
-    answers. The function that aggregates them now raises an exception on a cross-benchmark sum, and the function
-    that reports a placement component refuses to return one when its value is negative.</p>
-
-    <h3>Assuming every dividend was the good kind</h3>
-
-    <p>Which account a fund belongs in depends partly on whether its dividends are taxed at the long-term rate or
-    as ordinary income. We assumed they all qualified, because that is the standard simplifying assumption and
-    nobody had checked.</p>
-
-    <MarginNote label="Re-derived, not re-quoted">
-      <p>
-        Every placement conclusion that predated the filed fractions had to be worked again rather than restated.
-        A location ranking that assumes a qualified fraction has assumed its own answer.
-      </p>
-    </MarginNote>
-
-    <p>Reading the sponsors' filed fractions took an afternoon. VEA files 66.27%. VWO files
-    <Figure id="qualified-fraction-vwo" inline showUnit={false} />. IEMG 34.82%, AVES 44.48%, IDMO 25%, DFIV 100%.</p>
-
-    <p>The assumption had reversed the placement ranking for emerging-market equity. Every placement conclusion
-    that predated the filed fractions had to be re-derived rather than re-quoted, which is slower and much less
-    pleasant. A location ranking that assumes a qualified fraction has assumed its own answer.</p>
-
-    <h3>Reading a fund's biggest holding instead of its filing</h3>
-
-    <p>MATE gives you stocks and managed futures on the same dollar. Whether that is worth owning turns on how
-    much of the stock leg it really delivers, and its February 2026 holdings report shows an S&amp;P 500 ETF at
-    49.8% of net assets. Read that line and stop, and the fund looks worse than simply selling stocks to buy
-    trend.</p>
-
-    <p>The same filing shows a bet on the S&amp;P 500 through a futures contract at another 61.8%. The stock leg
-    is <Figure id="mate-base-leg" inline showUnit={false} />, and the arithmetic flips from bad to slightly better
-    than break-even.</p>
-
-    <p>Two quarters later the same mistake was available on a second fund and we nearly walked into it again. CTAP
-    shows an S&amp;P 500 ETF at 70.41%, which looks damning until you notice the 32.23% futures position
-    underneath, taking the stock leg to 102.64% and making CTAP the most tightly packed fund on the shelf. A
-    stacked fund's stock leg is everything delivering stocks added together, and on these products at least one of
-    those is always a futures contract.</p>
-
-    <h3>A monitoring bar finer than the instrument that reads it</h3>
-
-    <p>We wrote a rule for ourselves. If the amount of trend the fund actually delivers falls below 0.70, sell
-    it.</p>
-
-    <p>The first measurement came back at <Figure id="trend-loading-first-read" inline />. It sits 0.019 under the
-    bar, on a range that spans the bar twice over in both directions. The reading neither fires the rule nor
-    clears it.</p>
-
-    <MarginNote label="Review date">
-      <p>
-        The bar should have come from the exposure the fund needs to deliver at a 25% weight just to break even,
-        which is 0.19 to 0.27. Next reading at 48 filed months, around <span data-numeric>2027-09</span>.
-      </p>
-    </MarginNote>
-
-    <p>The bar stays where it is, unfired, recorded as unresolved, because moving a bar after seeing the number it
-    was written for is worse than setting it badly in the first place. It should never have been a round number.
-    It should have come from the exposure the fund needs to deliver at the weight we hold just to break even,
-    which is 0.19 to 0.27. We look again at 48 filed months, around September 2027.</p>
-
-    <p>This is the same defect twice. An earlier experiment rejected seven candidate holdings against a bar of
-    0.30 percentage points a year when the smallest effect that design could see was 1.039, on a page that had
-    already measured and printed that number. Six of ten verdicts were restated to we can't tell. The
-    specification was recorded as defective rather than quietly rewritten.</p>
-
-  </div>
-
-  <div class="prose mt-14">
-    <Rail>The pattern</Rail>
-
-    <h2>What caught them</h2>
-
-    <p>Most of these were caught by the project auditing itself: an adversarial review, a re-derivation of
-    arithmetic somebody had already done once, a null-case test whose right answer was known before any data was
-    seen. Two were caught by reading a filing instead of a summary.</p>
-
-    <p>The pattern in nearly all of them is the same. A number got separated from the thing that made it true, and
-    then it travelled.</p>
+    <p>Thirty-three errors have been found in this project's own published numbers. Eleven of them moved a
+    recommendation rather than a decimal, and each is written up at <a href="/corrections/">corrections</a> with
+    what we believed, what was wrong, what caught it, and what changed. Start with the trend-following return
+    that was quoted here for most of the project's life, that nobody had ever measured, and that was deleted
+    rather than replaced with a better guess.</p>
 
   </div>
 </Base>
