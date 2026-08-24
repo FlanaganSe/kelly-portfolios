@@ -1,41 +1,36 @@
 /**
- * Generates one 1200×630 social card per entry in {@link OG_PAGES}, at build time.
+ * Emits one 1200×630 social card per entry in {@link OG_PAGES}, at build time.
  *
- * `astro-og-canvas` draws with CanvasKit rather than a headless browser, so there is no
- * Chromium in the build and the results are cached in `node_modules/.astro-og-canvas`
- * across builds. Nothing here reads a WOFF2: neither CanvasKit nor Satori can, so a
- * specific face would have to arrive as a TTF or an OTF subset. The card uses CanvasKit's
- * own default family instead, which is the honest trade for not committing a font binary
- * to render four cards.
+ * The drawing is `~/lib/og-card`, which explains the composition and why this is not
+ * `astro-og-canvas` any more. This file is only the routing: it turns a page path into
+ * the file name `ogImagePath` promises, so `/stacking/` lands at `/og/stacking.png`
+ * and `/` at `/og/index.png`.
  *
- * The palette is the site's light theme, hard-coded: a social card is composited on
- * whatever background the reader's client uses, so it cannot follow a theme.
+ * `scripts/check-og-size.mjs` runs after the build and fails it if any card passes
+ * Bluesky's 1,000,000-byte cap, which binds long before anybody else's.
  */
-import { OGImageRoute } from "astro-og-canvas";
-import { OG_PAGES, type OgPage } from "~/lib/og";
-import { SITE_NAME } from "~/lib/site";
+import type { APIRoute, GetStaticPaths } from "astro";
+import { OG_PAGES } from "~/lib/og";
+import { renderCard } from "~/lib/og-card";
 
-/** `--paper`, `--ink`, `--ink-muted` and `--accent`, as RGB triples. */
-const PAPER: [number, number, number] = [250, 249, 246];
-const INK: [number, number, number] = [26, 25, 23];
-const INK_MUTED: [number, number, number] = [87, 84, 77];
-const ACCENT: [number, number, number] = [18, 80, 127];
+export const getStaticPaths = (() =>
+  Object.entries(OG_PAGES).map(([path, page]) => ({
+    params: { route: path === "/" ? "index.png" : `${path.replace(/^\/|\/$/g, "")}.png` },
+    props: { title: page.title },
+  }))) satisfies GetStaticPaths;
 
-// No `param` option: 0.13 reads the parameter name out of the route pattern itself, so
-// this file's name is what binds it to `[...route]`.
-export const { getStaticPaths, GET } = await OGImageRoute({
-  pages: OG_PAGES as Record<string, OgPage>,
-  getSlug: (path) => (path === "/" ? "index.png" : `${path.replace(/^\/|\/$/g, "")}.png`),
-  getImageOptions: (_path, page) => ({
-    title: page.title,
-    description: `${page.description}\n\n${SITE_NAME}`,
-    padding: 72,
-    bgGradient: [PAPER],
-    border: { color: ACCENT, width: 16, side: "inline-start" },
-    font: {
-      title: { color: INK, size: 66, weight: "Bold", lineHeight: 1.15 },
-      description: { color: INK_MUTED, size: 30, lineHeight: 1.4 },
+export const GET: APIRoute<{ title: string }> = async ({ props, site }) => {
+  // `site` is `https://kellyportfolios.com` from `astro.config.mjs`, the one place this
+  // project's origin is written down. Without it configured there is no card to draw a
+  // domain on, and a card that silently says nothing is worse than a failed build.
+  if (!site) {
+    throw new Error("`site` is unset in astro.config.mjs, so the social card has no domain to print.");
+  }
+
+  return new Response(await renderCard({ title: props.title, domain: site.host }), {
+    headers: {
+      "Content-Type": "image/png",
+      "Cache-Control": "public, max-age=31536000, immutable",
     },
-    format: "PNG",
-  }),
-});
+  });
+};
