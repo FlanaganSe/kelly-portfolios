@@ -114,7 +114,10 @@ written**: this is a study, and it adjudicates nothing a frozen specification wo
     0.15–0.25 of trend notional and a gross notional of **1.16× to 1.27×**. **Two independent
     routes land on the same band** — the tracking-error/holdability route in §6a and the
     valuation-conditioned drawdown route in §3.2 — and neither of them is the growth optimum.
-    §9.
+    §9. **The published weight is 30%, above this band**, set in
+    [part A](portfolio-for-one-investor.md) §2 on Experiment 016e's growth comparison rather
+    than on either holdability route; the trade between the two is stated on
+    [the recommendation](portfolio-recommendation.md).
 
 ---
 

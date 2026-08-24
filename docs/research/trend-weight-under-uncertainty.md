@@ -107,7 +107,11 @@ surface over quantities other pages measured.
    investor's own benchmark. What still argues lower is the **premium-free** holdability
    evidence in [the notional budget](leverage-and-the-notional-budget.md) — a tracking-error
    route and a CAPE-41 conditioned drawdown route landing at 15–25% — which the basis error
-   never touched. **25% is the only weight both routes admit.** §6.
+   never touched. **25% is the only weight both routes admit.** §6. **The published weight is
+   30%**, which this page's own robust range admits and none of its four routes selects; it
+   is set in [part A](portfolio-for-one-investor.md) §2 on Experiment 016e's one resolvable
+   whole-portfolio comparison, and [the recommendation](portfolio-recommendation.md) records
+   what that comparison does and does not isolate.
 
 9. **Cost is not what decides this.** Every gap depends on the premium and the cost only
    through their difference, so the whole taxable-versus-sheltered question — RSST's 32 bp/yr
