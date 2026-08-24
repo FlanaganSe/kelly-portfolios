@@ -82,7 +82,7 @@ jobs:
 
       - name: What is in front of the domain
         id: find
-        run: scripts/cloudfront/state.sh > /dev/null
+        run: scripts/cloudfront/state.sh | jq .
 
   build:
     runs-on: ubuntu-latest

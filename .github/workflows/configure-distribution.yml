@@ -40,7 +40,7 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
 
       - name: Before
-        run: scripts/cloudfront/state.sh > /dev/null
+        run: scripts/cloudfront/state.sh | jq .
         env:
           STATE_HEADING: Before
 
@@ -69,6 +69,6 @@ jobs:
 
       - name: After
         if: always()
-        run: scripts/cloudfront/state.sh > /dev/null
+        run: scripts/cloudfront/state.sh | jq .
         env:
           STATE_HEADING: After
