@@ -20,7 +20,6 @@ import {
   defaultTaxRegime,
   placementAsOf,
   priorityRule,
-  qualifiedFractionCorrection,
   taxRegimes,
 } from "~/content/placement";
 import { citationHref } from "~/lib/citation";
@@ -155,8 +154,12 @@ const WHERE = { shelter: "Sheltered", split: "Partly sheltered", taxable: "Taxab
     <Rail>What would break it</Rail>
     <h2>Three things this rests on</h2>
 
-    <p><strong>The share of each dividend that gets the low rate.</strong> {qualifiedFractionCorrection.detail}
-    {qualifiedFractionCorrection.consequence}</p>
+    <p><strong>The share of each dividend that gets the low rate.</strong> Part of what a fund pays out is taxed
+    at the dividend rate and the rest at your income rate, which is 17 points dearer at the top bracket. Every
+    figure above uses the fraction each sponsor filed rather than a round assumption: <span data-numeric
+    >66.27%</span> for VEA, <span data-numeric>44.48%</span> for AVES, <span data-numeric>34.82%</span> for IEMG,
+    <span data-numeric>25%</span> for IDMO. Assume they were all fully qualified instead and the answer for
+    emerging markets flips over. That one input decides the sign.</p>
 
     <p><strong>The stacked fund files two readings of itself.</strong> It books income inside itself that it has
     not paid out. Count only what shareholders were taxed on and it sits seventh in the queue; count everything
