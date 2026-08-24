@@ -1,11 +1,16 @@
 ---
 /**
- * The ordered checklist, and the page to read if you only read one.
+ * The ordered checklist, and the most useful page on the site.
  *
- * The order is set by how fast each step settles rather than by how large it is, so
- * every step closes with the same two-cell footer: the rung, and the horizon. Both
- * horizons quoted in the opening contrast are `T = (z·s/e)²` at 90% confidence — the
- * detection question belongs to `/how-sure/` and is not used here.
+ * Two rules govern the shape. The order is set by how certain each step is and how fast
+ * you would find out whether it worked, not by how large it is. And every step opens
+ * with the condition that makes it apply, because no page here may presume the reader
+ * owns a workplace plan, an IRA, a health savings account or a taxable brokerage
+ * account. Offer the option; never issue the instruction to everyone.
+ *
+ * Each step closes with the same two-cell footer, kept to a line a cell so the spine of
+ * the page stays scannable. Provenance sits in one block at the foot, and each
+ * `<Figure>` carries its own source.
  */
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
@@ -17,87 +22,84 @@ import Base from "~/layouts/Base.astro";
 
 <Base
   title="Start here"
-  description="The six things to do, in the order the size and the certainty of the payoff dictate. Fees first, because you would know in about three and a half months. The clever parts last, because you would know in about thirty-one years."
+  description="Eight steps in order, each one conditional on what you actually own. Fees and expensive debt first, because you would know within months. The clever parts last, because you would know in about thirty-one years."
 >
   <div class="prose">
     <Rail>The order</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Start here</h1>
 
-    <MarginNote label="The question">
-      <p>
-        In what order should I do things, and how long before I would know whether each one worked? Checked
-        against <code>docs/research/</code> on <span data-numeric>2026-08-23</span>.
-      </p>
-    </MarginNote>
+    <p>Eight steps, in this order. The order comes from how certain each one is and how fast you would know it
+    worked, which matters more than how big it is.</p>
 
-    <p>Six steps. They are in this order because of how fast you would find out whether each one worked, which
-    turns out to matter more than how big each one is.</p>
-
-    <p>Step one settles in about three and a half months. Step six settles in about thirty-one years. Both are worth roughly a
-    percentage point a year on paper. Only one of them is a decision you can actually check.</p>
+    <p>Some of these will not apply to you. Each step says up front who it is for, and skipping one costs you
+    nothing. Step one settles in months. Step eight settles in about thirty-one years.</p>
   </div>
 
   <div class="prose mt-14">
     <Rail>Step 1</Rail>
 
-    <h2>1. Pay less in fees</h2>
+    <h2>1. Find out what you are paying</h2>
 
-    <MarginNote label="Source">
-      <p>
-        Morningstar 2026, asset-weighted. The ICI series reads 0.05% against 0.64%. The equal-weighted active
-        average of 1.00% to 1.12% overstates the gap by about 0.45 points, so the asset-weighted pair is the
-        conservative one.
-      </p>
-    </MarginNote>
+    <p>For anyone who owns a fund. Open every account you have and write down what each fund charges you a year.
+    Anything with a cheaper share class of the same thing, or a plain index equivalent, is a straight swap.</p>
 
-    <p>Open your employer plan and your brokerage account, and write down what every fund charges. Anything with a
-    cheaper share class of the same thing, or a plain index equivalent, is a straight swap.</p>
+    <p>Weighted by the money actually in them, index funds and active funds charge
+    <Figure id="index-vs-active-fee" inline />. Booked against the fund an ordinary investor holds instead, moving
+    is worth <Figure id="fee-gap" inline />. On fifty thousand dollars that is about two hundred and fifty dollars
+    a year you stop handing over, every year.</p>
 
-    <p>Across the whole market, weighted by the money actually in them, index funds charge
-    <Figure id="index-vs-active-fee" inline />. Booked conservatively against the fund an ordinary investor holds
-    instead, moving is worth <Figure id="fee-gap" inline />.</p>
-
-    <MarginNote label="Read from filings">
-      <p>
-        110 annual filings to the SEC covering 25 funds and eight fiscal years, as of
-        <span data-numeric>2026-08-17</span>. SPY also has the tightest spread on the shelf, and a spread is paid
-        once where a fee is paid every year.
-      </p>
-    </MarginNote>
-
-    <p>One wrinkle, because the sticker fee is not the cost. Funds lend their holdings out to short sellers and
-    pass most of the fee back to shareholders, which offsets a fifth to a third of a broad index fund's charge. We
-    read the real number out of 110 annual filings covering 25 funds. SPY, the most traded S&amp;P 500 fund in the
-    world, is a trust that cannot lend at all, so it costs <Figure id="spy-net-cost" inline /> a year to own
-    against 0.02% to 0.03% for every other fund tracking the same index. BND is the dearest broad bond fund on our
-    shelf despite an identical 0.03% fee, for the same reason. Two funds with the same sticker are not the same
-    purchase.</p>
+    <p>One wrinkle, because the sticker fee is not what you pay. Funds lend their holdings out and hand most of
+    the income back to shareholders, which cancels a fifth to a third of a broad index fund's charge. SPY cannot
+    lend at all, so it costs <Figure id="spy-net-cost" inline /> a year to own against roughly a quarter of that
+    for the other funds tracking the same index. <a href="/funds/">The shelf</a> prices the rest.</p>
   </div>
 
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
       <Rung level="settled" class="mt-1.5" />
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        A fee is a contract. Nobody has to be right about markets for this to work.
-      </p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        Immediately, and the whole fee-and-tax package reaches 90% confidence against your old portfolio in about
-        four months.
-      </p>
+      <p class="mt-2 text-sm text-ink-muted">Immediately, and it never stops.</p>
     </div>
   </div>
 
   <div class="prose mt-14">
     <Rail>Step 2</Rail>
 
-    <h2>2. Fill the tax-advantaged space you already have</h2>
+    <h2>2. Pay off debt that costs more than Treasuries pay</h2>
 
-    <p>If your employer matches your contributions, take the whole match before you do anything else on this page.
-    It is the only return here that arrives the same day you buy it.</p>
+    <p>For anyone carrying a balance. If you carry debt costing more than the after-tax Treasury yield, paying it
+    down is very likely the best return available to you for the risk you take. Nothing on any fund shelf
+    competes, because this return is certain and none of those are.</p>
+
+    <p>A credit-card balance qualifies without argument. A car loan usually does. A cheap fixed mortgage usually
+    does not. Compare against the after-tax yield you could actually get on a short Treasury today, and not
+    against what you hope stocks will do.</p>
+
+    <p>This project models a portfolio rather than a household, so nothing here prices that comparison. It is
+    still the first thing to check.</p>
+  </div>
+
+  <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
+    <div>
+      <p class="eyebrow">How certain</p>
+      <Rung level="settled" class="mt-1.5" />
+    </div>
+    <div>
+      <p class="eyebrow">How long before you would know</p>
+      <p class="mt-2 text-sm text-ink-muted">The day the balance clears.</p>
+    </div>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Step 3</Rail>
+
+    <h2>3. Take the match, then fill whatever sheltered space you have</h2>
+
+    <p>If your employer matches your contributions, take the whole match first. It is the only return here that
+    arrives the same day you buy it. No match, or no plan at all, and the rest of this step still applies.</p>
 
     <MarginNote label="Statute">
       <p>
@@ -107,78 +109,134 @@ import Base from "~/layouts/Base.astro";
       </p>
     </MarginNote>
 
-    <p>Then use the limits. For 2026 you can defer <Figure id="deferral-limit-2026" inline /> into a workplace
-    plan, plus $8,000 more from age 50 and $11,250 in the years you are 60 to 63. An IRA takes $7,500, plus $1,100
-    from 50. A health savings account takes <Figure id="hsa-limit-2026" inline />, plus $1,000 from 55, and it is
-    the only account in the US code that is untaxed going in and untaxed coming out. California taxes it anyway,
-    on all three legs.</p>
+    <p>If you have a workplace plan, the 2026 limit on what you can defer into it is
+    <Figure id="deferral-limit-2026" inline />, with more allowed from age 50 and more again in your early
+    sixties. An IRA takes less and steps up the same way. If you are on a high-deductible health plan, a health
+    savings account takes <Figure id="hsa-limit-2026" inline />, and it is the only account in the US code that is
+    untaxed going in and untaxed coming out. California taxes it anyway, on all three legs.</p>
 
-    <MarginNote label="Scope">
-      <p>
-        The menu cost is a range across the 15%, 18.8% and 23.8% rates, comparing a wholly captive plan with a
-        fully self-directed one. It starts to bind once less than 55% of your sheltered money sits in accounts you
-        control.
-      </p>
-    </MarginNote>
-
-    <p>Two things that will catch a higher earner. The Roth IRA contribution disappears between $242,000 and
-    $252,000 of joint income, so above that your Roth money has to come from a workplace Roth account or a
-    conversion. And an old employer plan can be the most expensive thing you own, not because of its fees but
-    because of its menu: no workplace plan offers the funds this research would put in a shelter, and when the
-    menu binds it forces the fund that should be last in the queue into your best account. That costs
-    <Figure id="captive-plan-cost" inline showUnit={false} /> a year, which is more than the entire account-placement decision is
-    worth. Rolling an old plan into an IRA you control fixes it in one phone call.</p>
+    <p>One thing catches people with an old employer plan. It can be the most expensive thing you own, not for
+    its fees but for its menu: no plan we have seen offers the funds this research would shelter, so the menu
+    forces the wrong fund into your best account. That runs <Figure id="captive-plan-cost" inline />, more than
+    the whole account-placement decision is worth. One phone call rolls it into an IRA you control.</p>
   </div>
 
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
       <Rung level="settled" class="mt-1.5" />
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">These are statutes with numbers in them.</p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Next April.</p>
+      <p class="mt-2 text-sm text-ink-muted">Next April.</p>
     </div>
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 3</Rail>
+    <Rail>Step 4</Rail>
 
-    <h2>3. Put the right funds in the right accounts</h2>
+    <h2>4. Save more</h2>
 
-    <p>Same funds, same weights, different accounts, different result after tax. The rule everyone repeats is that
-    bonds go in the IRA and international goes in the taxable account so you can claim the foreign tax credit.</p>
+    <p>Here is the least interesting sentence on this site and probably the most useful one. The only research
+    conclusion here that its own data can resolve is worth, over a working life, about the same as raising your
+    contributions by <Figure id="savings-equivalent" inline />.</p>
 
-    <MarginNote label="Whose portfolio">
-      <p>
-        Derived for one investor holding equal nominal thirds in a Roth, a traditional account and a taxable
-        brokerage account, at US federal rates only. State tax is excluded and shrinks every gap in the table
-        without reordering it.
-      </p>
-    </MarginNote>
+    <p>One budgeting decision. Available this month, certain, with no fund risk in it at all. Everything below
+    this line is smaller and less sure than that.</p>
 
-    <p>For an investor holding roughly a third of their money in a Roth, a third in a traditional account and a
-    third taxable, we measured the opposite. Every international fund we priced outranks every US equity fund in
-    the queue for sheltered space, and a plain US total-market fund comes last at every tax rate tested.
-    Sheltering the international holdings does permanently destroy the foreign tax credit, worth about 0.088% a
-    year. It buys back more than that in ordinary income tax you stop paying.</p>
-
-    <p>Then the honest part. Placement is worth <Figure id="placement-value" inline /> against a control an
-    investor could actually build, and that is a long way below the 0.05% to 0.30% the industry quotes. Our own
-    published headline used to be 0.38% to 0.55%. An internal re-derivation found lines measured against three
-    different yardsticks added together, a cost avoided booked as a saving, and two mutually exclusive tactics
-    both counted. The arithmetic had been right; what we booked from it was not.</p>
+    <p>The equivalence turns on the ratio of your contributions to your balance, so it shrinks as the account
+    grows. Once the balance is large, fund decisions matter relatively more.</p>
   </div>
 
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
       <Rung level="settled" class="mt-1.5" />
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        The arithmetic is settled. Whether it applies to you moves with your brackets, your account sizes and what
-        your employer plan will hold, so this is the one step you cannot copy from someone else.
+    </div>
+    <div>
+      <p class="eyebrow">How long before you would know</p>
+      <p class="mt-2 text-sm text-ink-muted">The next statement, and every one after it.</p>
+    </div>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Step 5</Rail>
+
+    <h2>5. Set your stock-versus-safe split from your life</h2>
+
+    <p>For anyone with money invested. Pure growth arithmetic pushes toward holding nothing but stocks, and it
+    gets there by ignoring everything that makes people sell. Choosing 60/40 instead is a forecast whether you
+    write it down or not: it asserts that stocks beat bonds by about a point and a quarter a year, against the
+    five and a half points the US actually delivered over six decades.</p>
+
+    <p>Moving from 60/40 to 90/10 measured <Figure id="equity-step" inline />, and reaching 90% confidence in that
+    took <Figure id="equity-step-horizon" inline />. You will decide long before the evidence arrives.</p>
+
+    <p>So do not set the split from a return forecast. Set it from your withdrawals, your debts, whether your job
+    disappears in the same recession that takes your portfolio down, and the worst year you would sit through
+    without selling. The number missing from this project is your own tolerable peak-to-trough fall, and nothing
+    here can supply it.</p>
+
+    <p>Do not assume the safe side is safe. Over the same six decades an all-bond portfolio fell further and
+    stayed under water longer than a mix holding a third in stocks.</p>
+  </div>
+
+  <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
+    <div>
+      <p class="eyebrow">How certain</p>
+      <div class="mt-1.5 flex flex-col gap-1.5">
+        <Rung level="settled" />
+        <Rung level="cant-tell" />
+      </div>
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Settled that it is the big one. Can't tell which side
+      pays.</p>
+    </div>
+    <div>
+      <p class="eyebrow">How long before you would know</p>
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">About 24 years, so decide it from your circumstances.</p>
+    </div>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Step 6</Rail>
+
+    <h2>6. If you hold more than one kind of account, place each fund where it is taxed least</h2>
+
+    <p>This step needs both a sheltered account and a taxable one. If all of it sits inside a workplace plan, or
+    all of it sits in a taxable brokerage account, there is nothing here to do.</p>
+
+    <MarginNote label="Whose portfolio">
+      <p>
+        Derived for one investor holding equal nominal thirds in a Roth, a traditional account and a taxable
+        brokerage account, at US federal rates only. State tax is excluded and shrinks every gap without
+        reordering them.
       </p>
+    </MarginNote>
+
+    <p>Same funds, same weights, different accounts, different result after tax. The rule everyone repeats is that
+    bonds go in the IRA and international goes in the taxable account so you can claim the foreign tax credit
+    back. For an investor holding roughly equal thirds across a Roth, a traditional account and a taxable
+    brokerage account, we measured the opposite. Every international fund we priced outranked every US stock fund
+    in the queue for sheltered space, and a plain US total-market fund came last at every rate we tested.
+    Sheltering the international holdings does destroy the foreign tax credit for good, worth
+    <Figure id="credit-forfeited" inline showUnit={false} /> a year, and it buys back more than that in ordinary
+    income tax you stop paying.</p>
+
+    <p>That answer belongs to those account sizes and those rates. Yours are different.
+    <a href="/tools/placement/">The placement tool</a> runs the same arithmetic at your own bracket and your own
+    account split, and it is the only version of this answer worth acting on.</p>
+
+    <p>Then the honest part about the size. Getting the ordering right is worth
+    <Figure id="placement-value" inline /> against a control you could actually build, well below what the
+    industry quotes and well below what we used to publish ourselves.</p>
+  </div>
+
+  <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
+    <div>
+      <p class="eyebrow">How certain</p>
+      <Rung level="settled" class="mt-1.5" />
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">The arithmetic is settled. Whether it applies to you
+      moves with your brackets, so this is the one step you cannot copy.</p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
@@ -187,208 +245,114 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 4</Rail>
+    <Rail>Step 7</Rail>
 
-    <h2>4. Save more, and set your stock-versus-safe split from your life</h2>
+    <h2>7. Leave it alone, and rebalance with new money</h2>
 
-    <MarginNote label="Scope">
-      <p>
-        The equivalence depends entirely on the ratio of your contributions to your balance, so it shrinks as the
-        account grows: 2.57% over thirty years against 3.08% over thirty-six.
-      </p>
-    </MarginNote>
+    <p>For anyone holding more than one fund. Pick one month of the year. Check then, and only then. Act only when
+    a holding has wandered at least a quarter away from where you meant it to be. If you have sheltered accounts,
+    trade in there, where a sale costs no tax. Otherwise point new contributions at whatever is light instead of
+    selling.</p>
 
-    <p>The only research conclusion on this site that its own data can resolve is worth, over 36 years, about the
-    same as raising your contributions by <Figure id="savings-equivalent" inline />. One budgeting decision,
-    available this month, certain, with no fund risk in it at all.</p>
+    <p>On an eight-holding portfolio measured over three and a half decades, that policy held the average distance
+    from target to <Figure id="rebalance-drift" inline />, at roughly three trades a year and no realisation tax.
+    Left alone, the same portfolio wandered about six times as far. Over a century and a half a drifting 60/40
+    ends up almost entirely invested in the United States. Buying and holding does not hold a global portfolio. It
+    holds whichever market won.</p>
 
-    <MarginNote label="Source">
-      <p>
-        <a href="/research/setting-the-equity-share/"
-          >Setting the equity share</a
-        >: US, <span data-numeric>1963</span> to <span data-numeric>2025</span>, 750 months, with a modelled
-        ten-year Treasury leg. One country, and every rung of the ladder takes 21 to 26 years.
-      </p>
-    </MarginNote>
+    <p>Do not expect this to make you money. Against never trading at all, the policy returned
+    <Figure id="rebalance-return" inline />, well inside what that test could have seen either way. Rebalance to
+    hold your risk where you put it, which is settled, and which is the actual reason to do it.</p>
 
-    <p>Now the split. Pure growth arithmetic pushes toward holding all stocks, and it does that because it ignores
-    everything that makes people sell. Choosing 60/40 instead is a forecast whether you write it down or not: it
-    asserts that stocks will beat bonds by about 1.18% to 1.30% a year, against 5.51% a year realised from 1963 to
-    2025. Moving from 60/40 to 90/10 measured <Figure id="equity-step" inline />, and 90% confidence in that took
-    <Figure id="equity-step-horizon" inline />.</p>
-
-    <p>So do not set the split from a return forecast. Set it from your withdrawals, your debts, whether your job
-    disappears in the same recession that takes your portfolio, and the worst year you would genuinely sit through
-    without selling. The single most valuable number missing from this entire project is your tolerable
-    peak-to-trough fall. Nothing here can supply it.</p>
-
-    <p>And do not assume the safe side is safe. Over 1963 to 2025 an all-bond portfolio fell 25.1% and stayed
-    under water for 65 months, which is deeper and longer than the 30/70 mix's 17.9% over 41 months.</p>
-  </div>
-
-  <Callout kind="open-question">
-    <p>
-      This research models a portfolio rather than a household. If you carry debt costing more than the after-tax
-      Treasury yield, paying it down is very likely the best return available to you for the risk you take, and no
-      fund on any shelf competes with it. Nothing here prices that comparison.
-    </p>
-  </Callout>
-
-  <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
-    <div>
-      <p class="eyebrow">How certain</p>
-      <Rung level="settled" class="mt-1.5" />
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        The savings arithmetic is settled. The split is a judgement about you, informed by measurement.
-      </p>
-    </div>
-    <div>
-      <p class="eyebrow">How long before you would know</p>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        24 years, which is the argument for not agonising over it.
-      </p>
-    </div>
-  </div>
-
-  <div class="prose mt-14">
-    <Rail>Step 5</Rail>
-
-    <h2>5. Leave it alone, and rebalance with new money</h2>
-
-    <p>Pick one month of the year. Check then, and only then. Act only when a holding has drifted at least a
-    quarter away from its target, so a 20% target means you move at 15% or 25%, and do the trades inside your
-    sheltered accounts where a sale costs no tax.</p>
-
-    <MarginNote label="Source">
-      <p>
-        <a href="/research/rebalancing-policy/"
-          >Rebalancing policy</a
-        >: 427 months, eight holdings, sheltered trades only, as of <span data-numeric>2026-08-21</span>. Roughly
-        2.9 trades a year and no realisation tax.
-      </p>
-    </MarginNote>
-
-    <p>On the eight-holding portfolio over 427 months, that policy held average drift to
-    <Figure id="rebalance-drift" inline />, at roughly three trades a year and no realisation tax at all. Left
-    completely alone, the same portfolio drifted 6.39 points on average, and its trend holding wandered to 39.17%
-    of the portfolio against a 30% target. Over 149 years, a drifting 60/40 ends up 86.3% invested in the United
-    States. Buy-and-hold does not hold a global portfolio. It holds whichever market won.</p>
-
-    <MarginNote label="Read as a shrug">
-      <p>
-        Against a smallest detectable difference of 1.81 percentage points, so this is a shrug with a number
-        attached rather than a finding of zero. A separate 420-month measurement of a monthly policy came out at
-        −0.39% a year.
-      </p>
-    </MarginNote>
-
-    <p>Do not expect this to make you money. Measured against simply never trading, the policy returned
-    <Figure id="rebalance-return" inline />, and the smallest difference that test could have seen is 1.81
-    percentage points. We cannot tell whether rebalancing helps or hurts your return, and one earlier 35-year
-    measurement came out slightly negative. Rebalance to control how much risk you are carrying, which is settled
-    and is the actual reason to do it.</p>
-
-    <p>Two traps worth precommitting against. Never move your review month once you have picked it, because the
-    measured result moves 0.19 percentage points a year depending on whether you anchor in December, June or
-    March, which is as large as the thing being measured, and because moving it is indistinguishable from reacting
-    to a fall. And never set a performance trigger on a holding you bought as ballast: at a 30% weight such a
-    holding trails in 43.8% of simulated ten-year histories even when the extra return it is supposed to earn is
-    really there, so the trigger deletes it precisely for doing its job.</p>
+    <p>Two traps. Never move your review month once you have picked it: the result shifts by about as much as
+    the thing being measured, and moving it is indistinguishable from reacting to a fall. And never set a
+    performance trigger on a holding you bought as ballast, because it will trail often enough to get deleted for
+    doing its job.</p>
   </div>
 
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
       <div class="mt-1.5 flex flex-col gap-1.5">
-        <Rung level="settled" showGloss />
-        <Rung level="cant-tell" showGloss />
+        <Rung level="settled" />
+        <Rung level="cant-tell" />
       </div>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        Settled on drift control, which is the reason to do it. We can't tell on return.
-      </p>
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Settled on risk control. Can't tell on return.</p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        The drift control works in the first year. The return question is not answerable on any data we have.
-      </p>
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">The risk control shows in the first year. The return
+      question is not answerable at all.</p>
     </div>
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 6</Rail>
+    <Rail>Step 8</Rail>
 
-    <h2>6. Only now, the optional extras</h2>
+    <h2>8. Only now, the optional extras</h2>
 
-    <p>Everything above is arithmetic. Everything here is a bet, and we have tested 21 separate ideas to arrive at
-    the two worth your attention.</p>
-
-    <MarginNote label="The gap in it">
-      <p>
-        86% of this result comes from data starting <span data-numeric>1990-11</span>, and nobody has ever run it
-        on years the idea had not already seen. Charge each fund the shortfall we measured for it and the number
-        falls to 0.60% or 0.30%, depending on the method.
-      </p>
-    </MarginNote>
+    <p>Everything above is arithmetic. Everything here is a bet. We tested 21 ideas to get to the two worth your
+    attention.</p>
 
     <p>Leaning your stock holdings toward cheap and profitable companies probably beats a cheap index fund by
-    <Figure id="tilt-gap" inline />, and the honest range is 0.30 to 1.32. That clears the smallest difference the
-    test could see, narrowly, once you use error bars that allow for markets going quiet for years and then going
-    wild. It would take <Figure id="tilt-horizon" inline showUnit={false} /> before a study could separate that gap from zero, and
-    86% of the result rests on data beginning in November 1990, which is also the only data the idea has ever been
-    tested on.</p>
+    <Figure id="tilt-gap" inline />, on an honest range from about a third of a point to about one and a third.
+    That clears the smallest difference the test could see, narrowly. It would take
+    <Figure id="tilt-horizon" inline showUnit={false} /> of data before a study could separate the gap from zero,
+    and most of it rests on months beginning in 1990, the only stretch the idea has ever been tested on.</p>
 
-    <MarginNote label="Two questions">
-      <p>
-        Thirty years is how long a <em>study</em> would take. Thirty-one is how long <em>your own account</em>
-        would take. Different questions that happen to land near each other here.
-        <a href="/how-sure/">How sure we are</a> keeps them apart.
-      </p>
-    </MarginNote>
+    <p>The whole reference portfolio, that lean plus a trend fund, cannot be told apart from a cheap index fund
+    holding the same mix. Your own account would need
+    <Figure id="time-to-know-portfolio" inline showUnit={false} /> to settle it.</p>
 
-    <p>The whole recommended portfolio, that lean plus a trend fund, reads 2.20 percentage points a year ahead of
-    an index fund that borrows as much as it does. The range runs 0.05 to 4.57, the smallest difference the design
-    could see is 2.83, and the honest verdict is that we cannot tell. Set it against a plain cheap index fund
-    holding the same mix and your own account would need
-    <Figure id="time-to-know-portfolio" inline showUnit={false} /> to settle it, which is the thirty-one years at
-    the top of this page.</p>
+    <p>If you do add anything, notice how you pay for it. Selling a quarter of your stocks to buy a trend fund,
+    and buying a fund that holds the stocks and the trend position at once with borrowing inside it, are different
+    purchases. The gap between them is <Figure id="funding-rule-swing" inline />, larger than any extra return
+    this project has measured. Confusing the two has flipped more conclusions here than anything else.</p>
 
-    <p>If you do add anything, notice how you are paying for it. Selling 25% of your stocks to buy a trend fund
-    and buying a fund that holds the stocks and the trend position at once, using borrowing inside the fund, are
-    completely different purchases. The gap between them is <Figure id="funding-rule-swing" inline /> in the
-    arithmetic, which is larger than any extra return this project has ever measured. Confusing the two has
-    flipped more conclusions here than any other single mistake.</p>
-
-    <p>And know what this feels like before you buy it. Owning cheap US stocks rather than the whole US market has
-    run <Figure id="value-tilt-drought" inline /> and still has not caught up. That is not a simulated worst case.
-    That is the record, and you would have been checking it every month.</p>
+    <p>And know what this feels like first. Owning cheap US stocks rather than the whole US market has run
+    <Figure id="value-tilt-drought" inline /> and still has not caught up. That is the record rather than a
+    simulated worst case.</p>
   </div>
 
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
       <div class="mt-1.5 flex flex-col gap-1.5">
-        <Rung level="probably" showGloss />
-        <Rung level="cant-tell" showGloss />
+        <Rung level="probably" />
+        <Rung level="cant-tell" />
       </div>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        Probably on the lean toward cheap and profitable companies. Can't tell on the whole portfolio, which is
-        the honest verdict and not a no.
-      </p>
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Probably on the lean toward cheap and profitable
+      companies. Can't tell on the portfolio.</p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
-      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        About thirty-one years, against a cheap index fund holding the same mix. Your own account is never going to be
-        the evidence for this step.
-      </p>
+      <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">About thirty-one years. Your own account will never be
+      the evidence here.</p>
     </div>
   </div>
 
   <Callout kind="do-this">
     <p>
-      Do the first three. Then decide about the rest with your eyes open, and read
+      Do the first four. Then decide about the rest with your eyes open, and read
       <a href="/portfolio/">the portfolio</a> before you buy anything on this list.
     </p>
   </Callout>
+
+  <div class="prose mt-14">
+    <Rail>Sources</Rail>
+
+    <h2>Where this comes from</h2>
+
+    <p>Fee figures are Morningstar's 2026 asset-weighted averages, with fund costs read from annual filings to
+    the SEC, and contribution limits are IRS Notice 2025-67. The account work is in
+    <a href="/research/structural-and-tax-edges/">structural and tax edges</a>, the split in
+    <a href="/research/setting-the-equity-share/">setting the equity share</a>, the rebalancing in
+    <a href="/research/rebalancing-policy/">rebalancing policy</a>. All checked on
+    <span data-numeric>2026-08-23</span>.</p>
+
+    <p>One thing we could not check for you. Fidelity began charging a per-purchase fee on some exchange-traded
+    funds in <span data-numeric>2026</span>, and Schwab has confirmed a comparable programme. On a
+    ten-thousand-dollar purchase that fee outweighs a full year of almost every annual charge here, paid on day
+    one. Whether it hits the funds you want is unverified, so ask your broker.</p>
+  </div>
 </Base>
