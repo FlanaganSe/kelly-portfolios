@@ -52,3 +52,6 @@ research/*.egg-info/
 docs/the-plan.md
 docs/*-plan.md
 .claude/scratch/
+
+# Scratch space for one-off inspection scripts.
+scripts/.tmp/

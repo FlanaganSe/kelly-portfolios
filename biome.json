@@ -4,6 +4,7 @@
     "includes": [
       "src/**/*.{js,jsx,ts,tsx}",
       "scripts/**/*.{js,ts}",
+      "!**/.*",
       "infra/**/*.{js,ts}",
       "functions/**/*.{js,ts}",
       "*.{js,jsx,mjs,ts,tsx}"
