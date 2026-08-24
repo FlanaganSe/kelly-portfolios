@@ -1,34 +1,141 @@
-# Why GitHub Pages rather than Cloudflare Pages.
+# Publish the static bundle to the S3 bucket already behind kellyportfolios.com.
 #
-# The constraint that decides it is the apex record. The domain's DNS is Route 53, and
-# Route 53's ALIAS only targets AWS resources — it has no CNAME flattening, so an apex
-# can point at a third-party host only through plain A records. Cloudflare Pages hands
-# out a `*.pages.dev` hostname and no stable addresses, so `kellyportfolios.com` could
-# not be pointed at it without moving the zone to Cloudflare. GitHub Pages publishes
-# four fixed apex A records, which Route 53 can hold as-is.
+# Why S3 and CloudFront rather than a Pages host: the domain is registered at Amazon
+# Registrar, its DNS is Route 53, and the apex already points at a CloudFront
+# distribution. Deploying into that distribution changes no DNS record at all, so there
+# is no propagation window and no cutover. `AWS_ACCESS_KEY_ID` and
+# `AWS_SECRET_ACCESS_KEY` are already repository secrets.
 #
-# It is also the smaller change of habit. The repository is already public on GitHub,
-# so nobody opens a new account, and deployment authenticates with the workflow's own
-# OIDC token — no API key, no long-lived secret, nothing to rotate.
+# The pick stays reversible. `pnpm build` emits a plain static bundle in `dist/`, so
+# moving to any other host later means changing the last two steps.
 #
-# The pick is reversible: `pnpm build` emits a plain static bundle in `dist/`, so
-# swapping hosts later means changing the last two steps and the DNS records.
+# ---------------------------------------------------------------------------
+# Read this before the first run.
 #
-# Nothing here runs until the owner completes the manual steps in `docs/deploying.md`.
+# The previous site was a single-page application. Two of its likely CloudFront
+# settings would break this build quietly rather than loudly, which is worse:
+#
+#   1. A custom error response mapping 404 (or 403) to `/index.html` with status 200.
+#      That is the standard SPA fallback. Against a directory-format build it means a
+#      URL that does not exist serves the *home page* with a success status, so a typo
+#      looks like a working page and search engines index duplicates of the home page
+#      under every wrong URL.
+#
+#   2. A REST origin (`bucket.s3.amazonaws.com`) rather than the website endpoint
+#      (`bucket.s3-website-region.amazonaws.com`). Only the website endpoint resolves
+#      `/start/` to the key `start/index.html`. A REST origin returns 404 for every
+#      page except the root, because CloudFront's default root object applies to `/`
+#      alone and to no other directory.
+#
+# The `discover` job below reports both without changing anything. Run it first, from
+# the Actions tab, with `dry_run` left ticked. `docs/deploying.md` explains what to do
+# with each answer.
+# ---------------------------------------------------------------------------
 name: Deploy
 
 on:
   push:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Report what would happen, upload nothing"
+        type: boolean
+        default: true
 
-# One deploy at a time, and never cancel one halfway: a cancelled Pages deployment can
-# leave the site serving a partial artifact.
+# One deploy at a time, and never cancel one halfway: a half-synced bucket serves a
+# mixture of two builds, and the hashed asset names make that look like a cache bug.
 concurrency:
-  group: pages
+  group: deploy-prod
   cancel-in-progress: false
 
+env:
+  AWS_REGION: us-east-1
+  SITE_DOMAIN: kellyportfolios.com
+
 jobs:
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      distribution_id: ${{ steps.find.outputs.distribution_id }}
+      bucket: ${{ steps.find.outputs.bucket }}
+      origin_domain: ${{ steps.find.outputs.origin_domain }}
+      website_origin: ${{ steps.find.outputs.website_origin }}
+      error_responses: ${{ steps.find.outputs.error_responses }}
+    steps:
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Find the distribution serving the domain
+        id: find
+        run: |
+          set -euo pipefail
+
+          dist=$(aws cloudfront list-distributions \
+            --query "DistributionList.Items[?contains(Aliases.Items || \`[]\`, '${SITE_DOMAIN}')] | [0]" \
+            --output json)
+
+          if [ "$dist" = "null" ] || [ -z "$dist" ]; then
+            echo "::error::No CloudFront distribution lists ${SITE_DOMAIN} as an alias."
+            echo "Distributions this key can see:"
+            aws cloudfront list-distributions \
+              --query "DistributionList.Items[].{Id:Id,Aliases:Aliases.Items,Origin:Origins.Items[0].DomainName}" \
+              --output table || true
+            exit 1
+          fi
+
+          id=$(echo "$dist" | jq -r '.Id')
+          origin=$(echo "$dist" | jq -r '.Origins.Items[0].DomainName')
+          errors=$(echo "$dist" | jq -c '.CustomErrorResponses.Items // []')
+
+          # A website-endpoint origin resolves directory indexes; a REST origin does not.
+          if echo "$origin" | grep -q 's3-website'; then website=true; else website=false; fi
+
+          # Strip the S3 suffix either way to recover the bucket name.
+          bucket=$(echo "$origin" | sed -E 's/\.s3-website[.-][a-z0-9-]+\.amazonaws\.com$//; s/\.s3[.-][a-z0-9-]*\.?amazonaws\.com$//')
+
+          {
+            echo "distribution_id=$id"
+            echo "bucket=$bucket"
+            echo "origin_domain=$origin"
+            echo "website_origin=$website"
+            echo "error_responses=$errors"
+          } >> "$GITHUB_OUTPUT"
+
+          {
+            echo "### What is behind ${SITE_DOMAIN}"
+            echo ""
+            echo "| | |"
+            echo "|---|---|"
+            echo "| Distribution | \`$id\` |"
+            echo "| Origin | \`$origin\` |"
+            echo "| Bucket | \`$bucket\` |"
+            echo "| Resolves directory indexes | **$website** |"
+            echo ""
+            if [ "$website" = "false" ]; then
+              echo "> **A REST origin cannot serve \`/start/\`.** Only \`/\` would work."
+              echo "> Fix it before deploying: see \`docs/deploying.md\`."
+              echo ""
+            fi
+            if [ "$errors" = "[]" ]; then
+              echo "No custom error responses. Good — a missing page will 404 honestly."
+            else
+              echo "**Custom error responses are configured:**"
+              echo ""
+              echo '```json'
+              echo "$errors" | jq .
+              echo '```'
+              echo ""
+              echo "> If any of these maps 403 or 404 to \`/index.html\` with response code 200,"
+              echo "> it is the single-page-application fallback and it must be removed. Against"
+              echo "> this build it serves the home page for every wrong URL, with a success"
+              echo "> status, which search engines will index as duplicates."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
   build:
     runs-on: ubuntu-latest
     steps:
@@ -41,23 +148,85 @@ jobs:
           node-version: 22
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+
       # `astro build` is the real gate on content collections: `astro check` does not
       # validate them, so a figure citing a heading that no longer exists fails here
       # and nowhere earlier.
       - run: pnpm build
-      - uses: actions/upload-pages-artifact@v3
+
+      - uses: actions/upload-artifact@v4
         with:
+          name: site
+          path: dist/
+          retention-days: 7
+
+  publish:
+    needs: [discover, build]
+    if: github.event_name == 'push' || inputs.dry_run == false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: site
           path: dist
 
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    permissions:
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - id: deployment
-        uses: actions/deploy-pages@v4
+      - uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Refuse to publish into an origin that cannot serve the pages
+        if: needs.discover.outputs.website_origin == 'false'
+        run: |
+          echo "::error::${{ needs.discover.outputs.origin_domain }} is a REST origin."
+          echo "Every page except the root would 404. See docs/deploying.md."
+          exit 1
+
+      # Hashed filenames are immutable and cached for a year. HTML, the sitemap and
+      # the search index are re-read every time, so the only thing a deploy has to
+      # invalidate is the small set of documents.
+      - name: Upload the fingerprinted assets first
+        run: |
+          aws s3 sync dist/ "s3://${{ needs.discover.outputs.bucket }}/" \
+            --delete \
+            --exclude "*.html" --exclude "*.xml" --exclude "*.txt" --exclude "*.json" \
+            --cache-control "public,max-age=31536000,immutable"
+
+      # HTML last, so a reader never gets a new document referencing an asset that has
+      # not landed yet.
+      - name: Upload the documents
+        run: |
+          aws s3 sync dist/ "s3://${{ needs.discover.outputs.bucket }}/" \
+            --delete \
+            --exclude "*" \
+            --include "*.html" --include "*.xml" --include "*.txt" --include "*.json" \
+            --cache-control "public,max-age=0,must-revalidate"
+
+      - name: Invalidate
+        run: |
+          id=$(aws cloudfront create-invalidation \
+            --distribution-id "${{ needs.discover.outputs.distribution_id }}" \
+            --paths "/*" --query 'Invalidation.Id' --output text)
+          aws cloudfront wait invalidation-completed \
+            --distribution-id "${{ needs.discover.outputs.distribution_id }}" --id "$id"
+
+      - name: Check the live site
+        run: |
+          set -euo pipefail
+          fail=0
+          for path in / /start/ /stacking/ /portfolio/ /doesnt-work/ /how-sure/; do
+            code=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}${path}")
+            printf '%-16s %s\n' "$path" "$code"
+            [ "$code" = "200" ] || fail=1
+          done
+
+          # A missing page must 404. If it returns 200 the SPA error mapping is still
+          # in place and every wrong URL is serving the home page.
+          missing=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}/this-page-does-not-exist/")
+          echo "404 check     $missing"
+          if [ "$missing" = "200" ]; then
+            echo "::error::A nonexistent URL returned 200. Remove the CloudFront custom error response mapping 404 to /index.html."
+            fail=1
+          fi
+          exit $fail

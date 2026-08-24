@@ -1,128 +1,100 @@
 # Deploying the site
 
-The build runs in CI and produces a static bundle. Nothing between here and a live
-`kellyportfolios.com` needs an AWS credential, a Cloudflare account or a secret in the
-repository. It does need four actions in a browser that only the domain's owner can take,
-and they are listed below in the order they must happen.
+The build runs in CI and publishes into the S3 bucket that already sits behind
+`kellyportfolios.com`. **No DNS record changes.** `AWS_ACCESS_KEY_ID` and
+`AWS_SECRET_ACCESS_KEY` are already repository secrets, so there is nothing to create.
 
 `as of 2026-08-23`.
 
-## What is live now, and what replaces it
+## What is live now
 
 `kellyportfolios.com` is served by CloudFront in front of an S3 bucket. That bundle was
-last written on 2025-10-10 and cannot be rebuilt from a clone: `sst.config.ts` imports
+written on 2025-10-10 and cannot be rebuilt from a clone: `sst.config.ts` imports
 `./infra/*` and deploys handlers from `functions/`, and neither directory has ever been
-committed in any ref. So the deployment currently in production is unreproducible, and
-replacing it costs nothing that presently works.
+committed in any ref. The workflow that ran it, `deploy-prod.yaml`, has been deleted
+because it could only ever fail.
 
-The replacement is GitHub Pages, driven by
-[`.github/workflows/deploy.yml`](../.github/workflows/deploy.yml). The comment at the top
-of that file records why Pages rather than Cloudflare; the short version is that Route 53
-has no CNAME flattening, so a third-party host reaches the apex only through fixed A
-records, and Cloudflare Pages publishes none.
+What replaces it is [`deploy.yml`](../.github/workflows/deploy.yml), which builds the
+static bundle and syncs it into the same bucket. Because the distribution and the DNS
+records are untouched, there is no cutover and no propagation window.
 
-## Step 1. Turn Pages on
+## Run the discovery job first
 
-In the repository, `Settings`, then `Pages`, then `Build and deployment`, then `Source`, choose
-`GitHub Actions`. Do not choose "Deploy from a branch"; the workflow uploads an artifact
-and that source setting would ignore it.
+The previous site was a single-page application, and two of its likely CloudFront
+settings would break this build **quietly**. Find out before publishing:
 
-Nothing else on that screen matters yet. Leave the custom domain blank until step 3.
+`Actions` → `Deploy` → `Run workflow`, leave **dry run** ticked, run it.
 
-## Step 2. Let the workflow run once
+It changes nothing. It prints the distribution id, the bucket, the origin type, and any
+custom error responses into the run summary.
 
-Push to `main`, or run `Actions`, then `Deploy`, then `Run workflow`. The first run creates the
-`github-pages` environment and publishes to `https://flanaganse.github.io/kelly-portfolios/`.
+### If it reports `Resolves directory indexes: false`
 
-Open that URL and confirm the page renders before touching DNS. If the CSS is missing, the
-`site` value in `astro.config.mjs` and the repository subpath disagree; that resolves
-itself at step 3, when the site moves to the apex and the subpath disappears.
+The distribution uses a REST origin (`bucket.s3.amazonaws.com`) rather than the website
+endpoint (`bucket.s3-website-us-east-1.amazonaws.com`). A REST origin serves the default
+root object at `/` and nothing at any other directory, so every page except the home page
+would 404. The `publish` job refuses to run in this state rather than half-publishing.
 
-## Step 3. Claim the custom domain
+Two ways out, either is fine:
 
-`Settings`, then `Pages`, then `Custom domain`, enter `kellyportfolios.com`, and save. GitHub will
-report that the DNS check is pending, which is expected until step 4 finishes.
+- **Point the origin at the website endpoint.** Enable static website hosting on the
+  bucket with `index.html` as the index document, then change the distribution's origin
+  domain to the website endpoint. Note that a website endpoint is HTTP-only, so the
+  origin protocol policy has to be `http-only`.
+- **Attach a CloudFront Function** on viewer request:
 
-`public/CNAME` already contains `kellyportfolios.com` and is copied into every build, so
-the domain survives each deployment. Do not delete it.
+  ```js
+  function handler(event) {
+    var request = event.request;
+    if (request.uri.endsWith('/')) request.uri += 'index.html';
+    else if (!request.uri.includes('.')) request.uri += '/index.html';
+    return request;
+  }
+  ```
 
-## Step 4. The Route 53 records
+### If it reports a custom error response mapping 404 or 403 to `/index.html`
 
-In the Route 53 hosted zone for `kellyportfolios.com`:
+That is the single-page-application fallback, and it must be removed. Against this build
+it serves the **home page** for every URL that does not exist, with a 200 status. A typo
+looks like a working page, and search engines index a copy of the home page under every
+wrong URL. Delete the error response in the distribution's Error Pages tab.
 
-Delete the existing apex `A` ALIAS record pointing at the CloudFront distribution. Note
-the distribution's domain name first, so the old deployment can be restored if needed.
+The final step of the deploy checks for exactly this by requesting a URL that cannot
+exist and failing if it returns 200.
 
-Create an `A` record for the apex, TTL 300, with these four values:
+## Publish
 
-```
-185.199.108.153
-185.199.109.153
-185.199.110.153
-185.199.111.153
-```
+Once discovery is clean, either push to `main`, or run the workflow again with **dry run
+unticked**.
 
-Create an `AAAA` record for the apex, TTL 300, with these four values:
-
-```
-2606:50c0:8000::153
-2606:50c0:8001::153
-2606:50c0:8002::153
-2606:50c0:8003::153
-```
-
-Create a `CNAME` record for `www.kellyportfolios.com`, TTL 300, value
-`flanaganse.github.io.`, and the trailing dot matters. `www` does not resolve today; adding it
-means a reader who types it lands on the site instead of a DNS error, and GitHub redirects
-it to the apex on its own.
-
-Those addresses are GitHub's published set for apex domains. Confirm them against
-[GitHub's current documentation](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
-before creating the records; they change rarely, and a stale list here would be silent.
-
-## Step 5. Force HTTPS
-
-Return to `Settings`, then `Pages`. Once the DNS check passes, tick `Enforce HTTPS`. The
-certificate is issued by Let's Encrypt and usually appears within an hour of the records
-propagating. The tick box stays greyed out until then.
-
-## The trailing slash is the host's job
-
-The build emits one URL form and one only: `trailingSlash: "always"` with directory
-format, so every page is written as `<route>/index.html` and every internal link carries
-the slash. What the setting does not do is redirect. On a static build it governs the dev
-server and on-demand routes, so a reader who types `kellyportfolios.com/start` reaches the
-host, not Astro, and the host decides whether that is a redirect or a second copy of the
-page. Two indexed URLs for one document is the failure being avoided.
-
-GitHub Pages issues a 301 from `/start` to `/start/` when `/start/index.html` exists, which
-is the behaviour this configuration depends on. Check it once, at step 2, before the DNS
-change:
-
-```sh
-curl -sI https://flanaganse.github.io/kelly-portfolios/start | head -3
-```
-
-A `301` with a `location` ending in a slash is correct. A `200` means both forms serve the
-same page, and the fix is a redirect rule at whatever host is in use rather than a change
-in the Astro config.
+The sync runs in two passes on purpose. Fingerprinted assets go first with a one-year
+immutable cache; HTML, the sitemap and the search index go second with
+`must-revalidate`, so a reader never receives a new document that references an asset
+which has not landed. Then the whole distribution is invalidated and the job waits for it
+to complete before checking six live URLs.
 
 ## Verifying
 
 ```sh
-dig +short kellyportfolios.com A
-dig +short www.kellyportfolios.com CNAME
-curl -sI https://kellyportfolios.com | head -20
+curl -sI https://kellyportfolios.com/ | head -5
+curl -so /dev/null -w '%{http_code}\n' https://kellyportfolios.com/stacking/
+curl -so /dev/null -w '%{http_code}\n' https://kellyportfolios.com/no-such-page/   # must be 404
 ```
 
-The apex should answer with the four `185.199.x.153` addresses, and the response headers
-should carry `server: GitHub.com` rather than `server: AmazonS3`.
+## The trailing slash
+
+The build emits one URL form: `trailingSlash: "always"` with directory format, so every
+page is written as `<route>/index.html` and every internal link carries the slash. The
+setting does not redirect — on a static build it governs the dev server only, and the host
+decides whether `/start` is a redirect to `/start/` or a second copy of the page. Two
+indexed URLs for one document is the failure being avoided. An S3 website endpoint issues
+the redirect on its own; a CloudFront Function can do it if the origin changes.
 
 ## Rolling back
 
-The CloudFront distribution and its S3 bucket are untouched by any of this. Restoring the
-old site means recreating the apex ALIAS record that step 4 deleted. Nothing else changes,
-and the GitHub Pages deployment can be left running in parallel at its `github.io` address.
+The bucket is versioned only if it was configured that way, so the reliable rollback is to
+check out the previous commit and re-run the workflow. The distribution, its settings and
+every DNS record are untouched by any deploy, so nothing outside the bucket needs undoing.
 
 ## Building it yourself
 
@@ -133,4 +105,4 @@ pnpm preview    # serves dist/ on http://localhost:4321
 ```
 
 `pnpm build:legacy` still builds the old client-routed application into `dist-legacy/`.
-It is kept as a reference while pages are ported and is not deployed anywhere.
+It is kept as a reference while pages are ported and is deployed nowhere.
