@@ -1,0 +1,636 @@
+---
+/**
+ * The concrete construction: seven funds, the account each goes in, and the one choice
+ * left to the reader.
+ *
+ * Both horizons quoted here are `T = (z·s/e)²` at 90% confidence, so they answer when
+ * the reader's own account would show the gap. The design's detection horizon — 59
+ * years — is a different estimand and lives only on `/how-sure/`.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Rung from "~/components/Rung.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="The portfolio"
+  description="Seven funds, the account each one goes in, the single choice you have to make yourself, and an honest account of how bad it will feel when it is losing."
+>
+  <div class="prose">
+    <Rail>The holdings</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The portfolio</h1>
+
+    <MarginNote label="The question">
+      <p>
+        What should I actually hold, and which account does each piece go in? Checked against
+        <code>docs/research/</code> on <span data-numeric>2026-08-23</span>.
+      </p>
+    </MarginNote>
+
+    <p>Seven funds. You buy them in these proportions, you put each one in the account named further down, and you
+    leave it alone.</p>
+
+  </div>
+
+  <Breakout scroll class="my-8">
+
+    <table class="w-full min-w-[34rem] border-collapse text-sm">
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <th scope="col" class="eyebrow py-2 pr-4">Ticker</th>
+          <th scope="col" class="eyebrow py-2 pr-4">Fund</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">Weight</th>
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">RSST</th>
+          <td class="py-2 pr-4">Return Stacked U.S. Stocks &amp; Managed Futures</td>
+          <td data-numeric class="py-2 pr-4 text-right">30%</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">VTI</th>
+          <td class="py-2 pr-4">Vanguard Total Stock Market</td>
+          <td data-numeric class="py-2 pr-4 text-right">19%</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">VXUS</th>
+          <td class="py-2 pr-4">Vanguard Total International Stock</td>
+          <td data-numeric class="py-2 pr-4 text-right">16%</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">VTV</th>
+          <td class="py-2 pr-4">Vanguard Value</td>
+          <td data-numeric class="py-2 pr-4 text-right">15%</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">AVDV</th>
+          <td class="py-2 pr-4">Avantis International Small Cap Value</td>
+          <td data-numeric class="py-2 pr-4 text-right">10%</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">IDMO</th>
+          <td class="py-2 pr-4">Invesco S&amp;P International Developed Momentum</td>
+          <td data-numeric class="py-2 pr-4 text-right">5%</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">AVES</th>
+          <td class="py-2 pr-4">Avantis Emerging Markets Value</td>
+          <td data-numeric class="py-2 pr-4 text-right">5%</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </Breakout>
+
+  <div class="prose mt-8">
+
+    <p>Those seven numbers total 100, and they are the whole instruction.</p>
+
+    <MarginNote label="Source">
+      <p>
+        <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/final-construction-test.md"
+          >The final construction, tested as one object</a
+        >: 427 months, <span data-numeric>1990-11</span> to <span data-numeric>2026-05</span>. Funds are
+        basis-mapped rather than simulated from fund returns, which is the largest single source of error in the
+        figure.
+      </p>
+    </MarginNote>
+
+    <p>We can't tell you this beats a cheap index fund. Against a borrowing-matched cheap index it came out
+    <Figure id="portfolio-vs-control" inline showUnit={false} /> a year over 427 months, and the smallest gap that test could
+    reliably see was <Figure id="portfolio-floor" inline showUnit={false} />. So the honest reading is that we measured something
+    positive and our instrument is not sharp enough to confirm it. Your own account would need
+    <Figure id="time-to-know-construction" inline showUnit={false} /> to separate the portfolio from that control, and
+    <Figure id="time-to-know-portfolio" inline showUnit={false} /> to separate it from a plain cheap core holding the same split.
+    That is longer than you have.</p>
+
+    <p>What we can tell you is why each line is there, where it goes, and what it will do to you in a bad
+    decade.</p>
+  </div>
+
+  <div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+    <Rung level="might" showGloss />
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The lines</Rail>
+
+    <h2>What each piece is for</h2>
+
+    <MarginNote label="Loading, not return">
+      <p>
+        RSST's delivered trend exposure reads <span data-numeric>+0.681</span> on 31 filed monthly returns, with a
+        sister fund holding no trend at all reading <span data-numeric>−0.10</span> as a control. A loading is
+        exposure delivered, never return earned.
+      </p>
+    </MarginNote>
+
+    <p><strong>RSST</strong> buys you a dollar of US stocks and a dollar of managed futures for every dollar you
+    put in. Managed futures is a rule that goes long things that have been rising and short things that have been
+    falling, across bonds, currencies, commodities and stock indexes. It tends to be flat when stocks are fine and
+    helpful when stocks fall slowly. This is the one line in the portfolio that is not stocks.</p>
+
+    <p><strong>VTI</strong> is every US public company, weighted by size, for 3 basis points a year. A basis point
+    is a hundredth of a percent. Cheapest thing you own, heaviest lifting.</p>
+
+    <p><strong>VXUS</strong> is the same idea outside the United States, developed and emerging together.</p>
+
+    <p><strong>VTV</strong> tilts the US half toward cheap companies. Cheap here means a low price against book
+    value, and the tilt is measured rather than assumed: its value exposure reads +0.337 over six years of its own
+    filed returns.</p>
+
+    <MarginNote label="The most annoying number here">
+      <p>
+        Positive in the full window and in all seven declared sub-periods, adjusted p 0.033, and it misses its own
+        detection floor by <span data-numeric>0.01</span> points. Calling that unresolved is correct and is the
+        least interesting true thing about it.
+      </p>
+    </MarginNote>
+
+    <p><strong>AVDV</strong> does the same thing in smaller foreign companies, which is the only place a fund can
+    express that particular cell. Adding it was worth <Figure id="avdv-addition" inline showUnit={false} /> a year against the same
+    portfolio without it, against a detection floor of 0.29. That misses being a real result by a hundredth of a
+    point, which is the most annoying number on this page.</p>
+
+    <p><strong>IDMO</strong> buys foreign shares that have been going up. Momentum is the least comfortable
+    holding here and it is only 5%.</p>
+
+    <p><strong>AVES</strong> buys cheap emerging-market shares. Emerging markets carry the biggest measured value
+    premium in our data and the least reliable one.</p>
+
+    <p>Two of those seven lines carry no bet at all. VTI and VXUS are the benchmark, and most of RSST is US stocks
+    you would have owned anyway. The active part of this portfolio is worth about
+    <Figure id="effective-bets" inline showUnit={false} /> genuinely independent bets, not seven.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Placement</Rail>
+
+    <h2>Which account each piece goes in</h2>
+
+    <MarginNote label="Whose thirds">
+      <p>
+        Derived for one investor with roughly equal nominal thirds in a Roth, a traditional account and a taxable
+        brokerage account. After tax those thirds are 37.8 / 28.8 / 33.4, so the taxable account is the larger
+        constraint rather than the smaller.
+      </p>
+    </MarginNote>
+
+    <p>Two thirds of your money sits in accounts the tax system leaves alone. That shelter is scarce, so the
+    question is what a sheltered dollar saves you, and the answer is not the usual one.</p>
+
+  </div>
+
+  <Breakout scroll class="my-8">
+
+    <table class="w-full min-w-[34rem] border-collapse text-sm">
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <th scope="col" class="eyebrow py-2 pr-4">Account</th>
+          <th scope="col" class="eyebrow py-2 pr-4">Holdings</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">Weight</th>
+          <th scope="col" class="eyebrow py-2 pr-4">Why</th>
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Traditional</th>
+          <td class="py-2 pr-4">RSST</td>
+          <td data-numeric class="py-2 pr-4 text-right">30%</td>
+          <td class="py-2 pr-4">Highest tax bill per dollar of shelter, by a factor of two and a half.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal"></th>
+          <td class="py-2 pr-4">IDMO</td>
+          <td data-numeric class="py-2 pr-4 text-right">3.3%</td>
+          <td class="py-2 pr-4">Second highest, at a 5% weight.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Roth</th>
+          <td class="py-2 pr-4">IDMO</td>
+          <td data-numeric class="py-2 pr-4 text-right">1.7%</td>
+          <td class="py-2 pr-4">The overflow. Splitting a fund across two shelters costs nothing.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal"></th>
+          <td class="py-2 pr-4">AVES</td>
+          <td data-numeric class="py-2 pr-4 text-right">5%</td>
+          <td class="py-2 pr-4">Highest expected return of what is left, and Roth growth is never taxed.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal"></th>
+          <td class="py-2 pr-4">AVDV</td>
+          <td data-numeric class="py-2 pr-4 text-right">10%</td>
+          <td class="py-2 pr-4">Same reason.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal"></th>
+          <td class="py-2 pr-4">VXUS</td>
+          <td data-numeric class="py-2 pr-4 text-right">16%</td>
+          <td class="py-2 pr-4">Fifth in the queue, and shelter still fits.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal"></th>
+          <td class="py-2 pr-4">VTV</td>
+          <td data-numeric class="py-2 pr-4 text-right">0.7%</td>
+          <td class="py-2 pr-4">Where the shelter runs out.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Taxable</th>
+          <td class="py-2 pr-4">VTV</td>
+          <td data-numeric class="py-2 pr-4 text-right">14.3%</td>
+          <td class="py-2 pr-4">1.81% yield, all of it at the low rate, 8% turnover.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal"></th>
+          <td class="py-2 pr-4">VTI</td>
+          <td data-numeric class="py-2 pr-4 text-right">19%</td>
+          <td class="py-2 pr-4">Last in the queue at every tax rate we tested.</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </Breakout>
+
+  <div class="prose mt-8">
+
+    <p>Four things about that table are worth your attention.</p>
+
+    <MarginNote label="Section 901">
+      <p>
+        A foreign tax credit offsets a US tax, and section 408(e)(1) exempts an IRA from tax, so a sheltered
+        account has none for the credit to work against. The withholding is simply gone.
+      </p>
+    </MarginNote>
+
+    <p><strong>Every foreign fund outranks every US fund.</strong> You have probably read the opposite advice:
+    hold international in the taxable account so you can claim the foreign tax credit. It is wrong for someone
+    shaped like you, and the reason is arithmetic. Foreign countries withhold tax on dividends before you see
+    them. Inside an IRA or a Roth that money is gone for good, because a credit offsets a US tax and a sheltered
+    account owes none. Sheltering all four foreign funds destroys <Figure id="credit-forfeited" inline showUnit={false} /> a year
+    of credit, permanently. It buys back far more than that, because foreign funds yield more and a bigger
+    dividend in a taxable account is a bigger tax bill. VXUS saves <Figure id="vxus-priority" inline showUnit={false} /> per dollar
+    sheltered against VTI's <Figure id="vti-priority" inline showUnit={false} />. The credit is not close to deciding it.</p>
+
+    <p><strong>A total-market US fund is last, every time.</strong> VTI is the cheapest, broadest, calmest fund
+    you own, which is exactly why it belongs in the account with no protection. Its 1.07% dividend is the smallest
+    tax bill you can put on a scarce sheltered dollar.</p>
+
+    <MarginNote label="The filed fractions">
+      <p>
+        Read from sponsors' own filings rather than assumed: VEA 66.27%, VWO 34.63%, IEMG 34.82%, AVES 44.48%,
+        IDMO 25%, DFIV 100%. Assuming 100% had reversed the ranking for emerging-market equity.
+      </p>
+    </MarginNote>
+
+    <p><strong>A 5% momentum fund outranks almost everything else.</strong> IDMO turns over 105% of its portfolio
+    a year and only a quarter of what it pays out gets the low dividend rate. ETFs normally shrug off turnover
+    through a trick called in-kind redemption; at 105% the trick stops working. Nothing about the size of that
+    line tells you it is second in the queue.</p>
+
+    <MarginNote label="After tax, the thirds are not thirds">
+      <p>
+        Equal nominal thirds are Roth 37.84% / traditional 28.76% / taxable 33.41% once the eventual tax is
+        subtracted. The taxable account is the larger constraint, not the smaller.
+      </p>
+    </MarginNote>
+
+    <p><strong>Roth and traditional are not the same account.</strong> The recurring tax drag is identical in
+    both, so drag cannot choose between them. What separates them is that Roth growth is never taxed, while a
+    traditional balance is shared with the government at whatever rate you eventually withdraw at. At a 24%
+    withdrawal rate, $100,000 of traditional IRA is <Figure id="deferred-is-not-yours" inline showUnit={false} /> of your money. So
+    the Roth should hold the highest expected return, and the traditional should hold the thing you are least sure
+    about. That puts the tilts in the Roth and the trend wrapper in the traditional, which is the reverse of the
+    naive rule. Two smaller facts point the same way: the government sharing in RSST's dispersion as well as its
+    mean is a feature when the sleeve is the least established thing you own, and required minimum distributions
+    force the traditional account and never the Roth. RSST after a strong trend year is exactly the position you
+    would be trimming.</p>
+
+    <p>Getting this ordering right is worth <Figure id="placement-value" inline /> against what you would
+    otherwise have done. Not more. Numbers like "asset location is worth 75 basis points" come from comparing
+    against nobody's real portfolio.</p>
+
+    <h3>The thing that breaks it</h3>
+
+    <MarginNote label="Derived here">
+      <p>
+        The binding share is <span data-numeric>1 − 0.16/0.3333</span>, because the unconstrained plan already
+        shelters VXUS at 16% of the portfolio. The repository derives 0.55 the same way for the eight-fund
+        original.
+      </p>
+    </MarginNote>
+
+    <p>If part of your tax-deferred third is a workplace 401(k) rather than a rollover IRA, its fund menu can
+    invert this whole table. A typical menu offers a US index fund, a foreign one, and an emerging one. Of the
+    seven funds here, only VTI and VXUS can go in it.</p>
+
+    <p>Write f for the share of your tax-deferred money sitting in a rollover IRA. The plan above shelters VXUS at
+    16% of the portfolio, so a workplace plan smaller than that is free. Below <Figure id="menu-binding" inline showUnit={false} />
+    it starts costing you. At the extreme, with the whole tax-deferred third captive, VTI gets forced into shelter
+    at 17.3% while AVDV and AVES get evicted to taxable. That is the exact inverse of the ranking, imposed by a
+    fund lineup. It costs <Figure id="menu-cost" inline showUnit={false} /> a year, which is larger than the entire ordering
+    decision you just made.</p>
+
+    <p>Rolling an old employer balance into an IRA buys most of that back for the cost of a form. It is the
+    cheapest thing on this page.</p>
+  </div>
+
+  <Callout kind="do-this">
+    <p>
+      Find out what share of your tax-deferred money is a rollover IRA rather than a workplace plan. Under about
+      half, the plan's menu is inverting the table above and rolling it over is worth more than every ordering
+      decision on this page put together.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>The one choice</Rail>
+
+    <h2>The one choice you have to make</h2>
+
+    <MarginNote label="An input, not an estimate">
+      <p>
+        The abandonment trigger is a −20% relative drawdown, chosen rather than measured. Nothing in this
+        repository measures a real investor's capitulation threshold, and that is the number the whole section
+        turns on.
+      </p>
+    </MarginNote>
+
+    <p>How much RSST. We recommend 30%. The alternative is 25%, and here is the actual trade.</p>
+
+    <MarginNote label="Borrowing, not construction">
+      <p>
+        The two portfolios differ by 5.4 points of gross exposure, and against a panel whose US equity leg
+        returned 9.83% a year that difference is worth about what the measured gap is. It is a statement about the
+        trend weight rather than about how the thing is built.
+      </p>
+    </MarginNote>
+
+    <p>Holding 30% beat holding 25% by <Figure id="thirty-over-twenty-five" inline showUnit={false} /> a year against the same
+    portfolio at a lower weight, with a detection floor of <Figure id="thirty-over-twenty-five-floor" inline showUnit={false} />.
+    That is the only whole-portfolio comparison in this entire programme that clears its own resolution. Almost
+    everything else here is a shrug. It is also mostly a statement about borrowing rather than about trend: the
+    30% version runs 132% of gross exposure against the 25% version's 127%, and on a panel where US stocks
+    returned 9.83% a year, more exposure wins.</p>
+
+    <p>The cost is that you might sell it. Over thirty years, at a trigger where you quit after the sleeve has run
+    20% behind, a 30% weight ends the position in about <Figure id="abandonment-30" inline showUnit={false} /> of simulated paths
+    against <Figure id="abandonment-25" inline showUnit={false} /> at 25%. If the trend premium has gone entirely, 30% ends it in
+    <Figure id="abandonment-30-dead" inline showUnit={false} />. Read that last number properly. Whether you can hold the position
+    and whether it pays are the same bet, made twice.</p>
+
+    <p>We say 30% for you, for three reasons.</p>
+
+    <ol>
+      <li>The comparison that favours it is the only resolved one we have. Throwing that away for four methods that disagree with each other is choosing the weaker evidence.</li>
+      <li>You are contributing 5% to 15% of the portfolio a year. New money at low prices is the thing that carries a position through a drought, and it covers the one rebalancing move this portfolio cannot make internally two and a half to seven and a half times over.</li>
+      <li>Zero is the worse mistake. Through the one flat decade in our panel, March 1999 to February 2009, US stocks returned −2.55% a year and a 30% trend sleeve added about <Figure id="flat-decade" inline showUnit={false} /> above the stocks it displaced, turning that decade positive. Against +0.21 points a year in ordinary decades, that single state is what decides whether a plan survives.</li>
+    </ol>
+
+    <p>Take 25% if you think you would sell it. A portfolio you keep beats a better one you abandon, and the half
+    point a year you give up is invisible against a tracking error of
+    <Figure id="construction-tracking-error" inline showUnit={false} />. The switch is one swap: RSST 25, VTI 24, everything else
+    unchanged.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Cost</Rail>
+
+    <h2>What it costs</h2>
+
+    <MarginNote label="Net of lending">
+      <p>
+        Net cost is the expense ratio less median net securities-lending income, from 50 fiscal years of Form
+        N-CEN. RSST's lending was not read and is carried at its full 99 bp, so the real number is a little lower.
+      </p>
+    </MarginNote>
+
+    <p>The funds charge <Figure id="weighted-fee" inline showUnit={false} /> a year in total, weighted by how much of each you
+    hold. After the money the funds earn back by lending out their shares, the real number is
+    <Figure id="weighted-net-cost" inline showUnit={false} />. Almost all of it is RSST, at 0.99% on 30% of your money. Six of the
+    seven funds cost you under 31 basis points each and three cost under 3.</p>
+
+    <MarginNote label="Disclosure">
+      <p>
+        Both spreads are the Rule 6c-11(c)(1)(v) 30-day median, read from each issuer's product page on
+        <span data-numeric>2026-08-22</span>.
+      </p>
+    </MarginNote>
+
+    <p>Then there is the spread, which is the gap between the buy and sell price, and you pay it once. RSST's is
+    <Figure id="rsst-spread" inline showUnit={false} />, which for this category is fine. The whole entry cost across all seven
+    lines is roughly 3 basis points of the portfolio, one time. Worth knowing, not worth optimising.</p>
+
+    <p>One fund we did not pick is worth a line. CTAP does the same job and advertises a 0.10% fee; its real
+    all-in cost is about 0.81%, because a 0.75% affiliated fund hides inside a swap. Its spread is
+    <Figure id="ctap-spread" inline showUnit={false} />, so a round trip costs 66 basis points. Against RSST on a one-year hold
+    that is a 24 basis point a year difference, on a shelf where the whole fee gap between the candidates is 18.
+    RSST was already the pick on age and size.</p>
+
+    <p>The last cost is new and it might be the largest. On 1 June 2026 Fidelity began charging
+    <Figure id="broker-fee" inline showUnit={false} /> per purchase on ETFs from issuers that refused to pay it platform fees.
+    Schwab has said it will do something similar by the end of 2026. On a $10,000 buy that is
+    <Figure id="broker-fee-bp" inline showUnit={false} /> on day one, which is bigger than any annual fee here except RSST's. The
+    issuers exposed are the small ones, and RSST's issuer is small. No shelf issuer appears on any published list,
+    but Fidelity's live list refuses automated reads, so treat this as unchecked rather than clear.</p>
+
+    <p>Check it before your first purchase. If your broker charges it on RSST, buy that line once or twice a year
+    and point your monthly contributions at the index funds. Twelve $100 fees a year on a $200,000 portfolio is 60
+    basis points; once a year is 5.</p>
+  </div>
+
+  <Callout kind="caveat" label="Unchecked rather than cleared">
+    <p>
+      No shelf issuer appears on any published list of non-participating issuers, and Fidelity's live service-fee
+      list returns an error to automated reads. So whether this charge lands on anything here is unverified. Read
+      it as a cost to check at your own broker rather than as a cost we have priced.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>Operating it</Rail>
+
+    <h2>How to actually run it</h2>
+
+    <p>Read this bit twice.</p>
+
+    <p><strong>The seven numbers in the first table are capital weights. They are the only numbers you ever type
+    into a brokerage screen.</strong> Elsewhere you will see this portfolio described by its exposure: 66% US
+    stocks, 36% international, 30% managed futures, 132% gross. Those are audit figures. They are recomputed every
+    quarter from RSST's latest filing, and they add to 132 rather than 100 on purpose, because RSST gives you two
+    dollars of exposure per dollar of capital.</p>
+
+    <MarginNote label="The trap">
+      <p>
+        Exposure sums to 132.2% of capital. A screen that normalises to 100 scales every line down by 24%, so a
+        30% sleeve silently becomes 22.7% and nothing errors.
+      </p>
+    </MarginNote>
+
+    <p>Type them into a screen that wants weights adding to 100 and it will quietly scale everything down by 24%.
+    Your 30% trend sleeve becomes <Figure id="notional-scaling-error" inline showUnit={false} />. You will have bought roughly
+    three quarters of the thing you decided to buy and you will never notice, because nothing will error and the
+    pie chart will look right.</p>
+
+    <MarginNote label="Measured">
+      <p>
+        427 months, eight holdings, sheltered trades only: mean drift near one percentage point at roughly three
+        trades a year and zero realised tax. Left alone the same portfolio drifts 6.39 points.
+      </p>
+    </MarginNote>
+
+    <p>Rebalancing. Once a year, on a date you pick and never move. Compare each line against its target and act
+    only when one has drifted a quarter of its own weight away or further, so a 30% line at 22% or 38%. That
+    policy held mean drift near 1 percentage point at roughly three trades a year and zero realised tax across our
+    test.</p>
+
+    <p>Do every trade inside the Roth or the traditional account. All four foreign funds and the whole trend
+    sleeve already live there, so selling them realises nothing. The one move you cannot make internally is
+    selling US stocks to buy international, because your US holdings are mostly in the taxable account. It needs
+    about two points of the portfolio a year, and your contributions cover it several times over.</p>
+
+    <p>So: point new money at whatever is furthest below target, fill the dollar-limited accounts first, and do
+    not sell in the taxable account. Never selling there is worth about <Figure id="never-sell" inline showUnit={false} /> a year
+    on its own, which is larger than the entire ordering decision above. Leave a point or two of VTI in the Roth
+    rather than taxable, so a rebalance can never force a taxable sale. That costs a fraction of a basis
+    point.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The bad decade</Rail>
+
+    <h2>What it will feel like when it is losing</h2>
+
+    <MarginNote label="Record, not simulation">
+      <p>
+        All three rows happened, inside the history this portfolio is built from, and none of them recovered
+        inside the window. They are longer than most people's stated patience.
+      </p>
+    </MarginNote>
+
+    <p>Not a crash. A long grey decade where the thing you own trails the thing everyone else owns, monthly, for
+    years, with no obvious moment to act. Here is what these three engines have already done, inside the history
+    this portfolio is built from.</p>
+
+  </div>
+
+  <Breakout scroll class="my-8">
+
+    <table class="w-full min-w-[34rem] border-collapse text-sm">
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <th scope="col" class="eyebrow py-2 pr-4">Sleeve</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">Worst run behind its comparator</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">For how long</th>
+          <th scope="col" class="eyebrow py-2 pr-4">Recovered</th>
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">US value tilt</th>
+          <td data-numeric class="py-2 pr-4 text-right"><Figure id="value-drawdown" inline showUnit={false} /></td>
+          <td data-numeric class="py-2 pr-4 text-right">17.7 years</td>
+          <td class="py-2 pr-4">No</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">International</th>
+          <td data-numeric class="py-2 pr-4 text-right"><Figure id="intl-drawdown" inline showUnit={false} /></td>
+          <td data-numeric class="py-2 pr-4 text-right">18.2 years</td>
+          <td class="py-2 pr-4">No</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Trend, net of the stocks it displaces</th>
+          <td data-numeric class="py-2 pr-4 text-right"><Figure id="trend-drawdown" inline showUnit={false} /></td>
+          <td data-numeric class="py-2 pr-4 text-right">11.2 years</td>
+          <td class="py-2 pr-4">No</td>
+        </tr>
+      </tbody>
+    </table>
+
+  </Breakout>
+
+  <div class="prose mt-8">
+
+    <p>None of those is a tail scenario. All three are in the record. The whole portfolio's worst peak-to-trough
+    fall was <Figure id="max-drawdown" inline showUnit={false} /> against a borrowing-matched control's −64.6%, and its longest
+    stretch under water was 42 months. Its worst decade against that control was −1.15 points a year, for
+    seventeen years, starting in 2009.</p>
+
+    <p>And now the fact that reframes everything above.</p>
+
+    <MarginNote label="One rule, twice">
+      <p>
+        Both waits here are <code>T = (z·s/e)²</code> at 90% confidence, which is when your own account would show
+        the gap. When a study could separate the same gap from zero is a different question, and
+        <a href="/how-sure/">how sure we are</a> answers it separately.
+      </p>
+    </MarginNote>
+
+    <p><strong>At this portfolio's tracking error, thirty years of holding it cannot establish whether it
+    worked.</strong> Tracking error is how far your returns wander from your comparator's in a typical year, and
+    here it is <Figure id="construction-tracking-error" inline showUnit={false} />. The arithmetic is exact and there is no way
+    around it: the time you need to demonstrate an edge grows with the square of tracking error divided by the
+    edge. Against a same-split cheap core, thirty years of data would let us detect an edge of
+    <Figure id="thirty-year-floor" inline />. The edge we think is there is
+    <Figure id="thirty-year-edge" inline showUnit={false} />, which puts the wait at
+    <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
+
+    <p>You will not find out. Not in thirty years, not from your own account. That is not a reason to hold
+    nothing, and it is a reason to stop checking. If you set a performance review on the trend sleeve you will
+    delete it for doing its job: at a 30% weight it trails in 43.8% of simulated ten-year histories even when its
+    premium is positive.</p>
+
+    <p>The one discipline that matters: whatever you compare this against must have the same borrowing in it.
+    Comparing a portfolio carrying 132% of exposure against a plain index fund credits the extra exposure to the
+    strategy on the way up and blames the strategy for it on the way down.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>What would change it</Rail>
+
+    <h2>What would change this</h2>
+
+    <MarginNote label="The number we do not have">
+      <p>
+        Your tolerable peak-to-trough fall. It is the single most useful thing this project does not know about
+        you, and it is not a research question.
+      </p>
+    </MarginNote>
+
+    <p>Your own numbers, first and hardest. How much of your tax-deferred third is a rollover IRA rather than a
+    workplace plan, which moves the placement result from −2 to +7 basis points a year. The deepest fall you could
+    sit through without selling, which is the single most useful thing we do not know about you and is not a
+    research question. Your tax bracket.</p>
+
+    <p>Then the split between stocks and everything else, which this portfolio sets at all stocks by omission.
+    Moving from 60/40 to 90/10 was worth <Figure id="equity-share-step" inline showUnit={false} />, larger than every tilt here
+    combined. This portfolio holds no bonds. Decide that on purpose.</p>
+
+    <p>Then four measurements with dates on them.</p>
+
+    <ul>
+      <li>RSST's trend exposure, currently <Figure id="rsst-loading" inline showUnit={false} /> on 31 months of filings, which is roughly one market regime. We look again at 48 months, around September 2027.</li>
+      <li>The financing cost inside the wrapper, which no issuer discloses because it lives in the futures basis. It decides the sign of the whole sleeve.</li>
+      <li>RSST's next December distribution, which settles how much tax that fund is really storing up.</li>
+      <li>Whether your broker charges $100 a trade on it.</li>
+    </ul>
+
+    <p>One more, for later. RSIT launched on 6 May 2026 and does for international stocks what RSST does for US
+    ones, which is exactly where this portfolio is thin. It is three months old with no holdings filings, so there
+    is nothing to measure yet. Ask again in two years.</p>
+
+    <p><em>Nothing here is regulated advice. Every number is a function of stated inputs, and a different investor
+    should restate them. US federal taxes only; state tax is excluded and makes every gap in the placement table
+    smaller without reordering it.</em></p>
+
+  </div>
+</Base>
