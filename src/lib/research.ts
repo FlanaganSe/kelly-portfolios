@@ -255,7 +255,22 @@ export function rewriteCorpusHtml(html: string, context: CorpusContext): Rewrite
     return `href="${encodeHref(outcome.href)}" rel="noopener noreferrer"`;
   });
 
-  return { html: wrapTables(plainCodeBlocks(stripLeadingHeading(rewritten))), onSite, offSite, failures };
+  const body = wrapTables(plainCodeBlocks(demoteInnerHeadings(stripLeadingHeading(rewritten))));
+  return { html: body, onSite, offSite, failures };
+}
+
+/**
+ * Demotes any `<h1>` left in the body to `<h2>`, keeping its id.
+ *
+ * One document splits itself into three top-level parts, so removing its opening
+ * heading still leaves three `h1` elements under the page's own. Heading ids are
+ * computed from the text and not the level, so the demotion costs no anchor and buys
+ * one `h1` per page.
+ */
+export function demoteInnerHeadings(html: string): string {
+  return html
+    .replace(/<h1(\s[^>]*)?>/g, (_whole, attrs: string | undefined) => `<h2${attrs ?? ""}>`)
+    .replace(/<\/h1>/g, "</h2>");
 }
 
 /**

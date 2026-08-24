@@ -3,6 +3,7 @@ import { describe, expect, it } from "vitest";
 import {
   clamp,
   decisionHref,
+  demoteInnerHeadings,
   groupedResearchIds,
   onSiteRoute,
   plainCodeBlocks,
@@ -223,5 +224,15 @@ describe("fenced code", () => {
 
   it("leaves a plain pre alone", () => {
     expect(plainCodeBlocks("<pre><code>ls</code></pre>")).toBe("<pre><code>ls</code></pre>");
+  });
+});
+
+describe("a document that splits itself into parts", () => {
+  it("demotes a level-one heading left in the body, keeping its id", () => {
+    expect(demoteInnerHeadings('<h1 id="part-a">Part A</h1>')).toBe('<h2 id="part-a">Part A</h2>');
+  });
+
+  it("leaves every other heading alone", () => {
+    expect(demoteInnerHeadings("<h2>Two</h2><h3>Three</h3>")).toBe("<h2>Two</h2><h3>Three</h3>");
   });
 });

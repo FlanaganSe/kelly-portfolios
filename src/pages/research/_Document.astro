@@ -46,8 +46,10 @@ interface Props {
 const { title, description, rail, docPath, updated, status, plain, question, headings, crumbs } = Astro.props;
 
 // Only the top level. A contents list that mirrors every subheading of a twelve-section
-// page is a second page rather than a way into the first one.
-const sections = headings.filter((heading) => heading.depth === 2);
+// page is a second page rather than a way into the first one. The first heading is the
+// document's own title, printed above rather than listed; one document then carries
+// three more level-one parts, which the loader demotes and which belong here.
+const sections = headings.filter((heading, index) => index > 0 && heading.depth <= 2);
 
 // The document's own `# ` line is this page's `h1`, and the loader strips it from the
 // body so the page has one. Its id has to move with it: `#the-title` is a real anchor
