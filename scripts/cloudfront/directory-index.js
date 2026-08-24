@@ -62,12 +62,18 @@ function handler(event) {
 
 // The query string arrives parsed, so a redirect has to rebuild it or drop it. This
 // re-joins the parts exactly as they arrived; it does not encode or decode anything.
+//
+// The loops are indexed because `cloudfront-js-2.0` has no `for...of`. CloudFront's own
+// test harness is what says so, and `repair.sh` runs it before this is published.
 function queryString(parsed) {
+  const keys = Object.keys(parsed);
   const parts = [];
-  for (const key of Object.keys(parsed)) {
+  for (let i = 0; i < keys.length; i++) {
+    const key = keys[i];
     const parameter = parsed[key];
     if (parameter.multiValue) {
-      for (const each of parameter.multiValue) {
+      for (let j = 0; j < parameter.multiValue.length; j++) {
+        const each = parameter.multiValue[j];
         parts.push(each.value === "" ? key : `${key}=${each.value}`);
       }
     } else {

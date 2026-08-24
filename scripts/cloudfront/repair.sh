@@ -63,18 +63,20 @@ if $apply; then
   fi
 
   event() {
-    jq -n --arg uri "$1" '{
+    local qs="${2:-}"
+    if [ -z "$qs" ]; then qs="{}"; fi
+    jq -n --arg uri "$1" --argjson qs "$qs" '{
       version: "1.0",
       context: {eventType: "viewer-request"},
       viewer: {ip: "203.0.113.1"},
       request: {method: "GET", uri: $uri, headers: {host: {value: "kellyportfolios.com"}},
-                cookies: {}, querystring: {}}
+                cookies: {}, querystring: $qs}
     }'
   }
 
-  # `expect <uri> uri <expected>` or `expect <uri> status <expected>`.
+  # `expect <uri> uri|status|location <expected> [querystring-json]`
   expect() {
-    event "$1" > "$work/event.json"
+    event "$1" "${4:-}" > "$work/event.json"
     local out
     out=$(aws cloudfront test-function --name "$name" --if-match "$etag" --stage DEVELOPMENT \
       --event-object "fileb://$work/event.json" --output json)
@@ -87,8 +89,9 @@ if $apply; then
     fi
     local got
     case "$2" in
-      uri)    got=$(jq -r '.TestResult.FunctionOutput | fromjson | .request.uri' <<<"$out") ;;
-      status) got=$(jq -r '.TestResult.FunctionOutput | fromjson | .response.statusCode | tostring' <<<"$out") ;;
+      uri)      got=$(jq -r '.TestResult.FunctionOutput | fromjson | .request.uri' <<<"$out") ;;
+      status)   got=$(jq -r '.TestResult.FunctionOutput | fromjson | .response.statusCode | tostring' <<<"$out") ;;
+      location) got=$(jq -r '.TestResult.FunctionOutput | fromjson | .response.headers.location.value' <<<"$out") ;;
     esac
     printf '  %-28s %-6s %s\n' "$1" "$2" "$got"
     if [ "$got" != "$3" ]; then
@@ -104,6 +107,8 @@ if $apply; then
   expect "/start"                status "301"
   expect "/robots.txt"           uri    "/robots.txt"
   expect "/_astro/page.CH4nk3d.js" uri  "/_astro/page.CH4nk3d.js"
+  # The only path that exercises the query-string rebuild, which nothing else reaches.
+  expect "/tools/how-long"       location "/tools/how-long/?years=20" '{"years":{"value":"20"}}'
 
   aws cloudfront publish-function --name "$name" --if-match "$etag" >/dev/null
   echo "function $name: published"
