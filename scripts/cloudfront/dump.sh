@@ -53,5 +53,19 @@ for arn in $arns; do
 done
 
 echo
+echo "=== origin access controls"
+aws cloudfront list-origin-access-controls --output json | jq '.OriginAccessControlList.Items' || true
+
+bucket=$(jq -r .bucket <<<"$state")
+if [ -n "$bucket" ] && [ "$bucket" != "null" ]; then
+  echo
+  echo "=== policy on $bucket"
+  # Who is allowed to read the site, and on what condition. A custom error response is
+  # fetched with the cache behaviour's own origin and not the one the function picks, so
+  # whether a second, static origin can read this bucket decides whether a miss can 404.
+  aws s3api get-bucket-policy --bucket "$bucket" --query Policy --output text 2>&1 | jq . || true
+fi
+
+echo
 echo "=== buckets in the account"
 aws s3 ls || true
