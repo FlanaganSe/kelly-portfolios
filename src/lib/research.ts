@@ -342,6 +342,8 @@ export interface ResearchEntryMeta {
 
 export interface ResearchGroup {
   readonly id: string;
+  /** Two or three words for the left rail. The question is the heading, not this. */
+  readonly rail: string;
   /** What a reader would have to want to know to open anything in this group. */
   readonly question: string;
   readonly blurb: string;
@@ -358,6 +360,7 @@ export interface ResearchGroup {
 export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
   {
     id: "what-to-hold",
+    rail: "What to hold",
     question: "What should be held, and why that construction",
     blurb: "The working position, the investor it was derived for, and the tests that scored it against a cheap index.",
     entries: [
@@ -373,6 +376,7 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
   },
   {
     id: "does-stacking-help",
+    rail: "Stacking",
     question: "Does piling up more good bets help",
     blurb:
       "Breadth, borrowing, and how each new strategy is paid for. This is where most of the money in the proposal was riding.",
@@ -390,6 +394,7 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
   },
   {
     id: "are-the-premiums-real",
+    rail: "Factors",
     question: "Are the factor returns real, and can a fund deliver one",
     blurb: "The academic series, what survives publication, and what a fund an investor can buy actually hands over.",
     entries: [
@@ -402,6 +407,7 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
   },
   {
     id: "what-is-contractual",
+    rail: "Fees and tax",
     question: "What is contractual: fees, taxes and accounts",
     blurb:
       "The part of the answer that follows from a filing or a tax rule rather than from a backtest, and is the largest reliable line on the site.",
@@ -413,6 +419,7 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
   },
   {
     id: "did-not-earn-a-place",
+    rail: "Rejections",
     question: "What was tested and did not earn a place",
     blurb: "Each rejection scoped to the data, the window and the yardstick that produced it.",
     entries: [
@@ -423,6 +430,7 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
   },
   {
     id: "how-the-evidence-was-made",
+    rail: "Method",
     question: "How the evidence was made, and how sure it is",
     blurb: "The instruments, their resolution, the review that went looking for errors in all of it, and what is next.",
     entries: [
