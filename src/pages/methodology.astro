@@ -13,7 +13,6 @@ import Callout from "~/components/Callout.astro";
 import MarginNote from "~/components/MarginNote.astro";
 import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
-import { REPO_URL } from "~/lib/site";
 ---
 
 <Base
@@ -26,17 +25,15 @@ import { REPO_URL } from "~/lib/site";
 
     <MarginNote label="The question">
       <p>
-        What had to happen before that number went on the page? Checked against <code>docs/research/</code> and
-        the ledger on <span data-numeric>2026-08-23</span>.
+        What had to happen before that number went on the page? Checked against
+        <a href="/research/">the research</a> and the experiment record on <span data-numeric>2026-08-23</span>.
       </p>
     </MarginNote>
 
     <p>Five rules, and every one of them is here because breaking it put a wrong number on this site.</p>
 
-    <p>The full working agreement is <a href={`${REPO_URL}/blob/main/AGENTS.md`} rel="noopener noreferrer"
-    >AGENTS.md</a> and <a href={`${REPO_URL}/blob/main/docs/AGENTS.md`} rel="noopener noreferrer"
-    >docs/AGENTS.md</a> in the repository, which are the versions a machine reads before it is allowed to touch
-    anything. This page is the same content in a language a person would use.</p>
+    <p>A longer version of the same agreement is what anyone working on this project has to follow before they
+    are allowed to change a number. This page is that agreement in a language a person would use.</p>
 
   </div>
 
