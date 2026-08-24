@@ -9,6 +9,6 @@ source:
   docPath: docs/research/expected-edge-decomposition.md
   anchor: conclusion
 note: >-
-  A coin flip, and saying so is the finding. The interval crosses zero, so even the sign is
-  unsettled. This answers a different question from the 1.09% measured against the portfolio you
-  already own, and the two may never be added.
+  A coin flip. The range crosses zero, so we cannot even say the sign is positive. This answers a
+  different question from the 1.09% measured against the portfolio you already own, and the two are
+  never added.
