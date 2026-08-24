@@ -182,6 +182,16 @@ const breadcrumbs = {
     border-bottom: 1px solid var(--rule-strong);
   }
 
+  /* On a wide screen the reading measure is narrower than the body track, and the
+     margin track beside it is empty on these pages. A nine-column table is allowed
+     both, which is the difference between reading it and scrolling it. Below 62rem
+     the margin track is zero wide and this is the reading column again. */
+  @media (min-width: 62rem) {
+    .research-body .research-table {
+      width: calc(100% + var(--note-gap) + var(--note));
+    }
+  }
+
   .research-body table {
     /* Natural width, floored at the column, so a narrow table fills the measure and a
        nine-column one keeps its shape and scrolls. */
