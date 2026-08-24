@@ -58,6 +58,18 @@ const BOTTOM_RULE_Y = OG_HEIGHT - 118;
 const OPTICAL_LIFT = Math.round((BOTTOM_RULE_Y - TOP_RULE_Y) * 0.02);
 
 /**
+ * Source Serif 4's cap height and descender, as fractions of the em.
+ *
+ * Centring a paragraph on its *line boxes* puts a title visibly high in the band: the
+ * ascender space above the capitals is empty and the descender space below is empty
+ * too unless the title happens to contain a `g`. Centring on the ink instead — cap
+ * height down to a half descender, whether or not this particular title reaches
+ * either — puts every card in the same place and puts it where the eye expects.
+ */
+const CAP_HEIGHT = 0.67;
+const DESCENDER = 0.28;
+
+/**
  * The title is set as large as it can be without running past three lines or out of
  * the band. Both ends of the range matter: without the ceiling a two-word title fills
  * the frame like a poster, and without the floor a long one overflows the rules.
@@ -185,26 +197,44 @@ function buildTitle(kit: CanvasKit, fonts: FontMgr, title: string, size: number)
   return paragraph;
 }
 
+interface FittedTitle {
+  readonly paragraph: Paragraph;
+  readonly size: number;
+}
+
 /**
  * The largest size at which the title still fits the band in at most three lines.
  * Returns the built paragraph so the caller does not lay it out a second time.
  */
-function fitTitle(kit: CanvasKit, fonts: FontMgr, title: string): Paragraph {
+function fitTitle(kit: CanvasKit, fonts: FontMgr, title: string): FittedTitle {
   const band = BOTTOM_RULE_Y - TOP_RULE_Y - 48;
-  let fallback: Paragraph | undefined;
+  let fallback: FittedTitle | undefined;
   for (let size = TITLE_MAX; size >= TITLE_MIN; size -= TITLE_STEP) {
     const paragraph = buildTitle(kit, fonts, title, size);
     const lines = paragraph.getLineMetrics().length;
     if (lines <= TITLE_MAX_LINES && paragraph.getHeight() <= band) {
-      fallback?.delete();
-      return paragraph;
+      fallback?.paragraph.delete();
+      return { paragraph, size };
     }
-    fallback?.delete();
-    fallback = paragraph;
+    fallback?.paragraph.delete();
+    fallback = { paragraph, size };
   }
   // Nothing fit. The smallest is still the least bad, and it is drawn rather than
   // thrown over: a card that overflows its rules is easier to notice than no card.
-  return fallback ?? buildTitle(kit, fonts, title, TITLE_MIN);
+  return fallback ?? { paragraph: buildTitle(kit, fonts, title, TITLE_MIN), size: TITLE_MIN };
+}
+
+/** Where to draw the title so its ink, not its line boxes, sits in the band. */
+function titleTop({ paragraph, size }: FittedTitle): number {
+  const lines = paragraph.getLineMetrics();
+  const first = lines[0];
+  const last = lines[lines.length - 1];
+  if (!first || !last) return TOP_RULE_Y;
+
+  const inkTop = first.baseline - CAP_HEIGHT * size;
+  const inkBottom = last.baseline + (DESCENDER * size) / 2;
+  const band = BOTTOM_RULE_Y - TOP_RULE_Y;
+  return TOP_RULE_Y + band / 2 - OPTICAL_LIFT - (inkTop + inkBottom) / 2;
 }
 
 export interface Card {
@@ -218,7 +248,7 @@ export interface Card {
 }
 
 /** One card, as PNG bytes. */
-export async function renderCard({ title, domain }: Card): Promise<Uint8Array> {
+export async function renderCard({ title, domain }: Card): Promise<Uint8Array<ArrayBuffer>> {
   const kit = await getCanvasKit();
   const fonts = await getFonts(kit);
 
@@ -244,17 +274,20 @@ export async function renderCard({ title, domain }: Card): Promise<Uint8Array> {
   drawEyebrow(kit, canvas, fonts, { text: domain, y: BOTTOM_RULE_Y + 26, color: INK_MUTED });
 
   const heading = fitTitle(kit, fonts, title);
-  const band = BOTTOM_RULE_Y - TOP_RULE_Y;
-  const top = TOP_RULE_Y + (band - heading.getHeight()) / 2 - OPTICAL_LIFT;
-  canvas.drawParagraph(heading, LEFT, top);
-  heading.delete();
+  canvas.drawParagraph(heading.paragraph, LEFT, titleTop(heading));
+  heading.paragraph.delete();
 
   const image = surface.makeImageSnapshot();
   const bytes = image.encodeToBytes(kit.ImageFormat.PNG, 100);
+  if (!bytes) throw new Error(`CanvasKit encoded no bytes for the card titled "${title}".`);
+
+  // CanvasKit's array is a view on the WASM heap, so it has to be copied out before
+  // anything below hands that memory back.
+  const png = new Uint8Array(bytes.byteLength);
+  png.set(bytes);
+
   image.delete();
   surface.dispose();
   fill.delete();
-
-  if (!bytes) throw new Error(`CanvasKit encoded no bytes for the card titled "${title}".`);
-  return bytes;
+  return png;
 }
