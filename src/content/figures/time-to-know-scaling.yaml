@@ -8,6 +8,6 @@ source:
   docPath: docs/research/expected-edge-decomposition.md
   anchor: 3-what-probability-is-actually-attainable
 note: >-
-  The closed form is T = (z·s/e)², so the wait grows with the square of noise over edge. Forty
-  times the noise is sixteen hundred times the wait. The formula assumes the edge is known,
-  which makes every probability derived from it a best case.
+  The wait grows with the square of the noise divided by the gain. Forty times the noise is
+  sixteen hundred times the wait. The arithmetic assumes the gain is known, which makes every
+  probability drawn from it a best case.

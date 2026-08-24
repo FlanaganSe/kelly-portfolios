@@ -127,9 +127,9 @@ const DRAWDOWNS = [
       <p>
         <a href="/research/final-construction-test/"
           >The whole portfolio, tested as one object</a
-        >: 427 months, <span data-numeric>1990-11</span> to <span data-numeric>2026-05</span>. Funds are
-        basis-mapped rather than simulated from fund returns, which is the largest single source of error in the
-        figure.
+        >: 427 months, <span data-numeric>1990-11</span> to <span data-numeric>2026-05</span>. The test does not use
+        these funds' own returns. It rebuilds each one from academic index data, because most of them are younger
+        than the window. That substitution is the largest single source of error in the figure.
       </p>
     </MarginNote>
 
@@ -597,8 +597,8 @@ const DRAWDOWNS = [
 
     <MarginNote label="One rule, twice">
       <p>
-        Both waits here are <code>T = (z·s/e)²</code> at 90% confidence, which is when your own account would show
-        the gap. When a study could separate the same gap from zero is a different question, and
+        Both waits here are worked out the same way, at 90% confidence, and both answer when your own account
+        would show the gap. When a study could separate the same gap from zero is a different question, and
         <a href="/how-sure/">how sure we are</a> answers it separately.
       </p>
     </MarginNote>

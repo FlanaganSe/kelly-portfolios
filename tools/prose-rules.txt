@@ -96,3 +96,12 @@
 (?i)\bidiosyncratic\b
 (?i)\bcapital-efficient\b
 (?i)\bsystematic(ally)? (long|short)\b
+
+# Formulas and bare symbols. A reader-facing page says what the arithmetic does in
+# words; the closed form belongs in the research corpus, which this file does not lint.
+# These kept reappearing in figure notes and chart captions, where nothing checked them.
+T\s*=\s*\(?z
+\(z\s*[·*]\s*s\s*/\s*e\)
+[ΦΣρσαβ]\s*[=(]
+√\(?[a-zA-Z0-9]
+\bz₁?\s*=\s*Φ

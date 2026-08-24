@@ -22,12 +22,12 @@ const decomposition: Citation = {
 };
 
 export const formulas = {
-  probability: "P(outperform) = Phi(e * sqrt(T) / s)",
-  horizon: "T(confidence) = (z * s / e)^2",
-  variables: "e is the annual edge, s the annual tracking error, T the horizon in years, Phi the standard normal CDF.",
+  probability: "how likely you are to be ahead, given the gain, the wander and the years",
+  horizon: "the wait, in years, given how much a thing gains and how far it wanders",
+  variables:
+    "The gain is what you expect to earn above the thing you are measured against, each year. The wander is how far your result strays from it in a normal year. Both are yearly figures.",
   theLesson:
-    "The horizon scales with the square of s/e, so tracking error rather than edge size decides whether a lifetime is enough. The same 50 bp edge reaches 90% confidence in 24 days against 10 bp of tracking error and in 105 years against 400 bp.",
-  implementation: "research/src/portfolio_edge/studies/outperformance_horizon.py",
+    "The wait grows with the square of the wander divided by the gain, so it is the wander that decides whether a lifetime is long enough. The same 50 bp gain is 90% certain in 24 days if it wanders 10 bp, and takes 105 years if it wanders 400.",
   source: decomposition,
 } as const;
 

@@ -8,8 +8,8 @@ source:
   docPath: docs/research/final-construction-test.md
   anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
 note: >-
-  T = (z·s/e)², the same closed form every other horizon on this site uses. It answers when your
-  own account would show the gap, which is a different question from when a study could separate
+  Worked out the same way as every other wait on this site. It answers when your own account
+  would show the gap, which is a different question from when a study could separate
   the gap from zero. That second question is 59 years on this design, and the two are never
   contrasted with each other.
   The arm measured is the seven funds at a 25% trend weight, which is the construction 016e froze; `/portfolio` publishes the same seven at 30% and no experiment has run that one.

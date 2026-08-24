@@ -95,8 +95,8 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
       <p>{upperBoundWarning}</p>
     </MarginNote>
 
-    <p>Pick one of the claims below, or type your own pair. Everything on screen is
-    <code>{formulas.horizon}</code>, run live.</p>
+    <p>Pick one of the claims below, or type your own pair. Everything on screen is {formulas.horizon}, worked
+    out live as you change them.</p>
   </div>
 
   <Breakout class="mt-6">
@@ -165,8 +165,8 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
 
     <p class="text-sm">
       <a class="link" href={source} rel="noopener noreferrer">Where outperformance can come from</a>, checked
-      <span data-numeric>{confidenceAsOf}</span>. The same arithmetic runs in
-      <code class="break-all">{formulas.implementation}</code>.
+      <span data-numeric>{confidenceAsOf}</span>. The research workspace runs the same arithmetic, and this page
+      and it are tested against the same worked answers.
     </p>
   </div>
 </Base>

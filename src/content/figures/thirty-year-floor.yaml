@@ -9,5 +9,5 @@ source:
   anchor: 2-is-p-even-55
 note: >-
   At about 4.00% a year of drift against a cheap index fund holding the same mix, of which 3.72
-  points is the trend fund, at 90% confidence. The arithmetic is exact: T = (z·s/e)². The same 50
-  basis points needs 24 days against 10 basis points of drift and 105 years against 400.
+  points is the trend fund, at 90% confidence. The arithmetic is exact. The same 50 basis points
+  needs 24 days against 10 basis points of drift, and 105 years against 400.
