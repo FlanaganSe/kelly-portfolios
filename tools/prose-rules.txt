@@ -70,9 +70,29 @@
 (?i)\b(delve|delving|delves|tapestry|realm|intricate|intricacies|underscore[sd]?|underscoring|showcase[sd]?|showcasing|pivotal|meticulous(ly)?|leverage[sd]?|leveraging|utilize[sd]?|utilizing|foster(ing|s|ed)?|bolster(ing|s|ed)?|garner(ing|s|ed)?|seamless(ly)?|vibrant|robust|holistic|multifaceted|nuanced|myriad|plethora|burgeoning|groundbreaking|cutting-edge|state-of-the-art|transformative|unwavering|palpable|camaraderie|cacophony|amidst|whilst|unparalleled|paramount|invaluable|indelible|testament|beacon|cornerstone|linchpin|treasure trove|paradigm shift|impactful|actionable)\b
 
 # Typography
-# (em dash spacing handled by the density check, not as a hard error)
+# Typography (em dash spacing is a density check, not a hard error)
 ^\s*[-*•]\s*\*\*[^*]+:\*\*
 (?m)^(-{3,}|\*{3,})$
 [→⇒➡]
 [\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]
 !(?!\=)
+
+# Jargon a casual investor does not have (reader-facing pages only)
+(?i)\bsleeves?\b
+(?i)\btilts?\b
+(?i)\boverlays?\b
+(?i)\bnotional\b
+(?i)\bpremia\b
+(?i)\bloadings?\b
+(?i)\bwrappers?\b
+(?i)\bdetection floors?\b
+(?i)\bestimands?\b
+(?i)\bconvexity\b
+(?i)\bout-of-sample\b
+(?i)\bCRRA\b
+(?i)\bHAC\b
+(?i)\bex-ante\b
+(?i)\bex-post\b
+(?i)\bidiosyncratic\b
+(?i)\bcapital-efficient\b
+(?i)\bsystematic(ally)? (long|short)\b
