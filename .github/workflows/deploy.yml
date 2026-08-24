@@ -10,26 +10,31 @@
 # moving to any other host later means changing the last two steps.
 #
 # ---------------------------------------------------------------------------
-# Read this before the first run.
+# What the first run found, on 2026-08-24.
 #
-# The previous site was a single-page application. Two of its likely CloudFront
-# settings would break this build quietly rather than loudly, which is worse:
+# The distribution is SST's, built for the single-page client, and it is configured
+# for one in three ways that all fail quietly rather than loudly:
 #
-#   1. A custom error response mapping 404 (or 403) to `/index.html` with status 200.
-#      That is the standard SPA fallback. Against a directory-format build it means a
-#      URL that does not exist serves the *home page* with a success status, so a typo
-#      looks like a working page and search engines index duplicates of the home page
-#      under every wrong URL.
+#   1. `placeholder.sst.dev` sits first in the origin list. A deploy that reads
+#      `Origins.Items[0]` — this one did — derives the bucket name
+#      `placeholder.sst.dev` and syncs the whole site into a bucket that does not
+#      exist. `scripts/cloudfront/state.sh` reads the origin that the default cache
+#      behaviour targets instead, which is the one that answers a request.
 #
-#   2. A REST origin (`bucket.s3.amazonaws.com`) rather than the website endpoint
-#      (`bucket.s3-website-region.amazonaws.com`). Only the website endpoint resolves
-#      `/start/` to the key `start/index.html`. A REST origin returns 404 for every
-#      page except the root, because CloudFront's default root object applies to `/`
-#      alone and to no other directory.
+#   2. A REST origin (`bucket.s3.region.amazonaws.com`) rather than the website
+#      endpoint. Only the website endpoint resolves `/start/` to `start/index.html`;
+#      a REST origin misses on every page but the root, because CloudFront's default
+#      root object applies to `/` alone and to no other directory.
 #
-# The `discover` job below reports both without changing anything. Run it first, from
-# the Actions tab, with `dry_run` left ticked. `docs/deploying.md` explains what to do
-# with each answer.
+#   3. `errorPage: "index.html"` in `sst.config.ts`, which is a custom error response
+#      mapping 403 and 404 to `/index.html` with a 200. Against a directory-format
+#      build that answers every wrong URL with the *home page* and a success status,
+#      so a typo looks like a working page and a crawler indexes a copy of the home
+#      page under each one.
+#
+# Points 2 and 3 are what the `Configure distribution` workflow fixes, and `publish`
+# refuses to upload until they are fixed. `docs/deploying.md` is the long version.
+# ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 name: Deploy
 
@@ -54,87 +59,30 @@ env:
   SITE_DOMAIN: kellyportfolios.com
 
 jobs:
+  # Reports; changes nothing. Safe to run at any time, and worth running before a
+  # release: the distribution is edited by hand, so nothing else notices when it drifts.
   discover:
     runs-on: ubuntu-latest
     outputs:
       distribution_id: ${{ steps.find.outputs.distribution_id }}
       bucket: ${{ steps.find.outputs.bucket }}
       origin_domain: ${{ steps.find.outputs.origin_domain }}
-      website_origin: ${{ steps.find.outputs.website_origin }}
-      error_responses: ${{ steps.find.outputs.error_responses }}
+      origin_kind: ${{ steps.find.outputs.origin_kind }}
+      rewrites_directories: ${{ steps.find.outputs.rewrites_directories }}
+      spa_fallback: ${{ steps.find.outputs.spa_fallback }}
+      ready: ${{ steps.find.outputs.ready }}
     steps:
+      - uses: actions/checkout@v4
+
       - uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Find the distribution serving the domain
+      - name: What is in front of the domain
         id: find
-        run: |
-          set -euo pipefail
-
-          dist=$(aws cloudfront list-distributions \
-            --query "DistributionList.Items[?contains(Aliases.Items || \`[]\`, '${SITE_DOMAIN}')] | [0]" \
-            --output json)
-
-          if [ "$dist" = "null" ] || [ -z "$dist" ]; then
-            echo "::error::No CloudFront distribution lists ${SITE_DOMAIN} as an alias."
-            echo "Distributions this key can see:"
-            aws cloudfront list-distributions \
-              --query "DistributionList.Items[].{Id:Id,Aliases:Aliases.Items,Origin:Origins.Items[0].DomainName}" \
-              --output table || true
-            exit 1
-          fi
-
-          id=$(echo "$dist" | jq -r '.Id')
-          origin=$(echo "$dist" | jq -r '.Origins.Items[0].DomainName')
-          errors=$(echo "$dist" | jq -c '.CustomErrorResponses.Items // []')
-
-          # A website-endpoint origin resolves directory indexes; a REST origin does not.
-          if echo "$origin" | grep -q 's3-website'; then website=true; else website=false; fi
-
-          # Strip the S3 suffix either way to recover the bucket name.
-          bucket=$(echo "$origin" | sed -E 's/\.s3-website[.-][a-z0-9-]+\.amazonaws\.com$//; s/\.s3[.-][a-z0-9-]*\.?amazonaws\.com$//')
-
-          {
-            echo "distribution_id=$id"
-            echo "bucket=$bucket"
-            echo "origin_domain=$origin"
-            echo "website_origin=$website"
-            echo "error_responses=$errors"
-          } >> "$GITHUB_OUTPUT"
-
-          {
-            echo "### What is behind ${SITE_DOMAIN}"
-            echo ""
-            echo "| | |"
-            echo "|---|---|"
-            echo "| Distribution | \`$id\` |"
-            echo "| Origin | \`$origin\` |"
-            echo "| Bucket | \`$bucket\` |"
-            echo "| Resolves directory indexes | **$website** |"
-            echo ""
-            if [ "$website" = "false" ]; then
-              echo "> **A REST origin cannot serve \`/start/\`.** Only \`/\` would work."
-              echo "> Fix it before deploying: see \`docs/deploying.md\`."
-              echo ""
-            fi
-            if [ "$errors" = "[]" ]; then
-              echo "No custom error responses. Good — a missing page will 404 honestly."
-            else
-              echo "**Custom error responses are configured:**"
-              echo ""
-              echo '```json'
-              echo "$errors" | jq .
-              echo '```'
-              echo ""
-              echo "> If any of these maps 403 or 404 to \`/index.html\` with response code 200,"
-              echo "> it is the single-page-application fallback and it must be removed. Against"
-              echo "> this build it serves the home page for every wrong URL, with a success"
-              echo "> status, which search engines will index as duplicates."
-            fi
-          } >> "$GITHUB_STEP_SUMMARY"
+        run: scripts/cloudfront/state.sh > /dev/null
 
   build:
     runs-on: ubuntu-latest
@@ -176,12 +124,35 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ env.AWS_REGION }}
 
-      - name: Refuse to publish into an origin that cannot serve the pages
-        if: needs.discover.outputs.website_origin == 'false'
+      # A half-published site is worse than an unpublished one, so the state of the
+      # distribution is checked before a single object moves.
+      - name: Refuse to publish into a distribution that cannot serve the pages
+        if: needs.discover.outputs.ready != 'true'
         run: |
-          echo "::error::${{ needs.discover.outputs.origin_domain }} is a REST origin."
-          echo "Every page except the root would 404. See docs/deploying.md."
+          origin='${{ needs.discover.outputs.origin_domain }}'
+          if [ '${{ needs.discover.outputs.origin_kind }}' = 'foreign' ]; then
+            echo "::error::The behaviour serving the site points at ${origin}, not at a bucket."
+          elif [ '${{ needs.discover.outputs.rewrites_directories }}' != 'true' ]; then
+            echo "::error::${origin} is a REST origin with nothing rewriting the URI."
+            echo "Every page except the root would 404."
+          else
+            echo "::error::A custom error response still maps a miss to /index.html."
+            echo "Every wrong URL would answer with the home page and a 200."
+          fi
+          echo "Run the Configure distribution workflow. See docs/deploying.md."
           exit 1
+
+      # And again against the live site, because a configuration read is a claim about
+      # behaviour and this is the behaviour. A URL that cannot exist must not answer 200.
+      - name: Confirm a miss is still a miss
+        run: |
+          set -euo pipefail
+          code=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}/deploy-probe-does-not-exist/")
+          echo "a URL that cannot exist   $code"
+          if [ "$code" = "200" ]; then
+            echo "::error::It answered 200. The single-page fallback is still live; not publishing."
+            exit 1
+          fi
 
       # Hashed filenames are immutable and cached for a year. HTML, the sitemap and
       # the search index are re-read every time, so the only thing a deploy has to
