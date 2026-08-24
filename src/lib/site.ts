@@ -1,8 +1,12 @@
 /**
  * Site-wide constants and the primary navigation, in reading order.
  *
- * The order is the argument: what to do, then the mechanism that makes it work, then
- * the construction, then what failed, then how sure any of it is.
+ * The order is the argument, and it runs concrete before abstract: what to do, then
+ * what to hold, then why holding more good things stops helping, then what failed,
+ * then how sure any of it is.
+ *
+ * Stacking used to sit second. It is the most abstract page here, and a reader working
+ * left to right met it before they had seen a single holding.
  *
  * The site's own origin is not here. It is `site` in `astro.config.mjs`, which the
  * sitemap also reads, and a page reaches it through `Astro.site`.
@@ -33,8 +37,8 @@ export interface NavItem {
  */
 export const NAV_ITEMS = [
   { href: "/start/", label: "Start" },
-  { href: "/stacking/", label: "Stacking" },
   { href: "/portfolio/", label: "Portfolio" },
+  { href: "/stacking/", label: "Stacking" },
   { href: "/doesnt-work/", label: "What doesn't work" },
   { href: "/how-sure/", label: "How sure" },
   { href: "/funds/", label: "Funds" },
