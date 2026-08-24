@@ -132,6 +132,18 @@ SITE_DOMAIN=kellyportfolios.com scripts/cloudfront/state.sh | jq .
 SITE_DOMAIN=kellyportfolios.com scripts/cloudfront/dump.sh
 ```
 
+## `www` does not resolve
+
+`as of 2026-08-24`. The distribution lists `www.kellyportfolios.com` as an alias and the
+certificate covers it, but **Route 53 holds no record for it**, so the name fails to
+resolve rather than redirecting. Nothing in either workflow checks `www`, which is why it
+survived the repair above unnoticed.
+
+The fix is one record in the hosted zone: an A record for `www` aliased to the same
+distribution, or a redirect to the apex. The IAM user the workflows use has
+`ListResourceRecordSets` but not `ChangeResourceRecordSets`, so this cannot be automated
+with the current key and has to be done in the console.
+
 ## Verifying
 
 ```sh
