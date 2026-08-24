@@ -14,15 +14,27 @@ import { join } from 'node:path'
 const MAX_BYTES = 1_000_000
 const dir = process.argv[2] ?? 'dist/og'
 
-let files
+// Recursive, because a card's file name is its page's path: the tools sit at
+// dist/og/tools/, and the fifty rendered corpus documents at dist/og/research/. A
+// flat readdir here saw eighteen of sixty-four and reported all clear on the rest.
+async function cards(root) {
+  const found = []
+  for (const entry of await readdir(root, { withFileTypes: true })) {
+    const path = join(root, entry.name)
+    if (entry.isDirectory()) found.push(...(await cards(path)))
+    else if (/\.(png|jpe?g|webp)$/i.test(entry.name)) found.push(path)
+  }
+  return found
+}
+
+let images
 try {
-  files = await readdir(dir)
+  images = await cards(dir)
 } catch {
   console.error(`no social cards found at ${dir}; did the build run?`)
   process.exit(1)
 }
 
-const images = files.filter((name) => /\.(png|jpe?g|webp)$/i.test(name))
 if (images.length === 0) {
   console.error(`no social cards found at ${dir}; did the build run?`)
   process.exit(1)
@@ -30,7 +42,7 @@ if (images.length === 0) {
 
 const oversized = []
 for (const name of images) {
-  const { size } = await stat(join(dir, name))
+  const { size } = await stat(name)
   if (size > MAX_BYTES) oversized.push([name, size])
 }
 

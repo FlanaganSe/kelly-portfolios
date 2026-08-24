@@ -6,7 +6,7 @@
  * the pre-paint theme script below can rely on it being the only source of colour.
  */
 import ThemeToggle from "~/components/ThemeToggle.astro";
-import { ogAlt, OG_HEIGHT, ogImagePath, OG_WIDTH } from "~/lib/og";
+import { ogCard, OG_HEIGHT, OG_WIDTH } from "~/lib/og";
 import {
   canonicalPath,
   CORPUS_AS_OF,
@@ -53,8 +53,14 @@ const canonical = new URL(canonicalPath(pathname), origin).href;
 // Absolute, because every crawler that reads these resolves them from its own origin
 // rather than from the page. Width, height and alt travel with the URL: a card whose
 // dimensions a client cannot know gets rendered as a small square by several of them.
-const ogImage = new URL(ogImagePath(pathname), origin).href;
-const ogImageAlt = ogAlt(pathname);
+//
+// `ogCard` throws on a route it has no card for, and every page on the site renders
+// through here, so adding a page without a card fails the build. It used to hand back
+// the home page's card instead, which is how the account-placement calculator came to
+// be shared under the headline "Do the certain things first".
+const card = ogCard(pathname, title);
+const ogImage = new URL(card.src, origin).href;
+const ogImageAlt = card.alt;
 
 const structuredData = {
   "@context": "https://schema.org",
