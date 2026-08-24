@@ -74,14 +74,18 @@ const structuredData = {
 const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
 
 /**
- * The footer's own links, which are about the site rather than about investing.
+ * The footer's own links: the reference shelf, then the pages about the site itself.
  *
- * They live here rather than beside `NAV_ITEMS` on purpose: the masthead order is the
- * argument the site is making, and these five pages are not part of it. A reader
- * reaches them when they want to know who wrote this and what it is worth, which is a
- * different errand from reading the research.
+ * They live here rather than beside `NAV_ITEMS` on purpose. The masthead order is the
+ * argument the site is making, and none of these belongs inside it — a reader reaches
+ * them on a different errand. The glossary and the short course are the two a reader
+ * arrives at sideways, from a link in a sentence rather than from the masthead, and
+ * both need to be reachable from every page without lengthening a navigation that is
+ * already eight items long.
  */
 const FOOTER_ITEMS = [
+  { href: "/lessons/", label: "What we’ve learned" },
+  { href: "/glossary/", label: "Glossary" },
   { href: "/about/", label: "About" },
   { href: "/methodology/", label: "Methodology" },
   { href: "/corrections/", label: "Corrections" },

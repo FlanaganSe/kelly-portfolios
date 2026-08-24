@@ -1,0 +1,121 @@
+---
+/**
+ * The short course: the things a reader has to have straight before any other page
+ * here is worth reading.
+ *
+ * `src/content/lessons.ts` is the canonical record and this page prints each lesson
+ * as written, in the module's order, because each one depends only on the ones above
+ * it. The titles are claims rather than topics, so the contents list at the top is the
+ * whole course in one screen.
+ *
+ * The one thing this page does not take from the module is the address. `lessons.ts`
+ * was written against the client-routed application under `src/routes/`, whose routes
+ * (`/lab`, `/method`, `/research/value`) are not routes this build emits. `EVIDENCE`
+ * below maps each lesson onto a page that exists here, and the build fails rather than
+ * shipping a link into nowhere.
+ */
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+import { getCollection } from "astro:content";
+import { lessons } from "~/content/lessons";
+import { researchHref } from "~/lib/research";
+
+interface Evidence {
+  readonly href: string;
+  readonly label: string;
+}
+
+const EVIDENCE: Readonly<Record<string, Evidence>> = {
+  "which-market": { href: researchHref("structural-and-tax-edges"), label: "Cost, tax and the two yardsticks" },
+  "alpha-vs-beta": { href: researchHref("setting-the-equity-share"), label: "Setting the equity share" },
+  "tracking-error-decides": { href: "/tools/how-long/", label: "How long before you would know" },
+  "positive-and-losing": { href: "/how-sure/", label: "How sure we are" },
+  "correlated-is-not-diverse": { href: researchHref("alternative-sleeves-audit"), label: "The alternatives audit" },
+  "capital-is-not-exposure": { href: "/stacking/", label: "Why more good bets stop helping" },
+  "cost-eats-premia": { href: researchHref("factor-products"), label: "What the products actually deliver" },
+  "fund-not-strategy": { href: "/funds/", label: "The shelf" },
+  "long-only-is-not-long-short": { href: researchHref("long-only-capture"), label: "What a fund buyer receives" },
+  "trend-is-insurance": { href: researchHref("trend-marginal-value"), label: "What trend following is worth" },
+  gold: { href: researchHref("alternative-sleeves-audit"), label: "The alternatives audit" },
+  rebalancing: { href: researchHref("rebalancing-policy"), label: "Rebalancing policy" },
+  "leverage-needs-a-levered-benchmark": {
+    href: researchHref("capital-efficiency-and-breadth"),
+    label: "Borrowing, and what beating an index proves",
+  },
+  "reading-the-shape": { href: "/how-sure/", label: "How sure we are" },
+  "normal-or-broken": { href: "/doesnt-work/", label: "What we tested and dropped" },
+  "taxes-and-accounts": { href: "/tools/placement/", label: "Where to hold each fund" },
+  "backtest-is-not-proof": { href: "/methodology/", label: "How a result earns its status" },
+};
+
+// A dead link on this page is invisible to the person who wrote it and costs the reader
+// the one thing the lesson promised: somewhere to check it. Both halves are verified
+// here so a renamed synthesis fails the build instead.
+const corpus = new Set((await getCollection("research")).map((entry) => entry.id));
+
+const course = lessons.map((lesson) => {
+  const evidence = EVIDENCE[lesson.id];
+  if (!evidence) {
+    throw new Error(`Lesson "${lesson.id}" has no entry in EVIDENCE, so it would print without a way to check it.`);
+  }
+  const research = evidence.href.match(/^\/research\/([^/]+)\/$/);
+  if (research?.[1] && !corpus.has(research[1])) {
+    throw new Error(`Lesson "${lesson.id}" points at ${evidence.href}, and docs/research/${research[1]}.md is gone.`);
+  }
+  return { ...lesson, evidence };
+});
+---
+
+<Base
+  title="What we’ve learned"
+  description="Seventeen things worth having straight before the rest of this site is any use, each one a claim rather than a topic, and each one linked to the page that carries the evidence."
+>
+  <div class="prose">
+    <Rail>The short course</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">What we&rsquo;ve learned</h1>
+
+    <MarginNote label="Read in order">
+      <p>
+        Each one leans on the ones above it and on nothing below, so the list runs top to bottom rather than by
+        importance.
+      </p>
+    </MarginNote>
+
+    <p>
+      Every heading below is a claim, so reading the contents list is most of the course. The paragraph under each
+      heading says what we measured and where it stops, and the link at the end of it goes to the page that owns
+      the number. Words you have not met yet live in <a href="/glossary/">the glossary</a>.
+    </p>
+  </div>
+
+  <nav aria-label="Contents" data-pagefind-ignore class="mt-10 border-t border-rule pt-4 font-sans">
+    <p class="eyebrow mb-2">The course</p>
+    <ol class="max-w-measure text-sm text-ink-muted">
+      {
+        course.map((lesson) => (
+          <li class="mb-1.5">
+            <a href={`#${lesson.id}`} class="link">
+              {lesson.title}
+            </a>
+          </li>
+        ))
+      }
+    </ol>
+  </nav>
+
+  {
+    course.map((lesson, index) => (
+      <section id={lesson.id} class="prose mt-14 scroll-mt-8">
+        <Rail>{`Lesson ${index + 1}`}</Rail>
+        <h2>{lesson.title}</h2>
+
+        <p>{lesson.body}</p>
+
+        <p class="font-sans text-sm">
+          <a href={lesson.evidence.href} class="link">{lesson.evidence.label}</a>
+        </p>
+      </section>
+    ))
+  }
+</Base>
