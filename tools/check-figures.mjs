@@ -1,11 +1,20 @@
 #!/usr/bin/env node
-// Validate figure manifests before they are copied into src/content/figures/.
+// Validate figure records.
 //
-//   node tools/check-figures.mjs <dir-of-*.figures.yaml>
+//   node tools/check-figures.mjs src/content/figures       // the shipped collection
+//   node tools/check-figures.mjs <dir-of-*.figures.yaml>   // editorial manifests
 //
-// Checks: every id is declared exactly once across all manifests, every status is a
-// member of the EvidenceStatus union, values are strings, docPaths resolve, and the
-// same id never carries two different facts.
+// Two layouts, because a figure is written once as a page manifest and lives afterwards
+// as one file per id. A directory of `<id>.yaml` is read with the filename as the id; a
+// directory of `*.figures.yaml` is read as arrays of records carrying their own `id`.
+//
+// Checks: every id is declared exactly once, every status is a member of the
+// EvidenceStatus union, values are strings, docPaths resolve, and the same id never
+// carries two different facts.
+//
+// The collection schema in `src/content.config.ts` checks the same things at build time
+// and additionally resolves `source.anchor`, but only for records a page actually
+// renders. This walks every file, so a record nothing links to still has to be valid.
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs'
 import { join, basename } from 'node:path'
@@ -16,16 +25,19 @@ const STATUSES = new Set([
   'shadow-live', 'production-eligible', 'rejected', 'unresolved',
 ])
 
-const dir = process.argv[2] ?? '.claude/scratch/copy'
-const files = readdirSync(dir).filter((f) => f.endsWith('.figures.yaml'))
+const dir = process.argv[2] ?? 'src/content/figures'
+const manifests = readdirSync(dir).filter((f) => f.endsWith('.figures.yaml'))
+const split = manifests.length === 0
+
+const files = split ? readdirSync(dir).filter((f) => f.endsWith('.yaml')) : manifests
 
 const seen = new Map() // id -> [{page, record}]
 const problems = []
 
 for (const file of files) {
-  const page = basename(file, '.figures.yaml')
+  const page = basename(file, split ? '.yaml' : '.figures.yaml')
   const doc = yaml.load(readFileSync(join(dir, file), 'utf8'))
-  const records = Array.isArray(doc) ? doc : (doc?.figures ?? Object.values(doc ?? {}))
+  const records = split ? [{ id: page, ...doc }] : Array.isArray(doc) ? doc : (doc?.figures ?? Object.values(doc ?? {}))
 
   for (const r of records) {
     if (!r?.id) { problems.push(`${page}: a record has no id`); continue }
