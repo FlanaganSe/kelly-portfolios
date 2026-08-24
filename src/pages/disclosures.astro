@@ -1,13 +1,18 @@
 ---
 // The one fact on this page that cannot be derived from the repository: what the author
 // actually owns. It was briefly asserted here on an assumption nobody had checked, which
-// on a disclosures page is the exact failure the page exists to prevent. It has now been
-// answered by the author himself, which is the only source that could answer it.
+// on a disclosures page is the exact failure the page exists to prevent.
 //
-// If it ever stops being true, change it here in the same commit as the purchase. A
-// disclosure that is out of date is worse than none, because a reader trusts it.
-const AUTHOR_HOLDINGS =
-  "The author holds none of the funds named on this site, and no position in any of them.";
+// Replace the placeholder below with the true statement and delete the throw. Both
+// answers are publishable — "holds a portfolio resembling this one" and "holds none of
+// these funds" are each a complete disclosure. Silence is not.
+const AUTHOR_HOLDINGS = "";
+if (!AUTHOR_HOLDINGS) {
+  throw new Error(
+    "src/pages/disclosures.astro: AUTHOR_HOLDINGS is unset. State what the author owns, " +
+      "or state that he owns none of it. Do not publish this page without one of the two.",
+  );
+}
 /**
  * The conflict-of-interest statement, written as a verifiable negative.
  *
