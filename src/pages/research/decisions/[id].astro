@@ -9,7 +9,7 @@
  * has one entry for the corpus.
  */
 import { getCollection, render } from "astro:content";
-import { clamp, decisionNumber, researchLead, researchTitle } from "~/lib/research";
+import { clamp, DECISION_PLAIN_PAGE, decisionNumber, researchLead, researchTitle } from "~/lib/research";
 import Document from "../_Document.astro";
 
 export async function getStaticPaths() {
@@ -32,6 +32,7 @@ const description = lead ? clamp(lead, 180) : title;
   docPath={`docs/decisions/${entry.id}.md`}
   updated={entry.data.updated}
   status={entry.data.status}
+  plain={DECISION_PLAIN_PAGE}
   headings={headings}
   crumbs={[
     { name: "Kelly Portfolios", href: "/" },

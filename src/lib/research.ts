@@ -316,7 +316,7 @@ export interface PlainPage {
   readonly label: string;
 }
 
-const PLAIN = {
+export const PLAIN_PAGES = {
   start: { href: "/start/", label: "Start here" },
   stacking: { href: "/stacking/", label: "Why more good bets stop helping" },
   portfolio: { href: "/portfolio/", label: "The portfolio" },
@@ -324,6 +324,12 @@ const PLAIN = {
   howSure: { href: "/how-sure/", label: "How sure we are" },
   funds: { href: "/funds/", label: "The shelf" },
 } as const satisfies Readonly<Record<string, PlainPage>>;
+
+/**
+ * The decision records all point at the same one. A reader who has landed on the
+ * rationale for a bar is asking how sure any of this is, whichever bar it was.
+ */
+export const DECISION_PLAIN_PAGE: PlainPage = PLAIN_PAGES.howSure;
 
 export interface ResearchEntryMeta {
   /** The filename stem under `docs/research/`, and the last segment of the route. */
@@ -364,14 +370,14 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
     question: "What should be held, and why that construction",
     blurb: "The working position, the investor it was derived for, and the tests that scored it against a cheap index.",
     entries: [
-      { id: "portfolio-recommendation", status: "exploratory", loadBearing: true, plain: PLAIN.portfolio },
-      { id: "construction-tournament", status: "unresolved", loadBearing: true, plain: PLAIN.portfolio },
-      { id: "final-construction-test", status: "unresolved", plain: PLAIN.portfolio },
-      { id: "portfolio-for-one-investor", status: "exploratory", plain: PLAIN.portfolio },
-      { id: "setting-the-equity-share", status: "exploratory", plain: PLAIN.portfolio },
-      { id: "valuation-and-the-allocation", status: "exploratory", plain: PLAIN.portfolio },
-      { id: "untested-tilt-candidates", status: "exploratory", plain: PLAIN.portfolio },
-      { id: "rebalancing-policy", status: "rejected", plain: PLAIN.portfolio },
+      { id: "portfolio-recommendation", status: "exploratory", loadBearing: true, plain: PLAIN_PAGES.portfolio },
+      { id: "construction-tournament", status: "unresolved", loadBearing: true, plain: PLAIN_PAGES.portfolio },
+      { id: "final-construction-test", status: "unresolved", plain: PLAIN_PAGES.portfolio },
+      { id: "portfolio-for-one-investor", status: "exploratory", plain: PLAIN_PAGES.portfolio },
+      { id: "setting-the-equity-share", status: "exploratory", plain: PLAIN_PAGES.portfolio },
+      { id: "valuation-and-the-allocation", status: "exploratory", plain: PLAIN_PAGES.portfolio },
+      { id: "untested-tilt-candidates", status: "exploratory", plain: PLAIN_PAGES.portfolio },
+      { id: "rebalancing-policy", status: "rejected", plain: PLAIN_PAGES.portfolio },
     ],
   },
   {
@@ -381,15 +387,15 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
     blurb:
       "Breadth, borrowing, and how each new strategy is paid for. This is where most of the money in the proposal was riding.",
     entries: [
-      { id: "stacking-and-effective-breadth", status: "exploratory", loadBearing: true, plain: PLAIN.stacking },
-      { id: "capital-efficiency-and-breadth", status: "unresolved", plain: PLAIN.stacking },
-      { id: "leverage-and-the-notional-budget", status: "unresolved", plain: PLAIN.stacking },
-      { id: "marginal-sleeve-value", status: "unresolved", plain: PLAIN.stacking },
-      { id: "trend-marginal-value", status: "rejected", plain: PLAIN.stacking },
-      { id: "trend-weight-under-uncertainty", status: "exploratory", plain: PLAIN.stacking },
-      { id: "live-stacked-fund-records", status: "source-reproduced", plain: PLAIN.stacking },
-      { id: "live-managed-futures", status: "unresolved", plain: PLAIN.stacking },
-      { id: "loading-comparability-and-wrapper-exposure", status: "exploratory", plain: PLAIN.stacking },
+      { id: "stacking-and-effective-breadth", status: "exploratory", loadBearing: true, plain: PLAIN_PAGES.stacking },
+      { id: "capital-efficiency-and-breadth", status: "unresolved", plain: PLAIN_PAGES.stacking },
+      { id: "leverage-and-the-notional-budget", status: "unresolved", plain: PLAIN_PAGES.stacking },
+      { id: "marginal-sleeve-value", status: "unresolved", plain: PLAIN_PAGES.stacking },
+      { id: "trend-marginal-value", status: "rejected", plain: PLAIN_PAGES.stacking },
+      { id: "trend-weight-under-uncertainty", status: "exploratory", plain: PLAIN_PAGES.stacking },
+      { id: "live-stacked-fund-records", status: "source-reproduced", plain: PLAIN_PAGES.stacking },
+      { id: "live-managed-futures", status: "unresolved", plain: PLAIN_PAGES.stacking },
+      { id: "loading-comparability-and-wrapper-exposure", status: "exploratory", plain: PLAIN_PAGES.stacking },
     ],
   },
   {
@@ -398,11 +404,11 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
     question: "Are the factor returns real, and can a fund deliver one",
     blurb: "The academic series, what survives publication, and what a fund an investor can buy actually hands over.",
     entries: [
-      { id: "factor-persistence", status: "exploratory", plain: PLAIN.howSure },
-      { id: "factor-products", status: "unresolved", plain: PLAIN.funds },
-      { id: "long-only-capture", status: "rejected", plain: PLAIN.howSure },
-      { id: "expected-edge-decomposition", status: "exploratory", plain: PLAIN.howSure },
-      { id: "fama-french-reproduction", status: "source-reproduced", plain: PLAIN.howSure },
+      { id: "factor-persistence", status: "exploratory", plain: PLAIN_PAGES.howSure },
+      { id: "factor-products", status: "unresolved", plain: PLAIN_PAGES.funds },
+      { id: "long-only-capture", status: "rejected", plain: PLAIN_PAGES.howSure },
+      { id: "expected-edge-decomposition", status: "exploratory", plain: PLAIN_PAGES.howSure },
+      { id: "fama-french-reproduction", status: "source-reproduced", plain: PLAIN_PAGES.howSure },
     ],
   },
   {
@@ -412,9 +418,9 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
     blurb:
       "The part of the answer that follows from a filing or a tax rule rather than from a backtest, and is the largest reliable line on the site.",
     entries: [
-      { id: "structural-and-tax-edges", status: "source-reproduced", plain: PLAIN.start },
-      { id: "harvesting-and-direct-indexing", status: "exploratory", plain: PLAIN.start },
-      { id: "currency-and-the-international-sleeve", status: "exploratory", plain: PLAIN.portfolio },
+      { id: "structural-and-tax-edges", status: "source-reproduced", plain: PLAIN_PAGES.start },
+      { id: "harvesting-and-direct-indexing", status: "exploratory", plain: PLAIN_PAGES.start },
+      { id: "currency-and-the-international-sleeve", status: "exploratory", plain: PLAIN_PAGES.portfolio },
     ],
   },
   {
@@ -423,9 +429,9 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
     question: "What was tested and did not earn a place",
     blurb: "Each rejection scoped to the data, the window and the yardstick that produced it.",
     entries: [
-      { id: "timing-rules-on-the-equity-sleeve", status: "rejected", plain: PLAIN.rejected },
-      { id: "alternative-sleeves-audit", status: "exploratory", plain: PLAIN.rejected },
-      { id: "current-regime-and-pricing", status: "unresolved", plain: PLAIN.rejected },
+      { id: "timing-rules-on-the-equity-sleeve", status: "rejected", plain: PLAIN_PAGES.rejected },
+      { id: "alternative-sleeves-audit", status: "exploratory", plain: PLAIN_PAGES.rejected },
+      { id: "current-regime-and-pricing", status: "unresolved", plain: PLAIN_PAGES.rejected },
     ],
   },
   {
@@ -434,12 +440,12 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
     question: "How the evidence was made, and how sure it is",
     blurb: "The instruments, their resolution, the review that went looking for errors in all of it, and what is next.",
     entries: [
-      { id: "adversarial-review", status: "exploratory", loadBearing: true, plain: PLAIN.howSure },
-      { id: "evidence-base", status: "exploratory", plain: PLAIN.howSure },
-      { id: "portfolio-edge-research-framework", status: "exploratory", plain: PLAIN.howSure },
-      { id: "portfolio-engine-specification", status: "exploratory", plain: PLAIN.howSure },
-      { id: "market-scan-2026", status: "source-reproduced", plain: PLAIN.funds },
-      { id: "search-coverage", status: "exploratory", plain: PLAIN.howSure },
+      { id: "adversarial-review", status: "exploratory", loadBearing: true, plain: PLAIN_PAGES.howSure },
+      { id: "evidence-base", status: "exploratory", plain: PLAIN_PAGES.howSure },
+      { id: "portfolio-edge-research-framework", status: "exploratory", plain: PLAIN_PAGES.howSure },
+      { id: "portfolio-engine-specification", status: "exploratory", plain: PLAIN_PAGES.howSure },
+      { id: "market-scan-2026", status: "source-reproduced", plain: PLAIN_PAGES.funds },
+      { id: "search-coverage", status: "exploratory", plain: PLAIN_PAGES.howSure },
     ],
   },
 ];
