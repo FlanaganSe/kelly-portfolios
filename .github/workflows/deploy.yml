@@ -13,10 +13,12 @@
 # What the first runs found, on 2026-08-24.
 #
 # There is one distribution, `E2UXACC7VKS53Z`, and Route 53 points the domain at it. It
-# has a single origin, `placeholder.sst.dev`, which answers nothing, and no custom error
-# responses. None of that is broken: SST's design decides the origin per request inside a
-# viewer-request CloudFront Function, so the function is the entire routing behaviour of
-# the site and the origin list is a formality.
+# had a single origin, `placeholder.sst.dev`, which answers nothing, and no custom error
+# responses. None of that was broken: SST's design decides the origin per request inside a
+# viewer-request CloudFront Function, so the function was the entire routing behaviour of
+# the site and the origin list was a formality. It is also why a miss came back 502 — a
+# custom error response is fetched with the behaviour's own origin, and the function does
+# not run for it — so `Configure distribution` gives the distribution a real S3 origin.
 #
 # The function SST installed looks every path up in a CloudFront key-value store, one key
 # per file in the bucket — the store holds five — and rewrites anything it cannot find to
@@ -66,7 +68,8 @@ jobs:
     outputs:
       distribution_id: ${{ steps.find.outputs.distribution_id }}
       bucket: ${{ steps.find.outputs.bucket }}
-      bucket_domain: ${{ steps.find.outputs.bucket_domain }}
+      origin_domain: ${{ steps.find.outputs.origin_domain }}
+      origin_is_site: ${{ steps.find.outputs.origin_is_site }}
       attached_function: ${{ steps.find.outputs.attached_function }}
       function_is_ours: ${{ steps.find.outputs.function_is_ours }}
       honest_404: ${{ steps.find.outputs.honest_404 }}
@@ -129,11 +132,12 @@ jobs:
       - name: Refuse to publish into a distribution that cannot serve the pages
         if: needs.discover.outputs.ready != 'true'
         run: |
-          if [ '${{ needs.discover.outputs.function_is_ours }}' != 'true' ]; then
+          if [ '${{ needs.discover.outputs.origin_is_site }}' != 'true' ]; then
+            echo "::error::The behaviour serves from '${{ needs.discover.outputs.origin_domain }}', not the bucket in site.env."
+            echo "Uploading would put the build somewhere no reader is served from."
+          elif [ '${{ needs.discover.outputs.function_is_ours }}' != 'true' ]; then
             echo "::error::The viewer-request function is '${{ needs.discover.outputs.attached_function }}', not ours."
             echo "It resolves paths through a key-value store this deploy does not maintain."
-          elif [ -z '${{ needs.discover.outputs.bucket }}' ]; then
-            echo "::error::No bucket could be read out of the published function."
           else
             echo "::error::A miss does not answer 404. The custom error responses are not in place."
           fi

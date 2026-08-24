@@ -16,25 +16,24 @@
 # the distribution that answers a request, so the domain is followed. The alias match
 # survives only as a fallback for a key without Route 53 permission.
 #
-# Reading the origin: there isn't one to read. The distribution's single origin is a
-# placeholder that answers nothing, because SST's design decides the origin per request
-# inside a viewer-request function (`cf.updateRequestOrigin`). So the bucket the site is
-# served from is read back out of the published function's own source, which is the only
-# place it is true. `scripts/cloudfront/dump.sh` prints the whole arrangement.
+# Reading the origin: until `repair.sh` ran there was nothing to read. SST's design left
+# the distribution one origin, `placeholder.sst.dev`, which answers nothing, and picked
+# the bucket per request inside the viewer-request function. `scripts/cloudfront/dump.sh`
+# prints that arrangement; `docs/deploying.md` explains why it had to go.
 #
 # `ready` is what the deploy gates on, and it wants all three:
+#   `origin_is_site`    the behaviour serving the site points at the bucket in
+#       `site.env`, so the deploy uploads to the place the reader is served from.
 #   `function_is_ours`  the attached function is `directory-index.js` and not the one
 #       SST installed, which looks every path up in a five-key store and rewrites a miss
 #       to `/index.html` — the home page, with a 200, for every wrong URL.
-#   `bucket`            a bucket domain could be read out of that function.
 #   `honest_404`        403 and 404 from the origin become `/404.html` with a 404.
 set -euo pipefail
 
 domain="${SITE_DOMAIN:?SITE_DOMAIN is not set}"
 ours="kellyportfolios-directory-index"
-
-work=$(mktemp -d)
-trap 'rm -rf "$work"' EXIT
+# shellcheck source=/dev/null
+. "$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/site.env"
 
 distributions=$(aws cloudfront list-distributions --query 'DistributionList.Items' --output json)
 
@@ -78,44 +77,39 @@ attached=$(jq -r '
 ' <<<"$distribution")
 attached_name="${attached##*/}"
 
-# The bucket is a literal in our function and a variable in SST's, so this reads back
-# as empty for anything but the function this repository publishes.
-bucket_domain=""
-if [ "$attached_name" = "$ours" ]; then
-  if aws cloudfront get-function --name "$ours" --stage LIVE "$work/live.js" >/dev/null 2>&1; then
-    bucket_domain=$(grep -oE '[a-z0-9][a-z0-9.-]*\.s3[.-][a-z0-9.-]*amazonaws\.com' "$work/live.js" | head -1 || true)
-  fi
-fi
-
 state=$(jq -c \
   --arg selected_by "$selected_by" \
-  --arg attached "$attached" \
   --arg attached_name "$attached_name" \
   --arg ours "$ours" \
-  --arg bucket_domain "$bucket_domain" '
+  --arg site "$SITE_BUCKET_DOMAIN" '
   (.CustomErrorResponses.Items // []) as $errors
+  | .DefaultCacheBehavior.TargetOriginId as $target
+  | ((.Origins.Items // []) | map(select(.Id == $target)) | first | .DomainName // "") as $host
   | {
       distribution_id:   .Id,
       selected_by:       $selected_by,
       cloudfront_domain: .DomainName,
       aliases:           (.Aliases.Items // []),
-      placeholder_origin: (.Origins.Items // [] | map(.DomainName)),
+      origins:           ((.Origins.Items // []) | map(.DomainName)),
+      origin_domain:     $host,
+      origin_is_site:    ($host == $site),
+      bucket:            (if $host == $site
+                          then ($host | sub("\\.s3[.-][a-z0-9-]*\\.?amazonaws\\.com$"; ""))
+                          else "" end),
       attached_function: $attached_name,
       function_is_ours:  ($attached_name == $ours and $attached_name != ""),
-      bucket_domain:     $bucket_domain,
-      bucket:            ($bucket_domain | sub("\\.s3[.-][a-z0-9-]*\\.?amazonaws\\.com$"; "")),
       honest_404:        ([403, 404] | all(. as $code | $errors | any(
                             .ErrorCode == $code and .ResponsePagePath == "/404.html" and .ResponseCode == "404"))),
       spa_fallback:      ($errors | map(select(.ResponsePagePath == "/index.html")) | length > 0),
       error_responses:   $errors
     }
-  | .ready = (.function_is_ours and .bucket != "" and .honest_404)
+  | .ready = (.origin_is_site and .function_is_ours and .honest_404)
 ' <<<"$distribution")
 
 printf '%s\n' "$state"
 
 if [ -n "${GITHUB_OUTPUT:-}" ]; then
-  for key in distribution_id bucket bucket_domain attached_function function_is_ours honest_404 ready; do
+  for key in distribution_id bucket origin_domain origin_is_site attached_function function_is_ours honest_404 ready; do
     printf '%s=%s\n' "$key" "$(jq -r --arg k "$key" '.[$k]' <<<"$state")" >> "$GITHUB_OUTPUT"
   done
 fi
@@ -127,8 +121,8 @@ if [ -n "${GITHUB_STEP_SUMMARY:-}" ]; then
     jq -r '
       "| | |", "|---|---|",
       "| Distribution | `\(.distribution_id)` (\(.cloudfront_domain), found by \(.selected_by)) |",
+      "| Origin | `\(if .origin_domain == "" then "—" else .origin_domain end)`\(if .origin_is_site then "" else " — **not the bucket in site.env**" end) |",
       "| Viewer-request function | `\(if .attached_function == "" then "—" else .attached_function end)` |",
-      "| Bucket it serves from | `\(if .bucket == "" then "—" else .bucket end)` |",
       "| A miss answers 404 | **\(.honest_404)** |",
       "| Ready to publish | **\(.ready)** |"
     ' <<<"$state"

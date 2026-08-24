@@ -23,37 +23,40 @@ records are untouched, there is no cutover and no propagation window.
 Worth knowing before changing anything, because none of it is in this repository and two
 plausible readings of the distribution are both wrong.
 
-There is one distribution, `E2UXACC7VKS53Z`, and Route 53 points the domain at it. It has
-a single origin, `placeholder.sst.dev`, which answers nothing, and — until 2026-08-24 —
-no custom error responses at all. That is not a broken distribution. SST's design decides
-the origin *per request*, inside a viewer-request CloudFront Function that calls
-`cf.updateRequestOrigin`, so the function is the entire routing behaviour of the site and
-the origin list is a formality. [`scripts/cloudfront/dump.sh`](../scripts/cloudfront/dump.sh)
-prints the whole arrangement — the distribution, the function's source, the key-value
-store it reads, and the buckets in the account.
+There is one distribution, `E2UXACC7VKS53Z`, and Route 53 points the domain at it. Until
+2026-08-24 it had a single origin, `placeholder.sst.dev`, which answers nothing, and no
+custom error responses. That was not broken. SST's design decides the origin *per
+request*, inside a viewer-request CloudFront Function that calls `cf.updateRequestOrigin`,
+so the function was the entire routing behaviour of the site and the origin list was a
+formality. [`scripts/cloudfront/dump.sh`](../scripts/cloudfront/dump.sh) prints the whole
+arrangement — the distribution, the function's source, the key-value store it reads, the
+bucket policy, and the buckets in the account.
 
 The function SST installed resolves a path by looking it up in a CloudFront key-value
 store holding one key per file in the bucket, and rewrites anything it cannot find to
-`/index.html`. The store holds five keys, which was the whole of the old client-routed
+`/index.html`. The store held five keys, which was the whole of the old client-routed
 bundle. Two consequences:
 
-- **Every wrong URL answers with the home page and a 200.** Today
-  `https://kellyportfolios.com/no-such-page/` returns the home page's own ETag. Against a
-  build of thirty-odd pages that means a typo looks like a working page and a crawler
-  indexes a copy of the home page under each one.
-- **A file that is not in the store is not served**, so `aws s3 sync` alone would publish a
-  site that still answers every URL with the old home page. Keeping a key-value store in
-  step with several hundred built files on every deploy is a moving part with no purpose:
-  `<route>/index.html` is derivable from the URL.
+- **Every wrong URL answered with the home page and a 200**, so a typo looked like a
+  working page and a crawler would index a copy of the home page under each one.
+- **A file that is not in the store is not served**, so `aws s3 sync` alone would have
+  published a site that still answered every URL with the old home page. Keeping a
+  key-value store in step with several hundred built files on every deploy is a moving
+  part with no purpose: `<route>/index.html` is derivable from the URL.
 
-Two traps follow from the same design, and both cost a failed deploy on 2026-08-24:
+A third consequence only shows up once you try to fix the second. A custom error response
+is fetched with the cache behaviour's **own** origin — the viewer-request function does not
+run for it — so with only a placeholder origin a miss came back 502 rather than
+`/404.html`. That is why the repair gives the distribution a real S3 origin instead of
+leaving the choice to the function.
 
-- `Origins.Items[0]` is `placeholder.sst.dev`. A deploy that derives the bucket from it —
+Two more traps, both of which cost a failed deploy:
+
+- `Origins.Items[0]` was `placeholder.sst.dev`. A deploy that derives the bucket from it —
   the first version of this workflow did — syncs an entire site into a bucket of that name.
-- The bucket is named nowhere in the distribution. It is a literal inside the function, and
-  that is where [`state.sh`](../scripts/cloudfront/state.sh) reads it back from, so the
-  deploy syncs into the bucket the function actually serves from rather than one the
-  repository merely believes in.
+- The bucket was named nowhere in the distribution, only inside the function. It now has
+  one canonical home, [`scripts/cloudfront/site.env`](../scripts/cloudfront/site.env), and
+  the deploy refuses to upload unless the distribution serves from exactly that bucket.
 
 Finding the distribution has its own trap: the first one whose aliases mention the domain
 is not necessarily the one serving it. Route 53's alias record is followed instead, and the
@@ -62,37 +65,48 @@ alias match survives only as a fallback for a key without Route 53 permission.
 ## Reconfiguring it, once
 
 `Actions` → `Configure distribution` → `Run workflow`. Leave **apply** unticked for a dry
-run: it prints the state, the function being replaced, and the diff it would apply, and
-writes nothing. Then run it again with **apply** ticked. It takes a few minutes, most of
-that waiting for the distribution to deploy.
+run: it prints the state, the function being replaced, the bucket policy, and the diff it
+would apply, and writes nothing. Then run it again with **apply** ticked. It takes a few
+minutes, most of that waiting for the distribution to deploy.
 
-Two changes, both idempotent, neither touching the bucket, the certificate, the aliases, or
-any DNS record:
+Three changes, all idempotent, none of them touching the bucket's contents, its policy,
+the certificate, the aliases, or any DNS record:
 
-1. [`directory-index.js`](../scripts/cloudfront/directory-index.js) replaces SST's
-   function. It derives `<route>/index.html` from the URL, redirects `/start` to `/start/`
-   so one document has one URL rather than two, and points the request at the bucket with
-   the same signed origin-access-control configuration SST used. Because that function is
-   the whole behaviour of the site, `repair.sh` runs it against CloudFront's own
-   `test-function` harness — six paths, including the redirect and a hashed asset — and
-   refuses to publish it if any answer is wrong.
-2. 403 and 404 from the origin become `/404.html` with a status of 404. The build emits
-   that page. Both codes, because the bucket is read through an origin access control whose
-   policy grants `GetObject` and not `ListBucket`, so a missing key comes back as 403.
+1. **A real origin.** The bucket becomes an actual origin, read through a new origin
+   access control named `kellyportfolios-site`, and the default behaviour points at it.
+   The bucket policy already allows `cloudfront.amazonaws.com` to `GetObject` without
+   naming a distribution, so nothing about the policy has to change. The placeholder
+   origin is removed once nothing references it.
+2. **Honest misses.** 403 and 404 from that origin become `/404.html` with a status of
+   404. The build emits that page. Both codes, because the policy grants `GetObject` and
+   not `ListBucket`, so a missing key is a 403.
+3. **[`directory-index.js`](../scripts/cloudfront/directory-index.js) replaces SST's
+   function.** It derives `<route>/index.html` from the URL and redirects `/start` to
+   `/start/` so one document has one URL rather than two. Because a function is the whole
+   behaviour of the site, `repair.sh` runs it against CloudFront's own `test-function`
+   harness — seven paths, including the redirect, a hashed asset and a query string — and
+   refuses to publish it if any answer is wrong. That harness is what caught `for...of`
+   being absent from the `cloudfront-js-2.0` runtime.
+
+The order inside the run matters: the distribution is fixed first and the function's code
+is published last, because the function that is attached at the start may be the one
+choosing the origin, and publishing new code under it first would take the site down for
+the minutes the distribution takes to deploy.
 
 SST's function and its key-value store are left in place, unattached and unread. Nothing
 that could deploy them exists any more, and deleting them gains nothing.
 
-**Order matters, slightly.** Configure first, then deploy. In between — a few minutes — the
-old single-page client is still in the bucket and has lost the fallback that made its deep
-links work, so they answer 404 until the new build lands. The home page is unaffected.
-Deploying first instead would leave every URL answering with the *new* home page and a 200,
-which is the worse of the two windows.
+**Order between the two workflows matters too.** Configure first, then deploy. In between
+— a few minutes — the old bundle is still in the bucket and has lost the fallback that made
+its deep links work, so they answer 404 until the new build lands. The home page is
+unaffected. Deploying first instead would leave every URL answering with the *new* home
+page and a 200, which is the worse of the two windows.
 
 The IAM user needs `cloudfront:GetDistributionConfig`, `UpdateDistribution`,
-`CreateFunction`, `UpdateFunction`, `DescribeFunction`, `GetFunction`, `TestFunction` and
-`PublishFunction`, and `route53:ListHostedZonesByName` and `ListResourceRecordSets` for the
-lookup above. If it does not have them the workflow says so and changes nothing.
+`CreateOriginAccessControl`, `ListOriginAccessControls`, `CreateFunction`,
+`UpdateFunction`, `DescribeFunction`, `GetFunction`, `TestFunction` and `PublishFunction`,
+plus `route53:ListHostedZonesByName` and `ListResourceRecordSets` for the lookup above. If
+it does not have them the workflow says so and changes nothing.
 
 ## Publish
 
