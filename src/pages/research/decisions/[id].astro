@@ -9,7 +9,7 @@
  * has one entry for the corpus.
  */
 import { getCollection, render } from "astro:content";
-import { decisionNumber, researchLead, researchTitle } from "~/lib/research";
+import { clamp, decisionNumber, researchLead, researchTitle } from "~/lib/research";
 import Document from "../_Document.astro";
 
 export async function getStaticPaths() {
@@ -22,7 +22,7 @@ const { Content, headings } = await render(entry);
 
 const title = researchTitle(entry);
 const lead = researchLead(entry);
-const description = lead ? `${lead.slice(0, 180).trim()}${lead.length > 180 ? "…" : ""}` : title;
+const description = lead ? clamp(lead, 180) : title;
 ---
 
 <Document

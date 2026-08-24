@@ -8,7 +8,7 @@
  * frontmatter block that would then drift from the document.
  */
 import { getCollection, render } from "astro:content";
-import { researchGroupOf, researchLead, researchMeta, researchTitle } from "~/lib/research";
+import { clamp, researchGroupOf, researchLead, researchMeta, researchTitle } from "~/lib/research";
 import Document from "./_Document.astro";
 
 export async function getStaticPaths() {
@@ -26,7 +26,7 @@ const group = researchGroupOf(entry.id);
 
 // Long enough to be useful in a search result, short enough that no engine truncates
 // mid-clause. The lead is the document's own opening paragraph.
-const description = lead ? `${lead.slice(0, 180).trim()}${lead.length > 180 ? "…" : ""}` : title;
+const description = lead ? clamp(lead, 180) : title;
 ---
 
 <Document

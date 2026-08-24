@@ -49,6 +49,11 @@ const { title, description, rail, docPath, updated, status, plain, question, hea
 // page is a second page rather than a way into the first one.
 const sections = headings.filter((heading) => heading.depth === 2);
 
+// The document's own `# ` line is this page's `h1`, and the loader strips it from the
+// body so the page has one. Its id has to move with it: `#the-title` is a real anchor
+// in the corpus and several pages link to their own top.
+const topAnchor = headings.find((heading) => heading.depth === 1)?.slug;
+
 const origin = Astro.site ?? new URL("https://kellyportfolios.com");
 const canonical = new URL(canonicalPath(Astro.url.pathname), origin).href;
 
@@ -101,7 +106,7 @@ const breadcrumbs = {
       </ol>
     </nav>
 
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">{title}</h1>
+    <h1 id={topAnchor} class="font-serif text-4xl tracking-[-0.02em] text-ink">{title}</h1>
 
     <p class="mt-4 flex flex-wrap items-baseline gap-x-4 gap-y-2 font-sans text-sm text-ink-muted">
       {status && <StatusChip status={status} />}
@@ -118,11 +123,7 @@ const breadcrumbs = {
       {
         plain && (
           <p>
-            The plain-English page over the same ground is{" "}
-            <a href={plain.href} class="link">
-              {plain.label}
-            </a>
-            .
+            The plain-English page over the same ground is <a href={plain.href} class="link">{plain.label}</a>.
           </p>
         )
       }
@@ -219,6 +220,18 @@ const breadcrumbs = {
   .research-body td code,
   .research-body th code {
     font-size: 0.8em;
+  }
+
+  /* `research/tests/unit/test_studies_investor_placement.py` has no space in it and no
+     break opportunity either, so at 390px it reached 144px past the viewport and took
+     the page with it. The table scrollers were never the problem; a file path in a
+     sentence was. */
+  .research-body :not(pre) > code {
+    overflow-wrap: anywhere;
+  }
+
+  .research-body {
+    overflow-wrap: break-word;
   }
 
   .research-body pre {
