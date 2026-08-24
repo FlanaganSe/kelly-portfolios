@@ -1,0 +1,14 @@
+label: Fee saved by moving, against the fund you would otherwise have held
+value: 0.49%
+unit: a year
+interval: 0.40% to 0.59%
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 1-the-budget
+note: >-
+  The only large line in the whole budget that applies without a condition attached. It is
+  measured against the fund the investor would otherwise have owned, never against an index, and
+  it is zero for someone already holding cheap index funds.

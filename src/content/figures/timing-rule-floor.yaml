@@ -1,0 +1,12 @@
+label: Smallest gain that test could have detected
+value: '3.03'
+unit: pp/yr, at 80% power
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: Timing rules on the equity sleeve
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: the-gap-and-the-floor-it-has-to-clear
+note: >-
+  The effective sample is 73 round trips in 99 years rather than 1,190 monthly observations,
+  which is why a century of history resolves so little.

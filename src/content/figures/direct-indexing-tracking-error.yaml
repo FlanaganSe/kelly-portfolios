@@ -1,0 +1,12 @@
+label: Drift from the index it copies
+value: 1.44%/yr
+unit: against a 46 bp/yr edge budget
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Harvesting and direct indexing
+  docPath: docs/research/harvesting-and-direct-indexing.md
+  anchor: 5-the-cost-side-stated-fully
+note: >-
+  Measured on a 49-industry proxy, so it is a ceiling rather than a point estimate. Noise three
+  times louder than the signal it is listening for.

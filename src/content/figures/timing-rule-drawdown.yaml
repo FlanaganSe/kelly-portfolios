@@ -1,0 +1,13 @@
+label: Worst loss under the rule
+value: −43.1%
+unit: against a beta-matched control's −71.6% and buy-and-hold's −83.7%
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Timing rules on the equity sleeve
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: conclusion
+note: >-
+  The one claim on that page that clears its own floor. A mechanical property of truncating the
+  left tail rather than an estimated premium, which is why it survives when the average return
+  does not. Repeats in developed ex-US, emerging and 1871-1926.

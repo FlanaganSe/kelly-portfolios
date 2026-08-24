@@ -1,0 +1,14 @@
+label: Time before your own account could separate the recommended construction from its control
+value: 12.2 years
+unit: to 90% confidence, at +2.20 pp/yr against a borrowing-matched index and 6.0% tracking error
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: The final construction, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+note: >-
+  T = (z·s/e)², the same closed form every other horizon on this site uses. It answers when your
+  own account would show the gap, which is a different question from when a study could separate
+  the gap from zero. That second question is 59 years on this design, and the two are never
+  contrasted with each other.

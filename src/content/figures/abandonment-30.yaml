@@ -1,0 +1,12 @@
+label: Chance a 30% wrapper is sold within thirty years, at the premium prior's median
+value: 17%
+unit: percent of simulated thirty-year paths
+status: exploratory
+asOf: '2026-08-22'
+source:
+  label: The trend weight under acknowledged ignorance
+  docPath: docs/research/trend-weight-under-uncertainty.md
+note: >-
+  Trigger is a −20% relative drawdown, which is an input rather than an estimate; nothing in
+  this repository measures a real investor's capitulation threshold. The underlying table reads
+  17.2% at a weight of 0.30.

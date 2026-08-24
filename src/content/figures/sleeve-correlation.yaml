@@ -1,0 +1,13 @@
+label: Average correlation between the portfolio's own active slices
+value: '0.435'
+status: exploratory
+asOf: '2026-08-23'
+period: 422 months, 1990-11 to 2025-12
+source:
+  label: Stacking and effective breadth, correlation measured
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: correlation-measured
+note: >-
+  Measured on four modelled long-only tilts plus AQR's TSMOM standing in for the trend leg. It
+  is this portfolio's number, not a constant of nature. A genuinely wider stack would sit lower
+  and have a higher ceiling.

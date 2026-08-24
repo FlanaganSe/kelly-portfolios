@@ -1,0 +1,13 @@
+label: What index funds and active funds charge, weighted by the money in them
+value: 0.09% against 0.57%
+unit: a year
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 1-the-budget
+note: >-
+  Morningstar 2026, asset-weighted; the ICI series reads 0.05% against 0.64%. The equal-weighted
+  active average is 1.00% to 1.12%, which overstates the gap by roughly 0.45 points, so the
+  asset-weighted pair is the conservative one.

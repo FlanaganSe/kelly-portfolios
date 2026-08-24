@@ -1,0 +1,14 @@
+label: The 200-day rule's gain over a matched control
+value: '+0.74'
+unit: pp/yr against a beta-matched control
+interval: '[−1.38, +2.87]'
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: Timing rules on the equity sleeve
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: conclusion
+note: >-
+  1,190 months of US data, HAC t = 0.69. The interval spans zero, so the sign is not settled.
+  Unresolved, not rejected: the rule is not shown to fail, it is shown to be unreadable on this
+  instrument.

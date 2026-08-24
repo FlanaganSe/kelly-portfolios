@@ -1,0 +1,12 @@
+label: Distinct return engines a retail investor can reach
+value: six, and four worth the trouble
+unit: engines
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Capital efficiency and breadth, accessible return sources
+  docPath: docs/research/capital-efficiency-and-breadth.md
+  anchor: accessible-return-sources
+note: >-
+  A judgement over the shelf this project audited, not a fact about markets. The shelf changes.
+  The count is deliberately about mechanisms and failure modes rather than tickers.

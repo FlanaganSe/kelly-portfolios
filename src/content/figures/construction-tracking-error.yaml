@@ -1,0 +1,9 @@
+label: Tracking error of the recommended portfolio against its borrowing-matched control
+value: 6.0%
+unit: percent per year
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: The final construction, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: 1-the-tournament-on-the-portfolio-actually-recommended

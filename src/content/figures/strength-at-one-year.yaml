@@ -1,0 +1,11 @@
+label: Edge per unit of drift implied by beating the index 55% of the time over one year
+value: '0.126'
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Expected edge decomposition, what probability is actually attainable
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  Derived by inverting P = Phi(IR sqrt(T)) at T = 1. Illustrative arithmetic on the repository's
+  own identity, not a committed measurement.

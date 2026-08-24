@@ -1,0 +1,12 @@
+label: Cost of a wholly captive employer plan, at the top bracket
+value: 9.1 basis points
+unit: basis points per year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Part A, the portfolio for one investor
+  docPath: docs/research/portfolio-for-one-investor.md
+note: >-
+  9.12 bp/yr at a 30% wrapper and 6.00 at 25%, against the same plan at a rollover share of 1.
+  The repository's figure for the eight-fund original is 9.09 bp, which this reproduces. Larger
+  than the whole booked ordering edge.

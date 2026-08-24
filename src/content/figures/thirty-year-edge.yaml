@@ -1,0 +1,13 @@
+label: Central estimate of this portfolio's edge against a same-split cheap core
+value: 92 basis points
+unit: basis points per year
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth
+  docPath: docs/research/stacking-and-effective-breadth.md
+note: >-
+  One basis point under what thirty years of holding could detect. The joint probability of
+  beating a same-split cheap core over thirty years is 0.72 on the primary reading and runs 0.41
+  to 0.91 across four premium scenarios and three alpha settings. Quote the range, never the
+  point.

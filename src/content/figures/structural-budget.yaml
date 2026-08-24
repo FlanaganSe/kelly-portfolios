@@ -1,14 +1,14 @@
-label: Fees, taxes and account placement, against your own likely alternative
-value: "109"
-unit: bp/yr
+label: Fees, taxes and account placement, against the portfolio you already own
+value: 1.09%
+unit: a year
 status: source-reproduced
-certainty: contractual
-asOf: "2026-08-17"
+asOf: '2026-08-17'
 source:
   label: Structural and tax-aware edges
   docPath: docs/research/structural-and-tax-edges.md
-  anchor: conclusion
+  anchor: the-ledger
 note: >-
-  Built from fund filings rather than from a backtest. The largest single line is the
-  capital-gain distribution an active mutual fund makes and an exchange-traded fund
-  does not, worth 23 bp on its own.
+  Assembled from fund filings and tax statute rather than from a backtest, and measured against
+  the portfolio the reference investor would otherwise have held. It was 0.89% before the ledger
+  was revised. The largest single line is the capital-gain distribution an active mutual fund
+  makes and an exchange-traded fund does not.

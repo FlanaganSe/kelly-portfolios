@@ -1,0 +1,11 @@
+label: Chance a 30% wrapper is sold within thirty years if the trend premium is gone
+value: 66.7%
+unit: percent of simulated thirty-year paths
+status: exploratory
+asOf: '2026-08-22'
+source:
+  label: The trend weight under acknowledged ignorance
+  docPath: docs/research/trend-weight-under-uncertainty.md
+note: >-
+  At the premium prior's floor of −1.17% net. Holdability and return are a bet on the same
+  parameter, which is the same risk twice rather than a diversification of it.

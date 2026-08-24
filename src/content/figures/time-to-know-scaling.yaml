@@ -1,0 +1,13 @@
+label: Years to confirm the same 0.50 pp/yr edge, at two noise levels
+value: 24 days at 10 bp of tracking error, 105 years at 400 bp
+unit: to 90% confidence
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  The closed form is T = (z·s/e)², so the wait grows with the square of noise over edge. Forty
+  times the noise is sixteen hundred times the wait. The formula assumes the edge is known,
+  which makes every probability derived from it a best case.

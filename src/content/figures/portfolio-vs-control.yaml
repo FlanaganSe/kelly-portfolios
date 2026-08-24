@@ -1,0 +1,14 @@
+label: The whole portfolio against a borrowing-matched cheap index
+value: +2.2 points ahead, plausibly +0.1 to +4.6
+unit: percentage points per year
+interval: '[+0.05, +4.57]'
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: The final construction, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+note: >-
+  427 months, 1990-11 to 2026-05. Control is a cheap 65/35 cap-weighted index borrowed to the
+  same gross exposure and charged the same financing. Funds are basis-mapped, not simulated from
+  fund returns, which is the largest single source of error in the figure.

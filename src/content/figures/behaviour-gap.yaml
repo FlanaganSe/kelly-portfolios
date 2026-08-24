@@ -1,0 +1,13 @@
+label: Gap between what funds returned and what investors in those funds actually earned
+value: 0.15%
+unit: a year
+interval: 0.05% to 0.60%
+status: exploratory
+asOf: '2026-08-17'
+source:
+  label: The behaviour gap is a different benchmark
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 2-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line
+note: >-
+  Morningstar, ten years to 2024. A third yardstick, and the answer to a third question. It may
+  be shown beside the other two and never added to them.

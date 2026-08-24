@@ -1,0 +1,12 @@
+label: Bitcoin's move for each move in stocks
+value: 1.53x up, 1.62x down
+unit: beta to US equity, up months and down months
+status: rejected
+asOf: '2026-08-23'
+source:
+  label: Alternative sleeves audit
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 3-crypto-the-investor-asked-so-here-is-the-arithmetic
+note: >-
+  Falling harder than it rises is the opposite of the shape a diversifier is bought for. 137
+  months, FRED CBBTCUSD.

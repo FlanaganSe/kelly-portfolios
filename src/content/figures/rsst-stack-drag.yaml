@@ -1,0 +1,19 @@
+label: Amount the stocks-plus-managed-futures fund has trailed the S&P 500 since it launched
+value: 1.71 percentage points
+unit: percentage points a year
+status: source-reproduced
+asOf: '2026-08-23'
+period: 2023-09-05 to 2026-07-31
+source:
+  label: Live stacked fund records, the Return Stacked table
+  docPath: docs/research/live-stacked-fund-records.md
+  anchor: 1-return-stacked-six-of-seven-trail-the-benchmark-their-own-issuer-prints
+note: >-
+  Our subtraction of the issuer's own standardised NAV return, +19.07% a year, from the
+  benchmark the issuer itself prints beside it, the S&P 500 at +20.78%. Read from
+  returnstackedetfs.com on 2026-08-23, as of 2026-07-31, and re-read independently the same day.
+  It is issuer evidence, not a repository measurement. Two cautions the source page states in
+  full: the window is 2.9 years, and the benchmark is single-asset rather than
+  borrowing-matched, so the figure answers whether the second leg covered its own cost and not
+  whether the fund was a good idea at a given level of risk. Standardised returns update
+  monthly; re-read before publication.

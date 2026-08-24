@@ -1,0 +1,12 @@
+label: Embedded gain after thirty years
+value: 55.7% of value against 26.7%
+unit: harvested account against the same account never selling
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Harvesting and direct indexing
+  docPath: docs/research/harvesting-and-direct-indexing.md
+  anchor: conclusion
+note: >-
+  It more than doubles the lock-in it exists to exploit. Modelled, on a 35%
+  idiosyncratic-volatility assumption that is itself below the measured 45.9%.

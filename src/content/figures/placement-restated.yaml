@@ -1,0 +1,15 @@
+label: The asset-placement line, restated
+value: +2 to +7 bp/yr
+unit: against a feasible control; the published figure was +38 to +55
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Adversarial review
+  docPath: docs/research/adversarial-review.md
+  anchor: 4-the-placement-line-is-3-to-38-bpyr-not-38-to-55-and-is-not-contractual
+note: >-
+  Four defects at once: a truncated range dropping the distributed reading (−18 bp), a
+  rebalancing hurdle avoided booked as a saving (−14 bp), lot selection and never selling both
+  booked when they are mutually exclusive (−2.8 bp), and 94.7% of the top figure resting on one
+  holding's undistributed CFC accrual. The conditional +19 to +49 is reported and never added.
+  aggregate() now raises on a cross-benchmark sum.

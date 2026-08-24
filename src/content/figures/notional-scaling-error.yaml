@@ -1,0 +1,13 @@
+label: What a 30% trend sleeve becomes if exposure figures are typed into a capital-weight screen
+value: 22.7%
+unit: percent of capital
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: The recommended portfolio, operating the portfolio
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: operating-the-portfolio
+note: >-
+  Exposure sums to 132.2% of capital; a screen normalising it to 100 scales every line down by
+  24%, so 30 becomes 22.7. The repository states the loss as about a quarter of the intended
+  sleeve.

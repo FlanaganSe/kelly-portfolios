@@ -1,0 +1,13 @@
+label: Portfolio edge from putting the whole tilt budget into the single best tilt, funded by selling
+value: 117.3 bp
+unit: basis points a year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth, funding
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: funding-the-thesis-is-a-statement-about-overlays
+note: >-
+  Against a same-split cheap-core benchmark, at the premium set most favourable to the
+  portfolio, with 35% of capital available to tilt. Every premium behind it is an input, not a
+  forecast.

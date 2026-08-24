@@ -6,8 +6,8 @@
  * `T = (z s / e)^2`, straight out of {@link horizonForConfidence}. The wait scales with
  * the **square** of noise over edge, which is why two claims worth about the same on
  * paper — a percentage point a year each — settle three and a half months apart and
- * twelve years apart. That contrast is the site's signature idea and it deserves a
- * picture rather than a sentence.
+ * thirty-one years apart. That contrast is the site's headline and it deserves a picture
+ * rather than a sentence.
  *
  * **Form.** A dot plot on a log time axis, not a surface. The reader does not need to
  * understand a ratio to read a row; they need to see that one dot is near the left edge
@@ -62,8 +62,16 @@ const CLAIMS: readonly Row[] = [
     kind: "claim",
   },
   {
+    id: "same-split-core",
+    label: "The whole portfolio against a cheap index fund",
+    against: "vs a cheap core at the same split · 0.92% edge, 4.00% error",
+    edgeBp: 92,
+    trackingErrorBp: 400,
+    kind: "claim",
+  },
+  {
     id: "cheap-index",
-    label: "This portfolio beating a cheap index",
+    label: "The edge budget's own reading of the same question",
     against: "vs a cheap total-market index · 0.054% edge, 3.13% error",
     edgeBp: 5.4,
     trackingErrorBp: 313,
@@ -118,16 +126,16 @@ const AXIS_TICKS = [
 /* ------------------------------------------------------------------ wide */
 const W = {
   w: 1000,
-  h: 356,
+  h: 410,
   labelRight: 320,
   plotLeft: 342,
   plotRight: 900,
   bandRight: 940,
-  claimYs: [44, 98, 152],
-  dividerY: 190,
-  dividerTextY: 208,
-  illustrationYs: [236, 290],
-  axisY: 324,
+  claimYs: [44, 98, 152, 206],
+  dividerY: 244,
+  dividerTextY: 262,
+  illustrationYs: [290, 344],
+  axisY: 378,
 } as const;
 const wx = logScale(DOMAIN, [W.plotLeft, W.plotRight]);
 const wideRows = [
@@ -138,14 +146,14 @@ const wideRows = [
 /* ---------------------------------------------------------------- narrow */
 const N = {
   w: 390,
-  h: 338,
+  h: 390,
   plotLeft: 10,
   plotRight: 380,
-  claimYs: [30, 82, 134],
-  dividerY: 174,
-  dividerTextY: 190,
-  illustrationYs: [212, 264],
-  axisY: 300,
+  claimYs: [30, 82, 134, 186],
+  dividerY: 226,
+  dividerTextY: 242,
+  illustrationYs: [264, 316],
+  axisY: 352,
 } as const;
 const nx = logScale(DOMAIN, [N.plotLeft, N.plotRight]);
 const narrowRows = [
@@ -163,7 +171,7 @@ const descId = "time-to-know-desc";
 ---
 
 <ChartFrame
-  title="Two claims worth about a point a year. One settles over a summer, the other outlives you."
+  title="Two claims worth about a point a year. One settles over a summer, the other takes thirty-one years."
   subtitle="Years of holding before there is a 90% chance you are genuinely ahead of that row's own benchmark. Log scale."
   tableSummary="The same waits as a table"
   class={className}

@@ -1,0 +1,13 @@
+label: Drift around that edge, against a cheap index fund
+value: 3.13%
+unit: a year
+status: exploratory
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 1-the-budget
+note: >-
+  Assumed rather than measured: the component drifts are combined as though they were
+  independent of each other, and they are not, because they sit inside one portfolio. So this is
+  a lower bound on the real dispersion.

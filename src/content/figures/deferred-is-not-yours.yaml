@@ -1,0 +1,12 @@
+label: What $100,000 of traditional IRA is worth to the investor at a 24% withdrawal rate
+value: $76,000
+unit: US dollars
+status: exploratory
+asOf: '2026-08-12'
+source:
+  label: Structural and tax-aware edges
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: 8-the-investors-plan-eight-funds-three-accounts-and-a-ranking-that-does-not-move
+note: >-
+  Equal nominal thirds are Roth 37.84% / traditional 28.76% / taxable 33.41% after tax. The
+  taxable account is the larger constraint after tax, not the smaller.

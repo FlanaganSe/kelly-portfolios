@@ -1,0 +1,14 @@
+label: >-
+  Smallest yearly edge thirty years could demonstrate at 90% confidence against a cheap index
+  fund
+value: 0.73%
+unit: a year
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  0.57% at fifty years. Time to demonstrate an edge scales with the square of drift over edge,
+  so halving the drift cuts the wait fourfold.

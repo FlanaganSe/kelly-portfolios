@@ -1,0 +1,17 @@
+label: Strategies held by the best long-only portfolio on the same ladder
+value: three
+unit: strategies
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth, how many candidates a long-only optimiser holds
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: 5-how-many-candidates-a-long-only-optimiser-actually-holds
+note: >-
+  Same stated ladder, solved exactly by enumerating all 4,095 supports with weights non-negative
+  and summing to one, so the count carries no convergence tolerance, and a 40,000-draw simplex
+  search fails to beat it. It never rises above three however many candidates are offered. Two
+  scope limits travel with the number: it falls to two at a correlation of 0.50 and rises to
+  five at 0.10; and it depends on the candidates having DIFFERENT edges — give all eight the
+  same edge and the optimiser holds all eight at a transfer coefficient of 1.000. The 57.6%
+  ceiling is unchanged either way.

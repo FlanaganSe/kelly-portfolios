@@ -1,0 +1,15 @@
+label: The value exposure this site published, and why it was wrong
+value: '0.213'
+unit: withdrawn; the loading alone is 0.410
+status: rejected
+asOf: '2026-08-23'
+source:
+  label: Long-only capture
+  docPath: docs/research/long-only-capture.md
+  anchor: conclusion
+note: >-
+  A loading of 0.410 multiplied by a long-only capture fraction of 0.520. The two measure the
+  same exposure: the algebra gives capture = h + (α + Σb·mean(f))/mean(HML), exact to 4.4e-16,
+  and 94% of the measured 0.520 is the loading 0.4891. The product is below the loading of every
+  audited value product on the shelf. The code now raises CaptureDoubleCountError rather than
+  accepting a capture argument.

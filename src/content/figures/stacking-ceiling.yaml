@@ -1,11 +1,14 @@
-label: Where an unlimited stack of 55% sleeves stops
-value: "0.576"
+label: >-
+  Chance of finishing ahead of a cheap index for an unlimited stack of 55% strategies at that
+  correlation
+value: 57.6%
+unit: probability
 status: exploratory
-asOf: "2026-08-17"
+asOf: '2026-08-23'
 source:
-  label: Stacking and effective breadth
+  label: Stacking and effective breadth, the arithmetic of stacking
   docPath: docs/research/stacking-and-effective-breadth.md
-  anchor: conclusion
+  anchor: 1-the-arithmetic-of-stacking
 note: >-
-  The ceiling is arithmetic once the correlation is fixed. Buying more sleeves at a
-  correlation of 0.435 cannot carry the odds past this, however many you buy.
+  Closed form, tested against an independent covariance solve at every stack size from 1 to 40.
+  It treats the edge as known, so read it as a best case.

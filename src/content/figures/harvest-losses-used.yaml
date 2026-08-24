@@ -1,0 +1,13 @@
+label: Harvested losses that ever produce a tax saving
+value: 0.2%
+unit: of every dollar harvested, over thirty years, in a never-sell plan
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Harvesting and direct indexing
+  docPath: docs/research/harvesting-and-direct-indexing.md
+  anchor: 3-usage-the-constraint-every-vendor-figure-assumes-away
+note: >-
+  The binding constraint is 26 U.S.C. §1211(b), which caps the deduction of net capital loss
+  against ordinary income at $3,000 a year and has not been indexed since 1978. The other 99.8%
+  stands as a §1212(b) carryforward, which dies with the taxpayer.

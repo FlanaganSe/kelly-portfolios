@@ -1,0 +1,9 @@
+label: RSST's 30-day median bid-ask spread
+value: 0.09%
+unit: percent of price
+status: source-reproduced
+asOf: '2026-08-22'
+source:
+  label: Market scan 2026, bid-ask spreads
+  docPath: docs/research/market-scan-2026.md
+note: Rule 6c-11(c)(1)(v) disclosure, read from the issuer's product page.

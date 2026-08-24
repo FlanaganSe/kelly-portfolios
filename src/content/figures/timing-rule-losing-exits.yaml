@@ -1,0 +1,13 @@
+label: Exits that lost money
+value: 58 of 73
+unit: round trips, 1927 to 2026
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Timing rules on the equity sleeve
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: the-behavioural-cost
+note: >-
+  79.5%. Since 1990 it is 21 of 25. The worst run is twelve consecutive losing exits between
+  March 1948 and November 1960; the post-1990 worst is nine, July 2010 to May 2020, costing
+  56.8% of a fully invested position.

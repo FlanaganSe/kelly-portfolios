@@ -1,0 +1,13 @@
+label: The same foreign value funds on a longer window
+value: −1.0 and −1.7
+unit: pp/yr against the model, 78 months, neither interval excluding zero
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: Factor products
+  docPath: docs/research/factor-products.md
+  anchor: what-the-ex-us-comparator-decided-measured
+note: >-
+  On the 55 months two funds impose, all four large-cap ex-US value funds read −2.3 to −2.9 with
+  intervals excluding zero. The small-minus-large gap falls from +4.5 (resolvable) to +2.0
+  (not). Same funds, same method, different window, opposite verdict.

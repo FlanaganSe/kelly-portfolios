@@ -1,0 +1,10 @@
+label: Worst run of a US value tilt behind its comparator
+value: 54.3% behind
+unit: percent, cumulative
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: The recommended portfolio, what this construction will feel like
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: what-this-construction-will-feel-like
+note: Over 17.7 years, and it did not recover inside the window.

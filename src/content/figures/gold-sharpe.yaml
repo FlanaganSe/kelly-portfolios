@@ -1,0 +1,14 @@
+label: Gold's Sharpe ratio over half a century
+value: '0.18'
+unit: against equity's 0.42 to 0.59
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Alternative sleeves audit
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts
+note: >-
+  12 bp a month over T-bills at 16.24% volatility with a −91.2% peak-to-trough. Correlation to
+  equity is zero rather than negative, both unconditionally and inside drawdowns. About 40% of
+  the full-sample Sharpe comes from the forty months to December 1974, throughout which private
+  US gold ownership was illegal.

@@ -1,0 +1,10 @@
+label: Worst run of a financed trend sleeve behind the equity it displaces
+value: 59.9% behind
+unit: percent, cumulative
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: The recommended portfolio, what this construction will feel like
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: what-this-construction-will-feel-like
+note: Over 11.2 years, net of the equity it displaces, and it did not recover.

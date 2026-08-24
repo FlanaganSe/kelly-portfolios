@@ -1,0 +1,12 @@
+label: Share of the portfolio's active risk sitting in the single stacked fund
+value: 98%
+unit: share of active variance
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Adversarial review, a concentration nobody counted
+  docPath: docs/research/adversarial-review.md
+  anchor: 8-ninety-eight-per-cent-of-the-portfolios-active-risk-sits-in-one-boutique-fund
+note: >-
+  At 30% of capital. Found by the repository's own review of itself; it appears in no experiment
+  arm, no detection floor and no fee table.

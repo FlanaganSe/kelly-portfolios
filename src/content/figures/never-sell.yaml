@@ -1,0 +1,13 @@
+label: What never selling in the taxable account is worth
+value: 14 basis points
+unit: basis points per year
+status: source-reproduced
+asOf: '2026-08-22'
+source:
+  label: Structural and tax-aware edges, the investor's plan
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: 85-the-plan-and-the-employer-plans-menu
+note: >-
+  Realising 10% of standing gain a year costs 41.5 bp of the 84.1 bp deferral at a thirty-year
+  horizon; applied to the taxable third, never selling is worth about 14 bp/yr. Larger than the
+  whole ordering decision on the wrapper's conservative reading.

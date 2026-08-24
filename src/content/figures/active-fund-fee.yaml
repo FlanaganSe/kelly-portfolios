@@ -1,0 +1,13 @@
+label: What an actively managed fund charges, weighted by the money in it
+value: 0.57%
+unit: a year
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 1-the-budget
+note: >-
+  Morningstar 2026, asset-weighted, against 0.09% for index funds. The equal-weighted active
+  average is 1.00% to 1.12% and overstates the gap by roughly 0.45 points, so the asset-weighted
+  figure is the conservative one.

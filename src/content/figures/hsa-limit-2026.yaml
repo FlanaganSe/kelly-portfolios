@@ -1,0 +1,12 @@
+label: 2026 health savings account limit
+value: $4,400 on your own, $8,750 for a family
+status: source-reproduced
+asOf: '2026-08-20'
+source:
+  label: Smaller levers, sized so they can be dismissed with a number
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: 7-smaller-levers-sized-so-they-can-be-dismissed-with-a-number
+note: >-
+  Plus $1,000 from age 55, which has never been indexed. California taxes the contribution, the
+  growth and the withdrawal. New Jersey is widely reported to do the same and we could not find
+  a primary source saying so.

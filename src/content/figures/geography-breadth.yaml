@@ -1,0 +1,14 @@
+label: Genuinely separate bets bought by spreading one factor across three regions
+value: 1.35 to 1.55
+unit: independent bets
+status: exploratory
+asOf: '2026-08-23'
+period: 422 months, 1990-11 to 2025-12
+source:
+  label: Stacking and effective breadth, correlation measured
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: correlation-measured
+note: >-
+  The lower end is momentum across three regions, the upper end value. An international
+  allocation may be right for currency, valuation or home-bias reasons. It should not be
+  defended as diversification.

@@ -1,0 +1,14 @@
+label: The tilt component against a cheap 65/35 index fund
+value: '+0.79'
+unit: pp/yr against a cheap 65/35 index fund, at 1.0% tracking error
+interval: '[+0.30, +1.32]'
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Final construction test
+  docPath: docs/research/final-construction-test.md
+  anchor: the-tilt-component-on-its-own
+note: >-
+  Benjamini-Hochberg adjusted p = 0.010, positive in all five predeclared sub-periods, no sign
+  change across a 27-point perturbation grid. 86% of it rests on series starting 1990-11 with no
+  out-of-sample test.
