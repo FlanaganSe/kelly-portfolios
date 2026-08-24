@@ -1,0 +1,53 @@
+---
+/**
+ * Search, using Pagefind's own web components rather than the integration's
+ * `Search.astro` wrapper, which upstream has marked as maintenance-only.
+ *
+ * The index is built from every `data-pagefind-body` on the site, which is the page's
+ * `<main>` and not its masthead — otherwise every query would match every page on the
+ * navigation alone. This page opts itself out: it has no words worth finding.
+ */
+import PagefindConfig from "astro-pagefind/components/PagefindConfig.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Search"
+  description="Search everything on this site: the research, the funds, the corrections and the tests that failed."
+  indexable={false}
+>
+  <PagefindConfig />
+
+  <h1 class="font-serif text-3xl tracking-[-0.02em] text-ink">Search</h1>
+  <p class="mt-3 max-w-measure text-ink-muted">
+    Everything on the site, including the pages about what did not work. Nothing is hidden from this box.
+  </p>
+
+  <div class="mt-8" data-pagefind-ignore>
+    <pagefind-searchbox></pagefind-searchbox>
+  </div>
+
+  <noscript>
+    <p class="mt-8 max-w-measure text-ink-muted">
+      Search needs JavaScript, and this is the only thing on the site that does. Everything else is on disk as HTML,
+      so the <a class="link" href="/">front page</a> and the navigation above still work without it.
+    </p>
+  </noscript>
+</Base>
+
+<style is:global>
+  /* Pagefind's component ships its own custom properties. Point them at the site's
+     tokens so the widget inherits the theme instead of arriving with its own. */
+  pagefind-searchbox {
+    --pagefind-ui-primary: var(--ink);
+    --pagefind-ui-text: var(--ink);
+    --pagefind-ui-background: var(--paper);
+    --pagefind-ui-border: var(--rule-strong);
+    --pagefind-ui-tag: var(--paper-sunken);
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 3px;
+    --pagefind-ui-font: var(--font-sans);
+    display: block;
+    max-width: var(--container-measure);
+  }
+</style>

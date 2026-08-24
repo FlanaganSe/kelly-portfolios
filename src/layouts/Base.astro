@@ -6,6 +6,7 @@
  * the pre-paint theme script below can rely on it being the only source of colour.
  */
 import ThemeToggle from "~/components/ThemeToggle.astro";
+import { ogAlt, OG_HEIGHT, ogImagePath, OG_WIDTH } from "~/lib/og";
 import { canonicalPath, CORPUS_AS_OF, isCurrent, NAV_ITEMS, REPO_URL, SITE_DESCRIPTION, SITE_NAME } from "~/lib/site";
 import "~/styles.css";
 
@@ -14,9 +15,22 @@ interface Props {
   description?: string;
   /** Suppress the site name suffix when the page title already carries it. */
   bareTitle?: boolean;
+  /**
+   * Put this page in the search index. Off for the search page and the 404, which have
+   * no words of their own and would otherwise match every query.
+   */
+  indexable?: boolean;
+  /** Keep the page out of search-engine results. Used by the 404. */
+  noindex?: boolean;
 }
 
-const { title, description = SITE_DESCRIPTION, bareTitle = false } = Astro.props;
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  bareTitle = false,
+  indexable = true,
+  noindex = false,
+} = Astro.props;
 
 const pageTitle = bareTitle ? title : `${title} · ${SITE_NAME}`;
 const pathname = Astro.url.pathname;
@@ -26,6 +40,12 @@ const pathname = Astro.url.pathname;
 // uses, so canonical and sitemap can never disagree.
 const origin = Astro.site ?? new URL("https://kellyportfolios.com");
 const canonical = new URL(canonicalPath(pathname), origin).href;
+
+// Absolute, because every crawler that reads these resolves them from its own origin
+// rather than from the page. Width, height and alt travel with the URL: a card whose
+// dimensions a client cannot know gets rendered as a small square by several of them.
+const ogImage = new URL(ogImagePath(pathname), origin).href;
+const ogImageAlt = ogAlt(pathname);
 
 const structuredData = {
   "@context": "https://schema.org",
@@ -52,6 +72,7 @@ const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
     <title>{pageTitle}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="manifest" href="/manifest.json" />
     <link rel="sitemap" href="/sitemap-index.xml" />
@@ -67,9 +88,17 @@ const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content="en_US" />
-    {/* `summary` until a generated Open Graph image exists. `summary_large_image`
-        without one renders as a broken card rather than a small one. */}
-    <meta name="twitter:card" content="summary" />
+    {/* Generated at build time by `src/pages/og/[...route].ts`. Every card is well
+        under Bluesky's 1,000,000-byte thumbnail cap, which binds long before
+        Facebook's 8MB one. */}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(OG_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_HEIGHT)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
     <meta name="twitter:title" content={pageTitle} />
     <meta name="twitter:description" content={description} />
 
@@ -96,13 +125,14 @@ const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
       </a>
 
       <header class="border-b border-rule">
-        <div class="mx-auto w-full max-w-page px-5 sm:px-8">
+        <div class="page-rail">
           <div class="flex items-center justify-between gap-4 py-4">
             <a href="/" class="font-serif text-xl tracking-[-0.01em] text-ink transition-colors hover:text-accent">
               {SITE_NAME}
             </a>
-            <div class="flex items-center gap-2">
+            <div class="flex items-center gap-4">
               <span data-numeric class="hidden text-xs text-ink-faint sm:inline">as of {CORPUS_AS_OF}</span>
+              <a href="/search/" class="text-sm text-ink-muted transition-colors hover:text-ink">Search</a>
               <ThemeToggle />
             </div>
           </div>
@@ -138,13 +168,16 @@ const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
       {/* `data-pagefind-body` scopes the search index to the page's own words. Without
           it Pagefind indexes the masthead and footer on every page and every query
           matches everything. */}
-      <main id="main" data-pagefind-body class="mx-auto w-full max-w-page flex-1 px-5 py-12 sm:px-8 sm:py-16">
+      {/* The three-track canvas: a rail for section labels, the reading column, and a
+          margin for sources, dates and caveats. Both outer tracks collapse to zero width
+          below 62rem, at which point every child is a single clean column. */}
+      <main id="main" data-pagefind-body={indexable ? true : undefined} class="canvas flex-1 py-12 sm:py-16">
         <slot />
       </main>
 
       <footer class="mt-16 border-t border-rule">
         <div
-          class="mx-auto flex w-full max-w-page flex-col gap-3 px-5 py-8 text-sm text-ink-muted sm:flex-row sm:items-baseline sm:justify-between sm:px-8"
+          class="page-rail flex flex-col gap-3 py-8 text-sm text-ink-muted sm:flex-row sm:items-baseline sm:justify-between"
         >
           <p class="max-w-measure">Nothing here is advice, and no sleeve in the underlying research is promoted.</p>
           <p class="flex items-baseline gap-4 whitespace-nowrap">

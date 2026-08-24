@@ -1,0 +1,34 @@
+---
+/**
+ * A block allowed to run wider than the reading measure: a chart, a wide table, a row
+ * of figures.
+ *
+ * The measure is a constraint on **prose**, not on the page. A comparison table squeezed
+ * into 70ch wraps its own column headings, and a chart squeezed into 70ch throws away
+ * the width that makes its shape readable. This spans all three tracks — rail, reading
+ * column, margin — and collapses to the reading column on its own once the outer tracks
+ * close, so nothing overflows on a phone.
+ *
+ * It has to be a **direct child of the page canvas** to reach the outer grid lines. Set
+ * `scroll` for content that genuinely cannot shrink, such as a table with six numeric
+ * columns; the scroller is on the wrapper so the page body never scrolls sideways.
+ */
+interface Props {
+  /** Let the content scroll sideways inside its own box rather than squashing. */
+  scroll?: boolean;
+  /** A visible label above the block, in the left rail on a wide screen. */
+  label?: string;
+  class?: string;
+}
+
+const { scroll = false, label, class: className } = Astro.props;
+---
+
+<div class:list={["breakout", className]}>
+  {/* A breakout already starts at the rail's own grid line, so its label sits in the
+      rail without floating there. */}
+  {label && <p class="eyebrow mb-2">{label}</p>}
+  <div class:list={[scroll && "scroller"]}>
+    <slot />
+  </div>
+</div>

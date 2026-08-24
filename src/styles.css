@@ -373,3 +373,279 @@ table,
     font-variant-numeric: tabular-nums lining-nums;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   The page grid.
+
+   Three tracks: a narrow left rail for section labels, the reading column, and a
+   right margin for the source, the date, the rung and the caveat that this site
+   attaches to almost every claim. Those belong beside the line rather than inside
+   it, and putting them there is also what stops a 1440px screen from being a 70ch
+   column with a third of the window empty beside it.
+
+   The track widths live on `:root` so the masthead and the footer can size
+   themselves to the same composition without knowing how it is built. `--canvas`
+   is a `calc` over custom properties, which are substituted where they are used,
+   so it picks up each breakpoint's override on its own.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --edge: 1.25rem;
+  --rail: 0rem;
+  --rail-gap: 0rem;
+  --note: 0rem;
+  --note-gap: 0rem;
+  --measure-track: 44rem;
+  --canvas: calc(
+    var(--edge) * 2 + var(--rail) + var(--rail-gap) + var(--measure-track) + var(--note-gap) + var(--note)
+  );
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --edge: 2rem;
+  }
+}
+
+/* The margin opens first. It is the track that carries meaning. */
+@media (min-width: 62rem) {
+  :root {
+    --note: 13rem;
+    --note-gap: 1.75rem;
+  }
+}
+
+/* The rail opens second, once the margin no longer has to be cramped for it. */
+@media (min-width: 78rem) {
+  :root {
+    --rail: 7.5rem;
+    --rail-gap: 2rem;
+    --note: 15rem;
+    --note-gap: 2.25rem;
+  }
+}
+
+@media (min-width: 96rem) {
+  :root {
+    --rail: 9rem;
+    --note: 17rem;
+  }
+}
+
+/* The outer rail every band of the page aligns to. */
+@utility page-rail {
+  width: 100%;
+  max-width: var(--canvas);
+  margin-inline: auto;
+  padding-inline: var(--edge);
+}
+
+@utility canvas {
+  display: grid;
+  /* `main` is a flex child with `flex-1`, so on a short page the grid box is taller
+     than its rows. Without this the default stretch spreads every row down the
+     viewport and a two-paragraph page reads as though it were double-spaced. */
+  align-content: start;
+  width: 100%;
+  max-width: var(--canvas);
+  margin-inline: auto;
+  grid-template-columns:
+    [full-start] minmax(var(--edge), 1fr)
+    [rail-start] var(--rail)
+    [rail-end] var(--rail-gap)
+    [body-start] minmax(0, var(--measure-track))
+    [body-end] var(--note-gap)
+    [note-start] var(--note)
+    [note-end] minmax(var(--edge), 1fr)
+    [full-end];
+
+  /* Everything lands in the reading column unless it says otherwise. `min-width: 0`
+     stops a wide table from blowing the track out past its own grid line. */
+  & > * {
+    grid-column: body;
+    min-width: 0;
+  }
+
+  /* A table, a chart or a figure row, allowed the whole three-track width. Below the
+     first breakpoint the rail and the margin are zero wide, so this is the reading
+     column again and nothing overflows. */
+  & > .breakout {
+    grid-column: rail-start / note-end;
+  }
+
+  & > .bleed {
+    grid-column: full-start / full-end;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Margin notes.
+
+   A float rather than a grid child. Grid auto-placement gives a note its own row,
+   which leaves a hole in the reading column beside it; a float pulled out by its
+   own width sits level with the paragraph that follows it in source order and
+   costs the measure nothing. `clear` keeps two consecutive notes from stacking on
+   top of each other.
+
+   Below 62rem the float is dropped and the note becomes an indented block in the
+   flow, which is the only honest way to render it on a phone.
+   --------------------------------------------------------------------------- */
+
+@utility margin-note {
+  display: block;
+  margin-block: 1.25rem;
+  border-left: 2px solid var(--rule-strong);
+  padding-left: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink-muted);
+
+  & > * + * {
+    margin-top: 0.4rem;
+  }
+
+  & a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+}
+
+@media (min-width: 62rem) {
+  .margin-note {
+    float: right;
+    clear: right;
+    width: var(--note);
+    margin-right: calc(-1 * (var(--note) + var(--note-gap)));
+    margin-top: 0.3rem;
+    margin-bottom: 1.5rem;
+    border-left: 0;
+    padding-left: 0;
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--ink-faint);
+  }
+
+  /* The hairline sits above the note in the margin, echoing the rule under a
+     section heading rather than fencing the note off in a box. */
+  .margin-note::before {
+    content: "";
+    display: block;
+    width: 1.75rem;
+    border-top: 1px solid var(--rule-strong);
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* A section label in the left rail. Same mechanism, mirrored. */
+@utility rail-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+@media (min-width: 78rem) {
+  .rail-label {
+    float: left;
+    clear: left;
+    width: var(--rail);
+    margin-left: calc(-1 * (var(--rail) + var(--rail-gap)));
+    margin-top: 0.55rem;
+    margin-bottom: 0;
+    text-align: right;
+  }
+}
+
+/* A horizontal scroller for content that genuinely cannot shrink: a table with six
+   numeric columns, a wide chart. `position: relative` is not decoration — without a
+   positioned ancestor, an absolutely positioned descendant such as a `.sr-only` label
+   resolves against the initial containing block, escapes the scroller's clipping and
+   pushes the *page* sideways by however far the unclipped content reaches. That is
+   exactly the horizontal scroll this layout must never produce, and it is invisible
+   until you measure `document.documentElement.scrollWidth`. */
+@utility scroller {
+  position: relative;
+  overflow-x: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Charts.
+
+   Monochrome, always. Identity is carried by a direct label on every curve, by
+   stroke weight and by dash pattern; the ink step only reinforces it. Nothing on
+   this site is ever green for good news or red for bad, and a confidence reading
+   that depended on hue would be wrong on a printout anyway.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --plot-ink: var(--ink);
+  --plot-quiet: color-mix(in srgb, var(--ink) 55%, var(--paper));
+  --plot-quieter: color-mix(in srgb, var(--ink) 38%, var(--paper));
+  --plot-grid: var(--rule);
+  --plot-guide: var(--rule-strong);
+}
+
+@utility plot {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  & .plot-grid {
+    stroke: var(--plot-grid);
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+
+  & .plot-guide {
+    stroke: var(--plot-guide);
+    stroke-width: 1;
+    fill: none;
+  }
+
+  & .plot-axis-text {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums lining-nums;
+    fill: var(--ink-faint);
+  }
+
+  & .plot-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums lining-nums;
+    fill: var(--ink-muted);
+  }
+
+  & .plot-label-lead {
+    font-weight: 600;
+    fill: var(--ink);
+  }
+
+  & .plot-note {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    fill: var(--ink-muted);
+  }
+
+  & .plot-line {
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  & .plot-halo {
+    stroke: var(--paper);
+    stroke-width: 3.5;
+    paint-order: stroke;
+  }
+}

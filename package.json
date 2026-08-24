@@ -5,13 +5,13 @@
   "scripts": {
     "dev": "astro dev",
     "dev:legacy": "vite",
-    "build": "astro build",
+    "build": "astro build && node scripts/check-og-size.mjs",
     "build:legacy": "vite build --outDir dist-legacy && node scripts/spa-fallback.mjs dist-legacy",
     "preview": "astro preview",
     "typecheck": "astro sync && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint:prose": "node tools/prose-lint.mjs src/pages src/layouts src/components/Callout.astro src/components/Figure.astro src/components/Rung.astro",
+    "lint:prose": "node tools/prose-lint.mjs src/pages src/layouts src/components/*.astro src/components/charts/*.astro",
     "biome:fix": "biome check --write .",
     "prepare": "git config core.hooksPath scripts/githooks && chmod +x scripts/githooks/*",
     "lint:figures": "node tools/check-figures.mjs .claude/scratch/copy"
