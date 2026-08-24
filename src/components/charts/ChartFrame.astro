@@ -1,0 +1,57 @@
+---
+/**
+ * The shell every chart on this site renders inside.
+ *
+ * It owns the four things a figure needs and a chart component keeps forgetting: a
+ * heading, a one-line statement of what is plotted against what, a caption that says
+ * where the numbers came from and what the arithmetic assumes, and **the same data as a
+ * table**. The table is not a courtesy. Every curve here is monochrome, so a reader on a
+ * printout, a reader with no colour vision and a reader using a screen reader all end up
+ * in the same place, and that place has to be a real one.
+ *
+ * The SVG itself is passed in through the default slot and is expected to carry
+ * `role="img"` with `aria-labelledby` pointing at its own `<title>` and `<desc>`. There
+ * is no JavaScript in any of this, and no tooltip, so nothing is reachable by hover
+ * alone.
+ */
+interface Props {
+  /** The figure's own heading. A claim, not a noun phrase. */
+  title: string;
+  /** What is plotted against what, in one line. Stands in for the two axis titles. */
+  subtitle?: string;
+  /** Opens the table view by default. Use on a page whose whole job is the numbers. */
+  open?: boolean;
+  tableSummary?: string;
+  class?: string;
+}
+
+const { title, subtitle, open = false, tableSummary = "The same numbers as a table", class: className } = Astro.props;
+---
+
+<figure class:list={["mt-10 mb-10", className]}>
+  <figcaption class="mb-4 max-w-[62ch]">
+    <p class="text-balance font-sans text-base font-semibold tracking-[-0.01em] text-ink">{title}</p>
+    {subtitle && <p class="mt-1 text-sm text-ink-muted">{subtitle}</p>}
+  </figcaption>
+
+  <slot />
+
+  {
+    Astro.slots.has("caption") && (
+      <div class="mt-5 max-w-[68ch] text-sm text-ink-muted [&>*+*]:mt-3">
+        <slot name="caption" />
+      </div>
+    )
+  }
+
+  {
+    Astro.slots.has("table") && (
+      <details open={open} class="mt-4 border-t border-rule pt-3">
+        <summary class="eyebrow cursor-pointer select-none marker:text-ink-faint">{tableSummary}</summary>
+        <div class="scroller mt-3">
+          <slot name="table" />
+        </div>
+      </details>
+    )
+  }
+</figure>

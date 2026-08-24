@@ -103,3 +103,39 @@ export function areaPath(points: readonly (readonly [number, number])[], baselin
   }
   return `${linePath(usable)}L${last[0].toFixed(2)} ${baseline.toFixed(2)}L${first[0].toFixed(2)} ${baseline.toFixed(2)}Z`;
 }
+
+/**
+ * A base-10 log scale. Both ends of the domain must be strictly positive.
+ *
+ * Two of this site's arguments live on ratios rather than differences — a stack of 1 to
+ * 100 sleeves, and a wait of a month to a millennium — and a linear axis spends almost
+ * its whole width on the top decade of each. A zero or negative bound is refused rather
+ * than clamped, because silently moving the axis floor changes what the picture claims.
+ */
+export function logScale(domain: readonly [number, number], range: readonly [number, number]): Scale {
+  const [d0, d1] = domain;
+  if (!(d0 > 0) || !(d1 > 0)) {
+    throw new RangeError(`a log scale needs a strictly positive domain, got [${d0}, ${d1}]`);
+  }
+  const inner = linearScale([Math.log10(d0), Math.log10(d1)], range);
+  const scale = ((value: number) => inner(Math.log10(value))) as {
+    (value: number): number;
+    domain?: readonly [number, number];
+    range?: readonly [number, number];
+  };
+  scale.domain = domain;
+  scale.range = range;
+  return scale as Scale;
+}
+
+/** Every power of ten inside `[min, max]`, inclusive of a bound that is one exactly. */
+export function decadeTicks(min: number, max: number): number[] {
+  if (!(min > 0) || !(max > 0) || min > max) {
+    return [];
+  }
+  const ticks: number[] = [];
+  for (let exponent = Math.ceil(Math.log10(min) - 1e-9); exponent <= Math.log10(max) + 1e-9; exponent += 1) {
+    ticks.push(10 ** exponent);
+  }
+  return ticks;
+}

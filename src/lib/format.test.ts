@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { clamp, decimalsOf, formatNumber, parseNumber, roundTo, snapToStep } from "~/lib/format";
+import { clamp, decimalsOf, formatNumber, formatYears, parseNumber, roundTo, snapToStep } from "~/lib/format";
 
 describe("clamp", () => {
   it("passes a value already inside the range through untouched", () => {
@@ -68,5 +68,31 @@ describe("formatNumber", () => {
 
   it("shows an em dash for a non-finite value", () => {
     expect(formatNumber(Number.NaN)).toBe("—");
+  });
+});
+
+describe("formatYears", () => {
+  it("uses days under two months", () => {
+    expect(formatYears(0.065687)).toBe("24 days");
+    expect(formatYears(1 / 365.25)).toBe("1 day");
+  });
+
+  it("uses months under two years", () => {
+    expect(formatYears(0.29249)).toBe("3.5 months");
+    expect(formatYears(1)).toBe("12 months");
+  });
+
+  it("uses years with one decimal up to a century", () => {
+    expect(formatYears(12.216)).toBe("12.2 years");
+    expect(formatYears(105.1)).toBe("105 years");
+  });
+
+  it("stops pretending to precision past a century", () => {
+    expect(formatYears(5517.9)).toBe("5,500 years");
+  });
+
+  it("refuses a negative or non-finite wait", () => {
+    expect(() => formatYears(-1)).toThrow(RangeError);
+    expect(() => formatYears(Number.NaN)).toThrow(RangeError);
   });
 });

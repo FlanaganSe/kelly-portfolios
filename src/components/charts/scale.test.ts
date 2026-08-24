@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { areaPath, linearScale, linePath, niceDomain, niceStep, niceTicks } from "~/components/charts/scale";
+import {
+  areaPath,
+  decadeTicks,
+  linearScale,
+  linePath,
+  logScale,
+  niceDomain,
+  niceStep,
+  niceTicks,
+} from "~/components/charts/scale";
 
 describe("linear scale", () => {
   it("maps the domain onto the range", () => {
@@ -98,5 +107,44 @@ describe("a chart axis over a short horizon", () => {
       const step = total <= 4 ? 1 : total <= 10 ? 2 : total <= 30 ? 5 : 10;
       expect(Math.floor(total / step) + 1, `horizon ${total}`).toBeGreaterThan(1);
     }
+  });
+});
+
+describe("log scale", () => {
+  it("puts each decade the same distance apart", () => {
+    const scale = logScale([1, 1000], [0, 300]);
+    expect(scale(1)).toBeCloseTo(0, 10);
+    expect(scale(10)).toBeCloseTo(100, 10);
+    expect(scale(100)).toBeCloseTo(200, 10);
+    expect(scale(1000)).toBeCloseTo(300, 10);
+  });
+
+  it("inverts for a pixel axis that grows downwards", () => {
+    const scale = logScale([1, 100], [200, 0]);
+    expect(scale(1)).toBeCloseTo(200, 10);
+    expect(scale(100)).toBeCloseTo(0, 10);
+  });
+
+  it("refuses a domain that touches or crosses zero", () => {
+    expect(() => logScale([0, 100], [0, 1])).toThrow(RangeError);
+    expect(() => logScale([-1, 100], [0, 1])).toThrow(RangeError);
+  });
+
+  it("keeps the domain and range it was built with", () => {
+    const scale = logScale([2, 20], [0, 50]);
+    expect(scale.domain).toEqual([2, 20]);
+    expect(scale.range).toEqual([0, 50]);
+  });
+});
+
+describe("decade ticks", () => {
+  it("lists the powers of ten inside the domain", () => {
+    expect(decadeTicks(1, 1000)).toEqual([1, 10, 100, 1000]);
+    expect(decadeTicks(0.05, 300)).toEqual([0.1, 1, 10, 100]);
+  });
+
+  it("returns nothing for a domain a log scale could not draw", () => {
+    expect(decadeTicks(0, 10)).toEqual([]);
+    expect(decadeTicks(10, 1)).toEqual([]);
   });
 });

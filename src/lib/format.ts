@@ -51,3 +51,46 @@ export function formatNumber(value: number, decimals = 0): string {
   if (!Number.isFinite(value)) return "—";
   return value.toFixed(Math.max(0, Math.trunc(decimals)));
 }
+
+const DAYS_PER_YEAR = 365.25;
+const MONTHS_PER_YEAR = 12;
+
+/**
+ * A holding period in the largest unit that keeps it legible, with its real digits.
+ *
+ * "Nearly two decades" is banned on this site and so is "0.29 years". A wait that runs
+ * from three weeks to five thousand years has to change unit somewhere, and the
+ * thresholds here are where a reader stops being able to picture the number: under two
+ * months it is days, under two years it is months, under a century it is years to one
+ * decimal, under a millennium it is whole years, and above that the trailing digits are
+ * fake so it rounds to the nearest hundred.
+ */
+export function formatYears(years: number): string {
+  if (!Number.isFinite(years) || years < 0) {
+    throw new RangeError(`formatYears expects a non-negative number of years, got ${years}`);
+  }
+  if (years < 2 / MONTHS_PER_YEAR) {
+    const days = Math.round(years * DAYS_PER_YEAR);
+    return `${days} ${days === 1 ? "day" : "days"}`;
+  }
+  if (years < 2) {
+    const months = roundTo(years * MONTHS_PER_YEAR, 1);
+    return `${formatNumber(months, Number.isInteger(months) ? 0 : 1)} months`;
+  }
+  if (years < 100) {
+    const rounded = roundTo(years, 1);
+    return `${formatNumber(rounded, Number.isInteger(rounded) ? 0 : 1)} years`;
+  }
+  if (years < 1000) {
+    return `${Math.round(years)} years`;
+  }
+  // Grouped, because five thousand five hundred without a separator is unreadable at a
+  // glance. `formatNumber` deliberately does not group — it formats fields a reader is
+  // typing into — so the separator is added here rather than by changing its contract.
+  return `${grouped(Math.round(years / 100) * 100)} years`;
+}
+
+/** Thousands separators, en-US, without pulling in `Intl` for one call site. */
+function grouped(value: number): string {
+  return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
