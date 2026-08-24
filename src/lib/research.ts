@@ -334,6 +334,7 @@ export interface PlainPage {
 export const PLAIN_PAGES = {
   start: { href: "/start/", label: "Start here" },
   stacking: { href: "/stacking/", label: "Why more good bets stop helping" },
+  bets: { href: "/how-many-bets/", label: "How many different bets you can buy" },
   portfolio: { href: "/portfolio/", label: "The portfolio" },
   rejected: { href: "/doesnt-work/", label: "What doesn't work" },
   howSure: { href: "/how-sure/", label: "How sure we are" },
@@ -403,6 +404,7 @@ export const RESEARCH_GROUPS: readonly ResearchGroup[] = [
       "Breadth, borrowing, and how each new strategy is paid for. This is where most of the money in the proposal was riding.",
     entries: [
       { id: "stacking-and-effective-breadth", status: "exploratory", loadBearing: true, plain: PLAIN_PAGES.stacking },
+      { id: "how-many-independent-engines", status: "source-reproduced", plain: PLAIN_PAGES.bets },
       { id: "capital-efficiency-and-breadth", status: "unresolved", plain: PLAIN_PAGES.stacking },
       { id: "leverage-and-the-notional-budget", status: "unresolved", plain: PLAIN_PAGES.stacking },
       { id: "marginal-sleeve-value", status: "unresolved", plain: PLAIN_PAGES.stacking },

@@ -76,6 +76,13 @@ For the major decisions:
   candidates a long-only optimiser holds out of a shelf of twelve, why it stops at three,
   and why that count depends on the dispersion of the candidates' edges as much as on
   their correlation.
+- [How many independent engines exist](research/how-many-independent-engines.md): the same
+  ceiling reached from evidence this repository did not produce — a manager's published
+  capital market assumptions, one market-neutral multi-premium fund's whole live record,
+  and five instances of capacity decay. It answers what `stacking and effective breadth`
+  leaves open, namely which engines are genuinely distinct and what a completed stack is
+  worth, and it is the page to read for the size of the haircut between the stacking
+  mathematics and anything delivered.
 - [Live stacked fund records](research/live-stacked-fund-records.md): what the retail
   return-stacking shelf has actually paid its investors, read from issuer-published
   standardised returns rather than from a backtest — six of seven Return Stacked funds

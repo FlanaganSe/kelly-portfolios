@@ -148,7 +148,7 @@ describe("the reading order covers the corpus", () => {
   it("groups every synthesis exactly once", () => {
     const listed = RESEARCH_GROUPS.flatMap((group) => group.entries.map((entry) => entry.id));
     expect(new Set(listed).size).toBe(listed.length);
-    expect(listed).toHaveLength(34);
+    expect(listed).toHaveLength(35);
   });
 
   it("names four load-bearing pages", () => {

@@ -59,6 +59,10 @@ export const OG_PAGES = {
     title: "Why more good bets stop helping",
     alt: `${SITE_NAME}: the stacking ceiling, and why the funding rule decides everything.`,
   },
+  "/how-many-bets/": {
+    title: "How many different bets you can buy",
+    alt: `${SITE_NAME}: four or five genuinely different sources of return exist, not twenty, and the whole exercise is worth 1.5 to 2 points a year.`,
+  },
   "/portfolios/": {
     title: "Four ways to hold it",
     alt: `${SITE_NAME}: four portfolios, ordered by how much of each case is arithmetic and how much is a guess.`,

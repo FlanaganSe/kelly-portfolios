@@ -1,0 +1,271 @@
+---
+/**
+ * The sequel to `/stacking/`. That page ends on an instruction — lower the correlation
+ * rather than raise the count — and leaves the reader's obvious next question unanswered:
+ * so what actually is uncorrelated, and how much is the whole exercise worth?
+ *
+ * The evidence behind this page is an outside review that shares no data with the
+ * repository's own measurements, which is why the corroboration section exists and why it
+ * is stated once rather than sprinkled. The numbers here are read from published sources
+ * rather than measured here, so none of them carries a `<Figure>` record yet; they are
+ * marked with `data-numeric` like the dated numbers on `/corrections/` and every one of
+ * them is sourced in the block at the foot.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+
+/** The one-year odds of finishing ahead, by how many genuinely unrelated bets you hold. */
+const ODDS_COLUMNS = ["Genuinely unrelated bets", "Chance of beating the index over a year"] as const;
+
+const ODDS_ROWS = [
+  { bets: "1", odds: "55%" },
+  { bets: "5", odds: "61%" },
+  { bets: "10", odds: "65%" },
+  { bets: "20", odds: "71%" },
+] as const;
+---
+
+<Base
+  title="How many different bets you can buy"
+  description="About four or five genuinely different sources of return exist for a normal investor, not twenty, and doing the whole thing well is worth roughly 1.5 to 2 percentage points a year."
+>
+  <div class="prose">
+    <Rail>The answer</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How many different bets you can buy</h1>
+
+    <MarginNote label="The question this answers">
+      <p>
+        If the instruction is to lower the correlation between my holdings, what is actually uncorrelated, and
+        what is the finished job worth?
+      </p>
+    </MarginNote>
+
+    <p>About four or five, and roughly <span data-numeric>1.5</span> to <span data-numeric>2</span> percentage
+    points a year. Those are the two numbers. The rest of this page is where they come from and how much weight
+    they will carry.</p>
+
+    <p>The <a href="/stacking/">stacking page</a> tells you to lower the correlation between what you hold rather
+    than add another fund. This is the question that follows it, answered from evidence outside this project.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The odds</Rail>
+
+    <h2>A 55% strategy is a weaker thing than it sounds</h2>
+
+    <p>A strategy that beats a cheap index fund 55 times in a hundred sounds like a decent edge. Line up twenty
+    of them, all genuinely unrelated, and charge yourself nothing in fees.</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="Frictionless best case, one year">
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[30rem]">
+      <caption class="sr-only">
+        The chance of finishing ahead of the index over one year, by the number of genuinely unrelated bets held
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            ODDS_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i === 1 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          ODDS_ROWS.map((row) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" data-numeric class="py-2 pr-4 text-left font-normal">
+                {row.bets}
+              </th>
+              <td role="cell" data-label={ODDS_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.odds}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-4">
+    <p>Twenty unrelated bets, no fees, nothing shared between them, and you still have a
+    <span data-numeric>29%</span> chance of trailing the index next year. That is the best case for a portfolio
+    nobody can actually build.</p>
+
+    <p>Now let those twenty share a little behaviour. At an average correlation of <span data-numeric>0.2</span>,
+    which is lower than most real portfolios manage, twenty holdings behave like <span data-numeric>4.2</span> and
+    the odds fall back to <span data-numeric>60%</span>. The ceiling from the stacking page, arriving by a
+    different road.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The live version</Rail>
+
+    <h2>The best-built version of this idea delivered a quarter of the theory</h2>
+
+    <p>AQR runs a fund that is the literal implementation of the stacking thesis. Dozens of separate premiums,
+    four styles, spread across five groups of assets, built by the people who wrote the theory down and financed
+    at institutional rates. If the idea works anywhere, it works here.</p>
+
+    <MarginNote label="Return per unit of risk">
+      <p>
+        How much a holding paid for each unit of the bumpiness it put you through. A cheap global stock fund has
+        run around <span data-numeric>0.4</span> to <span data-numeric>0.6</span> over long stretches.
+      </p>
+    </MarginNote>
+
+    <p>Its independence is genuine. Measured against the S&amp;P 500 since it launched in October 2013, its
+    exposure to the stock market is about <span data-numeric>−0.01</span>. So this is a fair test of the idea
+    rather than a stock fund in a costume. The published forecast for a composite like that, from the firm's own
+    head of research, was a return per unit of risk above <span data-numeric>2</span>. Over twelve and a half
+    years it delivered <span data-numeric>0.46</span>, returning <span data-numeric>7.57%</span> a year while the
+    S&amp;P 500 returned about <span data-numeric>13.5%</span>.</p>
+
+    <p>The gap to the index looks damning and it is the wrong comparison. A stack like this is something you add
+    on top of your stocks using borrowing, so its return arrives alongside the index rather than instead of it.
+    Buy it by selling stocks and it loses to them, which is what the funding arithmetic on the stacking page says
+    will happen. What the record settles is the size of the haircut. About four to one between the stacking
+    mathematics and the delivered result, absorbed by fees, financing, and holdings less separate than the model
+    assumed, and each of those is worse for you than for them.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>What is different</Rail>
+
+    <h2>Four or five genuinely different sources exist, not twenty</h2>
+
+    <p>Same firm, March 2026, its published assumptions for the decade ahead. Take the stock market exposure out
+    of ten asset classes and ask what is left. Only three still have a meaningfully positive edge: commodities at
+    <span data-numeric>0.24</span>, hedge funds at <span data-numeric>0.29</span>, managed futures at
+    <span data-numeric>0.26</span>. High yield credit comes out at <span data-numeric>−0.06</span>, real estate at
+    <span data-numeric>−0.03</span>, and private equity at <span data-numeric>0.06</span>, which is noise.</p>
+
+    <p>Six of the ten correlate between <span data-numeric>0.68</span> and <span data-numeric>0.93</span> with
+    stocks. And when the same firm pulled apart a typical eight-asset institutional portfolio, the kind held up
+    everywhere as the diversified ideal, stocks alone accounted for <span data-numeric>81%</span> of its risk.
+    Stocks plus credit, over <span data-numeric>90%</span>. Eight names on the pie chart, one and a bit bets.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The prize</Rail>
+
+    <h2>Doing all of it well is worth about two points a year</h2>
+
+    <p>On the same firm's numbers, a well-built diversified portfolio is expected to return
+    <span data-numeric>6.5%</span> to <span data-numeric>8.1%</span> a year at a return per unit of risk of
+    <span data-numeric>0.26</span> to <span data-numeric>0.35</span>. Against the portfolio a normal person would
+    otherwise be holding, the improvement is somewhere around <span data-numeric>1.5</span> to
+    <span data-numeric>2</span> percentage points a year.</p>
+
+    <p>On $100,000 that is $1,500 to $2,000 in the first year, and it compounds into a genuinely different
+    retirement. So it is real money and worth having. It is also nowhere near "you will beat the market", and
+    anybody selling it in those words is selling something else.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The free one</Rail>
+
+    <h2>The gain nobody sells you is worth about as much as all the rest</h2>
+
+    <p>An exchange-traded fund can hand shares to a departing institution instead of selling them, so it realises
+    fewer gains and passes fewer of them to you at the end of the year. Against equivalent mutual funds, that
+    raised long-term investors' after-tax returns by <span data-numeric>1.05%</span> a year.</p>
+
+    <p>On $100,000 in a taxable account that is about $1,050 a year, for no fee, no minimum and no skill. It is
+    the same size as the entire tax case for direct indexing, which costs <span data-numeric>25</span> to
+    <span data-numeric>40</span> basis points a year plus a good deal of paperwork. You have never been pitched
+    it because nobody earns anything when you do it.</p>
+  </div>
+
+  <Callout kind="do-this" label="Worth ten minutes on your own account">
+    <p>
+      If you hold anything in a taxable account, check whether each fund there is an exchange-traded fund or a
+      mutual fund. Inside a sheltered account it makes no difference. If one of them comes in both forms, the
+      exchange-traded version is cheaper to own from here on. Check the tax bill on switching first, because the
+      gain you would realise selling the old holding can be larger than several years of the saving.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>The warning</Rail>
+
+    <h2>Every one of these premiums shrinks when the money arrives</h2>
+
+    <p>Merger arbitrage spreads have come down by more than <span data-numeric>400</span> basis points since
+    2002. The roll return on commodities paid <span data-numeric>+1.95%</span> a year for the thirty-four years
+    to 2004, then <span data-numeric>−9.29%</span> a year over the eleven years after index money showed up.
+    Catastrophe bond spreads roughly halved, <span data-numeric>11.31%</span> to <span data-numeric>5.53%</span>,
+    while the capital chasing them grew <span data-numeric>31%</span>. Published stock market factors decayed
+    <span data-numeric>26%</span> to <span data-numeric>58%</span> once they were published.</p>
+
+    <p>Five different premiums, one mechanism. Be most suspicious of whatever is being marketed hardest, because
+    that is where the money is arriving. In 2026 that is return stacking and options income.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Why we believe it</Rail>
+
+    <h2>Two separate routes, one answer</h2>
+
+    <p>One thing here matters more than any single number on the page. This project reached its conclusions from
+    its own data: 422 months of returns, its own correlation measurements, its own arithmetic about how an
+    addition gets paid for. The evidence above is an outside review of completely different material, which is
+    manager research, SEC filings, Ken French's data library and FRED. It lands in the same place. Same ceiling,
+    same count of separate engines, same size of prize.</p>
+
+    <p>Neither route is strong alone. Ours is one portfolio over one window, and theirs is one firm's forecasts
+    plus one fund's record. Two weak instruments that share no data and agree are worth more than either, and
+    that is the closest thing to confirmation this site has.</p>
+  </div>
+
+  <Callout kind="caveat" label="How much weight these numbers carry">
+    <p>
+      Two of the four headline figures are forecasts rather than records. The count of different sources and the
+      1.5 to 2 point prize both come from one manager's published assumptions about the next decade, and that
+      manager sells products in the categories it is forecasting. The conflict runs against its own conclusion
+      here, which is mild reassurance and not a control.
+    </p>
+    <p>
+      The 0.46 is one fund over one stretch of history, so read it as evidence about the size of the shortfall
+      rather than as a forecast of what that strategy earns. Nothing here was rebuilt from underlying data.
+      Every number is a published figure, read on 2026-08-24.
+    </p>
+  </Callout>
+
+  <Callout kind="change-your-mind">
+    <p>
+      A market-neutral fund holding many premiums that reaches a ten-year return per unit of risk above 1 would
+      move the shortfall above from four-to-one to something the theory can carry. So would a genuinely new
+      source of return, cheap to buy, that correlates under 0.2 with stocks. The arithmetic on this page would
+      not change. The ingredients would.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>Sources</Rail>
+
+    <h2>Where this comes from</h2>
+
+    <MarginNote label="Standing caveats">
+      <p>
+        The author holds no licence, works for no firm and belongs to no professional body. AI was used heavily
+        throughout. Backtests are hindsight with a chart attached.
+      </p>
+    </MarginNote>
+
+    <p>Every figure on this page, with its period, its benchmark and what is thin about it, is set out in
+    <a href="/research/how-many-independent-engines/">the outside evidence review</a>. The odds table and the
+    correlation ceiling come from <a href="/research/stacking-and-effective-breadth/">the stacking
+    measurements</a>, and why a financed addition beats a funded one comes from <a href="/research/capital-efficiency-and-breadth/">capital efficiency and breadth</a>. The
+    exchange-traded fund result is Moussawi, Shen and Velthuis in the <em>Review of Financial Studies</em>, 2025,
+    and direct indexing is priced against it <a href="/research/harvesting-and-direct-indexing/">on its own
+    page</a>. <a href="/corrections/">Corrections</a> lists everything published here that later turned out to be
+    wrong.</p>
+  </div>
+</Base>
