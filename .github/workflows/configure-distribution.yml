@@ -44,6 +44,11 @@ jobs:
         env:
           STATE_HEADING: Before
 
+      # The function on the distribution is the only description of how the site is
+      # served; nothing in the repository records it. Printed on every run.
+      - name: What serves the site today
+        run: scripts/cloudfront/dump.sh
+
       - name: Attach the rewrite and stop answering misses with the home page
         run: scripts/cloudfront/repair.sh ${{ inputs.apply && '--apply' || '' }}
 
