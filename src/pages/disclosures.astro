@@ -9,9 +9,7 @@
 //
 // So the page says that it has not been stated, which is true, and publishes the rest,
 // which is also true. An earlier version threw at build time instead. That was the wrong
-// trade: it stopped sixty-one honest pages from shipping over one open question, and it
-// turned every unanswered build into a red CI run. A reader is better served by a page
-// that says "this part is not disclosed yet" than by no page at all.
+// trade: it stopped sixty-one honest pages from shipping over one open question.
 //
 // To set it: replace the empty string with the true sentence, in the owner's own words.
 // Nothing else needs changing. If it later stops being true, change it in the same commit
@@ -53,9 +51,8 @@ import { REPO_URL } from "~/lib/site";
 
     <p>Nobody pays for this site and nobody is paid for it.</p>
 
-    <p>That sentence beats a paragraph of assurance, because you can check it yourself. The whole site is a few
-    hundred kilobytes of static HTML in a public repository, and an affiliate link is a thing you can search
-    for.</p>
+    <p>That beats a paragraph of assurance, because you can check it. The site is a few hundred kilobytes of
+    static HTML in a public repository, and an affiliate link is a thing you can search for.</p>
 
   </div>
 
@@ -68,16 +65,15 @@ import { REPO_URL } from "~/lib/site";
 
     <ul>
       <li>Advertising, of any kind, in any position.</li>
-      <li>Affiliate links, referral links, broker sign-up bonuses, and tracking parameters on an outbound link.
-      An external link here goes to a filing, a data source, a paper, a news report or a repository, and carries
-      no code that identifies where you came from.</li>
-      <li>Sponsors, underwriters, grants, and anyone with the right to see a page before it is published.</li>
+      <li>Affiliate links, referral links, broker sign-up bonuses, and tracking codes on an outbound link. A
+      link out of here carries nothing that says where you came from.</li>
+      <li>Sponsors, underwriters, grants, and anyone with a right to see a page before it is published.</li>
       <li>Compensation, in cash or in kind, from any fund company, index provider, broker, custodian, adviser or
-      data vendor. No product was placed here for money and no product was placed here as a favour.</li>
-      <li>Anything for sale. There is no subscription, no newsletter, no course, no book, no consulting, no
-      software, and no waiting list to join.</li>
-      <li>Analytics. The site ships no measurement JavaScript, sets no cookie, and runs no fingerprinting. Traffic
-      is monitored, when it is monitored at all, through public aggregate data that never touches the page.</li>
+      data vendor. Nothing was placed here for money and nothing as a favour.</li>
+      <li>Anything for sale. No subscription, no newsletter, no course, no book, no consulting, no software, and
+      no waiting list.</li>
+      <li>Analytics. No measurement JavaScript, no cookie, no fingerprinting. What traffic data exists is public
+      and aggregate, and never touches the page.</li>
     </ul>
 
     <MarginNote label="The one thing stored">
@@ -87,9 +83,9 @@ import { REPO_URL } from "~/lib/site";
       </p>
     </MarginNote>
 
-    <p>The site names <span data-numeric>{shelf.length}</span> specific funds by ticker, which is worth something
-    to the companies that run them. They are named because somebody read their filings, several are named
-    unkindly, and not one of those companies knows this site exists.</p>
+    <p>The site names <span data-numeric>{shelf.length}</span> funds by ticker, which is worth something to the
+    companies that run them. They are named because somebody read their filings, several are named unkindly, and
+    none of those companies knows this site exists.</p>
 
   </div>
 
@@ -98,8 +94,8 @@ import { REPO_URL } from "~/lib/site";
 
     <h2 id="interests">The interests that do exist</h2>
 
-    <p>Having no revenue removes one way of being wrong. It leaves the others alone, and these are the ones that
-    apply here.</p>
+    <p>Having no revenue removes one way of being wrong and leaves every other way alone. These are the ones
+    that apply here.</p>
 
     <h3 id="holdings">What the author owns</h3>
 
@@ -108,21 +104,17 @@ import { REPO_URL } from "~/lib/site";
         "Not stated yet. The author has not published whether he holds any of the funds named on this site, and nothing here should be read as saying that he does or that he does not."}
     </p>
 
-    <p>Whatever that answer turns out to be, it belongs here, because a person who owns what they are
-    arguing for has a real financial interest in the argument being correct. Exact
-    amounts and account balances are private and are not going to appear on this page.</p>
+    <p>Whatever the answer turns out to be, it belongs here, because a person who owns what he argues for has
+    money riding on the argument being right. Amounts and balances stay private.</p>
 
     <h3 id="reputation">The author would like the work to be right</h3>
 
-    <p>Months went into this. Nobody who spends months on an argument is neutral about it afterwards, and no
+    <p>Months went into this, and nobody who spends months on an argument is neutral about it afterwards. No
     disclosure fixes that. What the project does instead is make disagreement cheap:
-    <a href="/corrections/">the corrections log</a> is the record of it working, and an
-    <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue</a> is the way to add to it.</p>
+    <a href="/corrections/">the corrections log</a> records it working, and an
+    <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue</a> is how you add to it.</p>
 
     <h3 id="tools">Tools and data</h3>
-
-    <p>The AI tools used to build this were bought at retail like anyone else buys them. No vendor was consulted,
-    none has seen a page before publication, and none has any involvement in what the pages say.</p>
 
     <MarginNote label="Sources">
       <p>
@@ -132,10 +124,13 @@ import { REPO_URL } from "~/lib/site";
       </p>
     </MarginNote>
 
-    <p>Every data source here is free and public, and each one is recorded in
-    <code>research/data-manifests/</code> with the hash of the exact bytes used. There is no paid data feed, no
-    licensed return series and no commercial arrangement with any provider. That is also a limitation rather than
-    a virtue, and <a href="/methodology/">the method page</a> says which questions it leaves unanswerable.</p>
+    <p>The AI tools used to build this were bought at retail. No vendor was consulted, none has seen a page
+    before publication, and none has any say in what the pages claim.</p>
+
+    <p>Every data source here is free and public, and each download is recorded with a hash of the exact bytes
+    used, so a provider quietly restating its own history shows up as a mismatch. There is no paid feed and no
+    commercial arrangement with any provider, which is a limitation as much as a virtue.
+    <a href="/methodology/">The method page</a> says what that leaves unanswerable.</p>
 
     <Callout kind="caveat">
       <p>

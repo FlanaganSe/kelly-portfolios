@@ -9,10 +9,15 @@
  * repository, specifications frozen before their results were seen, a ledger that
  * records the failures, and a corrections log. Weaker than a licence, and checkable.
  *
+ * The AI disclosure is deliberately short here and long on `/methodology/`. This page
+ * says it happened; that page says what it means for the numbers. Keep it that way, and
+ * do not let the two grow into duplicates of each other.
+ *
  * Counts come from `uv run python -m portfolio_edge.reporting.programme_status`, which
  * reads the ledger. Re-read it before editing a number here.
  */
 import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
 import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
@@ -29,20 +34,19 @@ import { REPO_URL } from "~/lib/site";
 
     <MarginNote label="The question">
       <p>
-        Who wrote this, and why believe any of it? Checked against <code>docs/research/</code> on
-        <span data-numeric>2026-08-23</span>.
+        Who wrote this, and why believe any of it? Checked on <span data-numeric>2026-08-23</span>.
       </p>
     </MarginNote>
 
-    <p>One person built this. His name is Sean Flanagan, he holds no financial licence or credential of any kind,
-    and you should know that before the first number.</p>
+    <p>One person writes this. Sean Flanagan, a software engineer in the United States, working in his own time.
+    He holds no financial licence and no credential of any kind, and you should know that before the first
+    number.</p>
 
-    <p>What you are reading is the reading half of a public repository. The measuring half is Python:
-    <span data-numeric>23</span> experiment families, <span data-numeric>27</span> frozen specifications,
-    <span data-numeric>47</span> runs and a ledger with <span data-numeric>134</span> entries in it. Every number
-    on these pages carries a link back to the file that owns it. If the link goes somewhere that does not say what
-    the sentence says, the sentence is wrong, and an <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue
-    on GitHub</a> is the fastest way to say so.</p>
+    <p>The site is the reading half of a public repository. The measuring half is Python:
+    <span data-numeric>23</span> experiment families, <span data-numeric>27</span> frozen specifications and a
+    ledger with <span data-numeric>134</span> entries. Every number links back to the file that owns it. If that
+    file does not say what the sentence says, the sentence is wrong, and an
+    <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue on GitHub</a> is the fastest way to say so.</p>
 
   </div>
 
@@ -53,26 +57,20 @@ import { REPO_URL } from "~/lib/site";
 
     <MarginNote label="No badge">
       <p>
-        There is no review board, no editorial panel, and no "reviewed by" line. A site that claims a credential
-        it does not hold has told you what its other claims are worth.
+        No review board, no editorial panel, and no "reviewed by" line. A site that claims a credential it does
+        not hold has told you what its other claims are worth.
       </p>
     </MarginNote>
 
-    <p>Sean Flanagan. A software engineer in the United States, writing in his own time, with no employer or
-    client anywhere near this work.</p>
+    <p>He is not a registered investment adviser. He does not work for a broker-dealer or an advisory firm, he is
+    not a financial planner, and he holds no CFA, CFP, CPA, Series 7 or Series 65. No licence, no firm, no
+    professional body, and nobody reviews a page before it goes up. No employer and no client is anywhere near
+    this work.</p>
 
-    <p>He is not a registered investment adviser. He does not work for a broker-dealer or a registered investment
-    advisory firm. He is not a financial planner and holds no CFA, CFP, CPA, Series 7 or Series 65. No licence, no
-    firm, no professional body, and nobody reviewing a page before it goes up.</p>
-
-    <p>That last sentence is the one this page exists to say plainly. The temptation on a site like this is to
-    invent a review board or borrow an institution's shape, and it would be the cheapest thing here to fake. It is
-    also the most expensive thing to be caught at, because a reader who finds one invented credential is right to
-    discard the other four hundred numbers on the site.</p>
-
-    <p>Large parts of this were drafted with AI assistance, which is true of the code, the research prose and
-    these pages. <a href="/methodology/">How a result earns its status</a> says exactly what was machine-written,
-    what was checked by hand, and what none of that protects you from.</p>
+    <p>AI was used, heavily. The code, the research and these sentences were drafted by a large language model,
+    then cut by a person who is responsible for what they say. <a href="/methodology/">How a result earns its
+    status</a> says what gets checked by machinery rather than by another model, and what none of it protects you
+    from.</p>
 
   </div>
 
@@ -83,30 +81,19 @@ import { REPO_URL } from "~/lib/site";
 
     <p>Shown work, and a great deal of it.</p>
 
-    <MarginNote label="Where to look">
-      <p>
-        The specifications are under <code>research/specs/</code>, the ledger is
-        <code>research/ledger.jsonl</code>, and the syntheses are <code>docs/research/</code>. All of it is in the
-        same repository as the site you are reading.
-      </p>
-    </MarginNote>
-
     <ul>
-      <li>The <a href={REPO_URL} rel="noopener noreferrer">repository is public</a>, every commit of it, including
-      the ones that undo the previous week.</li>
-      <li>A specification is frozen before anyone sees the result it will produce, which is what stops a bar from
-      being moved to meet a number. There are <span data-numeric>27</span> of them.</li>
-      <li>The ledger records every attempt that carried a hypothesis, including the abandoned ones and the ones
-      that failed. Nine runs ended in a rejection and nine ended in "we could not tell".</li>
-      <li>Thirty-three errors have been found in this project's own published numbers. Each one is on
-      <a href="/corrections/">the corrections log</a> with its date, what caught it, and what changed as a
-      result.</li>
+      <li>The <a href={REPO_URL} rel="noopener noreferrer">repository is public</a>. That includes the commits
+      that undo the previous week.</li>
+      <li>Each of the <span data-numeric>27</span> specifications was frozen before anyone saw the result, which
+      is what stops a bar from being moved to meet a number.</li>
+      <li>The ledger records every attempt that carried a hypothesis, including the abandoned ones. Nine runs
+      ended in a rejection and nine ended in "we could not tell".</li>
+      <li>Thirty-three errors have been found in this project's own numbers, and each one is on
+      <a href="/corrections/">the corrections log</a> with its date and what caught it.</li>
     </ul>
 
-    <p>You cannot audit a certificate. You can audit a diff.</p>
-
-    <p>None of that makes a conclusion here correct. It makes each one checkable by somebody who wants to argue,
-    which is the only offer anyone in this position can honestly make.</p>
+    <p>None of that makes a conclusion correct. It makes each one checkable, which is the only offer anyone
+    without a licence can honestly make.</p>
 
   </div>
 
@@ -115,21 +102,19 @@ import { REPO_URL } from "~/lib/site";
 
     <h2>How it is paid for</h2>
 
-    <p>It isn't, really.</p>
-
-    <p>No advertising. No affiliate links. No sponsors, no paid placement, no compensation from any fund company,
-    broker, custodian or data provider. Nothing to subscribe to and nothing to buy. Hosting a static site costs a
-    few dollars a month and comes out of the author's own pocket.</p>
+    <p>Nothing pays for it. No advertising. No affiliate links. No sponsors, no paid placement, no compensation
+    from any fund company, broker, custodian or data provider. Nothing to subscribe to and nothing to buy. Hosting
+    costs a few dollars a month and comes out of the author's own pocket.</p>
 
     <MarginNote label="Where the interests are listed">
       <p>
-        What the author owns is not published. <a href="/disclosures/#holdings">The disclosures page</a> says so
-        plainly, and lists the interests that do exist.
+        What the author owns is not published. <a href="/disclosures/#holdings">The disclosures page</a> says so,
+        and lists the interests that do exist.
       </p>
     </MarginNote>
 
-    <p>One thing is better said than left to inference. A site with nothing to sell can still be wrong. Having
-    no advertiser and no product removes one failure mode out of many, and the rest of them are still live.</p>
+    <p>A site with nothing to sell can still be wrong. Having no advertiser and no product removes one way of
+    being wrong out of many, and the rest are still live.</p>
 
   </div>
 
@@ -138,20 +123,14 @@ import { REPO_URL } from "~/lib/site";
 
     <h2>What the site claims, and what it refuses to</h2>
 
-    <p>Three sentences, in the order the site is built in.</p>
+    <p>The reliable win is fees, taxes and which account each fund sits in. That is worth about
+    <Figure id="structural-budget" inline /> against the portfolio an ordinary investor would otherwise hold, it
+    needs no forecast, and your own account would show it inside a year.</p>
 
-    <p>The reliable win is fees, taxes and which account each fund sits in, worth roughly 90 to 110 basis points a
-    year against the portfolio an ordinary investor would otherwise hold. It is close to certain, it needs no
-    forecast, and your own account would show it inside a year.</p>
-
-    <p>Beating a cheap index fund is a different question, and the honest answer is that we cannot demonstrate it:
-    about <span data-numeric>5</span> basis points a year of defensible advantage against
-    <span data-numeric>313</span> basis points of year-to-year drift away from that index. Saying so on the fourth
-    screen rather than the fortieth is most of what makes this site different from the ones it is competing
-    with.</p>
-
-    <p>Everything after that is mostly "we can't tell". That is a verdict rather than an evasion, and
-    <a href="/how-sure/">how sure we are</a> explains the difference.</p>
+    <p>Beating a cheap index fund is a different question, and we cannot show that we do. The defensible advantage
+    is <Figure id="edge-vs-cheap-index" inline />, against <Figure id="index-tracking-error" inline /> of
+    year-to-year wander away from that index. Everything past that is mostly "we can't tell", which is a verdict
+    rather than an evasion. <a href="/how-sure/">How sure we are</a> explains the difference.</p>
 
     <Callout kind="caveat">
       <p>
@@ -168,33 +147,12 @@ import { REPO_URL } from "~/lib/site";
 
     <h2>The one thing this site will never do</h2>
 
-    <p>It will never answer a question about your portfolio.</p>
-
-    <p>Not by email, not in a GitHub issue, not in a comment, not privately. Half of that is a legal condition and
-    <a href="/disclaimer/">the disclaimer</a> explains which half. The other half is honest: every number here was
-    measured against a reference case, and nobody here knows your tax bracket, your job security, what you owe,
-    when you stop working, or what you actually did in March 2020. A general answer wearing a personal answer's
-    clothes is worse than no answer, because you would act on it.</p>
-
-    <p>Questions about the method, the data or an error in a number are a different thing entirely, and those are
-    welcome anywhere.</p>
+    <p>It will never answer a question about your portfolio. Not by email, not in an issue, not privately. Nobody
+    here knows your tax bracket, your job security, what you owe or when you stop working, and a general answer
+    dressed as a personal one is worse than no answer, because you would act on it.
+    <a href="/disclaimer/">The disclaimer</a> says the rest of it. Questions about the method, the data or an
+    error in a number are welcome anywhere.</p>
 
   </div>
 
-  <div class="prose mt-14">
-    <Rail>A note on grammar</Rail>
-
-    <h2>Why the site says "we"</h2>
-
-    <p>There is one person here, and almost every page says "we" anyway.</p>
-
-    <p>"We" means the research programme rather than a team: the frozen specifications, the runs, the code, the
-    tests and the reviews that argued with each other and occasionally won. "I" would be more accurate about who
-    typed the words and less accurate about what produced the number. The pronoun stays, and this paragraph is
-    where the site tells you it is one person, which seemed better than four hundred sentences opening "I
-    measured".</p>
-
-    <p>That is the whole disclosure. The rest of the site is the work.</p>
-
-  </div>
 </Base>
