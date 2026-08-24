@@ -7,7 +7,16 @@
  */
 import ThemeToggle from "~/components/ThemeToggle.astro";
 import { ogAlt, OG_HEIGHT, ogImagePath, OG_WIDTH } from "~/lib/og";
-import { canonicalPath, CORPUS_AS_OF, isCurrent, NAV_ITEMS, REPO_URL, SITE_DESCRIPTION, SITE_NAME } from "~/lib/site";
+import {
+  canonicalPath,
+  CORPUS_AS_OF,
+  isCurrent,
+  NAV_ITEMS,
+  type NavItem,
+  REPO_URL,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+} from "~/lib/site";
 import "~/styles.css";
 
 interface Props {
@@ -63,6 +72,22 @@ const structuredData = {
 };
 
 const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
+
+/**
+ * The footer's own links, which are about the site rather than about investing.
+ *
+ * They live here rather than beside `NAV_ITEMS` on purpose: the masthead order is the
+ * argument the site is making, and these five pages are not part of it. A reader
+ * reaches them when they want to know who wrote this and what it is worth, which is a
+ * different errand from reading the research.
+ */
+const FOOTER_ITEMS = [
+  { href: "/about/", label: "About" },
+  { href: "/methodology/", label: "Methodology" },
+  { href: "/corrections/", label: "Corrections" },
+  { href: "/disclosures/", label: "Disclosures" },
+  { href: "/disclaimer/", label: "Disclaimer" },
+] as const satisfies readonly NavItem[];
 ---
 
 <html lang="en">
@@ -175,15 +200,38 @@ const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
         <slot />
       </main>
 
+      {/* The two-line disclaimer sits on every page because the condition it states is a
+          condition of the whole site, not of one essay. `/disclaimer/` carries the full
+          text and the reasoning; these two sentences are the part a reader has to see
+          without clicking. */}
       <footer class="mt-16 border-t border-rule">
-        <div
-          class="page-rail flex flex-col gap-3 py-8 text-sm text-ink-muted sm:flex-row sm:items-baseline sm:justify-between"
-        >
-          <p class="max-w-measure">Nothing here is advice, and no sleeve in the underlying research is promoted.</p>
-          <p class="flex items-baseline gap-4 whitespace-nowrap">
-            <a href={REPO_URL} rel="noopener noreferrer" class="link">GitHub</a>
-            <span data-numeric class="text-ink-faint">Research as of {CORPUS_AS_OF}</span>
+        <div class="page-rail flex flex-col gap-6 py-8 text-sm text-ink-muted">
+          <p class="max-w-measure">
+            General information about investing, and no part of it is personalised advice. This site does not
+            answer questions about an individual reader&rsquo;s portfolio.{" "}
+            <a href="/disclaimer/" class="link">Read the full disclaimer</a>.
           </p>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+            <nav aria-label="About this site">
+              <ul class="flex flex-wrap gap-x-5 gap-y-2">
+                {
+                  FOOTER_ITEMS.map((item) => (
+                    <li>
+                      <a href={item.href} class="link">
+                        {item.label}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+
+            <p class="flex items-baseline gap-4 whitespace-nowrap">
+              <a href={REPO_URL} rel="noopener noreferrer" class="link">GitHub</a>
+              <span data-numeric class="text-ink-faint">Research as of {CORPUS_AS_OF}</span>
+            </p>
+          </div>
         </div>
       </footer>
     </div>
