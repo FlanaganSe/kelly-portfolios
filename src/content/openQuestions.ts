@@ -106,11 +106,16 @@ export const openQuestions: readonly OpenQuestion[] = [
   {
     id: "leverage-reopening",
     group: "changes-the-construction",
-    question: "What would reopen the zero-leverage rule?",
-    whyItIsOpen: "Leverage was conditioned on an unlevered edge surviving the protocol. None has.",
+    question: "What is still unknown about the leverage the portfolio already holds?",
+    whyItIsOpen:
+      "Zero leverage was the reference answer for an investor whose financing and policy inputs were missing, and decision 0010 clause 6 keeps it as that rather than as a rule against financed constructions. The published portfolio holds about 1.32x gross exposure through RSST, and three of the four inputs the old rule asked for are still not measured.",
     whatWouldSettleIt:
-      "All four together: a measured implied financing spread on the specific contracts a candidate rolls, a term premium signed under this repository's own protocol, a defined investor policy, and a modelled forced-liquidation path.",
-    source: recommendation,
+      "The fund-level implied financing spread on the contracts the wrapper actually rolls, which no issuer discloses because futures financing lives in the basis; a modelled margin and forced-liquidation path under a stated investor policy; and the wrapper's trend delivery on more than 31 filed months. A term premium signed under this repository's own protocol would settle the bond-stacking variant, which the portfolio does not hold.",
+    source: {
+      label: "0010 — Research stays open; claim gates carry scope",
+      docPath: "docs/decisions/0010-bars-carry-a-reopening-condition.md",
+      anchor: "decision",
+    },
   },
   {
     id: "rmw-cma-reopening",

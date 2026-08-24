@@ -49,7 +49,25 @@ function headingSlugs(markdown: string): Set<string> {
 type Cite = { docPath: string; anchor?: string; where: string };
 
 /**
- * A citation object literal, whose `anchor` may sit on either side of `docPath`.
+ * The `docPath` a shared citation constant carries, so a spread can be resolved.
+ *
+ * `{ ...productAudit, anchor: "…" }` is the idiom half this repository's anchored
+ * citations use, and it carries no `docPath` of its own. Before this resolved them,
+ * every such anchor was invisible to the check below and one of them had been dead
+ * since the page it named was rewritten.
+ */
+function citationConsts(text: string): Map<string, string> {
+  const consts = new Map<string, string>();
+  for (const match of text.matchAll(/const\s+(\w+)(?::\s*Citation)?\s*=\s*\{([\s\S]*?)\}/g)) {
+    const docPath = /docPath:\s*"([^"]+)"/.exec(match[2] ?? "");
+    if (match[1] && docPath?.[1]) consts.set(match[1], docPath[1]);
+  }
+  return consts;
+}
+
+/**
+ * A citation object literal, whose `anchor` may sit on either side of `docPath`,
+ * plus every `{ ...someCitation, anchor: "…" }` spread.
  * `citation.test.ts` fixtures are excluded: they assert URL shape, not targets.
  */
 function citations(): Cite[] {
@@ -62,6 +80,11 @@ function citations(): Cite[] {
       const tail = text.slice(match.index, match.index + 400);
       const anchor = /^[^}]*?anchor:\s*"([^"]+)"/.exec(tail);
       found.push({ docPath: match[1] ?? "", anchor: anchor?.[1], where });
+    }
+    const consts = citationConsts(text);
+    for (const match of text.matchAll(/\{\s*\.\.\.(\w+),\s*anchor:\s*"([^"]+)"/g)) {
+      const docPath = consts.get(match[1] ?? "");
+      if (docPath && match[2]) found.push({ docPath, anchor: match[2], where });
     }
   }
   return found;

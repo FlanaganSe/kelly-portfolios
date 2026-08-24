@@ -695,9 +695,9 @@ const candidate: PortfolioCandidate = {
         "RSST, MATE, CTAP and JPFP look like the same product and are not — though not for the reason this line used to give. On the funding rule the three with filed holdings are the same class: RSST −0.07, MATE −0.159, CTAP −0.027, all keeping the whole gap. Nor does the fee table separate them. CTAP advertises 0.10% net against RSST's 0.99%, but its trend leg is a total return swap on CTA, an affiliated fund charging 0.75% with no waiver, and a swap reference is not reached by acquired-fund fees — so it is about 0.81% all-in today and about 0.99% when its waiver lapses on 2026-12-04. What is left is age, size, counterparty and evidence: RSST has 35 months and $415m of filed net assets; CTAP has eight months, $157.88m, 82.48% of net assets of bilateral swap exposure to one bank and a disclosed affiliated-fund conflict; MATE has eight months and $39.41m; JPFP has three months, $17.07m and no N-PORT at all. RSST is also the only one old enough to regress: its trend loading is +0.681 [+0.406, +0.955] on 31 filed months, and the other three have three to eight months of filings, which is not a measurement problem but an age one.",
     },
     {
-      title: "It is levered, and this repository does not permit that",
+      title: "It is levered, and nothing here demonstrates that the leverage pays",
       detail:
-        "Decision 0004 holds leverage at zero and is unsuperseded. This portfolio runs about 132% of gross exposure. That is a deliberate departure from the research, not a conclusion of it.",
+        "This portfolio runs about 132% of gross exposure. Decision 0010 clause 6 is the governing statement: funding is part of the hypothesis, and the zero-leverage portfolio is a reference recommendation for an investor whose financing and policy inputs are missing rather than a rule against financed constructions. So this is not a departure from the research. What it is not either is a demonstrated edge: the sizing rests on holdability and on one whole-portfolio comparison that does not isolate the weight, decision 0004's non-promotion stands, and the fund-level financing spread that decides the sign of the whole thing is unmeasured.",
     },
   ],
   trackingErrorCharacter:

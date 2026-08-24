@@ -362,9 +362,9 @@ export const families: readonly StrategyFamily[] = [
           "The growth-optimal trend overlay through RSST's delta is 3.04 units of notional. This repository refuses that number. The realised growth optimum on levered equity over a century is 2.2× at a −99.3% drawdown and 296 months under water.",
       },
       {
-        title: "Leverage stays at zero",
+        title: "Zero leverage is a default, not a bar",
         detail:
-          "Decision 0004 holds leverage at zero and is unsuperseded. A portfolio using these wrappers departs from this repository's research deliberately.",
+          "Decision 0010 clause 6 holds the zero-leverage portfolio as a reference recommendation for an investor whose financing and policy inputs are missing, and explicitly not as a restriction on researching financed constructions. Decision 0004's non-promotion still stands, so a portfolio using these wrappers is sized on holdability rather than on a demonstrated edge.",
       },
     ],
     implementation:

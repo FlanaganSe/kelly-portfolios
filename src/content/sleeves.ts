@@ -9,6 +9,15 @@ import { type AsOf, asOf, type Citation, type EvidenceStatus, type KeyNumber } f
  * underperformed the market over these 72 months", not as a defect in the fund. And
  * momentum is excluded despite carrying the largest gross premium measured anywhere
  * here.
+ *
+ * `status` and `verdict` are different questions and this file keeps them apart.
+ * `status` is the evidence grade an experiment assigned to a claim, and it stays where
+ * the experiment left it; `verdict` is whether the published portfolio holds the thing.
+ * Decision 0010 clause 7 is the rule: a status applies to a claim, not to a product, so
+ * VTV can carry a `rejected` product-audit status and still be held at 15% on cost.
+ * Two records were restated on 2026-08-23 for exactly that reason — `vtv-large-value`
+ * and `leverage` — and each says so in its own `statusNote`. `sleeveAsOf` below is the
+ * date the file as a whole was compiled, not a claim that no record has moved since.
  */
 
 const productAudit: Citation = {
@@ -189,16 +198,22 @@ export const sleeves: readonly Sleeve[] = [
     id: "vtv-large-value",
     label: "Large-cap value",
     ticker: "VTV",
-    verdict: "excluded",
+    verdict: "hold",
     status: "rejected",
+    statusNote:
+      "The status is Experiment 002's product-audit verdict and it is scoped to that audit's comparator and window. It is not a verdict on holding the fund, and the portfolio holds it at 15% of capital. Decision 0010 clause 7: a status applies to a claim, not to a product.",
     loading: { factor: "HML", value: 0.337, interval: "[+0.225, +0.471]" },
     feeBp: 3,
     feeAsOf: asOf("2026-08-12"),
     reason:
       "It delivers a real HML loading at 3 bp and still carries a +2.57 pp/yr shortfall against the fitted cheap combination.",
     caveat:
-      'That shortfall is not a defect in the fund. VTV is itself one of the four funds the replication is built from, and a fund is never in its own basis, so its replication degenerates to 0.784 VTI + 0.216 VB at 7.48 pp/yr of tracking error. Read the rejection as "value underperformed the market over these 72 months" — a return finding the audit is not entitled to make.',
-    source: { ...productAudit, anchor: "the-comparator-shrinkage-and-two-traps" },
+      'That shortfall is not a defect in the fund. VTV is itself one of the four funds the replication is built from, and a fund is never in its own basis, so its replication degenerates to 0.784 VTI + 0.216 VB at 7.48 pp/yr of tracking error. Read the rejection as "value underperformed the market over these 72 months" — a return finding the audit is not entitled to make. As of 2026-08-23 the portfolio holds VTV at 15%, chosen on cost rather than on measured return: 2.70 bp of net cost after securities lending against AVUV\'s 24.54, and 8%/yr of turnover. Whole-portfolio, VTV against AVUV reads −0.15 pp/yr [−0.68, +0.34] against a 0.68 floor, which is unresolved on both windows on which the comparison is legal.',
+    source: {
+      label: "The whole portfolio, tested as one object",
+      docPath: "docs/research/final-construction-test.md",
+      anchor: "conclusion",
+    },
   },
   {
     id: "vb-small-cap",
@@ -310,18 +325,24 @@ export const sleeves: readonly Sleeve[] = [
   },
   {
     id: "leverage",
-    label: "Leverage of any kind",
-    ticker: null,
-    verdict: "excluded",
+    label: "Leverage, held through a stacked fund",
+    ticker: "RSST",
+    verdict: "optional",
     status: null,
-    statusNote: "Zero, and it stays zero.",
+    statusNote:
+      "Zero leverage is the reference recommendation for an investor whose financing and policy inputs are missing. It is not a research prohibition and it is not what the published portfolio holds.",
     loading: null,
-    feeBp: null,
-    feeAsOf: null,
-    reason: "It was conditioned on an unlevered edge surviving the protocol. None has, so there is nothing to lever.",
+    feeBp: 99,
+    feeAsOf: asOf("2026-08-17"),
+    reason:
+      "The published construction holds RSST at 30% of capital, which is about 1.32x gross exposure and 30 points of trend. The wrapper is what makes that a financed position rather than a sale of equity: RSST's filed delta of −0.07 keeps essentially the whole +2.44 pp/yr funding-rule gap, where buying a standalone managed-futures fund out of the equity sleeve keeps none of it.",
     caveat:
-      "Four measurable conditions would reopen it together: a measured implied financing spread on the specific contracts a candidate rolls, a term premium signed under this repository's own protocol, a defined investor policy, and a modelled margin and forced-liquidation path.",
-    source: { label: "0004 — No sleeve is promoted", docPath: "docs/decisions/0004-no-sleeve-promoted.md" },
+      "Decision 0010 clause 6 is the governing statement as of 2026-08-22: funding is part of the hypothesis, and the zero-leverage portfolio is a current recommendation for an underspecified investor rather than a restriction on researching financed constructions. Decision 0004's own header now reads as a dated publication conclusion rather than a research constraint. What has not changed is that nothing is promoted: the sizing rests on holdability and on one whole-portfolio comparison that does not isolate the weight, not on a demonstrated edge. Three things remain unmeasured and each could move the sign — the fund-level implied financing spread, which no issuer discloses because futures financing lives in the basis; the wrapper's trend delivery beyond 31 filed months; and a modelled margin and forced-liquidation path under a defined investor policy.",
+    source: {
+      label: "0010 — Research stays open; claim gates carry scope",
+      docPath: "docs/decisions/0010-bars-carry-a-reopening-condition.md",
+      anchor: "decision",
+    },
   },
   {
     id: "rebalancing-as-return",
