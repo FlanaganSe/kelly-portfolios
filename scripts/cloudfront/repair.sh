@@ -29,7 +29,9 @@ apply=false
 if [ "${1:-}" = "--apply" ]; then apply=true; fi
 
 name="kellyportfolios-directory-index"
-comment="Directory indexes, one trailing-slash form, and the bucket origin"
+# The shorthand form of --function-config splits on commas, so this must not
+# contain one; JSON is passed instead, built here once.
+config='{"Comment":"Directory indexes and the bucket origin for a static build","Runtime":"cloudfront-js-2.0"}'
 
 state=$(GITHUB_OUTPUT="" GITHUB_STEP_SUMMARY="" SITE_DOMAIN="${SITE_DOMAIN:?SITE_DOMAIN is not set}" "$here/state.sh" 2>/dev/null)
 id=$(jq -r .distribution_id <<<"$state")
@@ -52,11 +54,11 @@ echo "function $name: will $action"
 if $apply; then
   if [ "$action" = "create" ]; then
     etag=$(aws cloudfront create-function --name "$name" \
-      --function-config "Comment=$comment,Runtime=cloudfront-js-2.0" \
+      --function-config "$config" \
       --function-code "fileb://$here/directory-index.js" --query ETag --output text)
   else
     etag=$(aws cloudfront update-function --name "$name" --if-match "$etag" \
-      --function-config "Comment=$comment,Runtime=cloudfront-js-2.0" \
+      --function-config "$config" \
       --function-code "fileb://$here/directory-index.js" --query ETag --output text)
   fi
 
