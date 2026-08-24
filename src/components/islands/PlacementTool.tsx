@@ -1,3 +1,5 @@
+// biome-ignore-all lint/a11y/noRedundantRoles: the roles on the table below are not redundant. `.stack-table` in src/styles.css sets `display: block` under 40rem to lay each row out as a card, and any `display` other than a `table-*` value drops the implicit table roles from the accessibility tree in every engine. Above the breakpoint the attributes restate what the elements already mean; below it they are the only thing relating a cell to its row. The lint rule reads the markup and cannot see the stylesheet.
+// biome-ignore-all lint/a11y/useSemanticElements: the semantic elements are already in use — `table`, `thead`, `tr`, `th`, `td`. This rule fires on the same attributes as the one above, for the same reason, and has the same answer.
 import { type Component, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { NumberField, RangeField, SelectField } from "~/components/islands/controls";
 import {
@@ -39,6 +41,21 @@ const WHERE_TEXT: Readonly<Record<PlacedRow["where"], string>> = {
   split: "Partly sheltered",
   taxable: "Taxable account",
 };
+
+/**
+ * Written once, read twice: into `<thead>`, and into the label each cell shows when
+ * the table becomes a list of cards below 40rem. Seven columns is the widest table
+ * the site renders, and a phone cannot usefully scroll it.
+ */
+const COLUMNS = [
+  "#",
+  "Fund",
+  "Weight",
+  "Tax if taxable",
+  "Credit lost if sheltered",
+  "Saved per sheltered dollar",
+  "Goes in",
+] as const;
 
 export const PlacementTool: Component = () => {
   const [config, setConfig] = createSignal<PlacementConfig>(defaultPlacementConfig);
@@ -190,60 +207,61 @@ export const PlacementTool: Component = () => {
         <p class="mt-8 max-w-measure text-lg text-ink">{headline()}</p>
 
         <div class="scroller mt-6">
-          <table class="w-full min-w-[42rem] border-collapse text-sm">
+          <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[42rem]">
             <caption class="sr-only">
               What a sheltered dollar of each fund saves a year, at {bracketNote()}, and where the fund lands once your
               shelter runs out
             </caption>
-            <thead>
-              <tr class="border-b border-rule-strong text-left">
-                <th scope="col" class="eyebrow py-2 pr-3 text-right">
-                  #
-                </th>
-                <th scope="col" class="eyebrow py-2 pr-4">
-                  Fund
-                </th>
-                <th scope="col" class="eyebrow py-2 pr-4 text-right">
-                  Weight
-                </th>
-                <th scope="col" class="eyebrow py-2 pr-4 text-right">
-                  Tax if taxable
-                </th>
-                <th scope="col" class="eyebrow py-2 pr-4 text-right">
-                  Credit lost if sheltered
-                </th>
-                <th scope="col" class="eyebrow py-2 pr-4 text-right">
-                  Saved per sheltered dollar
-                </th>
-                <th scope="col" class="eyebrow py-2 pr-4">
-                  Goes in
-                </th>
+            <thead role="rowgroup">
+              <tr role="row" class="border-b border-rule-strong text-left">
+                <For each={COLUMNS}>
+                  {(heading, i) => (
+                    <th
+                      role="columnheader"
+                      scope="col"
+                      classList={{
+                        eyebrow: true,
+                        "py-2": true,
+                        "pr-3": i() === 0,
+                        "pr-4": i() > 0,
+                        "text-right": i() === 0 || (i() >= 2 && i() <= 5),
+                      }}
+                    >
+                      {heading}
+                    </th>
+                  )}
+                </For>
               </tr>
             </thead>
-            <tbody class="text-ink-muted">
+            <tbody role="rowgroup" class="text-ink-muted">
               <For each={placed()}>
                 {(row, index) => (
-                  <tr class="border-b border-rule last:border-0">
-                    <td data-numeric class="py-2 pr-3 text-right text-ink-faint">
+                  <tr role="row" class="border-b border-rule last:border-0">
+                    <td role="cell" data-label={COLUMNS[0]} data-numeric class="py-2 pr-3 text-right text-ink-faint">
                       {index() + 1}
                     </td>
-                    <th scope="row" class="py-2 pr-4 text-left font-normal text-ink">
+                    <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal text-ink">
                       {row.ticker}
-                      <span class="block text-xs text-ink-faint">{row.name}</span>
+                      <span class="block text-xs font-normal text-ink-faint">{row.name}</span>
                     </th>
-                    <td data-numeric class="py-2 pr-4 text-right">
+                    <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
                       {ratePercent(row.weight, 1)}%
                     </td>
-                    <td data-numeric class="py-2 pr-4 text-right">
+                    <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
                       {bp(row.taxableBp)} bp
                     </td>
-                    <td data-numeric class="py-2 pr-4 text-right">
+                    <td role="cell" data-label={COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
                       {bp(row.shelteredBp)} bp
                     </td>
-                    <td data-numeric class="py-2 pr-4 text-right font-semibold text-ink">
+                    <td
+                      role="cell"
+                      data-label={COLUMNS[5]}
+                      data-numeric
+                      class="py-2 pr-4 text-right font-semibold text-ink"
+                    >
                       {bp(row.priorityBp)} bp
                     </td>
-                    <td class="py-2 pr-4">
+                    <td role="cell" data-label={COLUMNS[6]} class="py-2 pr-4">
                       {WHERE_TEXT[row.where]}
                       <Show when={row.where === "split"}>
                         <span data-numeric class="block text-xs text-ink-faint">
