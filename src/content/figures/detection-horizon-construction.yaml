@@ -6,10 +6,11 @@ asOf: '2026-08-23'
 source:
   label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
-  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+  anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
 note: >-
   The measured gap is +2.20 points a year on a range of [+0.05, +4.57] against 2.83, so
   the estimate sits under the smallest effect the design could see. This is the detection
   question and not the holding period: the same portfolio would separate from its control in an
   investor's own account in 12.2 years. The verdict was predicted as unresolved in the frozen
   specification before the run.
+  The arm measured is the seven funds at a 25% trend weight, which is the construction 016e froze; `/portfolio` publishes the same seven at 30% and no experiment has run that one.

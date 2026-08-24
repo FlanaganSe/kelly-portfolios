@@ -378,13 +378,29 @@ const DRAWDOWNS = [
       </p>
     </MarginNote>
 
-    <p>Holding 30% beat holding 25% by <Figure id="thirty-over-twenty-five" inline showUnit={false} /> a year
-    against the same portfolio at the lower weight, and the smallest gap that test could reliably see was
-    <Figure id="thirty-over-twenty-five-floor" inline showUnit={false} />. That is the only whole-portfolio
-    comparison in this entire project that clears its own resolution. Almost everything else here is a shrug. It
-    is also mostly a statement about borrowing rather than about trend: the 30% version leaves you exposed to 132%
-    of your money against the 25% version's 127%, and over a stretch where US stocks returned 9.83% a year, more
-    exposure wins.</p>
+    <p>One measurement favours 30%, and it is worth being exact about what it compared. The higher-trend portfolio
+    in that test was an earlier eight-fund draft; the lower-trend one was the seven funds above. The 30% version
+    won by <Figure id="thirty-over-twenty-five" inline showUnit={false} /> a year and the smallest gap that test
+    could reliably see was <Figure id="thirty-over-twenty-five-floor" inline showUnit={false} />, which makes it
+    the only whole-portfolio comparison in this entire project that clears its own resolution. Almost everything
+    else here is a shrug.</p>
+
+    <p>Two things it does not settle. The pair differed in four of its holdings as well as in how much trend it
+    held, so the gap is not purely the five points. And what the five points buy is mostly borrowing rather than
+    trend: the 30% version leaves you exposed to 132% of your money against the 25% version's 127%, and over a
+    stretch where US stocks returned 9.83% a year, more exposure wins.</p>
+
+    <MarginNote label="Why we read it as the trend weight anyway">
+      <p>
+        Strip the trend and the borrowing out of both, and the two sets of holdings scored 0.80 and 0.79
+        percentage points a year against the same plain index over the same 427 months. That is as close to equal
+        as this data can say, which leaves the trend weight as the thing that moved. It is an argument, not the
+        matched pair that would settle it.
+      </p>
+    </MarginNote>
+
+    <p>Nobody has run these exact seven funds at 30%. The test that would settle the question is the same seven
+    funds at both weights, and it is on the list of things this project has not done.</p>
 
     <p>The cost is that you might sell it. Over thirty years, at a trigger where you quit once the fund has run
     20% behind, a 30% weight ends the position in about <Figure id="abandonment-30" inline showUnit={false} /> of simulated paths
@@ -395,7 +411,7 @@ const DRAWDOWNS = [
     <p>We say 30% for you, for three reasons.</p>
 
     <ol>
-      <li>The comparison that favours it is the only resolved one we have. Throwing that away for four methods that disagree with each other is choosing the weaker evidence.</li>
+      <li>The comparison that favours it is the only resolved one we have, imperfect as it is. Throwing that away for four methods that disagree with each other is choosing the weaker evidence.</li>
       <li>You are contributing 5% to 15% of the portfolio a year. New money at low prices is the thing that carries a position through a drought, and it covers the one rebalancing move this portfolio cannot make internally two and a half to seven and a half times over.</li>
       <li>Zero is the worse mistake. Through the one flat decade in our data, March 1999 to February 2009, US stocks returned −2.55% a year and a 30% trend holding added about <Figure id="flat-decade" inline showUnit={false} /> above the stocks it displaced, turning that decade positive. Against +0.21 points a year in ordinary decades, that one decade is what decides whether a plan survives.</li>
     </ol>

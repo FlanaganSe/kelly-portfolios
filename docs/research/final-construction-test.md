@@ -18,6 +18,18 @@ improve it.
 ([factor persistence](factor-persistence.md)), and the weights themselves
 ([the recommendation](portfolio-recommendation.md), which this page does not edit).
 
+> **"Recommended" on this page means the 25% arm, and the published recommendation is
+> now 30%.** Experiment 016e's specification was frozen while the recommendation stood at
+> RSST 25% / VTI 24%, and every arm here named `recommended` carries those weights. §1's
+> own resolved head-to-head is then what moved the weight: the published construction is
+> **RSST 30% / VTI 19% / VTV 15% / VXUS 16% / AVDV 10% / IDMO 5% / AVES 5%**, derived in
+> [part A](portfolio-for-one-investor.md) §2 and rendered on `/portfolio`. The five points
+> come out of VTI and go into trend; nothing else changes. A frozen specification is not
+> amended after its results were inspected
+> ([decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md) clause 4), so the
+> labels stay and this note carries the correction. **No arm in this file, or in any other
+> experiment in the programme, holds the recommended seven funds at a 30% trend weight.**
+
 `as of 2026-08-23`. **`exploratory`.** The tournament arm is
 [Experiment 016e](../../research/experiments/exp_016e_final_construction.yaml)
 (spec `3a86ef6f…`, run
@@ -49,7 +61,10 @@ improve it.
    equity leg returned 9.83%/yr, five points more notional is worth about what the gap is.
    This is the tournament's own load-bearing lesson pointed at the recommendation:
    **comparing two portfolios at different leverage credits the leverage to the winner.**
-   It is a statement about the trend weight, which this page does not settle.
+   **The pair also differs in four of its holdings**, so it is not a clean reading of the
+   trend weight either; §1 gives the reason to attribute it to the wrapper anyway and the
+   reason that reason is not a measurement. This page does not settle the trend weight, and
+   the weight it moved to is 30%.
 4. **Adding AVDV was worth about +0.28% a year and sits exactly on the edge of what the
    test can see.** Recommended against previous recommendation, same gross notional, one
    sleeve different: **+0.28 pp/yr [+0.05, +0.56] against a floor of 0.29**, positive in
@@ -87,7 +102,7 @@ improve it.
 
 ---
 
-## 1. The tournament, on the portfolio actually recommended
+## 1. The tournament, on the seven-fund construction at a 25% trend weight
 
 Same frozen machinery as [the construction tournament](construction-tournament.md), same
 427-month panel (1990-11…2026-05), same costs charged inside the rule, same stationary
@@ -128,15 +143,32 @@ against a control, so these are the comparisons this design can nearly resolve.
 | recommended − previous recommendation | +0.28 | [+0.05, +0.56] | 0.29 | 39 | 0.6% | unresolved, by 0.01 |
 | recommended − AVUV variant | −0.15 | [−0.68, +0.34] | 0.68 | 717 | 1.4% | unresolved |
 
-**Read the first row carefully.** It is the only whole-portfolio comparison in either
-tournament that clears its own floor, and what it says is that cutting the trend wrapper
-from 30% to 25% cost about half a point a year *on this panel's realised equity and trend
-means*. It is negative in all seven declared sub-periods as well as the full window, from
-−0.19 post-GFC to −0.94 before the flat decade. It is not a construction result: the two portfolios differ by 5.4 points of
-gross notional, and [the tournament](construction-tournament.md) finding 11 established
-that the sign of a wrapper's contribution is set by the equity premium assumed. At the
-panel's realised 9.83% US equity premium, more notional wins. The recommendation's trend
-weight rests on holdability, not on this number, and this number does not disturb it.
+**Read the first row carefully, because it is quoted more than anything else here and it
+is not the comparison it is usually described as.** It is the only whole-portfolio
+comparison in either tournament that clears its own floor. **It is not a 25-against-30
+comparison at a fixed construction.** `recommended_vs_original` scores RSST 25 / VTI 24 /
+VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 against RSST 30 / VTI 20 / AVLV 15 / DFIV 10 /
+VEA 10 / IDMO 5 / IEMG 5 / AVES 5, so **the pair differs in four of its holdings as well as
+in five points of trend**, and no arm anywhere holds the recommended seven funds at 30%.
+
+Two reasons to read the gap as the trend weight rather than the fund list, and one reason
+not to over-read it. The tilt complexes are near enough identical: `recommended_no_trend`
+scores **+0.7996** and 016's `proposal_no_trend` **+0.79** pp/yr, both against the same
+unlevered cheap control on the same 427 months, so what is left to move the whole-portfolio
+number is the wrapper. And the gap is negative in all seven declared sub-periods as well as
+the full window, from −0.19 post-GFC to −0.94 before the flat decade. Against that: the two
+tilt-only figures come from two tournaments and are not a paired difference, so they carry
+no interval of their own and cannot bound the fund-list contribution. **The clean design is
+in *Open* item 4 and has not been run.**
+
+What survives is that this is a leverage result rather than a construction one: the two
+portfolios differ by 5.4 points of gross notional, and
+[the tournament](construction-tournament.md) finding 11 established that the sign of a
+wrapper's contribution is set by the equity premium assumed. At the panel's realised 9.83%
+US equity premium, more notional wins. **This number is what subsequently moved the
+recommended trend weight from 25% to 30%** ([part A](portfolio-for-one-investor.md) §2),
+against the holdability evidence rather than in agreement with it, and it should be quoted
+with the caveat above attached.
 
 The second row is the AVDV decision, and it is the most informative line on the page: two
 portfolios at identical leverage differing in one sleeve, +0.28 pp/yr against a floor of

@@ -18,9 +18,14 @@ Sources: `.claude/scratch/claims-ledger.md`, `docs/research/portfolio-recommenda
 
 ## 1. The construction
 
-Taken from the repository's recommended construction, which is what Experiment 016e scored
+Taken from the construction Experiment 016e scored
 (`docs/research/final-construction-test.md`, spec `3a86ef6f…`, run `cd2fb4b9…`). Not a new
 invention.
+
+**The table below is the 25% arm, which is what was tested and is not what is recommended.**
+§2 takes the wrapper to 30% and VTI to 19%, which is the vector `/portfolio` publishes and
+the one every figure record on the site carries. Nothing else in the construction changes,
+so §1's fund-by-fund reasoning applies to both.
 
 ### Capital weights — the only vector anyone types
 
@@ -115,11 +120,22 @@ stated as such:
 The five points come out of VTI. Because RSST carries 1.072 of US equity per dollar, US
 equity notional barely moves (65.8 → 66.2) and the whole change is +5 points of trend.
 
-**Growth.** 30% beats 25% by **0.50 pp/yr [0.23, 0.77] against a 0.39 floor** — the only
-whole-portfolio comparison in either tournament that clears its own resolution, negative for
-the 25% arm in all seven declared sub-periods (−0.19 to −0.94). The tournament is explicit
+**Growth.** The higher weight wins by **0.50 pp/yr [0.23, 0.77] against a 0.39 floor** — the
+only whole-portfolio comparison in either tournament that clears its own resolution, negative
+for the 25% arm in all seven declared sub-periods (−0.19 to −0.94). The tournament is explicit
 that this is a *leverage* result, not a construction one: at the panel's realised 9.83% US
 equity premium, more notional wins.
+
+**And it is not the comparison in the table above.** 016e's `recommended_vs_original` scores
+RSST 25 / VTI 24 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 against the investor's
+*original eight-fund* proposal — RSST 30, VTI 20, AVLV 15, DFIV 10, VEA 10, IDMO 5, IEMG 5,
+AVES 5 — so **the pair differs in four holdings as well as in five points of the wrapper**,
+and **no arm in the programme holds these seven funds at 30%**. The reason to read the gap as
+the wrapper: the two tilt complexes, stripped of trend and of leverage, score **+0.7996** and
+**+0.79** pp/yr against the same unlevered control on the same 427 months, leaving the wrapper
+as what moved. That is an argument and not a paired measurement — the two figures come from
+two tournaments and carry no interval of their own — so it cannot bound the fund-list
+contribution. 016e's open question 4 asks for the matched pair, and it has not been run.
 
 **Holdability.** Abandonment probability over thirty years at a −20% relative-drawdown
 trigger runs about **17% at 30% against 11% at 25%** at the premium prior's median, and
@@ -140,9 +156,11 @@ minimisation 21.6% [10.3, 32.8]; growth subject to holdability 15–25%; minimax
 For *this* investor. Three reasons, in order of weight.
 
 1. **The comparison that favours 30% is the only one in the programme that clears its own
-   floor.** Nearly everything else here is unresolved. Discarding the one resolved
-   measurement in favour of four routes that disagree with each other is choosing the
-   weaker evidence.
+   floor**, even though it does not isolate the weight. Nearly everything else here is
+   unresolved. Discarding the one resolved measurement in favour of four routes that
+   disagree with each other is choosing the weaker evidence — but it is one arm short of
+   the comparison it is being asked to be, and that belongs in the reason rather than in a
+   footnote.
 2. **A contribution stream is what carries a position through a drought.** The abandonment
    model's trigger is a relative drawdown, and the mechanism that defeats it is new money
    arriving at a low price. This investor contributes 5–15%/yr, which is 2.5 to 7.5 times

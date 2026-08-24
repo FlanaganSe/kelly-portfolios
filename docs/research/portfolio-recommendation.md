@@ -82,11 +82,21 @@ The strongest claims are contractual or arithmetic:
 
 ## The final construction, tested as one object
 
-Experiment 016e ran the recommended construction through the frozen tournament machinery, with
+**Two weight vectors appear in this repository and only one of them is published.** The
+recommendation is **RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5**,
+1.322× gross, 38.2 bp of weighted fee and 36.2 bp of weighted net cost, derived in
+[part A](portfolio-for-one-investor.md) §2 and rendered on `/portfolio`. The construction
+Experiment 016e scored, and which everything in this section reports, is the **same seven
+funds at RSST 25 / VTI 24**, 1.268× gross, 33.4 bp of fee and 31.3 bp of net cost — the
+recommendation as it stood when the specification was frozen. The five points come out of VTI
+and go into trend; no other line changes. Every "recommended" figure below belongs to the 25%
+arm, and no experiment anywhere has run the seven funds at 30%.
+
+Experiment 016e ran that construction through the frozen tournament machinery, with
 `unresolved` predicted in the specification before the run.
 
 Against a cheap index levered to the same 1.268× and charged the same financing, the
-recommended portfolio reads **+2.20 pp/yr [+0.05, +4.57] against a 2.83 floor** — unresolved,
+25% arm reads **+2.20 pp/yr [+0.05, +4.57] against a 2.83 floor** — unresolved,
 and 59 years of holding before the design could see it. Tracking error 6.0%; probability of
 trailing 15.6% / 7.1% / 3.4% at 10 / 20 / 30 years with median shortfalls of −0.79 / −0.46 /
 −0.30; drawdown −50.3% against the levered control's −64.6%.
@@ -98,13 +108,14 @@ resolution, and a page that ranks them is reporting noise.
 
 **Two comparisons do resolve, and they are the useful part.**
 
-1. **Recommended minus the investor's original is −0.50 pp/yr [−0.77, −0.23] against a 0.39
-   floor.** That difference is **5.4 points of leverage, not construction** — the original
-   holds the wrapper at 30% where the recommendation holds 25%. On growth against a
-   leverage-matched control, more trend earns more. The recommendation sits below it for the
-   premium-free holdability reasons on [trend weight](trend-weight-under-uncertainty.md), not
-   because the growth arithmetic prefers it. That trade should be stated to the investor as a
-   choice rather than resolved on their behalf.
+1. **The 25% arm minus the investor's original is −0.50 pp/yr [−0.77, −0.23] against a 0.39
+   floor.** That difference is **5.4 points of leverage rather than construction** — the
+   original holds the wrapper at 30% where the 25% arm holds 25%. On growth against a
+   leverage-matched control, more trend earns more. It is also **not a clean reading of the
+   trend weight**: the two arms differ in four holdings as well, which *Optional financed
+   trend* below sets out. This is the number that subsequently moved the published weight to
+   30%, against the holdability evidence rather than with it, and the trade should be stated
+   to the investor as a choice rather than resolved on their behalf.
 2. **The tilt complex alone beats the cheap index by +0.80 pp/yr [+0.36, +1.31] against a 0.47
    floor — resolvable, in 12 years.** This reproduces Experiment 016's +0.79 on a different
    fund list, which is independent confirmation rather than a restatement.
@@ -144,16 +155,26 @@ investor's own benchmark under any reweighting of the premium prior; what holds 
 consensus below the regret surface's own 0.36 is the premium-free holdability evidence — 15–25%
 from tracking error, and 19.1% from the CAPE-conditioned drawdown.
 
-Experiment 016e then resolved what the four routes could not: **30% beats 25% by 0.50 pp/yr
-[0.23, 0.77] against a 0.39 floor**, the only construction comparison in the programme that
-clears its own resolution. So the choice between them is not a measurement question. It is
+Experiment 016e then measured the closest thing to a 25-against-30 comparison the programme
+has: **0.50 pp/yr [0.23, 0.77] against a 0.39 floor** in favour of the higher weight, the only
+whole-portfolio comparison anywhere here that clears its own resolution. **Read what it
+compared.** The arm is `recommended_vs_original`, which scores the seven-fund construction at
+RSST 25 against the investor's *original eight-fund* proposal at RSST 30, so **the pair differs
+in four holdings as well as in five points of the wrapper**, and no experiment holds the
+recommended seven funds at 30%. The reason to attribute the gap to the wrapper is that the two
+tilt complexes, stripped of trend and of leverage, score +0.7996 and +0.79 pp/yr against the
+same unlevered control on the same panel; that is an argument rather than a paired measurement,
+and [016e's own open question 4](final-construction-test.md#verified-assumed-open) asks for the
+matched pair that would settle it.
+
+So the choice between them is not settled by measurement either. It is
 whether the investor can hold a sleeve through a decade in which it contributes nothing while
 equities rise — abandonment probability runs about 17% at the median at 30% against 11% at 25%,
 and 66.7% at 30% if the premium is gone entirely.
 
 **For an investor contributing 5–15%/yr with a multi-decade horizon, 30% is the better choice**,
 because a contribution stream is what carries a position through a drought and the growth
-difference is measurable where almost nothing else here is. For an investor who would sell it,
+comparison, imperfect as it is, is the only one in the programme that clears its own floor. For an investor who would sell it,
 25% is better, and a portfolio held beats a better one abandoned. State the trade; do not
 resolve it silently.
 

@@ -1,4 +1,4 @@
-label: Smallest gap the 30-against-25 comparison could detect
+label: Smallest gap the eight-fund-at-30 against seven-fund-at-25 comparison could detect
 value: 0.39 points a year
 unit: percentage points per year
 status: source-reproduced
@@ -6,4 +6,8 @@ asOf: '2026-08-23'
 source:
   label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
-  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+  anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
+note: >-
+  The paired-difference floor for 016e's `recommended_vs_original` arm, at 80% power on 427
+  months. It is the floor for that pair, which differs in four holdings as well as in five
+  points of trend; no arm holds the recommended seven funds at a 30% trend weight.

@@ -1,4 +1,4 @@
-label: Holding 30% of the trend fund against holding 25%, same seven funds
+label: The eight-fund proposal at a 30% trend weight against the seven-fund construction at 25%
 value: 0.50 points, plausibly 0.23 to 0.77
 unit: percentage points per year
 interval: '[0.23, 0.77]'
@@ -7,10 +7,18 @@ asOf: '2026-08-23'
 source:
   label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
-  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+  anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
 note: >-
   The only whole-portfolio comparison in either tournament that clears the smallest gap its own
-  test could see. Negative for the 25% arm in all seven declared sub-periods, −0.19 to −0.94. It
-  is a statement about borrowing rather than about how the thing is built: the two portfolios
-  differ by 5.4 points of exposure, and over a stretch where US stocks paid 9.83% a year above
-  cash, more exposure wins.
+  test could see, and the closest thing to a measurement of the trend weight that exists. It is
+  not a clean one. The arms are 016e's `recommended_vs_original`: RSST 25 / VTI 24 / VTV 15 /
+  VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 against RSST 30 / VTI 20 / AVLV 15 / DFIV 10 / VEA 10 /
+  IDMO 5 / IEMG 5 / AVES 5, so the pair differs in four holdings as well as in five points of
+  trend, and no arm anywhere holds the recommended seven funds at 30%. Two reasons to read the
+  gap as the trend weight rather than the holdings: the two tilt sets, stripped of trend and of
+  borrowing, scored +0.7996 and +0.79 pp/yr against the same unlevered control on the same
+  panel; and the gap is negative for the 25% arm in all seven declared sub-periods, -0.19 to
+  -0.94. It is a statement about borrowing rather than about how the thing is built: the two
+  portfolios differ by 5.4 points of exposure, and over a stretch where US stocks paid 9.83% a
+  year above cash, more exposure wins. 016e's own open question 4 asks for the pair that would
+  settle it, matched at the same gross exposure, and it has not been run.

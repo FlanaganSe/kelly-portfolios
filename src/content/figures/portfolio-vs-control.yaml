@@ -7,8 +7,9 @@ asOf: '2026-08-23'
 source:
   label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
-  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+  anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
 note: >-
   427 months, 1990-11 to 2026-05. The control is a cheap 65/35 index borrowed to the same total
   exposure and charged the same interest. Funds are modelled rather than simulated from their own
   returns, which is the largest single source of error in the figure.
+  The arm measured is the seven funds at a 25% trend weight, which is the construction 016e froze; `/portfolio` publishes the same seven at 30% and no experiment has run that one.

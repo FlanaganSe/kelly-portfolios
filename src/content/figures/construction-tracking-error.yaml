@@ -1,4 +1,4 @@
-label: How far the recommended portfolio drifts from a control that borrows as much
+label: How far the portfolio drifts from a control that borrows as much
 value: 6.0%
 unit: percent per year
 status: source-reproduced
@@ -6,4 +6,6 @@ asOf: '2026-08-23'
 source:
   label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
-  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+  anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
+note: >-
+  The arm measured is the seven funds at a 25% trend weight, which is the construction 016e froze; `/portfolio` publishes the same seven at 30% and no experiment has run that one.
