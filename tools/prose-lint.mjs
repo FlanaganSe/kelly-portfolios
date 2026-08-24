@@ -78,6 +78,14 @@ function proseOf(text, ext) {
     s = s.replace(/\/\*[\s\S]*?\*\//g, '')
     s = s.replace(/\b(class|className|href|src|id|key|slug|path|docPath)=(["'])[^"']*\2/g, '')
   }
+
+  // A `.ts` data module is mostly identifiers. Its reader-facing copy is always inside a
+  // string, so lint the strings and nothing else — otherwise a field named `loadings`
+  // reports as jargon sixty-four times and buries the four sentences that really say it.
+  if (ext === '.ts' || ext === '.tsx') {
+    const literals = s.match(/(["'`])(?:\\.|(?!\1)[^\\])*\1/g) ?? []
+    s = literals.map((l) => l.slice(1, -1)).join('\n')
+  }
   return s
 }
 
