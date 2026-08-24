@@ -27,8 +27,12 @@ if (!themeConfig) {
   process.exit(2)
 }
 const suffix = theme === 'system-light' ? '' : `.${theme}`
+// 390 is the phone the stacked card list is designed for, 768 is the tablet width
+// just inside the first breakpoint where the table comes back, 1440 is the desktop
+// composition with the rail and the margin track both open.
 const widths = [
   ['mobile', 390, 844],
+  ['tablet', 768, 1024],
   ['desktop', 1440, 900],
 ]
 

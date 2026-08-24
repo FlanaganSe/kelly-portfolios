@@ -43,6 +43,12 @@ const brackets = taxRegimes.length;
 const source = citationHref(priorityRule.source);
 
 const WHERE = { shelter: "Sheltered", split: "Partly sheltered", taxable: "Taxable" } as const;
+
+/**
+ * Written once, read twice: into `<thead>`, and into the label each cell shows when
+ * the table becomes a list of cards below 40rem.
+ */
+const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"] as const;
 ---
 
 <Base
@@ -120,29 +126,45 @@ const WHERE = { shelter: "Sheltered", split: "Partly sheltered", taxable: "Taxab
   </div>
 
   <Breakout scroll class="mt-6">
-    <table class="w-full min-w-[36rem] border-collapse text-sm">
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[36rem]">
       <caption class="sr-only">
         The shelf ranked by what a sheltered dollar of each fund saves a year, at the top marginal rates, with
         two thirds of the portfolio sheltered
       </caption>
-      <thead>
-        <tr class="border-b border-rule-strong text-left">
-          <th scope="col" class="eyebrow py-2 pr-3 text-right">#</th>
-          <th scope="col" class="eyebrow py-2 pr-4">Fund</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Weight</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Saved per sheltered dollar</th>
-          <th scope="col" class="eyebrow py-2 pr-4">Goes in</th>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            COLUMNS.map((heading, i) => (
+              <th
+                role="columnheader"
+                scope="col"
+                class:list={["eyebrow py-2", i === 0 ? "pr-3 text-right" : "pr-4", (i === 2 || i === 3) && "text-right"]}
+              >
+                {heading}
+              </th>
+            ))
+          }
         </tr>
       </thead>
-      <tbody class="text-ink-muted">
+      <tbody role="rowgroup" class="text-ink-muted">
         {
           placed.map((row, index) => (
-            <tr class="border-b border-rule last:border-0">
-              <td data-numeric class="py-2 pr-3 text-right text-ink-faint">{index + 1}</td>
-              <th scope="row" class="py-2 pr-4 text-left font-normal text-ink">{row.ticker}</th>
-              <td data-numeric class="py-2 pr-4 text-right">{ratePercent(row.weight, 1)}%</td>
-              <td data-numeric class="py-2 pr-4 text-right font-semibold text-ink">{bp(row.priorityBp)} bp</td>
-              <td class="py-2 pr-4">{WHERE[row.where]}</td>
+            <tr role="row" class="border-b border-rule last:border-0">
+              <td role="cell" data-label={COLUMNS[0]} data-numeric class="py-2 pr-3 text-right text-ink-faint">
+                {index + 1}
+              </td>
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal text-ink">
+                {row.ticker}
+              </th>
+              <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {ratePercent(row.weight, 1)}%
+              </td>
+              <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right font-semibold text-ink">
+                {bp(row.priorityBp)} bp
+              </td>
+              <td role="cell" data-label={COLUMNS[4]} class="py-2 pr-4">
+                {WHERE[row.where]}
+              </td>
             </tr>
           ))
         }

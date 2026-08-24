@@ -168,6 +168,12 @@ const description =
 
 const titleId = "time-to-know-title";
 const descId = "time-to-know-desc";
+
+/**
+ * The fallback table's headings, written once and read twice: into `<thead>`, and
+ * into the label each cell shows when the table becomes a list of cards below 40rem.
+ */
+const COLUMNS = ["Claim", "Edge", "Tracking error", "Time to know"] as const;
 ---
 
 <ChartFrame
@@ -344,31 +350,38 @@ const descId = "time-to-know-desc";
     </p>
   </div>
 
-  <table slot="table" class="w-full min-w-[38rem] border-collapse text-sm">
+  <table slot="table" role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[38rem]">
     <caption class="sr-only">Time to 90% confidence, by claim, with the edge and tracking error behind it</caption>
-    <thead>
-      <tr class="border-b border-rule-strong text-left">
-        <th scope="col" class="eyebrow py-2 pr-4">Claim</th>
-        <th scope="col" class="eyebrow py-2 pr-4 text-right">Edge</th>
-        <th scope="col" class="eyebrow py-2 pr-4 text-right">Tracking error</th>
-        <th scope="col" class="eyebrow py-2 text-right">Time to know</th>
+    <thead role="rowgroup">
+      <tr role="row" class="border-b border-rule-strong text-left">
+        {
+          COLUMNS.map((heading, i) => (
+            <th
+              role="columnheader"
+              scope="col"
+              class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", i > 0 && "text-right"]}
+            >
+              {heading}
+            </th>
+          ))
+        }
       </tr>
     </thead>
-    <tbody class="text-ink-muted">
+    <tbody role="rowgroup" class="text-ink-muted">
       {
         solved.map((row) => (
-          <tr class="border-b border-rule last:border-0">
-            <th scope="row" class="py-2 pr-4 text-left font-normal">
+          <tr role="row" class="border-b border-rule last:border-0">
+            <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
               {row.label}
-              <span class="block text-xs text-ink-faint">{row.against}</span>
+              <span class="block text-xs font-normal text-ink-faint">{row.against}</span>
             </th>
-            <td data-numeric class="py-2 pr-4 text-right">
+            <td role="cell" data-label={COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
               {(row.edgeBp / 100).toFixed(2)}%
             </td>
-            <td data-numeric class="py-2 pr-4 text-right">
+            <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
               {(row.trackingErrorBp / 100).toFixed(2)}%
             </td>
-            <td data-numeric class="py-2 text-right font-semibold text-ink">
+            <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 text-right font-semibold text-ink">
               {formatYears(row.years)}
             </td>
           </tr>

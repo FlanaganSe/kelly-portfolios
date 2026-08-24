@@ -723,7 +723,17 @@ table,
     text-align: left;
   }
 
+  /* The label owns the first column and the first row; everything the cell actually
+     contains stacks down the second. Without the explicit placement a cell holding a
+     name and a sub-line — a fund and its mandate — drops the sub-line into the label
+     column, under the label, where it reads as a second heading. */
+  .stack-table > tbody > tr > td > * {
+    grid-column: 2;
+  }
+
   .stack-table > tbody > tr > td::before {
+    grid-column: 1;
+    grid-row: 1;
     content: attr(data-label);
     font-family: var(--font-sans);
     font-size: var(--text-2xs);

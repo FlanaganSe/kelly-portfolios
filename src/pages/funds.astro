@@ -45,6 +45,13 @@ const groups = ORDER.map((category) => ({
 })).filter((group) => group.funds.length > 0);
 
 const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2));
+
+/**
+ * Written once, read twice: into `<thead>`, and into the label each cell shows when
+ * the table becomes a list of cards below 40rem. Five columns at 42rem is the widest
+ * table on the site and the one a phone can least afford to scroll.
+ */
+const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis points a year", "Status"] as const;
 ---
 
 <Base
@@ -103,34 +110,42 @@ const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2))
   {
     groups.map((group) => (
       <Breakout scroll class="mt-10" label={group.label}>
-        <table class="w-full min-w-[42rem] border-collapse text-sm">
-          <caption class="sr-only">{group.label}: fee, cost after lending income, and verdict</caption>
-          <thead>
-            <tr class="border-b border-rule-strong text-left">
-              <th scope="col" class="eyebrow py-2 pr-4">Ticker</th>
-              <th scope="col" class="eyebrow py-2 pr-4">Fund</th>
-              <th scope="col" class="eyebrow py-2 pr-4 text-right">Fee, basis points a year</th>
-              <th scope="col" class="eyebrow py-2 pr-4 text-right">Cost, basis points a year</th>
-              <th scope="col" class="eyebrow py-2">Status</th>
+        <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[42rem]">
+          <caption class="sr-only">
+            {group.label}: fee, cost after lending income, and verdict
+          </caption>
+          <thead role="rowgroup">
+            <tr role="row" class="border-b border-rule-strong text-left">
+              {COLUMNS.map((heading, i) => (
+                <th
+                  role="columnheader"
+                  scope="col"
+                  class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", (i === 2 || i === 3) && "text-right"]}
+                >
+                  {heading}
+                </th>
+              ))}
             </tr>
           </thead>
-          <tbody class="text-ink-muted">
+          <tbody role="rowgroup" class="text-ink-muted">
             {group.funds.map((fund) => (
-              <tr class="border-b border-rule last:border-0 align-top">
-                <th scope="row" class="py-2 pr-4 text-left font-medium text-ink">
+              <tr role="row" class="border-b border-rule last:border-0 align-top">
+                <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-medium text-ink">
                   {fund.ticker}
                 </th>
-                <td class="py-2 pr-4">
+                <td role="cell" data-label={COLUMNS[1]} class="py-2 pr-4">
                   {fund.name}
                   <span class="block max-w-[52ch] text-xs text-ink-faint">{fund.mandate}</span>
                 </td>
-                <td data-numeric class="py-2 pr-4 text-right">
+                <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
                   {bp(fund.expenseRatioBp)}
                 </td>
-                <td data-numeric class="py-2 pr-4 text-right">
+                <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
                   {bp(fund.netCostBp)}
                 </td>
-                <td class="py-2 text-xs">{fund.status ? statusMeta[fund.status].label : "Not scored"}</td>
+                <td role="cell" data-label={COLUMNS[4]} class="py-2 text-xs">
+                  {fund.status ? statusMeta[fund.status].label : "Not scored"}
+                </td>
               </tr>
             ))}
           </tbody>
