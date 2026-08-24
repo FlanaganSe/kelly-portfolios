@@ -139,9 +139,9 @@ export const HowLongTool: Component = () => {
           onInput={editEdge}
           min={0}
           max={10}
-          {/* Three decimals, not two. The budget measured against a cheap index is 5.4
-              basis points, and a two-decimal step cannot hold 0.054 — it showed 0.05,
-              which is a different number and returns a different wait. */}
+          // Three decimals, not two. The budget against a cheap index is 5.4 basis
+          // points, and a two-decimal step cannot hold 0.054: it displayed 0.05 while
+          // the tool computed with 5.4, so the field did not reproduce its own answer.
           step={0.001}
           unit="%"
           hint="0.89 means you expect to finish 0.89 percentage points a year ahead of whatever you are comparing yourself with."
