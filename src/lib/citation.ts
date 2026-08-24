@@ -1,7 +1,14 @@
 import type { Citation } from "~/content/types";
+import { REPO_URL } from "~/lib/site";
 
-/** Where the Markdown that owns each fact actually lives. */
-export const REPO_BLOB_BASE = "https://github.com/FlanaganSe/investing-portfolio/blob/main";
+/**
+ * Where the Markdown that owns each fact actually lives.
+ *
+ * Derived from `REPO_URL` rather than written out again. The two were separate
+ * literals and had drifted: this one still named a repository that no longer
+ * exists, so every figure's source link 404'd.
+ */
+export const REPO_BLOB_BASE = `${REPO_URL}/blob/main`;
 
 /**
  * The URL a citation points at. An external primary source wins when the owning
