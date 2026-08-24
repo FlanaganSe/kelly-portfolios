@@ -169,7 +169,7 @@ export const families: readonly StrategyFamily[] = [
     headline: {
       value: "+4.74 pp/yr",
       label: "HML pooled post-publication, three regions, 384 months",
-      interval: "[+1.46, +8.10] against a 3.35 detection floor",
+      interval: "[+1.46, +8.10], against the 3.35 the test could have seen",
       note: "Gross, long-short and not investable. 1.49 effective regions after correlation, average pairwise 0.52.",
     },
     evidenceFor: [
@@ -226,7 +226,7 @@ export const families: readonly StrategyFamily[] = [
     headline: {
       value: "+7.33 pp/yr",
       label: "UMD pooled post-publication, three regions",
-      interval: "[+3.92, +10.31] against a 4.98 detection floor",
+      interval: "[+3.92, +10.31], against the 4.98 the test could have seen",
       note: "The resolution of this test is the worst measured anywhere in this repository.",
     },
     evidenceFor: [
