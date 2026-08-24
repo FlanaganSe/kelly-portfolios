@@ -4,7 +4,7 @@ unit: to 90% confidence, at +2.20 points a year against an index that borrows as
 status: unresolved
 asOf: '2026-08-23'
 source:
-  label: The final construction, tested as one object
+  label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
   anchor: 1-the-tournament-on-the-portfolio-actually-recommended
 note: >-

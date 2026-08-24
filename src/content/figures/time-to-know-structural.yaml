@@ -8,7 +8,7 @@ source:
   docPath: docs/research/expected-edge-decomposition.md
   anchor: 3-what-probability-is-actually-attainable
 note: >-
-  The own-counterfactual row: a reference investor with an expensive active-fund alternative, a
+  The row measured against your own portfolio: an investor with an expensive active-fund alternative, a
   taxable account, more than one account type and continuing contributions, against an assumed
   drift. Change any of those and the row moves towards the index row, where 90%
   confidence lies beyond any useful horizon.

@@ -4,7 +4,7 @@ unit: percentage points per year
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: The final construction, tested as one object
+  label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
   anchor: 1-the-tournament-on-the-portfolio-actually-recommended
 note: The smallest effect the test could see at 80% power, on the same 427 months.

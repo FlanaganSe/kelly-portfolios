@@ -69,7 +69,7 @@ import Base from "~/layouts/Base.astro";
         <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/structural-and-tax-edges.md"
           >Structural and tax-aware edges</a
         >, as of <span data-numeric>2026-08-17</span>. Built from fund filings rather than a backtest, and
-        measured against your own counterfactual.
+        measured against the portfolio you would otherwise own.
       </p>
     </MarginNote>
 
@@ -195,12 +195,13 @@ import Base from "~/layouts/Base.astro";
     <p>That produces the contrast this site is built around. The fee, tax and account-placement savings come to
     about <Figure id="structural-budget" inline />. They wobble by roughly 41 basis points a year against the
     portfolio you would otherwise hold, so you would know inside <Figure id="time-to-know-structural" inline showUnit={false} />.
-    Now run the identical arithmetic on the whole recommended portfolio, measured against a cheap core holding the
-    same split. Its edge is <Figure id="central-edge" inline showUnit={false} /> and it wobbles by
+    Now run the identical arithmetic on the whole recommended portfolio, measured against a cheap index fund
+    holding the same mix. Its edge is <Figure id="central-edge" inline showUnit={false} /> and it wobbles by
     <Figure id="tracking-error" inline showUnit={false} />, so you would know in <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
 
-    <p>Four months and thirty-one years, one rule applied twice. Between them sits the construction against a
-    borrowing-matched index, ahead by 2.20 percentage points a year and wobbling by 6.0%, which comes out at
+    <p>Four months and thirty-one years, one rule applied twice. Between them sits the whole portfolio against an
+    index fund that borrows as much as it does, ahead by 2.20 percentage points a year and wobbling by 6.0%, which
+    comes out at
     <Figure id="time-to-know-construction" inline showUnit={false} />.</p>
 
     <p>Which is not an argument for doing nothing. It is an argument for doing the boring things first, and for
@@ -234,7 +235,7 @@ import Base from "~/layouts/Base.astro";
     slow to prove. It can also run the other way.</p>
 
     <p>The recommended construction is the sharpest case on the site. Your own account would separate it from its
-    borrowing-matched control in <Figure id="time-to-know-construction" inline showUnit={false} />. Separating the same gap from
+    control that borrows as much in <Figure id="time-to-know-construction" inline showUnit={false} />. Separating the same gap from
     zero, at the resolution this design actually has over its 427-month panel, would take
     <Figure id="detection-horizon-construction" inline showUnit={false} />. Same portfolio, same data, two questions, and nearly
     five times the answer.</p>
@@ -328,10 +329,10 @@ import Base from "~/layouts/Base.astro";
     anything about your construction. You take credit for the borrowing on the way up and blame the strategy for
     it on the way down.</p>
 
-    <p>We did this. At matched gross exposure the trend route's worst loss was
-    <Figure id="levered-comparison-drawdown" inline />, and the trend route's Sharpe ratio rose from 0.538 to
-    0.641 while the borrowed-equity route's fell to 0.530. Two different answers, and the gross exposure figure
-    everyone quotes cannot tell the two routes apart.</p>
+    <p>We did this. At the same total exposure the trend route's worst loss was
+    <Figure id="levered-comparison-drawdown" inline />, and its return per unit of risk rose from 0.538 to 0.641
+    while the borrowed-stocks route's fell to 0.530. Two different answers, and the total-exposure figure everyone
+    quotes cannot tell the two routes apart.</p>
 
     <p>The consequence is uncomfortable and we print it anyway. The single whole-portfolio comparison in the
     entire project that clears the smallest gap its own test could see, the recommended portfolio against the

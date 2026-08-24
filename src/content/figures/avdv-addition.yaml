@@ -1,11 +1,11 @@
-label: What adding AVDV was worth, same portfolio, same gross exposure
+label: What adding AVDV was worth, same portfolio, same total exposure
 value: +0.28 points, plausibly +0.05 to +0.56
 unit: percentage points per year
 interval: '[+0.05, +0.56]'
 status: unresolved
 asOf: '2026-08-23'
 source:
-  label: The final construction, tested as one object
+  label: The whole portfolio, tested as one object
   docPath: docs/research/final-construction-test.md
   anchor: conclusion
 note: >-
