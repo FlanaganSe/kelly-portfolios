@@ -88,7 +88,7 @@ export const contractualRows: readonly ConfidenceRow[] = [
     probability10yr: 0.522,
     probability30yr: 0.538,
     ninetyPercentAt: "far beyond any horizon worth stating",
-    note: "This is a coin flip, and saying so is the finding. The budget carries two probabilistic lines against a cheap index — a value tilt at +43.1 bp and a rebalancing line measured at −38.7 bp over 420 months — and they very nearly cancel. The range runs from −91.6 to +82.9, so the sign is not robust. Against this benchmark the repository can demonstrate nothing; what it can demonstrate is the contractual budget above, against the portfolio you would otherwise have owned.",
+    note: "This is a coin flip, and saying so is the finding. Against a cheap index the budget carries two lines that depend on chance: a value lean at +43.1 bp, and a rebalancing line measured at −38.7 bp over 420 months. They very nearly cancel. The range runs from −91.6 to +82.9, so even the sign could go either way. Against this benchmark the repository can demonstrate nothing. What it can demonstrate is the contractual budget above, against the portfolio you would otherwise have owned.",
     source: recommendation,
   },
   {
@@ -227,15 +227,15 @@ export const smallValueCorners: readonly {
 export const smallValueReading = {
   headline: "The premium decides the sign, and the variance decides how much survives.",
   detail:
-    "The probability of being ahead does not move with the weight, because edge and tracking error are both linear in it: weight sets the size of the bet, never its demonstrability. On the pooled premium a 20% tilt adds 43 bp of arithmetic edge and 21 bp of geometric growth — the difference is the portfolio variance the swap adds, which no chain of the form premium × loading − cost can see. On the US-only post-publication premium the growth contribution is negative at every weight.",
+    "The probability of being ahead does not move with the weight, because edge and tracking error are both linear in it: weight sets the size of the bet, never its demonstrability. On the pooled premium a 20% lean into small value adds 43 bp of arithmetic edge against VTI, and 21 bp of geometric growth. The difference is the portfolio variance the swap adds, which no chain of the form premium × exposure − cost can see. On the US-only post-publication premium the growth contribution is negative at every weight.",
   assumption:
-    "Tracking error is now measured rather than assumed: AVUV against VTI over 2020-01…2025-12 reads 15.59 pp/yr, against the 7 pp/yr this page previously assumed. French's small-value research portfolio reads 16.47 pp/yr over the same months and 11.13 over 1963–2025, so the fund's window is high but not aberrant. On the 62-year moments the same 20% tilt gives 223 bp of tracking error and 36.9 bp of growth.",
+    "Tracking error is now measured rather than assumed: AVUV against VTI over 2020-01…2025-12 reads 15.59 pp/yr, against the 7 pp/yr this page previously assumed. French's small-value research portfolio reads 16.47 pp/yr over the same months and 11.13 over 1963–2025, so the fund's window is high but not aberrant. On the 62-year moments the same 20% lean gives 223 bp of tracking error and 36.9 bp of growth.",
   costAssumption:
     "Fee and turnover are read from each fund's own SEC filing and charged incrementally over VTI: AVUV 0.25% and 6%/yr against VTI's 0.03% and 3%/yr, giving 0.271 pp/yr. Experiment 007 assumed 20–40%/yr of sort turnover, which is four to eight times what the systematic funds actually file.",
   correction:
-    "The +15.2 bp published here on 2026-08-12 is withdrawn. It multiplied VBR's HML loading by a long-only capture fraction, which is the same quantity measured a second way, and used a fund the corrected census frame has since superseded.",
+    "The +15.2 bp published here on 2026-08-12 is withdrawn. It multiplied VBR's value exposure by the share of that exposure a long-only fund can hold, which is the same quantity measured a second way, and used a fund the corrected census frame has since superseded.",
   detectability:
-    "A positive expected edge below its detection floor is still a positive expected edge. At a 20% weight the smallest edge thirty years could detect at 80% power is 142 bp, against the 43 bp best case.",
+    "An expected edge too small for the test to see is still a positive expected edge. At a 20% weight the smallest edge thirty years could detect at 80% power is 142 bp, against the 43 bp best case.",
   source: recommendation,
 } as const;
 
@@ -275,11 +275,11 @@ export const managedFuturesCases: readonly {
 ];
 
 export const managedFuturesReading = {
-  headline: "The wrapper, not the account, is the largest controllable term.",
+  headline: "The way the fund is packaged, rather than the account it sits in, is the largest term you control.",
   detail:
-    "Moving DBMF into a shelter is worth 21.6 bp/yr of portfolio return once you subtract the distribution tax the equity it displaced was paying anyway. This row previously charged the full 2.09 pp/yr and said the account decides the sleeve's sign; that is a fact about DBMF and not about the exposure. The same trend notional through the return-stacked wrapper RSST carries 0.32 pp/yr gross and 4.5 bp incremental, so its account decides almost nothing — while the funding rule the wrapper sets moves the sleeve's hurdle by 2.44 pp/yr. Set that against the rest of the record: the index's standalone Sharpe fell 1.34 to 0.18 and its geometric return 19.4% to 3.1% after publication, the vendor states no cost basis anywhere in the archived workbook, comparable CTA survivorship and backfill distortion is 7.7 pp/yr — larger than the strategy's entire gross premium — and seven products' loadings have been measured on a shelf of fifteen, on seven different windows, which is why they are not rankable as published.",
+    "Moving DBMF into a shelter is worth 21.6 bp/yr of portfolio return once you subtract the distribution tax the equity it displaced was paying anyway. This row previously charged the full 2.09 pp/yr and said the account decides whether the trend holding helps or hurts. That is a fact about DBMF rather than about the exposure. The same trend exposure through the return-stacked fund RSST carries 0.32 pp/yr gross and 4.5 bp incremental, so its account decides almost nothing, while the funding rule that fund structure sets moves the hurdle the holding has to clear by 2.44 pp/yr. Set that against the rest of the record: the index's standalone Sharpe fell 1.34 to 0.18 and its geometric return 19.4% to 3.1% after publication, the vendor states no cost basis anywhere in the archived workbook, comparable CTA survivorship and backfill distortion is 7.7 pp/yr, larger than the strategy's entire gross premium, and seven products' exposures have been measured on a shelf of fifteen, on seven different windows, which is why they are not rankable as published.",
   assumptions: [
-    "That a trend sleeve's marginal certainty equivalent scales linearly in the product's loading on the index. 0.671 × 1.011 is an approximation; the experiment measured the index at a 15% weight, not DBMF at any weight. The product audit's own marginal-contribution arm is labelled invalid for every fund on warm-up grounds, so no direct measurement exists.",
+    "That a trend holding's marginal certainty equivalent scales linearly in the product's exposure to the index. 0.671 × 1.011 is an approximation; the experiment measured the index at a 15% weight, not DBMF at any weight. The product audit's own marginal-contribution arm is labelled invalid for every fund on warm-up grounds, so no direct measurement exists.",
     "A derived 2.52 pp/yr tracking error, computed from the published volatilities and correlation against the fully invested passive benchmark rather than the risk-matched comparator the experiment used as primary: sqrt(7.65² + 9.12² − 2 × 0.97 × 7.65 × 9.12).",
   ],
   source: recommendation,
@@ -299,21 +299,21 @@ export const decidingComparison: readonly {
     // 109 bp is 49 + 30 + 10 + 23 + 5 − 3.4 − 4.4 and contains no behaviour line; the gap
     // that would justify one is measured against the average investor, not against this
     // benchmark. See expected-edge-decomposition.md §2.4.
-    label: "Fund cost, wrapper, lot method and placement",
+    label: "Fund cost, fund structure, lot method and placement",
     edgeBp: 109,
     trackingErrorBp: 46,
     ninetyNinePercentAt: "about twelve months",
   },
   {
     id: "small-value-best-case",
-    label: "Best case for a 20% small-value tilt",
+    label: "Best case for a 20% lean into small value",
     edgeBp: 43.1,
     trackingErrorBp: 312,
     ninetyNinePercentAt: "about 283 years",
   },
   {
     id: "trend-best-case",
-    label: "Best case for a 15% trend sleeve in a shelter",
+    label: "Best case for a 15% trend holding in a shelter",
     edgeBp: 90,
     trackingErrorBp: 251,
     ninetyNinePercentAt: "about 42 years",
@@ -321,7 +321,7 @@ export const decidingComparison: readonly {
 ];
 
 export const decidingComparisonReading =
-  "A certain 109 bp is worth more than any tilt's gross premium, and it is available first. That is not a rhetorical preference; it is what the pairing of edge and tracking error produces.";
+  "A certain 109 bp is worth more than the gross premium of any lean, and it is available first. That is what the pairing of edge and tracking error produces, not a matter of taste.";
 
 /** What thirty and fifty years can demonstrate at all, against 400 bp of tracking error. */
 export const demonstrability = {

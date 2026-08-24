@@ -80,7 +80,7 @@ const CARD: Readonly<Record<string, Card | undefined>> = CARDS;
 const PLAIN_LINE: Readonly<Record<string, string | undefined>> = {
   "Fund cost reduction": "Paying a cheaper fund",
   "Tax-loss harvesting, gross of its own fee": "Selling what has fallen to offset gains",
-  "ETF rather than active mutual-fund wrapper": "Holding an exchange-traded fund rather than an active one",
+  "ETF rather than an active mutual-fund structure": "Holding an exchange-traded fund rather than an active one",
   "Asset location": "Holding each fund in the account that taxes it least",
   "Specific identification of lots": "Telling the broker which shares to sell",
   "Foreign tax credit forfeited inside a shelter": "Foreign tax credit lost by sheltering a foreign fund",
@@ -92,7 +92,7 @@ const PLAIN_LINE: Readonly<Record<string, string | undefined>> = {
   "US large value at 20% (the weight it was priced at)": "The cheaper half of the US market, priced at a heavier weight than this portfolio holds",
   "Developed ex-US large value at 8% (the weight it was priced at)":
     "The cheaper half of the developed markets outside the US, priced at a lighter weight than this portfolio holds",
-  "A 10% trend sleeve against a global equity core":
+  "A 10% trend holding against a global equity core":
     "The borrowed managed-futures piece, priced at a third of the weight this portfolio holds",
 };
 
@@ -124,8 +124,27 @@ const BENCHMARK: Readonly<Record<string, { label: string; why: string } | undefi
 
 /** Source labels, same problem and same treatment. */
 const PLAIN_SOURCE: Readonly<Record<string, string | undefined>> = {
-  "Decision 0004 — no sleeve promoted": "Why nothing here is promoted",
+  "Decision 0004 — no holding promoted": "Why nothing here is promoted",
 };
+
+/**
+ * Both maps are keyed by a string another module owns, and a key that matches nothing
+ * fails in the one direction a reader cannot see: the gloss silently stops appearing
+ * and the research label renders in its place. That is exactly what happened when the
+ * prose pass rewrote three of these labels, so the page asserts it instead.
+ */
+const pricedLabels = new Set(portfolios.flatMap((p) => p.priced.map((line) => line.label)));
+const sourceLabels = new Set(portfolios.flatMap((p) => p.sources.map((citation) => citation.label)));
+const orphaned = [
+  ...Object.keys(PLAIN_LINE).filter((key) => !pricedLabels.has(key)),
+  ...Object.keys(PLAIN_SOURCE).filter((key) => !sourceLabels.has(key)),
+];
+if (orphaned.length > 0) {
+  throw new Error(
+    `${orphaned.length} plain-language key${orphaned.length === 1 ? "" : "s"} on this page no longer matches a ` +
+      `label in src/content/portfolios.ts, so the gloss is dead: ${orphaned.map((k) => JSON.stringify(k)).join(", ")}`
+  );
+}
 
 const EFFORT = { low: "Low", moderate: "Moderate", high: "High" } as const satisfies Readonly<
   Record<Complexity, string>

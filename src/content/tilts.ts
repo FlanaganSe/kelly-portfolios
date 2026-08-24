@@ -89,7 +89,7 @@ const DEV_EX_US: PremiumChoice = {
   value: 5.07125,
   interval: "[+1.45, +9.05]",
   detectionFloor: 3.67,
-  note: "Signable on its own panel, which is what makes the ex-US tilt the strongest one priced here.",
+  note: "Signable on its own panel, which is what makes the ex-US lean the strongest one priced here.",
 };
 
 const EMERGING: PremiumChoice = {
@@ -152,7 +152,7 @@ export const pricedTilts: readonly PricedTilt[] = [
     premia: [DEV_EX_US, POOLED, US_ONLY],
     defaultPremiumId: "dev-ex-us",
     caveat:
-      "None of this charges DFIV's own alpha, which is −4.11 pp/yr against a 3.52 pp/yr detection floor. Charging it takes the published 8% line from +27.1 bp to −8.2 bp, and on that reading the repository's answer is IVLU.",
+      "None of this charges DFIV's own alpha, which is −4.11 pp/yr against the smallest effect this window could have found, 3.52 pp/yr. Charging it takes the published 8% line from +27.1 bp to −8.2 bp, and on that reading the repository's answer is IVLU.",
     source: recommendation,
     asOf: asOf("2026-08-17"),
   },

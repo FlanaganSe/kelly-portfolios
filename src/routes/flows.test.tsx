@@ -71,7 +71,7 @@ describe("moving between a strategy and the portfolios that use it", () => {
   it("links a family to a portfolio and to the funds audited under it", async () => {
     mount("/research/value", "/research/:slug", ResearchDetail);
 
-    expect(await screen.findByRole("link", { name: /the evidence-led tilt/i })).toHaveAttribute(
+    expect(await screen.findByRole("link", { name: /the evidence-led lean/i })).toHaveAttribute(
       "href",
       "/portfolios/evidence-led"
     );

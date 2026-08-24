@@ -71,7 +71,7 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
     explanation:
       "Asset-weighted fees run about 0.09% for broad index funds against 0.57% for active ones, and ICI puts the gap wider still. Sharpe's arithmetic makes this half an identity rather than a forecast: before costs the average active dollar earns the average passive dollar, so after costs it earns less by the fee. The saving is real and it is spent once — an index fund cannot beat its own index by cutting its fee again.",
     caveat:
-      "Switching out of one randomly chosen active fund carries that fund's own idiosyncratic risk. At 350 bp of tracking error a 50 bp fee edge is only 78% likely to be ahead after thirty years. Against the average active dollar the tracking error collapses and the saving is near-certain, so the certainty comes from the pairing rather than from the fee.",
+      "Switching out of one randomly chosen active fund carries the risk specific to that one fund. At 350 bp of tracking error a 50 bp fee edge is only 78% likely to be ahead after thirty years. Against the average active dollar the tracking error collapses and the saving is near-certain, so the certainty comes from the pairing rather than from the fee.",
     source: decomposition,
   },
   {
@@ -115,7 +115,7 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
     decaying: true,
     appliesWhen: "Taxable account only, and only against an active mutual fund you would otherwise have held",
     explanation:
-      "An ETF hands appreciated shares to an authorised participant and recognises no gain; an equivalent mutual fund sells, recognises, and has to distribute. Vanguard's index funds show zero capital-gain distributions across 44 fund-years, while two of the largest active funds averaged 6.6% and 7.0% of net asset value — one of them distributing 7.25% in a year it lost 28%. Booked at 23 bp: 38.3 bp of drag on the taxable equity sleeve at a 3%-of-NAV counterfactual, times the 60% of the portfolio that sleeve occupies.",
+      "An ETF hands appreciated shares to an authorised participant and recognises no gain; an equivalent mutual fund sells, recognises, and has to distribute. Vanguard's index funds show zero capital-gain distributions across 44 fund-years, while two of the largest active funds averaged 6.6% and 7.0% of net asset value — one of them distributing 7.25% in a year it lost 28%. Booked at 23 bp: 38.3 bp of drag on the taxable equity holding at a 3%-of-NAV counterfactual, times the 60% of the portfolio that holding occupies.",
     caveat:
       "This is the biggest new line and it is decaying while being measured. The SEC has granted 94 orders letting mutual funds add ETF share classes, covering roughly ninety fund families, with only two applications still noticed and unordered. Re-check the order count before leaning on this line. The advantage is also against active and non-Vanguard index funds, never against a low-turnover index mutual fund: Poterba and Shoven found before- and after-tax returns very similar for an SPDR trust and its mutual-fund equivalent.",
     source: structural,
@@ -144,9 +144,9 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
     role: "correction",
     certaintyClass: "contractual",
     decaying: false,
-    appliesWhen: "An international sleeve held inside a traditional account or a Roth",
+    appliesWhen: "An international fund held inside a traditional account or a Roth",
     explanation:
-      "A foreign government withholds tax on foreign dividends before the fund gets them. In a taxable account you can credit that against your US tax. Inside an IRA or a Roth there is no US tax to credit it against, so it is paid and permanently lost — 15.78 bp a year on a developed sleeve and 20.00 bp on emerging.",
+      "A foreign government withholds tax on foreign dividends before the fund gets them. In a taxable account you can credit that against your US tax. Inside an IRA or a Roth there is no US tax to credit it against, so it is paid and permanently lost: 15.78 bp a year on a developed-markets holding and 20.00 bp on emerging.",
     caveat:
       "This is a correction to the 10 bp asset-location line, not a new negative line. Booking it separately would count the same dollars twice with the sign reversed. No IRS publication states the IRA result in terms; it is asserted from the statute.",
     source: structural,
@@ -164,7 +164,7 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
     explanation:
       "The 30 bp harvesting figure requires owning the securities directly, and buying that costs a fee the budget never charged. Netting 9 bp against the thirty-year average leaves 25.6 bp for a contributing investor. Retail direct indexing has split into a 9–12 bp automated tier and a 40 bp incumbent-brokerage tier.",
     caveat:
-      "At the 40 bp tier no scenario measured is positive over thirty years, including the one that needs systematic short-term gains. Vendor headlines quote year one, which is the largest number any of these decay profiles ever takes.",
+      "At the 40 bp tier no scenario measured is positive over thirty years, including the one that needs a steady supply of short-term gains to offset. Vendor headlines quote year one, which is the largest number any of these decay profiles ever takes.",
     source: structural,
     asOf: asOf("2026-08-12"),
   },
@@ -180,7 +180,7 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
     explanation:
       "An unrealised gain is an interest-free loan from the government whose principal compounds with the position. Realising it turns the loan into a payment. At thirty years that deferral is worth 84.1 bp a year, which is more than every line in the budget except fund cost.",
     caveat:
-      'This is a hurdle, not a saving, and it is deliberately not booked. Crediting yourself for not doing something nobody proposed is how these budgets get inflated. What it is for is pricing any future sleeve that trades: it has to out-earn 84 bp before its fee and its spread. And "low turnover" is not a defence, because the function is sharply concave — see `deferralHurdle` below.',
+      'This is a hurdle, not a saving, and it is deliberately not booked. Crediting yourself for not doing something nobody proposed is how these budgets get inflated. What it is for is pricing any future holding that trades: it has to out-earn 84 bp before its fee and its spread. And "low turnover" earns little relief, because the cost curve bends sharply. See `deferralHurdle` below.',
     source: structural,
   },
   {
@@ -191,7 +191,8 @@ export const edgeBudgetLines: readonly EdgeBudgetLine[] = [
     role: "risk-control",
     certaintyClass: "contractual",
     decaying: false,
-    appliesWhen: "Any multi-sleeve portfolio whose owner wants the declared allocation to stay the actual allocation",
+    appliesWhen:
+      "Any portfolio with more than one holding whose owner wants the declared allocation to stay the actual allocation",
     explanation:
       "Holding the weights costs 0.3 to 1.2 bp a year and buys exposure control, not return. Left alone, a 60/30/10 portfolio drifted a mean 14.83 percentage points from target and reached 26.36 at its worst; monthly rebalancing held that to 0.60 and 2.62. That is keeping a promise, and it is the only claim the evidence supports.",
     caveat:
@@ -283,7 +284,7 @@ export const notBooked = [
     id: "capital-efficiency",
     label: "Return-stacking and capital efficiency",
     reason:
-      "A 90/60 fund needs 92.0 bp/yr of Treasury excess return over cash before its overlay contributes anything, against a measured futures funding basis of 58.70 bp/yr that was positive in all 28 years measured. Both inputs are forecasts, so it cannot enter a contractual budget however good the mechanism looks.",
+      "A 90/60 fund needs 92.0 bp/yr of Treasury excess return over cash before the borrowed exposure stacked on top contributes anything, against a measured futures funding basis of 58.70 bp/yr that was positive in all 28 years measured. Both inputs are forecasts, so it cannot enter a contractual budget however good the mechanism looks.",
     source: structural,
   },
   {

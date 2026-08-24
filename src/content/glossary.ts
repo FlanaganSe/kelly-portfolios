@@ -44,8 +44,8 @@ export const glossary: readonly GlossaryEntry[] = [
   {
     term: "Certainty equivalent",
     short: "The guaranteed return you would swap a risky one for.",
-    long: "A risky portfolio and a certain return are equivalent to you when you would genuinely accept either. The gap between a portfolio's average return and its certainty equivalent is the price you put on its risk, and it depends on a risk preference somebody has to declare. Two experiments here declared a CRRA coefficient of 3 for their own comparison.",
-    whyYouCare: "It is how a sleeve's value gets compared once its risk is counted, rather than only its return.",
+    long: "A risky portfolio and a certain return are equivalent to you when you would genuinely accept either. The gap between a portfolio's average return and its certainty equivalent is the price you put on its risk, and it depends on a risk preference somebody has to declare. Two experiments here declared a risk-aversion setting of 3 for their own comparison.",
+    whyYouCare: "It is how a holding's value gets compared once its risk is counted, rather than only its return.",
     source: { label: "Rebalancing policy on real regional equity", docPath: "docs/research/rebalancing-policy.md" },
   },
   {
@@ -56,19 +56,19 @@ export const glossary: readonly GlossaryEntry[] = [
     source: decomposition,
   },
   {
-    term: "Factor loading",
+    term: "Factor exposure",
     short: "How much of a factor's behaviour a fund actually delivers.",
-    long: "Regress a fund's returns on a factor and the coefficient is its loading. A loading of 0.41 on value means the fund moves 0.41 units for each unit the value factor moves. It measures manufacturing, not returns: a fund can deliver its exposure perfectly and still be a poor thing to own.",
+    long: "Regress a fund's returns on a factor and the coefficient is its exposure to that factor. An exposure of 0.41 to value means the fund moves 0.41 units for each unit the value factor moves. It measures manufacturing rather than returns: a fund can deliver its exposure perfectly and still be a poor thing to own.",
     whyYouCare:
       "A product that does not deliver the exposure it advertises cannot deliver the premium behind it, whatever the premium turns out to be.",
     source: productAudit,
   },
   {
-    term: "Capture fraction",
+    term: "The share a long-only fund captures",
     short: "The share of a long-short premium that a long-only holder actually receives.",
-    long: "Academic factors are long-short spreads with zero net investment that no retail investor can hold. A long-only tilt gets some fraction of the spread, and against a size-neutral benchmark that fraction is about one half — for a structural reason, since the long leg is one half of a symmetric spread. Against the market it reads far higher, and the difference is a size premium wearing another name. Regress that same long-only spread on the factors and 94% of the one half is simply its own value loading, which is what the fraction turns out to be.",
+    long: "Academic factors are long-short spreads with zero net investment that no retail investor can hold. A long-only lean gets some fraction of the spread, which the research literature calls the capture fraction. Against a size-neutral benchmark that fraction is about one half, and there is a structural reason for it: the long leg is one half of a symmetric spread. Against the market it reads far higher, and the difference is a size premium wearing another name. Regress that same long-only spread on the factors and 94% of the one half is simply its own exposure to value, which is what the fraction turns out to be.",
     whyYouCare:
-      "It has no single value — five defensible benchmarks span 0.846 — and it must never multiply a fund's own loading, because it is a second copy of one. Doing so halved every value-tilt figure this repository published before 2026-08-17.",
+      "It has no single value; five defensible benchmarks span a range of 0.846 between them. It must never multiply a fund's own exposure, because it is a second copy of that exposure. Doing so halved every figure for a lean into value that this repository published before 2026-08-17.",
     source: capture,
   },
   {
@@ -88,10 +88,11 @@ export const glossary: readonly GlossaryEntry[] = [
     source: persistence,
   },
   {
-    term: "HAC standard errors",
-    short: "Error bars that survive returns being autocorrelated and unevenly volatile.",
-    long: "HAC stands for heteroskedasticity and autocorrelation consistent — Newey-West is the common version. Ordinary standard errors assume each month is independent and equally noisy, and monthly returns are neither. HAC widens the errors accordingly, typically by 7% to 18% on the series here.",
-    whyYouCare: "The gap between the plain and the HAC error is the size of an assumption that is known to be false.",
+    term: "Error bars widened for clustered returns",
+    short: "Error bars that still hold when quiet and stormy months arrive in runs rather than at random.",
+    long: "Ordinary error bars assume each month is independent of the last and equally noisy, and monthly returns are neither: calm stretches and violent stretches come in runs. The standard repair, named after Newey and West, widens the bars to allow for both, typically by 7% to 18% on the series here.",
+    whyYouCare:
+      "The gap between the plain error bar and the widened one is the size of an assumption that is known to be false.",
     source: { label: "Fama-French factor reproduction", docPath: "docs/research/fama-french-reproduction.md" },
   },
   {
@@ -116,7 +117,7 @@ export const glossary: readonly GlossaryEntry[] = [
     whyYouCare:
       "It is what closed two factors here on these files. The best pooled threshold in public factor data is 2.62 pp/yr, above this repository's own 2.0 materiality bar — so a premium below that cannot be signed by any re-pooling of them. That is a limit of the instrument, not a finding that the premium is zero.",
     source: {
-      label: "0005 — Profitability and investment premia are closed on public data",
+      label: "0005 — Profitability and investment premiums are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
     },
   },
@@ -153,8 +154,9 @@ export const glossary: readonly GlossaryEntry[] = [
   {
     term: "Foreign tax credit",
     short: "Credit for tax a foreign government already withheld on your foreign dividends.",
-    long: "A US fund pays foreign withholding and may elect to pass it through, after which you credit it against your US tax. Inside an IRA or a Roth there is no US tax to credit against, so the withholding is paid and permanently lost — 15.78 bp a year on a developed sleeve and 20.00 on emerging. Below $300 of creditable tax ($600 joint) you claim it without Form 1116 or its limitation.",
-    whyYouCare: "It is the term that inverts the standard placement advice for one sleeve at two of the four US rates.",
+    long: "A US fund pays foreign withholding and may elect to pass it through, after which you credit it against your US tax. Inside an IRA or a Roth there is no US tax to credit against, so the withholding is paid and permanently lost: 15.78 bp a year on a developed-markets holding and 20.00 on emerging. Below $300 of creditable tax ($600 joint) you claim it without Form 1116 or its limitation.",
+    whyYouCare:
+      "It is the term that inverts the standard placement advice for one holding at two of the four US rates.",
     source: structural,
   },
   {
@@ -170,7 +172,7 @@ export const glossary: readonly GlossaryEntry[] = [
     short: "The built-in cost of holding exposure through futures rather than owning the asset.",
     long: "A futures contract embeds a financing rate, and that rate has been measured above cash: 58.70 basis points on five-year Treasury note futures over 1991–2018, positive in all 28 years. Equity futures are similar and more variable, and their sign is not even constant. It is a stable cost rather than a crisis artefact.",
     whyYouCare:
-      "It is why a 90/60 return-stacked fund needs 92 bp a year of Treasury excess return before its overlay contributes anything.",
+      "It is why a 90/60 return-stacked fund needs 92 bp a year of Treasury excess return before the borrowed exposure stacked on top contributes anything.",
     source: structural,
   },
   {
@@ -198,7 +200,7 @@ export const glossary: readonly GlossaryEntry[] = [
   {
     term: "Model-misfit pedestal",
     short: "What a factor model charges a fund that is definitionally the market.",
-    long: "A total-market fund is the market portfolio, so under a correctly specified model its alpha should be about minus its three-basis-point fee. Under the standard six-factor model over 2020–2025 it came out at −0.55 percentage points a year, with a HAC t of −3.41. Every fund priced by the same model over the same window carries that offset.",
+    long: "A total-market fund is the market portfolio, so under a correctly specified model its alpha should be about minus its three-basis-point fee. Under the standard six-factor model over 2020–2025 it came out at −0.55 percentage points a year, on error bars widened for clustered returns, with a t of −3.41. Every fund priced by the same model over the same window carries that offset.",
     whyYouCare:
       'It is the difference between "this index fund destroyed 3 pp/yr" and "this model does not span these years to better than half a point". Read every alpha as a distance from the pedestal, never from zero.',
     source: productAudit,

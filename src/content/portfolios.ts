@@ -38,7 +38,7 @@ export const engineMeta = {
   value: {
     label: "Value",
     gloss:
-      "A measured tilt toward cheap stocks. The only factor premium in this repository to advance on its own strength.",
+      "A measured lean toward cheap stocks. The only factor premium in this repository to advance on its own strength.",
   },
   momentum: {
     label: "Momentum",
@@ -55,7 +55,7 @@ export const engineMeta = {
   "cost-and-tax": {
     label: "Cost and tax",
     gloss:
-      "Fee, wrapper, lot method and account placement. Statutory and accounting facts whose sign is known in advance.",
+      "Fee, fund structure, lot method and account placement. Statutory and accounting facts whose sign is known in advance.",
   },
   cash: { label: "Cash", gloss: "Unallocated capital. Earns the bill rate and nothing else." },
 } as const satisfies Readonly<Record<ReturnEngine, EngineMeta>>;
@@ -176,7 +176,7 @@ const products: Citation = { label: "The factor-product audit", docPath: "docs/r
 const trendValue: Citation = { label: "The marginal value of trend", docPath: "docs/research/trend-marginal-value.md" };
 const persistence: Citation = { label: "Factor persistence", docPath: "docs/research/factor-persistence.md" };
 const noSleeve: Citation = {
-  label: "Decision 0004 — no sleeve promoted",
+  label: "Decision 0004 — no holding promoted",
   docPath: "docs/decisions/0004-no-sleeve-promoted.md",
 };
 
@@ -223,7 +223,7 @@ const control: PortfolioCandidate = {
   },
   priced: [],
   mayOutperform: [
-    "It does not have to. Ninety-six of the 109 US factor loadings audited here survive multiple-comparison correction; five of 327 alpha tests do, and all five are negative. Exposure is measurable and skill is not.",
+    "It does not have to. Ninety-six of the 109 US factor exposures audited here survive multiple-comparison correction; five of 327 alpha tests do, and all five are negative. Exposure is measurable and skill is not.",
     "Its cost, net of securities lending, is about 0.52 bp a year, against 0.76 bp for the cheapest combination on the shelf and 3.12 for the dearest plausible one. The whole fund-selection decision inside this construction is worth 0.60 bp/yr, against an 84 bp/yr hurdle for the turnover needed to capture it.",
   ],
   mayUnderperform: [
@@ -263,7 +263,7 @@ const disciplined: PortfolioCandidate = {
   id: "disciplined",
   name: "The control, held properly",
   thesis:
-    "The same three funds, with the fee, wrapper, lot method and account placement decided deliberately — about 109 bp a year against the portfolio most readers already own, and roughly 99% confident inside a year.",
+    "The same three funds, with the fee, the fund structure, the lot method and the account placement decided deliberately — about 109 bp a year against the portfolio most readers already own, and roughly 99% confident inside a year.",
   forWhom:
     "A reader holding an expensive active fund, in the wrong account, with average-cost lots. For a reader already in cheap index funds in one tax-deferred account, the honest figure is close to zero.",
   holdings: control.holdings,
@@ -297,7 +297,7 @@ const disciplined: PortfolioCandidate = {
       source: structural,
     },
     {
-      label: "ETF rather than active mutual-fund wrapper",
+      label: "ETF rather than an active mutual-fund structure",
       edgeBp: 23,
       trackingErrorBp: 0,
       growthBp: null,
@@ -381,7 +381,7 @@ const disciplined: PortfolioCandidate = {
   ],
   failureModes: [
     {
-      title: "The wrapper line is decaying",
+      title: "The fund-structure line is decaying",
       detail:
         "The ETF-versus-mutual-fund advantage rests on active managers not having an ETF share class. There are now 94 SEC orders and 89 filings naming one, from fourteen registrants, against two filings before the first order — though only nine funds have actually listed. The line is +23 bp today and its mechanism is visibly closing.",
     },
@@ -397,7 +397,7 @@ const disciplined: PortfolioCandidate = {
     },
   ],
   trackingErrorCharacter:
-    "Essentially none against the control. This portfolio holds the same three funds; what changes is which account each sits in, how lots are identified, and what wrapper the money left behind.",
+    "Essentially none against the control. This portfolio holds the same three funds; what changes is which account each sits in, how lots are identified, and what kind of fund the money left behind.",
   complexity: "low",
   tax: "This is the tax portfolio. The emerging-market withholding input, 9.853%, is below ten of eleven funds' filed rates, and correcting it would move the placement ranking rather than the size of the prize.",
   rebalancing: control.rebalancing,
@@ -406,7 +406,7 @@ const disciplined: PortfolioCandidate = {
   evidenceSummary:
     "The largest reliably available result in this repository, and the only one whose sign is known before the fact. It is also the one most often quoted at the wrong size: it is measured against your own counterfactual, never against an index.",
   editorialNote:
-    "The 109 bp is a per-reader figure sized for one stated reference investor. Quoting a per-sleeve number as a portfolio number is how tax figures get inflated.",
+    "The 109 bp is a per-reader figure sized for one stated reference investor. Quoting a per-holding number as a portfolio number is how tax figures get inflated.",
   benchmarkTicker: "VT",
   sources: [structural, decomposition],
   asOf: READ,
@@ -414,17 +414,17 @@ const disciplined: PortfolioCandidate = {
 
 const evidenceLed: PortfolioCandidate = {
   id: "evidence-led",
-  name: "The evidence-led tilt",
+  name: "The evidence-led lean",
   thesis:
-    "The control plus the only two tilts this repository has priced whose case survives its own comparators — US large value and developed ex-US large value — at exactly the weights they were priced at.",
+    "The control plus the only two leans this repository has priced whose case survives its own comparators — US large value and developed ex-US large value — at exactly the weights they were priced at.",
   forWhom:
-    "A reader who wants a factor tilt and wants it sized by what was measured rather than by conviction. It accepts decades of tracking error for tens of basis points of expected edge.",
+    "A reader who wants a factor lean and wants it sized by what was measured rather than by conviction. It accepts decades of tracking error for tens of basis points of expected edge.",
   holdings: [
     {
       ticker: "VTI",
       percent: 40,
       engine: "equity-beta",
-      why: "The US core, reduced to make room for the value tilt rather than levered against it.",
+      why: "The US core, reduced to make room for the value lean rather than borrowing to pay for it.",
       status: null,
       certainty: "nothing-better-exists",
     },
@@ -432,7 +432,7 @@ const evidenceLed: PortfolioCandidate = {
       ticker: "AVLV",
       percent: 20,
       engine: "value",
-      why: "HML +0.322 [+0.22, +0.46] over 51 months on the US panel, against VTI's +0.0247, at 15 bp and 7%/yr turnover. Less value exposure than a small-value fund and under half the tracking error — and none of its SMB loading, which is variance this repository cannot price.",
+      why: "HML +0.322 [+0.22, +0.46] over 51 months on the US panel, against VTI's +0.0247, at 15 bp and 7%/yr turnover. Less value exposure than a small-value fund and under half the tracking error — and none of its SMB exposure, which is variance this repository cannot price.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -465,7 +465,7 @@ const evidenceLed: PortfolioCandidate = {
   grossExposurePercent: 100,
   benchmark: {
     label: "The control",
-    why: "The tilts are substitutions inside the same regional split, so the honest comparison holds the split fixed and changes only the funds.",
+    why: "The leans are substitutions inside the same regional split, so the honest comparison holds the split fixed and changes only the funds.",
   },
   priced: [
     {
@@ -485,32 +485,32 @@ const evidenceLed: PortfolioCandidate = {
       trackingErrorBp: 47.6,
       growthBp: 29.5,
       horizonNote:
-        "The only tilt in this repository whose 30-year detection floor, 21.6 bp, sits below its own edge. Growth per unit of tracking error 0.620, the best of the five priced.",
+        "The only lean in this repository whose smallest detectable 30-year gap, 21.6 bp, sits below its own edge. Growth per unit of tracking error 0.620, the best of the five priced.",
       certainty: "risk-premium",
       status: "exploratory",
       source: recommendation,
     },
   ],
   mayOutperform: [
-    "Both tilts buy a factor whose pooled premium is exploratory at +4.74 pp/yr [+1.46, +8.10] against a 3.35 pp/yr detection floor, positive in all three regions and surviving multiple-comparison correction.",
-    "Both funds deliver the exposure they advertise. Their loadings survive Benjamini–Hochberg correction and keep their status under every comparator basis tested.",
+    "Both leans buy a factor whose pooled premium is exploratory at +4.74 pp/yr [+1.46, +8.10] against a 3.35 pp/yr floor on what the test could see, positive in all three regions and surviving multiple-comparison correction.",
+    "Both funds deliver the exposure they advertise. Their exposures survive Benjamini–Hochberg correction and keep their status under every comparator basis tested.",
     "Large value rather than small value is a measured choice, not a compromise: a small-value fund's size leg is variance with no priced expectation, since the size premium is +0.33 pp/yr against a 2.47 pp/yr floor and is not signable on any panel.",
   ],
   mayUnderperform: [
-    "The US value premium on its own panel is +1.57 pp/yr [−2.28, +5.54] against a 5.03 pp/yr detection floor, and is not signable. Only the pooled three-region figure makes the AVLV line's growth contribution positive.",
-    "DFIV's own alpha is −4.11 pp/yr against a 3.52 pp/yr detection floor. Charge it and the 8% tilt goes from +27.1 bp to −8.2 bp. Four ex-US large-value funds read −2.2 to −4.1 and nobody here knows why.",
-    "Every fund window on this shelf is shorter than one value cycle. Whether 36 to 72 months of loading forecasts the next 36 to 72 is an open question nothing here tests.",
+    "The US value premium on its own panel is +1.57 pp/yr [−2.28, +5.54] against a 5.03 pp/yr floor on what the test could see, and is not signable. Only the pooled three-region figure makes the AVLV line's growth contribution positive.",
+    "DFIV's own alpha is −4.11 pp/yr against a 3.52 pp/yr floor on what the test could see. Charge it and the 8% lean goes from +27.1 bp to −8.2 bp. Four ex-US large-value funds read −2.2 to −4.1 and nobody here knows why.",
+    "Every fund window on this shelf is shorter than one value cycle. Whether 36 to 72 months of measured exposure forecasts the next 36 to 72 is an open question nothing here tests.",
   ],
   failureModes: [
     {
       title: "The premium is gross, long-short and unimplementable",
       detail:
-        "+4.74 pp/yr is a Ken French long-short spread with no costs and no shorting constraint. A long-only fund receives weight × (fund loading − incumbent loading) × premium, less cost — three terms. Multiplying by a further capture fraction is banned in this repository's code, and doing it understated the tilt by about half in five places.",
+        "+4.74 pp/yr is a Ken French long-short spread with no costs and no shorting constraint. A long-only fund receives weight × (fund exposure − incumbent exposure) × premium, less cost — three terms. Multiplying by a further capture fraction is banned in this repository's code, and doing it understated the lean by about half in five places.",
     },
     {
       title: "Thirty years may not settle it",
       detail:
-        "Scaled to AVLV's 135 bp of tracking error, the thirty-year detection floor at a 20% weight is about 61 bp against its +24.4 bp edge. The small-value alternative is worse: 142 bp against 43. Either way you would hold the tilt for a working lifetime and still not know whether it worked.",
+        "Scaled to AVLV's 135 bp of tracking error, the smallest gap thirty years could reveal at a 20% weight is about 61 bp against its +24.4 bp edge. The small-value alternative is worse: 142 bp against 43. Either way you would hold the lean for a working lifetime and still not know whether it worked.",
     },
     {
       title: "The alpha problem is unexplained",
@@ -521,15 +521,15 @@ const evidenceLed: PortfolioCandidate = {
   trackingErrorCharacter:
     "About 135 bp on the US leg and 48 bp on the ex-US leg. Long stretches behind the control are the normal behaviour of this portfolio, not evidence against it.",
   complexity: "moderate",
-  tax: "Both tilt funds are low-turnover — 7%/yr and 6%/yr — which matters more than the fee difference given the 162 bp/yr horizon-free hurdle on realised gains. Neither has ever distributed a capital gain in the years on file.",
+  tax: "Both value funds are low-turnover — 7%/yr and 6%/yr — which matters more than the fee difference given the 162 bp/yr horizon-free hurdle on realised gains. Neither has ever distributed a capital gain in the years on file.",
   rebalancing:
     "Annually, or on bands. Do not rebalance to harvest a bonus — there is none. Every rebalanced policy tested here had an equal or worse maximum drawdown than buy-and-hold.",
   placement:
-    "Same ordering as the control. The tilt funds are US and developed ex-US, so neither changes the shelter ranking.",
+    "Same ordering as the control. The two value funds are US and developed ex-US, so neither changes the shelter ranking.",
   evidenceSummary:
-    "Two exploratory tilts, which is the highest status anything in this repository has reached. exploratory means a product may stand in for a real one in a later experiment. It does not mean the tilt works.",
+    "Two exploratory leans, which is the highest status anything in this repository has reached. exploratory means a product may stand in for a real one in a later experiment. It does not mean the lean works.",
   editorialNote:
-    "This construction is editorial. The repository's own reference portfolio holds no tilt at all — decision 0004 promotes no sleeve — and the weights here are the weights at which each tilt was priced, chosen so that its published edge and tracking error can be quoted without rescaling.",
+    "This construction is editorial. The repository's own reference portfolio holds no lean at all — decision 0004 promotes no holding — and the weights here are the weights at which each lean was priced, chosen so that its published edge and tracking error can be quoted without rescaling.",
   benchmarkTicker: "VT",
   sources: [recommendation, products, persistence, noSleeve],
   asOf: READ,
@@ -539,7 +539,7 @@ const candidate: PortfolioCandidate = {
   id: "candidate",
   name: "The stacked candidate",
   thesis:
-    "A capital-efficient sleeve carries a trend overlay alongside a full equity allocation, with value and momentum tilts across both regions — about 132% of gross exposure for 100% of capital.",
+    "A fund that buys more exposure per dollar carries a trend position financed by borrowing rather than by selling equity, alongside a full equity allocation, with value and momentum leans across both regions — about 132% of gross exposure for 100% of capital.",
   forWhom:
     "A reader who has decided that diversifying the return engine matters more than keeping the construction simple, and who can hold an unfamiliar drawdown pattern without selling it.",
   holdings: [
@@ -547,7 +547,7 @@ const candidate: PortfolioCandidate = {
       ticker: "RSST",
       percent: 30,
       engine: "trend",
-      why: "107.2% equity plus roughly 100% managed-futures notional per dollar, at delta −0.07 — the sleeve keeps essentially all of the funding advantage a standalone trend fund gives away.",
+      why: "107.2% equity plus roughly 100% managed-futures exposure per dollar, at delta −0.07 — the holding keeps essentially all of the funding advantage a standalone trend fund gives away.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -563,7 +563,7 @@ const candidate: PortfolioCandidate = {
       ticker: "AVLV",
       percent: 15,
       engine: "value",
-      why: "The US value tilt, at three quarters of the weight it was priced at.",
+      why: "The US value lean, at three quarters of the weight it was priced at.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -571,7 +571,7 @@ const candidate: PortfolioCandidate = {
       ticker: "DFIV",
       percent: 10,
       engine: "value",
-      why: "The developed ex-US value tilt, at 1.25× the weight it was priced at.",
+      why: "The developed ex-US value lean, at 1.25× the weight it was priced at.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -587,7 +587,7 @@ const candidate: PortfolioCandidate = {
       ticker: "IDMO",
       percent: 5,
       engine: "momentum",
-      why: "UMD +0.540 [+0.39, +0.71] over 77 months on the developed ex-US panel, the one momentum premium that clears its own detection floor.",
+      why: "UMD +0.540 [+0.39, +0.71] over 77 months on the developed ex-US panel, the one momentum premium that clears the smallest effect its own test could see.",
       status: "exploratory",
       certainty: "risk-premium",
     },
@@ -603,7 +603,7 @@ const candidate: PortfolioCandidate = {
       ticker: "AVES",
       percent: 5,
       engine: "value",
-      why: "The emerging value tilt, into the region with the largest measured HML premium: +7.58 pp/yr [+4.34, +11.01]. AVES's own HML reads +0.237 on the emerging panel and −0.074 on the US one.",
+      why: "The emerging value lean, into the region with the largest measured HML premium: +7.58 pp/yr [+4.34, +11.01]. AVES's own HML reads +0.237 on the emerging panel and −0.074 on the US one.",
       status: "unresolved",
       certainty: "risk-premium",
     },
@@ -615,13 +615,13 @@ const candidate: PortfolioCandidate = {
     {
       label: "Managed futures",
       percent: 30,
-      note: "RSST's trend leg, roughly 100% of notional per dollar of capital.",
+      note: "RSST's trend leg, roughly 100% of exposure per dollar of capital.",
     },
   ],
   grossExposurePercent: 132,
   benchmark: {
-    label: "A leverage-matched control, not the unlevered index",
-    why: "At 132% of gross exposure the honest comparison is against the same equity risk taken directly. Comparing a levered portfolio with an unlevered index credits the leverage to the strategy.",
+    label: "A borrowing-matched control, not the index held without borrowing",
+    why: "At 132% of gross exposure the honest comparison is against the same equity risk taken directly. Comparing it with an index that does not borrow credits the borrowing to the strategy.",
   },
   priced: [
     {
@@ -646,38 +646,38 @@ const candidate: PortfolioCandidate = {
       source: recommendation,
     },
     {
-      label: "A 10% trend sleeve against a global equity core",
+      label: "A 10% trend holding against a global equity core",
       edgeBp: null,
       trackingErrorBp: null,
       growthBp: 25.8,
       horizonNote:
-        "Quoted at the 10% reference weight Experiment 010 used. This portfolio carries about 30% of trend notional, the repository publishes no figure at that weight, and its own search-coverage audit records that this closure turns on the reference weight rather than on evidence. The certainty equivalent at γ=3 for the same row is +1.172 pp/yr, and decision 0008 says growth decides when the two disagree. A different experiment, measuring the vendor index at a 15% weight against a risk-matched cash comparator rather than an equity core, reads +1.312 — a different question, and not a figure that may be carried back to this line.",
+        "Quoted at the 10% reference weight Experiment 010 used. This portfolio carries about 30% of trend exposure, the repository publishes no figure at that weight, and its own search-coverage audit records that this closure turns on the reference weight rather than on evidence. The certainty equivalent at γ=3 for the same row is +1.172 pp/yr, and decision 0008 says growth decides when the two disagree. A different experiment, measuring the vendor index at a 15% weight against a risk-matched cash comparator rather than an equity core, reads +1.312 — a different question, and not a figure that may be carried back to this line.",
       certainty: "risk-premium",
       status: "rejected",
       source: capital,
     },
   ],
   mayOutperform: [
-    "The funding rule is worth more than any sleeve. Financing a diversifier as notional rather than selling equity to buy it is worth about +2.44 pp/yr for a 100% equity base, and that figure contains nothing at all about trend. RSST's delta of −0.07 keeps essentially all of it; a standalone managed-futures fund keeps none.",
+    "The funding rule is worth more than any holding. Financing a diversifier with borrowing rather than selling equity to buy it is worth about +2.44 pp/yr for a 100% equity base, and that figure contains nothing at all about trend. RSST's delta of −0.07 keeps essentially all of it; a standalone managed-futures fund keeps none.",
     "Trend's correlation to equity is negative when it matters. Three independent instruments agree: −0.07 built here, −0.11 across 46 live funds, −0.08 from the vendor index, and −0.59 inside crisis months with a downside beta of −0.67.",
-    "It buys four engines rather than one, and the two value tilts inside it are the same ones the evidence-led portfolio holds.",
+    "It buys four engines rather than one, and the two value leans inside it are the same ones the evidence-led portfolio holds.",
   ],
   mayUnderperform: [
-    "Three of its eight lines have no measured factor exposure of any kind. RSST is no longer one of them — its trend loading is +0.681 [+0.406, +0.955] on 31 filed months — but 31 months is roughly one market regime, and that interval cannot tell a dollar of delivered trend from four fifths of one.",
-    "Trend's mean does not resolve. Post-publication the sleeve measures +0.883 pp/yr with an interval containing zero, failing Holm correction, and the standalone index's Sharpe fell from 1.34 to 0.18 across three eras.",
-    "Momentum is excluded by this repository's own audit. IDMO files 105%/yr of turnover, which takes 43% of the gross exposure in cost, and momentum's pooled detection floor of 4.98 pp/yr is the worst measured here.",
+    "Three of its eight lines have no measured factor exposure of any kind. RSST is no longer one of them — its trend exposure is +0.681 [+0.406, +0.955] on 31 filed months — but 31 months is roughly one market regime, and that interval cannot tell a dollar of delivered trend from four fifths of one.",
+    "Trend's mean does not resolve. Post-publication the holding measures +0.883 pp/yr with an interval containing zero, failing Holm correction, and the standalone index's Sharpe fell from 1.34 to 0.18 across three eras.",
+    "Momentum is excluded by this repository's own audit. IDMO files 105%/yr of turnover, which takes 43% of the gross exposure in cost, and the smallest effect momentum's pooled test could see, 4.98 pp/yr, is the worst measured here.",
     "AVES is unresolved, and no comparator however expressive can move an emerging-market value product to exploratory on the windows available.",
   ],
   failureModes: [
     {
       title: "The cost stack binds before the correlation does",
       detail:
-        "Financing plus fee plus distribution-tax character runs about 1.4 pp/yr sheltered and about 3.5 pp/yr taxable, against a post-publication trend excess return of roughly 1.8 pp/yr. No wrapper on this shelf quantifies its financing cost anywhere, and the family's only disclosed rate, OBFR + 6.64%, more than doubled in a single quarter.",
+        "Financing plus fee plus distribution-tax character runs about 1.4 pp/yr sheltered and about 3.5 pp/yr taxable, against a post-publication trend excess return of roughly 1.8 pp/yr. No fund on this shelf quantifies its financing cost anywhere, and the family's only disclosed rate, OBFR + 6.64%, more than doubled in a single quarter.",
     },
     {
-      title: "The overlay is the deeper drawdown above a weight this portfolio is near",
+      title: "The financed addition is the deeper drawdown above a weight this portfolio is near",
       detail:
-        "The resampled probability that the overlay is the deeper drawdown is 6.9% at 30% of notional, and then doubles from 10.8% to 18.9% between 58% and 60%. That is a cliff rather than a ramp, and it is why the implied ceiling is near 55%. This portfolio sits at 30%, clear of it — and the cliff is the reason the weight cannot simply be raised.",
+        "The resampled probability that the financed addition is the deeper drawdown is 6.9% at a 30% exposure weight, and then doubles from 10.8% to 18.9% between 58% and 60%. That is a cliff rather than a ramp, and it is why the implied ceiling is near 55%. This portfolio sits at 30%, clear of it — and the cliff is the reason the weight cannot simply be raised.",
     },
     {
       title: "Trend fails exactly when it is needed",
@@ -690,41 +690,41 @@ const candidate: PortfolioCandidate = {
         "52% of the managed-futures ETFs listed in 2019 were gone by the end of 2025 — a 10.7%/yr hazard, 43% at five years. RSST itself is under three years old and its 28-month tax window is entirely a rising market.",
     },
     {
-      title: "The three stacked wrappers are not interchangeable",
+      title: "The three stacked funds are not interchangeable",
       detail:
-        "RSST, MATE, CTAP and JPFP look like the same product and are not — though not for the reason this line used to give. On the funding rule the three with filed holdings are the same class: RSST −0.07, MATE −0.159, CTAP −0.027, all keeping the whole gap. Nor does the fee table separate them. CTAP advertises 0.10% net against RSST's 0.99%, but its trend leg is a total return swap on CTA, an affiliated fund charging 0.75% with no waiver, and a swap reference is not reached by acquired-fund fees — so it is about 0.81% all-in today and about 0.99% when its waiver lapses on 2026-12-04. What is left is age, size, counterparty and evidence: RSST has 35 months and $415m of filed net assets; CTAP has eight months, $157.88m, 82.48% of net assets of bilateral swap exposure to one bank and a disclosed affiliated-fund conflict; MATE has eight months and $39.41m; JPFP has three months, $17.07m and no N-PORT at all. RSST is also the only one old enough to regress: its trend loading is +0.681 [+0.406, +0.955] on 31 filed months, and the other three have three to eight months of filings, which is not a measurement problem but an age one.",
+        "RSST, MATE, CTAP and JPFP look like the same product and are not — though not for the reason this line used to give. On the funding rule the three with filed holdings are the same class: RSST −0.07, MATE −0.159, CTAP −0.027, all keeping the whole gap. Nor does the fee table separate them. CTAP advertises 0.10% net against RSST's 0.99%, but its trend leg is a total return swap on CTA, an affiliated fund charging 0.75% with no waiver, and a swap reference is not reached by acquired-fund fees — so it is about 0.81% all-in today and about 0.99% when its waiver lapses on 2026-12-04. What is left is age, size, counterparty and evidence: RSST has 35 months and $415m of filed net assets; CTAP has eight months, $157.88m, 82.48% of net assets of bilateral swap exposure to one bank and a disclosed affiliated-fund conflict; MATE has eight months and $39.41m; JPFP has three months, $17.07m and no N-PORT at all. RSST is also the only one old enough to regress: its trend exposure is +0.681 [+0.406, +0.955] on 31 filed months, and the other three have three to eight months of filings, which is not a measurement problem but an age one.",
     },
     {
-      title: "It is levered, and nothing here demonstrates that the leverage pays",
+      title: "It borrows, and nothing here demonstrates that the borrowing pays",
       detail:
-        "This portfolio runs about 132% of gross exposure. Decision 0010 clause 6 is the governing statement: funding is part of the hypothesis, and the zero-leverage portfolio is a reference recommendation for an investor whose financing and policy inputs are missing rather than a rule against financed constructions. So this is not a departure from the research. What it is not either is a demonstrated edge: the sizing rests on holdability and on one whole-portfolio comparison that does not isolate the weight, decision 0004's non-promotion stands, and the fund-level financing spread that decides the sign of the whole thing is unmeasured.",
+        "This portfolio runs about 132% of gross exposure. Decision 0010 clause 6 is the governing statement: funding is part of the hypothesis, and the zero-borrowing portfolio is a reference recommendation for an investor whose financing and policy inputs are missing rather than a rule against financed constructions. So this is not a departure from the research. What it is not either is a demonstrated edge: the sizing rests on holdability and on one whole-portfolio comparison that does not isolate the weight, decision 0004's non-promotion stands, and the fund-level financing spread that decides the sign of the whole thing is unmeasured.",
     },
   ],
   trackingErrorCharacter:
     "Large and unfamiliar. The trend leg will be flat or negative through a strong equity year and is expected to earn its keep in the years the equity leg loses. There is no published tracking-error figure for this construction because no experiment here has ever tested a portfolio like it.",
   complexity: "high",
-  tax: "RSST's distribution drag is 0.32 pp/yr — 4.5 bp incremental once the VTI it displaces is subtracted, or 1.3 bp of portfolio return at a 30% weight. That is small. DBMF's equivalent is 143.9 bp, which is the comparison worth carrying: the wrapper, not the strategy, decides the tax outcome.",
+  tax: "RSST's distribution drag is 0.32 pp/yr — 4.5 bp incremental once the VTI it displaces is subtracted, or 1.3 bp of portfolio return at a 30% weight. That is small. DBMF's equivalent is 143.9 bp, which is the comparison worth carrying: the fund structure, not the strategy, decides the tax outcome.",
   rebalancing:
-    "The trend leg's weight is stated in notional, and the equity legs' in capital. Those units are not comparable and must never be rebalanced against each other as though they were.",
+    "The trend leg's weight is stated as exposure, and the equity legs' as capital. Those units are not comparable and must never be rebalanced against each other as though they were.",
   placement:
-    "The obvious rule — shelter the highest tax drag — is exactly backwards here. It puts DBMF and GDE at the front and RSST near the back, when RSST is the one whose marginal contribution clears its own detection floor and the one that needs the shelter least.",
+    "The obvious rule — shelter the highest tax drag — is exactly backwards here. It puts DBMF and GDE at the front and RSST near the back, when RSST is the one whose marginal contribution clears the smallest effect its own test could see and the one that needs the shelter least.",
   evidenceSummary:
-    "Two lines are exploratory, one is unresolved, one is rejected on the repository's own bar, and the largest holding has 31 months of exposure evidence and no return evidence. The construction's case rests on a funding identity that is closed-form and solid, applied to a sleeve that demonstrably delivers its exposure and whose return this evidence still cannot sign.",
+    "Two lines are exploratory, one is unresolved, one is rejected on the repository's own bar, and the largest holding has 31 months of exposure evidence and no return evidence. The construction's case rests on a funding identity that is closed-form and solid, applied to a holding that demonstrably delivers its exposure and whose return this evidence still cannot sign.",
   suggestedChanges: [
     {
       change: "Drop IDMO and put the 5% back into VEA.",
       because:
-        "Momentum's pooled detection floor is 4.98 pp/yr, the worst measured here, its three regions are worth 1.33 effective regions and all three lost their worst calendar year in 2009. IDMO turns over 105% a year, which takes 43% of the gross exposure in cost. This repository's product audit excludes it by name.",
+        "The smallest effect momentum's pooled test could see is 4.98 pp/yr, the worst measured here, its three regions are worth 1.33 effective regions and all three lost their worst calendar year in 2009. IDMO turns over 105% a year, which takes 43% of the gross exposure in cost. This repository's product audit excludes it by name.",
     },
     {
-      change: "Drop AVES and hold the emerging sleeve plain in IEMG.",
+      change: "Drop AVES and hold the emerging slice plain in IEMG.",
       because:
         "AVES is unresolved on window length, and no comparator however expressive can move an emerging-market value product to exploratory on the windows available. The emerging HML premium is the largest measured anywhere here, at +7.58 pp/yr, and there is nothing audited to buy it with.",
     },
     {
-      change: "Take the 30% wrapper line to RSST specifically, or leave it out.",
+      change: "Take the 30% stacked-fund line to RSST specifically, or leave it out.",
       because:
-        "RSST, MATE and CTAP all file a negative delta, so structure no longer separates them, and once CTAP's swap layer is counted neither does cost. Survival, counterparty and evidence do. RSST has 35 months, $415m of filed net assets, exchange-cleared futures and a measured distribution tax drag. CTAP is the closest challenger at about 0.81% all-in and the tightest delta on the shelf, but it is eight months old, its cost case expires on 2026-12-04, and 82.48% of its net assets is bilateral exposure to Bank of America. MATE has eight months and $39.41m. JPFP has three months, $17.07m and no N-PORT, so its delta cannot be computed until one is filed — due 2026-08-29 or 2026-09-29. RSST is the only one of the four with a measured trend loading, +0.681 [+0.406, +0.955] on 31 filed months, because it is the only one old enough; none belongs in a taxable account.",
+        "RSST, MATE and CTAP all file a negative delta, so structure no longer separates them, and once CTAP's swap layer is counted neither does cost. Survival, counterparty and evidence do. RSST has 35 months, $415m of filed net assets, exchange-cleared futures and a measured distribution tax drag. CTAP is the closest challenger at about 0.81% all-in and the tightest delta on the shelf, but it is eight months old, its cost case expires on 2026-12-04, and 82.48% of its net assets is bilateral exposure to Bank of America. MATE has eight months and $39.41m. JPFP has three months, $17.07m and no N-PORT, so its delta cannot be computed until one is filed — due 2026-08-29 or 2026-09-29. RSST is the only one of the four with a measured trend exposure, +0.681 [+0.406, +0.955] on 31 filed months, because it is the only one old enough; none belongs in a taxable account.",
     },
     {
       change: "Move AVLV to 20% and DFIV to 8%, the weights they were priced at.",
@@ -734,11 +734,11 @@ const candidate: PortfolioCandidate = {
     {
       change: "Decide the equity-versus-bond split before any of the above.",
       because:
-        "Moving 60/40 to 90/10 is worth about +127 bp a year against 485 bp of tracking error — larger than every tilt on this page combined. This portfolio holds no bonds at all, which is a position rather than an oversight, and it should be a deliberate one.",
+        "Moving 60/40 to 90/10 is worth about +127 bp a year against 485 bp of tracking error — larger than every lean on this page combined. This portfolio holds no bonds at all, which is a position rather than an oversight, and it should be a deliberate one.",
     },
   ],
   editorialNote:
-    "This is a reader's proposal, priced against the same shelf as everything else here. It departs from this repository's research in three specific ways: it is levered, it holds a momentum fund the product audit excludes, and it holds an emerging value fund that is unresolved. Those are stated, not hidden.",
+    "This is a reader's proposal, priced against the same shelf as everything else here. It departs from this repository's research in three specific ways: it borrows, it holds a momentum fund the product audit excludes, and it holds an emerging value fund that is unresolved. Those are stated, not hidden.",
   benchmarkTicker: "VT",
   sources: [capital, trendValue, recommendation, noSleeve],
   asOf: READ,

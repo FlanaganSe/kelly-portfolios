@@ -49,7 +49,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     question: "Is §852(b)(6) repealed?",
     whyItIsOpen:
       "A 2021 Senate Finance discussion draft proposed exactly that. It was never enacted and no successor bill was found, though Treasury and IRS officials discussed boundary cases publicly in July 2026.",
-    whatWouldSettleIt: "Enactment removes the ETF wrapper advantage outright.",
+    whatWouldSettleIt: "Enactment removes the ETF structure's advantage outright.",
     source: recommendation,
   },
   {
@@ -68,7 +68,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     whyItIsOpen:
       "Every free source tested is unusable, and not because of reachability: none publishes a documented total-return contract, corporate-action treatment, delisting coverage or revision history. This is the single binding constraint on every investable conclusion.",
     whatWouldSettleIt:
-      "A source covering the listed shelf from at least 2003 — so the window is 240 months rather than 72 — with coded exit reasons, stable economic fund identity, inception and vendor first-seen dates, point-in-time fees and net assets, and retrievable vintages. A source supplying returns but not exit reasons or vintages lifts nothing, and paying for one would be the most expensive way to learn nothing.",
+      "A source covering the listed shelf from at least 2003 onward, so the window is 240 months rather than 72 months, with coded exit reasons, stable economic fund identity, inception and vendor first-seen dates, point-in-time fees and net assets, and retrievable vintages. A source supplying returns but not exit reasons or vintages lifts nothing, and paying for one would be the most expensive way to learn nothing.",
     source: {
       label: "0002 — No research-grade free price source",
       docPath: "docs/decisions/0002-no-research-grade-free-price-source.md",
@@ -87,7 +87,7 @@ export const openQuestions: readonly OpenQuestion[] = [
   {
     id: "second-trend-product",
     group: "changes-the-construction",
-    question: "Is there a second managed-futures ETF with a loading at or above 0.50?",
+    question: "Is there a second managed-futures ETF with an exposure at or above 0.50?",
     whyItIsOpen: "One listed product delivers the exposure, so a manager or structure failure has no fallback.",
     whatWouldSettleIt:
       'A second product measured against a per-fund benchmark built from its own stated universe, which would also separate "does not deliver trend" from "does not deliver this trend".',
@@ -106,11 +106,11 @@ export const openQuestions: readonly OpenQuestion[] = [
   {
     id: "leverage-reopening",
     group: "changes-the-construction",
-    question: "What is still unknown about the leverage the portfolio already holds?",
+    question: "What is still unknown about the borrowing already inside the portfolio?",
     whyItIsOpen:
-      "Zero leverage was the reference answer for an investor whose financing and policy inputs were missing, and decision 0010 clause 6 keeps it as that rather than as a rule against financed constructions. The published portfolio holds about 1.32x gross exposure through RSST, and three of the four inputs the old rule asked for are still not measured.",
+      "Borrowing nothing was the reference answer for an investor whose financing and policy inputs were missing, and decision 0010 clause 6 keeps it as that rather than as a rule against financed constructions. The published portfolio holds about 1.32x gross exposure through RSST, and three of the four inputs the old rule asked for are still not measured.",
     whatWouldSettleIt:
-      "The fund-level implied financing spread on the contracts the wrapper actually rolls, which no issuer discloses because futures financing lives in the basis; a modelled margin and forced-liquidation path under a stated investor policy; and the wrapper's trend delivery on more than 31 filed months. A term premium signed under this repository's own protocol would settle the bond-stacking variant, which the portfolio does not hold.",
+      "The fund-level implied financing spread on the contracts the fund actually rolls, which no issuer discloses because futures financing lives in the basis; a modelled margin and forced-liquidation path under a stated investor policy; and the fund's trend delivery on more than 31 filed months. A term premium signed under this repository's own protocol would settle the bond-stacking variant, which the portfolio does not hold.",
     source: {
       label: "0010 — Research stays open; claim gates carry scope",
       docPath: "docs/decisions/0010-bars-carry-a-reopening-condition.md",
@@ -126,7 +126,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     whatWouldSettleIt:
       "Roughly a further decade — about 245 months, ending near 2035 — or a genuinely independent non-French construction on a different universe and a different vendor's accounting data. A new vintage of the same files, a different block length, a different pooling weight or a different era boundary inside the same sample does not.",
     source: {
-      label: "0005 — Profitability and investment premia are closed on public data",
+      label: "0005 — Profitability and investment premiums are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
     },
   },
@@ -137,7 +137,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     whyItIsOpen:
       "It is unread in every file and is a genuine holdout. Looking once converts a holdout into training data.",
     whatWouldSettleIt:
-      "Not yet. Six to eight months against a 2.6 pp/yr detection floor spends a genuine holdout for very little. It is the natural confirmatory test under a new frozen specification, later.",
+      "Not yet. Six to eight months, against a test that could not see an effect below 2.6 pp/yr, spends a genuine holdout for very little. It is the natural confirmatory test under a new frozen specification, later.",
     source: recommendation,
   },
   {
@@ -160,7 +160,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     group: "framework-open-decision",
     question: "Who is the modelled investor?",
     whyItIsOpen:
-      "Taxable or tax-advantaged, horizon, currency, liabilities, cash flows, drawdown tolerance and accessible instruments are all unset. Two experiments each declared a CRRA gamma of 3 for their own comparison; that is a per-experiment preference, not a product decision.",
+      "Taxable or tax-advantaged, horizon, currency, liabilities, cash flows, drawdown tolerance and accessible instruments are all unset. Two experiments each declared a risk-aversion setting of 3 for their own comparison; that is a per-experiment preference, not a product decision.",
     whatWouldSettleIt:
       "A stated investor policy. It is the binding constraint on producing an allocation rather than a design map, and without it the equity/bond variants are ranges rather than an answer.",
     source: framework,
@@ -179,7 +179,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     id: "framework-4-implementability",
     group: "framework-open-decision",
     question:
-      "What capital scale, tax model, leverage source, margin rules and liquidity reserve define implementability?",
+      "What capital scale, tax model, source of borrowing, margin rules and liquidity reserve define implementability?",
     whyItIsOpen: 'None of them is declared, so "implementable at realistic scale" has no test behind it.',
     whatWouldSettleIt: "The same investor policy that closes open decision 1.",
     source: framework,
@@ -190,7 +190,7 @@ export const openQuestions: readonly OpenQuestion[] = [
     question:
       "Which factor themes survive both the strict frequentist and the hierarchical Bayesian construction, and stay positive after executable costs?",
     whyItIsOpen:
-      "Four factors were measured on the value-weighted French construction only. The equal-weighted variant is not distributed and the test was not run, which matters because that single choice moves published replication rates from 35% to 58.6%.",
+      "Four factors were measured on the value-weighted French construction only. The equal-weighted variant is not distributed and nobody has run the test, which matters because that single choice moves published replication rates from 35% to 58.6%.",
     whatWouldSettleIt: "The underlying sorted portfolios, which the distributed files do not supply.",
     source: framework,
   },
@@ -237,9 +237,9 @@ export const openQuestions: readonly OpenQuestion[] = [
     group: "framework-open-decision",
     question: "What is a real fund's delivered capture?",
     whyItIsOpen:
-      "Every capture figure here comes from research portfolios. A fund's tilt is its holdings, not a sort, and the two are not the same quantity.",
+      "Every capture figure here comes from research portfolios. A fund's lean is what it actually holds rather than an academic sort, and the two are not the same quantity.",
     whatWouldSettleIt:
-      "Holdings rather than returns — the product audit's data rather than the capture experiment's. It is the next move and nobody has made it.",
+      "Holdings rather than returns: the product audit's data rather than the capture experiment's. It is the next move and nobody has made it.",
     source: {
       label: "The long-only capture fraction",
       docPath: "docs/research/long-only-capture.md",

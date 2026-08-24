@@ -216,7 +216,7 @@ const structural: Citation = {
   docPath: "docs/research/structural-and-tax-edges.md",
 };
 const alternatives: Citation = {
-  label: "The alternative-sleeves audit",
+  label: "Our audit of the alternatives",
   docPath: "docs/research/alternative-sleeves-audit.md",
 };
 const capital: Citation = {
@@ -225,7 +225,7 @@ const capital: Citation = {
 };
 const trend: Citation = { label: "The marginal value of trend", docPath: "docs/research/trend-marginal-value.md" };
 const untestedTilts: Citation = {
-  label: "Four tilts the recommendation never priced",
+  label: "Four leans the recommendation never priced",
   docPath: "docs/research/untested-tilt-candidates.md",
 };
 const finalTest: Citation = {
@@ -280,7 +280,7 @@ export const shelf: readonly ShelfFund[] = [
     issuer: {
       notes: [
         'The "Morningstar" in the name is the fund\'s own, not a typo: Vanguard Index Funds\' supplement of 2026-07-29 renames "Vanguard Total Stock Market Index Fund" to "Vanguard Morningstar Total Stock Market Index Fund", and its ETF share class to "Vanguard Morningstar Total Stock Market ETF", after Morningstar acquired CRSP and rebranded the indexes.',
-        'Its target index became the Morningstar US Total Market Index on the same date, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." Ticker, fee, holdings and every loading on this shelf are unaffected.',
+        'Its target index became the Morningstar US Total Market Index on the same date, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." Ticker, fee, holdings and every exposure on this shelf are unaffected.',
       ],
       source: {
         label: "Vanguard Index Funds, 497 supplement dated 2026-07-29",
@@ -310,7 +310,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "The whole difference from VTI is 1.78 bp of securities lending — VOO earns the least of any fund on the core shelf in all eight filed years — and P(ahead at 30 yr) is 0.52 to 0.54. No factor experiment read it, so it has no loading and no alpha.",
+      "The whole difference from VTI is 1.78 bp of securities lending — VOO earns the least of any fund on the core shelf in all eight filed years — and P(ahead at 30 yr) is 0.52 to 0.54. No factor experiment read it, so it has no measured exposure and no alpha.",
     caution: null,
     source: structural,
     asOf: READ,
@@ -485,9 +485,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The largest HML loading on the US large-value shelf, and on exposure alone a 20% weight prices at +53.8 bp for 163 bp of tracking error — the best ratio in the table.",
+      "The largest HML exposure on the US large-value shelf, and on that alone a 20% weight prices at +53.8 bp for 163 bp of tracking error — the best ratio in the table.",
     caution:
-      "Disqualifying: its raw alpha of −6.06 pp/yr exceeds its own 5.69 detection floor, one of sixteen such funds on a 109-fund shelf and all sixteen negative. Charging it takes the tilt to about −67 bp, or −54 bp against its own 36-month pedestal of −0.65 pp/yr.",
+      "Disqualifying: its raw alpha of −6.06 pp/yr is larger than the 5.69 pp/yr its own window could have resolved, one of sixteen such funds on a 109-fund shelf and all sixteen negative. Charging it takes the lean to about −67 bp, or −54 bp against its own 36-month pedestal of −0.65 pp/yr.",
     source: recommendation,
     asOf: READ,
   },
@@ -618,13 +618,13 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The only US value product that both delivers its exposure and does not lose to a cheap mix, at 5 bp. It is the optional sleeve because of the fee, not because the chain is positive.",
+      "The only US value product that both delivers its exposure and does not lose to a cheap mix, at 5 bp. It is the optional holding because of the fee, not because the chain is positive.",
     caution:
       "Its alpha is −2.78 against a 3.22 floor — the closest to measurable of the cheap products — and 25%/yr of turnover puts it with RPV rather than with the systematic funds.",
     issuer: {
       notes: [
         'The "Morningstar" in the name is the fund\'s own, not a typo: Vanguard Index Funds\' supplement of 2026-07-29 renames "Vanguard Small-Cap Value Index Fund" to "Vanguard Morningstar Small-Cap Value Index Fund", and its ETF share class to "Vanguard Morningstar Small-Cap Value ETF", after Morningstar acquired CRSP and rebranded the indexes.',
-        'Its target index became the Morningstar US Small Cap Value Index on the same date, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." The rename touches neither the 5 bp fee nor the +0.41 HML loading above.',
+        'Its target index became the Morningstar US Small Cap Value Index on the same date, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." The rename touches neither the 5 bp fee nor the +0.41 HML exposure above.',
       ],
       source: {
         label: "Vanguard Index Funds, 497 supplement dated 2026-07-29",
@@ -663,7 +663,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Delivers its exposure and keeps its status under every comparator basis tested. It buys comparable HML to a small-value fund at roughly half the tracking error.",
     caution:
-      "The US value premium on its own panel is +1.57 pp/yr against a 5.03 pp/yr floor and is not signable. Only the pooled three-region premium makes this tilt's growth contribution positive.",
+      "The US value premium on its own panel is +1.57 pp/yr against a 5.03 pp/yr floor and is not signable. Only the pooled three-region premium makes this lean's growth contribution positive.",
     source: products,
     asOf: READ,
   },
@@ -704,9 +704,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
     verdict:
-      "A genuinely deep value tilt destroyed by its own trading. It files 332%/yr of portfolio turnover against VTI's 3%, which costs 3.54 to 5.86 pp/yr at the repository's 1.0-to-1.7 coefficient against a gross factor gain of about 1.1 pp/yr. At a 5% weight it is the only candidate whose portfolio effect this data can resolve, and it resolves to about -0.30% a year.",
+      "A genuinely deep value lean destroyed by its own trading. It files 332%/yr of portfolio turnover against VTI's 3%, which costs 3.54 to 5.86 pp/yr at the repository's 1.0-to-1.7 coefficient against a gross factor gain of about 1.1 pp/yr. At a 5% weight it is the only candidate whose portfolio effect this data can resolve, and it resolves to about -0.30% a year.",
     caution:
-      "Its loadings are stated over its own filings and its incumbent's, not over the shelf's other value products: EDGAR lists no Form N-PORT for the quarter ending 2021-09-30, so its history has a three-month hole and only the 54 gapless months after it are usable. Its active leg is +0.754 correlated with AVUV's, so it duplicates a position rather than adding one.",
+      "Its exposures are stated over its own filings and its incumbent's, not over the shelf's other value products: EDGAR lists no Form N-PORT for the quarter ending 2021-09-30, so its history has a three-month hole and only the 54 gapless months after it are usable. Its active leg is +0.754 correlated with AVUV's, so it duplicates a position rather than adding one.",
     issuer: {
       notes: [
         "0.28% total annual fund operating expenses, management fee restated to the current rate, with no 12b-1 fee and no other expenses, per its summary prospectus dated 2026-02-01.",
@@ -808,9 +808,9 @@ export const shelf: readonly ShelfFund[] = [
       "Like VTV, it sits inside the basis it is scored against, so the rejection reads as 'small-cap is approximable', not as a defect.",
     issuer: {
       notes: [
-        'The name is verified, not inferred. Vanguard Index Funds\' supplement of 2026-07-29 enumerates the ten funds of that registrant and gives this one explicitly: "Vanguard Small-Cap Index Fund → Vanguard Morningstar Small-Cap Index Fund → Vanguard Morningstar Small-Cap ETF". The same table carries VTI and VBR.',
+        "The name is verified, not inferred. Vanguard Index Funds' supplement of 2026-07-29 enumerates the ten funds of that registrant and gives this one explicitly: Vanguard Small-Cap Index Fund becomes Vanguard Morningstar Small-Cap Index Fund, and the ETF share class becomes Vanguard Morningstar Small-Cap ETF. The same table carries VTI and VBR.",
         "Ten and thirteen are the same event counted twice over. Vanguard announced on 2026-04-29 that it would rename 13 US equity index funds across all share classes; ten of them are in the Vanguard Index Funds registrant and are supplemented here, and Vanguard World Fund filed its own supplement on the same date for the rest. Nothing on this shelf sits outside the ten.",
-        'Its target index was renamed on the same date, CRSP US Small Cap Index to Morningstar US Small Cap Index, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." The rename is a rebranding after Morningstar acquired CRSP; no loading on this shelf is affected by it.',
+        'Its target index was renamed on the same date, CRSP US Small Cap Index to Morningstar US Small Cap Index, and the filing states that "Each Fund\'s investment objective, strategies, and polices remain unchanged." The rename is a rebranding after Morningstar acquired CRSP; no exposure on this shelf is affected by it.',
       ],
       source: {
         label: "Vanguard Index Funds, 497 supplement dated 2026-07-29",
@@ -853,7 +853,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Delivers UMD +0.444 and is rejected anyway on a +1.10 pp/yr shortfall to a cheap combination. That it was 'the entire momentum shelf' was a property of Experiment 002's census frame, not of the market.",
     caution:
-      "Its 7.34 pp/yr detection floor is the worst on the US shelf, so its −2.95 alpha means nothing either way. Turnover is now measured and it is what decides the fund: 116%/yr against VTI's 3% costs 1.25 to 2.06 pp/yr, against a gross exposure gain of +1.78 pp/yr on a US momentum premium of +4.19 that is itself under a 7.27 pp/yr floor. The tax objection, by contrast, is false — its filed distribution drag is 11 bp/yr *below* VTI's.",
+      "The smallest alpha its window could have found is 7.34 pp/yr, the worst on the US shelf, so its −2.95 alpha means nothing either way. Turnover is now measured and it is what decides the fund: 116%/yr against VTI's 3% costs 1.25 to 2.06 pp/yr, against a gross exposure gain of +1.78 pp/yr on a US momentum premium of +4.19 that is itself under a 7.27 pp/yr floor. The tax objection, by contrast, is false — its filed distribution drag is 11 bp/yr *below* VTI's.",
     issuer: {
       notes: [
         "0.15% total annual fund operating expenses, no 12b-1 fee and no other expenses, per its summary prospectus dated 2025-11-28.",
@@ -888,7 +888,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Its facts are now read and they favour it over MTUM on every knowable dimension — 13 bp against 15, 44%/yr of turnover against 116%, 12.93 bp of net cost, and a distribution tax drag of 0.37 pp/yr against VTI\u2019s 0.42. Over VTI it delivers UMD +0.395 [+0.281, +0.508] on 78 months (2019-10\u20262026-03). At a 5% weight it still changes portfolio return by about +0.02% a year, plausibly \u22120.14% to +0.18%.",
     caution:
-      "The published +0.414 carries NO WINDOW and must not be compared with any other fund\u2019s loading; the +0.395 above is fitted here on a stated window and is the delivered exposure over VTI, not the fund\u2019s own loading. The exposure it buys sits on a US momentum premium of +4.19 pp/yr against a 7.27 pp/yr detection floor, and its active leg is +0.626 correlated with IDMO\u2019s — a tighter overlap than MTUM\u2019s +0.554, so a portfolio already holding international momentum buys less than it looks.",
+      "The published +0.414 carries NO WINDOW and must not be compared with any other fund\u2019s exposure figure; the +0.395 above is fitted here on a stated window and is the exposure delivered over VTI rather than the fund\u2019s own measured exposure. The exposure it buys sits on a US momentum premium of +4.19 pp/yr, against 7.27 pp/yr as the smallest premium that window could have found, and its active leg is +0.626 correlated with IDMO\u2019s — a tighter overlap than MTUM\u2019s +0.554, so a portfolio already holding international momentum buys less than it looks.",
     issuer: {
       notes: [
         "0.13% management fee, no other expenses, and 44% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-12-19.",
@@ -928,9 +928,9 @@ export const shelf: readonly ShelfFund[] = [
     alphaDetectionFloorPpYr: 3.13,
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
-    verdict: "Rejected on clause (c) at a +1.14 pp/yr shortfall, on an RMW loading of +0.186.",
+    verdict: "Rejected on clause (c) at a +1.14 pp/yr shortfall, on an RMW exposure of +0.186.",
     caution:
-      "The exposure is not purchasable at this threshold anywhere on the shelf — nine quality products and the largest RMW loading is +0.228 — and the premium behind it is rejected and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
+      "The exposure is not purchasable at this threshold anywhere on the shelf — nine quality products and the largest RMW exposure is +0.228 — and the premium behind it is rejected and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
     spread: { bp: 3, asOf: SPREADS_READ },
     source: products,
     asOf: READ,
@@ -1019,7 +1019,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: null,
     verdict:
-      "Costs −0.30 bp/yr to own: 3.30 bp of securities lending more than covers the 3 bp fee. Its own loadings are the term every ex-US tilt is measured against, and its −0.31 pp/yr alpha is the developed-ex-US pedestal.",
+      "Costs −0.30 bp/yr to own: 3.30 bp of securities lending more than covers the 3 bp fee. Its own exposures are the term every ex-US lean is measured against, and its −0.31 pp/yr alpha is the developed-ex-US pedestal.",
     caution:
       "It beat its region's French market portfolio by 0.517 pp/yr beyond its fee. That is recorded as an index-construction difference and is not a finding. Its foreign tax credit is worth 15.78 bp/yr and only in a taxable account.",
     spread: { bp: 1.41, asOf: PORTFOLIO_SPREADS_READ },
@@ -1079,7 +1079,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "The cheapest total-international fund audited at 1.43 bp net, and still dearer than holding VEA and VWO separately: splitting saves 1.25 bp/yr on the international sleeve before any placement argument.",
+      "The cheapest total-international fund audited at 1.43 bp net, and still dearer than holding VEA and VWO separately: splitting saves 1.25 bp/yr on the international holding before any placement argument.",
     caution:
       "This repository previously recorded VXUS at 3 bp, which was wrong. The 5 bp is from the 497K fee table dated 2026-02-27.",
     spread: { bp: 1.18, asOf: PORTFOLIO_SPREADS_READ },
@@ -1137,9 +1137,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The strongest tilt this repository has priced: at an 8% substitution out of VEA it is the only line whose edge, +27.1 bp, sits above its own 30-year detection floor of 21.6 bp.",
+      "The strongest lean this repository has priced: at an 8% substitution out of VEA it is the only line whose edge, +27.1 bp, sits above the 21.6 bp that 30 years of data could have resolved.",
     caution:
-      "Its own alpha is −4.11 pp/yr against a 3.52 pp/yr floor — measurably negative, and one of four ex-US large-value funds reading −2.2 to −4.1. Charging that alpha takes the same tilt from +27.1 bp to −8.2 bp.",
+      "Its own alpha is −4.11 pp/yr against a 3.52 pp/yr floor — measurably negative, and one of four ex-US large-value funds reading −2.2 to −4.1. Charging that alpha takes the same lean from +27.1 bp to −8.2 bp.",
     issuer: {
       notes: [
         "$19.32bn of net assets at 2026-04-30 from its own Form N-PORT, which marks the filing not final. Size is the one risk this fund does not carry.",
@@ -1208,7 +1208,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Second on growth per unit of tracking error at 0.576, and the lowest tracking error of the five at 31.3 bp for an 8% substitution. Shortfall −0.51 frozen, −0.16 expressive.",
     caution:
-      "Its −3.13 pp/yr alpha against a 1.81 floor is the most clearly measurable negative on the ex-US shelf; charging it takes an 8% tilt from +18.0 bp to −9.5 bp.",
+      "Its −3.13 pp/yr alpha against a 1.81 floor is the most clearly measurable negative on the ex-US shelf; charging it takes an 8% lean from +18.0 bp to −9.5 bp.",
     source: recommendation,
     asOf: READ,
   },
@@ -1263,7 +1263,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The only large-value fund of the four whose alpha is not measurable — −2.53 inside a 2.63 floor — so on the alpha-charged reading this repository's answer is IVLU rather than DFIV, at 0.552 growth per unit of tracking error.",
+      "The only large-value fund of the four whose alpha the window cannot measure: −2.53 sits inside a 2.63 floor, so on the alpha-charged reading this repository's answer is IVLU rather than DFIV, at 0.552 growth per unit of tracking error.",
     caution:
       "Its edge is smaller than DFIV's (+19.4 bp against +27.1 at an 8% substitution) and its shortfall of −1.19 does not move under any of the seven bases. Its 31 bp is the fee table's total, not its management fee: an aggregator reading of 0.30% is the 0.30% management line with the 0.01% of other expenses left off, and quoting it would understate what a holder pays.",
     issuer: {
@@ -1407,7 +1407,7 @@ export const shelf: readonly ShelfFund[] = [
       notes: [
         "0.36% total annual fund operating expenses and 4% portfolio turnover in the most recent fiscal year — the lowest turnover of any factor product on this shelf — per its summary prospectus dated 2025-12-31.",
         "Five-year return before taxes 6.35% and after taxes on distributions 5.57% to 2024-12, a drag of 0.78 pp/yr against VXUS's 0.79 over the same period: parity with the fund it would displace.",
-        "Median net securities-lending income of 5.97 bp/yr across six fiscal years of Form N-CEN, 2020-08-31 to 2025-08-31, so its net cost is 30.03 bp rather than 36 — the largest fee-to-cost gap of any tilt on this shelf.",
+        "Median net securities-lending income of 5.97 bp/yr across six fiscal years of Form N-CEN, 2020-08-31 to 2025-08-31, so its net cost is 30.03 bp rather than 36 — the largest fee-to-cost gap of any lean on this shelf.",
       ],
       source: {
         label: "Avantis International Small Cap Value ETF, Form 497K dated 2025-12-31",
@@ -1627,7 +1627,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "Delivers +0.535 of UMD over VEA on a signable premium (+8.35 [+4.82, +11.66] against a 5.21 floor), worth +4.47 pp/yr gross and +2.53 net per dollar of sleeve. It survives all seven bases at −5.43 to −5.18, and at 0.25% it is what causes IMTM to be rejected.",
+      "Delivers +0.535 of UMD over VEA on a signable premium (+8.35 [+4.82, +11.66] against a 5.21 floor), worth +4.47 pp/yr gross and +2.53 net per dollar held. It survives all seven bases at −5.43 to −5.18, and at 0.25% it is what causes IMTM to be rejected.",
     caution:
       "Excluded from the reference portfolio anyway. It files 105%/yr of turnover against VEA's 4%, so cost takes 43% of the gross exposure at k = 1.7 (28% at k = 1.0), and it carries CMA −0.394 on a rejected factor.",
     source: products,
@@ -1734,7 +1734,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "A 50% higher fee than VWO and the cheaper fund to own: lending covers the whole 9 bp and 0.87 bp besides. Its fee is capped at 0.09% to 2030-12-31 with no recoupment — the most durable fee commitment on the shelf.",
     caution:
-      "No factor loading, no alpha and no usable tracking difference were read for it. A high lending yield is partly compensation for holding what short sellers want.",
+      "No factor exposure, no alpha and no usable tracking difference were read for it. A high lending yield is partly compensation for holding what short sellers want.",
     spread: { bp: 1, asOf: SPREADS_READ },
     source: structural,
     asOf: READ,
@@ -1757,9 +1757,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: EMERGING_PEDESTAL,
     status: "unresolved",
     verdict:
-      "Unresolved on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to exploratory, because clause (a) reads the loading and unresolved reads its interval and neither reads the basis.",
+      "Unresolved on window length, not on failure: 51 months put its interval across the 0.15 bar. The verdict is basis-invariant — no comparator, however expressive, can move an emerging product to exploratory, because clause (a) reads the exposure and unresolved reads its interval and neither reads the basis.",
     caution:
-      "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. At 36 bp it costs 27 bp a year more than IEMG's 9 bp, which is the incremental cost the tilt has to clear before its loading matters — and its loading is the one this shelf cannot sign. Its net cost is 29.21 bp: 36 bp less a median 6.79 bp of securities lending across four fiscal years of Form N-CEN, 2022-08-31 to 2025-08-31. Turnover and every tax figure for AVES remain unread. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
+      "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. At 36 bp it costs 27 bp a year more than IEMG's 9 bp, which is the extra cost the lean has to clear before its exposure matters — and that exposure is the one this shelf cannot sign. Its net cost is 29.21 bp: 36 bp less a median 6.79 bp of securities lending across four fiscal years of Form N-CEN, 2022-08-31 to 2025-08-31. Turnover and every tax figure for AVES remain unread. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
     issuer: {
       notes: [
         "36 bp, gross equal to net, with no fee waiver and no expense cap — so unlike IEMG's contractual 9 bp cap there is nothing here to expire and nothing to be recouped.",
@@ -1793,7 +1793,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: EMERGING_PEDESTAL,
     status: "unresolved",
     verdict:
-      "The larger of the two emerging value loadings and the shorter window: 44 months, interval across the bar, shortfall −2.19 frozen and −2.03 expressive. unresolved, basis-invariant.",
+      "The larger of the two emerging value exposures and the shorter window: 44 months, interval across the bar, shortfall −2.19 frozen and −2.03 expressive. unresolved, basis-invariant.",
     caution:
       "Reads −0.092 on the US panel. With AVES it is why the region with the largest measured HML premium — +7.58 [+4.34, +11.01] — has nothing investable audited here. The 43 bp is a net figure that depends on a waiver running only to 2027-02-28; the fee table's gross is 46 bp, and 43 is what the shelf carries because it is what a buyer pays today. Only its shrunk alpha, −1.19 against a 3.23 floor, was published.",
     issuer: {
@@ -1809,7 +1809,7 @@ export const shelf: readonly ShelfFund[] = [
     },
     reviewTrigger: {
       on: asOf("2027-02-28"),
-      what: "DFEV's 43 bp is a waived figure. Read the next Dimensional ETF Trust 497K: if the waiver is not renewed the fee goes to the 46 bp gross the same table prints, and the cheapest emerging-value line on this shelf moves by 3 bp. Nothing about the loading or the unresolved verdict turns on it.",
+      what: "DFEV's 43 bp is a waived figure. Read the next Dimensional ETF Trust 497K: if the waiver is not renewed the fee goes to the 46 bp gross the same table prints, and the cheapest emerging-value line on this shelf moves by 3 bp. Nothing about the exposure or the unresolved verdict turns on it.",
     },
     source: products,
     asOf: asOf("2026-08-24"),
@@ -1888,7 +1888,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "The one product that delivers this benchmark's exposure: the interval clears the frozen 0.50 bar, one regressor explains 52% of its monthly variance, and the loading holds across the fixed split and all 19 rolling windows with no sign change. It trailed a cost-free vendor index by 0.48 pp/yr against its 85 bp fee.",
+      "The one product that delivers this benchmark's exposure: the interval clears the frozen 0.50 bar, one regressor explains 52% of its monthly variance, and the exposure holds across the fixed split and all 19 rolling windows with no sign change. It trailed a cost-free vendor index by 0.48 pp/yr against its 85 bp fee.",
     caution:
       "Its 2.09 pp/yr distribution tax drag is 2.5 times its own fee, 143.9 bp of it incremental over the equity it displaces — 43 bp of portfolio return at a 30% weight. Bought pro rata it keeps none of the funding-rule gap. The post-publication trend interval includes zero and fails Holm.",
     wrapper: {
@@ -1918,9 +1918,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Audited as a candidate wrapper and it is not in that category at all. Its 2026-03-31 N-PORT holds no equity ETF, no equity index future and no equity of any kind: 89.5% of net assets in Treasury bills, 4.4% in a money fund, and four total return swaps on DBi managed-futures indices. b is zero, so delta is 1.000 and it keeps none of the +2.44 pp/yr funding-rule gap — the same arithmetic as DBMF, KMLM or any standalone trend fund. 0.20% management plus 0.15% acquired-fund fees is 0.35% with no waiver.",
+      "Audited as a candidate stacked fund and it is not in that category at all. Its 2026-03-31 N-PORT holds no equity ETF, no equity index future and no equity of any kind: 89.5% of net assets in Treasury bills, 4.4% in a money fund, and four total return swaps on DBi managed-futures indices. b is zero, so delta is 1.000 and it keeps none of the +2.44 pp/yr funding-rule gap — the same arithmetic as DBMF, KMLM or any standalone trend fund. 0.20% management plus 0.15% acquired-fund fees is 0.35% with no waiver.",
     caution:
-      "$4.38m of net assets at 2026-03-31 makes it the smallest fund on this shelf, below even JPFP, and it did not exist at 2025-12-31. Its whole diversifier leg is bilateral swap exposure, and its Cayman subsidiary held 22.50% of total assets against the 25% RIC cap. Bought at a 30% weight it would pay the full funding-rule gap that the wrappers exist to avoid, so its 35 bp is cheap for the wrong product rather than cheap for the right one.",
+      "$4.38m of net assets at 2026-03-31 makes it the smallest fund on this shelf, below even JPFP, and it did not exist at 2025-12-31. Its whole diversifier leg is bilateral swap exposure, and its Cayman subsidiary held 22.50% of total assets against the 25% RIC cap. Bought at a 30% weight it would pay the full funding-rule gap that the stacked funds exist to avoid, so its 35 bp is cheap for the wrong product rather than cheap for the right one.",
     wrapper: {
       delta: 1,
       fundingCapturePercent: 0,
@@ -1959,7 +1959,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Rejected against the frozen 0.50 bar: the point estimate is below it and the interval spans from 0.058 to 0.991, on 46 months with an R² of 0.137 and a +1.90 pp/yr tracking difference.",
     caution:
-      "A 13.14 pp/yr detection floor. This is a statement about what the window could see, not that the fund holds no trend.",
+      "Its window could only have found an alpha of 13.14 pp/yr or larger. That is a statement about what the window could see, not that the fund holds no trend.",
     wrapper: {
       delta: 1,
       fundingCapturePercent: 0,
@@ -1997,7 +1997,8 @@ export const shelf: readonly ShelfFund[] = [
     status: "rejected",
     verdict:
       "Rejected at +0.245 with an interval containing zero. The shortfall is partly definitional and must not be read as a defect: its index holds none of the nine equity futures in AQR's universe.",
-    caution: "A 16.49 pp/yr detection floor, the worst of the five, on an R² of 0.066.",
+    caution:
+      "Its window could only have found an alpha of 16.49 pp/yr or larger, the worst of the five, on an R² of 0.066.",
     wrapper: {
       delta: 1,
       fundingCapturePercent: 0,
@@ -2071,7 +2072,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "The lowest loading of the five at +0.099 with an R² of 0.042: on this benchmark it is very nearly not a trend fund at all.",
+      "The lowest exposure of the five at +0.099 with an R² of 0.042: on this benchmark it is very nearly not a trend fund at all.",
     caution: "Its +2.31 pp/yr tracking difference is the largest of the five and sits inside an 8.94 pp/yr floor.",
     wrapper: {
       delta: 1,
@@ -2102,7 +2103,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Repackaging of a mechanism this shelf has already priced five times, and the one variable it changes is the one that has actually decided outcomes here. It listed 2025-06-05 and holds $346.23m at 2026-08-22, which makes it the third-largest managed-futures ETF on this shelf behind DBMF and CTA. `docs/research/live-managed-futures.md` measures 52% attrition of the 2019 cohort inside 6.5 years, and an issuer with Fidelity's distribution is the least likely of these to stop filing.",
     caution:
-      "No loading, no alpha and no tracking difference were measured for it: Experiment 008 predates its inception and it has not been regressed against the AQR index the rest of the trend shelf is scored on, so nothing here says whether it delivers trend. Its 0.80% is a capped figure and not a fee: 0.80% management plus 0.02% of other expenses is 0.82% gross, held to 0.80% by an expense cap that FDS may recoup within the fiscal year. The two net-asset figures in this repository are a quarter apart and both are current for their date — $255.9m at 2026Q2 (`docs/research/trend-marginal-value.md`, its second census table) and $346.23m at 2026-08-22 — and this record carries the later one.",
+      "No exposure, no alpha and no tracking difference were measured for it: Experiment 008 predates its inception and it has not been regressed against the AQR index the rest of the trend shelf is scored on, so nothing here says whether it delivers trend. Its 0.80% is a capped figure and not a fee: 0.80% management plus 0.02% of other expenses is 0.82% gross, held to 0.80% by an expense cap that FDS may recoup within the fiscal year. The two net-asset figures in this repository are a quarter apart and both are current for their date — $255.9m at 2026Q2 (`docs/research/trend-marginal-value.md`, its second census table) and $346.23m at 2026-08-22 — and this record carries the later one.",
     issuer: {
       notes: [
         "0.80% management fee plus 0.02% other expenses is 0.82% gross, less a 0.02% fee waiver, for 0.80% net, per its summary prospectus dated 2026-05-30.",
@@ -2118,7 +2119,7 @@ export const shelf: readonly ShelfFund[] = [
     },
     reviewTrigger: {
       on: asOf("2027-05-31"),
-      what: "The 0.80% expense cap lapses unless the Board extends it, taking the filed net expense to the 0.82% gross the same table prints. The larger question has no date on it and is not answered by re-reading a fee table: whether this fund delivers the AQR index's exposure the way Experiment 008 asked of the other five. It will have three filed years by then, which is still short of what the trend shelf's own detection floor needs.",
+      what: "The 0.80% expense cap lapses unless the Board extends it, taking the filed net expense to the 0.82% gross the same table prints. The larger question has no date on it and is not answered by re-reading a fee table: whether this fund delivers the AQR index's exposure the way Experiment 008 asked of the other five. It will have three filed years by then, which is still short of the history the trend shelf needs before an alpha can be told from noise.",
     },
     source: scan,
     asOf: asOf("2026-08-22"),
@@ -2161,9 +2162,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "It delivers the trend exposure it sells, and this is the first measurement of it: TSMOM +0.681 [+0.406, +0.955] over 31 filed months to 2026-04, beside an equity beta of +0.979 [+0.763, +1.195] — one dollar of equity and about seven tenths of a dollar of trend, per dollar of capital, against a filed notional of one and one. Regressed on DBMF instead of on the vendor index it reads +0.857 [+0.719, +0.995]. Structure and cost are from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross notional to deliver ~100% of risk exposure. delta is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% notional weight.",
+      "It delivers the trend exposure it sells, and this is the first measurement of it: TSMOM +0.681 [+0.406, +0.955] over 31 filed months to 2026-04, beside an equity beta of +0.979 [+0.763, +1.195] — one dollar of equity and about seven tenths of a dollar of trend, per dollar of capital, against a filed exposure of one and one. Regressed on DBMF instead of on the vendor index it reads +0.857 [+0.719, +0.995]. Structure and cost are from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross exposure to deliver ~100% of risk exposure. delta is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and the hurdle this holding has to clear is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% exposure weight.",
     caution:
-      "The trend loading above rests on 31 filed months, which is roughly one market regime. Its 95% interval runs from +0.406 to +0.955, so this window cannot tell one dollar of delivered trend from four fifths of one, and the smallest loading it could have detected at 80% power is 0.392. It is exposure delivered, not a return earned: there is still no alpha, no Sharpe and no drawdown measured for the fund. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the sleeve exists for. Under three years old. Its 9 bp median spread against CTAP's 33 is what separates the two once entry cost is counted — 24 bp/yr on a one-year hold, against 18 bp of fee dispersion across the three wrappers (`docs/research/market-scan-2026.md` §6.2) — and a spread is paid once where a fee is paid every year.",
+      "The trend exposure above rests on 31 filed months, which is roughly one market regime. Its 95% interval runs from +0.406 to +0.955, so this window cannot tell one dollar of delivered trend from four fifths of one, and the smallest exposure it could have detected at 80% power is 0.392. It is exposure delivered, not a return earned: there is still no alpha, no Sharpe and no drawdown measured for the fund. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the holding exists for. Under three years old. Its 9 bp median spread against CTAP's 33 is what separates the two once entry cost is counted — 24 bp/yr on a one-year hold, against 18 bp of fee dispersion across the three stacked funds (`docs/research/market-scan-2026.md` §6.2) — and a spread is paid once where a fee is paid every year.",
     wrapper: {
       delta: -0.07,
       fundingCapturePercent: 100,
@@ -2182,7 +2183,7 @@ export const shelf: readonly ShelfFund[] = [
         "The fund's own words: \"one dollar invested in the Fund provides approximately one dollar of exposure to the Fund's U.S. Equity strategy and approximately one dollar of exposure to the Fund's Managed Futures strategy\", targeting 100% of each.",
         "The managed-futures leg runs through a wholly-owned Cayman subsidiary capped at 25% of total assets, tested quarterly. The subsidiary is not registered under the 1940 Act, and breaching the cap would put the fund's RIC status at risk.",
         "35 months live at 2026-08-17, at $508.70m of net assets on 2026-08-14. The fee table shows no waiver line at all, so 99 bp is both gross and net.",
-        "Over its short life it has trailed US equity: the prospectus reports 17.17% a year since inception on 2023-09-05 against 21.50% for the S&P 500. Thirty-five months settles nothing about a sleeve whose whole purpose is the years equities lose, and it is not evidence either way.",
+        "Over its short life it has trailed US equity: the prospectus reports 17.17% a year since inception on 2023-09-05 against 21.50% for the S&P 500. Thirty-five months settles nothing about a holding whose whole purpose is the years equities lose, and it is not evidence either way.",
       ],
       source: {
         label: "RSST summary prospectus, 497K filed 2026-04-27",
@@ -2211,9 +2212,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "The tightest delta on the wrapper shelf, and the fee table that least resembles what the fund costs. Its 2026-03-31 N-PORT reads iShares Core S&P 500 at 70.41% of net assets plus a long E-mini S&P 500 future at 32.23% — 102.64% equity — against 95.17% of total-return-swap notional on CTA plus 3.71% of CTA held outright, 98.88% of trend. delta is −0.027, it keeps the whole +2.44 pp/yr funding-rule gap, its sleeve hurdle is 0.00, and 18.79% sits in T-bills as collateral. Net assets went $4.47m at 2025-12-31 to $123.41m at 2026-03-31 to $157.88m on 2026-08-21.",
+      "The tightest delta on the stacked-fund shelf, and the fee table that least resembles what the fund costs. Its 2026-03-31 N-PORT reads iShares Core S&P 500 at 70.41% of net assets plus a long E-mini S&P 500 future at 32.23% — 102.64% equity — against 95.17% of total-return-swap exposure on CTA plus 3.71% of CTA held outright, 98.88% of trend. delta is −0.027, it keeps the whole +2.44 pp/yr funding-rule gap, the hurdle this holding has to clear is 0.00, and 18.79% sits in T-bills as collateral. Net assets went $4.47m at 2025-12-31 to $123.41m at 2026-03-31 to $157.88m on 2026-08-21.",
     caution:
-      "The 0.10% is real, contractual and expiring, and it is not what the trend dollar costs. A total return swap pays the reference fund's return net of that fund's fees, and Acquired Fund Fees and Expenses reaches direct holdings rather than a swap reference — so CTA's own 0.75%, which carries no waiver, rides inside 95.17% of net assets and appears nowhere in this fee table. All-in is about 0.81%/yr today and about 0.99% once the waiver lapses on 2026-12-04, against RSST's 0.99% and MATE's 0.97%. Three further asymmetries, none of them in a fee table: 82.48% of net assets is bilateral swap exposure to Bank of America and 12.70% to Citibank, rather than to a clearing house; the trend leg is an affiliated fund and the prospectus concedes the conflict; and a swap is not a §1256 contract, so the 60/40 split that reaches RSST's and MATE's futures does not reach 95% of this fund's diversifier. Eight months old, and it lost a portfolio manager on 2026-08-07. Its trend loading is unmeasured because it has three filed monthly returns, not because a wrapper cannot be regressed — RSST's was measured on 31. Its 30-day median bid-ask spread is 33 bp against RSST's 9, which on a one-year hold is a 24 bp/yr difference on a shelf whose entire fee dispersion across the three candidate wrappers is 18 bp — so once entry cost is counted CTAP is the dearest of the three and not the cheapest (`docs/research/market-scan-2026.md` §6.2).",
+      "The 0.10% is real, contractual and expiring, and it is not what the trend dollar costs. A total return swap pays the reference fund's return net of that fund's fees, and Acquired Fund Fees and Expenses reaches direct holdings rather than a swap reference — so CTA's own 0.75%, which carries no waiver, rides inside 95.17% of net assets and appears nowhere in this fee table. All-in is about 0.81%/yr today and about 0.99% once the waiver lapses on 2026-12-04, against RSST's 0.99% and MATE's 0.97%. Three further asymmetries, none of them in a fee table: 82.48% of net assets is bilateral swap exposure to Bank of America and 12.70% to Citibank, rather than to a clearing house; the trend leg is an affiliated fund and the prospectus concedes the conflict; and a swap is not a §1256 contract, so the 60/40 split that reaches RSST's and MATE's futures does not reach 95% of this fund's diversifier. Eight months old, and it lost a portfolio manager on 2026-08-07. Its trend exposure is unmeasured because it has three filed monthly returns, not because a stacked fund cannot be regressed — RSST's was measured on 31. Its 30-day median bid-ask spread is 33 bp against RSST's 9, which on a one-year hold is a 24 bp/yr difference on a shelf whose entire fee dispersion across the three candidate stacked funds is 18 bp — so once entry cost is counted CTAP is the dearest of the three and not the cheapest (`docs/research/market-scan-2026.md` §6.2).",
     wrapper: {
       delta: -0.027,
       fundingCapturePercent: 100,
@@ -2229,16 +2230,16 @@ export const shelf: readonly ShelfFund[] = [
     ],
     reviewTrigger: {
       on: asOf("2026-12-04"),
-      what: "Two dates, and the near one is a filing. Its next Form N-PORT, for the quarter ending 2026-06-30, is due 2026-08-29: reread the base leg and the swap notional and recompute delta. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified wrapper on the shelf and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
+      what: "Two dates, and the near one is a filing. Its next Form N-PORT, for the quarter ending 2026-06-30, is due 2026-08-29: reread the base leg and the swap exposure and recompute delta. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified stacked fund on the shelf and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
     },
     issuer: {
       notes: [
         "Inception 2025-12-08, so eight months live at 2026-08-22, and $157,883,998.76 of net assets on 2026-08-21 — larger than MATE and JPFP together, and the fastest asset growth on this shelf.",
-        'Its own words fix both legs: "The Fund uses derivatives to overlay the Managed Futures Strategy on top of the US Equity Strategy such that for each one dollar invested, the Fund has one dollar of US equity exposure and one dollar of CTA futures exposure."',
+        "The prospectus fixes both legs in its own summary: the fund uses derivatives to add the Managed Futures Strategy on top of the US Equity Strategy, so that for each one dollar invested it has one dollar of US equity exposure and one dollar of CTA futures exposure.",
         'The trend leg is an affiliated fund reached by swap: "The Fund primarily executes the Managed Futures Strategy indirectly by investing in a total return swap on the Simplify Managed Futures Strategy ETF ("CTA"), which is a US domiciled exchange-traded fund managed by the adviser." The prospectus concedes the conflict: "The adviser is subject to an indirect conflict of interest in allocating the Fund\'s assets to a swap linked to CTA, as CTA is an affiliated fund that may underperform other futures-based funds."',
         'The fee table reads 0.25% management plus 0.03% acquired-fund fees for 0.28% gross, less an 0.18% waiver, for 0.10% net. The waiver is a fee reduction and not an expense cap: "The Fund\'s adviser has contractually agreed, through at least December 4, 2026, to reduce its management fees to 0.07% of the Fund\'s average daily net assets. This agreement may be terminated only by the Simplify Exchange Traded Funds\' Board of Trustees." The words "recoup" and "recapture" do not appear anywhere in the statutory prospectus, so there is nothing to be clawed back — the risk here is the expiry, not a recoupment.',
         "It runs no Cayman subsidiary of its own — Form N-PORT reports zero assets invested in a controlled foreign corporation — because its commodity exposure sits inside CTA, which has one. The 25% RIC cap therefore binds CTA rather than this fund.",
-        "Every swap files its financing leg as SOFR plus a spread of 0.00000000, which makes CTAP the only wrapper on this shelf whose financing spread is disclosed at all. Termination dates are 2049-12-31, so the swaps are evergreen rather than rolling.",
+        "Every swap files its financing leg as SOFR plus a spread of 0.00000000, which makes CTAP the only stacked fund on this shelf whose financing spread is disclosed at all. Termination dates are 2049-12-31, so the swaps are evergreen rather than rolling.",
       ],
       source: {
         label: "Simplify US Equity PLUS Managed Futures Strategy ETF, 497K dated 2025-12-05",
@@ -2277,7 +2278,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The clean read, and it verifies the marketing exactly: two equity ETFs at 90.53% of net assets plus one equity-index future at 9.54% is 100.07% equity, and four Treasury futures total 100.33%. The two legs use different N-PORT asset categories, so nothing is commingled and delta is −0.0007 at 0.39% all-in with no waiver.",
     caution:
-      "Its own trend loading is −0.101 [−0.358, +0.155] on 29 filed months — the negative control that makes RSST's +0.681 readable, since the same sponsor, the same wrapper and the same regression return nothing where there is no trend book. Rejected as a second overlay and as a replacement. A bond overlay does not inherit trend's flat drawdown: resampled, it is the deeper drawdown in 49.7% of histories at 30% notional and 70.0% at 100%, against trend's 6.9%; at matched 1.6× gross, 60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single delta scores it for a US-based reader.",
+      "Its own trend exposure is −0.101 [−0.358, +0.155] on 29 filed months — the negative control that makes RSST's +0.681 readable, since the same sponsor, the same fund structure and the same regression return nothing where there is no trend book. Rejected as a second financed addition and as a replacement. Bonds added on top, paid for by borrowing, do not inherit trend's flat drawdown: resampled, they are the deeper drawdown in 49.7% of histories at 30% exposure and 70.0% at 100%, against trend's 6.9%; at matched 1.6× gross, 60% trend beats 30% trend plus 30% bonds by +1.40 pp/yr and on Sharpe. Its base leg is *global* equity where the incumbent is US, so no single delta scores it for a US-based reader.",
     wrapper: {
       delta: -0.0007,
       fundingCapturePercent: 100,
@@ -2321,9 +2322,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Its 2026-03-31 N-PORT reads 90.83% equity plus 63.50% Treasury futures, 1.543× gross, delta 0.144 — so it keeps 85.6% of the funding-rule gap and its sleeve hurdle is 0.35 pp/yr. The 0.20% fee converted to overlay notional is 0.315%.",
+      "Its 2026-03-31 N-PORT reads 90.83% equity plus 63.50% Treasury futures, 1.543× gross, delta 0.144 — so it keeps 85.6% of the funding-rule gap and the hurdle this holding has to clear is 0.35 pp/yr. Spread across the exposure added on top, the 0.20% fee is 0.315%.",
     caution:
-      "It needs 48.3 bp/yr of Treasury excess return over cash at the 15 bp OIS financing benchmark before the overlay contributes anything, and both inputs are forecasts. This row previously said 92.0 bp against a basis measured on special-collateral repo, which is not a rate a fund pays. No loading of any kind has been measured for it.",
+      "It needs 48.3 bp/yr of Treasury excess return over cash at the 15 bp OIS financing benchmark before the financed addition contributes anything, and both inputs are forecasts. This row previously said 92.0 bp against a basis measured on special-collateral repo, which is not a rate a fund pays. No exposure of any kind has been measured for it.",
     wrapper: {
       delta: 0.144,
       fundingCapturePercent: 85.6,
@@ -2355,9 +2356,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Its 2026-02-28 N-PORT reads 84.80% equity plus 83.63% gold futures, 1.684× gross, delta 0.182, keeping 81.8% of the funding-rule gap. The all-in overlay cost is about 0.60%/yr once ≤40 bp of gold-futures financing is added to the 0.20% fee.",
+      "Its 2026-02-28 N-PORT reads 84.80% equity plus 83.63% gold futures, 1.684× gross, delta 0.182, keeping 81.8% of the funding-rule gap. The all-in cost of the exposure added on top is about 0.60%/yr once ≤40 bp of gold-futures financing is added to the 0.20% fee.",
     caution:
-      "As a sleeve it contributes +0.09 pp/yr against a detection floor of 1.68 — unmeasurable. Its 1.53 pp/yr distribution tax drag is the second largest on the wrapper shelf (1.31 restated at a 24%/15%-federal plus 9.3%-CA investor), and the naive rule 'shelter the highest drag' puts it at the front of the queue, which is exactly backwards.",
+      "As a holding it contributes +0.09 pp/yr where the smallest effect the test could have found is 1.68 — unmeasurable. Its 1.53 pp/yr distribution tax drag is the second largest on the stacked-fund shelf (1.31 restated at a 24%/15%-federal plus 9.3%-CA investor), and the naive rule 'shelter the highest drag' puts it at the front of the queue, which is exactly backwards.",
     wrapper: {
       delta: 0.182,
       fundingCapturePercent: 81.8,
@@ -2389,9 +2390,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "Measured from the holdings, and the gap this row used to describe is closed. Its 2026-05-31 N-PORT reads iShares Core S&P 500 at 50.30% of net assets plus one long E-mini S&P 500 future at 65.57% — 115.87% US equity, not the 49.8% base leg recorded here before — against a filed 100% trend target, so delta is −0.159, it keeps the whole +2.44 pp/yr funding-rule gap, and its sleeve hurdle is 0.00 where a standalone managed-futures fund pays the full 2.44. Net assets $39.41m, T-bill collateral 29.54%, and the derivative book runs 404.5% of net assets in gross notional (284.2% futures, 120.3% FX forwards) to deliver it. The 2026-02-28 filing reads the same way at 111.56% equity and delta −0.116. All-in 0.97%, no waiver.",
+      "Measured from the holdings, and the gap this row used to describe is closed. Its 2026-05-31 N-PORT reads iShares Core S&P 500 at 50.30% of net assets plus one long E-mini S&P 500 future at 65.57% — 115.87% US equity, not the 49.8% base leg recorded here before — against a filed 100% trend target, so delta is −0.159, it keeps the whole +2.44 pp/yr funding-rule gap, and the hurdle this holding has to clear is 0.00 where a standalone managed-futures fund pays the full 2.44. Net assets $39.41m, T-bill collateral 29.54%, and the derivative book runs 404.5% of net assets in gross exposure (284.2% futures, 120.3% FX forwards) to deliver it. The 2026-02-28 filing reads the same way at 111.56% equity and delta −0.116. All-in 0.97%, no waiver.",
     caution:
-      "The 65.57% E-mini line is not separable into base completion and the trend book's own equity position, because the trend book trades equity-index futures too and no filing tags a contract by sleeve. 115.87% is the filed US-equity total, not a contractual base leg; the contractual floor is the prospectus's 100%, where delta is 0.00. Both reads keep the whole gap, so the conclusion survives the ambiguity and the exact delta does not. Beyond that: eight months old at $39.41m, which is closure territory; the Cayman subsidiary held 21.09% of total assets at 2026-05-31 and 22.12% three months earlier against a 25% cap that costs RIC status if breached and not cured; no loading on any trend benchmark, no return, no Sharpe and no drawdown has been measured for it, and with six filed monthly returns none can be — the constraint is its age, not the source; and it has no SEC-standardised after-tax table because it has not completed a calendar year, so its distribution tax drag is unknown rather than small.",
+      "The 65.57% E-mini line is not separable into base completion and the trend book's own equity position, because the trend book trades equity-index futures too and no filing tags a contract to one leg or the other. 115.87% is the filed US-equity total, not a contractual base leg; the contractual floor is the prospectus's 100%, where delta is 0.00. Both reads keep the whole gap, so the conclusion survives the ambiguity and the exact delta does not. Beyond that: eight months old at $39.41m, which is closure territory; the Cayman subsidiary held 21.09% of total assets at 2026-05-31 and 22.12% three months earlier against a 25% cap that costs RIC status if breached and not cured; no exposure measured on any trend benchmark, no return, no Sharpe and no drawdown has been measured for it, and with six filed monthly returns none can be — the constraint is its age, not the source; and it has no SEC-standardised after-tax table because it has not completed a calendar year, so its distribution tax drag is unknown rather than small.",
     wrapper: {
       delta: -0.159,
       fundingCapturePercent: 100,
@@ -2438,16 +2439,16 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Still unmeasurable, and now for a filing-level reason rather than an unexamined one: no Form N-PORT exists for it. Its series is S000101300 in the SEC's own ticker map, and none of the 24 N-PORT filings the J.P. Morgan Exchange-Traded Fund Trust made for the 2026-05-31 period carries that series. It commenced 2026-05-27, so its first holdings filing belongs to the quarter ending 2026-06-30 or 2026-07-31 and is due 2026-08-29 or 2026-09-29. Until one is filed there is no base leg, no diversifier leg and therefore no delta; its stack rests on the prospectus sentence 'aggregate notional exposure will exceed its net assets' and nothing else. Checked 2026-08-22.",
+      "Still unmeasurable, and now for a filing-level reason rather than an unexamined one: no Form N-PORT exists for it. Its series is S000101300 in the SEC's own ticker map, and none of the 24 N-PORT filings the J.P. Morgan Exchange-Traded Fund Trust made for the 2026-05-31 period carries that series. It commenced 2026-05-27, so its first holdings filing belongs to the quarter ending 2026-06-30 or 2026-07-31 and is due 2026-08-29 or 2026-09-29. Until one is filed there is no base leg, no diversifier leg and therefore no delta; its stack rests on one sentence of the prospectus, which says only that its total exposure will exceed its net assets, and nothing else. Checked 2026-08-22.",
     caution:
-      "It is the one product that would reorder the wrapper cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. Three months live at $17.07m makes it the smallest fund on this shelf and the likeliest to close. It also carries one tax cost the other wrappers do not disclose: it expects to create and redeem in cash, which forfeits the in-kind shield on its equity leg as well as its overlay. No delta, no loading, no record — and no Form N-PORT, so all three wait on the same filing.",
+      "It is the one product that would reorder the stacked-fund cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. Three months live at $17.07m makes it the smallest fund on this shelf and the likeliest to close. It also carries one tax cost the other stacked funds do not disclose: it expects to create and redeem in cash, which forfeits the in-kind shield on its equity leg as well as on what it adds on top. No delta, no exposure, no record — and no Form N-PORT, so all three wait on the same filing.",
     /**
      * The dated review trigger. This is the only entry on the shelf whose structure is
      * unknown for a reason that expires, so the recheck has a date rather than a condition.
      */
     reviewTrigger: {
       on: asOf("2026-09-29"),
-      what: "Read JPFP's first Form N-PORT — its series is S000101300, and the filing is due 2026-08-29 if its first reporting period ends 2026-06-30 or 2026-09-29 if it ends 2026-07-31 — and compute delta from the base leg and the diversifier leg the way MATE's was computed, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. If delta comes back at or below zero, JPFP keeps the whole funding-rule gap at 59 bp against RSST's 99 and MATE's 97, and it reorders the wrapper cost ranking outright. That still would not make it holdable at a 30% weight: at $17.07m it would be the smallest fund on this shelf with three months of record, so a negative delta buys it a place in the comparison, not the allocation. If no filing has appeared by 2026-09-29, that is itself the finding and the next date is the following quarter.",
+      what: "Read JPFP's first Form N-PORT — its series is S000101300, and the filing is due 2026-08-29 if its first reporting period ends 2026-06-30 or 2026-09-29 if it ends 2026-07-31 — and compute delta from the base leg and the diversifier leg the way MATE's was computed, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. If delta comes back at or below zero, JPFP keeps the whole funding-rule gap at 59 bp against RSST's 99 and MATE's 97, and it reorders the stacked-fund cost ranking outright. That still would not make it holdable at a 30% weight: at $17.07m it would be the smallest fund on this shelf with three months of record, so a negative delta buys it a place in the comparison, not the allocation. If no filing has appeared by 2026-09-29, that is itself the finding and the next date is the following quarter.",
     },
     wrapper: {
       delta: null,
@@ -2462,7 +2463,7 @@ export const shelf: readonly ShelfFund[] = [
       notes: [
         "It has since commenced. Performance inception 2026-05-27, so three months live at 2026-08-22, with $17.07m of net assets on its 2026-06-30 fact sheet — the smallest fund on this shelf and the one with the highest closure risk. No later issuer figure was reachable: the J.P. Morgan product page renders its data client-side and returned none.",
         "59 bp unitary, no waiver, no recoupment: 40 bp cheaper than RSST for a structurally similar product, which is why it is a standing review trigger in the research rather than a footnote.",
-        'It says only that it "seeks to provide full exposure to each of the Managed Futures Strategy and the U.S. Equity Strategy, simultaneously" and that "aggregate notional exposure will exceed its net assets". Unlike RSST, RSSB and MATE it publishes no numeric per-dollar breakdown anywhere, so none is stated here.',
+        'It says only that it "seeks to provide full exposure to each of the Managed Futures Strategy and the U.S. Equity Strategy, simultaneously" and that its total exposure will exceed its net assets. Unlike RSST, RSSB and MATE it publishes no numeric per-dollar breakdown anywhere, so none is stated here.',
         'The commodity leg runs through Managed Futures Plus Fund CS Ltd., a wholly-owned Cayman subsidiary, and the fund gains commodity exposure "by investing up to 25% of the Fund\'s assets" in it.',
         'It discloses a tax cost the other two candidates do not: "the Fund expects to generally effect its creations and redemptions entirely or partially in cash, rather than primarily for in-kind securities. Therefore, it will be required to sell portfolio securities and subsequently recognize a gain on such sales that the Fund might not have recognized if it were to distribute portfolio securities in kind."',
         "Its registration statement never states the §1256 mark-to-market rule for the fund's own regulated futures contracts; the single mention of §1256 in the whole filing is inside the §988(a)(1)(B) foreign-currency election. The rule applies regardless, so this is a disclosure difference from MATE and not an exposure difference.",
@@ -2492,9 +2493,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: -0.55,
     status: "rejected",
     verdict:
-      "Dominated. Sharpe 0.643 at a correlation of +0.820 to the equity core, against 6 bp of fee and 0.51 pp/yr of distribution tax. It is the equity sleeve with a screen and a tax bill, not a second engine.",
+      "Dominated. Sharpe 0.643 at a correlation of +0.820 to the equity core, against 6 bp of fee and 0.51 pp/yr of distribution tax. It is the equity holding with a screen and a tax bill, not a second engine.",
     caution:
-      "The detection floor on its alpha is 10.93 pp/yr, so the rejection rests on dominance and correlation rather than on a measured alpha. rejected means a falsifier fired, never that the effect is zero.",
+      "The smallest alpha this test could have found is 10.93 pp/yr, so the rejection rests on dominance and correlation rather than on a measured alpha. rejected means a falsifier fired, never that the effect is zero.",
     source: alternatives,
     asOf: READ,
   },
@@ -2566,9 +2567,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "Correlated +0.9997 with TIP and costs 2.99 bp net against its 17.92. If a TIPS sleeve is held at all, that arithmetic is the whole of the decision about which one.",
+      "Correlated +0.9997 with TIP and costs 2.99 bp net against its 17.92. If any TIPS position is held at all, that arithmetic is the whole of the decision about which one.",
     caution:
-      "The sleeve itself is rejected on correlation. Being the cheaper way to hold it is not an argument for holding it.",
+      "The position itself is rejected on correlation. Being the cheaper way to hold it is not an argument for holding it.",
     source: alternatives,
     asOf: READ,
   },
@@ -2597,13 +2598,13 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "The international twin of RSST, and nothing about it has been measured. It listed 2026-05-06 at $68.53m and is the first fund to stack the two legs this repository separately reaches for — a developed ex-US sleeve and trend. The only structure available is an issuer-page estimate rather than a filed measurement: an equity leg of roughly 75% SPDW plus 25% MSCI EAFE index futures, so a base leg near 1.00 against a trend leg of 1.00 and a delta near 0.00. Read that as a description off a marketing page. RSST's delta of −0.07 was computed from an N-PORT; this one was not computed at all, which is why this record carries no wrapper block.",
+      "The international twin of RSST, and nothing about it has been measured. It listed 2026-05-06 at $68.53m and is the first fund to stack the two legs this repository separately reaches for — a developed ex-US holding and trend. The only structure available is an issuer-page estimate rather than a filed measurement: an equity leg of roughly 75% SPDW plus 25% MSCI EAFE index futures, so a base leg near 1.00 against a trend leg of 1.00 and a delta near 0.00. Read that as a description off a marketing page. RSST's delta of −0.07 was computed from an N-PORT; this one was not computed at all, which is why this record carries no fund-structure block.",
     caution:
-      "Three and a half months old, no Form N-PORT, no filed monthly return, and therefore no loading, no alpha, no delta and no place in the wrapper comparison. Its 15 bp median spread is the second widest of the funds whose Rule 6c-11 disclosure was read, and at $68.53m it sits in the size band where this repository's own attrition measurement bites. It sits in the stacked-wrapper category on its mandate; it carries no `wrapper` block, because the two legs of that block are read off a filing and this fund has not made one.",
+      "Three and a half months old, no Form N-PORT, no filed monthly return, and therefore no exposure, no alpha, no delta and no place in the stacked-fund comparison. Its 15 bp median spread is the second widest of the funds whose Rule 6c-11 disclosure was read, and at $68.53m it sits in the size band where this repository's own attrition measurement bites. It sits in the stacked-fund category on its mandate; it carries no `wrapper` block, because the two legs of that block are read off a filing and this fund has not made one.",
     spread: { bp: 15, asOf: SPREADS_READ },
     reviewTrigger: {
       on: asOf("2026-09-29"),
-      what: "Read RSIT's first Form N-PORT and compute delta from the base leg and the diversifier leg, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. Tidal Trust II's fiscal year ends 31 January — RSST files Form N-CEN for years ended that date — so a fund that commenced 2026-05-06 has its first reporting period ending 2026-07-31 and its filing due about 2026-09-29. A delta at or below zero would put it beside RSST at a 1 bp lower fee; it would still have no loading, because a loading needs filed monthly returns and one quarter is not a window.",
+      what: "Read RSIT's first Form N-PORT and compute delta from the base leg and the diversifier leg, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. Tidal Trust II's fiscal year ends 31 January — RSST files Form N-CEN for years ended that date — so a fund that commenced 2026-05-06 has its first reporting period ending 2026-07-31 and its filing due about 2026-09-29. A delta at or below zero would put it beside RSST at a 1 bp lower fee; it would still have no measured exposure, because an exposure needs filed monthly returns and one quarter is not a window.",
     },
     source: scan,
     asOf: asOf("2026-08-22"),
@@ -2612,7 +2613,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "RSSX",
     name: "Return Stacked U.S. Stocks & Gold/Bitcoin ETF",
     category: "capital-efficient",
-    mandate: "US stocks plus a financed gold-and-bitcoin sleeve, reached through IBIT and CME bitcoin futures.",
+    mandate: "US stocks plus a financed gold-and-bitcoin holding, reached through IBIT and CME bitcoin futures.",
     expenseRatioBp: 67,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -2623,9 +2624,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "It exists, which is the finding. `docs/research/alternative-sleeves-audit.md` concludes that bitcoin should be funded from the speculation budget by selling equity, and that conclusion is written against a pro-rata construction; this is a financed one, at 0.67% and $70.59m since 2025-05-29. Financing improves the hurdle a sleeve has to clear. It does not create a premium where the return evidence is a price expectation, so the audit's verdict is untouched and its scope is not.",
+      "It exists, which is the finding. `docs/research/alternative-sleeves-audit.md` concludes that bitcoin should be funded from the speculation budget by selling equity, and that conclusion is written against a pro-rata construction; this is a financed one, at 0.67% and $70.59m since 2025-05-29. Financing improves the hurdle such a holding has to clear. It does not create a premium where the return evidence is a price expectation, so the audit's verdict is untouched and its scope is not.",
     caution:
-      "No loading, no alpha, no filed delta, and the widest median spread of any fund on this shelf at 28 bp — which on a one-year hold is 42% of its own annual fee. Its since-inception return is +16.44% a year against the S&P 500 total return's +23.81% over the same stretch, both to 2026-07-31 and both the issuer's own standardised figures: a 7.37 pp/yr shortfall over fourteen months, which is a statement about fourteen months of a rising equity market and not about the construction. Its second leg carries the two assets this repository prices most cautiously.",
+      "No exposure, no alpha, no filed delta, and the widest median spread of any fund on this shelf at 28 bp — which on a one-year hold is 42% of its own annual fee. Its since-inception return is +16.44% a year against the S&P 500 total return's +23.81% over the same stretch, both to 2026-07-31 and both the issuer's own standardised figures: a 7.37 pp/yr shortfall over fourteen months, which is a statement about fourteen months of a rising equity market and not about the construction. Its second leg carries the two assets this repository prices most cautiously.",
     spread: { bp: 28, asOf: SPREADS_READ },
     source: liveStacked,
     asOf: asOf("2026-08-22"),
@@ -2647,7 +2648,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "On the shelf for completeness rather than as a candidate. It listed 2024-05-28 and holds $94.46m, and its second leg is a carry strategy no experiment in this repository has priced or regressed. Since inception it has returned +11.68% a year against the S&P 500 total return's +18.66%, both to 2026-07-31 from the issuer's own standardised table — the second-largest shortfall in the family.",
     caution:
-      "No loading, no alpha, no filed delta and no spread on file. A shortfall against an equity index is what a stacked fund is supposed to produce in a rising equity market, so it falsifies nothing on its own; it is recorded because the whole family's record is, and because a reader comparing the eight funds should not have to reconstruct which six are missing.",
+      "No exposure, no alpha, no filed delta and no spread on file. A shortfall against an equity index is what a stacked fund is supposed to produce in a rising equity market, so it falsifies nothing on its own; it is recorded because the whole family's record is, and because a reader comparing the eight funds should not have to reconstruct which six are missing.",
     source: liveStacked,
     asOf: asOf("2026-08-22"),
   },
@@ -2668,7 +2669,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The oldest of the six and the one whose base leg this repository would actually pay for: bonds rather than equity, so its funding arithmetic is the 2.08 pp/yr case rather than the 2.44 one. Listed 2023-02-07, $147.27m. Since inception it has returned −0.38% a year against the Bloomberg US Aggregate's +3.16%, both to 2026-07-31 from the issuer's own table.",
     caution:
-      "No loading, no alpha, no filed delta and no spread on file, so it enters no comparison here. Its 101 bp is the dearest fee on this shelf outside KMLM, against a base leg — aggregate bonds — that costs 3 bp to buy on its own, which is the whole of what a stacked bond fund has to justify.",
+      "No exposure, no alpha, no filed delta and no spread on file, so it enters no comparison here. Its 101 bp is the dearest fee on this shelf outside KMLM, against a base leg — aggregate bonds — that costs 3 bp to buy on its own, which is the whole of what a stacked bond fund has to justify.",
     source: liveStacked,
     asOf: asOf("2026-08-22"),
   },
@@ -2687,9 +2688,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Listed 2024-08-20 at $55.63m, and the worst absolute record in the family: −3.58% a year since inception against the Bloomberg US Aggregate's +2.22%, both to 2026-07-31 from the issuer's own table. Two years is not a verdict on a carry sleeve, and the second-smallest fund in a family whose documented failure mode is closure is not a candidate either.",
+      "Listed 2024-08-20 at $55.63m, and the worst absolute record in the family: −3.58% a year since inception against the Bloomberg US Aggregate's +2.22%, both to 2026-07-31 from the issuer's own table. Two years is not a verdict on a carry position, and the second-smallest fund in a family whose documented failure mode is closure is not a candidate either.",
     caution:
-      "No loading, no alpha, no filed delta and no spread on file. Its second leg is the same unpriced carry strategy as RSSY's, and neither has been regressed against anything here, so a 5.80 pp/yr shortfall says only that the two years it lived were not the years the sleeve is sold for.",
+      "No exposure, no alpha, no filed delta and no spread on file. Its second leg is the same unpriced carry strategy as RSSY's, and neither has been regressed against anything here, so a 5.80 pp/yr shortfall says only that the two years it lived were not the years the position is sold for.",
     source: liveStacked,
     asOf: asOf("2026-08-22"),
   },
@@ -2708,9 +2709,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "The one clear win in the family and the dullest sleeve in it. Listed 2024-12-17 at $52.33m, it has returned +4.11% a year since inception against the Bloomberg US Treasury index's +2.87%, both to 2026-07-31 from the issuer's own table — a +1.24 pp/yr difference where five of the other five clean cases are negative. The ordering is worth more than the number: the stacked legs with the largest advertised upside have the largest shortfalls.",
+      "The one clear win in the family and the dullest holding in it. Listed 2024-12-17 at $52.33m, it has returned +4.11% a year since inception against the Bloomberg US Treasury index's +2.87%, both to 2026-07-31 from the issuer's own table — a +1.24 pp/yr difference where five of the other five clean cases are negative. The ordering is worth more than the number: the stacked legs with the largest advertised upside have the largest shortfalls.",
     caution:
-      "Twenty months, a subtraction of two figures the issuer prints beside each other, and a benchmark this repository did not choose — that is not a measurement and it is not evidence that merger arbitrage pays. No loading, no alpha, no filed delta, no spread on file, and at $52.33m it is the smallest of the six. A single positive difference over one short window is exactly the shape of result this shelf's detection floors exist to discount.",
+      "Twenty months, a subtraction of two figures the issuer prints beside each other, and a benchmark this repository did not choose — that is not a measurement and it is not evidence that merger arbitrage pays. No exposure, no alpha, no filed delta, no spread on file, and at $52.33m it is the smallest of the six. A single positive difference over one short window is exactly the shape of result this shelf discounts, by asking first what its windows could have resolved at all.",
     source: liveStacked,
     asOf: asOf("2026-08-22"),
   },
@@ -2746,7 +2747,7 @@ export const shelfAudit = {
   medianDetectableAlphaExUsPpYr: 3.23,
   medianDetectableAlphaManagedFuturesPpYr: 12.75,
   trueAlphaDispersionPpYr: 1.25,
-  correction: "Benjamini–Hochberg on the loadings, Holm on the alphas",
+  correction: "Benjamini–Hochberg on the exposures, Holm on the alphas",
   note: "Exposure is measurable and skill is not. The median alpha this instrument can detect is about four times the true dispersion between funds, so most alpha findings on any shelf are noise by construction.",
   source: products,
   asOf: READ,

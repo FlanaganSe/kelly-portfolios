@@ -11,7 +11,7 @@ note: >-
   Same stated ladder, solved exactly by enumerating all 4,095 supports with weights non-negative
   and summing to one, so the count carries no convergence tolerance, and a 40,000-draw simplex
   search fails to beat it. It never rises above three however many candidates are offered. Two
-  scope limits travel with the number: it falls to two at a correlation of 0.50 and rises to
-  five at 0.10; and it depends on the candidates having DIFFERENT edges — give all eight the
-  same edge and the optimiser holds all eight at a transfer coefficient of 1.000. The 57.6%
-  ceiling is unchanged either way.
+  scope limits travel with the number. It falls to two at a correlation of 0.50 and rises to
+  five at 0.10. And it depends on the candidates having different edges: give all eight the same
+  edge and the optimiser holds all eight at a transfer coefficient of 1.000, which is to say it
+  puts the full intended weight into every one. The 57.6% ceiling is unchanged either way.

@@ -123,12 +123,12 @@ export const growthPenalty = {
   headline:
     "Holding half the growth-optimal equity exposure costs a quarter of the peak excess growth. Holding double it costs all of it.",
   detail:
-    "The asymmetry is multiplicative rather than additive, so erring low is cheap and erring high is not. In this portfolio you cannot err high anyway: with leverage fixed at zero the growth-optimal weight sits above 1 — about 2.28 at the sample premium — so every reachable equity share is on the left branch of the curve, and the only question is how far left you sit.",
+    "The asymmetry is multiplicative rather than additive, so erring low is cheap and erring high is not. In this portfolio you cannot err high anyway: with borrowing fixed at zero the growth-optimal weight sits above 1 — about 2.28 at the sample premium — so every reachable equity share is on the left branch of the curve, and the only question is how far left you sit.",
   retainedAtHalf: 0.75,
   retainedAtDouble: 0.0,
   unconstrainedOptimalWeight: 2.28,
   cornerSolution:
-    "Growth-optimal sizing carries no risk-aversion parameter, so with leverage at zero the objective on its own returns a corner solution of 100% equity for any equity-over-bond arithmetic premium above about 2.06 to 2.68%/yr. Every bond in the mixed and short-horizon variants comes from the drawdown constraint, not from the objective. Read the other way: choosing 60/40 asserts a premium forecast of about 1.18 to 1.30%/yr.",
+    "Growth-optimal sizing carries no risk-aversion parameter, so with borrowing at zero the objective on its own returns a corner solution of 100% equity for any equity-over-bond arithmetic premium above about 2.06 to 2.68%/yr. Every bond in the mixed and short-horizon variants comes from the drawdown constraint, not from the objective. Read the other way: choosing 60/40 asserts a premium forecast of about 1.18 to 1.30%/yr.",
   estimationCost:
     "The growth cost of estimating the optimum rather than knowing it is 1/(2T), free of every parameter — 2.50%/yr on twenty years of data and 0.80%/yr on sixty-two. Optimal shrinkage at the sample Sharpe over that longer record is 0.931, not the half-Kelly rule of thumb; half-Kelly would be claiming those sixty-two years are worth 4.66.",
   consequence:
@@ -211,7 +211,7 @@ export const equitySleeveWeights = {
   isMarketWeight: false,
   provenance: "A declared research weight, frozen before results were examined (Experiment 003's specification).",
   caveat:
-    "A US 45 / international 35 proposal is a 56:44 split against this 60:40, and no page here can distinguish them. There is no global market-capitalisation series in this repository and no experiment signed a regional tilt. Choose either and stop.",
+    "A US 45 / international 35 proposal is a 56:44 split against this 60:40, and no page here can distinguish them. There is no global market-capitalisation series in this repository and no experiment signed a regional lean. Choose either and stop.",
   source: recommendation,
   asOf: asOf("2026-08-12"),
 } as const;
@@ -220,7 +220,7 @@ export const equitySleeveWeights = {
 // The funds
 // ---------------------------------------------------------------------------
 
-export type FundRole = "core" | "core-alternative" | "optional-sleeve" | "priced-but-not-held";
+export type FundRole = "core" | "core-alternative" | "optional-holding" | "priced-but-not-held";
 
 export interface FundAlternate {
   readonly ticker: string;
@@ -357,7 +357,7 @@ export const funds: readonly Fund[] = [
       },
     ],
     whatItBuys:
-      "The same diversification, at a net cost of 1.67 bp/yr. Its credit is worth 20.00 bp/yr in taxable, and it is the sleeve the placement arithmetic moves.",
+      "The same diversification, at a net cost of 1.67 bp/yr. Its credit is worth 20.00 bp/yr in taxable, and it is the holding the placement arithmetic moves.",
     certaintyClass: "nothing-better-exists",
     status: null,
     source: recommendation,
@@ -392,7 +392,7 @@ export const funds: readonly Fund[] = [
     id: "vxus",
     ticker: "VXUS",
     name: "Vanguard Total International Stock ETF",
-    sleeve: "Whole international sleeve in one fund",
+    sleeve: "Whole international slice in one fund",
     role: "core-alternative",
     expenseRatioBp: 5,
     expenseRatioAsOf: FEE_TABLES_READ,
@@ -420,8 +420,8 @@ export const funds: readonly Fund[] = [
     id: "vbr",
     ticker: "VBR",
     name: "Vanguard Morningstar Small-Cap Value ETF",
-    sleeve: "Small-cap value tilt",
-    role: "optional-sleeve",
+    sleeve: "Small-cap value lean",
+    role: "optional-holding",
     expenseRatioBp: 5,
     expenseRatioAsOf: asOf("2026-08-12"),
     expenseRatioNote: "Read from the sponsor's own prospectus or fund page, with the URL and date recorded.",
@@ -430,7 +430,7 @@ export const funds: readonly Fund[] = [
     netCostBp: null,
     alternates: [],
     whatItBuys:
-      "An HML loading of +0.410 [+0.322, +0.480], delivered and stable, at 5 bp, with a negative shortfall against a fitted four-fund combination. It is the only US value product that both delivers its exposure and does not lose to a cheap mix. It is not here because the chain is positive.",
+      "An HML exposure of +0.410 [+0.322, +0.480], delivered and stable, at 5 bp, with a negative shortfall against a fitted four-fund combination. It is the only US value product that both delivers its exposure and does not lose to a cheap mix. It is not here because the chain is positive.",
     certaintyClass: "risk-premium",
     status: "exploratory",
     source: recommendation,
@@ -440,7 +440,7 @@ export const funds: readonly Fund[] = [
     ticker: "DBMF",
     name: "iMGP DBi Managed Futures Strategy ETF",
     sleeve: "Managed futures",
-    role: "optional-sleeve",
+    role: "optional-holding",
     expenseRatioBp: 85,
     expenseRatioAsOf: asOf("2026-08-12"),
     expenseRatioNote: "Read from the fund's SEC-filed 497K summary prospectus fee table, with its accession number.",
@@ -449,7 +449,7 @@ export const funds: readonly Fund[] = [
     netCostBp: null,
     alternates: [],
     whatItBuys:
-      "A loading of +0.671 [+0.513, +0.829] on the AQR time-series-momentum index, stable across the fixed split and all 19 rolling windows, trailing a cost-free vendor index by 0.48 pp/yr against an 0.85% fee. Crisis correlation −0.59 and downside beta −0.67 — but the post-publication interval includes zero and fails Holm.",
+      "An exposure of +0.671 [+0.513, +0.829] on the AQR time-series-momentum index, stable across the fixed split and all 19 rolling windows, trailing a cost-free vendor index by 0.48 pp/yr against an 0.85% fee. Crisis correlation −0.59 and downside beta −0.67 — but the post-publication interval includes zero and fails Holm.",
     certaintyClass: "risk-premium",
     status: "exploratory",
     source: recommendation,
@@ -476,7 +476,7 @@ export const funds: readonly Fund[] = [
 
 export const vxusTradeoff = {
   headline: "Hold VEA + VWO rather than VXUS. The split is cheaper before any placement argument.",
-  why: "VXUS costs 5 bp against a 75/25 blend of VEA and VWO at 3.75, and lending is a wash — so splitting saves 1.25 bp/yr on the international sleeve, 0.50 bp of equity, whatever accounts the reader has. The placement result is separate and smaller: 1.33 bp/yr of equity at a 23.8% qualified rate, 0.96 at 15%, and exactly zero once the shelter holds the whole equity sleeve. VXUS buys one fewer holding, one fewer spread crossing, and market weights this repository cannot otherwise supply.",
+  why: "VXUS costs 5 bp against a 75/25 blend of VEA and VWO at 3.75, and lending is a wash — so splitting saves 1.25 bp/yr on the international slice, 0.50 bp of equity, whatever accounts the reader has. The placement result is separate and smaller: 1.33 bp/yr of equity at a 23.8% qualified rate, 0.96 at 15%, and exactly zero once the shelter holds the whole equity slice. VXUS buys one fewer holding, one fewer spread crossing, and market weights this repository cannot otherwise supply.",
   vxusFacts:
     "Expense ratio 5 bp from the 497K fee table dated 2026-02-27, securities lending 3.57 bp, net cost 1.43 bp, 30-day median bid/ask spread 1.18 bp as of 2026-08-10. This repository previously recorded VXUS at 3 bp, which was wrong.",
   asOf: asOf("2026-08-17"),
@@ -521,9 +521,9 @@ export const optionalSleeves: readonly OptionalSleeve[] = [
     size: "0–20% of US equity",
     requiredAccount: "Anywhere. Treat it as US equity in the placement ranking",
     verdict:
-      "An exploratory product on an exploratory premium. Its best case is +43 bp/yr of edge against 312 bp of tracking error, worth +21 bp of geometric growth and 6.6% more terminal wealth over thirty years; on the US-only post-publication premium the growth contribution is negative at every weight. The +15 bp/yr this page carried until 2026-08-17 multiplied a loading by a capture fraction, which is the same quantity measured a second way.",
+      "An exploratory product on an exploratory premium. Its best case is +43 bp/yr of edge against 312 bp of tracking error, worth +21 bp of geometric growth and 6.6% more terminal wealth over thirty years; on the US-only post-publication premium the growth contribution is negative at every weight. The +15 bp/yr this page carried until 2026-08-17 multiplied an exposure by a capture fraction, which is the same quantity measured a second way.",
     sizingNote:
-      "VBR's yield is higher than the market's, which raises its shelter priority above the 26.2 / 20.7 / 16.5 bp of plain US equity. By how much is not measured here. A small-value fund also carries an SMB loading near +0.85 whose premium this repository tested and could not sign, so a large-value fund buys comparable HML exposure at roughly half the tracking error.",
+      "VBR's yield is higher than the market's, which raises its shelter priority above the 26.2 / 20.7 / 16.5 bp of plain US equity. By how much is not measured here. A small-value fund also carries an SMB exposure near +0.85 whose premium this repository tested and could not sign, so a large-value fund buys comparable HML exposure at roughly half the tracking error.",
     productStatus: "exploratory",
     underlyingStatus: "exploratory",
     source: recommendation,
@@ -537,9 +537,9 @@ export const optionalSleeves: readonly OptionalSleeve[] = [
     size: "0–10% of total",
     requiredAccount: "Tax-deferred only",
     verdict:
-      "An exploratory product on an unresolved index, with single-product risk: four of the five listed managed-futures ETFs fail the 0.50 loading bar, so there is no fallback. Its 2.09 pp/yr distribution tax drag is 2.5× its own fee in a taxable account and zero in a shelter.",
+      "An exploratory product on an unresolved index, with single-product risk: four of the five listed managed-futures ETFs fail the 0.50 exposure bar, so there is no fallback. Its 2.09 pp/yr distribution tax drag is 2.5× its own fee in a taxable account and zero in a shelter.",
     sizingNote:
-      "Experiment 004 priced a 15% trend sleeve, not a 10% one. The cap is set below the tested weight because one product delivers the exposure and there is no fallback, not because 10% was measured to be better.",
+      "Experiment 004 priced a 15% trend holding, not a 10% one. The cap is set below the tested weight because one product delivers the exposure and there is no fallback, not because 10% was measured to be better.",
     productStatus: "exploratory",
     underlyingStatus: "unresolved",
     source: recommendation,
@@ -555,7 +555,7 @@ export const constructionSummary = {
   detail:
     "A cheap, broad, long-only, fully invested global equity/bond portfolio, held in the right accounts, with lot discipline, and not traded. That is not a default chosen for want of anything better. It is the only construction whose delivery is contractual rather than statistical.",
   disciplinesAreWorthMore:
-    "The disciplines are worth more than the sleeves. About 109 bp/yr against your own counterfactual, 99% confident in about twelve months, against a best case of 43.1 bp for a 20% small-value tilt — 21 bp of it in geometric growth — and 90 bp for a sheltered trend sleeve.",
+    "The disciplines are worth more than the holdings. About 109 bp/yr against your own counterfactual, 99% confident in about twelve months, against a best case of 43.1 bp for a 20% small-value lean — 21 bp of it in geometric growth — and 90 bp for a sheltered trend holding.",
   source: recommendation,
   asOf: asOf("2026-08-17"),
 } as const;
@@ -574,7 +574,7 @@ export const whatThisIsNot: readonly { readonly claim: string; readonly detail: 
   {
     claim: "Not a promotion",
     detail:
-      "No sleeve reached production-eligible, or walk-forward-tested, or even independently-reproduced. VBR and DBMF are exploratory products, which permits them to be used as implementation proxies in a later experiment and permits nothing else.",
+      "No holding reached production-eligible, or walk-forward-tested, or even independently-reproduced. VBR and DBMF are exploratory products, which permits them to be used as implementation proxies in a later experiment and permits nothing else.",
   },
   {
     claim: "Not a claim of outperformance against an index",
@@ -589,7 +589,7 @@ export const whatThisIsNot: readonly { readonly claim: string; readonly detail: 
   {
     claim: "Not free of model risk",
     detail:
-      "FF5+UMD prices VTI itself at −0.55 pp/yr with a HAC t of −3.41 over 2020–2025. The standard model does not span the control, and every alpha here is a distance from that pedestal rather than from zero.",
+      "FF5+UMD prices VTI itself at −0.55 pp/yr with a t of −3.41 on error bars widened for clustered, uneven returns, over 2020–2025. The standard model does not span the control, and every alpha here is a distance from that pedestal rather than from zero.",
   },
   {
     claim: "Not vintage-stable",

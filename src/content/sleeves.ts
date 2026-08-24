@@ -40,7 +40,7 @@ const structural: Citation = {
   docPath: "docs/research/structural-and-tax-edges.md",
 };
 const marginalValue: Citation = {
-  label: "What a sleeve is worth inside a portfolio, rather than on its own",
+  label: "What a holding is worth inside a portfolio, rather than on its own",
   docPath: "docs/research/marginal-sleeve-value.md",
 };
 
@@ -90,7 +90,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "The only line in the whole record whose delivery is contractual rather than statistical. Its cost is certain; its return is not, and no page here forecasts it.",
     caveat:
-      "The standard factor model does not even span it: FF5+UMD prices VTI at −0.55 pp/yr with a HAC t of −3.41 over 2020–2025.",
+      "The standard factor model does not even span it: FF5+UMD prices VTI at −0.55 pp/yr with a t of −3.41, on error bars widened for clustered, uneven returns, over 2020–2025.",
     source: {
       label: "0003 — The cheap broad-market control",
       docPath: "docs/decisions/0003-cheap-broad-market-control.md",
@@ -114,7 +114,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "It is the only US value product that both delivers its exposure and does not lose to a cheap combination — a shortfall of −0.62 pp/yr, meaning it beat the fitted four-fund mix. It is not here because the chain is positive.",
     caveat:
-      "The chain carries no capture term: a capture fraction is itself an HML loading, so multiplying the two discounted one exposure twice. Restated as weight × (loading − VTI's +0.0247) × premium − cost, a 20% VBR tilt is +28.7 bp of edge and +18.2 bp of growth on the pooled premium. AVUV, which the corrected census frame admitted after this sleeve was written, delivers +0.537 rather than +0.410. VBR's tracking error against VTI is 10.48 pp/yr, measured over 2020-01…2025-12.",
+      "The chain carries no capture term: a capture fraction is itself an HML exposure, so multiplying the two discounted one exposure twice. Restated as weight × (exposure − VTI's +0.0247) × premium − cost, a 20% lean into VBR is +28.7 bp of edge and +18.2 bp of growth on the pooled premium. AVUV, which the corrected census frame admitted after this record was written, delivers +0.537 rather than +0.410. VBR's tracking error against VTI is 10.48 pp/yr, measured over 2020-01…2025-12.",
     source: recommendation,
   },
   {
@@ -135,7 +135,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "One product on the listed shelf delivers the index's exposure, and it is the one that sells replication. It trailed a cost-free vendor index by 0.48 pp/yr against an 0.85% fee. Three independent measurements agree it is the index scaled down by about two thirds.",
     caveat:
-      "Fifty-four months, one benchmark, no bid-ask or brokerage. Its distribution tax drag is 2.09 pp/yr in a taxable account — 2.5× the fee — and zero in a shelter; the same trend notional held through the return-stacked wrapper RSST carries 0.32 pp/yr. The listed shelf has gone from five funds to fifteen, so the fallback risk has eased, but none of the newcomers has been tested. The index's own post-publication interval includes zero and fails Holm.",
+      "Fifty-four months, one benchmark, no bid-ask or brokerage. Its distribution tax drag is 2.09 pp/yr in a taxable account, 2.5× the fee, and zero in a shelter; the same trend exposure held through the return-stacked fund RSST carries 0.32 pp/yr. The listed shelf has grown from five funds to fifteen. The fallback risk has eased, but none of the newcomers has been tested. The index's own post-publication interval includes zero and fails Holm.",
     source: trend,
   },
   {
@@ -156,7 +156,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "Momentum is the largest gross premium in this repository, pooled +7.33 pp/yr, and MTUM delivers the exposure cleanly. It is excluded on two other grounds: turnover, and three regions that crash together.",
     caveat:
-      "It lost 1.22 pp/yr to a three-fund combination whose fee premium over it was 0.12 — leaving the audit's 1.10 pp/yr shortfall figure, which is the tracking difference net of that fee advantage. Its pooled detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and all lost their worst calendar year in 2009; and the academic construction rebalances monthly at an assumed 3.30–18.67 pp/yr of cost against a 7.33 gross premium. The third ground has gone: MTUM is the entire retail momentum shelf was true of the census frame Experiment 002 screened, and the corrected frame carries six momentum products of which four reach exploratory.",
+      "It lost 1.22 pp/yr to a three-fund combination whose fee premium over it was 0.12, leaving the audit's 1.10 pp/yr shortfall figure, which is the tracking difference net of that fee advantage. Its pooled detection threshold is 4.98 pp/yr, the worst here; its three regions are worth 1.33 effective regions and all lost their worst calendar year in 2009; and the academic construction rebalances monthly at an assumed 3.30–18.67 pp/yr of cost against a 7.33 gross premium. The third ground has gone: MTUM is the entire retail momentum shelf was true of the census frame Experiment 002 screened, and the corrected frame carries six momentum products of which four reach exploratory.",
     source: productAudit,
   },
   {
@@ -173,7 +173,7 @@ export const sleeves: readonly Sleeve[] = [
     caveat:
       "Rejected does not mean the premium is zero. It means the publicly available data cannot sign it either way, and that adding more of the same data provably will not: RMW pooled at +2.53 pp/yr against its own measured 2.62 pp/yr detection threshold.",
     source: {
-      label: "0005 — Profitability and investment premia are closed on public data",
+      label: "0005 — Profitability and investment premiums are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
     },
   },
@@ -206,7 +206,7 @@ export const sleeves: readonly Sleeve[] = [
     feeBp: 3,
     feeAsOf: asOf("2026-08-12"),
     reason:
-      "It delivers a real HML loading at 3 bp and still carries a +2.57 pp/yr shortfall against the fitted cheap combination.",
+      "It delivers a real HML exposure at 3 bp and still carries a +2.57 pp/yr shortfall against the fitted cheap combination.",
     caveat:
       'That shortfall is not a defect in the fund. VTV is itself one of the four funds the replication is built from, and a fund is never in its own basis, so its replication degenerates to 0.784 VTI + 0.216 VB at 7.48 pp/yr of tracking error. Read the rejection as "value underperformed the market over these 72 months" — a return finding the audit is not entitled to make. As of 2026-08-23 the portfolio holds VTV at 15%, chosen on cost rather than on measured return: 2.70 bp of net cost after securities lending against AVUV\'s 24.54, and 8%/yr of turnover. Whole-portfolio, VTV against AVUV reads −0.15 pp/yr [−0.68, +0.34] against a 0.68 floor, which is unresolved on both windows on which the comparison is legal.',
     source: {
@@ -247,7 +247,7 @@ export const sleeves: readonly Sleeve[] = [
     reason:
       "Forty-six months and an interval running from +0.058 to +0.991. Under the frozen rule the point estimate decides, and this is the shakiest classification on the page.",
     caveat:
-      "Its exposure profile is the odd one on the shelf: a static market beta of −0.053 and a negative volatility-scaled loading, which is not the trend shape at all over these months, whatever it is.",
+      "Its exposure profile is the odd one on the shelf: a static market beta of −0.053 and a negative volatility-scaled exposure, which is not the trend shape at all over these months, whatever it is.",
     source: trend,
   },
   {
@@ -313,31 +313,31 @@ export const sleeves: readonly Sleeve[] = [
     verdict: "excluded",
     status: null,
     statusNote:
-      "No experiment here graded it. It is priced from the arithmetic of what it would have to earn, and its structure is read from its own N-PORT holdings.",
+      "No experiment here graded it. Its price rests on arithmetic: what it would have to earn before it contributes anything. Its structure is read from its own N-PORT holdings.",
     loading: null,
     feeBp: 20,
     feeAsOf: asOf("2026-08-17"),
     reason:
-      "A 90/60 fund needs 48.3 bp/yr of Treasury excess return over cash before the overlay contributes anything, at the 12–18 bp OIS benchmark a fund actually finances at. The 92.0 bp this line used to state came from a special-collateral repo basis that is not a rate a fund pays. Both inputs are forecasts.",
+      "A 90/60 fund needs 48.3 bp/yr of Treasury excess return over cash before the borrowed Treasury position it adds on top contributes anything, at the 12–18 bp OIS benchmark a fund actually finances at. The 92.0 bp this line used to state came from a special-collateral repo basis that is not a rate a fund pays. Both inputs are forecasts.",
     caveat:
-      "Holdings put it at 90.83% equity plus 63.50% of Treasury futures notional, so 1.54x gross and delta 0.14 — it keeps 85.6% of the funding-rule benefit rather than all of it. Its own record does not settle the overlay either way, and its two siblings are the counter-evidence: NTSI and NTSE have each lost to their own equity leg's index by about 3 pp/yr since 2021. Its zero-capital-gain record comes from $163m of capital loss carryforwards and in-kind redemption relief, not from Treasury futures being elegant.",
+      "Holdings put it at 90.83% equity plus 63.50% of Treasury futures exposure, so 1.54x gross and delta 0.14. It keeps 85.6% of the funding-rule benefit rather than all of it. Its own record does not settle that financed addition either way, and its two siblings are the counter-evidence: NTSI and NTSE have each lost to their own equity leg's index by about 3 pp/yr since 2021. Its zero-capital-gain record comes from $163m of capital loss carryforwards and in-kind redemption relief, not from Treasury futures being elegant.",
     source: { ...structural, anchor: "3-section-1256-and-capital-efficiency-handled-honestly" },
   },
   {
     id: "leverage",
-    label: "Leverage, held through a stacked fund",
+    label: "Borrowing, held through a stacked fund",
     ticker: "RSST",
     verdict: "optional",
     status: null,
     statusNote:
-      "Zero leverage is the reference recommendation for an investor whose financing and policy inputs are missing. It is not a research prohibition and it is not what the published portfolio holds.",
+      "Borrowing nothing is the reference recommendation for an investor whose financing and policy inputs are missing. It bars no research, and it is not what the published portfolio holds.",
     loading: null,
     feeBp: 99,
     feeAsOf: asOf("2026-08-17"),
     reason:
-      "The published construction holds RSST at 30% of capital, which is about 1.32x gross exposure and 30 points of trend. The wrapper is what makes that a financed position rather than a sale of equity: RSST's filed delta of −0.07 keeps essentially the whole +2.44 pp/yr funding-rule gap, where buying a standalone managed-futures fund out of the equity sleeve keeps none of it.",
+      "The published construction holds RSST at 30% of capital, which is about 1.32x gross exposure and 30 points of trend. The way it is packaged is what makes that a financed position rather than a sale of equity: RSST's filed delta of −0.07 keeps essentially the whole +2.44 pp/yr funding-rule gap, where buying a standalone managed-futures fund out of the equity holding keeps none of it.",
     caveat:
-      "Decision 0010 clause 6 is the governing statement as of 2026-08-22: funding is part of the hypothesis, and the zero-leverage portfolio is a current recommendation for an underspecified investor rather than a restriction on researching financed constructions. Decision 0004's own header now reads as a dated publication conclusion rather than a research constraint. What has not changed is that nothing is promoted: the sizing rests on holdability and on one whole-portfolio comparison that does not isolate the weight, not on a demonstrated edge. Three things remain unmeasured and each could move the sign — the fund-level implied financing spread, which no issuer discloses because futures financing lives in the basis; the wrapper's trend delivery beyond 31 filed months; and a modelled margin and forced-liquidation path under a defined investor policy.",
+      "Decision 0010 clause 6 is the governing statement as of 2026-08-22: funding is part of the hypothesis, and the borrow-nothing portfolio is a current recommendation for an underspecified investor rather than a restriction on researching financed constructions. Decision 0004's own header now reads as a dated publication conclusion rather than a research constraint. What has not changed is that nothing is promoted: the sizing rests on holdability and on one whole-portfolio comparison that does not isolate the weight, not on a demonstrated edge. Three things remain unmeasured and each could move the sign: the fund-level implied financing spread, which no issuer discloses because futures financing lives in the basis; the fund's trend delivery beyond 31 filed months; and a modelled margin and forced-liquidation path under a defined investor policy.",
     source: {
       label: "0010 — Research stays open; claim gates carry scope",
       docPath: "docs/decisions/0010-bars-carry-a-reopening-condition.md",
@@ -388,11 +388,11 @@ export const sleeves: readonly Sleeve[] = [
     feeBp: 10,
     feeAsOf: asOf("2026-08-17"),
     reason:
-      "Tested 2026-08-17 under both funding rules, over 618 months from 1975-01 — the first month a US person could legally own it. Its Sharpe ratio is 0.18 against equity's 0.59, and everything follows from that. Funded by selling equity, which is what a physical gold ETF imposes, it loses 0.40 pp/yr against a 0.30 bar. Funded as a financed overlay, which is what a return-stacked wrapper imposes, it gains 0.18 pp/yr — still below the bar and below its own 0.73 detection floor. Its correlation to equity is zero rather than negative, −0.02 to +0.03 and −0.04 to +0.08 inside equity drawdowns, which confirms the prior that it is an average hedge rather than a universal negative-correlation asset.",
+      "Tested 2026-08-17 under both funding rules, over 618 months from 1975-01 — the first month a US person could legally own it. Its Sharpe ratio is 0.18 against equity's 0.59, and everything follows from that. Funded by selling equity, which is what a physical gold ETF imposes, it loses 0.40 pp/yr against a 0.30 bar. Funded as an addition paid for by borrowing, which is what a return-stacked fund imposes, it gains 0.18 pp/yr, still below the bar and below 0.73, the smallest effect this window could have found. Its correlation to equity is zero rather than negative, −0.02 to +0.03 and −0.04 to +0.08 inside equity drawdowns, which confirms the prior that it is an average hedge rather than a universal negative-correlation asset.",
     caveat:
-      "The forty months from 1971-09 to 1974-12 carry about 40% of the full-sample Sharpe ratio, and private US gold ownership was illegal throughout them, so every figure here excludes them. Beside a trend overlay gold adds rather than substitutes — the two correlate +0.07 — but the increment is 0.09 pp/yr against a detection floor of 1.68. Tax decides where to hold it, not whether: a bullion ETF pays 28% as a collectible plus 3.8% on a gain it can defer for decades, while the overlay wrapper distributes ordinary income every year at a measured 1.53 pp/yr.",
+      "The forty months from 1971-09 to 1974-12 carry about 40% of the full-sample Sharpe ratio, and private US gold ownership was illegal throughout them, so every figure here excludes them. Beside a borrowed trend position gold adds rather than substitutes (the two correlate +0.07), but the increment is 0.09 pp/yr against the 1.68 that is the smallest effect the test could have found. Tax decides where to hold it, not whether: a bullion ETF pays 28% as a collectible plus 3.8% on a gain it can defer for decades, while the fund that adds it on borrowed money distributes ordinary income every year at a measured 1.53 pp/yr.",
     source: {
-      label: "What a sleeve is worth inside a portfolio, rather than on its own",
+      label: "What a holding is worth inside a portfolio, rather than on its own",
       docPath: "docs/research/marginal-sleeve-value.md",
     },
   },
@@ -501,11 +501,11 @@ export interface CreditRow {
  * imply that it is.
  */
 export const diversificationCredit = {
-  heading: "Why there is no trend, momentum or managed-futures sleeve",
+  heading: "Why there is no trend, momentum or managed-futures holding",
   headline:
-    "The credit a sleeve earns for not moving with the portfolio has a ceiling, and the ceiling is the base portfolio's own variance. That part is arithmetic. The 0.30 pp/yr bar it was compared against is not: it is a reference point nobody has derived, and it sits below this instrument's own 0.58 pp/yr detection floor.",
+    "The credit a holding earns for not moving with the portfolio has a ceiling, and the ceiling is the base portfolio's own variance. That part is arithmetic. The 0.30 pp/yr bar it was compared against is not. That bar is a reference point nobody has derived, and it sits below the 0.58 pp/yr this instrument could resolve.",
   mechanism:
-    "Fund a sleeve pro rata out of the portfolio you already hold, and its diversification credit is the portfolio's variance times one minus the sleeve's beta. Set the beta to zero and the credit is exactly the portfolio's variance. That number belongs to the base portfolio. No sleeve can raise it.",
+    "Fund a new holding pro rata out of the portfolio you already hold, and its diversification credit is the portfolio's variance times one minus that holding's beta. Set the beta to zero and the credit is exactly the portfolio's variance. That number belongs to the base portfolio. No holding can raise it.",
   referenceWeight: "10%",
   materialityThreshold: "0.30 pp/yr",
   bases: [
@@ -547,16 +547,16 @@ export const diversificationCredit = {
     },
   ] as const satisfies readonly CreditRow[],
   ruler:
-    "The experiment carried a control designed to supply nothing: cash added to a 100% equity core, funded pro rata out of it. It sits at a beta of +0.001 and lands on the ceiling, +0.217 pp/yr at a 10% weight. The algebra is confirmed by a sleeve built to be worthless.",
+    "The experiment carried a control designed to supply nothing: cash added to a 100% equity core, funded pro rata out of it. It sits at a beta of +0.001 and lands on the ceiling, +0.217 pp/yr at a 10% weight. The algebra is confirmed by a holding built to be worthless.",
   aboveTheCeiling:
-    "Five sleeves earn more than the ceiling — the four funded long-short overlays and a modelled Treasury proxy — and every one of them does it with a negative beta rather than a zero one. All five pay for it in the standalone return term instead.",
+    "Five holdings earn more than the ceiling: the four funded long-short positions and a modelled Treasury proxy. Every one of them does it with a negative beta rather than a zero one. All five pay for it in the standalone return term instead.",
   trendReading:
-    "Trend's own beta to the core is −0.132, worth +0.246 pp/yr at a 10% weight against a total marginal growth contribution of +0.258. So essentially all of what trend contributes is credit rather than return it earned standing alone. Its interval runs from −0.545 to +1.069 and its Holm-adjusted p is 1.0000. Read both with the instrument in view: every one of the ten estimates lies inside the design's own ±0.58 pp/yr detection floor, and family-wise control at 0.05 belongs to a confirmatory stage rather than to a first search. Trend and long-only US momentum are therefore unresolved here, not refuted.",
+    "Trend's own beta to the core is −0.132, worth +0.246 pp/yr at a 10% weight against a total marginal growth contribution of +0.258. So essentially all of what trend contributes is credit rather than return it earned standing alone. Its interval runs from −0.545 to +1.069 and its Holm-adjusted p is 1.0000. Read both with the instrument in view: every one of the ten estimates lies inside the ±0.58 pp/yr the design itself could resolve, and family-wise control at 0.05 belongs to a confirmatory stage rather than to a first search. Trend and long-only US momentum are therefore unresolved here, not refuted.",
   fragility:
-    "The sleeves whose value is a credit earned it in one crisis. Every negative-beta sleeve collapses in the second half of the sample and every one loses its best year to 2008. Trend goes from +1.243 pp/yr over 1991–2008 to −0.823 over 2009–2025, and doubling the cost assumption alone takes its full-period figure to −0.009.",
+    "The holdings whose value is a credit earned it in one crisis. Every negative-beta holding collapses in the second half of the sample and every one loses its best year to 2008. Trend goes from +1.243 pp/yr over 1991–2008 to −0.823 over 2009–2025, and doubling the cost assumption alone takes its full-period figure to −0.009.",
   deRisking: {
     headline:
-      "The same control is why growth decides here and a certainty equivalent does not. On a CRRA certainty equivalent at gamma = 3 the cash control scores +0.166 pp/yr, while losing 0.643 pp/yr of geometric growth. The gap between the two is payment for holding less equity. Any investor can have that for free.",
+      "The same control is why growth decides here and a certainty equivalent does not. On a certainty equivalent at the declared risk-aversion setting gamma = 3, the cash control scores +0.166 pp/yr, while losing 0.643 pp/yr of geometric growth. The gap between the two is payment for holding less equity. Any investor can have that for free.",
     figures: [
       {
         label: "Certainty equivalent, gamma = 3",
@@ -574,7 +574,7 @@ export const diversificationCredit = {
         label: "The de-risking reward",
         value: "+0.809",
         unit: "pp/yr",
-        note: "The difference, and 2.7× the 0.30 pp/yr reference point, for a sleeve that supplies nothing.",
+        note: "The difference, and 2.7× the 0.30 pp/yr reference point, for a holding that supplies nothing.",
       },
     ] as const satisfies readonly KeyNumber[],
     source: {
@@ -583,10 +583,10 @@ export const diversificationCredit = {
     } as const satisfies Citation,
   },
   caveat:
-    "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold has since been tested and it lands exactly on the ceiling: its beta to the equity core measures zero, so it takes the whole credit and still loses 0.10 pp/yr. Per unit of weight the credit is 2.17 pp/yr against a standalone shortfall of 2.95, so the most the credit can ever pay is 74% of the gap — and because both scale with the weight, holding more does not close it.",
+    "The ceiling is arithmetic. What goes into it is not. The volatilities and the betas are estimates from 420 months, 1991 to 2025, and the credit is a difference of two covariances — several of these move by more than themselves when the correlation moves by 0.10. Gold has since been tested and it lands exactly on the ceiling: its beta to the equity core measures zero, so it takes the whole credit and still loses 0.10 pp/yr. Per unit of weight the credit is 2.17 pp/yr against a standalone shortfall of 2.95, so the most the credit can ever pay is 74% of the gap, and because both scale with the weight, holding more does not close it.",
   status: "unresolved" as EvidenceStatus,
   statusNote:
-    "A falsifier written down before the result fired, on two specifications judging the same data — one on a certainty equivalent, one on growth. Growth decides. Six of the ten sleeve verdicts have since been restated unresolved, because the only clauses that fired on them were a bar below this design's own detection floor and a family-wise correction that belongs to a confirmatory stage; the four that fired a sign or boundary clause stand, scoped to pro-rata funding at a 10% weight. Every input is a paper portfolio, a vendor series or a model. None of it is investable, none of it promotes anything, and none of it says trend is worthless.",
+    "A falsifier written down before the result fired, on two specifications judging the same data: one on a certainty equivalent, one on growth. Growth decides. Six of the ten verdicts on holdings have since been restated unresolved, because the only clauses that fired on them were a bar below what this design could resolve and a family-wise correction that belongs to a confirmatory stage; the four that fired a sign or boundary clause stand, scoped to pro-rata funding at a 10% weight. Every input is a paper portfolio, a vendor series or a model. None of it is investable, none of it promotes anything, and none of it says trend is worthless.",
   source: marginalValue,
   asOf: asOf("2026-08-22"),
 } as const;
@@ -655,7 +655,7 @@ export const factorPremia: readonly FactorPremium[] = [
     byRegion: "US +3.04, developed ex-US +1.68, emerging +2.88 pp/yr",
     longOnlyCapture: null,
     source: {
-      label: "0005 — Profitability and investment premia are closed on public data",
+      label: "0005 — Profitability and investment premiums are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
     },
   },
@@ -672,7 +672,7 @@ export const factorPremia: readonly FactorPremium[] = [
     byRegion: "US −1.39, developed ex-US +0.53, emerging +1.46 pp/yr",
     longOnlyCapture: null,
     source: {
-      label: "0005 — Profitability and investment premia are closed on public data",
+      label: "0005 — Profitability and investment premiums are closed on public data",
       docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
     },
   },
@@ -696,12 +696,12 @@ export const factorPremia: readonly FactorPremium[] = [
     label: "Diversified trend (AQR TSMOM index)",
     status: "unresolved",
     statusNote:
-      "Rejected under the absolute reading of clause (d) as frozen, unresolved under the relative reading that Experiment 008 judges better justified. Unresolved is not a promotion, and a vendor-series evaluation is capped at exploratory in any case.",
+      "Rejected under the absolute reading of clause (d) as frozen, unresolved under the relative reading that Experiment 008 judges better justified. Unresolved promotes nothing. A vendor-series evaluation is capped at exploratory in any case.",
     // Decision 0008 constraint 2: growth, the certainty equivalent and the de-risking
     // component between them are published as three numbers or as none. This record
     // carried the CE alone until 2026-08-12.
     pooledPremium:
-      "+1.312 pp/yr of marginal geometric growth at a 15% sleeve weight, against +1.342 of CRRA certainty equivalent, so +0.030 of it is de-risking",
+      "+1.312 pp/yr of marginal geometric growth at a 15% weight in the holding, against +1.342 of certainty equivalent at a declared risk-aversion setting, so +0.030 of it is de-risking",
     pooledInterval:
       "[+0.759, +1.916] over 432 months, on the certainty equivalent, which is what the frozen specification named as primary and what the risk-matched comparator uniquely entitles it to be. Post-publication +0.883 growth against +1.011 CE, interval [−0.175, +2.165], failing Holm",
     detectionThreshold: null,
@@ -719,10 +719,10 @@ export const factorPremia: readonly FactorPremium[] = [
 /** Shared exposures the sleeves above do not diversify away from each other. */
 export const sharedExposures: readonly string[] = [
   "HML and CMA correlate 0.63 over the common US post-publication window and must never be counted as two independent bets.",
-  "Regional factor sleeves are not independent either: US, developed ex-US and emerging HML correlate 0.52 and amount to an effective 1.49 regions; the same three momentum series correlate 0.66 and amount to 1.33.",
-  "A momentum tilt gets no regional diversification at all in a crash. All three regions lost their worst calendar year in 2009, and all ten worst pooled months are negative in every region.",
-  "Trend is a levered futures book. It shares leverage, funding liquidity, volatility estimation and short borrow with everything else levered.",
-  "A factor tilt and a rebalancing policy sit inside the same equity portfolio, so combining their tracking errors in quadrature assumes an independence that is optimistic.",
+  "Regional factor holdings are not independent either: US, developed ex-US and emerging HML correlate 0.52 and amount to an effective 1.49 regions; the same three momentum series correlate 0.66 and amount to 1.33.",
+  "A lean into momentum gets no regional diversification at all in a crash. All three regions lost their worst calendar year in 2009, and all ten worst pooled months are negative in every region.",
+  "Trend is a futures book run on borrowed money. It shares that borrowing, funding liquidity, volatility estimation and short borrow with everything else run the same way.",
+  "A factor lean and a rebalancing policy sit inside the same equity portfolio, so combining their tracking errors in quadrature assumes an independence that is optimistic.",
   "Twenty independent 55% bets give a strict majority only 59.1% of the time, and independence is itself estimated from the same selected history.",
 ];
 

@@ -148,7 +148,7 @@ export const withholdingForfeited = {
   blend70_30Bp: 17.04,
   blendAt30PercentOfEquityBp: 5.11,
   arithmetic: "developed: 2.60% × 6.068% = 15.78 bp/yr. emerging: 2.03% × 9.853% = 20.00 bp/yr.",
-  note: "The two sleeves cannot be treated as one international line.",
+  note: "Developed and emerging cannot be treated as one international line.",
   source: structural,
   asOf: asOf("2026-08-12"),
 } as const;
@@ -276,8 +276,8 @@ export const accountOrder: readonly AccountPlacement[] = [
   {
     id: "hsa",
     account: "HSA",
-    holds: "Equity, the highest-growth sleeve",
-    why: "The only US account untaxed at all three points, and payroll contributions escape FICA on top. That is not a rate forecast; it is a strictly dominant wrapper.",
+    holds: "Equity, the highest-growth holding",
+    why: "The only US account untaxed at all three points, and payroll contributions escape FICA on top. That needs no rate forecast. The structure wins at every rate.",
     conditions: [
       "It requires a high-deductible health plan.",
       "Its value is a dollar limit rather than a rate, so it cannot be expressed as basis points on a portfolio of arbitrary size.",
@@ -290,12 +290,12 @@ export const accountOrder: readonly AccountPlacement[] = [
     account: "Traditional 401(k) or IRA",
     holds:
       "Bonds first, then developed ex-US, then by the ranking above. A pro-rata managed-futures fund here or not at all",
-    why: "Bonds dominate by a factor of four. DBMF's 2.09 pp/yr distribution tax drag is zero here, and 1.44 pp/yr of it is incremental over the equity it is sold to buy. A trend overlay held through the return-stacked wrapper RSST does not need this shelter: 4.5 bp per dollar in a taxable account, because the wrapper contains the equity fund it displaces.",
+    why: "Bonds dominate by a factor of four. DBMF's 2.09 pp/yr distribution tax drag is zero here, and 1.44 pp/yr of it is incremental over the equity it is sold to buy. Trend exposure added on top through the return-stacked fund RSST does not need this shelter: 4.5 bp per dollar in a taxable account, because RSST contains the equity fund it displaces.",
   },
   {
     id: "roth",
     account: "Roth",
-    holds: "The highest-expected-growth sleeve that fits after bonds — US equity, or the small-value tilt",
+    holds: "The highest-expected-growth holding that fits after bonds: US equity, or the lean into small value",
     why: "Identical to a traditional account on foreign withholding: both forfeit it. The traditional-versus-Roth choice itself is a rate forecast, not a structure, and does not belong in a contractual budget.",
   },
   {
@@ -322,7 +322,7 @@ export const hsaLimits = {
 // ---------------------------------------------------------------------------
 
 export const deferredBalanceIsNotYourMoney = {
-  headline: "A tax-deferred balance is not the investor's money.",
+  headline: "Part of a tax-deferred balance belongs to the government rather than to the investor.",
   detail:
     "At a 24% withdrawal rate, $100,000 of traditional IRA is $76,000 of investor wealth and $24,000 of government wealth. An allocation stated on nominal balances misstates true equity exposure, and a location comparison run on nominal rather than after-tax dollars is systematically wrong. The ranking above is stated per dollar of shelter capacity precisely to sidestep that.",
   source: structural,
@@ -334,7 +334,7 @@ export const form1116Threshold = {
   holdingsSingleUsd: 190153,
   holdingsJointUsd: 380305,
   detail:
-    "Below $300 of creditable foreign tax ($600 joint) the credit is claimed on Schedule 3 with no Form 1116 and no §904 limitation. At the developed sleeve's withholding rate that threshold arrives at $190,153 of holdings, or $380,305 filing jointly.",
+    "Below $300 of creditable foreign tax ($600 joint) the credit is claimed on Schedule 3 with no Form 1116 and no §904 limitation. At the developed-markets withholding rate that threshold arrives at $190,153 of holdings, or $380,305 filing jointly.",
   caveats: [
     "Neither figure is indexed, so the fraction of investors pushed onto Form 1116 rises mechanically every year.",
     "Unused credit carries back one year and forward ten under §904(c), and is not refundable.",
@@ -348,7 +348,7 @@ export const form1116Threshold = {
 export const washSaleTrap = {
   headline: "Wash-sale scanning has to be household-wide, and this is why.",
   detail:
-    "An ordinary wash sale merely defers the loss, because §1091(d) adds it to the replacement shares' basis. Revenue Ruling 2008-5 removes that repair when the replacement is bought inside the taxpayer's IRA: the loss is disallowed and the IRA's basis is not increased, so the deduction is destroyed rather than deferred.",
+    "An ordinary wash sale merely defers the loss, because §1091(d) adds it to the replacement shares' basis. Revenue Ruling 2008-5 removes that repair when the replacement is bought inside the taxpayer's IRA: the loss is disallowed and the IRA's basis does not rise to absorb it, so the deduction is destroyed rather than deferred.",
   costBp: 119,
   costBasis: "A 5%-of-portfolio disallowance at the top rate.",
   whyItMatters:
@@ -530,9 +530,9 @@ export const foreignSleeves: readonly NamedForeignSleeve[] = [developedSleeve, e
 // ---------------------------------------------------------------------------
 
 /**
- * Everything above this line is stated for a **sleeve**. Everything below is stated for
- * a **named fund held by one stated investor**, and the two disagree — because a sleeve
- * table has to assume a qualified fraction and the funds file theirs.
+ * Everything above this line is stated for an **asset class**. Everything below is stated
+ * for a **named fund held by one stated investor**, and the two disagree — because an
+ * asset-class table has to assume a qualified fraction and the funds file theirs.
  *
  * Regenerate from `research/src/portfolio_edge/studies/investor_placement.py`; every
  * figure is pinned in `research/tests/unit/test_studies_investor_placement.py`.
@@ -543,12 +543,12 @@ const investorPlacement: Citation = {
   docPath: "docs/research/structural-and-tax-edges.md",
 };
 
-/** The one input that decides the sign, and the one the sleeve table above assumes away. */
+/** The one input that decides the sign, and the one the asset-class table above assumes away. */
 export const qualifiedFractionCorrection = {
   headline:
-    "The sleeve ranking above assumes international dividends are fully qualified. Their sponsors file otherwise.",
+    "The asset-class ranking above assumes international dividends are fully qualified. Their sponsors file otherwise.",
   detail:
-    "A qualified dividend is taxed at the long-term rate; the rest is ordinary income, 17 pp dearer at the top bracket. The sleeve table above takes the qualified fraction as 1.00 for both international sleeves. Vanguard's own 2025 foreign tax credit worksheet — the same document the withholding input comes from — reports qualified foreign dividend income of 66.2741% of Box 1a for VEA and 34.6250% for VWO. iShares designates 34.82% for IEMG, Avantis 44.48% for AVES and Invesco 25% for IDMO.",
+    "A qualified dividend is taxed at the long-term rate; the rest is ordinary income, 17 pp dearer at the top bracket. The asset-class table above takes the qualified fraction as 1.00 for both international classes. Vanguard's own 2025 foreign tax credit worksheet — the same document the withholding input comes from — reports qualified foreign dividend income of 66.2741% of Box 1a for VEA and 34.6250% for VWO. iShares designates 34.82% for IEMG, Avantis 44.48% for AVES and Invesco 25% for IDMO.",
   consequence:
     "Restoring the filed fraction reverses the emerging-market inversion. Both emerging funds this investor holds outrank US equity for shelter capacity at every live US qualified rate, not just at 23.8%. The inversion was an artifact of the assumption, not a property of the funds.",
   asOf: asOf("2026-08-22"),
@@ -605,7 +605,7 @@ export const investorHoldings: readonly InvestorHolding[] = [
     priorityBp: [361.78, 315.42, 213.79],
     account: "shelter",
     provenance:
-      "Tidal Trust II N-CSR for the year ended 2026-01-31. Undistributed ordinary income on a tax basis went from 1.40% to 8.56% of net assets in one year while the fund distributed 0.33% of net assets of ordinary income, so about 8.43% of net assets was recognised and not paid out. The trust's own note: as wholly-owned controlled foreign corporations, the subsidiaries' net income and capital gains are included each year in the fund's investment company taxable income. Whether and when the queue is distributed is not settled; the same note reserves the right to retain income and pay excise tax.",
+      "Tidal Trust II N-CSR for the year ended 2026-01-31. Undistributed ordinary income on a tax basis went from 1.40% to 8.56% of net assets in one year while the fund distributed 0.33% of net assets of ordinary income, so about 8.43% of net assets was recognised and not paid out. The trust's own note: as wholly-owned controlled foreign corporations, the subsidiaries' net income and capital gains are included each year in the fund's investment company taxable income. Nobody can yet say whether or when the queue is distributed; the same note reserves the right to retain income and pay excise tax.",
     asOf: asOf("2026-01-31"),
   },
   {
@@ -762,9 +762,9 @@ export const menuConstraint = {
   bindingDerivation:
     "The unconstrained plan already shelters VEA and IEMG — 15% of the portfolio — so while the employer plan is no larger than that it can be filled with exactly those two and costs nothing. 1 − 0.15/0.333 = 0.55. Below that every extra point of employer plan forces one more point of a low-priority index fund into the shelter and evicts a high-priority one.",
   whatItCosts:
-    "At f = 0 the two highest-yielding funds in the portfolio — DFIV at 4.03% and AVES at 3.91% — are evicted to the taxable account while VTI, last in the queue at every rate, is forced into the shelter at 18.3% of the portfolio. That is the exact inverse of the ranking, imposed by a fund lineup rather than by any tax fact. Against the same plan at f = 1 it costs 9.09 bp/yr at 23.8%, 6.56 at 18.8% and 3.33 at 15% — identically on both readings of the wrapper, because the wrapper is sheltered either way and what the menu reorders is the equity queue behind it.",
+    "At f = 0 the two highest-yielding funds in the portfolio — DFIV at 4.03% and AVES at 3.91% — are evicted to the taxable account while VTI, last in the queue at every rate, is forced into the shelter at 18.3% of the portfolio. That is the exact inverse of the ranking, imposed by a fund lineup rather than by any tax fact. Against the same plan at f = 1 it costs 9.09 bp/yr at 23.8%, 6.56 at 18.8% and 3.33 at 15% — identically on both readings of RSST, because RSST is sheltered either way and what the menu reorders is the equity queue behind it.",
   wrapperAlwaysFits:
-    "The wrapper never has to leave the shelter at any f, because the Roth alone is 33.3% against its 30%. The margin is 3.3 points, so that is a coincidence of the stated weights rather than a structural fact.",
+    "RSST never has to leave the shelter at any f, because the Roth alone is 33.3% against its 30%. The margin is 3.3 points, so that is a coincidence of the stated weights rather than a structural fact.",
   cheapestLever:
     "Consolidating an old employer balance into the rollover IRA buys the whole f = 0 to f = 0.5 improvement for the cost of a form. It is the cheapest lever on this page.",
   source: investorPlacement,
@@ -786,15 +786,15 @@ export const planValue: readonly PlanValueRow[] = [
 ];
 
 export const planValueNote =
-  "Booked figures are against a control the investor could actually have executed, on the audited distributed basis. The conditional column is reported and never added: it rests on income recognised inside the wrapper and not yet distributed to anybody. At f = 0 the booked line is negative — with a wholly captive tax-deferred third, forcing the wrapper into the Roth costs more on the audited basis than the fund ordering saves. The sign flips at f between 0.02 and 0.05.";
+  "Booked figures are against a control the investor could actually have executed, on the audited distributed basis. The conditional column is reported and never added: it rests on income recognised inside RSST and not yet distributed to anybody. At f = 0 the booked line is negative: with a wholly captive tax-deferred third, forcing RSST into the Roth costs more on the audited basis than the fund ordering saves. The sign flips at f between 0.02 and 0.05.";
 
 /** Why an unresolved input does not stall the decision. */
 export const wrapperRegret = {
-  headline: "The wrapper's unresolved accrual does not need to be settled to make the decision.",
+  headline: "RSST's unresolved accrual does not need to be settled to make the decision.",
   shelterItCostIfWrongBp: [8.54, 1.12] as const,
   followTheAuditedRankingCostIfWrongBp: [89.88, 42.62] as const,
   reading:
-    "At 23.8%, sheltering the wrapper costs 1.12 bp/yr at f = 1 and 8.54 at f = 0 if the audited basis is right. Following the audited-basis ranking instead costs 42.62 and 89.88 respectively if the accrual is distributed. The asymmetry is ten to one at every f and every bracket, so sheltering it is right under either reading and the measurement can stay open.",
+    "At 23.8%, sheltering RSST costs 1.12 bp/yr at f = 1 and 8.54 at f = 0 if the audited basis is right. Following the audited-basis ranking instead costs 42.62 and 89.88 respectively if the accrual is distributed. The asymmetry is ten to one at every f and every bracket, so sheltering it is right under either reading and the measurement can stay open.",
   source: investorPlacement,
   asOf: asOf("2026-08-22"),
 } as const;
@@ -820,7 +820,7 @@ export const linesNotBooked: readonly { readonly line: string; readonly why: str
 export const contributionCoverage = {
   constrainedRotationPp: 2,
   detail:
-    "One rebalancing direction cannot be executed inside the shelter — selling US equity to buy international — because at f = 1 only 1.7% of AVLV sits in the shelter beside the wrapper. It needs roughly two points of the portfolio a year. Contributions of 5–15%/yr cover it 2.5 to 7.5 times over, so the taxable account never has to sell.",
+    "One rebalancing direction cannot be executed inside the shelter — selling US equity to buy international — because at f = 1 only 1.7% of AVLV sits in the shelter beside RSST. It needs roughly two points of the portfolio a year. Contributions of 5–15%/yr cover it 2.5 to 7.5 times over, so the taxable account never has to sell.",
   coverageAtFivePercent: 2.5,
   coverageAtFifteenPercent: 7.5,
   source: investorPlacement,
@@ -830,14 +830,14 @@ export const contributionCoverage = {
 export const rothVersusTraditional = {
   headline: "The drag cannot decide between a Roth and a traditional account, because it is the same number in both.",
   algebra:
-    "Terminal after-tax wealth from putting growth factor A in a Roth of nominal size R and factor B in a traditional of size T at withdrawal rate t is R·A + T(1−t)·B. Swapping them changes it by exactly (R − T(1−t))(A − B). The gain is the after-tax size gap between the accounts times the growth gap between the sleeves, and it is zero when R = T(1−t).",
+    "Terminal after-tax wealth from putting growth factor A in a Roth of nominal size R and factor B in a traditional of size T at withdrawal rate t is R·A + T(1−t)·B. Swapping them changes it by exactly (R − T(1−t))(A − B). The gain is the after-tax size gap between the accounts times the growth gap between the two holdings, and it is zero when R = T(1−t).",
   valueBp: 1.96,
   valueBasis:
-    "Equal nominal thirds, a 24% withdrawal rate, 30 years, a 30% sleeve swapped, and a 1 pp/yr expected-return gap: 1.96 bp/yr. Comparable to the whole taxable-versus-sheltered decision once that is measured against a feasible control, and unlike it, entirely a forecast.",
+    "Equal nominal thirds, a 24% withdrawal rate, 30 years, a 30% holding swapped, and a 1 pp/yr expected-return gap: 1.96 bp/yr. Comparable to the whole taxable-versus-sheltered decision once that is measured against a feasible control, and unlike it, entirely a forecast.",
   theHonestReading:
-    "Holding the same after-tax allocation, this gain is not free. The traditional account makes the government a t-share partner in the outcome, so moving a sleeve to the Roth raises the investor's share of its dispersion by the same factor it raises the mean. Putting the least-established sleeve in the traditional is a risk decision, not an edge.",
+    "Holding the same after-tax allocation, this gain is not free. The traditional account makes the government a t-share partner in the outcome, so moving a holding to the Roth raises the investor's share of its dispersion by the same factor it raises the mean. Putting the least-established holding in the traditional is a risk decision rather than an edge.",
   whatIsNotAForecast:
-    "Required minimum distributions. The IRS states that withdrawals from Roth IRAs and designated Roth accounts are not required until after the death of the account owner, while a traditional balance must begin distributing at 73. The traditional account is therefore the right home for the sleeve the investor expects to be trimming anyway, and the Roth for the one they never intend to sell.",
+    "Required minimum distributions. The IRS states that withdrawals from Roth IRAs and designated Roth accounts are not required until after the death of the account owner, while a traditional balance must begin distributing at 73. The traditional account is therefore the right home for the holding the investor expects to be trimming anyway, and the Roth for the one they never intend to sell.",
   source: {
     ...investorPlacement,
     href: "https://www.irs.gov/retirement-plans/retirement-plan-and-ira-required-minimum-distributions-faqs",
@@ -853,9 +853,9 @@ export const contributionDirection = {
   theConstraintThatBites:
     "The Roth IRA contribution phases out between $242,000 and $252,000 of modified AGI filing jointly, and the §1411 surtax starts at an unindexed $250,000. An investor paying the surtax — which is every investor in the 18.8% and 23.8% columns — is at or past the Roth IRA phase-out, so their Roth capacity comes from a designated Roth account in an employer plan or from a conversion, not from a direct contribution.",
   rebalancing:
-    "The entire international sleeve and the entire trend overlay sit inside the shelter, so every trade on those two legs realises nothing. The constrained direction is selling US equity to buy international: only about 1.7% of the portfolio in AVLV sits in the shelter beside the wrapper, so a rotation larger than about two points either disturbs the wrapper or realises a gain in the taxable account. Point new contributions at it instead.",
+    "The entire international holding and the entire trend position sit inside the shelter, so every trade on those two legs realises nothing. The constrained direction is selling US equity to buy international: only about 1.7% of the portfolio in AVLV sits in the shelter beside RSST, so a rotation larger than about two points either disturbs RSST or realises a gain in the taxable account. Point new contributions at it instead.",
   rebalancingValue:
-    "Realising 10% of standing gain a year costs 41.5 bp/yr of the 84.1 bp deferral at a 30-year horizon. Applied to the taxable third of this portfolio, never having to sell there is worth about 14 bp/yr — larger than the entire location decision on the wrapper's conservative reading.",
+    "Realising 10% of standing gain a year costs 41.5 bp/yr of the 84.1 bp deferral at a 30-year horizon. Applied to the taxable third of this portfolio, never having to sell there is worth about 14 bp/yr, larger than the entire location decision on RSST's conservative reading.",
   source: { ...investorPlacement, href: "https://www.irs.gov/pub/irs-drop/n-25-67.pdf" },
   asOf: asOf("2026-08-22"),
 } as const;
@@ -863,7 +863,7 @@ export const contributionDirection = {
 export const investorPlanCaveats: readonly string[] = [
   "The rollover share f of the tax-deferred third has not been measured, and it is the input the plan is most sensitive to: it moves the booked line from −2.0 to +6.7 bp/yr and decides whether DFIV and AVES can be sheltered at all. Ask for it before executing. So has the employer plan's actual lineup — VTI, VEA and IEMG is a typical menu, not a filed one.",
   "Contributions are 5–15%/yr of the portfolio. No conclusion here turns on where in that range the investor sits, because new money covers the one constrained rebalancing direction more than twice over at every point in it.",
-  "Three qualified fractions are assumed rather than filed — VTI, AVLV and the wrapper's undistributed queue. Each assumption pushes its fund toward the taxable account, so the plan is conservative in the direction it is uncertain.",
+  "Three qualified fractions are assumed rather than filed: VTI, AVLV and RSST's undistributed queue. Each assumption pushes its fund toward the taxable account, so the plan is conservative in the direction it is uncertain.",
   "IDMO's capital-gain line rests on one December distribution and one fiscal year's undistributed balance. It is the least durable figure in the table and it is what puts IDMO second in the queue.",
   "Yields mix windows: two are sponsor forecasts effective 2026-07-31, three are audited fiscal-year ratios ending in 2025. A yield is the input a placement ranking is most sensitive to and none of these is point-in-time.",
   "State income tax is excluded and additive. A state that taxes ordinary income and capital gain alike compresses every gap in the table and makes the ranking flatter, not different.",

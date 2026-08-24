@@ -82,10 +82,13 @@ const equityShare: Citation = {
   docPath: "docs/research/setting-the-equity-share.md",
 };
 const alternatives: Citation = {
-  label: "The alternative-sleeves audit",
+  label: "Our audit of the alternatives",
   docPath: "docs/research/alternative-sleeves-audit.md",
 };
-const marginal: Citation = { label: "Marginal sleeve value", docPath: "docs/research/marginal-sleeve-value.md" };
+const marginal: Citation = {
+  label: "The marginal value of a holding",
+  docPath: "docs/research/marginal-sleeve-value.md",
+};
 const closedPremia: Citation = {
   label: "Decision 0005 — RMW and CMA closed on public data",
   docPath: "docs/decisions/0005-factor-premia-closed-on-public-data.md",
@@ -96,7 +99,7 @@ const READ = asOf("2026-08-17");
 export const families: readonly StrategyFamily[] = [
   {
     slug: "structural-and-tax",
-    name: "Cost, wrapper and tax",
+    name: "Cost, fund structure and tax",
     claim:
       "Fee, fund structure, lot method and account placement are worth about 109 bp a year, and their sign is known in advance.",
     inPractice:
@@ -118,13 +121,13 @@ export const families: readonly StrategyFamily[] = [
       "Every one of the 25 audited core funds distributed zero capital gains in every fiscal year on file.",
     ],
     evidenceAgainst: [
-      "Only the 49 bp fee line is unconditional. Harvesting needs a taxable account with gains, placement needs more than one account type, and the wrapper line needs you to be leaving an active mutual fund.",
+      "Only the 49 bp fee line is unconditional. Harvesting needs a taxable account with gains, placement needs more than one account type, and the fund-structure line needs you to be leaving an active mutual fund.",
       "The 46 bp tracking error is assumed rather than measured, and the components are not independent. Every horizon on the page inherits that.",
       "The emerging-market withholding input, 9.853%, is below ten of eleven funds' filed rates of 9.12–14.23%.",
     ],
     failureModes: [
       {
-        title: "The wrapper advantage is closing",
+        title: "The fund-structure advantage is closing",
         detail:
           "The +23 bp ETF-versus-mutual-fund line depends on active managers not having an ETF share class. There are now 94 SEC orders and 89 filings naming one, against two before the first order, from fourteen registrants — though only nine funds have actually listed.",
       },
@@ -136,14 +139,14 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "It is a per-reader number",
         detail:
-          "The budget is sized for one stated reference investor. Quoting a per-sleeve figure as a portfolio figure is the standard way tax numbers get inflated, and this repository has made that error itself.",
+          "The budget is sized for one stated reference investor. Quoting a figure for one holding as a figure for the whole portfolio is the standard way tax numbers get inflated, and this repository has made that error itself.",
       },
     ],
     implementation:
-      "Move to funds whose fee less lending is lowest, hold them in an ETF wrapper, set specific-lot identification once at the brokerage, and place each sleeve by computed priority rather than by rule of thumb.",
+      "Move to funds whose fee less lending is lowest, hold them in an ETF rather than a mutual fund, set specific-lot identification once at the brokerage, and place each holding by computed priority rather than by rule of thumb.",
     cost: "The whole fund-selection decision inside a cheap four-fund construction is worth 0.60 bp/yr — 1.36 against 0.76 — against an 84 bp/yr hurdle for the turnover needed to capture it.",
     overlap:
-      "Nothing, which is the point. It is the one line that adds to a factor tilt rather than competing with it — as long as the two are not quoted against different benchmarks and then summed.",
+      "Nothing, which is the point. It is the one line that adds to a factor lean rather than competing with it — as long as the two are not quoted against different benchmarks and then summed.",
     roleInPortfolio:
       "The first thing to do and the last thing to give up. It changes no holding you need to believe in.",
     portfolios: ["disciplined"],
@@ -156,13 +159,13 @@ export const families: readonly StrategyFamily[] = [
     name: "Value",
     claim: "Cheap stocks have earned more than expensive ones, and a long-only fund can capture part of the spread.",
     inPractice:
-      "Value is the only factor premium in this repository that advanced on its own strength. Pooled across three regions it measures +4.74 pp/yr against a detection floor of 3.35. But that figure is a gross long-short spread you cannot buy, and what reaches a shareholder is weight × (fund loading − incumbent loading) × premium − cost. At a 20% weight in a US large-value fund that is about 24 bp a year against 135 bp of tracking error.",
+      "Value is the only factor premium in this repository that advanced on its own strength. Pooled across three regions it measures +4.74 pp/yr, and the smallest effect that window could have found is 3.35. But that figure is a gross long-short spread you cannot buy, and what reaches a shareholder is weight × (fund exposure − incumbent exposure) × premium − cost. At a 20% weight in a US large-value fund that is about 24 bp a year against 135 bp of tracking error.",
     mechanism:
       "Either a risk story — cheap firms are distressed and their cash flows are more exposed to bad states — or a behavioural one, that investors over-extrapolate growth. This repository does not adjudicate between them, and the distinction matters only for whether the premium should survive being known.",
     certainty: "risk-premium",
     status: "exploratory",
     statusReason:
-      "The premium clears its own detection floor pooled across three regions and survives Holm correction and the removal of its best year. The missing promotion clause is a prior-window replication that no experiment here has fitted.",
+      "The premium clears the smallest effect its own window could have found, pooled across three regions, and it survives Holm correction and the removal of its best year. The missing promotion clause is a prior-window replication that no experiment here has fitted.",
     headline: {
       value: "+4.74 pp/yr",
       label: "HML pooled post-publication, three regions, 384 months",
@@ -172,10 +175,10 @@ export const families: readonly StrategyFamily[] = [
     evidenceFor: [
       "Positive in all three regions post-publication: +1.57 US, +5.07 developed ex-US, +7.58 emerging.",
       "Nine systematic value and small-value products keep their exploratory status under every comparator basis tested. The exposure they sell is delivered.",
-      "The developed ex-US tilt is the only line in this repository whose thirty-year detection floor, 21.6 bp, sits below its own edge of 27.1 bp.",
+      "The developed ex-US lean is the only line in this repository where the smallest effect thirty years could resolve, 21.6 bp, sits below its own edge of 27.1 bp.",
     ],
     evidenceAgainst: [
-      "The US leg alone is +1.57 pp/yr [−2.28, +5.54] against a 5.03 floor and survives no correction. On the US-only premium a 20% tilt's growth contribution is negative at every weight.",
+      "The US leg alone is +1.57 pp/yr [−2.28, +5.54] against a 5.03 floor and survives no correction. On the US-only premium a 20% lean's growth contribution is negative at every weight.",
       "The pooled figure is carried by the two non-US regions, with the largest leg in emerging markets, where shorting is hardest and the long-short construction least plausible.",
       "Four ex-US large-value funds read alphas of −2.2 to −4.1 pp/yr, and nobody here knows why. That is the largest open question in the product audit.",
     ],
@@ -183,12 +186,12 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "The capture double-count",
         detail:
-          "A long-only fund's 'capture fraction' and its factor loading are the same quantity measured two ways — 94% of the 0.520 capture is the 0.4891 loading, an identity exact to 4.4 × 10⁻¹⁶. Multiplying them discounts one exposure twice, and doing so understated this repository's own value tilt by about a factor of two in five places. The code now raises rather than allowing it.",
+          "A long-only fund's 'capture fraction' and its factor exposure are the same quantity measured two ways — 94% of the 0.520 capture is the 0.4891 exposure, an identity exact to 4.4 × 10⁻¹⁶. Multiplying them discounts one exposure twice, and doing so understated this repository's own value lean by about a factor of two in five places. The code now raises rather than allowing it.",
       },
       {
         title: "A working lifetime may not settle it",
         detail:
-          "A 20% US large-value tilt earns +24.4 bp against 135 bp of tracking error, which puts its thirty-year detection floor near 61 bp — more than twice the edge. The small-value alternative is worse: 142 bp against 43. You would hold either for thirty years and still not know.",
+          "A 20% US large-value lean earns +24.4 bp against 135 bp of tracking error, so the smallest effect thirty years could resolve is near 61 bp — more than twice the edge. The small-value alternative is worse: 142 bp against 43. You would hold either for thirty years and still not know.",
       },
       {
         title: "Small value is the worse trade",
@@ -197,12 +200,12 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "A long-only systematic value fund with a real loading and low turnover. AVLV delivers HML +0.322 at 15 bp and 7%/yr turnover; DFIV delivers +0.662 at 27 bp and 6%/yr on the developed ex-US panel. Both hold their status under every basis tested.",
+      "A long-only systematic value fund with a real exposure and low turnover. AVLV delivers HML +0.322 at 15 bp and 7%/yr turnover; DFIV delivers +0.662 at 27 bp and 6%/yr on the developed ex-US panel. Both hold their status under every basis tested.",
     cost: "15 to 27 bp of fee, plus the trading implied by 6–7%/yr turnover. Neither fund has distributed a capital gain in the years on file.",
     overlap:
-      "A value tilt overlaps heavily with the market it is drawn from: at a 20% weight the tracking error against the control is 135 bp on a portfolio whose own volatility is ten times that. It does not overlap with trend, and it overlaps with momentum negatively.",
+      "A value lean overlaps heavily with the market it is drawn from: at a 20% weight the tracking error against the control is 135 bp on a portfolio whose own volatility is ten times that. It does not overlap with trend, and it overlaps with momentum negatively.",
     roleInPortfolio:
-      "A sized bet, not a core. The two tilts this repository has priced sit at 20% and 8% of capital and together buy tens of basis points of expected edge for decades of tracking error.",
+      "A sized bet, not a core. The two leans this repository has priced sit at 20% and 8% of capital and together buy tens of basis points of expected edge for decades of tracking error.",
     portfolios: ["evidence-led", "candidate"],
     tickers: ["AVLV", "DFIV", "AVUV", "VBR", "IVLU", "AVES"],
     sources: [persistence, capture, products, recommendation],
@@ -224,7 +227,7 @@ export const families: readonly StrategyFamily[] = [
       value: "+7.33 pp/yr",
       label: "UMD pooled post-publication, three regions",
       interval: "[+3.92, +10.31] against a 4.98 detection floor",
-      note: "The worst detection floor measured anywhere in this repository.",
+      note: "The resolution of this test is the worst measured anywhere in this repository.",
     },
     evidenceFor: [
       "Positive in every region post-publication: +4.19 US, +8.35 developed ex-US, +9.44 emerging.",
@@ -258,7 +261,7 @@ export const families: readonly StrategyFamily[] = [
     overlap:
       "Momentum is distinct from value — the two are negatively correlated — which is the strongest argument for holding it. It overlaps with trend conceptually and not statistically: trend is time-series, momentum is cross-sectional.",
     roleInPortfolio:
-      "This repository excludes it. A reader who holds it anyway should size it knowing that its detection floor is the worst here and its regional diversification is close to imaginary.",
+      "This repository excludes it. A reader who holds it anyway should size it knowing that the test behind it has the worst resolution here and that its regional diversification is close to imaginary.",
     portfolios: ["candidate"],
     tickers: ["IDMO", "MTUM", "SPMO", "IMTM"],
     sources: [persistence, products, recommendation],
@@ -270,18 +273,18 @@ export const families: readonly StrategyFamily[] = [
     claim:
       "A diversified long/short futures book earns a positive expected return and is uncorrelated with equity, or negatively correlated when it matters.",
     inPractice:
-      "Trend's correlation claim holds on three independent instruments. Its return claim does not resolve on any of them. Treat a trend sleeve as a risk-reduction decision that may also pay, and size it as though the mean were zero.",
+      "Trend's correlation claim holds on three independent instruments. Its return claim does not resolve on any of them. Treat a trend holding as a risk-reduction decision that may also pay, and size it as though the mean were zero.",
     mechanism:
-      "Futures markets under-react to slow-moving information, so a systematic long/short book across dozens of markets earns a premium — and because it can be short, its correlation to equity is near zero unconditionally and negative inside sustained equity declines.",
+      "Futures markets under-react to slow-moving information, so a rule-driven book that can be long or short across dozens of markets earns a premium — and because it can be short, its correlation to equity is near zero unconditionally and negative inside sustained equity declines.",
     certainty: "risk-premium",
     status: "unresolved",
     statusReason:
       "The vendor index is rejected against the falsifier frozen before the run, and unresolved on the reading the experiment itself judges better. DBMF is exploratory. Nothing is promoted, and the mean does not resolve on any instrument tried.",
     headline: {
       value: "+1.312 pp/yr",
-      label: "Marginal growth of a 15% sleeve against a risk-matched cash comparator, 432 months",
+      label: "Marginal growth of a 15% holding against a risk-matched cash comparator, 432 months",
       interval: "certainty equivalent +1.342 [+0.759, +1.916]",
-      note: "Against a global equity core rather than cash, a 10% sleeve measures +0.258 pp/yr against a frozen 0.30 bar — which sits below that design's own 0.58 pp/yr detection floor, so the sleeve is unresolved there rather than refuted.",
+      note: "Against a global equity core rather than cash, a 10% holding measures +0.258 pp/yr against a frozen 0.30 bar — below the 0.58 pp/yr that was the smallest gap that design could have seen, so the holding is unresolved there rather than refuted.",
     },
     evidenceFor: [
       "The correlation holds three ways: −0.07 in the construction built here, −0.11 across 46 live funds, −0.08 from the vendor index. Inside crisis months it is −0.59, with a downside beta of −0.67.",
@@ -289,7 +292,7 @@ export const families: readonly StrategyFamily[] = [
       "Live funds, net of their own fees, returned +2.84%/yr at Sharpe 0.329 over 78 months — ahead of the vendor index over the same window, which is the opposite of the usual survivorship story.",
     ],
     evidenceAgainst: [
-      "Post-publication the sleeve measures +0.883 pp/yr with an interval containing zero, failing Holm correction.",
+      "Post-publication the holding measures +0.883 pp/yr with an interval containing zero, failing Holm correction.",
       "A static plus volatility-scaled replica delivers 44% of the benefit for none of the fee — which is the clause that fired the falsifier.",
       "The standalone index's Sharpe fell from 1.34 to 0.83 to 0.18 across three eras, and its geometric return from 19.4% to 3.1%.",
     ],
@@ -311,12 +314,12 @@ export const families: readonly StrategyFamily[] = [
       },
     ],
     implementation:
-      "DBMF clears the frozen 0.50 bar on the vendor index at +0.671 [+0.513, +0.829]; CTA, KMLM, FMF and WTMF are all rejected against it. Every one of those five was fitted on its own filed history, so the five windows run from 46 to 78 months and the numbers are not rankable as published — on the 46 months all five share, FMF rises from +0.303 to +0.476 and passes CTA. RSST delivers the exposure as notional rather than capital, and its own loading, measured from its filings, is +0.681 [+0.406, +0.955] on 31 months.",
-    cost: "85 bp for DBMF and 99 bp all-in for RSST, plus a distribution tax drag of 2.09 pp/yr and 0.32 pp/yr respectively. Once the equity each displaces is subtracted, that is 143.9 bp against 4.5 bp — the wrapper, not the strategy, decides the tax outcome.",
+      "DBMF clears the frozen 0.50 bar on the vendor index at +0.671 [+0.513, +0.829]; CTA, KMLM, FMF and WTMF are all rejected against it. Every one of those five was fitted on its own filed history, so the five windows run from 46 to 78 months and the numbers are not rankable as published — on the 46 months all five share, FMF rises from +0.303 to +0.476 and passes CTA. RSST buys the exposure with borrowing rather than with your capital, and the exposure it actually delivers, measured from its filings, is +0.681 [+0.406, +0.955] on 31 months.",
+    cost: "85 bp for DBMF and 99 bp all-in for RSST, plus a distribution tax drag of 2.09 pp/yr and 0.32 pp/yr respectively. Once the equity each displaces is subtracted, that is 143.9 bp against 4.5 bp — the way the fund is packaged, rather than the strategy, decides the tax outcome.",
     overlap:
       "Nothing else here. Trend is the one engine uncorrelated with equity, which is why its diversification credit survives even when its mean does not.",
     roleInPortfolio:
-      "A sleeve sized by the drawdown it changes, not by the return it might add. The resampled probability that the overlay is the deeper drawdown is 6.9% at 30% of notional and then doubles from 10.8% to 18.9% between 58% and 60% — a cliff, not a ramp, and the reason the practical ceiling sits near 55%.",
+      "A holding sized by the drawdown it changes, not by the return it might add. The resampled probability that adding trend on borrowed money leaves the deeper drawdown is 6.9% when that added exposure is 30% of the portfolio, and then doubles from 10.8% to 18.9% between 58% and 60% — a cliff, not a ramp, and the reason the practical ceiling sits near 55%.",
     portfolios: ["candidate"],
     tickers: ["DBMF", "RSST", "KMLM", "CTA"],
     sources: [trendValue, liveTrend, capital, marginal],
@@ -326,11 +329,11 @@ export const families: readonly StrategyFamily[] = [
     slug: "capital-efficiency",
     name: "Capital efficiency and return stacking",
     claim:
-      "Getting a diversifier as financed notional instead of selling equity to buy it lowers its hurdle, so a sleeve that would not be worth holding becomes worth holding.",
+      "Getting a diversifier with borrowed money instead of selling equity to buy it lowers its hurdle, so a holding that would not be worth owning becomes worth owning.",
     inPractice:
-      "This is the strongest closed-form result on the site and the one most often misread. The funding rule is worth about +2.44 pp/yr for a 100% equity base — and that number contains nothing whatever about the sleeve being stacked. What decides whether a particular wrapper delivers it is one quantity, delta = (1 − b) / d, and a fund with a half-sized equity base can be arithmetically worse than simply selling equity.",
+      "This is the strongest closed-form result on the site and the one most often misread. The funding rule is worth about +2.44 pp/yr for a 100% equity base — and that number contains nothing whatever about the holding being stacked. What decides whether a particular fund delivers it is one quantity, delta = (1 − b) / d, and a fund with a half-sized equity base can be arithmetically worse than simply selling equity.",
     mechanism:
-      "Buying a sleeve with capital forces you to sell base exposure, so the sleeve must clear a_p − σ_p²(1 − β). Financing it as notional removes that sale, and the hurdle falls to ρ σ_p σ_d. The wrapper's structure enters exactly once, through delta.",
+      "Buying a holding with capital forces you to sell base exposure, so the holding must clear a_p − σ_p²(1 − β). Paying for it with borrowing removes that sale, and the hurdle falls to ρ σ_p σ_d. The fund's structure enters exactly once, through delta.",
     certainty: "risk-premium",
     status: "exploratory",
     statusReason:
@@ -338,42 +341,42 @@ export const families: readonly StrategyFamily[] = [
     headline: {
       value: "+2.44 pp/yr",
       label: "The funding-rule gap for a 100% equity base",
-      note: "a_p − σ_p² = σ_p²(L_p* − 1). It contains nothing about the sleeve. RSST's delta of −0.07 keeps 100% of it; a standalone managed-futures fund keeps 0%.",
+      note: "a_p − σ_p² = σ_p²(L_p* − 1). It contains nothing about the holding being added. RSST's delta of −0.07 keeps 100% of it; a standalone managed-futures fund keeps 0%.",
     },
     evidenceFor: [
       "The result is closed-form and pinned by tests, not estimated from a window.",
       "RSST's structure is verified from its own Form N-PORT: 74.09% of net assets in an S&P 500 fund plus 33.1% in E-mini futures is 107.2% equity, with a government money fund at 16.04% as futures collateral.",
-      "A 25% trend overlay improved the Sharpe ratio by +0.050 against +0.001 for the same base levered to identical volatility over 426 months. The overlay is not merely leverage.",
+      "Adding trend at 25% on borrowed money improved the Sharpe ratio by +0.050 against +0.001 for the same base borrowed up to identical volatility over 426 months. The gain comes from what was added, not from the borrowing alone.",
     ],
     evidenceAgainst: [
       "The cost stack binds before the correlation does: financing plus fee plus distribution-tax character runs about 1.4 pp/yr sheltered and 3.5 pp/yr taxable, against a post-publication trend excess return of roughly 1.8 pp/yr.",
-      "No wrapper on the shelf quantifies its financing cost anywhere.",
+      "No fund on the shelf quantifies its financing cost anywhere.",
       "NTSI and NTSE each lost to their own equity leg's index by about 3 pp/yr since 2021.",
     ],
     failureModes: [
       {
-        title: "A wrapper can be worse than selling equity",
+        title: "A stacked fund can be worse than selling equity",
         detail:
-          "At a 40% equity base with a 30% sleeve, delta is 2.0 and the wrapper is arithmetically worse than selling the equity outright to buy the sleeve. There is no name for this category in the marketing vocabulary, and a gross-notional figure cannot distinguish it from the good case.",
+          "At a 40% equity base with a 30% added holding, delta is 2.0 and the fund is arithmetically worse than selling the equity outright to buy that holding. There is no name for this category in the marketing vocabulary, and a headline exposure figure cannot distinguish it from the good case.",
       },
       {
         title: "The growth optimum is unholdable",
         detail:
-          "The growth-optimal trend overlay through RSST's delta is 3.04 units of notional. This repository refuses that number. The realised growth optimum on levered equity over a century is 2.2× at a −99.3% drawdown and 296 months under water.",
+          "The growth-optimal trend exposure through RSST's delta is 3.04 units of borrowed exposure. This repository refuses that number. The realised growth optimum on borrowed equity over a century is 2.2× at a −99.3% drawdown and 296 months under water.",
       },
       {
-        title: "Zero leverage is a default, not a bar",
+        title: "Zero borrowing is a default, not a bar",
         detail:
-          "Decision 0010 clause 6 holds the zero-leverage portfolio as a reference recommendation for an investor whose financing and policy inputs are missing, and explicitly not as a restriction on researching financed constructions. Decision 0004's non-promotion still stands, so a portfolio using these wrappers is sized on holdability rather than on a demonstrated edge.",
+          "Decision 0010 clause 6 holds the no-borrowing portfolio as a reference recommendation for an investor whose financing and policy inputs are missing, and explicitly not as a restriction on researching financed constructions. Decision 0004's non-promotion still stands, so a portfolio using these funds is sized on holdability rather than on a demonstrated edge.",
       },
     ],
     implementation:
-      "Compute delta = (1 − b) / d for the fund and convert its fee to fee / d before comparing anything. CTAP reads −0.027, RSST −0.07, MATE −0.159, RSSB −0.00, NTSX 0.144, GDE 0.182, and both a standalone managed-futures fund and SDMF 1.000. Read the whole filing: for MATE and CTAP alike, the largest line is the base ETF and a completing index future sits beside it, and taking the ETF alone puts a sound wrapper in the range where a wrapper is worse than selling equity. A wrapper whose base leg is not your own base gets a refusal, not a number.",
-    cost: "99 bp all-in for RSST with no waiver and no recoupment clause. The fee table is the wrong instrument twice over: financing is undisclosed for the cleared-futures wrappers, and CTAP's headline 10 bp net is a fee reduction expiring 2026-12-04 that omits the 0.75% charged inside the total-return swap on its affiliated reference fund — about 81 bp all-in today and 99 bp after.",
+      "Compute delta = (1 − b) / d for the fund and convert its fee to fee / d before comparing anything. CTAP reads −0.027, RSST −0.07, MATE −0.159, RSSB −0.00, NTSX 0.144, GDE 0.182, and both a standalone managed-futures fund and SDMF 1.000. Read the whole filing: for MATE and CTAP alike, the largest line is the base ETF and a completing index future sits beside it, and taking the ETF alone puts a sound fund into the range where the structure is worse than selling equity. A fund whose base leg differs from your own base gets a refusal rather than a number.",
+    cost: "99 bp all-in for RSST with no waiver and no recoupment clause. The fee table is the wrong instrument twice over: financing is undisclosed for the cleared-futures funds, and CTAP's headline 10 bp net is a fee reduction expiring 2026-12-04 that omits the 0.75% charged inside the total-return swap on its affiliated reference fund — about 81 bp all-in today and 99 bp after.",
     overlap:
-      "Capital efficiency is not a return engine. It is a funding decision applied to whatever engine you already chose, and it is the reason a trend sleeve is cheaper to hold inside a stacked fund than beside one.",
+      "Capital efficiency is not a return engine. It is a funding decision applied to whatever engine you already chose, and it is the reason a trend holding is cheaper to own inside a stacked fund than beside one.",
     roleInPortfolio:
-      "It changes how a sleeve is paid for, never whether the sleeve is worth owning. Answer that question first.",
+      "It changes how a holding is paid for, never whether the holding is worth owning. Answer that question first.",
     portfolios: ["candidate"],
     tickers: ["RSST", "MATE", "CTAP", "RSSB", "NTSX", "GDE"],
     sources: [capital],
@@ -384,7 +387,7 @@ export const families: readonly StrategyFamily[] = [
     name: "Quality and profitability",
     claim: "Profitable firms outperform unprofitable ones for their risk.",
     inPractice:
-      "Closed. The pooled premium is +2.53 pp/yr against its own measured detection floor of 2.62 — the instrument cannot see an effect of the size being claimed. Reopening it needs about 245 months of additional data, around 2035, or a construction that is not Ken French's.",
+      "Closed. The pooled premium is +2.53 pp/yr, and the smallest effect its own window could have found is 2.62 — the instrument cannot see an effect of the size being claimed. Reopening it needs about 245 months of additional data, around 2035, or a construction that is not Ken French's.",
     mechanism:
       "Profitable firms with the same book value have higher expected cash flows, so at the same price they must have higher expected returns. The logic is an identity; whether the market prices it away is the question.",
     certainty: "risk-premium",
@@ -393,7 +396,7 @@ export const families: readonly StrategyFamily[] = [
       "The falsifier fired: the premium sits below the floor its own window could detect. rejected here means the test fired, never that the premium is zero — and decision 0005 records exactly that distinction.",
     headline: {
       value: "+2.53 pp/yr",
-      label: "RMW pooled, against a 2.62 pp/yr detection floor",
+      label: "RMW pooled, against the 2.62 pp/yr smallest effect the test could see",
       interval: "[+1.07, +3.96]",
       note: "The best pooled floor across twelve cells is 2.62 against a 2.0 pp/yr materiality threshold.",
     },
@@ -404,7 +407,7 @@ export const families: readonly StrategyFamily[] = [
     evidenceAgainst: [
       "62% of the US premium is the single year 2021. Dropping the pooled best year takes it to +1.79 pp/yr.",
       "Its volatility carries an unresolved ±5.09% band from the Phase 1 reproduction gate, so anything dividing by it inherits that.",
-      "Nine quality products on the US shelf and not one reaches exploratory. The largest RMW loading found is +0.228.",
+      "Nine quality products on the US shelf and not one reaches exploratory. The largest RMW exposure found is +0.228.",
     ],
     failureModes: [
       {
@@ -415,14 +418,14 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "Adding data will not help soon",
         detail:
-          "The detection floor falls with the square root of time. Reaching materiality needs roughly 245 more months, which is about 2035 — and only if the effect is at the top of its interval.",
+          "The smallest effect the test can see falls with the square root of time. Reaching materiality needs roughly 245 more months, which is about 2035 — and only if the effect is at the top of its interval.",
       },
     ],
     implementation: "None recommended. QUAL and SPHQ are rejected and unresolved respectively; DUHP is unresolved.",
     cost: "Immaterial, because there is nothing to buy.",
     overlap:
       "Quality overlaps with value negatively — cheap firms are often unprofitable — which is why systematic value funds increasingly screen on profitability. That screen is inside AVLV and DFIV already.",
-    roleInPortfolio: "None as a standalone sleeve. As a screen inside a value fund it is already present.",
+    roleInPortfolio: "None as a standalone holding. As a screen inside a value fund it is already present.",
     portfolios: [],
     tickers: ["QUAL", "SPHQ", "DUHP"],
     sources: [closedPremia, persistence, products],
@@ -452,7 +455,7 @@ export const families: readonly StrategyFamily[] = [
       "Catastrophe bonds pass the correlation screen at about 0.10 to equity.",
     ],
     evidenceAgainst: [
-      "Duration-hedged credit is a premium, not a hedge: its mean in the worst decile of equity months is −0.24% and it lost 13.1% through the GFC while Treasuries gained 13.4%. At 4.12% volatility a 10% sleeve contributes about 21 bp/yr, inside the 0.58 pp/yr detection floor.",
+      "Duration-hedged credit is a premium, not a hedge: its mean in the worst decile of equity months is −0.24% and it lost 13.1% through the GFC while Treasuries gained 13.4%. At 4.12% volatility a 10% holding contributes about 21 bp/yr, inside the 0.58 pp/yr that is the smallest gap the test could see.",
       "The hedged-credit series ends in 2014-12, so it has never been measured through March 2020 — a liquidity event in exactly that instrument — or through 2022.",
       "REITs give 112% of the downside for 80% of the upside. SCHD and VNQ are both dominated on Sharpe at correlations of +0.82 and +0.84. TIPS correlate +0.76 to +0.85 with the nominal bond funds beside them.",
       "Merger arbitrage returned 2.92% to 4.29%/yr over ten years to 2026-06-30 across MNA, MERFX and MERIX — total, not excess, over a decade when cash was a large part of it.",
@@ -464,9 +467,9 @@ export const families: readonly StrategyFamily[] = [
           "Booking a term or credit premium as outperformance against an equity index swaps the yardstick rather than adding return. This is the error the repository has actually made, in four places.",
       },
       {
-        title: "The wrapper eats the premium",
+        title: "The fund structure eats the premium",
         detail:
-          "Alternative risk premia earn 0.3–1.0%/yr gross post-2019 at 2–5% volatility, against a retail wrapper costing about 1.5%. QAI, the survivor, returned 3.93%/yr over ten years to 2026-06-30 at a 0.88% net fee.",
+          "Alternative risk premiums earn 0.3–1.0%/yr gross post-2019 at 2–5% volatility, against a retail fund costing about 1.5%. QAI, the survivor, returned 3.93%/yr over ten years to 2026-06-30 at a 0.88% net fee.",
       },
       {
         title: "The instrument decides the verdict",
@@ -476,11 +479,11 @@ export const families: readonly StrategyFamily[] = [
     ],
     implementation:
       "None promoted. Duration-hedged credit is the one candidate whose next step is a decision rather than another screen, and it is a substitution inside the defensive allocation rather than a new satellite.",
-    cost: "0.13% to 2.00% depending on the sleeve, against gross premia that are frequently smaller than the fee.",
+    cost: "0.13% to 2.00% depending on the holding, against gross premiums that are frequently smaller than the fee.",
     overlap:
-      "The recurring finding is that these sleeves overlap far more than their labels suggest. TIPS are nominal bonds plus an inflation basis; dividend funds are value with a screen; long/short commodities are the commodity leg of a trend programme. The exception is credit once its duration is hedged out, which overlaps nothing else measured here.",
+      "The recurring finding is that these holdings overlap far more than their labels suggest. TIPS are nominal bonds plus an inflation basis; dividend funds are value with a screen; long/short commodities are the commodity leg of a trend programme. The exception is credit once its duration is hedged out, which overlaps nothing else measured here.",
     roleInPortfolio:
-      "One candidate admitted, as a substitution. Duration-hedged credit belongs beside — not instead of — the Treasury leg of whatever defensive allocation the investor holds, because the two correlate +0.016 and fail in different states. Everything else remains unresolved rather than refuted: ten candidates were measured against a 0.30 pp/yr bar and every estimate lies inside that design's own 0.58 pp/yr detection floor.",
+      "One candidate admitted, as a substitution. Duration-hedged credit belongs beside — not instead of — the Treasury leg of whatever defensive allocation the investor holds, because the two correlate +0.016 and fail in different states. Everything else remains unresolved rather than refuted: ten candidates were measured against a 0.30 pp/yr bar and every estimate lies inside the 0.58 pp/yr that is the smallest gap that design could have seen.",
     portfolios: [],
     tickers: ["SCHD", "VNQ", "TIP", "SCHP"],
     sources: [alternatives, marginal, decomposition],
@@ -493,27 +496,27 @@ export const families: readonly StrategyFamily[] = [
     inPractice:
       "It is not uncorrelated and it is not a hedge. In the worst decile of equity months since 2015 bitcoin's mean return was −7.51% and it was positive in one month out of thirteen. A holding is defensible at 1–2% as a declared speculation you want to own; it is not defensible as the diversifier it is usually sold as.",
     mechanism:
-      "There is no cash-flow claim and there is no payer. A bond pays because a borrower is obliged, an equity pays because a firm earns, a catastrophe bond pays because an insurer needs capacity. Bitcoin's expected return is entirely the claim that a future buyer will pay more. What can be defended is narrower: fixed supply, settlement without a counterparty, and a payoff that is not a claim on any government's solvency. Those are properties, not premia.",
+      "There is no cash-flow claim and there is no payer. A bond pays because a borrower is obliged, an equity pays because a firm earns, a catastrophe bond pays because an insurer needs capacity. Bitcoin's expected return is entirely the claim that a future buyer will pay more. What can be defended is narrower: fixed supply, settlement without a counterparty, and a payoff that is not a claim on any government's solvency. Those are properties, not premiums.",
     certainty: "different-benchmark",
     status: "rejected",
     statusReason:
-      "Rejected as a diversifier, which is the claim tested, and not as an asset anybody may own. The rejection rests on a measured up-beta of 1.526 and down-beta of 1.616 with no resolvable convexity, a correlation to equity that has risen rather than fallen, and a lower-tail mean worse than the equity it would be funded by selling.",
+      "Rejected as a diversifier, which is the claim tested, and not as an asset anybody may own. The rejection rests on a measured up-beta of 1.526 and down-beta of 1.616 with no measurable tendency for its payoff to grow as the fall deepens, a correlation to equity that has risen rather than fallen, and a lower-tail mean worse than the equity it would be funded by selling.",
     headline: {
       value: "−7.51%",
       label: "Mean monthly return in the worst decile of equity months, 2015-02…2026-06",
-      note: "Positive in 1 of those 13 months. Equity's own mean in the same months was −7.96%, so a bitcoin sleeve barely improved on the equity sold to fund it, while cash improved on it by 0.80% per 10% swapped.",
+      note: "Positive in 1 of those 13 months. Equity's own mean in the same months was −7.96%, so a bitcoin holding barely improved on the equity sold to fund it, while cash improved on it by 0.80% per 10% swapped.",
     },
     evidenceFor: [
-      "Its measured alpha over the window is +4.46% per month — economically enormous, and at HAC t = 1.44 statistically nothing.",
+      "Its measured alpha over the window is +4.46% per month — economically enormous, and statistically nothing at a t of 1.44 on error bars widened for clustered returns.",
       "A 1–2% position that goes to zero costs 1–2%, is uncorrelated with the investor's human capital, and is easier to hold than a portfolio the investor resents. Holdability is in the objective.",
       "Staking ETPs are now live and material — Grayscale's ether trusts recognised $18.8m and $16.9m of staking income in the first half of 2026 against zero in 2025, under the Rev. Proc. 2025-31 safe harbour. That is the first contractual payer this family has had. It is also not bitcoin.",
     ],
     evidenceAgainst: [
-      "Up-beta 1.526, down-beta 1.616, convexity indistinguishable from zero. A 2% sleeve is, to first order, 3% more equity plus a large idiosyncratic risk.",
+      "Up-beta 1.526, down-beta 1.616, and no measurable tendency for the payoff to grow as the fall deepens. A 2% holding is, to first order, 3% more equity plus a large risk all its own.",
       "Correlation to equity is +0.342 over 137 months and +0.531 over the most recent 81 — outside the 0.5 boundary at which the repository's own admission arithmetic stops being usable, and moving the wrong way.",
       "−10.5% through Q1 2020 and −58.3% through 2022, when equity fell 25.3%. Maximum drawdown −75.9% over a window in which equity's was −25.3%.",
       "In the first half of 2026 it fell 33.2% while US equity returned +9.9% — the sample's own final six months, and the same result again.",
-      "It is the only candidate measured whose sleeve made the portfolio's drawdown deeper at every weight tested: −29.2% against a base of −24.8% at a 10% weight.",
+      "It is the only candidate measured that made the portfolio's drawdown deeper at every weight tested: −29.2% against a base of −24.8% at a 10% weight.",
     ],
     failureModes: [
       {
@@ -524,7 +527,7 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "The sample is the best years in the asset's history",
         detail:
-          "137 months containing a +60%/yr realised return still cannot distinguish bitcoin from the S&P 500 at matched volatility: the measured gap is +0.10 pp/yr against a detection floor of 15.58 pp/yr.",
+          "137 months containing a +60%/yr realised return still cannot distinguish bitcoin from the S&P 500 at matched volatility: the measured gap is +0.10 pp/yr, and the smallest gap the test could have seen is 15.58 pp/yr.",
       },
       {
         title: "The vehicle and the venue are not the asset",
@@ -538,7 +541,7 @@ export const families: readonly StrategyFamily[] = [
     overlap:
       "Substantially overlaps equity, which is the finding. At a 2% weight it duplicates roughly 3% of equity beta, obtainable more cheaply and with a shallower drawdown by holding more equity.",
     roleInPortfolio:
-      "At most 1–2%, funded from a speculation budget rather than from the defensive sleeve, held in taxable so the loss-harvesting option survives, and labelled a speculation. Zero is equally defensible. Above about 5% it is a leveraged equity position with extra steps.",
+      "At most 1–2%, funded from a speculation budget rather than from the defensive holdings, held in taxable so the loss-harvesting option survives, and labelled a speculation. Zero is equally defensible. Above about 5% it is a borrowed equity position with extra steps.",
     portfolios: [],
     tickers: [],
     sources: [alternatives, capital],
@@ -551,21 +554,21 @@ export const families: readonly StrategyFamily[] = [
     inPractice:
       "The bleed is measured and it is large: roughly twelve percentage points a year against the index on the cleanest available comparison. Swapping a tenth of an equity holding into T-bills added back 0.92% in the average worst-decile month, for no fee and no drawdown. Nothing on the option shelf beats that net of its own cost.",
     mechanism:
-      "A long put is the short side of the variance risk premium. Index options are persistently rich relative to subsequent realised volatility because somebody is paid to bear crash risk — and the tail-hedge fund's investor is the one paying. The strategy is negative expected return by construction; the case for it can only ever be that convexity at the right moment is worth the premium, which is a claim about the path.",
+      "A long put is the short side of the variance risk premium. Index options are persistently rich relative to subsequent realised volatility because somebody is paid to bear crash risk — and the tail-hedge fund's investor is the one paying. The strategy is negative expected return by construction; the case for it can only ever be that a payoff which grows as the fall deepens is worth the premium at the right moment, which is a claim about the path.",
     certainty: "risk-premium",
     status: "rejected",
     statusReason:
-      "Rejected on measured cost against measured benefit, not on the existence of the premium — the premium is real, and the holder is on the paying side of it. The supporting measurement is that no engine on this repository's panel shows statistically resolvable convexity at all, so the payoff shape being bought is not one the data can find.",
+      "Rejected on measured cost against measured benefit, not on the existence of the premium — the premium is real, and the holder is on the paying side of it. The supporting measurement is that no engine on this repository's panel shows a statistically resolvable gain that grows as the fall deepens, so the payoff shape being bought is not one the data can find.",
     headline: {
       value: "−7.15%/yr",
       label: "TAIL's NAV return since inception 2017-04-06, as of 2026-06-30",
       note: "−49.59% cumulative. On the cleanest same-window comparison, CAOS returned +3.00%/yr over ten years to 2026-07-31 against SPY's +14.93%.",
     },
     evidenceFor: [
-      "The convexity is real when it fires: a long put is the one payoff that accelerates as equity falls, which no asset on the measured panel does.",
+      "The payoff is real when it fires: a long put is the one holding whose gain accelerates as equity falls, which no asset on the measured panel does.",
     ],
     evidenceAgainst: [
-      "Not one of eight candidate engines shows resolvable convexity. Fitting engine = a + b·equity + k·min(equity, 0), the largest |t| on k outside BAB is 1.37, and BAB's significant k is the wrong sign at +3.49.",
+      "Not one of eight candidate engines shows a resolvable gain that accelerates as equity falls. Fitting engine = a + b·equity + k·min(equity, 0), the largest |t| on k outside BAB is 1.37, and BAB's significant k is the wrong sign at +3.49.",
       "VIX futures were in steep contango across the whole visible curve on 2026-08-21 — spot 15.13 against 17.50 for September. VIXY returned −46.56%/yr and UVXY −71.37%/yr over ten years to 2026-07-31.",
       "The cap-and-buffer package is worth −2.4 to −4.1 pp/yr priced from 1,183 overlapping twelve-month returns, and the funds' realised −4.1 lands inside that range from disjoint data.",
       "BTAL, the non-option version, returned −3.63%/yr since inception against the S&P 500's +15.41%, at a 1.65% gross expense ratio whose 0.45% headline excludes the dividend and brokerage cost of the short book.",
@@ -574,7 +577,7 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "The hedge has to be monetised at the bottom",
         detail:
-          "A convex payoff only helps if it is sold into the crash and recycled into the asset that fell. That is the moment an investor is least able to act, and no fund does it for them.",
+          "A payoff that grows as the fall deepens only helps if it is sold into the crash and recycled into the asset that fell. That is the moment an investor is least able to act, and no fund does it for them.",
       },
       {
         title: "Roll cost is not a fee and does not appear as one",
@@ -582,13 +585,13 @@ export const families: readonly StrategyFamily[] = [
           "A constant-maturity VIX index pays the front-to-second spread every cycle. At the August 2026 curve that is on the order of 9% of the front month per roll, which is why the ten-year numbers look the way they do.",
       },
       {
-        title: "Most of the wrapper is something you can buy for three basis points",
+        title: "Most of the fund is something you can buy for three basis points",
         detail:
           "TAIL is about 91% ten-year Treasuries and about 5% options. The Treasury part is available at 3 bp; the part the 59 bp buys is the part with negative expected return.",
       },
     ],
     implementation:
-      "Not recommended. The substitutes measured to work better are a larger short-Treasury and cash allocation, the trend overlay already held, and not owning the concave things.",
+      "Not recommended. The substitutes measured to work better are a larger short-Treasury and cash allocation, the trend exposure already held, and not owning the things whose losses accelerate as markets fall.",
     cost: "0.25% to 1.65% in stated fees, on top of a premium paid to the seller every month the crash does not arrive.",
     overlap:
       "It is the mirror image of put-writing, which this repository has separately rejected. Holding both is paying a spread to take no position.",
@@ -634,11 +637,11 @@ export const families: readonly StrategyFamily[] = [
       {
         title: "The 68.27% floor is an assumption, not a theorem about markets",
         detail:
-          "It is a property of equal drift between components. Drift was not equal, and the floor realised zero times in 61 windows.",
+          "It is a property of equal drift between components. Drift was not equal. The floor realised zero times in 61 windows.",
       },
     ],
     implementation:
-      "Annually or on a 25% relative band, whichever produces fewer trades. Direct new contributions at the underweight sleeve before selling anything.",
+      "Annually or on a 25% relative band, whichever produces fewer trades. Direct new contributions at the underweight holding before selling anything.",
     cost: "0.3 to 1.2 bp/yr. The binding constraint is the spread: VB's 2.72 bp round trip is nearly a year of its own expense ratio.",
     overlap:
       "It interacts with tax more than with any return engine. In a taxable account rebalancing by selling meets the 162 bp/yr realisation hurdle.",
@@ -668,7 +671,7 @@ export const families: readonly StrategyFamily[] = [
     evidenceFor: [
       "The break-even qualified-dividend rate is 10.52% for developed markets and 21.51% for emerging — and 21.51% sits between two live US brackets.",
       "The foreign tax credit is worth 15.78 bp/yr on a developed fund and 20.00 bp on an emerging one, in a taxable account and nowhere else.",
-      "Splitting VEA and VWO rather than holding VXUS is worth 1.334 bp of equity at a 23.8% qualified rate and exactly zero once the shelter holds the whole equity sleeve.",
+      "Splitting VEA and VWO rather than holding VXUS is worth 1.334 bp of equity at a 23.8% qualified rate and exactly zero once the shelter holds the whole equity allocation.",
     ],
     evidenceAgainst: [
       "No IRS publication states the IRA result. It is asserted from the statute.",
@@ -676,9 +679,9 @@ export const families: readonly StrategyFamily[] = [
     ],
     failureModes: [
       {
-        title: "The naive rule is backwards for wrappers",
+        title: "The naive rule is backwards for stacked funds",
         detail:
-          "'Shelter the highest tax drag' puts DBMF and GDE at the front and RSST near the back — when RSST is the only one of the three whose marginal contribution clears its own detection floor, and the one that needs the shelter least.",
+          "'Shelter the highest tax drag' puts DBMF and GDE at the front and RSST near the back — when RSST is the only one of the three whose marginal contribution clears the smallest effect its own test could see, and the one that needs the shelter least.",
       },
       {
         title: "Wash sales destroy rather than defer",
@@ -701,7 +704,7 @@ export const families: readonly StrategyFamily[] = [
     name: "The equity share",
     claim: "How much of the portfolio is in equities matters more than which equities.",
     inPractice:
-      "It does, and this repository cannot set it for you. Moving from 60/40 to 90/10 is worth +127.1 bp a year against 485 bp of tracking error — larger than every factor tilt priced here combined. It is also the only decision on the site that depends on facts about you rather than about markets.",
+      "It does, and this repository cannot set it for you. Moving from 60/40 to 90/10 is worth +127.1 bp a year against 485 bp of tracking error — larger than every factor lean priced here combined. It is also the only decision on the site that depends on facts about you rather than about markets.",
     mechanism:
       "Equities pay a premium for a risk that shows up as drawdown. The optimal share is a function of that premium, its volatility and your horizon — and the premium is not estimable to the precision the answer requires.",
     certainty: "risk-premium",
@@ -739,7 +742,7 @@ export const families: readonly StrategyFamily[] = [
       "Pick a share you can hold through an 80% decline, write down why, and change it only when the reason changes.",
     cost: "None directly. The cost is the drawdown you have to sit through.",
     overlap:
-      "It dominates everything else on this site. A 30-percentage-point change in equity share is worth roughly five times the largest factor tilt priced here.",
+      "It dominates everything else on this site. A 30-percentage-point change in equity share is worth roughly five times the largest factor lean priced here.",
     roleInPortfolio:
       "The first decision, and the one this evidence is silent on. It turns on facts about you rather than about markets, which is why no page here sets it.",
     portfolios: ["control", "candidate"],
