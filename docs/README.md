@@ -143,6 +143,13 @@ Topical pages not already named above: [Fama–French reproduction](research/fam
 [expected-edge decomposition](research/expected-edge-decomposition.md), and the
 [numerical engine](research/portfolio-engine-specification.md).
 
+Two pages written for the public site and kept because the site cites them by path:
+[market scan 2026](research/market-scan-2026.md), an outside-in check on what has changed
+in the real world and what the audited shelf would now get wrong, and
+[the portfolio for one investor](research/portfolio-for-one-investor.md), the derivation
+behind `/portfolio/`. Both are scoped to one reader and one read date, and neither
+supersedes the pages above.
+
 Decision records: [0001](decisions/0001-contained-python-research-workspace.md),
 [0002](decisions/0002-no-research-grade-free-price-source.md),
 [0003](decisions/0003-cheap-broad-market-control.md),
