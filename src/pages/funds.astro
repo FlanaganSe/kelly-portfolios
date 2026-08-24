@@ -104,13 +104,13 @@ const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2))
     groups.map((group) => (
       <Breakout scroll class="mt-10" label={group.label}>
         <table class="w-full min-w-[42rem] border-collapse text-sm">
-          <caption class="sr-only">{group.label}: fee, cost after lending, and verdict</caption>
+          <caption class="sr-only">{group.label}: fee, cost after lending income, and verdict</caption>
           <thead>
             <tr class="border-b border-rule-strong text-left">
               <th scope="col" class="eyebrow py-2 pr-4">Ticker</th>
               <th scope="col" class="eyebrow py-2 pr-4">Fund</th>
-              <th scope="col" class="eyebrow py-2 pr-4 text-right">Fee, bp</th>
-              <th scope="col" class="eyebrow py-2 pr-4 text-right">Cost, bp</th>
+              <th scope="col" class="eyebrow py-2 pr-4 text-right">Fee, basis points a year</th>
+              <th scope="col" class="eyebrow py-2 pr-4 text-right">Cost, basis points a year</th>
               <th scope="col" class="eyebrow py-2">Status</th>
             </tr>
           </thead>
