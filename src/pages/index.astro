@@ -16,6 +16,20 @@ import MarginNote from "~/components/MarginNote.astro";
 import Rail from "~/components/Rail.astro";
 import Rung from "~/components/Rung.astro";
 import Base from "~/layouts/Base.astro";
+import type { RungLevel } from "~/lib/rungs";
+
+/**
+ * The three yardsticks, as data. The column headings and each cell's own label on a
+ * narrow screen are read from the same array, which is what stops the stacked card
+ * list and the table drifting apart: there is only one copy of each heading.
+ */
+const BENCHMARK_COLUMNS = ["Compared with", "Edge, a year", "Drift, a year", "How sure"] as const;
+
+const BENCHMARK_ROWS = [
+  { against: "The portfolio you hold now", edge: "1.09%", drift: "0.46%", rung: "settled" },
+  { against: "A cheap total-market index", edge: "0.054%", drift: "3.13%", rung: "cant-tell" },
+  { against: "What the average investor actually gets", edge: "0.15%", drift: "1.50%", rung: "might" },
+] as const satisfies readonly { against: string; edge: string; drift: string; rung: RungLevel }[];
 ---
 
 <Base
@@ -187,35 +201,44 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <Breakout scroll class="mt-6">
-    <table class="w-full min-w-[32rem] border-collapse text-sm">
-      <caption class="sr-only">The three benchmarks, their edges, their drift, and how sure we are of each</caption>
-      <thead>
-        <tr class="border-b border-rule-strong text-left">
-          <th scope="col" class="eyebrow py-2 pr-4">Compared with</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Edge, a year</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Drift, a year</th>
-          <th scope="col" class="eyebrow py-2">How sure</th>
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[32rem]">
+      <caption role="caption" class="sr-only">
+        The three benchmarks, their edges, their drift, and how sure we are of each
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            BENCHMARK_COLUMNS.map((heading, i) => (
+              <th
+                role="columnheader"
+                scope="col"
+                class:list={["eyebrow py-2", i < BENCHMARK_COLUMNS.length - 1 && "pr-4", i > 0 && i < 3 && "text-right"]}
+              >
+                {heading}
+              </th>
+            ))
+          }
         </tr>
       </thead>
-      <tbody class="text-ink-muted">
-        <tr class="border-b border-rule">
-          <th scope="row" class="py-2 pr-4 text-left font-normal">The portfolio you hold now</th>
-          <td data-numeric class="py-2 pr-4 text-right">1.09%</td>
-          <td data-numeric class="py-2 pr-4 text-right">0.46%</td>
-          <td class="py-2"><Rung level="settled" /></td>
-        </tr>
-        <tr class="border-b border-rule">
-          <th scope="row" class="py-2 pr-4 text-left font-normal">A cheap total-market index</th>
-          <td data-numeric class="py-2 pr-4 text-right">0.054%</td>
-          <td data-numeric class="py-2 pr-4 text-right">3.13%</td>
-          <td class="py-2"><Rung level="cant-tell" /></td>
-        </tr>
-        <tr>
-          <th scope="row" class="py-2 pr-4 text-left font-normal">What the average investor actually gets</th>
-          <td data-numeric class="py-2 pr-4 text-right">0.15%</td>
-          <td data-numeric class="py-2 pr-4 text-right">1.50%</td>
-          <td class="py-2"><Rung level="might" /></td>
-        </tr>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          BENCHMARK_ROWS.map((row) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {row.against}
+              </th>
+              <td role="cell" data-label={BENCHMARK_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.edge}
+              </td>
+              <td role="cell" data-label={BENCHMARK_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {row.drift}
+              </td>
+              <td role="cell" data-label={BENCHMARK_COLUMNS[3]} class="py-2">
+                <Rung level={row.rung} />
+              </td>
+            </tr>
+          ))
+        }
       </tbody>
     </table>
   </Breakout>

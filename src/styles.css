@@ -649,3 +649,89 @@ table,
     paint-order: stroke;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Comparison tables on a narrow screen.
+
+   A four-column table with a confidence mark is 32rem across at its narrowest and
+   a phone is 24rem, so the scroller does its job and the reading is still poor:
+   you cannot compare two rows you have to scroll between, and a heading you have
+   scrolled away from stops labelling anything. Below the first breakpoint a
+   `.stack-table` becomes one card per row — the row header as the card's title,
+   every other cell as a labelled line.
+
+   **One piece of markup, not two.** The visible label comes from `data-label`,
+   which each page fills from the same array it fills `<thead>` from, so the header
+   and the card label cannot drift apart.
+
+   `display` other than a `table-*` value drops the implicit table roles from the
+   accessibility tree in every engine, which is why each of these tables carries
+   explicit `role` attributes. Above the breakpoint they restate the implicit
+   roles and change nothing; below it they are the only thing keeping the rows and
+   cells related to each other.
+   --------------------------------------------------------------------------- */
+
+@media (width < 40rem) {
+  .stack-table,
+  .stack-table > tbody,
+  .stack-table > tbody > tr > th,
+  .stack-table > tbody > tr > td {
+    display: block;
+    width: auto;
+    min-width: 0;
+  }
+
+  /* The column headings are carried by each cell's own label below. */
+  .stack-table > thead {
+    display: none;
+  }
+
+  /* A column: the row header is pulled to the top whatever its source order, so a
+     rank or an index cell cannot end up above the name of the thing it ranks. */
+  .stack-table > tbody > tr {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background-color: var(--paper-raised);
+    padding: 0.7rem 0.85rem 0.75rem;
+  }
+
+  .stack-table > tbody > tr + tr {
+    margin-top: 0.5rem;
+  }
+
+  .stack-table > tbody > tr > th[scope="row"] {
+    order: -1;
+    margin-bottom: 0.55rem;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 0.45rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+    text-align: left;
+  }
+
+  .stack-table > tbody > tr > td {
+    display: grid;
+    grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.1rem 0.85rem;
+    padding: 0.25rem 0;
+    text-align: left;
+  }
+
+  .stack-table > tbody > tr > td::before {
+    content: attr(data-label);
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    line-height: 1.5;
+    letter-spacing: var(--text-2xs--letter-spacing);
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-wrap: balance;
+  }
+}
