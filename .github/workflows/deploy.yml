@@ -215,7 +215,13 @@ jobs:
         run: |
           set -euo pipefail
           fail=0
-          for path in / /start/ /stacking/ /portfolio/ /doesnt-work/ /how-sure/; do
+          # One path from each family that has its own route generator, so a broken
+          # collection shows up here rather than in a search console six weeks later.
+          for path in / /start/ /stacking/ /portfolio/ /doesnt-work/ /how-sure/ \
+                      /funds/ /tools/ /tools/placement/ /tools/how-long/ \
+                      /research/ /research/long-only-capture/ \
+                      /research/decisions/0004-no-sleeve-promoted/ \
+                      /about/ /methodology/ /corrections/ /disclosures/ /disclaimer/; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}${path}")
             printf '%-16s %s\n' "$path" "$code"
             [ "$code" = "200" ] || fail=1
