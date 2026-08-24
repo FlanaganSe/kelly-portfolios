@@ -59,6 +59,10 @@ export const OG_PAGES = {
     title: "Why more good bets stop helping",
     alt: `${SITE_NAME}: the stacking ceiling, and why the funding rule decides everything.`,
   },
+  "/portfolios/": {
+    title: "Four ways to hold it",
+    alt: `${SITE_NAME}: four portfolios, ordered by how much of each case is arithmetic and how much is a guess.`,
+  },
   "/portfolio/": {
     title: "The portfolio",
     alt: `${SITE_NAME}: seven holdings and the account each one belongs in.`,

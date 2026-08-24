@@ -2,11 +2,18 @@
  * Site-wide constants and the primary navigation, in reading order.
  *
  * The order is the argument, and it runs concrete before abstract: what to do, then
- * what to hold, then why holding more good things stops helping, then what failed,
- * then how sure any of it is.
+ * what to choose between, then why holding more good things stops helping, then what
+ * failed, then how sure any of it is.
  *
  * Stacking used to sit second. It is the most abstract page here, and a reader working
  * left to right met it before they had seen a single holding.
+ *
+ * `/portfolios/` holds the second slot rather than `/portfolio/`, which used to. The
+ * singular page prescribes one construction, and a reader arriving from `/start/` has
+ * not yet been given a choice to make. The plural page lays the options out in order of
+ * how much of each case is arithmetic and hands off to the singular one for the detail,
+ * so `/portfolio/` is still reachable in one click and is no longer the only answer on
+ * offer. The bar stays at eight items: a ninth would not survive the narrow breakpoint.
  *
  * The site's own origin is not here. It is `site` in `astro.config.mjs`, which the
  * sitemap also reads, and a page reaches it through `Astro.site`.
@@ -37,7 +44,7 @@ export interface NavItem {
  */
 export const NAV_ITEMS = [
   { href: "/start/", label: "Start" },
-  { href: "/portfolio/", label: "Portfolio" },
+  { href: "/portfolios/", label: "Portfolios" },
   { href: "/stacking/", label: "Stacking" },
   { href: "/doesnt-work/", label: "What doesn't work" },
   { href: "/how-sure/", label: "How sure" },

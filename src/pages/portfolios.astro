@@ -1,0 +1,599 @@
+---
+/**
+ * The options page: four constructions, ordered by how much of each case is arithmetic.
+ *
+ * `src/content/portfolios.ts` has carried these four records since the client-routed
+ * application, fully typed and fully cited, and no page rendered them. This is their
+ * only home. The site's structural problem was that it published one prescriptive
+ * portfolio and assumed the reader's accounts and tax rates; four options with their
+ * evidence attached is the fix, and the data for it was already written.
+ *
+ * Two rules from that module survive onto the page in substance. Nothing here is
+ * promoted, and no construction here is claimed to beat an index. So the four are
+ * ordered by the share of capital riding on a risk premium, which the module can
+ * compute, rather than by measured return, which the research could not separate —
+ * four constructions of this kind landed inside the smallest gap that test could see.
+ *
+ * Every number a reader sees comes from a `<Figure>` record or from a field on the
+ * module. Every *label* is written here in plain words, because the module's own
+ * strings carry the vocabulary this site has banned from reader-facing pages. The two
+ * translation maps fall back to the module's text, so a renamed line degrades to
+ * jargon rather than to a blank cell.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Rung from "~/components/Rung.astro";
+import Base from "~/layouts/Base.astro";
+import type { Complexity, PortfolioCandidate } from "~/content/portfolios";
+import { portfolios, portfoliosAsOf } from "~/content/portfolios";
+import { fundByTicker } from "~/content/shelf";
+import type { Citation } from "~/content/types";
+import { certaintyMeta, statusMeta } from "~/content/types";
+import { citationHref } from "~/lib/citation";
+import type { RungLevel } from "~/lib/rungs";
+
+/** The editorial half of each record: a plain heading, and how sure we are. */
+interface Card {
+  readonly ordinal: string;
+  readonly heading: string;
+  readonly short: string;
+  readonly rung: RungLevel;
+}
+
+const CARDS = {
+  control: {
+    ordinal: "One",
+    heading: "A cheap global index fund",
+    short: "A cheap global index fund",
+    rung: "settled",
+  },
+  disciplined: {
+    ordinal: "Two",
+    heading: "The same three funds, held properly",
+    short: "The same funds, held properly",
+    rung: "settled",
+  },
+  "evidence-led": {
+    ordinal: "Three",
+    heading: "The same funds, leaned toward cheap companies",
+    short: "Leaned toward cheap companies",
+    rung: "might",
+  },
+  candidate: {
+    ordinal: "Four",
+    heading: "The stacked proposal",
+    short: "The stacked proposal",
+    rung: "cant-tell",
+  },
+} as const satisfies Readonly<Record<string, Card>>;
+
+const CARD: Readonly<Record<string, Card | undefined>> = CARDS;
+
+/**
+ * A priced line's own label, in words a reader has. The module writes for the research
+ * corpus and its labels carry the vocabulary this site keeps off reader-facing pages.
+ * An unmapped label falls through unchanged, which is visible rather than silent.
+ */
+const PLAIN_LINE: Readonly<Record<string, string | undefined>> = {
+  "Fund cost reduction": "Paying a cheaper fund",
+  "Tax-loss harvesting, gross of its own fee": "Selling what has fallen to offset gains",
+  "ETF rather than active mutual-fund wrapper": "Holding an exchange-traded fund rather than an active one",
+  "Asset location": "Holding each fund in the account that taxes it least",
+  "Specific identification of lots": "Telling the broker which shares to sell",
+  "Foreign tax credit forfeited inside a shelter": "Foreign tax credit lost by sheltering a foreign fund",
+  "Direct-indexing fee, netted against harvesting": "The fee charged for doing that selling",
+  "The whole budget, against your own counterfactual": "All of it, against the portfolio you already own",
+  "The same discipline, against a cheap index": "All of it, against a cheap index fund",
+  "US large value at 20% of portfolio": "The cheaper half of the US market",
+  "Developed ex-US large value at 8% of portfolio": "The cheaper half of the developed markets outside the US",
+  "US large value at 20% (the weight it was priced at)": "The cheaper half of the US market, priced at a heavier weight than this portfolio holds",
+  "Developed ex-US large value at 8% (the weight it was priced at)":
+    "The cheaper half of the developed markets outside the US, priced at a lighter weight than this portfolio holds",
+  "A 10% trend sleeve against a global equity core":
+    "The borrowed managed-futures piece, priced at a third of the weight this portfolio holds",
+};
+
+/**
+ * The benchmark each portfolio is measured against, in plain words.
+ *
+ * Same treatment as the priced lines, and it matters more here than anywhere else on
+ * the page: two of these four are measured against different yardsticks, and a reader
+ * who misses that will add numbers the research code refuses to add.
+ */
+const BENCHMARK: Readonly<Record<string, { label: string; why: string } | undefined>> = {
+  control: {
+    label: "Itself",
+    why: "It is the yardstick, and the thing the other three have to beat.",
+  },
+  disciplined: {
+    label: "The portfolio you would otherwise have owned",
+    why: "A different question from the one an index fund answers, and the two answers never add.",
+  },
+  "evidence-led": {
+    label: "The first portfolio, holding the same three regions in the same proportions",
+    why: "The leans are swaps inside that split, so the honest comparison changes the funds and nothing else.",
+  },
+  candidate: {
+    label: "A cheap index fund borrowing as much as this one borrows",
+    why: "Comparing a portfolio that borrows against one that does not hands the borrowing to the strategy as though it were skill.",
+  },
+};
+
+/** Source labels, same problem and same treatment. */
+const PLAIN_SOURCE: Readonly<Record<string, string | undefined>> = {
+  "Decision 0004 — no sleeve promoted": "Why nothing here is promoted",
+};
+
+const EFFORT = { low: "Low", moderate: "Moderate", high: "High" } as const satisfies Readonly<
+  Record<Complexity, string>
+>;
+
+/** Weighted expense ratio, in basis points. Every fund on this page files one. */
+function weightedFeeBp(portfolio: PortfolioCandidate): number {
+  const total = portfolio.holdings.reduce(
+    (sum, holding) => sum + (holding.percent / 100) * fundByTicker(holding.ticker).expenseRatioBp,
+    0
+  );
+  return Math.round(total * 10) / 10;
+}
+
+/**
+ * The share of capital sitting in a holding whose return is a risk premium.
+ *
+ * This is the ordering. It is computed from the certainty class each holding already
+ * carries, so it cannot disagree with the chips beside the holdings, and it says the
+ * one thing about these four that the evidence can actually support.
+ */
+function guessSharePercent(portfolio: PortfolioCandidate): number {
+  const bet = portfolio.holdings
+    .filter((holding) => holding.certainty === "risk-premium")
+    .reduce((sum, holding) => sum + holding.percent, 0);
+  return Math.round(bet);
+}
+
+const bp = (value: number | null) => (value === null ? "—" : value.toFixed(1));
+
+const SUMMARY_COLUMNS = [
+  "Portfolio",
+  "Holdings",
+  "Fee, basis points a year",
+  "Share riding on a guess",
+  "Total exposure",
+] as const;
+
+const HOLDING_COLUMNS = ["Ticker", "Fund", "Weight", "What kind of thing it is"] as const;
+
+const PRICED_COLUMNS = [
+  "What it is",
+  "Worth, basis points a year",
+  "Wander, basis points a year",
+  "What kind of number",
+] as const;
+
+const sources: Citation[] = [];
+for (const portfolio of portfolios) {
+  for (const citation of portfolio.sources) {
+    if (!sources.some((one) => one.docPath === citation.docPath)) sources.push(citation);
+  }
+}
+---
+
+<Base
+  title="Four ways to hold it"
+  description="Four portfolios, ordered by how much of each case is arithmetic and how much is a guess about markets. The first is a cheap global index fund, and plenty of readers should stop there."
+>
+  <div class="prose">
+    <Rail>The options</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Four ways to hold it</h1>
+
+    <MarginNote label="What this is">
+      <p>
+        Four constructions, each with the evidence behind it attached to it. Read from the research on
+        <span data-numeric>{portfoliosAsOf}</span>. None of them is a recommendation, and no page on this
+        site claims that any of them beats an index fund.
+      </p>
+    </MarginNote>
+
+    <p>Four portfolios follow. They are four answers to one question rather than four rungs of a risk ladder.
+    Pick the one whose case you believe, buy it, and then leave it alone.</p>
+
+    <p>The first is a cheap global index fund. That is a completely respectable answer, and plenty of readers
+    should stop there. The other three have to beat it. None of them has been shown to.</p>
+
+    <p>You will not find them ranked by return. When this project ran four constructions of this kind against
+    each other, the spread between the best and the worst came in below the smallest gap the test could have
+    seen. Sorting on that would be sorting noise. So they are sorted by something the evidence can carry: how
+    much of each case falls out of arithmetic, and how much of it is a guess about markets.</p>
+
+    <p>The first two hold the same three funds. What changes between them is the fee you pay, which account
+    each fund sits in, and how often you touch any of it. The third and the fourth change what you own, and
+    both of those are bets. The fourth column below is the share of your money riding on one.</p>
+  </div>
+
+  <Callout kind="caveat">
+    <p>
+      Every figure on this page carries its own source, date and status. The two that matter most are pulling
+      in opposite directions: the fee and tax work is measured against the portfolio you already own, and the
+      bets are measured against a cheap index fund. Those answer different questions and they never add.
+    </p>
+  </Callout>
+
+  <Breakout label="Three numbers that frame the choice" class="mt-10">
+    <div class="grid gap-8 sm:grid-cols-3">
+      <Figure id="structural-budget" />
+      <Figure id="edge-vs-cheap-index" />
+      <Figure id="odds-ahead-of-cheap-index" />
+    </div>
+  </Breakout>
+
+  <Breakout scroll class="mt-10" label="The four, side by side">
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[44rem]">
+      <caption class="sr-only">
+        The four portfolios, with the fee each one charges and the share of capital riding on a risk premium
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            SUMMARY_COLUMNS.map((heading, i) => (
+              <th
+                role="columnheader"
+                scope="col"
+                class:list={["eyebrow py-2", i < SUMMARY_COLUMNS.length - 1 && "pr-4", i > 0 && "text-right"]}
+              >
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          portfolios.map((portfolio) => (
+            <tr role="row" class="border-b border-rule last:border-0 align-top">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-medium text-ink">
+                {CARD[portfolio.id]?.short ?? portfolio.name}
+                <span class="block text-xs font-normal text-ink-faint">
+                  {EFFORT[portfolio.complexity]} effort
+                </span>
+              </th>
+              <td role="cell" data-label={SUMMARY_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {portfolio.holdings.length}
+              </td>
+              <td role="cell" data-label={SUMMARY_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {weightedFeeBp(portfolio)}
+              </td>
+              <td role="cell" data-label={SUMMARY_COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
+                {guessSharePercent(portfolio)}%
+              </td>
+              <td role="cell" data-label={SUMMARY_COLUMNS[4]} data-numeric class="py-2 text-right">
+                {portfolio.grossExposurePercent}%
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  {
+    portfolios.map((portfolio) => {
+      const card = CARD[portfolio.id];
+      const bench = BENCHMARK[portfolio.id] ?? portfolio.benchmark;
+      return (
+        <>
+          <div class="prose mt-14">
+            <Rail>{card?.ordinal ?? portfolio.id}</Rail>
+            <h2>{card?.heading ?? portfolio.name}</h2>
+            <p class="not-prose"><Rung level={card?.rung ?? "cant-tell"} showGloss /></p>
+
+            <MarginNote label="Measured against">
+              <p>{bench.label}. {bench.why}</p>
+            </MarginNote>
+
+            {portfolio.id === "control" && (
+              <>
+                <p>Three funds. The whole US market, the developed markets outside it, and the emerging ones.
+                You own a slice of nearly every listed company on earth, and the fee column above is what you
+                pay for it.</p>
+
+                <p>Who it is for: everyone, as a starting position. It is also the yardstick. Every other
+                portfolio here gets measured against a fund like this one, because a fund like this one is
+                what you can buy instead.</p>
+
+                <p>What it is worth over itself is nothing, by construction, and that is the point of it. Its
+                case is that the alternatives were priced and lost, which is a weaker claim than saying it is
+                good and a far easier one to check. The costs behind it come out of fund contracts, so their
+                sign is known before you start.</p>
+
+                <p>The split between the three regions is a research weight rather than a measured optimum,
+                and this project holds no data that could tell one sensible split from another. Pick one and
+                stop worrying about it.</p>
+
+                <p>What a bad decade costs you: it falls when markets fall, and the record has some very deep
+                falls in it. It also means watching one part of what you own run away from another for a very
+                long time. International stocks once spent a stretch <Figure id="intl-drawdown" inline showUnit={false} />
+                US stocks and had not caught up by the end of the record.</p>
+              </>
+            )}
+
+            {portfolio.id === "disciplined" && (
+              <>
+                <p>Nothing changes about what you own. What changes is the fee, which account each fund sits
+                in, whether you hold an exchange-traded fund or an active one, which shares your broker sells
+                when you sell, and how often you trade at all.</p>
+
+                <p>Against the portfolio a normal person is already holding, that package is worth about
+                <Figure id="structural-budget" inline />, and you would know inside about
+                <Figure id="structural-budget-horizon" inline /> whether you got it right. Every line of it
+                comes out of a fund contract or a tax statute. Nobody has to be right about markets for it to
+                pay.</p>
+
+                <p>Against a cheap index fund instead of against your own old holdings, the same work is worth
+                <Figure id="edge-vs-cheap-index" inline />, which is too small to tell from zero. Two
+                questions, two answers, and adding them is the mistake this project has made most often
+                against itself.</p>
+
+                <p>Who it is for: anyone paying an expensive fund, or holding whatever they bought in
+                whichever account they happened to open first. If you already own one cheap index fund in one
+                account and never touch it, your number here sits close to zero, and there is nothing to sell
+                you.</p>
+
+                <p>Most of the lines below need a condition you may not have. The first one needs nothing but
+                an expensive fund to escape from. The rest want a taxable account, or gains to offset, or more
+                than one kind of account to sort between. Where you have none of that, the line is worth zero
+                to you and the total shrinks accordingly.</p>
+
+                <p>What a bad decade costs you: nothing the first portfolio does not also cost you, because
+                this one owns the same three funds. What it can cost you is the trading. Reorganising a
+                taxable account means selling, selling means a tax bill, and that bill comes off the top of
+                everything in the table. The advantage of holding an exchange-traded fund rather than an
+                active one is also closing on its own, because a great many active managers have now filed to
+                run one.</p>
+              </>
+            )}
+
+            {portfolio.id === "evidence-led" && (
+              <>
+                <p>Two of the three index funds give up part of their weight to funds holding the cheaper half
+                of the same market, in the US and in the developed markets outside it. Nothing is borrowed and
+                nothing else moves.</p>
+
+                <p>These are the only two leans this project has priced whose case survived its own
+                comparisons. Both funds deliver the exposure they advertise, both are cheap, and both trade
+                slowly, which matters more than the fee once a tax bill is in the picture. The emerging market
+                has the largest measured gap of the three regions and no fund on this shelf was good enough to
+                buy it with, so that piece stays plain.</p>
+
+                <p>Who it is for: a reader who wants a lean and wants it sized by what was measured rather
+                than by how strongly they feel about it. The price of admission is decades of wandering away
+                from the index for tens of basis points a year of hoped-for gain.</p>
+
+                <p>Read the two rows below as pairs. In both of them the wander column is several times the
+                worth column, and the second number is the one that decides how your account will feel.</p>
+
+                <p>How sure we are: exploratory is the highest status anything in this project has reached,
+                and all it licenses is standing in for a real product in a later test. It does not say the
+                lean works. A study would need about <Figure id="tilt-horizon" inline /> of data before it
+                could separate this gap from zero. Charge the foreign fund the shortfall it has actually run
+                against its own model and the second row turns negative. Four foreign funds of that kind read
+                the same way, and nobody here knows why.</p>
+
+                <p>What a bad decade costs you: long stretches behind the plain index fund are the normal
+                behaviour of this portfolio rather than evidence against it. Cheap US stocks are
+                <Figure id="value-tilt-drought" inline />, and they had not recovered when the record was
+                read.</p>
+              </>
+            )}
+
+            {portfolio.id === "candidate" && (
+              <>
+                <p>A reader's proposal, priced against the same shelf as everything else here. Eight funds:
+                the two leans above, a momentum fund, an emerging value fund, and one fund that holds US
+                stocks and a managed-futures strategy on the same dollar by borrowing inside itself. Total
+                exposure comes to <span data-numeric>{portfolio.grossExposurePercent}%</span> of the money
+                you put in.</p>
+
+                <p>The most interesting number in it has nothing to do with any strategy. Paying for an
+                addition by borrowing rather than by selling something you already own is worth about
+                <Figure id="funding-gap" inline /> on an all-stock base, and that figure contains no property
+                whatsoever of the thing being added. It is the largest single result this project has, and it
+                is a statement about how you pay rather than about what you buy.</p>
+
+                <p>Who it is for: a reader who has decided that spreading the bet across different kinds of
+                return matters more than keeping the thing simple, and who can hold an unfamiliar losing
+                streak without selling it.</p>
+
+                <p>How sure we are: two of the priced lines below are exploratory, one holding is unresolved,
+                and the borrowed piece was rejected on this project's own bar. The momentum fund is excluded
+                by name by the fund audit, because it turns over more than its own value every year and the
+                cost eats the case. Two of the leans sit at weights other than the ones they were priced at,
+                so the published figures do not describe this portfolio. And the borrowing itself has never
+                been shown to pay here.</p>
+
+                <p>What a bad decade costs you: this is the one that will feel worst. The borrowed piece has
+                spent a stretch <Figure id="trend-drawdown" inline showUnit={false} /> the stocks it displaces,
+                and it did not recover. <Figure id="active-variance-concentration" inline /> of the
+                portfolio's active risk sits inside one young fund from a small issuer, in a category where
+                <Figure id="managed-futures-attrition" inline /> of the funds filing at the start of the
+                window had stopped filing by the end of it. None of that appears in a fee table.</p>
+              </>
+            )}
+          </div>
+
+          <Breakout scroll class="mt-8" label="What it holds">
+            <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[40rem]">
+              <caption class="sr-only">{card?.heading ?? portfolio.name}: the holdings and their weights</caption>
+              <thead role="rowgroup">
+                <tr role="row" class="border-b border-rule-strong text-left">
+                  {HOLDING_COLUMNS.map((heading, i) => (
+                    <th
+                      role="columnheader"
+                      scope="col"
+                      class:list={["eyebrow py-2", i < HOLDING_COLUMNS.length - 1 && "pr-4", i === 2 && "text-right"]}
+                    >
+                      {heading}
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody role="rowgroup" class="text-ink-muted">
+                {portfolio.holdings.map((holding) => (
+                  <tr role="row" class="border-b border-rule last:border-0 align-top">
+                    <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-medium text-ink">
+                      {holding.ticker}
+                    </th>
+                    <td role="cell" data-label={HOLDING_COLUMNS[1]} class="py-2 pr-4">
+                      {fundByTicker(holding.ticker).name}
+                    </td>
+                    <td role="cell" data-label={HOLDING_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                      {holding.percent}%
+                    </td>
+                    <td role="cell" data-label={HOLDING_COLUMNS[3]} class="py-2 text-xs">
+                      {certaintyMeta[holding.certainty].label}
+                      {holding.status && (
+                        <span class="block text-ink-faint">{statusMeta[holding.status].label}</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </Breakout>
+
+          {portfolio.priced.length > 0 && (
+            <Breakout scroll class="mt-6" label="What each piece is worth, and what it wanders">
+              <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[44rem]">
+                <caption class="sr-only">
+                  {card?.heading ?? portfolio.name}: each priced line, its size, its wander and its kind
+                </caption>
+                <thead role="rowgroup">
+                  <tr role="row" class="border-b border-rule-strong text-left">
+                    {PRICED_COLUMNS.map((heading, i) => (
+                      <th
+                        role="columnheader"
+                        scope="col"
+                        class:list={[
+                          "eyebrow py-2",
+                          i < PRICED_COLUMNS.length - 1 && "pr-4",
+                          (i === 1 || i === 2) && "text-right",
+                        ]}
+                      >
+                        {heading}
+                      </th>
+                    ))}
+                  </tr>
+                </thead>
+                <tbody role="rowgroup" class="text-ink-muted">
+                  {portfolio.priced.map((line) => (
+                    <tr role="row" class="border-b border-rule last:border-0 align-top">
+                      <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                        {PLAIN_LINE[line.label] ?? line.label}
+                      </th>
+                      <td role="cell" data-label={PRICED_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                        {bp(line.edgeBp)}
+                      </td>
+                      <td role="cell" data-label={PRICED_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                        {bp(line.trackingErrorBp)}
+                      </td>
+                      <td role="cell" data-label={PRICED_COLUMNS[3]} class="py-2 text-xs">
+                        {certaintyMeta[line.certainty].label}
+                        {line.status && <span class="block text-ink-faint">{statusMeta[line.status].label}</span>}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </Breakout>
+          )}
+        </>
+      );
+    })
+  }
+
+  <div class="prose mt-14">
+    <Rail>The detail</Rail>
+
+    <h2>The full detail of the last one</h2>
+
+    <p><a href="/portfolio/">The portfolio</a> writes a construction of this kind out in full: every holding,
+    the account each one goes in on a stated set of assumptions, and an honest account of how bad it feels
+    while it is losing. <a href="/funds/">The shelf</a> lists every fund this project has priced, most of
+    which were read in order to rule them out.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Choosing</Rail>
+
+    <h2>How to choose</h2>
+
+    <p>Nothing on this page depends on what you earn, and nothing on it assumes which accounts you have.
+    Where an account type decides an answer, it is named as a condition rather than issued as an instruction.
+    If you have a workplace plan. If you have a taxable account. If you have gains to offset.</p>
+
+    <p>If you want the arithmetic run at your own tax rates and your own account sizes rather than at a
+    stated example's, <a href="/tools/placement/">the placement tool</a> does that, and it is the only form
+    of that answer worth acting on. <a href="/tools/how-long/">The waiting tool</a> tells you how long a gap
+    of a given size would take to show up in an account of yours.</p>
+
+    <p>Two comparisons are worth carrying away. Over a career, the one research result this data actually
+    resolves is worth about as much as raising what you put in each year by
+    <Figure id="savings-equivalent" inline />. And none of these four holds a bond, which is a position
+    rather than an oversight and ought to be a deliberate one. Shifting the balance between stocks and bonds
+    moves the answer further than every lean on this page put together:
+    <Figure id="equity-share-step" inline showUnit={false} />.</p>
+  </div>
+
+  <Callout kind="do-this">
+    <p>
+      Whichever of the four you land on, do the second one as well. It changes no holding, its gain falls out
+      of arithmetic rather than out of a forecast, and it is worth more, and worth it more reliably, than
+      anything else on this page. Then pick one, buy it, and leave it alone.
+    </p>
+  </Callout>
+
+  <Callout kind="change-your-mind">
+    <p>
+      A decade in which the funds holding the cheaper half of a market trailed that market by more than their
+      stated wander would take the third portfolio off this page. For the fourth, a run in which the borrowed
+      piece moved with stocks inside a falling market rather than against them would do the same, because
+      that behaviour is the whole of its case.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>Sources</Rail>
+
+    <h2>Where this comes from</h2>
+
+    <MarginNote label="Standing caveats">
+      <p>
+        The author holds no licence, works for no firm and belongs to no professional body. AI was used
+        heavily throughout. Backtests are hindsight with a chart attached.
+      </p>
+    </MarginNote>
+
+    <p>The four constructions and every number attached to them were read from the research on
+    <span data-numeric>{portfoliosAsOf}</span>. Fee and tax figures come from fund filings and tax statute
+    rather than from a backtest. Everything measured against an index fund carries a wander that was assumed
+    rather than measured, so read every probability here as a best case.</p>
+
+    <ul>
+      {
+        sources.map((citation) => (
+          <li>
+            <a href={citationHref(citation)} class="link">
+              {PLAIN_SOURCE[citation.label] ?? citation.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <p><a href="/how-sure/">How sure we are</a> sets out the four words this site uses for confidence and how
+    long each claim would take to settle. <a href="/corrections/">Corrections</a> lists everything published
+    here that later turned out to be wrong.</p>
+  </div>
+</Base>
