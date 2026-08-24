@@ -13,6 +13,7 @@
  */
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
+import TimeToKnow from "~/components/charts/TimeToKnow.astro";
 import HowLongTool from "~/components/islands/HowLongTool";
 import { timeToKnow } from "~/components/islands/horizon-model";
 import { horizonPresets } from "~/components/islands/horizon-presets";
@@ -110,6 +111,10 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
     until there is a 9-in-10 chance you are ahead of that row's own comparison. Rows are not comparable across
     comparisons: beating the portfolio you already own is a far easier claim than beating a cheap index fund.</p>
   </div>
+
+  <Breakout class="mt-6">
+    <TimeToKnow />
+  </Breakout>
 
   <Breakout scroll class="mt-6">
     <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">

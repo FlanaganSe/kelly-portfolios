@@ -68,8 +68,8 @@ export const OG_PAGES = {
     alt: `${SITE_NAME}: the rejections, each scoped to the design that produced it.`,
   },
   "/how-sure/": {
-    title: "How sure we are, and how we have been wrong",
-    alt: `${SITE_NAME}: the four confidence rungs, and the corrections log.`,
+    title: "How sure we are",
+    alt: `${SITE_NAME}: the four levels of confidence, and how long before you would know.`,
   },
   "/funds/": {
     title: "The shelf",

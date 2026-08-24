@@ -337,10 +337,9 @@ const COLUMNS = ["Claim", "Edge", "Tracking error", "Time to know"] as const;
 
   <div slot="caption">
     <p>
-      <code class="font-mono text-xs">T = (z&nbsp;s / e)&sup2;</code> at <span data-numeric>z = &Phi;&#8315;&sup1;(0.90)</span>,
-      the same closed form the client's own horizon module runs. The square is the whole result: forty times the
-      noise is sixteen hundred times the wait, and it is why arguing about which value fund to hold is not the same
-      kind of question as reading your expense ratio.
+      The wait grows with the square of the noise, so it runs away from you fast. Forty times the wander is sixteen
+      hundred times the wait. That is why checking what your fund charges and picking between two value funds are
+      not the same kind of question, even when both are worth a similar amount on paper.
     </p>
     <p>
       Each row is measured against its own benchmark and the sizes must never be added. It assumes annual relative
