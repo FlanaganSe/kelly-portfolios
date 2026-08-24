@@ -1,0 +1,67 @@
+---
+/**
+ * The research corpus, listed.
+ *
+ * None of the files under `docs/research/` carries frontmatter, so the reading title and
+ * the blurb are read out of each document at query time by `researchTitle` and
+ * `researchLead`. Adding frontmatter to make a template tidier would edit evidence, and
+ * this listing is the thing that has to bend instead.
+ *
+ * Each row links to the file on GitHub rather than to an on-site render. Rendering the
+ * corpus is a separate job with its own decisions about anchors and figure ids; a link
+ * that resolves today is better than a route that does not exist yet.
+ */
+import { getCollection } from "astro:content";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+import { citationHref } from "~/lib/citation";
+import { researchLead, researchTitle } from "~/lib/research";
+
+const entries = (await getCollection("research"))
+  .filter((entry) => entry.data.draft !== true)
+  .map((entry) => ({
+    id: entry.id,
+    title: researchTitle(entry),
+    lead: researchLead(entry),
+    href: citationHref({ docPath: `docs/research/${entry.id}.md` }),
+  }))
+  .sort((a, b) => a.title.localeCompare(b.title));
+---
+
+<Base
+  title="The research"
+  description="Every synthesis behind this site, one page per question. Several of them conclude that we could not tell."
+>
+  <div class="prose">
+    <Rail>The corpus</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The research</h1>
+
+    <MarginNote label="Why these link out">
+      <p>
+        Each file lives in the repository and is linked there rather than re-rendered here. The figures on this
+        site name these documents by path, and the build fails if a path or a heading anchor stops resolving.
+      </p>
+    </MarginNote>
+
+    <p>
+      One synthesis per question, <span data-numeric>{entries.length}</span> of them. Several conclude that the
+      instrument could not see the effect, which is a result and is written as one. Nothing has been removed
+      because it was disappointing.
+    </p>
+  </div>
+
+  <ul class="mt-10 flex flex-col gap-0 border-t border-rule">
+    {
+      entries.map((entry) => (
+        <li class="border-b border-rule py-4">
+          <a href={entry.href} rel="noopener noreferrer" class="link font-medium">
+            {entry.title}
+          </a>
+          {entry.lead && <p class="mt-1.5 max-w-measure text-sm text-ink-muted">{entry.lead}</p>}
+          <p data-numeric class="mt-1 font-mono text-xs text-ink-faint">docs/research/{entry.id}.md</p>
+        </li>
+      ))
+    }
+  </ul>
+</Base>
