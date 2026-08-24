@@ -1,0 +1,16 @@
+label: Data needed before a study could separate that gap from zero
+value: 30 years
+unit: at 80% power, on error bars that allow for markets clustering
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Adversarial review
+  docPath: docs/research/adversarial-review.md
+  anchor: >-
+    3-the-published-detection-floors-use-a-different-inference-basis-from-the-intervals-beside-them
+note: >-
+  A detection horizon, not a holding period. It scales the design's own floor over its 427-month
+  panel; the figure published beside it was 13 years, computed on i.i.d. inference rather than
+  on the block bootstrap the interval beside it used. The separate question of when your own
+  account would show the gap has a different answer, because those funds drift only about a
+  percentage point a year against a cheap 65/35 index.

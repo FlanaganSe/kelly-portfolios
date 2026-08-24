@@ -1,0 +1,12 @@
+label: How far the portfolio drifts from a comparable cheap index fund in a typical year
+value: 400 basis points
+unit: basis points a year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth, is p even 55%
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: 2-is-p-even-55
+note: >-
+  Against a cheap index fund holding the same mix. 372 of the 400 basis points is the trend fund
+  alone.

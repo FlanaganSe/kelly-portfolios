@@ -1,0 +1,2756 @@
+{
+ "schema_version": 1,
+ "what_this_is": "Experiment 013's PUBLISHED clause (c) column under its frozen VTI/VUG/VTV/VB basis, extracted verbatim from its committed run artifact. Experiment 014 varies only the basis, so it must reproduce every figure here to ZERO difference before any of its own numbers may be read. A disagreement means something other than the basis moved.",
+ "source_run_id": "2b8cc7f73aef4d8abee68b7abcde9c1c",
+ "source_spec_hash": "79f4e7628a3aadf9aa4f6c8c6c32c59ff4e0144982e8063c01e55058f325c3ca",
+ "source_artifact_sha256": "be8b662e4596a74af640a9f41132dbea3adf68d5055199536626915214530031",
+ "source_artifact_path": "artifacts/2b8cc7f73aef4d8abee68b7abcde9c1c/result.json",
+ "extracted_utc": "2026-08-17",
+ "note_on_provenance": "artifacts/ is not in Git, so the artifact itself cannot be a test input. This file is the small committed record of what it said, which is the same treatment every other frozen fixture in this workspace gets.",
+ "basis": [
+  "VTI",
+  "VUG",
+  "VTV",
+  "VB"
+ ],
+ "funds": {
+  "AVLV": {
+   "months": 51,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.14154887951432524,
+    8.787966827763366e-21,
+    0.5206255151805833,
+    0.33782560530509154
+   ],
+   "tracking_difference_vs_combination_pp": 2.812080965124643,
+   "tracking_error_vs_combination_pp": 3.7583457032957894,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": -2.932080965124643,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.322028508346998,
+   "alpha_annual_percent": -0.9159783726031281,
+   "alpha_mde_80pc_power_percent": 5.27552677817176
+  },
+  "AVSC": {
+   "months": 47,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.0,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.5022945689453631,
+   "tracking_error_vs_combination_pp": 5.900803546299757,
+   "fee_premium_over_basis_pp": 0.22,
+   "implementation_shortfall_pp": -0.722294568945363,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 1.0579939391911668,
+   "alpha_annual_percent": 0.6166418325115774,
+   "alpha_mde_80pc_power_percent": 3.1375356235886733
+  },
+  "AVUV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.7755575615628914e-17,
+    0.0,
+    5.551115123125783e-17,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": 4.701092916212668,
+   "tracking_error_vs_combination_pp": 9.553200433917905,
+   "fee_premium_over_basis_pp": 0.22,
+   "implementation_shortfall_pp": -4.921092916212667,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5367593054895407,
+   "alpha_annual_percent": 0.38766517684725305,
+   "alpha_mde_80pc_power_percent": 3.6355582736039724
+  },
+  "BBMC": {
+   "months": 68,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    6.081696561285876e-19,
+    0.05351977006108225,
+    4.472333961502706e-19,
+    0.9464802299389178
+   ],
+   "tracking_difference_vs_combination_pp": -0.1503015942562652,
+   "tracking_error_vs_combination_pp": 1.5792386009770232,
+   "fee_premium_over_basis_pp": 0.04000000000000001,
+   "implementation_shortfall_pp": 0.11030159425626518,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.522443674090608,
+   "alpha_annual_percent": -2.903791573001413,
+   "alpha_mde_80pc_power_percent": 3.6170104759918034
+  },
+  "CALF": {
+   "months": 55,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.42861286636753e-17,
+    4.336808689942018e-17,
+    0.0,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": 6.1278363665454565,
+   "tracking_error_vs_combination_pp": 9.999386993118446,
+   "fee_premium_over_basis_pp": 0.5599999999999999,
+   "implementation_shortfall_pp": -6.687836366545456,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.9244522099924692,
+   "alpha_annual_percent": 1.1764603041345543,
+   "alpha_mde_80pc_power_percent": 9.584772804724611
+  },
+  "CGGR": {
+   "months": 46,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    4.336808689942018e-19,
+    0.7113013488451155,
+    1.3010426069826053e-18,
+    0.28869865115488447
+   ],
+   "tracking_difference_vs_combination_pp": 2.2677510300122203,
+   "tracking_error_vs_combination_pp": 3.7505786888342136,
+   "fee_premium_over_basis_pp": 0.36,
+   "implementation_shortfall_pp": -2.62775103001222,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.22340095514161173,
+   "alpha_annual_percent": 2.9363240657627556,
+   "alpha_mde_80pc_power_percent": 5.089192781056777
+  },
+  "DFAS": {
+   "months": 54,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    6.938893903907228e-18,
+    0.023764573382486595,
+    0.9762354266175135
+   ],
+   "tracking_difference_vs_combination_pp": 0.934133927572784,
+   "tracking_error_vs_combination_pp": 3.116344201130669,
+   "fee_premium_over_basis_pp": 0.23,
+   "implementation_shortfall_pp": -1.164133927572784,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.8158576353670364,
+   "alpha_annual_percent": -1.3967457717025622,
+   "alpha_mde_80pc_power_percent": 2.969355181927823
+  },
+  "DFAT": {
+   "months": 54,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.08633196351714724,
+    0.9136680364828527
+   ],
+   "tracking_difference_vs_combination_pp": 3.189569944847997,
+   "tracking_error_vs_combination_pp": 5.914906170228531,
+   "fee_premium_over_basis_pp": 0.25000000000000006,
+   "implementation_shortfall_pp": -3.439569944847997,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.43326338723041546,
+   "alpha_annual_percent": 0.33326636559368183,
+   "alpha_mde_80pc_power_percent": 3.7928486654080364
+  },
+  "DFLV": {
+   "months": 36,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.7366638450738239,
+    0.2633361549261761
+   ],
+   "tracking_difference_vs_combination_pp": 0.24393659282904173,
+   "tracking_error_vs_combination_pp": 2.878424312648551,
+   "fee_premium_over_basis_pp": 0.18,
+   "implementation_shortfall_pp": -0.4239365928290417,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.6371656158892023,
+   "alpha_annual_percent": -6.05997871836213,
+   "alpha_mde_80pc_power_percent": 5.68753172801891
+  },
+  "DFSV": {
+   "months": 46,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.810252031082426e-16,
+    1.630640067418198e-16,
+    0.0,
+    0.9999999999999996
+   ],
+   "tracking_difference_vs_combination_pp": 1.562456486086955,
+   "tracking_error_vs_combination_pp": 6.727271251520234,
+   "fee_premium_over_basis_pp": 0.27,
+   "implementation_shortfall_pp": -1.832456486086955,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4422941317066591,
+   "alpha_annual_percent": 0.44927463570154924,
+   "alpha_mde_80pc_power_percent": 4.838681780639203
+  },
+  "DFUV": {
+   "months": 43,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    4.515702048402126e-17,
+    0.0,
+    0.6755294048236785,
+    0.32447059517632143
+   ],
+   "tracking_difference_vs_combination_pp": -0.2879161191738836,
+   "tracking_error_vs_combination_pp": 2.6448835576682024,
+   "fee_premium_over_basis_pp": 0.18,
+   "implementation_shortfall_pp": 0.1079161191738836,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.515474777531104,
+   "alpha_annual_percent": -2.0634969192620893,
+   "alpha_mde_80pc_power_percent": 5.205240409815933
+  },
+  "DSTL": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.16803969329663732,
+    0.7128945317277662,
+    0.11906577497559656
+   ],
+   "tracking_difference_vs_combination_pp": 0.7543444819385017,
+   "tracking_error_vs_combination_pp": 4.631004125653683,
+   "fee_premium_over_basis_pp": 0.36,
+   "implementation_shortfall_pp": -1.1143444819385016,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.081 is below 0.15",
+    "(b) intended loading flips sign between halves: -0.009 then +0.356"
+   ],
+   "intended_loading": 0.08085869169807319,
+   "alpha_annual_percent": -0.8217091302181914,
+   "alpha_mde_80pc_power_percent": 5.159544984374848
+  },
+  "DUHP": {
+   "months": 46,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    4.244851445572738e-17,
+    0.3371400201018845,
+    0.6628599798981154,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.06437612839509133,
+   "tracking_error_vs_combination_pp": 2.736457054872439,
+   "fee_premium_over_basis_pp": 0.17,
+   "implementation_shortfall_pp": -0.10562387160490869,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.17915938915062174,
+   "alpha_annual_percent": -1.4297180639425442,
+   "alpha_mde_80pc_power_percent": 4.459840020719878
+  },
+  "DYNF": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.40437949379863447,
+    0.33054234724549797,
+    0.2650781589558675,
+    2.825404127019827e-18
+   ],
+   "tracking_difference_vs_combination_pp": 0.7543336528959358,
+   "tracking_error_vs_combination_pp": 2.825889758743907,
+   "fee_premium_over_basis_pp": 0.27,
+   "implementation_shortfall_pp": -1.024333652895936,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.046 is below 0.15",
+    "(b) intended loading flips sign between halves: +0.071 then -0.073"
+   ],
+   "intended_loading": 0.04579047493739791,
+   "alpha_annual_percent": 0.9040256428009326,
+   "alpha_mde_80pc_power_percent": 3.814706046775658
+  },
+  "EZM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    5.204170427930421e-17,
+    1.0061396160665481e-16,
+    0.12147846897626335,
+    0.8785215310237365
+   ],
+   "tracking_difference_vs_combination_pp": 0.7052156086436854,
+   "tracking_error_vs_combination_pp": 5.188458180266187,
+   "fee_premium_over_basis_pp": 0.35,
+   "implementation_shortfall_pp": -1.0552156086436852,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5537863461363037,
+   "alpha_annual_percent": -3.4270854195658105,
+   "alpha_mde_80pc_power_percent": 4.4505244113762465
+  },
+  "FBCG": {
+   "months": 65,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.775557561562891e-16,
+    0.9999999999999998,
+    0.0,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 1.3690957809230755,
+   "tracking_error_vs_combination_pp": 5.032590648550213,
+   "fee_premium_over_basis_pp": 0.5399999999999999,
+   "implementation_shortfall_pp": -1.9090957809230753,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3935117840349318,
+   "alpha_annual_percent": 3.719671860114245,
+   "alpha_mde_80pc_power_percent": 6.613223654490123
+  },
+  "FLQL": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    5.329607773225681e-16,
+    0.4282121815998581,
+    0.5717878184001414,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.38958986222650865,
+   "tracking_error_vs_combination_pp": 3.2414006078929942,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 0.26958986222650866,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.064 is below 0.15"
+   ],
+   "intended_loading": 0.06408934983016068,
+   "alpha_annual_percent": -1.283394908025632,
+   "alpha_mde_80pc_power_percent": 2.854763562052244
+  },
+  "FLQM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.2401820985823018e-16,
+    0.1270776788417333,
+    0.5036038871353566,
+    0.3693184340229099
+   ],
+   "tracking_difference_vs_combination_pp": -0.6755735102061122,
+   "tracking_error_vs_combination_pp": 4.273133660422022,
+   "fee_premium_over_basis_pp": 0.27,
+   "implementation_shortfall_pp": 0.4055735102061122,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.128 is below 0.15"
+   ],
+   "intended_loading": 0.12805436868454473,
+   "alpha_annual_percent": -3.5417108299281392,
+   "alpha_mde_80pc_power_percent": 4.498963470287307
+  },
+  "FQAL": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.47166120001999684,
+    0.5283387999800032,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.7422662650305804,
+   "tracking_error_vs_combination_pp": 2.185760163418913,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 0.6222662650305804,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.74 pp/yr to its cheap replication against a fee premium of only +0.12 pp/yr"
+   ],
+   "intended_loading": 0.18853863342271426,
+   "alpha_annual_percent": -1.2541595028948014,
+   "alpha_mde_80pc_power_percent": 2.0683656501651386
+  },
+  "FSMD": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    1.235990476633475e-17,
+    0.3125573003802659,
+    0.687442699619734
+   ],
+   "tracking_difference_vs_combination_pp": 0.3622455433766463,
+   "tracking_error_vs_combination_pp": 2.676461805853761,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": -0.48224554337664627,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.2658000925096342,
+   "alpha_annual_percent": -2.5315156120133775,
+   "alpha_mde_80pc_power_percent": 3.181773066406228
+  },
+  "FTA": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    4.0766001685454967e-17,
+    0.6493099737130928,
+    0.35069002628690726
+   ],
+   "tracking_difference_vs_combination_pp": -0.2188963724542179,
+   "tracking_error_vs_combination_pp": 5.533971768981825,
+   "fee_premium_over_basis_pp": 0.5499999999999999,
+   "implementation_shortfall_pp": -0.33110362754578204,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4521016577370569,
+   "alpha_annual_percent": -3.852360989686507,
+   "alpha_mde_80pc_power_percent": 4.398727007803409
+  },
+  "FTC": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.3335809527754327,
+    0.360084943949097,
+    0.0,
+    0.30633410327547034
+   ],
+   "tracking_difference_vs_combination_pp": 0.1428203837759508,
+   "tracking_error_vs_combination_pp": 5.627951982917902,
+   "fee_premium_over_basis_pp": 0.5499999999999999,
+   "implementation_shortfall_pp": -0.6928203837759508,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.059 is below 0.15",
+    "(b) intended loading flips sign between halves: +0.077 then -0.060"
+   ],
+   "intended_loading": 0.05858691375181929,
+   "alpha_annual_percent": -1.0312904097556177,
+   "alpha_mde_80pc_power_percent": 4.947172914968263
+  },
+  "FTGS": {
+   "months": 38,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.43926205195790885,
+    0.27748261226487453,
+    0.2832553357772167
+   ],
+   "tracking_difference_vs_combination_pp": -0.22474513507304705,
+   "tracking_error_vs_combination_pp": 4.851161221048841,
+   "fee_premium_over_basis_pp": 0.57,
+   "implementation_shortfall_pp": -0.3452548649269529,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.120 is below 0.15"
+   ],
+   "intended_loading": -0.11995337487919289,
+   "alpha_annual_percent": -3.751567429755863,
+   "alpha_mde_80pc_power_percent": 10.26675977157619
+  },
+  "FVAL": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.5931604158318516,
+    0.0,
+    0.40313479825690335,
+    0.0037047859112450563
+   ],
+   "tracking_difference_vs_combination_pp": 0.4835834576683366,
+   "tracking_error_vs_combination_pp": 2.83410485285342,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": -0.6035834576683365,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.1894954081727767,
+   "alpha_annual_percent": -1.3461286404355268,
+   "alpha_mde_80pc_power_percent": 2.21589365625981
+  },
+  "IJH": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.1890243032807307e-18,
+    5.618740116052198e-19,
+    0.2098655363559264,
+    0.7901344636440736
+   ],
+   "tracking_difference_vs_combination_pp": 0.25992005243877714,
+   "tracking_error_vs_combination_pp": 2.4278571213420657,
+   "fee_premium_over_basis_pp": 0.020000000000000004,
+   "implementation_shortfall_pp": -0.27992005243877716,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.48019960494730274,
+   "alpha_annual_percent": -3.4656827157539234,
+   "alpha_mde_80pc_power_percent": 4.059667121370281
+  },
+  "IJJ": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    4.163336342344337e-17,
+    4.5102810375396984e-17,
+    0.23144580336095727,
+    0.7685541966390427
+   ],
+   "tracking_difference_vs_combination_pp": 0.4061457503015114,
+   "tracking_error_vs_combination_pp": 5.121489472074585,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": -0.5561457503015114,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4106139875481982,
+   "alpha_annual_percent": -2.9555950015540406,
+   "alpha_mde_80pc_power_percent": 5.255402984525878
+  },
+  "IJK": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.18454996800820594,
+    0.10800498441273632,
+    0.7074450475790578
+   ],
+   "tracking_difference_vs_combination_pp": -1.6916122213302531,
+   "tracking_error_vs_combination_pp": 4.335146137985682,
+   "fee_premium_over_basis_pp": 0.13,
+   "implementation_shortfall_pp": 1.561612221330253,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.067 is below 0.15",
+    "(c) lost +1.69 pp/yr to its cheap replication against a fee premium of only +0.13 pp/yr",
+    "(d) total cost of ownership 1.85 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": -0.06749419335201878,
+   "alpha_annual_percent": -4.3212591922927714,
+   "alpha_mde_80pc_power_percent": 4.433477783280681
+  },
+  "IJR": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    1.734723475976807e-17,
+    6.938893903907228e-18,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.9762744649999995,
+   "tracking_error_vs_combination_pp": 5.071118307446647,
+   "fee_premium_over_basis_pp": 0.03,
+   "implementation_shortfall_pp": 0.9462744649999995,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.98 pp/yr to its cheap replication against a fee premium of only +0.03 pp/yr"
+   ],
+   "intended_loading": 0.888809728852006,
+   "alpha_annual_percent": -2.9893694301671463,
+   "alpha_mde_80pc_power_percent": 1.9958378449059637
+  },
+  "IJS": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    6.765421556309546e-17,
+    5.5511151231257815e-17,
+    0.9999999999999998
+   ],
+   "tracking_difference_vs_combination_pp": -0.7562744649999985,
+   "tracking_error_vs_combination_pp": 7.7250724609670165,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": 0.6062744649999985,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.76 pp/yr to its cheap replication against a fee premium of only +0.15 pp/yr"
+   ],
+   "intended_loading": 0.36703251897742406,
+   "alpha_annual_percent": -2.513634966730688,
+   "alpha_mde_80pc_power_percent": 2.6947830388888168
+  },
+  "IJT": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    1.734723475976807e-18,
+    0.0,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -1.5384546316666647,
+   "tracking_error_vs_combination_pp": 4.994882663928454,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": 1.3884546316666648,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.067 is below 0.15",
+    "(c) lost +1.54 pp/yr to its cheap replication against a fee premium of only +0.15 pp/yr",
+    "(d) total cost of ownership 1.72 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": -0.06679873637113587,
+   "alpha_annual_percent": -3.8134826601707785,
+   "alpha_mde_80pc_power_percent": 3.606847195578529
+  },
+  "ILCV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.014755094309517996,
+    0.07626407865938858,
+    0.9089808270310935,
+    1.14746494573356e-20
+   ],
+   "tracking_difference_vs_combination_pp": -0.558979908534091,
+   "tracking_error_vs_combination_pp": 2.1391706116675855,
+   "fee_premium_over_basis_pp": 0.009999999999999998,
+   "implementation_shortfall_pp": 0.548979908534091,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.56 pp/yr to its cheap replication against a fee premium of only +0.01 pp/yr"
+   ],
+   "intended_loading": 0.2820261627637283,
+   "alpha_annual_percent": -2.211065055299013,
+   "alpha_mde_80pc_power_percent": 3.481449274246655
+  },
+  "IMCB": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.14395229950970476,
+    0.3423465253535164,
+    0.5137011751367788
+   ],
+   "tracking_difference_vs_combination_pp": -1.563476785064495,
+   "tracking_error_vs_combination_pp": 2.7879276943663394,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": 1.553476785064495,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.56 pp/yr to its cheap replication against a fee premium of only +0.01 pp/yr"
+   ],
+   "intended_loading": 0.18765611900261892,
+   "alpha_annual_percent": -4.38698328854939,
+   "alpha_mde_80pc_power_percent": 4.320981169115131
+  },
+  "IMCG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.4359319219037444,
+    2.7714918034160707e-17,
+    0.5640680780962556
+   ],
+   "tracking_difference_vs_combination_pp": -1.9469483004985386,
+   "tracking_error_vs_combination_pp": 5.43831843755801,
+   "fee_premium_over_basis_pp": 0.029999999999999995,
+   "implementation_shortfall_pp": 1.9169483004985386,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(b) intended loading flips sign between halves: +0.159 then -0.002",
+    "(c) lost +1.95 pp/yr to its cheap replication against a fee premium of only +0.03 pp/yr"
+   ],
+   "intended_loading": 0.16355996618739818,
+   "alpha_annual_percent": -2.2908384241391486,
+   "alpha_mde_80pc_power_percent": 7.534777332506991
+  },
+  "IUSG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    4.685760501361595e-17,
+    0.8594785181757255,
+    0.14052148182427449,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.1864639576953562,
+   "tracking_error_vs_combination_pp": 2.6325630334065897,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": 0.1764639576953562,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.20699672204916608,
+   "alpha_annual_percent": 0.7168144291523793,
+   "alpha_mde_80pc_power_percent": 3.7254090093539842
+  },
+  "IUSV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    9.698611949356464e-17,
+    0.03976059616475233,
+    0.8132319613179827,
+    0.14700744251726494
+   ],
+   "tracking_difference_vs_combination_pp": -0.06674209963477956,
+   "tracking_error_vs_combination_pp": 2.5155267566487645,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": 0.05674209963477956,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.30971374209801106,
+   "alpha_annual_percent": -2.1809172714144176,
+   "alpha_mde_80pc_power_percent": 4.069412438379819
+  },
+  "IVE": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.05652234257005872,
+    0.8467155767377469,
+    0.09676208069219443
+   ],
+   "tracking_difference_vs_combination_pp": -0.34057951281501014,
+   "tracking_error_vs_combination_pp": 2.569140241908309,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": 0.19057951281501015,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.301936096312937,
+   "alpha_annual_percent": -2.2673887740401204,
+   "alpha_mde_80pc_power_percent": 4.1319827563293945
+  },
+  "IVOG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.535871060291566e-17,
+    0.18470895471128868,
+    0.10758679232026166,
+    0.7077042529684496
+   ],
+   "tracking_difference_vs_combination_pp": -1.6670031528708489,
+   "tracking_error_vs_combination_pp": 4.332111586013583,
+   "fee_premium_over_basis_pp": 0.07,
+   "implementation_shortfall_pp": 1.5970031528708488,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.067 is below 0.15",
+    "(c) lost +1.67 pp/yr to its cheap replication against a fee premium of only +0.07 pp/yr",
+    "(d) total cost of ownership 1.77 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": -0.06741481919991443,
+   "alpha_annual_percent": -4.291605435403797,
+   "alpha_mde_80pc_power_percent": 4.435061991559056
+  },
+  "IVOO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.209283258898941,
+    0.790716741101059
+   ],
+   "tracking_difference_vs_combination_pp": 0.2074136196236497,
+   "tracking_error_vs_combination_pp": 2.425574491153044,
+   "fee_premium_over_basis_pp": 0.04000000000000001,
+   "implementation_shortfall_pp": -0.24741361962364972,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.48063285709201553,
+   "alpha_annual_percent": -3.5189811911556297,
+   "alpha_mde_80pc_power_percent": 4.0461238791153535
+  },
+  "IVOV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    7.979727989493313e-17,
+    2.949029909160572e-17,
+    0.2305610820570027,
+    0.7694389179429972
+   ],
+   "tracking_difference_vs_combination_pp": 0.4715712405452065,
+   "tracking_error_vs_combination_pp": 5.12124675946916,
+   "fee_premium_over_basis_pp": 0.07,
+   "implementation_shortfall_pp": -0.5415712405452064,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4112179199145518,
+   "alpha_annual_percent": -2.892505244384131,
+   "alpha_mde_80pc_power_percent": 5.2399912536505004
+  },
+  "IVW": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.1660074353985152e-16,
+    0.8858436007977492,
+    0.11415639920225083,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.078060148351984,
+   "tracking_error_vs_combination_pp": 2.804222180316915,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": -0.071939851648016,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.22360482528254044,
+   "alpha_annual_percent": 0.9290342244948582,
+   "alpha_mde_80pc_power_percent": 4.0483374246126225
+  },
+  "IWD": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.6720959774391925e-19,
+    0.0019219089374204398,
+    0.804637664983592,
+    0.19344042607898765
+   ],
+   "tracking_difference_vs_combination_pp": -0.7845981588016168,
+   "tracking_error_vs_combination_pp": 1.405005601043241,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": 0.6345981588016167,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.78 pp/yr to its cheap replication against a fee premium of only +0.15 pp/yr"
+   ],
+   "intended_loading": 0.3498304431629328,
+   "alpha_annual_percent": -3.634836340177197,
+   "alpha_mde_80pc_power_percent": 2.9939234586544
+  },
+  "IWF": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    3.0633154682981365e-17,
+    0.9401259670070703,
+    0.05987403299292967,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.42531028109576124,
+   "tracking_error_vs_combination_pp": 1.5392580144216907,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": -0.5753102810957612,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.27770476029569957,
+   "alpha_annual_percent": 2.273481469685748,
+   "alpha_mde_80pc_power_percent": 2.8620020777654167
+  },
+  "IWN": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.8102520310824275e-16,
+    0.0,
+    0.01403076234229729,
+    0.9859692376577025
+   ],
+   "tracking_difference_vs_combination_pp": -0.6987933611649235,
+   "tracking_error_vs_combination_pp": 6.584725538886955,
+   "fee_premium_over_basis_pp": 0.21,
+   "implementation_shortfall_pp": 0.48879336116492356,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.39177404571790997,
+   "alpha_annual_percent": -2.5530796161170253,
+   "alpha_mde_80pc_power_percent": 2.2820591958968808
+  },
+  "IWO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.10333098047940892,
+    0.0,
+    0.8966690195205912
+   ],
+   "tracking_difference_vs_combination_pp": -1.8163807162735885,
+   "tracking_error_vs_combination_pp": 6.363027347856795,
+   "fee_premium_over_basis_pp": 0.21,
+   "implementation_shortfall_pp": 1.6063807162735886,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.134 is below 0.15",
+    "(c) lost +1.82 pp/yr to its cheap replication against a fee premium of only +0.21 pp/yr",
+    "(d) total cost of ownership 2.06 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.13447062245740193,
+   "alpha_annual_percent": -2.5475120622956005,
+   "alpha_mde_80pc_power_percent": 3.871042377165847
+  },
+  "IWP": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.46283651604739784,
+    0.0,
+    0.5371634839526022
+   ],
+   "tracking_difference_vs_combination_pp": -2.389937299773017,
+   "tracking_error_vs_combination_pp": 6.413273379520786,
+   "fee_premium_over_basis_pp": 0.2,
+   "implementation_shortfall_pp": 2.1899372997730167,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +2.39 pp/yr to its cheap replication against a fee premium of only +0.20 pp/yr"
+   ],
+   "intended_loading": 0.1675472066274873,
+   "alpha_annual_percent": -2.7366186418514142,
+   "alpha_mde_80pc_power_percent": 7.582668474013322
+  },
+  "IWR": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    8.570313771032493e-17,
+    0.12340865315946146,
+    0.24408307256320572,
+    0.6325082742773328
+   ],
+   "tracking_difference_vs_combination_pp": -0.8868650608909224,
+   "tracking_error_vs_combination_pp": 2.3782628382742126,
+   "fee_premium_over_basis_pp": 0.15,
+   "implementation_shortfall_pp": 0.7368650608909224,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.89 pp/yr to its cheap replication against a fee premium of only +0.15 pp/yr"
+   ],
+   "intended_loading": 0.29349716751729993,
+   "alpha_annual_percent": -3.859158844437648,
+   "alpha_mde_80pc_power_percent": 4.000067531078373
+  },
+  "IWS": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.4295972927111026,
+    0.5704027072888975
+   ],
+   "tracking_difference_vs_combination_pp": -0.8311586353492341,
+   "tracking_error_vs_combination_pp": 3.246593060515063,
+   "fee_premium_over_basis_pp": 0.2,
+   "implementation_shortfall_pp": 0.631158635349234,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.83 pp/yr to its cheap replication against a fee premium of only +0.20 pp/yr"
+   ],
+   "intended_loading": 0.39152709125180474,
+   "alpha_annual_percent": -4.9069448578338415,
+   "alpha_mde_80pc_power_percent": 3.7325081510631026
+  },
+  "IWX": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.029626786423992548,
+    0.9703732135760074,
+    1.0570971181733666e-18
+   ],
+   "tracking_difference_vs_combination_pp": -0.9519339577358473,
+   "tracking_error_vs_combination_pp": 1.6393632709763066,
+   "fee_premium_over_basis_pp": 0.17,
+   "implementation_shortfall_pp": 0.7819339577358473,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.95 pp/yr to its cheap replication against a fee premium of only +0.17 pp/yr"
+   ],
+   "intended_loading": 0.3300236117919901,
+   "alpha_annual_percent": -2.9811223409470573,
+   "alpha_mde_80pc_power_percent": 3.486313869747156
+  },
+  "IWY": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.2962654044307115e-16,
+    0.981597290577613,
+    0.018402709422386754,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 1.2208283543914533,
+   "tracking_error_vs_combination_pp": 2.5511927237980436,
+   "fee_premium_over_basis_pp": 0.17,
+   "implementation_shortfall_pp": -1.3908283543914532,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3017574007936311,
+   "alpha_annual_percent": 3.0918480774015067,
+   "alpha_mde_80pc_power_percent": 3.7368144068433877
+  },
+  "JAVA": {
+   "months": 50,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.0408340855860843e-17,
+    1.5178830414797062e-18,
+    0.8628677115719788,
+    0.1371322884280212
+   ],
+   "tracking_difference_vs_combination_pp": 0.7375369621072382,
+   "tracking_error_vs_combination_pp": 2.5599267947055004,
+   "fee_premium_over_basis_pp": 0.41000000000000003,
+   "implementation_shortfall_pp": -1.1475369621072382,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3895955844808663,
+   "alpha_annual_percent": -0.9197281202684828,
+   "alpha_mde_80pc_power_percent": 5.516936518267741
+  },
+  "JGRO": {
+   "months": 40,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.23999088354356213,
+    0.7600091164564379,
+    5.2807266104797665e-18,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.5305394879210233,
+   "tracking_error_vs_combination_pp": 3.322654002148585,
+   "fee_premium_over_basis_pp": 0.41000000000000003,
+   "implementation_shortfall_pp": 0.12053948792102331,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.2991247064998162,
+   "alpha_annual_percent": 0.46204020680938596,
+   "alpha_mde_80pc_power_percent": 4.834613680963617
+  },
+  "JHML": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.16629027246996628,
+    0.2687424985856966,
+    0.4502471948173526,
+    0.11472003412698456
+   ],
+   "tracking_difference_vs_combination_pp": -0.29183724311116754,
+   "tracking_error_vs_combination_pp": 0.9634999494143016,
+   "fee_premium_over_basis_pp": 0.26,
+   "implementation_shortfall_pp": 0.031837243111167535,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.106 is below 0.15"
+   ],
+   "intended_loading": 0.10597710266863397,
+   "alpha_annual_percent": -1.659272236389979,
+   "alpha_mde_80pc_power_percent": 1.364049329195962
+  },
+  "JHMM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.2743518047212343e-16,
+    0.07111817874646795,
+    0.28018176489025,
+    0.648700056363282
+   ],
+   "tracking_difference_vs_combination_pp": -0.2691897186339366,
+   "tracking_error_vs_combination_pp": 2.36692751487336,
+   "fee_premium_over_basis_pp": 0.38,
+   "implementation_shortfall_pp": -0.11081028136606341,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.21218791705537787,
+   "alpha_annual_percent": -3.596074811637237,
+   "alpha_mde_80pc_power_percent": 3.779340340671187
+  },
+  "JMEE": {
+   "months": 43,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    1.734723475976807e-18,
+    0.11445293996669381,
+    0.8855470600333062
+   ],
+   "tracking_difference_vs_combination_pp": -0.1911179058805454,
+   "tracking_error_vs_combination_pp": 2.1074119863681107,
+   "fee_premium_over_basis_pp": 0.21,
+   "implementation_shortfall_pp": -0.0188820941194546,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.5814149068920944,
+   "alpha_annual_percent": -3.1700746883862014,
+   "alpha_mde_80pc_power_percent": 5.2417377458624195
+  },
+  "JMOM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.7346910932536717,
+    0.20843511766468364,
+    5.593043254014872e-17,
+    0.05687378908164464
+   ],
+   "tracking_difference_vs_combination_pp": 0.499548159877697,
+   "tracking_error_vs_combination_pp": 4.022428619969136,
+   "fee_premium_over_basis_pp": 0.09,
+   "implementation_shortfall_pp": -0.589548159877697,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.19837659765274415,
+   "alpha_annual_percent": -0.21153958400661546,
+   "alpha_mde_80pc_power_percent": 2.8721847447986573
+  },
+  "JQUA": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.4008113945474703,
+    0.5991886054525297,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.23468785299963568,
+   "tracking_error_vs_combination_pp": 2.9919249019227605,
+   "fee_premium_over_basis_pp": 0.09,
+   "implementation_shortfall_pp": 0.14468785299963569,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.19821108282919686,
+   "alpha_annual_percent": -0.7337873704121235,
+   "alpha_mde_80pc_power_percent": 2.7470403254791043
+  },
+  "MDYG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    6.993006074346977e-17,
+    0.18439370289094847,
+    0.10877675539248208,
+    0.7068295417165693
+   ],
+   "tracking_difference_vs_combination_pp": -1.693291867489232,
+   "tracking_error_vs_combination_pp": 4.332512601043135,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 1.5732918674892322,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.068 is below 0.15",
+    "(c) lost +1.69 pp/yr to its cheap replication against a fee premium of only +0.12 pp/yr",
+    "(d) total cost of ownership 1.84 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": -0.0677416221753222,
+   "alpha_annual_percent": -4.314549576546452,
+   "alpha_mde_80pc_power_percent": 4.4241684721365715
+  },
+  "MDYV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.23223635068379128,
+    0.7677636493162087
+   ],
+   "tracking_difference_vs_combination_pp": 0.44598672816558854,
+   "tracking_error_vs_combination_pp": 5.113771776276291,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": -0.5659867281655886,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4114405502004529,
+   "alpha_annual_percent": -2.9029450419513547,
+   "alpha_mde_80pc_power_percent": 5.257471730881634
+  },
+  "MGK": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.9428902930940235e-16,
+    0.9999999999999998,
+    0.0,
+    2.60208521396521e-17
+   ],
+   "tracking_difference_vs_combination_pp": 0.9662584800000016,
+   "tracking_error_vs_combination_pp": 1.5335757609686944,
+   "fee_premium_over_basis_pp": 0.04000000000000001,
+   "implementation_shortfall_pp": -1.0062584800000016,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3103952923902701,
+   "alpha_annual_percent": 2.9357411390361188,
+   "alpha_mde_80pc_power_percent": 3.799734754056829
+  },
+  "MGV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    4.0670254001843764e-17,
+    1.0,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.1499200366666662,
+   "tracking_error_vs_combination_pp": 1.3078745605517619,
+   "fee_premium_over_basis_pp": 0.020000000000000004,
+   "implementation_shortfall_pp": -0.16992003666666622,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3107281262346573,
+   "alpha_annual_percent": -2.22942930983546,
+   "alpha_mde_80pc_power_percent": 3.496861289577506
+  },
+  "MTUM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.6090451061142287,
+    0.25196763033736586,
+    0.13898726354840563,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": -1.2241515177352704,
+   "tracking_error_vs_combination_pp": 8.650909862827955,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 1.1041515177352705,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.22 pp/yr to its cheap replication against a fee premium of only +0.12 pp/yr"
+   ],
+   "intended_loading": 0.44364772703098426,
+   "alpha_annual_percent": -2.953333504444547,
+   "alpha_mde_80pc_power_percent": 7.341665798924128
+  },
+  "NUGO": {
+   "months": 51,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.9743709870010968,
+    0.025629012998903102,
+    2.659005828020699e-17
+   ],
+   "tracking_difference_vs_combination_pp": -0.7088191810988427,
+   "tracking_error_vs_combination_pp": 3.4892562083620646,
+   "fee_premium_over_basis_pp": 0.47,
+   "implementation_shortfall_pp": 0.2388191810988427,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3591444109829429,
+   "alpha_annual_percent": 0.6171556940566758,
+   "alpha_mde_80pc_power_percent": 6.4630154764576
+  },
+  "OMFL": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.20648785647182688,
+    0.5658168429574794,
+    0.22769530057069365
+   ],
+   "tracking_difference_vs_combination_pp": 0.0306003348605699,
+   "tracking_error_vs_combination_pp": 7.4171007185069096,
+   "fee_premium_over_basis_pp": 0.26,
+   "implementation_shortfall_pp": -0.2906003348605699,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.024 is below 0.15",
+    "(b) intended loading flips sign between halves: -0.032 then +0.241"
+   ],
+   "intended_loading": 0.023772082134512484,
+   "alpha_annual_percent": -0.4975334874145553,
+   "alpha_mde_80pc_power_percent": 8.537365857448728
+  },
+  "PSC": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    2.0816681711721685e-17,
+    0.00600449438860573,
+    0.9939955056113943
+   ],
+   "tracking_difference_vs_combination_pp": 2.244661097081746,
+   "tracking_error_vs_combination_pp": 4.907975486444635,
+   "fee_premium_over_basis_pp": 0.35,
+   "implementation_shortfall_pp": -2.594661097081746,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.7392453579359266,
+   "alpha_annual_percent": -0.7121546442723621,
+   "alpha_mde_80pc_power_percent": 3.460461074431209
+  },
+  "PWB": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.809321684131064,
+    0.19067831586893605,
+    6.288054963060705e-18
+   ],
+   "tracking_difference_vs_combination_pp": -0.5849572830128357,
+   "tracking_error_vs_combination_pp": 5.0523747999235304,
+   "fee_premium_over_basis_pp": 0.52,
+   "implementation_shortfall_pp": 0.06495728301283565,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.135 is below 0.15",
+    "(d) total cost of ownership 1.13 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.1354760276543819,
+   "alpha_annual_percent": -0.08124631283295894,
+   "alpha_mde_80pc_power_percent": 3.2513747338905583
+  },
+  "PWV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    4.163336342344337e-17,
+    1.3877787807814457e-17,
+    1.0,
+    2.7755575615628914e-17
+   ],
+   "tracking_difference_vs_combination_pp": 0.12368928333333354,
+   "tracking_error_vs_combination_pp": 3.1268933920610635,
+   "fee_premium_over_basis_pp": 0.52,
+   "implementation_shortfall_pp": -0.6436892833333335,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4297869654883147,
+   "alpha_annual_percent": -2.2466345148290254,
+   "alpha_mde_80pc_power_percent": 3.610575860183977
+  },
+  "QGRO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.6415421325492278,
+    0.1014813016741449,
+    0.2569765657766273
+   ],
+   "tracking_difference_vs_combination_pp": 1.5022529321238733,
+   "tracking_error_vs_combination_pp": 5.318051701775165,
+   "fee_premium_over_basis_pp": 0.26,
+   "implementation_shortfall_pp": -1.7622529321238734,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended RMW loading +0.083 is below 0.15",
+    "(b) intended loading flips sign between halves: +0.180 then -0.023"
+   ],
+   "intended_loading": 0.08310955083475069,
+   "alpha_annual_percent": 1.5389099319965411,
+   "alpha_mde_80pc_power_percent": 5.444680092474769
+  },
+  "QGRW": {
+   "months": 36,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.9999999999999998,
+    0.0,
+    1.804112415015879e-16
+   ],
+   "tracking_difference_vs_combination_pp": 2.7085618266666702,
+   "tracking_error_vs_combination_pp": 1.9331599274307454,
+   "fee_premium_over_basis_pp": 0.25,
+   "implementation_shortfall_pp": -2.9585618266666702,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended RMW loading -0.107 is below 0.15"
+   ],
+   "intended_loading": -0.10684977480887148,
+   "alpha_annual_percent": 6.276204261144056,
+   "alpha_mde_80pc_power_percent": 7.974191704935974
+  },
+  "QUAL": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.5029168603975933,
+    0.49708313960240663,
+    6.45100292628875e-18
+   ],
+   "tracking_difference_vs_combination_pp": -1.2642816156316368,
+   "tracking_error_vs_combination_pp": 2.9618823245074717,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 1.1442816156316367,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.26 pp/yr to its cheap replication against a fee premium of only +0.12 pp/yr"
+   ],
+   "intended_loading": 0.18575607898697077,
+   "alpha_annual_percent": -2.1463382379478992,
+   "alpha_mde_80pc_power_percent": 3.134123657017472
+  },
+  "QVML": {
+   "months": 54,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.013274062524242e-17,
+    0.4437675778639582,
+    0.5562324221360417,
+    1.0498549864743422e-17
+   ],
+   "tracking_difference_vs_combination_pp": 0.7046999986253547,
+   "tracking_error_vs_combination_pp": 1.645661941444122,
+   "fee_premium_over_basis_pp": 0.08,
+   "implementation_shortfall_pp": -0.7846999986253547,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended RMW loading +0.111 is below 0.15"
+   ],
+   "intended_loading": 0.11121855330188435,
+   "alpha_annual_percent": -0.58291183149509,
+   "alpha_mde_80pc_power_percent": 1.973635966921122
+  },
+  "RPG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.2604970502787441,
+    0.4568727055277029,
+    6.1838566756586256e-18,
+    0.28263024419355304
+   ],
+   "tracking_difference_vs_combination_pp": -2.823492846764644,
+   "tracking_error_vs_combination_pp": 7.7992624367339305,
+   "fee_premium_over_basis_pp": 0.31999999999999995,
+   "implementation_shortfall_pp": 2.5034928467646442,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.084 is below 0.15",
+    "(c) lost +2.82 pp/yr to its cheap replication against a fee premium of only +0.32 pp/yr",
+    "(d) total cost of ownership 3.17 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.08409766535131907,
+   "alpha_annual_percent": -4.989787351243946,
+   "alpha_mde_80pc_power_percent": 7.957821294751531
+  },
+  "RPV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.4825907858925166,
+    0.5174092141074835
+   ],
+   "tracking_difference_vs_combination_pp": 0.6331771705098483,
+   "tracking_error_vs_combination_pp": 8.915976709784722,
+   "fee_premium_over_basis_pp": 0.31999999999999995,
+   "implementation_shortfall_pp": -0.9531771705098483,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.709817353820136,
+   "alpha_annual_percent": -2.7974583295457918,
+   "alpha_mde_80pc_power_percent": 6.496166402273861
+  },
+  "RWJ": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    3.122502256758253e-17,
+    5.898059818321144e-17,
+    5.551115123125783e-17,
+    0.9999999999999999
+   ],
+   "tracking_difference_vs_combination_pp": 6.618907535000002,
+   "tracking_error_vs_combination_pp": 13.29892434594386,
+   "fee_premium_over_basis_pp": 0.36,
+   "implementation_shortfall_pp": -6.978907535000002,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 1.2541913220715726,
+   "alpha_annual_percent": 3.726029070967238,
+   "alpha_mde_80pc_power_percent": 6.838163878824734
+  },
+  "SCHA": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    2.775557561562892e-17,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.32294113166666577,
+   "tracking_error_vs_combination_pp": 2.548244175846124,
+   "fee_premium_over_basis_pp": 0.0,
+   "implementation_shortfall_pp": 0.32294113166666577,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.761062550148758,
+   "alpha_annual_percent": -2.908944694478708,
+   "alpha_mde_80pc_power_percent": 2.3075254509740977
+  },
+  "SCHG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.9483257286975308e-17,
+    0.9925473441294943,
+    0.007452655870505719,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.6961261431115713,
+   "tracking_error_vs_combination_pp": 1.468839850115681,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": -0.7061261431115713,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.2764972403242165,
+   "alpha_annual_percent": 3.1449522088001123,
+   "alpha_mde_80pc_power_percent": 3.9701362792333637
+  },
+  "SCHM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.04870704652630807,
+    0.1439774541662084,
+    0.8073154993074836
+   ],
+   "tracking_difference_vs_combination_pp": -1.18590365324624,
+   "tracking_error_vs_combination_pp": 1.9145621751218378,
+   "fee_premium_over_basis_pp": 0.0,
+   "implementation_shortfall_pp": 1.18590365324624,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.19 pp/yr to its cheap replication against a fee premium of only +0.00 pp/yr"
+   ],
+   "intended_loading": 0.3859153935645374,
+   "alpha_annual_percent": -4.583849518228159,
+   "alpha_mde_80pc_power_percent": 3.8769080927687045
+  },
+  "SCHV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.03490453696221703,
+    0.859026583161576,
+    0.106068879876207
+   ],
+   "tracking_difference_vs_combination_pp": -1.384599337013469,
+   "tracking_error_vs_combination_pp": 1.3656820575233206,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": 1.374599337013469,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.38 pp/yr to its cheap replication against a fee premium of only +0.01 pp/yr"
+   ],
+   "intended_loading": 0.29764455355474195,
+   "alpha_annual_percent": -4.117539880848541,
+   "alpha_mde_80pc_power_percent": 3.229386090362666
+  },
+  "SLYG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    4.5102810375396984e-17,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -1.4662744649999986,
+   "tracking_error_vs_combination_pp": 4.992047908357314,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 1.3462744649999987,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading -0.067 is below 0.15",
+    "(c) lost +1.47 pp/yr to its cheap replication against a fee premium of only +0.12 pp/yr",
+    "(d) total cost of ownership 1.62 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": -0.06669695411259058,
+   "alpha_annual_percent": -3.7285063330220423,
+   "alpha_mde_80pc_power_percent": 3.5985733243777536
+  },
+  "SLYV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    9.974659986866641e-17,
+    4.336808689942018e-18,
+    0.0,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.6979411316666666,
+   "tracking_error_vs_combination_pp": 7.742439158929974,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": 0.5779411316666666,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.70 pp/yr to its cheap replication against a fee premium of only +0.12 pp/yr"
+   ],
+   "intended_loading": 0.3673488310795331,
+   "alpha_annual_percent": -2.435455428262228,
+   "alpha_mde_80pc_power_percent": 2.700881006684531
+  },
+  "SPHQ": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.6875785840418862e-16,
+    0.4188592333941397,
+    0.5811407666058601,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.006500761276712758,
+   "tracking_error_vs_combination_pp": 4.2442896229530565,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": -0.12650076127671275,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.17636224064054462,
+   "alpha_annual_percent": -0.5603061420017125,
+   "alpha_mde_80pc_power_percent": 3.7470852016557323
+  },
+  "SPMD": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.21073741331734291,
+    0.7892625866826571
+   ],
+   "tracking_difference_vs_combination_pp": 0.23790521965224887,
+   "tracking_error_vs_combination_pp": 2.418845306573688,
+   "fee_premium_over_basis_pp": -3.469446951953614e-18,
+   "implementation_shortfall_pp": -0.23790521965224887,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4805352666657239,
+   "alpha_annual_percent": -3.474267785202625,
+   "alpha_mde_80pc_power_percent": 4.041188742715904
+  },
+  "SPMO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.5627935288447691,
+    0.43720647115523076,
+    1.1453918325951548e-16
+   ],
+   "tracking_difference_vs_combination_pp": 4.431982561646267,
+   "tracking_error_vs_combination_pp": 8.659722960486317,
+   "fee_premium_over_basis_pp": 0.1,
+   "implementation_shortfall_pp": -4.531982561646267,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4139364070177838,
+   "alpha_annual_percent": 2.8216665415614863,
+   "alpha_mde_80pc_power_percent": 7.534413603080814
+  },
+  "SPSM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    5.724587470723462e-17,
+    1.1102230246251563e-16,
+    0.9999999999999998
+   ],
+   "tracking_difference_vs_combination_pp": -0.9396077983333325,
+   "tracking_error_vs_combination_pp": 5.092648308616809,
+   "fee_premium_over_basis_pp": 3.469446951953614e-18,
+   "implementation_shortfall_pp": 0.9396077983333325,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.94 pp/yr to its cheap replication against a fee premium of only +0.00 pp/yr"
+   ],
+   "intended_loading": 0.8889460455961669,
+   "alpha_annual_percent": -2.9455715846991555,
+   "alpha_mde_80pc_power_percent": 1.9718208879709718
+  },
+  "SPYG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.8859587570889029,
+    0.11404124291109703,
+    1.0876564787235259e-17
+   ],
+   "tracking_difference_vs_combination_pp": 0.03939994127470613,
+   "tracking_error_vs_combination_pp": 2.811829399026197,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": -0.04939994127470613,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.22333609149195138,
+   "alpha_annual_percent": 1.0557633372832227,
+   "alpha_mde_80pc_power_percent": 4.051377217971924
+  },
+  "SPYV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    9.464110877909111e-17,
+    0.05657503841511601,
+    0.8480095476029433,
+    0.09541541398194049
+   ],
+   "tracking_difference_vs_combination_pp": -0.23818354190973512,
+   "tracking_error_vs_combination_pp": 2.5719175882326955,
+   "fee_premium_over_basis_pp": 0.010000000000000002,
+   "implementation_shortfall_pp": 0.2281835419097351,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.30323148502952324,
+   "alpha_annual_percent": -2.139180614801793,
+   "alpha_mde_80pc_power_percent": 4.139451440704909
+  },
+  "TCHP": {
+   "months": 64,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.3877787807814454e-16,
+    0.9999999999999998,
+    0.0,
+    4.1633363423443364e-17
+   ],
+   "tracking_difference_vs_combination_pp": -2.5144133474999992,
+   "tracking_error_vs_combination_pp": 3.1939571347817797,
+   "fee_premium_over_basis_pp": 0.5399999999999999,
+   "implementation_shortfall_pp": 1.9744133474999992,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +2.51 pp/yr to its cheap replication against a fee premium of only +0.54 pp/yr"
+   ],
+   "intended_loading": 0.2839652931013503,
+   "alpha_annual_percent": 0.13673507843963428,
+   "alpha_mde_80pc_power_percent": 5.949681848132438
+  },
+  "TILT": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.5819483804754884,
+    0.0,
+    0.1190345645007469,
+    0.29901705502376486
+   ],
+   "tracking_difference_vs_combination_pp": 0.9870874102390885,
+   "tracking_error_vs_combination_pp": 1.3752184568645738,
+   "fee_premium_over_basis_pp": 0.22,
+   "implementation_shortfall_pp": -1.2070874102390885,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.148 is below 0.15"
+   ],
+   "intended_loading": 0.1481873704516964,
+   "alpha_annual_percent": -0.945758948584162,
+   "alpha_mde_80pc_power_percent": 1.0776519305172994
+  },
+  "USVM": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.734723475976807e-17,
+    0.0,
+    0.10224380758792281,
+    0.8977561924120773
+   ],
+   "tracking_difference_vs_combination_pp": 1.3762299081210616,
+   "tracking_error_vs_combination_pp": 3.8231146741181243,
+   "fee_premium_over_basis_pp": 0.25999999999999995,
+   "implementation_shortfall_pp": -1.6362299081210616,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.24241409671615288,
+   "alpha_annual_percent": -1.9221442336191163,
+   "alpha_mde_80pc_power_percent": 3.338678450141978
+  },
+  "VB": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV"
+   ],
+   "weights": [
+    0.7334124041777115,
+    0.0,
+    0.26658759582228864
+   ],
+   "tracking_difference_vs_combination_pp": -2.88742528500124,
+   "tracking_error_vs_combination_pp": 8.311551216618746,
+   "fee_premium_over_basis_pp": 0.0,
+   "implementation_shortfall_pp": 2.88742528500124,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +2.89 pp/yr to its cheap replication against a fee premium of only +0.00 pp/yr"
+   ],
+   "intended_loading": 0.5986957911177337,
+   "alpha_annual_percent": -2.9653940996828463,
+   "alpha_mde_80pc_power_percent": 3.162930829370313
+  },
+  "VBK": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.7755575615628907e-17,
+    0.2103740200009829,
+    0.0,
+    0.789625979999017
+   ],
+   "tracking_difference_vs_combination_pp": -2.8645544141190684,
+   "tracking_error_vs_combination_pp": 4.992393802495581,
+   "fee_premium_over_basis_pp": 0.020000000000000007,
+   "implementation_shortfall_pp": 2.8445544141190684,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.125 is below 0.15",
+    "(c) lost +2.86 pp/yr to its cheap replication against a fee premium of only +0.02 pp/yr",
+    "(d) total cost of ownership 2.91 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.12514225663858392,
+   "alpha_annual_percent": -3.490907947459455,
+   "alpha_mde_80pc_power_percent": 4.4074177688032075
+  },
+  "VBR": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.7347234759768068e-17,
+    0.0,
+    0.17987675002011014,
+    0.8201232499798897
+   ],
+   "tracking_difference_vs_combination_pp": 0.5961219087094483,
+   "tracking_error_vs_combination_pp": 4.2060547980823575,
+   "fee_premium_over_basis_pp": 0.020000000000000007,
+   "implementation_shortfall_pp": -0.6161219087094483,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.41024604892244443,
+   "alpha_annual_percent": -2.778033576541609,
+   "alpha_mde_80pc_power_percent": 3.2243003244438517
+  },
+  "VFMO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.3359766253824092,
+    0.06865833284453696,
+    9.974871745103454e-19,
+    0.5953650417730538
+   ],
+   "tracking_difference_vs_combination_pp": 3.3423677364869406,
+   "tracking_error_vs_combination_pp": 6.293168072522066,
+   "fee_premium_over_basis_pp": 0.1,
+   "implementation_shortfall_pp": -3.4423677364869407,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.37247729863685025,
+   "alpha_annual_percent": 1.3253433134279777,
+   "alpha_mde_80pc_power_percent": 3.9766031294278474
+  },
+  "VIOO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    5.724587470723462e-17,
+    2.0816681711721682e-17,
+    5.5511151231257815e-17,
+    0.9999999999999998
+   ],
+   "tracking_difference_vs_combination_pp": -0.9511945616666646,
+   "tracking_error_vs_combination_pp": 5.089890434963799,
+   "fee_premium_over_basis_pp": 0.04000000000000001,
+   "implementation_shortfall_pp": 0.9111945616666646,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.95 pp/yr to its cheap replication against a fee premium of only +0.04 pp/yr"
+   ],
+   "intended_loading": 0.8897363199304729,
+   "alpha_annual_percent": -2.9585904147003386,
+   "alpha_mde_80pc_power_percent": 1.9765878880425125
+  },
+  "VIOV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.42861286636753e-17,
+    5.4643789493269423e-17,
+    0.0,
+    1.0
+   ],
+   "tracking_difference_vs_combination_pp": -0.6396958549999998,
+   "tracking_error_vs_combination_pp": 7.764163085574404,
+   "fee_premium_over_basis_pp": 0.07,
+   "implementation_shortfall_pp": 0.5696958549999998,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.64 pp/yr to its cheap replication against a fee premium of only +0.07 pp/yr"
+   ],
+   "intended_loading": 0.36699238254053135,
+   "alpha_annual_percent": -2.392187829006604,
+   "alpha_mde_80pc_power_percent": 2.688532484614106
+  },
+  "VLUE": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    1.1600963245594894e-17,
+    0.7040936787794556,
+    0.2959063212205444
+   ],
+   "tracking_difference_vs_combination_pp": 0.20422688246749046,
+   "tracking_error_vs_combination_pp": 5.566988884257205,
+   "fee_premium_over_basis_pp": 0.12,
+   "implementation_shortfall_pp": -0.32422688246749043,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3927404251177159,
+   "alpha_annual_percent": -2.4046774611619135,
+   "alpha_mde_80pc_power_percent": 5.713193190007175
+  },
+  "VO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.17921290335726597,
+    0.2827444522452314,
+    0.5380426443975027
+   ],
+   "tracking_difference_vs_combination_pp": -1.175462956845414,
+   "tracking_error_vs_combination_pp": 3.020631793054088,
+   "fee_premium_over_basis_pp": 0.0,
+   "implementation_shortfall_pp": 1.175462956845414,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +1.18 pp/yr to its cheap replication against a fee premium of only +0.00 pp/yr"
+   ],
+   "intended_loading": 0.23179881086665355,
+   "alpha_annual_percent": -3.778202997084966,
+   "alpha_mde_80pc_power_percent": 4.463274020735383
+  },
+  "VOE": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    2.6020852139652106e-18,
+    0.6063939706759999,
+    0.39360602932400013
+   ],
+   "tracking_difference_vs_combination_pp": -0.5938229582575535,
+   "tracking_error_vs_combination_pp": 3.940370016495334,
+   "fee_premium_over_basis_pp": 0.020000000000000004,
+   "implementation_shortfall_pp": 0.5738229582575535,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.59 pp/yr to its cheap replication against a fee premium of only +0.02 pp/yr"
+   ],
+   "intended_loading": 0.43438343793945555,
+   "alpha_annual_percent": -4.378335964149533,
+   "alpha_mde_80pc_power_percent": 4.062830311379967
+  },
+  "VONG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.5338056219036884e-17,
+    0.9403725153887875,
+    0.059627484611212464,
+    0.0
+   ],
+   "tracking_difference_vs_combination_pp": 0.5231423740383622,
+   "tracking_error_vs_combination_pp": 1.5398689110596762,
+   "fee_premium_over_basis_pp": 0.03,
+   "implementation_shortfall_pp": -0.5531423740383622,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.27763887165019896,
+   "alpha_annual_percent": 2.3734190075072097,
+   "alpha_mde_80pc_power_percent": 2.8674157330541012
+  },
+  "VONV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    2.500335381176288e-18,
+    0.002152689390301029,
+    0.8041286931746204,
+    0.19371861743507857
+   ],
+   "tracking_difference_vs_combination_pp": -0.6941506991401001,
+   "tracking_error_vs_combination_pp": 1.4124275472298116,
+   "fee_premium_over_basis_pp": 0.03,
+   "implementation_shortfall_pp": 0.6641506991401,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +0.69 pp/yr to its cheap replication against a fee premium of only +0.03 pp/yr"
+   ],
+   "intended_loading": 0.35096551478219334,
+   "alpha_annual_percent": -3.551447470891289,
+   "alpha_mde_80pc_power_percent": 3.0096162121352847
+  },
+  "VOOG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.8865082577404996,
+    0.11349174225950051,
+    1.0791596834915643e-18
+   ],
+   "tracking_difference_vs_combination_pp": -0.003701585161258389,
+   "tracking_error_vs_combination_pp": 2.8084184483620303,
+   "fee_premium_over_basis_pp": 0.04000000000000001,
+   "implementation_shortfall_pp": -0.03629841483874162,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.22361432808744053,
+   "alpha_annual_percent": 1.0033847653127246,
+   "alpha_mde_80pc_power_percent": 4.060299923188112
+  },
+  "VOOV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    9.326616280074275e-17,
+    0.05624612550630929,
+    0.8462431000118943,
+    0.09751077448179636
+   ],
+   "tracking_difference_vs_combination_pp": -0.27241411919503705,
+   "tracking_error_vs_combination_pp": 2.571575432660839,
+   "fee_premium_over_basis_pp": 0.04000000000000001,
+   "implementation_shortfall_pp": 0.23241411919503704,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3031413280773614,
+   "alpha_annual_percent": -2.2042421342089003,
+   "alpha_mde_80pc_power_percent": 4.1291129937407325
+  },
+  "VOT": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.4603768677223695,
+    2.6020852139652106e-17,
+    0.5396231322776306
+   ],
+   "tracking_difference_vs_combination_pp": -2.6180365588210393,
+   "tracking_error_vs_combination_pp": 5.358202940226755,
+   "fee_premium_over_basis_pp": 0.02,
+   "implementation_shortfall_pp": 2.5980365588210392,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.121 is below 0.15",
+    "(c) lost +2.62 pp/yr to its cheap replication against a fee premium of only +0.02 pp/yr",
+    "(d) total cost of ownership 2.67 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.12051936451268519,
+   "alpha_annual_percent": -3.2174941656555585,
+   "alpha_mde_80pc_power_percent": 7.484606189242201
+  },
+  "VTV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VB"
+   ],
+   "weights": [
+    0.7841334283081993,
+    3.335402322251661e-16,
+    0.2158665716918004
+   ],
+   "tracking_difference_vs_combination_pp": -2.5739646733179766,
+   "tracking_error_vs_combination_pp": 7.479904298795717,
+   "fee_premium_over_basis_pp": 0.0,
+   "implementation_shortfall_pp": 2.5739646733179766,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(c) lost +2.57 pp/yr to its cheap replication against a fee premium of only +0.00 pp/yr"
+   ],
+   "intended_loading": 0.3368530366415649,
+   "alpha_annual_percent": -2.604254252296556,
+   "alpha_mde_80pc_power_percent": 3.2793749159052634
+  },
+  "VTWG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    7.806255641895632e-17,
+    0.10411896675972525,
+    0.0,
+    0.8958810332402747
+   ],
+   "tracking_difference_vs_combination_pp": -1.7202516183985055,
+   "tracking_error_vs_combination_pp": 6.365085025867605,
+   "fee_premium_over_basis_pp": 0.03,
+   "implementation_shortfall_pp": 1.6902516183985055,
+   "status": "rejected",
+   "falsifier_clauses_fired": [
+    "(a) intended HML loading +0.135 is below 0.15",
+    "(c) lost +1.72 pp/yr to its cheap replication against a fee premium of only +0.03 pp/yr",
+    "(d) total cost of ownership 1.78 pp/yr exceeds 1.00 with no corresponding exposure"
+   ],
+   "intended_loading": 0.13467254742900958,
+   "alpha_annual_percent": -2.447048602431852,
+   "alpha_mde_80pc_power_percent": 3.8508817789487826
+  },
+  "VUG": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.9999999999999993,
+    0.0,
+    5.551115123125781e-16
+   ],
+   "tracking_difference_vs_combination_pp": 4.190625465000002,
+   "tracking_error_vs_combination_pp": 7.357393871552813,
+   "fee_premium_over_basis_pp": 3.469446951953614e-18,
+   "implementation_shortfall_pp": -4.190625465000002,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.2841079368707334,
+   "alpha_annual_percent": 2.2478321059125292,
+   "alpha_mde_80pc_power_percent": 3.1936121001360367
+  },
+  "WTV": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    0.0,
+    0.4586872920110854,
+    0.5413127079889146
+   ],
+   "tracking_difference_vs_combination_pp": 3.7538915388176552,
+   "tracking_error_vs_combination_pp": 3.82557965517245,
+   "fee_premium_over_basis_pp": 0.09,
+   "implementation_shortfall_pp": -3.843891538817655,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.3338514325772759,
+   "alpha_annual_percent": -0.03492819647006179,
+   "alpha_mde_80pc_power_percent": 4.53453250871775
+  },
+  "XMHQ": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    1.0451433657052405e-17,
+    0.0848517973667901,
+    0.2876394511100069,
+    0.6275087515232031
+   ],
+   "tracking_difference_vs_combination_pp": 2.6093438238519666,
+   "tracking_error_vs_combination_pp": 6.977722538327204,
+   "fee_premium_over_basis_pp": 0.22,
+   "implementation_shortfall_pp": -2.829343823851967,
+   "status": "unresolved",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.2283643785479793,
+   "alpha_annual_percent": -0.1926319945964608,
+   "alpha_mde_80pc_power_percent": 8.471375568562054
+  },
+  "XMMO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.38455284177126475,
+    0.04417024235817384,
+    5.8783027748264376e-18,
+    0.5712769158705614
+   ],
+   "tracking_difference_vs_combination_pp": 3.527697963658711,
+   "tracking_error_vs_combination_pp": 8.779689056354592,
+   "fee_premium_over_basis_pp": 0.31999999999999995,
+   "implementation_shortfall_pp": -3.8476979636587108,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.4618290937778756,
+   "alpha_annual_percent": 0.8099156380982069,
+   "alpha_mde_80pc_power_percent": 7.580163306650492
+  },
+  "XSMO": {
+   "months": 72,
+   "basis_used": [
+    "VTI",
+    "VUG",
+    "VTV",
+    "VB"
+   ],
+   "weights": [
+    0.0,
+    1.214306433183765e-17,
+    0.03823120132751864,
+    0.9617687986724813
+   ],
+   "tracking_difference_vs_combination_pp": 2.164976024945031,
+   "tracking_error_vs_combination_pp": 7.808018577477428,
+   "fee_premium_over_basis_pp": 0.32999999999999996,
+   "implementation_shortfall_pp": -2.4949760249450312,
+   "status": "exploratory",
+   "falsifier_clauses_fired": [],
+   "intended_loading": 0.41306993501289513,
+   "alpha_annual_percent": -1.2398383303558227,
+   "alpha_mde_80pc_power_percent": 7.569213941841342
+  }
+ },
+ "status_counts": {
+  "exploratory": 48,
+  "rejected": 48,
+  "unresolved": 13
+ }
+}

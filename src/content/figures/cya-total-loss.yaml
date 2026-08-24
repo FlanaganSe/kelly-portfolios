@@ -1,0 +1,15 @@
+label: Simplify's CYA before liquidation
+value: −99.16%
+unit: since inception, on the issuer's own site at 2023-12-31
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Our audit of the alternatives, crash hedging
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 4-tail-hedging-the-bleed-is-measured-and-the-cheaper-substitutes-win
+note: >-
+  Launched 2021-09-14, took a 1-for-20 reverse split effective after the close on 2024-02-09,
+  and was liquidated on or about 2024-03-14 per the SEC 497 filed 2024-02-20. Last filed net
+  assets about $2.16M; the widely repeated "$1.7M at liquidation" is unconfirmed and is not
+  used. A total loss on a product sold as crash protection, over a stretch containing a bear
+  market.

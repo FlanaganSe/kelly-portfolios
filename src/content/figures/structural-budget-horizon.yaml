@@ -1,0 +1,11 @@
+label: Time to 90% confidence on that package, against your own portfolio
+value: 3.5 months
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  At about 1.09% a year against roughly 0.46% of assumed drift. 99% confidence arrives at about
+  twelve months. The drift is assumed rather than measured, so read the speed as a best case.

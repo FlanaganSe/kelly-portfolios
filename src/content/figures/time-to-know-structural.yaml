@@ -1,0 +1,17 @@
+label: Time to confirm the fee, tax and placement savings from your own account
+value: about 3.5 months
+unit: to 90% confidence, at 1.09% ahead against 0.46% of wander
+status: source-reproduced
+asOf: '2026-08-22'
+source:
+  label: Structural and tax-aware edges
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: the-ledger
+note: >-
+  The row measured against the portfolio you would otherwise have held: an investor with an
+  expensive active-fund alternative, a taxable account, more than one account type and
+  continuing contributions. Change any of those and the row moves towards the cheap-index
+  row, where 90% confidence lies beyond any useful horizon. The 0.46% of wander is assumed
+  rather than measured, and it is the weaker half of the pair. An earlier version of this
+  record read 4.2 months from the superseded 0.89%-against-0.41% pair, before the ledger
+  was revised.

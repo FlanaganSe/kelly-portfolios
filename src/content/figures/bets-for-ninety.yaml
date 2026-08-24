@@ -1,0 +1,13 @@
+label: Unrelated 55% bets needed to be 90% likely to finish ahead
+value: '104'
+unit: bets
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth, the arithmetic of stacking
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: 1-the-arithmetic-of-stacking
+note: >-
+  An inversion of the page's own closed form, now tabulated on it: at zero correlation the
+  requirement is (z_P / z_1) squared with z_1 = 0.12566, which is 104.01 at 90%, 171.34 at 95%
+  and 342.73 at 99%. Strictly, 104 bets reach 0.89997 and the hundred-and-fifth clears 90%.

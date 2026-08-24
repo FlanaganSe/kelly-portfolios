@@ -1,0 +1,11 @@
+label: Chance of staying ahead of the average investor's result over thirty years
+value: 71 in 100
+status: exploratory
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  At 0.15% a year against 1.50% of assumed drift. Both inputs are assumptions, so this is the
+  softest of the three probabilities on the page.

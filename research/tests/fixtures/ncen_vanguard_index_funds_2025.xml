@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<edgarSubmission xmlns="http://www.sec.gov/edgar/ncen" xmlns:com="http://www.sec.gov/edgar/common">
+  <schemaVersion>X0505</schemaVersion>
+  <headerData>
+    <submissionType>N-CEN</submissionType>
+    <filerInfo>
+      <liveTestFlag>LIVE</liveTestFlag>
+      <filer>
+        <issuerCredentials>
+          <cik>0000036405</cik>
+          <ccc>XXXXXXXX</ccc>
+        </issuerCredentials>
+        <fileNumber>811-02652</fileNumber>
+      </filer>
+      <flags>
+        <overrideInternetFlag>false</overrideInternetFlag>
+        <confirmingCopyFlag>false</confirmingCopyFlag>
+      </flags>
+      <investmentCompanyType>N-1A</investmentCompanyType>
+    </filerInfo>
+    <seriesClass>
+      <reportSeriesClass>
+        <rptIncludeAllSeriesFlag>true</rptIncludeAllSeriesFlag>
+      </reportSeriesClass>
+    </seriesClass>
+  </headerData>
+  <formData>
+    <generalInfo reportEndingPeriod="2025-12-31" isReportPeriodLt12="N"/>
+    <registrantInfo>
+      <registrantFullName>VANGUARD INDEX FUNDS</registrantFullName>
+      <investmentCompFileNo>811-02652</investmentCompFileNo>
+      <registrantCik>0000036405</registrantCik>
+      <registrantLei>549300G6KNDK44WUN559</registrantLei>
+      <registrantstreet1>100 Vanguard Boulevard</registrantstreet1>
+      <registrantcity>Malvern</registrantcity>
+      <registrantzipCode>19355</registrantzipCode>
+      <registrantstate>US-PA</registrantstate>
+      <registrantcountry>US</registrantcountry>
+      <registrantphoneNumber>6106691000</registrantphoneNumber>
+      <websites>
+        <website webpage="www.vanguard.com"/>
+      </websites>
+      <isRegistrantFirstFiling>N</isRegistrantFirstFiling>
+      <isRegistrantLastFiling>N</isRegistrantLastFiling>
+      <registrantFamilyInvComp isRegistrantFamilyInvComp="Y" familyInvCompFullName="The Vanguard Group, Inc."/>
+      <registrantClassificationType>N-1A</registrantClassificationType>
+      <totalSeries>12</totalSeries>
+      <isSecuritiesActRegistration>Y</isSecuritiesActRegistration>
+      <securityMatterSeriesInfo isRegistrantSubmittedMatter="Y"/>
+      <isPreviousLegalProceeding>N</isPreviousLegalProceeding>
+      <isPreviousProceedingTerminated>N</isPreviousProceedingTerminated>
+      <isClaimFiled>N</isClaimFiled>
+      <coveredByInsurancePolicy isCoveredByInsurancePolicy="Y" isClaimFiledDuringPeriod="N"/>
+      <isFinancialSupportDuringPeriod>N</isFinancialSupportDuringPeriod>
+      <releaseNumbers isExemptionFromAct="Y">
+        <releaseNumberInfo releaseNumber="IC-11645"/>
+        <releaseNumberInfo releaseNumber="IC-19184"/>
+        <releaseNumberInfo releaseNumber="IC-24789"/>
+        <releaseNumberInfo releaseNumber="IC-26317"/>
+        <releaseNumberInfo releaseNumber="IC-26436"/>
+        <releaseNumberInfo releaseNumber="IC-8676"/>
+        <releaseNumberInfo releaseNumber="IC-9001"/>
+        <releaseNumberInfo releaseNumber="IC-9205"/>
+        <releaseNumberInfo releaseNumber="IC-9664"/>
+      </releaseNumbers>
+      <isUnderwriterHiredOrTerminated>N</isUnderwriterHiredOrTerminated>
+      <isPublicAccountantChanged>N</isPublicAccountantChanged>
+      <isMaterialWeakness>N</isMaterialWeakness>
+      <isOpinionOffered>N</isOpinionOffered>
+      <isMaterialChange>N</isMaterialChange>
+      <isAccountingPrincipleChange>N</isAccountingPrincipleChange>
+      <isPaymentErrorInNetAssetValue>N</isPaymentErrorInNetAssetValue>
+      <isPaymentDividend>N</isPaymentDividend>
+    </registrantInfo>
+    <managementInvestmentQuestionSeriesInfo>
+<managementInvestmentQuestion>
+        <mgmtInvFundName>VANGUARD 500 INDEX FUND</mgmtInvFundName>
+        <mgmtInvSeriesId>S000002839</mgmtInvSeriesId>
+        <mgmtInvLei>12WZ1W76P8QD4VJ6OB47</mgmtInvLei>
+        <isFirstFilingByFund>N</isFirstFilingByFund>
+        <numAuthorizedClass>4</numAuthorizedClass>
+        <numAddedClass>0</numAddedClass>
+        <numTerminatedClass>0</numTerminatedClass>
+        <sharesOutstandings>
+          <sharesOutstanding sharesOutstandingClassName="Admiral Shares" sharesOutstandingClassId="C000007774" sharesOutstandingTickerSymbol="VFIAX"/>
+          <sharesOutstanding sharesOutstandingClassName="ETF Shares" sharesOutstandingClassId="C000092055" sharesOutstandingTickerSymbol="VOO"/>
+          <sharesOutstanding sharesOutstandingClassName="Institutional Select Shares" sharesOutstandingClassId="C000170274" sharesOutstandingTickerSymbol="VFFSX"/>
+          <sharesOutstanding sharesOutstandingClassName="Investor Shares" sharesOutstandingClassId="C000007773" sharesOutstandingTickerSymbol="VFINX"/>
+        </sharesOutstandings>
+        <fundTypes>
+          <fundType>Exchange-Traded Fund</fundType>
+          <indexFundInfo fundType="Index Fund">
+            <isIndexFundAffiliated>N</isIndexFundAffiliated>
+            <isIndexFundExclusive>N</isIndexFundExclusive>
+            <indexFundReturnDiffBeforeExpense>-0.00397999</indexFundReturnDiffBeforeExpense>
+            <indexFundReturnDiffAfterExpense>-0.16890000</indexFundReturnDiffAfterExpense>
+            <indexFundReturnDailyStdevBeforeExpense>0.01187674</indexFundReturnDailyStdevBeforeExpense>
+            <indexFundReturnDailyStdevAfterExpense>0.01268580</indexFundReturnDailyStdevAfterExpense>
+          </indexFundInfo>
+        </fundTypes>
+        <isNonDiversifiedCompany>N</isNonDiversifiedCompany>
+        <isForeignSubsidiary>N</isForeignSubsidiary>
+        <isFundSecuritiesLending>Y</isFundSecuritiesLending>
+        <fundLendSecurities didFundLendSecurities="Y">
+          <isFundLiquidated>N</isFundLiquidated>
+          <isFundAdverselyImpacted>N</isFundAdverselyImpacted>
+        </fundLendSecurities>
+        <securityLendings>
+          <securityLending>
+            <securitiesAgentName>The Vanguard Group, Inc.</securitiesAgentName>
+            <securitiesAgentLei>5493002789CX3L0CJP65</securitiesAgentLei>
+            <isSecuritiesAgentAffiliated>Y</isSecuritiesAgentAffiliated>
+            <isSecurityAgentIdemnity>N</isSecurityAgentIdemnity>
+          </securityLending>
+        </securityLendings>
+        <avgPortfolioSecuritiesValue>65311984.65999999</avgPortfolioSecuritiesValue>
+        <netIncomeSecuritiesLending>10002223.40000000</netIncomeSecuritiesLending>
+        <isExpenseLimitationInPlace>N</isExpenseLimitationInPlace>
+        <isExpenseReducedOrWaived>N</isExpenseReducedOrWaived>
+        <isFeesWaivedRecoupable>N</isFeesWaivedRecoupable>
+        <isExpenseWaivedRecoupable>N</isExpenseWaivedRecoupable>
+        <isTransferAgentHiredOrTerminated>N</isTransferAgentHiredOrTerminated>
+        <isPricingServiceHiredOrTerminated>N</isPricingServiceHiredOrTerminated>
+        <isCustodianHiredOrTerminated>N</isCustodianHiredOrTerminated>
+        <isShareholderServiceHiredTerminated>N</isShareholderServiceHiredTerminated>
+        <isAdminHiredOrTerminated>N</isAdminHiredOrTerminated>
+        <aggregateCommission>4361773.78999991</aggregateCommission>
+        <principalAggregatePurchase>64219285525.80999998</principalAggregatePurchase>
+        <isBrokerageResearchPayment>N</isBrokerageResearchPayment>
+        <mnthlyAvgNetAssets>1408456183321.80416666</mnthlyAvgNetAssets>
+        <lineOfCredit hasLineOfCredit="Y">
+        </lineOfCredit>
+        <isInterfundLending>N</isInterfundLending>
+        <isInterfundBorrowing>N</isInterfundBorrowing>
+        <liquidityClassifications>
+        </liquidityClassifications>
+        <isLiquidityHiredTerminated>N</isLiquidityHiredTerminated>
+      </managementInvestmentQuestion>
+<managementInvestmentQuestion>
+        <mgmtInvFundName>VANGUARD TOTAL STOCK MARKET INDEX FUND</mgmtInvFundName>
+        <mgmtInvSeriesId>S000002848</mgmtInvSeriesId>
+        <mgmtInvLei>HJ2RZRUQEVF2A5SPRB21</mgmtInvLei>
+        <isFirstFilingByFund>N</isFirstFilingByFund>
+        <numAuthorizedClass>6</numAuthorizedClass>
+        <numAddedClass>0</numAddedClass>
+        <numTerminatedClass>0</numTerminatedClass>
+        <sharesOutstandings>
+          <sharesOutstanding sharesOutstandingClassName="Admiral Shares" sharesOutstandingClassId="C000007806" sharesOutstandingTickerSymbol="VTSAX"/>
+          <sharesOutstanding sharesOutstandingClassName="ETF Shares" sharesOutstandingClassId="C000007808" sharesOutstandingTickerSymbol="VTI"/>
+          <sharesOutstanding sharesOutstandingClassName="Institutional Plus Shares" sharesOutstandingClassId="C000155407" sharesOutstandingTickerSymbol="VSMPX"/>
+          <sharesOutstanding sharesOutstandingClassName="Institutional Select Shares" sharesOutstandingClassId="C000170276" sharesOutstandingTickerSymbol="VSTSX"/>
+          <sharesOutstanding sharesOutstandingClassName="Institutional Shares" sharesOutstandingClassId="C000007807" sharesOutstandingTickerSymbol="VITSX"/>
+          <sharesOutstanding sharesOutstandingClassName="Investor Shares" sharesOutstandingClassId="C000007805" sharesOutstandingTickerSymbol="VTSMX"/>
+        </sharesOutstandings>
+        <fundTypes>
+          <fundType>Exchange-Traded Fund</fundType>
+          <indexFundInfo fundType="Index Fund">
+            <isIndexFundAffiliated>N</isIndexFundAffiliated>
+            <isIndexFundExclusive>N</isIndexFundExclusive>
+            <indexFundReturnDiffBeforeExpense>0.01666000</indexFundReturnDiffBeforeExpense>
+            <indexFundReturnDiffAfterExpense>-0.14726999</indexFundReturnDiffAfterExpense>
+            <indexFundReturnDailyStdevBeforeExpense>0.04364447</indexFundReturnDailyStdevBeforeExpense>
+            <indexFundReturnDailyStdevAfterExpense>0.04328907</indexFundReturnDailyStdevAfterExpense>
+          </indexFundInfo>
+        </fundTypes>
+        <isNonDiversifiedCompany>N</isNonDiversifiedCompany>
+        <isForeignSubsidiary>N</isForeignSubsidiary>
+        <isFundSecuritiesLending>Y</isFundSecuritiesLending>
+        <fundLendSecurities didFundLendSecurities="Y">
+          <isFundLiquidated>N</isFundLiquidated>
+          <isFundAdverselyImpacted>N</isFundAdverselyImpacted>
+        </fundLendSecurities>
+        <securityLendings>
+          <securityLending>
+            <securitiesAgentName>The Vanguard Group, Inc.</securitiesAgentName>
+            <securitiesAgentLei>5493002789CX3L0CJP65</securitiesAgentLei>
+            <isSecuritiesAgentAffiliated>Y</isSecuritiesAgentAffiliated>
+            <isSecurityAgentIdemnity>N</isSecurityAgentIdemnity>
+          </securityLending>
+        </securityLendings>
+        <avgPortfolioSecuritiesValue>3676469383.88999990</avgPortfolioSecuritiesValue>
+        <netIncomeSecuritiesLending>194031188.50999999</netIncomeSecuritiesLending>
+        <isExpenseLimitationInPlace>N</isExpenseLimitationInPlace>
+        <isExpenseReducedOrWaived>N</isExpenseReducedOrWaived>
+        <isFeesWaivedRecoupable>N</isFeesWaivedRecoupable>
+        <isExpenseWaivedRecoupable>N</isExpenseWaivedRecoupable>
+        <isTransferAgentHiredOrTerminated>N</isTransferAgentHiredOrTerminated>
+        <isPricingServiceHiredOrTerminated>N</isPricingServiceHiredOrTerminated>
+        <isCustodianHiredOrTerminated>N</isCustodianHiredOrTerminated>
+        <isShareholderServiceHiredTerminated>N</isShareholderServiceHiredTerminated>
+        <isAdminHiredOrTerminated>N</isAdminHiredOrTerminated>
+        <aggregateCommission>17852246.47999985</aggregateCommission>
+        <principalAggregatePurchase>80766424874.43999990</principalAggregatePurchase>
+        <isBrokerageResearchPayment>N</isBrokerageResearchPayment>
+        <mnthlyAvgNetAssets>1903470699301.93500000</mnthlyAvgNetAssets>
+        <lineOfCredit hasLineOfCredit="Y">
+        </lineOfCredit>
+        <isInterfundLending>N</isInterfundLending>
+        <isInterfundBorrowing>N</isInterfundBorrowing>
+        <liquidityClassifications>
+        </liquidityClassifications>
+        <isLiquidityHiredTerminated>N</isLiquidityHiredTerminated>
+      </managementInvestmentQuestion>
+</managementInvestmentQuestionSeriesInfo>
+  </formData>
+</edgarSubmission>

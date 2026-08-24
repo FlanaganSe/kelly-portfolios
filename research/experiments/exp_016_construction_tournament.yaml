@@ -1,0 +1,1186 @@
+# FREEZE NOTE — READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. THIS TOURNAMENT SCORES CONSTRUCTIONS, NOT FUNDS.
+#    No research-grade fund return series is committed to this repository
+#    (decision 0002), so every ticker below is a BASIS EXPRESSION: a market leg
+#    plus this repository's own measured factor loadings, less a fee. The mapping
+#    is an ASSUMPTION and it is the largest single source of error in every
+#    number this file produces. `parameters.fund_mapping` states each mapping,
+#    what it assumes, and what error it introduces, and
+#    `parameters.mapping_perturbation` measures how far the ranking moves when
+#    each mapping is perturbed. A reader who quotes a growth figure here as a
+#    fund's expected return has misread the experiment.
+#
+# 2. THIS SPECIFICATION IS NOT CONFIRMATORY AND CANNOT BE MADE CONFIRMATORY.
+#    The panel it runs on is the same French and AQR data fifteen earlier
+#    experiments have already searched, the loadings come from audits already
+#    published here, and the candidate weights were proposed by a human who had
+#    read all of it. `run_kind: exploratory` is a statement of fact about the
+#    order events happened in. It is a SCREEN. Decision 0009 clause 2 requires a
+#    screen to be corrected for false discovery rather than family-wise error,
+#    and that is what `inference` does.
+#
+# 3. THE TREND LEG IS A VENDOR SERIES.
+#    AQR's TSMOM is author-maintained, reconstructed in full on every update, and
+#    states no fee, transaction-cost, slippage, roll or financing basis anywhere.
+#    Every trend figure here is gross of the vendor's internal trading costs BY
+#    OMISSION. Nothing here replicates trend following.
+#
+# 4. ONE OF THE THREE STACKED FUNDS HAS FILED NOTHING.
+#    RSST's structure is read off Form N-PORT of 2026-04-30 and MATE's off Form
+#    N-PORT of 2026-05-31. JPFP commenced operations on 2026-05-27, has filed no
+#    Form N-PORT, and its first is due 2026-08-29 or 2026-09-29, so its arm is
+#    priced on prospectus PROSE and is labelled `structure_assumed`. Reading a
+#    stacked fund's base leg off its largest holding is the error that made an
+#    earlier draft of this file price MATE at 0.498 of equity: the base leg is
+#    the sum of EVERY instrument that delivers the base, and on these products at
+#    least one of them is an index future.
+#
+# 5. THE SPECIFICATION WAS FROZEN AND HASHED BEFORE THE EXPERIMENT MODULE RAN.
+#    The minimum detectable effect table in
+#    `parameters.minimum_detectable_effect` is arithmetic on the window length
+#    and a grid of assumed tracking errors; it required no look at the data and
+#    it is what says, in advance, which comparisons this design can and cannot
+#    resolve. The realised MDE is reported beside every estimate.
+experiment_family: exp_016_construction_tournament
+title: >
+  A construction tournament: do the proposed stacked, tilted portfolios beat a
+  cheap cap-weighted control, and does any weighting method beat market weight,
+  on basis-mapped funds over the joint 1990-2026 window?
+entry_point: exp_016_construction_tournament
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260822
+
+hypothesis: >
+  A portfolio holding a capital-efficient equity-plus-trend wrapper alongside
+  regional value and momentum tilts delivers higher after-cost geometric growth
+  than a cheap cap-weighted global equity portfolio at the same capital, and
+  more than the same gross exposure taken as leveraged beta. The claim is about
+  the WHOLE CONSTRUCTION as a joint object: a sleeve-by-sleeve tournament cannot
+  answer it, and fifteen experiments in this repository have run sleeve by
+  sleeve. Three sub-hypotheses are scored separately because they have different
+  answers: (i) the stacked wrapper choice matters — RSST, MATE and JPFP are not
+  interchangeable; (ii) the funding rule changes the verdict, so overlay,
+  pro-rata and cash funding are three arms and not one; (iii) among the six
+  weighting methods decision 0009 clause 4 names, some beat market weight after
+  costs on out-of-sample estimates.
+
+mechanism: >
+  Three mechanisms are in play and they are separable.
+  FUNDING. `portfolio_edge.studies.overlay_growth` equation (3): the hurdle a
+  sleeve must clear under pro-rata sale exceeds the hurdle under a financed
+  overlay by `sigma_p**2 (L_p* - 1)`, an expression containing no sleeve
+  property. A wrapper keeps `1 - delta` of that gap. RSST's filed delta is
+  -0.07, so it keeps essentially all of it; a standalone managed-futures fund
+  has delta 1 and keeps none.
+  DIVERSIFICATION. Equation (4): a sleeve raises growth when its net Sharpe
+  ratio exceeds `L rho sigma_p`. At negative correlation the threshold is
+  negative, so a sleeve with a small negative net expected excess return can
+  still raise growth. This is why trend is scored on its joint behaviour rather
+  than its mean.
+  EXPOSURE. A long-only tilt earns `weight x (fund loading - incumbent loading)
+  x premium - cost`. Three terms, and a capture fraction is not a fourth: the
+  code in this repository raises on one.
+  Against these sit the costs, all charged inside the rule: fees, the
+  equity-futures financing basis, spreads on rebalancing turnover, and the
+  distribution tax drag where a fund's own after-tax table supplies one.
+
+falsifier: >
+  There is deliberately NO fixed pp/yr bar in this falsifier. Decision 0010
+  clause 4 demotes the 2.0 pp/yr and 0.30 pp/yr constants to sensitivities, and
+  decision 0009 clause 1 forbids a verdict stronger than the instrument, so the
+  operative bar IS the instrument's own resolution and it is computed per arm.
+  For each contestant, against each named benchmark separately:
+  (a) `rejected` if the after-cost growth gap point estimate is at or below zero
+  on the full joint window;
+  (b) `rejected` if the arm's gross notional exceeds 1.0, its gap is positive
+  against the unlevered control, and the leverage-matched control attains an
+  equal or higher Sharpe ratio, because the gain is then leveraged beta rather
+  than a construction effect. The clause is restricted to levered arms because
+  an unlevered arm has no leverage to which a gain could be attributed;
+  (c) `unresolved` if the gap is positive but smaller in absolute value than the
+  minimum detectable effect at 80% power computed from that arm's own paired
+  difference series, which must be reported in the same sentence;
+  (d) `unresolved` if the gap exceeds its MDE but its Benjamini-Hochberg
+  adjusted p-value over the declared family exceeds 0.10;
+  (e) `unresolved` if the gap survives (c) and (d) but changes sign anywhere on
+  the declared mapping-perturbation grid, because the mapping is an assumption
+  and a result that lives inside the assumption is not a result about a
+  portfolio;
+  (f) `exploratory` otherwise. Under no outcome may this specification produce a
+  status above `exploratory`; see the freeze note.
+  The whole-experiment status is `exploratory` when at least one arm reaches (f)
+  and `unresolved` when none does, because "no construction was separable from
+  the control on this instrument" is a statement about the instrument.
+
+universe:
+  description: >
+    Sixteen monthly basis series from three pinned public factor files and one
+    pinned vendor file, plus the cash rate. Every fund in the tournament is a
+    linear combination of these series less its own costs. No fund share class,
+    no NAV series, no contract-level futures data, no rolls and no collateral
+    model appear anywhere, so this experiment cannot and does not evaluate any
+    fund, and cannot and does not replicate trend following.
+  basis_series:
+    - id: us_mkt
+      source: Ken French `F-F_Research_Data_5_Factors_2x3`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published.
+    - id: us_smb
+      source: same file, `SMB`
+      basis: Long-short size spread. Self-financing; not an excess-of-cash return.
+    - id: us_hml
+      source: same file, `HML`
+    - id: us_rmw
+      source: same file, `RMW`
+    - id: us_cma
+      source: same file, `CMA`
+    - id: us_umd
+      source: Ken French `F-F_Momentum_Factor`, monthly, `Mom`
+    - id: dxus_mkt
+      source: Ken French `Developed_ex_US_5_Factors`, monthly, `Mkt-RF`
+      basis: >
+        USD, developed markets EXCLUDING the United States. The ex-US file and
+        not the Developed file, because the Developed file is roughly half US by
+        weight and would double-count the US leg.
+    - id: dxus_smb
+      source: same file, `SMB`
+    - id: dxus_hml
+      source: same file, `HML`
+    - id: dxus_rmw
+      source: same file, `RMW`
+    - id: dxus_cma
+      source: same file, `CMA`
+    - id: dxus_umd
+      source: Ken French `Developed_ex_US_Mom_Factor`, monthly, `WML`
+      basis: >
+        Begins 1990-11 and is therefore the series that sets the start of the
+        joint window. That boundary was not chosen.
+    - id: em_mkt
+      source: Ken French `Emerging_5_Factors`, monthly, `Mkt-RF`
+    - id: em_hml
+      source: same file, `HML`
+    - id: trend
+      source: "AQR `Time Series Momentum: Factors`, monthly, `TSMOM`"
+      basis: >
+        Excess of cash per the workbook's own header, internally volatility
+        scaled to a 40% per-position target by the vendor and NOT re-scaled here.
+        Ends 2026-05 and therefore sets the end of the joint window.
+    - id: cash
+      source: Ken French `F-F_Research_Data_5_Factors_2x3`, monthly, `RF`
+      basis: >
+        The one-month bill rate, added back to every portfolio's excess return so
+        that wealth paths, drawdowns and geometric returns are those of a funded
+        portfolio. It is the same `RF` French subtracts inside `Mkt-RF`, so no
+        cross-source cash rate is spliced anywhere.
+  excluded:
+    - Any claim that a ticker's simulated path is that fund's return.
+    - >
+      Any claim of independent replication of trend following, of a factor
+      premium, or of a fund's realised performance.
+    - >
+      A weight search. Nothing in this file optimises a weight vector against
+      the outcome. The six weighting methods estimate a covariance matrix on an
+      expanding window and apply it forward; they never see the return they are
+      scored on.
+    - >
+      `research/artifacts` figures from experiments 001-015 as inputs. Only the
+      loadings and costs recorded in `src/content/shelf.ts` and the cost figures
+      cited in `parameters.cost_model_sources` enter, and each is named.
+
+sample_policy:
+  start: "1990-11"
+  end: "2026-05"
+  held_out: >
+    Nothing is held out, and that is a limitation rather than a design. The
+    window is the intersection of what the four files publish: Ken French's
+    Developed ex-US momentum factor begins 1990-11 and AQR's TSMOM ends 2026-05,
+    so the panel is 427 months and neither boundary was chosen. The joint sample
+    is SHORT for this question, and its shortness is the binding constraint on
+    every conclusion; see `parameters.minimum_detectable_effect`. A genuine
+    holdout for a portfolio-construction question does not exist in this
+    repository.
+  embargo: >
+    None for the constant-weight arms, which estimate nothing. The six weighting
+    methods use an expanding estimation window with a 120-month minimum and
+    apply each estimate to the following twelve months only, so no month is ever
+    scored by a covariance matrix that saw it. The look-ahead this design DOES
+    carry is of a different kind and no embargo removes it: the candidate
+    weights, the fund list and the loadings were all chosen by people who had
+    already seen these files.
+  eras:
+    - name: full_joint_window
+      start: "1990-11"
+      end: "2026-05"
+      rationale: >
+        The whole intersected panel. Reported with the sub-periods and never
+        instead of them.
+    - name: first_half
+      start: "1990-11"
+      end: "2008-08"
+      rationale: >
+        The first 214 of 427 months. A mechanical midpoint, chosen by counting
+        rather than by any event, so that the split cannot be accused of being
+        placed where the answer changes.
+    - name: second_half
+      start: "2008-09"
+      end: "2026-05"
+      rationale: The remaining 213 months.
+    - name: post_gfc
+      start: "2009-04"
+      end: "2026-05"
+      rationale: >
+        From the March-2009 equity trough onward: the regime in which US
+        large-cap beta dominated, value underperformed and trend following had
+        its worst extended stretch. It is the sub-period least favourable to
+        every candidate here and most favourable to the control, which is why it
+        is declared in advance rather than found afterwards.
+    - name: lost_decade
+      start: "2000-01"
+      end: "2009-12"
+      rationale: >
+        The sub-period most favourable to the candidates, declared in the same
+        breath as the least favourable one so that neither can be quoted alone.
+
+benchmark:
+  primary:
+    id: control_capweight
+    definition: >
+      65% VTI + 35% VXUS, cap-weighted, unlevered, held at the same capital and
+      charged the same rebalancing costs.
+    rationale: >
+      Decision 0003: a cheap broad-market portfolio is the primary control. The
+      65/35 regional split matches the candidate's regional split so that the
+      comparison changes the construction and not the geography. This benchmark
+      answers charter question 1, "can a construction beat a cheap index".
+  secondary:
+    id: control_capweight_levered
+    definition: >
+      The same 65/35 cap-weighted portfolio held at each levered arm's own gross
+      notional, financed at cash plus the declared equity-futures basis, charged
+      on identical terms.
+    rationale: >
+      A levered arm compared with an unlevered index is credited with the return
+      of its extra risk. Charter, "benchmarks and funding": add a leverage-matched
+      comparator when the candidate changes that dimension. This benchmark
+      answers "is it a construction effect or is it beta".
+  tertiary:
+    id: control_seventy_thirty_cash
+    definition: 70% of the cap-weighted control plus 30% cash.
+    rationale: >
+      The cash-funding arm's own counterfactual. An investor who funds a sleeve
+      out of a cash bucket did not previously hold 100% equity, so scoring that
+      arm against a 100%-equity control asks a question the investor is not
+      facing.
+  aggregation_rule: >
+    THE THREE BENCHMARKS ARE THREE FAMILIES AND THEIR RESULTS MAY NEVER BE
+    ADDED, AVERAGED OR PRESENTED AS ONE LINE. They are different null
+    hypotheses measured against different counterfactuals, and combining them is
+    the error `aggregate()` in
+    `portfolio_edge.studies.outperformance_horizon` raises on. Every reported gap
+    names its benchmark, the multiple-testing correction is applied within a
+    benchmark family and never across, and the implementation refuses to combine
+    comparisons whose benchmarks differ.
+
+primary_metric:
+  name: after-cost annualised log growth gap
+  definition: >
+    `1200 * (mean(log(1 + r_portfolio)) - mean(log(1 + r_benchmark)))` over the
+    monthly funded total returns of the two portfolios, both net of every cost
+    charged inside the simulation. Log growth because the charter's default
+    objective is expected log terminal wealth; the paired monthly difference
+    because its mean IS the gap and its standard error is therefore directly
+    estimable.
+  units: percentage points per year
+  uncertainty: >
+    Stationary block bootstrap over the JOINT monthly panel, resampling whole
+    rows so that every cross-sleeve correlation and every arm's dependence on
+    every other arm survives, mean block 12 months, 10000 resamples, 95%
+    percentile interval. A minimum detectable effect at 80% power is computed
+    from each arm's own paired difference series and reported beside its gap.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: >
+      `2.801585 * standard error of the annualised mean of the paired difference
+      series`. Reported beside every gap without exception; decision 0009 clause 1.
+  - name: after-tax annualised log growth gap
+    units: percentage points per year
+    note: >
+      Computed ONLY where a fund's own SEC-standardised after-tax table supplies
+      a distribution tax drag. Where it does not, the cell reads `not measured`
+      and no default is substituted. On the current shelf this means RSST alone
+      carries a measured drag; the tax column is therefore nearly empty and the
+      emptiness is the finding.
+  - name: maximum drawdown of the funded wealth path
+    units: percent
+  - name: longest run of months below the running peak
+    units: months
+  - name: probability of underperforming the benchmark over ten and thirty years
+    units: probability
+    note: >
+      From block-bootstrap resampled paths of the paired difference series, not
+      from a normal approximation.
+  - name: median shortfall conditional on underperforming
+    units: percentage points per year
+    note: >
+      The magnitude the charter's common core requires beside the probability. A
+      probability of underperformance without its magnitude is half a result.
+  - name: tracking error against the named benchmark
+    units: percent per year
+  - name: annualised volatility of the funded total return
+    units: percent per year
+  - name: net Sharpe ratio on excess returns
+    units: ratio
+  - name: gross notional
+    units: multiple of net asset value
+  - name: weighted expense ratio plus financing
+    units: basis points per year
+  - name: one-sided turnover from rebalancing
+    units: percent per year
+  - name: number of funds held
+    units: count
+    note: >
+      Implementation burden. Counted because the charter's common core requires
+      it, not because a smaller number is better.
+  - name: break-even haircut on the trend leg's arithmetic mean
+    units: percentage points per year
+  - name: break-even haircut on the value premium
+    units: percentage points per year
+  - name: maximum regret across the declared input grid
+    units: percentage points per year
+    note: >
+      `max over grid points of (best arm's growth - this arm's growth)`. The
+      charter asks for regret across plausible inputs rather than an estimated
+      optimum, and on a 427-month joint sample the optimum is not identifiable.
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    Four charges, each divided by 12 and subtracted from the monthly excess
+    return of the leg that incurs it.
+    (1) A fund's own expense ratio, on the capital allocated to it.
+    (2) The equity-index-futures financing basis, on the futures notional a
+    wrapper holds beyond its cash equity position.
+    (3) A round-trip bid/ask spread on one-sided rebalancing turnover.
+    (4) The distribution tax drag, in the after-tax column only, where the fund
+    publishes one.
+    Nothing is applied as a post-hoc haircut to an annual figure.
+  fund_expense_ratio_basis_points:
+    VTI: 3
+    VXUS: 5
+    VEA: 3
+    IEMG: 9
+    AVLV: 15
+    DFIV: 27
+    IDMO: 25
+    AVES: 30
+    RSST: 99
+    MATE: 97
+    MATE_FLOOR: 97
+    JPFP: 59
+    TREND: 85
+    CASH: 0
+  expense_ratio_source: >
+    Every figure except AVES is the `expenseRatioBp` recorded in
+    `src/content/shelf.ts`, each traced there to the fund's own fee table. AVES
+    records `null`: NO FEE FOR IT APPEARS ANYWHERE IN THIS REPOSITORY. Its 30 bp
+    above is a declared ASSUMPTION, the midpoint of the audited emerging and
+    ex-US value shelf, and it is swept in `parameters.assumed_fee_grid`. No
+    wrapper here discloses a financing cost and the zero is accurate rather than
+    an omission: RSST files 0.00% of interest expense, MATE's and JPFP's unitary
+    fees exclude interest expense, and futures financing is paid inside the
+    contract's basis rather than as an expense item. That is why this
+    specification charges the basis separately in
+    `equity_index_futures_basis_annual_percent` rather than trusting a fee table
+    to contain it.
+  securities_lending: >
+    NOT credited. `shelf.ts` records net lending income for VTI, VEA, VXUS and
+    IEMG only, which would credit the control and the cheap legs and charge
+    nothing to the candidates. Omitting it is therefore the assumption LEAST
+    favourable to the control and most favourable to the hypothesis under test,
+    which is the direction a hostile design should choose. Its magnitude is
+    0.3 to 9.9 bp/yr and it cannot change a ranking whose MDE is measured in
+    whole percentage points.
+  equity_index_futures_basis_annual_percent: 0.62
+  equity_index_futures_basis_source: >
+    `docs/research/structural-and-tax-edges.md` section 3, as of 2026-08-16: ten
+    rolls Dec-2022 to Mar-2025 against 3-month Term SOFR, described there as a
+    genuine post-2022 regime change. It is charged on futures notional only. The
+    58.70 bp Fleckenstein-Longstaff funding basis is NOT used and that page
+    explains why: it is measured against special-collateral repo, which is not a
+    rate any fund pays.
+  trend_book_financing_annual_percent: 0.0
+  trend_book_financing_source: >
+    Same page and section: Hazelkorn, Moskowitz and Vasudevan (2023) measure the
+    SIGNED basis across 18 equity index futures at -0.83 bp on average over
+    2000-2017 against a mean absolute basis of 52-64 bp, and a trend book takes
+    both sides by construction. A systematic per-contract financing drag on a
+    long/short trend book is not supported, so zero is charged and the omission
+    is recorded rather than hidden. The mean ABSOLUTE basis must never be applied
+    as a drag; that trap is pinned on the same page.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+    developed_ex_us_equity: 1.18
+    emerging_equity: 2.72
+  spread_region_by_ticker:
+    VTI: us_equity
+    AVLV: us_equity
+    RSST: us_equity
+    MATE: us_equity
+    MATE_FLOOR: us_equity
+    JPFP: us_equity
+    TREND: us_equity
+    CASH: us_equity
+    VXUS: developed_ex_us_equity
+    VEA: developed_ex_us_equity
+    DFIV: developed_ex_us_equity
+    IDMO: developed_ex_us_equity
+    IEMG: emerging_equity
+    AVES: emerging_equity
+  spread_application: >
+    A rebalancing trade of size `|delta w|` in a fund crosses HALF the quoted
+    bid/ask once, so the charge is `|delta w| * spread / 2`. The spreads below
+    are 30-day medians of the quoted spread, not effective costs, and no market
+    impact is modelled anywhere in this experiment.
+  round_trip_spread_source: >
+    `research/experiments/exp_003_rebalancing.yaml`, which records 30-day median
+    published spreads for VTI, VXUS and VB as of 2026-08-10. VB stands in for an
+    emerging-market fund whose spread was not retrieved; that substitution is an
+    assumption inherited from that specification and is recorded here as one. A
+    wrapper is charged the US equity spread.
+  measured_alpha_less_pedestal_pp_yr:
+    VTI: 0.003
+    AVLV: -0.37
+    VEA: 0.0
+    DFIV: -3.80
+    IDMO: 0.42
+    AVES: -1.66
+    VXUS: null
+    IEMG: null
+    RSST: null
+    MATE: null
+    MATE_FLOOR: null
+    JPFP: null
+    TREND: null
+    CASH: null
+  measured_alpha_source: >
+    `alphaPpYr - pedestalPpYr` from `src/content/shelf.ts` as of 2026-08-17, with
+    the regional pedestals -0.55 US, -0.31 developed and +1.50 emerging. AVES
+    publishes no raw alpha; its -1.66 is the published SHRUNK alpha of -0.16 less
+    the emerging pedestal, and is labelled as such. `null` means NO ALPHA WAS
+    MEASURED FOR THIS FUND ANYWHERE IN THIS REPOSITORY; it is charged zero in the
+    hostile arm and the cell reads `not measured`, never `0.00`. Every non-null
+    figure sits inside its own detection floor (5.28, 3.52, 5.34 and 4.48 pp/yr
+    respectively), which is why it is charged only in a hostile arm.
+  distribution_tax_drag_pp_yr:
+    RSST: 0.32
+  incremental_distribution_tax_drag_bp:
+    RSST: 4.5
+  tax_source: >
+    RSST's own SEC-standardised after-tax table, recorded in
+    `src/content/shelf.ts` as of 2026-08-17. It is the ONLY fund in this
+    tournament for which this repository holds a distribution tax drag. Every
+    other after-tax cell reads `not measured` and no default is substituted. The
+    incremental figure is the drag less that of the VTI it displaces and is the
+    one that enters a gap; the full figure is reported beside it.
+  not_charged:
+    - >
+      The vendor's own trading costs inside AQR's TSMOM series. They are not
+      observable and the workbook states no basis, so every trend figure here is
+      gross of them BY OMISSION. This is the single largest unpriced item, and
+      `parameters.haircut_sweep` exists because of it.
+    - >
+      Any fund's measured alpha, in the headline arms. The three tilt funds'
+      alphas are -0.92, -4.11 and +0.11 pp/yr against detection floors of 5.28,
+      3.52 and 5.34, so all three are unresolved and charging a point estimate
+      inside its own floor would be reading noise as a cost. The
+      `charge_measured_alpha` hostile arm charges each fund `alpha - pedestal`
+      anyway and reports what it does to the ranking, because "unresolved" is not
+      the same as "zero".
+    - >
+      Capital-gains tax on realisation, of any kind. The simulation holds no tax
+      lots, so it cannot know a basis, so it may not price a realisation.
+      Rebalancing here is PRE-CAPITAL-GAINS-TAX everywhere and the after-tax
+      column covers distributions only.
+    - >
+      Non-recoverable foreign withholding. `exp_003` records 21 bp and 30 bp for
+      developed and emerging as declared assumptions with no primary source. They
+      are charged on assets held, are nearly identical across every arm here
+      because every arm holds a similar international share, and would cancel in
+      the paired differences.
+    - >
+      Bid/ask spread on the initial purchase. Every arm is scored from a common
+      starting portfolio and the entry trade is not part of the comparison.
+
+rebalance_rule:
+  frequency: >
+    Annually, every twelfth month, back to the arm's target weights. Annual
+    rather than monthly because `docs/research/portfolio-recommendation.md` and
+    every candidate in `src/content/portfolios.ts` specify annual or banded
+    rebalancing, and because rebalancing was measured in this repository at
+    -38.7 bp/yr as a return source and retained only as risk control.
+  drift: >
+    Weights drift with returns between rebalances and the drifted weights are
+    what earn each month's return. A constant-weight simulation that silently
+    rebalances monthly at no cost is not the portfolio anybody holds.
+  execution: >
+    Weights are targets and returns are monthly; there is no signal, no lag and
+    no execution convention to choose for the constant-weight arms. The six
+    weighting methods re-estimate at each annual rebalance from data ending the
+    previous month and apply the result forward for twelve months.
+  overlay_legs: >
+    A wrapper's internal notional is a property of the wrapper, not a portfolio
+    weight, and is never rebalanced by the investor. RSST's 1.072 equity and
+    1.000 trend per dollar are constants of the fund.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, with 6 and 24 predeclared as a
+    robustness arm. The Politis-White automatic rule is computed and reported
+    per arm but is NOT used to set the block length, because a data-chosen block
+    length is a tuned parameter.
+  multiple_testing_correction: >
+    Benjamini-Hochberg false discovery rate at q = 0.10, applied within each
+    benchmark family separately and never across them. NOT Holm: decision 0009
+    clause 2 records that family-wise control on an exploratory screen cannot
+    promote anything in principle, and this is a screen. The family is declared
+    in `parameters.multiple_testing_family`, including what it omits.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval that includes zero is reported as unresolved and is never
+    narrowed by changing the estimator. The MDE is reported beside every gap so
+    that a null can be told apart from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order, per arm and per benchmark, and record
+  which clause fired. `unresolved` is the expected outcome for most arms on a
+  427-month joint sample: `parameters.minimum_detectable_effect` shows that an
+  arm with 6 percentage points of tracking error cannot resolve an effect below
+  about 2.8 pp/yr on this window, and no candidate here plausibly carries an
+  effect that large. That is a property of the design and it is stated before
+  the run rather than discovered after it. Under no outcome may this
+  specification produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    funds_are_basis_mapped: true
+    statement: >
+      Every ticker in this experiment is a linear combination of public factor
+      series and a fee. No fund's returns were used, because none is committed.
+      The tournament therefore scores CONSTRUCTIONS. A construction result
+      transfers to a fund only to the extent that the fund delivers the mapped
+      exposure at the mapped cost, which experiments 002, 009, 013, 014 and 015
+      measured for the tilt funds and which nobody has measured for MATE or JPFP.
+    order_of_operations: >
+      This file was written, frozen and hashed before the experiment module
+      produced any statistic. The DATA, however, has been searched by fifteen
+      earlier specifications, and the weights, the fund list and the loadings
+      were chosen by people who had read those results. That is the look-ahead
+      that matters here and no freezing step removes it.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: >
+      `2.801585 * sigma_gap / sqrt(years)`, where `sigma_gap` is the annualised
+      standard deviation of the paired monthly difference in log returns between
+      an arm and its benchmark. The multiplier is `z(0.975) + z(0.80)`.
+    window_years: 35.5833
+    computed_before_freezing: >
+      This table is arithmetic on the window length and a grid of tracking
+      errors. It required no look at the data and it is the reason this
+      specification predicts, in advance, that most arms will come back
+      `unresolved`.
+    floor_at_assumed_tracking_error:
+      "1.0": 0.47
+      "2.0": 0.94
+      "3.0": 1.41
+      "5.0": 2.35
+      "6.0": 2.82
+      "8.0": 3.76
+      "10.0": 4.70
+      "12.0": 5.64
+    what_this_says: >
+      Two arms differing only in weighting method over the same seven sleeves
+      will track each other within 1-3 percentage points, so this design can
+      resolve differences of roughly 0.5 to 1.4 pp/yr between them. An arm
+      holding 30% trend notional will track the cap-weighted control at 5-8
+      percentage points, so this design can resolve nothing below roughly 2.4 to
+      3.8 pp/yr for it. THE TOURNAMENT IS THEREFORE WELL POWERED FOR THE
+      WEIGHTING-METHOD QUESTION AND BADLY POWERED FOR THE STACKED-WRAPPER
+      QUESTION, and that asymmetry is the most useful thing it can report.
+
+  multiple_testing_family:
+    procedure: benjamini-hochberg
+    q: 0.10
+    family: >
+      Every contestant scored against `control_capweight` on the primary metric
+      over the full joint window, excluding the benchmarks themselves. One
+      family per benchmark; the families are never pooled.
+    what_the_family_omits: >
+      It omits the sub-period tests, the perturbation grid, the haircut sweeps,
+      the hostile arms, and every one of the fifteen earlier specifications that
+      searched this same data. It also omits the candidate weights that were
+      considered and discarded before this file was written, which are not
+      recoverable. The corrected p-values are therefore an UPPER BOUND on
+      significance, exactly as `TRIALS_CAVEAT` in
+      `portfolio_edge.experiments.ledger` says a specification count is an upper
+      bound on trials.
+
+  fund_mapping:
+    doctrine: >
+      ticker -> basis expression -> what the mapping assumes -> what error it
+      introduces. Loadings are this repository's own measured values from
+      `src/content/shelf.ts` as of 2026-08-17. A market beta of 1.000 is an
+      assumption everywhere: no market beta was measured for any of these funds.
+    funds:
+      - ticker: VTI
+        expression: 1.000 * us_mkt + 0.0247 * us_hml
+        assumes: >
+          VTI is the US market. Its measured HML of +0.0247 is carried because
+          it is the incumbent loading every tilt is measured AGAINST, and
+          dropping it would overstate every tilt by that amount.
+        error: >
+          Ignores VTI's measured raw alpha of -0.547 pp/yr, which is also the US
+          pedestal, so the two cancel and the fund sits exactly on its own
+          model. Ignores +1.84 bp/yr of net securities lending.
+      - ticker: VXUS
+        expression: 0.750 * dxus_mkt + 0.250 * em_mkt
+        assumes: >
+          VXUS is 75% developed ex-US and 25% emerging by weight. THIS IS AN
+          ASSUMPTION AND NOT A MEASUREMENT: this repository holds no global
+          capitalisation series and `src/content/portfolios.ts` says so
+          explicitly. Swept at 0.70/0.30 and 0.80/0.20.
+        error: >
+          A misassigned regional weight of 5 points moves the control's return by
+          the emerging-developed return difference times 0.05.
+      - ticker: VEA
+        expression: 1.000 * dxus_mkt + 0.015 * dxus_hml + 0.006 * dxus_umd
+        assumes: VEA is the developed ex-US market. Loadings measured over 51 months.
+        error: Ignores a measured raw alpha of -0.31 pp/yr, which is the developed pedestal.
+      - ticker: DFIV
+        expression: >
+          1.000 * dxus_mkt + 0.662 * dxus_hml - 0.114 * dxus_smb
+          - 0.001 * dxus_rmw - 0.122 * dxus_cma + 0.016 * dxus_umd
+        assumes: >
+          Loadings measured over 51 months (roughly 2021-2025) describe 1990-2026.
+          One value cycle is longer than that window.
+        error: >
+          THE LARGEST SINGLE MAPPING RISK IN THE TOURNAMENT. DFIV's measured raw
+          alpha is -4.11 pp/yr against a 3.52 pp/yr detection floor, and the
+          headline arms do not charge it. At a 10% weight, charging
+          `alpha - pedestal` = -3.80 costs the arm 38 bp/yr. Four ex-US
+          large-value funds read -2.2 to -4.1 and this repository does not know
+          why. The `charge_measured_alpha` arm exists for this fund.
+      - ticker: AVLV
+        expression: 1.000 * us_mkt + 0.322 * us_hml + 0.120 * us_smb
+        assumes: Loadings measured over 51 months describe 1990-2026.
+        error: >
+          Raw alpha -0.92 against a 5.28 floor, uncharged in the headline. The
+          SMB leg is variance with no priced expectation: the size premium is
+          +0.33 pp/yr against a 2.47 pp/yr floor and is not signable on any panel.
+      - ticker: IDMO
+        expression: >
+          1.000 * dxus_mkt + 0.540 * dxus_umd + 0.218 * dxus_hml
+          - 0.164 * dxus_smb + 0.040 * dxus_rmw - 0.394 * dxus_cma
+        assumes: >
+          Loadings measured over 77 months describe 1990-2026, and that a
+          long-only momentum fund with 105%/yr turnover pays only its 25 bp fee.
+        error: >
+          The turnover assumption is the weak one. At 105% annual turnover and
+          the 0.55 bp US round-trip spread the internal trading cost is under 1
+          bp/yr on spread alone, but market impact is not modelled at all and
+          momentum is the strategy where it lives. The -0.394 CMA loading is
+          large, negative and unexplained.
+      - ticker: IEMG
+        expression: 1.000 * em_mkt
+        assumes: IEMG is the emerging market. No loading was measured for it.
+        error: Ignores +9.87 bp/yr of net securities lending, the largest on the shelf.
+      - ticker: AVES
+        expression: 1.000 * em_mkt + 0.237 * em_hml
+        assumes: >
+          The +0.237 measured on the EMERGING panel over 51 months, not the
+          -0.074 the same fund reads on the US panel. Choosing the panel chooses
+          the sign, and the emerging panel is chosen because that is the panel
+          the fund's mandate names.
+        error: >
+          The fund is `unresolved` on this repository's own shelf: 51 months put
+          its loading interval across the 0.15 bar. Its fee is assumed, not read.
+      - ticker: RSST
+        expression: 1.072 * us_mkt + 1.000 * trend
+        assumes: >
+          The N-PORT of 2026-04-30: SPDR Portfolio S&P 500 at 74.09% of net
+          assets plus E-mini futures at 33.1%, giving 107.2% equity, with a
+          government money fund at 16.04% as collateral and a trend book at
+          roughly 294% gross notional delivering about 100% of risk exposure.
+          The S&P 500 is mapped to the total US market.
+        error: >
+          Substituting the total market for the S&P 500 leg adds a small-cap
+          exposure the fund does not hold. The trend leg's mapping to AQR's TSMOM
+          is the mapping this experiment is least able to defend: TSMOM is 58
+          markets, volatility-scaled to 40% per position, gross of costs, and
+          RSST's book is not it. Sweeping the trend beta by +/-20% is the only
+          answer this design has.
+        futures_notional_for_financing: 0.331
+        distribution_tax_drag_pp_yr: 0.32
+        incremental_tax_drag_bp: 4.5
+      - ticker: MATE
+        expression: 1.1587 * us_mkt + 1.000 * trend
+        assumes: >
+          Form N-PORT of 2026-05-31: an S&P 500 ETF at 50.30% of net assets plus
+          a long E-mini S&P 500 future at 65.57%, giving a base leg of 115.87%
+          and delta -0.159, so the wrapper keeps the whole funding-rule gap. The
+          S&P 500 is mapped to the total US market, as RSST's leg is.
+        error: >
+          The index future is NOT separable into base completion and the trend
+          book's own equity position, because both sleeves trade equity-index
+          futures and no filing tags a contract by sleeve. The contractual floor
+          is the prospectus target of 100%, at delta 0.00, and
+          `proposal_mate_prospectus_floor` runs that instead. Gross notional on a
+          volatility-targeted trend book is an artefact of the risk target rather
+          than an exposure: MATE's whole derivative book ran 339% of net assets
+          in February and 405% in May while its stated targets did not move. No
+          SEC-standardised after-tax table exists for it, because it has not
+          completed a calendar year.
+        futures_notional_for_financing: 0.6557
+        structure_assumed: false
+      - ticker: JPFP
+        expression: 1.072 * us_mkt + 1.000 * trend
+        assumes: >
+          THE PROSPECTUS PROSE, NOT A FILING. JPFP commenced operations on
+          2026-05-27 with $17.07m of net assets and has filed no Form N-PORT;
+          its series S000101300 appears in none of the 24 filings its trust made
+          for the 2026-05-31 period, and its first holdings filing is due
+          2026-08-29 or 2026-09-29. Its registration statement says only that it
+          "seeks to provide full exposure to each of the Managed Futures
+          Strategy and the U.S. Equity Strategy, simultaneously" and that
+          "aggregate notional exposure will exceed its net assets". THE
+          STRUCTURE ABOVE IS RSST'S, COPIED. That is the least arbitrary
+          assumption available: it makes the JPFP arm differ from the RSST arm
+          by its 40 bp fee and by nothing else. It is an assumption, not a
+          measurement.
+        error: >
+          Everything except the 59 bp unitary fee is assumed, including the
+          0.331 futures share below, which is RSST's. "Not filed, with a date
+          attached" is the honest state of this fund and no number here changes
+          it. JPFP's entire measurable advantage in this tournament is 40 bp of
+          fee against RSST, which at a 30% weight is 12 bp/yr on the portfolio
+          by construction: two orders of magnitude below this design's
+          resolution for a stacked arm. The arm exists to show that, not to rank
+          the fund. It also expects to create and redeem in cash, which forfeits
+          the in-kind tax shield on its equity leg as well as its overlay.
+        futures_notional_for_financing: 0.331
+        structure_assumed: true
+
+  contestants:
+    proposal_rsst:
+      role: candidate
+      weights: {RSST: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+      note: >
+        The investor's proposal, and identically the `candidate` in
+        `src/content/portfolios.ts`. 132% gross exposure.
+    proposal_mate:
+      role: candidate
+      weights: {MATE: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+    proposal_jpfp:
+      role: candidate
+      weights: {JPFP: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+    proposal_mate_prospectus_floor:
+      role: hostile variant
+      weights: {MATE_FLOOR: 0.30, VTI: 0.20, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+      note: >
+        MATE priced at its prospectus contractual floor of 100% equity (delta
+        0.00) rather than at the 115.87% its 2026-05-31 filing shows (delta
+        -0.159), because the filed index future cannot be separated into base
+        completion and the trend book's own equity position. BOTH READINGS KEEP
+        THE WHOLE FUNDING-RULE GAP, so the pair exists to show that the
+        conclusion is robust where the point estimate is not.
+    proposal_no_trend:
+      role: decomposition
+      weights: {VTI: 0.50, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight
+      note: >
+        The proposal with the wrapper replaced by plain US beta at the same
+        capital. The difference between this arm and `proposal_rsst` is what the
+        trend leg contributes; the difference between this arm and the control is
+        what the tilts contribute. Nobody in this repository has separated them.
+    control_capweight:
+      role: primary benchmark
+      weights: {VTI: 0.65, VXUS: 0.35}
+    control_capweight_levered:
+      role: leverage-matched benchmark
+      weights: {VTI: 0.65, VXUS: 0.35}
+      leverage: 1.3216
+      note: >
+        1.3216 is `proposal_rsst`'s gross notional: 0.30 x 2.072 + 0.70. Financed
+        at cash plus the declared equity-futures basis, charged on identical
+        terms to the arms it benchmarks. Charging financing to a candidate but
+        not to its levered control changes the sign of the comparison.
+    control_seventy_thirty_cash:
+      role: tertiary benchmark
+      weights: {VTI: 0.455, VXUS: 0.245, CASH: 0.30}
+    control_global_603010:
+      role: candidate
+      weights: {VTI: 0.60, VEA: 0.30, IEMG: 0.10}
+      benchmark: control_capweight
+      note: The `control` in `src/content/portfolios.ts`, whose 60/30/10 split that file calls a declared research weight rather than a market weight.
+    repo_evidence_led:
+      role: candidate
+      weights: {VTI: 0.40, AVLV: 0.20, VEA: 0.22, DFIV: 0.08, IEMG: 0.10}
+      benchmark: control_capweight
+      note: The `evidence-led` candidate in `src/content/portfolios.ts`, at the weights its tilts were priced at.
+    fund_overlay_216:
+      role: funding rule
+      weights: {VTI: 0.65, VXUS: 0.35, TREND: 0.216}
+      benchmark: control_capweight_levered
+      note: >
+        The same overlay at the variance-minimising trend notional the breadth
+        study derives, 21.6%, rather than at the 30% the investor proposes. It is
+        here so that the trend-weight dimension is spanned at 21.6, 30 and 50
+        rather than asserted at one point.
+    proposal_rsst_216:
+      role: candidate
+      weights: {RSST: 0.216, VTI: 0.284, AVLV: 0.15, DFIV: 0.10, VEA: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+      note: >
+        The proposal with the wrapper cut to the weight that delivers 21.6% of
+        trend notional, the freed capital going to plain US beta. US equity
+        notional falls from 67.2% to 66.6%, which is the price of holding the
+        trend weight rather than the equity weight fixed.
+    fund_overlay_30:
+      role: funding rule
+      weights: {VTI: 0.65, VXUS: 0.35, TREND: 0.30}
+      benchmark: control_capweight_levered
+      note: 100% of the control plus 30% trend notional financed on top. Gross 1.30.
+    fund_prorata_30:
+      role: funding rule
+      weights: {VTI: 0.455, VXUS: 0.245, TREND: 0.30}
+      benchmark: control_capweight
+      note: >
+        The control sold pro rata to fund the sleeve. Gross 1.00. THIS ARM AND
+        `fund_cash_30` HOLD THE IDENTICAL PORTFOLIO; only the benchmark differs,
+        which is the entire point of running both.
+    fund_cash_30:
+      role: funding rule
+      weights: {VTI: 0.455, VXUS: 0.245, TREND: 0.30}
+      benchmark: control_seventy_thirty_cash
+      note: The same portfolio as `fund_prorata_30`, scored against the cash-holding investor's own counterfactual.
+    wm_market_weight:
+      role: weighting method
+      weights: {VTI: 0.65, VEA: 0.2625, IEMG: 0.0875}
+      benchmark: control_capweight
+      note: The market-weight member of decision 0009 clause 4's six, over the cap-weight vehicles.
+    wm_equal_weight:
+      role: weighting method
+      method: equal_weight
+      sleeves: [VTI, AVLV, VEA, DFIV, IDMO, IEMG, AVES]
+      benchmark: control_capweight
+    wm_inverse_volatility:
+      role: weighting method
+      method: inverse_volatility
+      sleeves: [VTI, AVLV, VEA, DFIV, IDMO, IEMG, AVES]
+      benchmark: control_capweight
+    wm_min_variance:
+      role: weighting method
+      method: minimum_variance_long_only
+      sleeves: [VTI, AVLV, VEA, DFIV, IDMO, IEMG, AVES]
+      benchmark: control_capweight
+    wm_min_variance_shrunk:
+      role: weighting method
+      method: minimum_variance_shrunk
+      sleeves: [VTI, AVLV, VEA, DFIV, IDMO, IEMG, AVES]
+      benchmark: control_capweight
+      note: Ledoit-Wolf linear shrinkage to the constant-correlation target, intensity estimated on the same expanding window.
+    wm_equal_risk_contribution:
+      role: weighting method
+      method: equal_risk_contribution
+      sleeves: [VTI, AVLV, VEA, DFIV, IDMO, IEMG, AVES]
+      benchmark: control_capweight
+    stacked_heavy_50:
+      role: candidate of this experiment's own design
+      weights: {RSST: 0.50, AVLV: 0.15, VEA: 0.10, DFIV: 0.10, IDMO: 0.05, IEMG: 0.05, AVES: 0.05}
+      benchmark: control_capweight_levered
+      note: >
+        Nobody in this repository has proposed more than 30% of a stacked
+        wrapper. If 30% is right, this arm should be worse; if the wrapper's
+        near-zero delta is the mechanism the funding algebra says it is, this arm
+        should be better and the proposal's 30% is a habit rather than a result.
+        Gross 1.536.
+    erc_engines:
+      role: candidate of this experiment's own design
+      method: equal_risk_contribution_engines
+      engines:
+        us_equity: {VTI: 1.0}
+        international_equity: {VXUS: 1.0}
+        value: {AVLV: 0.4, DFIV: 0.4, AVES: 0.2}
+        trend: {TREND: 1.0}
+      benchmark: control_capweight_levered
+      gross_notional_cap: 1.3216
+      note: >
+        The charter says to count distinct return engines and failure modes
+        rather than ticker symbols, and no experiment here has ever weighted by
+        engine. Equal risk contribution across four engine blocks, estimated on
+        the same expanding window, rescaled to the proposal's gross notional so
+        that it is compared at matched leverage rather than at matched capital.
+
+  weighting_method_estimation:
+    minimum_estimation_months: 120
+    window: expanding, ending the month before the rebalance
+    reapply_every_months: 12
+    scored_window: >
+      1990-11 plus 120 months is 2000-11, so every weighting-method arm is scored
+      on 2000-11..2026-05, 307 months. ITS BENCHMARK IS RE-MEASURED ON THE SAME
+      307 MONTHS. A weighting-method gap and a constant-weight gap are computed
+      on different windows and are never placed in the same ranking column, and
+      the two Benjamini-Hochberg families are separate for the same reason.
+    covariance_input: monthly excess returns of the mapped sleeves
+    long_only: true
+    note: >
+      An in-sample optimisation would be a look-ahead and is not run. The
+      in-sample result is reported for the minimum-variance arm ONLY, labelled
+      `lookahead_ceiling`, so that the reader can see the size of the gap between
+      what an optimiser would have achieved knowing the answer and what it
+      achieved not knowing it. That figure is a diagnostic and scores nothing.
+
+  mapping_perturbation:
+    factor_loading_delta: [-0.15, 0.0, 0.15]
+    trend_beta_multiplier: [0.8, 1.0, 1.2]
+    vxus_developed_share: [0.70, 0.75, 0.80]
+    applies_to: every gap against every benchmark
+    loading_rule: >
+      The delta is added to the MAGNITUDE of every non-market, non-trend
+      coefficient, preserving its sign: `c -> c + delta * sign(c)`. A +0.662 HML
+      becomes 0.812 or 0.512; a -0.394 CMA becomes -0.544 or -0.244. Market betas
+      are not perturbed by this parameter and the trend beta has its own.
+    reporting: >
+      Report the minimum and maximum gap over the 27-point grid for every arm,
+      and mark an arm `unresolved` under falsifier clause (e) if its gap changes
+      sign anywhere on the grid. A ranking that survives only at the central
+      point is a property of the mapping.
+
+  haircut_sweep:
+    trend_arithmetic_mean_percent_per_year: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0, 6.0, 8.0, 10.0, 12.0]
+    value_premium_percent_per_year: [0.0, 1.0, 2.0, 3.0, 4.0, 5.0]
+    rationale: >
+      A constant subtracted from every monthly observation of the leg inside the
+      simulation, so volatility and every correlation are unchanged and the gap
+      falls linearly. The trend grid exists because AQR's series is gross of the
+      vendor's own trading costs by omission; the value grid exists because the
+      US value premium on its own panel is +1.57 pp/yr against a 5.03 pp/yr
+      detection floor and is not signable. The break-even is reported by linear
+      interpolation between the bracketing grid points, which is exact for this
+      construction.
+
+  assumed_fee_grid:
+    AVES: [0.15, 0.30, 0.60]
+    rationale: >
+      AVES's fee appears nowhere in this repository. The grid brackets the
+      plausible range and the headline uses the middle point, labelled as an
+      assumption everywhere it appears.
+
+  underperformance_horizons_years: [10, 30]
+  years_to_distinguish:
+    definition: >
+      The holding period at which this design's own detection floor falls to the
+      arm's estimated gap: `years = (2.801585 * sigma_gap / gap)**2`, the
+      inversion of the minimum-detectable-effect formula. It answers the question
+      an investor actually faces, which is not "which construction has the larger
+      expected value" but "how long would I have to hold this before I could tell
+      whether it worked".
+    reporting: >
+      Reported beside every gap. WHERE IT EXCEEDS A HUMAN INVESTING HORIZON THAT
+      IS A HEADLINE FINDING AND NOT A CAVEAT: it means the ranking is a ranking of
+      expected values whose differences are unobservable to the person holding
+      them, which reframes the decision from "which is best" to "which is
+      best-supported and cheapest to be wrong about".
+  crra_gamma: 3
+  bootstrap_block_months: 12
+  bootstrap_block_robustness_months: [6, 24]
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch ABORTS before any statistic is computed. Ken French
+      recomputes his files from each new CRSP vintage and AQR reconstructs its
+      entire history on every update, so an unrecognised hash is a NEW VINTAGE
+      rather than a corrupted download, and a result computed from an
+      unrecognised file looks exactly like a good one. A normalised-hash
+      mismatch when the raw hash matched means the parser changed behaviour,
+      which is a finding and not a hash to update.
+    expected_frequency: monthly
+    files:
+      - id: french_us_ff5
+        source: french
+        dataset_id: french_us_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA", "RF"]
+        expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+        expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+        committed_manifest: data-manifests/french_us_ff5_monthly.json
+      - id: french_us_momentum
+        source: french
+        dataset_id: french_us_momentum
+        table_id: monthly
+        columns: ["Mom"]
+        expected_sha256_raw: f405ee2d47a5c75ce05025f789733d0599879361e9836a553504240b89159871
+        expected_sha256_normalized: 488da69c6890bc86f1993b2ccf65cfdfa12b17011dd4d5cd5405c7869005b506
+        committed_manifest: data-manifests/french_us_momentum_monthly.json
+      - id: french_developed_ex_us_ff5
+        source: french
+        dataset_id: french_developed_ex_us_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA"]
+        expected_sha256_raw: 54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d
+        expected_sha256_normalized: 8e09ae56db0222f8f633b448f54690cb0f18a3f43282e11e77a183a9a5820fd2
+        committed_manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+      - id: french_developed_ex_us_momentum
+        source: french
+        dataset_id: french_developed_ex_us_momentum
+        table_id: monthly
+        columns: ["WML"]
+        expected_sha256_raw: ca8297c338b45cc2121b81ac23f0bba9cd8b8cf3c6afb523a413542fd1557bb6
+        expected_sha256_normalized: faef3644e3da9d2d348c3aa8c7e098c8a6b02cf03bc16a171fbc761e77d82adc
+        committed_manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+      - id: french_emerging_ff5
+        source: french
+        dataset_id: french_emerging_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "HML"]
+        expected_sha256_raw: ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8
+        expected_sha256_normalized: 300e14451a59af3e4a34dc4db6d4f9677052672373a7f9f860ab68bf58182406
+        committed_manifest: data-manifests/french_emerging_ff5_monthly.json
+      - id: aqr_tsmom_factors
+        source: aqr
+        dataset_id: aqr_tsmom_factors
+        table_id: monthly
+        columns: ["TSMOM"]
+        expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+        expected_sha256_normalized: b58b9f527de8fa1aff06c292895b53ed6a5c69bf8331f7c9c367cf84b104e03e
+        committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+
+  cost_model_sources:
+    - src/content/shelf.ts, as of 2026-08-17, for every expense ratio, loading, notional and tax drag except those marked assumed
+    - docs/research/structural-and-tax-edges.md section 3, as of 2026-08-16, for the equity-futures basis and the trend-book financing sign
+    - research/experiments/exp_003_rebalancing.yaml for the round-trip spreads, as of 2026-08-10
+
+data_sources:
+  - id: french_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+    construction: Mkt-RF, SMB, HML, RMW, CMA and RF, used as published
+  - id: french_us_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+    construction: Mom, used as published
+  - id: french_developed_ex_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+    construction: Mkt-RF, SMB, HML, RMW and CMA in USD, used as published
+  - id: french_developed_ex_us_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_Mom_Factor_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+    construction: WML in USD, used as published; its 1990-11 start sets the window
+  - id: french_emerging_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+    construction: Mkt-RF and HML in USD, used as published
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    sheet: TSMOM Factors
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    construction: TSMOM, used as published and not re-scaled; its 2026-05 end sets the window
+
+hostile_tests:
+  - >
+    Charge the equity-futures financing basis to the leverage-matched control on
+    exactly the terms it is charged to every levered arm, and report how much of
+    each headline gap survives. Not charging it is the error this test exists to
+    catch.
+  - >
+    Charge every tilt fund its measured `alpha - pedestal` and report the whole
+    ranking again. DFIV's -3.80 is the number most capable of reversing the
+    proposal, and the headline arms do not charge it.
+  - >
+    Price MATE at its prospectus contractual floor of 100% equity rather than at
+    the 115.87% its filing shows, and report both arms side by side, because the
+    filed index future is not separable by sleeve.
+  - >
+    Sweep a 0-to-12 pp/yr haircut on the trend leg's arithmetic mean and report
+    where every trend-bearing arm stops paying, against each benchmark
+    separately.
+  - >
+    Sweep a 0-to-5 pp/yr haircut on the value premium and report where every
+    tilted arm stops paying.
+  - >
+    Perturb every mapped loading by +/-0.15, the trend beta by +/-20% and the
+    VXUS regional split by +/-5 points, and mark any arm whose gap changes sign
+    anywhere on that grid as unresolved.
+  - >
+    Report all five eras for every arm, including the post-GFC sub-period which
+    is declared in advance as the one least favourable to every candidate.
+  - >
+    Report the in-sample minimum-variance result beside the walk-forward one, so
+    that the reader can see what an optimiser gains from knowing the answer.
+  - Repeat the bootstrap at mean block lengths of 6 and 24 months.
+  - >
+    Report the minimum detectable effect beside every gap and mark any gap below
+    it unresolved rather than positive.
+  - >
+    Report the years required to distinguish each arm from its benchmark at 80%
+    power, and treat a figure beyond a human investing horizon as a finding.
+  - >
+    Report the growth wedge between `fund_overlay_30` and `fund_prorata_30`,
+    which hold the same trend notional and differ only in whether the base was
+    sold to pay for it. Under substitution the portfolio's edge is a weighted
+    AVERAGE of its sleeves and under a financed overlay it is a SUM; this pair is
+    that distinction realised on growth rather than asserted.
+  - >
+    Report the identical-portfolio pair `fund_prorata_30` and `fund_cash_30` with
+    their two different benchmarks, so that a reader can see a funding rule
+    changing an answer without changing a holding.
+
+reporting_requirements:
+  - The freeze note, printed with every table, including that funds are basis-mapped.
+  - The minimum detectable effect beside every gap, in the same row.
+  - >
+    The benchmark named beside every gap, and NEVER a figure combining two
+    benchmarks.
+  - >
+    Gross notional beside every arm, so that a reader can see which figures
+    require borrowing and how much.
+  - >
+    The four charter common-core outcomes for every arm: after-cost relative
+    growth, maximum drawdown, probability and magnitude of underperformance, and
+    implementation burden.
+  - The maximum regret across the perturbation grid beside every arm's point estimate.
+  - >
+    An explicit `not measured` in every after-tax cell where no fund-published
+    drag exists, and no substituted default.
+  - The sha256 of every source file, the table read, and the observed first and last observation.
+  - >
+    A statement that AQR's TSMOM is gross of the vendor's own trading costs by
+    omission, and that MATE's and JPFP's structures are prospectus prose rather
+    than filed numbers.
+
+notes: >
+  This experiment can rank constructions and it cannot rank funds. It can say
+  which differences this data is capable of resolving and which it is not, and on
+  a 427-month joint sample the second list is longer than the first. Retain
+  `unresolved` rather than `rejected` wherever the instrument cannot separate an
+  arm from its benchmark; decision 0009 clause 1 requires it and this
+  repository's failure mode has never been excessive optimism. No sleeve, fund or
+  portfolio is promoted by this specification, and decision 0004's non-promotion
+  stands.

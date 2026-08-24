@@ -1,0 +1,694 @@
+# Frozen before any ex-US fund return was downloaded or any result examined.
+#
+# THIS IS THE MISSING HALF OF EXPERIMENT 002. That audit screened the US factor
+# shelf and audited zero ex-US products: its exclusion pattern removes every
+# series whose name carries international, intl, global, world, emerging,
+# developed, eafe, acwi or ex-US. Experiments 005 and 007 then located
+# essentially all of the value premium's measurable weight OUTSIDE the United
+# States. So the repository audited products where the premium is weakest and
+# audited none where it is strongest. This specification closes that gap.
+#
+# EXPERIMENT 002'S SCREEN IS NOT MODIFIED. It is COMPLEMENTED. The two regexes in
+# exp_002_fund_exposure.yaml are asserted byte-for-byte by
+# exp_009_universe.exp_002_screen_is_unmodified before this experiment runs, so
+# "no previously published US result changed" is a checked claim rather than an
+# assurance. What changed, and only here, is recorded in
+# parameters.screen_changes_from_exp_002.
+experiment_family: exp_009_exus_factor_products
+title: Ex-US factor product exposure and implementation audit
+entry_point: exp_009_exus_factor_products
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  Among ex-US factor products that pass the predeclared screen below, at least
+  one delivers its intended factor exposure against its OWN region's factor
+  panel, with a loading materially different from a cheap broad ex-US fund,
+  stable across subperiods, at a total cost that leaves the exposure worth
+  buying. This is a hypothesis about EXPOSURE DELIVERY, not about alpha. Over
+  windows that begin in 2019 at the earliest and in 2021 for most of the
+  products that matter, no residual return is identifiable and none is claimed.
+
+mechanism: >
+  A factor product is a manufacturing problem. Ex-US it is a harder one than the
+  US audit could see, for three reasons this experiment measures rather than
+  asserts. Foreign dividend withholding is deducted before a US-domiciled fund's
+  net asset value is struck, so an ex-US index fund loses to its own academic
+  benchmark by more than its fee even when it tracks perfectly. Ex-US markets
+  cost more to trade, so a tilt that rebalances more often pays more for the same
+  nominal exposure. And the ex-US shelf is thinner, so an exposure may exist in
+  only one product at any price, which is a concentration risk rather than a
+  choice. The delivered exposure is the only one of these that can be audited
+  directly; the second and third are read off the tracking difference and the
+  shelf census.
+
+falsifier: >
+  A fund is rejected as an implementation candidate when ANY of: (a) the point
+  estimate of its loading on its intended factor, in its own region's FF5+UMD
+  panel, is below 0.15 over its own common period; (b) that loading's sign flips
+  between the two fixed calendar halves, evaluated only where the fund's filed
+  history covers both; (c) its tracking difference against the in-sample
+  long-only combination of cheap broad ex-US funds that best replicates it is
+  worse than its fee premium over that combination by more than 0.50 percentage
+  points per year; or (d) its total realised cost of ownership, being its
+  expense ratio plus any tracking-difference shortfall, exceeds 1.0 percentage
+  point per year above the regional broad-market comparator without a
+  corresponding exposure. A fund is `unresolved` when no clause fires but the
+  95% bootstrap interval on its intended loading contains 0.15, which is what a
+  short window is expected to produce. A t-statistic on residual alpha is NOT a
+  falsifier in either direction. SHORT HISTORY IS A FINDING: a fund whose filed
+  history cannot detect its own intended loading is reported with its sample
+  length and its minimum detectable effect and marked `unresolved`, never
+  rejected for the shortness of a window it did not choose. Under no outcome may
+  this specification produce a status above `exploratory`; decision record 0002
+  fixes that ceiling for all fund-level work and the window fixes it again.
+
+universe:
+  description: >
+    Every fund series that filed a Form NPORT-P in either the 2019Q4 or the
+    2025Q4 SEC N-PORT structured data set, whose official name in either census
+    carries a REGION word and a FACTOR word, screened in a fixed order by the
+    exclusion pattern, US overlap, exchange listing, asset floor, name-derived
+    mandate, name-derived region, net expense ratio and mandate stability. Every
+    screened series is recorded with its outcome and the FIRST criterion it
+    failed, because the multiple-testing denominator is the whole screen.
+  frame_policy: >
+    The frame is the UNION of the first and the most recent public N-PORT census,
+    as in Experiment 008 and unlike Experiment 002. Experiment 002 could take its
+    frame at the START of its window because every fund it audited already
+    existed in 2019. Here that is false for the products the question is about:
+    AVDV launched 2019-09, AVIV, AVES and DISV in 2021-09, DFIV in 2021-11 and
+    DFEV in 2022. A 2019Q4-only frame would exclude them by construction. The
+    union frame admits funds that launched inside the window AND retains funds
+    present in 2019Q4 and absent in 2025Q4, so it is the least
+    survivorship-selecting frame this source can support. It is not
+    survivorship-free: public N-PORT filings begin in 2019, so an ex-US factor
+    fund that closed before 2019Q4 is invisible to both censuses.
+  net_assets_policy: >
+    The floor is applied to the MAXIMUM of a series' observed net assets across
+    the two censuses. Applying it to the later census alone would select on
+    terminal size as well as on survival; applying it to the earlier one would
+    exclude every fund that launched small and grew, which is most of this shelf.
+  attrition_policy: >
+    Attrition separates a DEATH from a RENAME. Experiment 002 measures attrition
+    by differencing two name-qualified sets of series identifiers, which counts a
+    fund that renamed out of the mandate pattern as a fund that died: every
+    iShares "Edge" product dropped that word inside the window. Here a series
+    absent from the later census entirely is a death; a series still filing whose
+    name no longer qualifies is a rename; and both counts are reported, with the
+    naive combined rate beside them so the difference is visible. The same
+    decomposition is applied to Experiment 002's own patterns as a diagnostic,
+    because that number is already published.
+  intended_factor_map:
+    description: >
+      Which factor each name-derived mandate must deliver, and its sign, declared
+      before any regression is run so no fund can be graded against whichever
+      loading turned out largest. Identical to Experiment 002's map so that an
+      ex-US value fund is graded exactly as a US value fund was.
+    mapping:
+      value: {factor: HML, sign: 1}
+      growth: {factor: HML, sign: -1}
+      momentum: {factor: UMD, sign: 1}
+      quality: {factor: RMW, sign: 1}
+      small_cap: {factor: SMB, sign: 1}
+      small_cap_value: {factor: HML, sign: 1}
+      multifactor: {factor: HML, sign: 1}
+    note: >
+      A growth mandate is graded on a NEGATIVE HML loading, because growth is the
+      short leg of value and not an independent factor. A size-and-style mandate
+      is graded on its STYLE leg. A multifactor mandate is graded on HML because
+      every multifactor product on this shelf names value in its own objective.
+      `min_vol` is deliberately ABSENT: no factor in FF5+UMD corresponds to a
+      low-volatility mandate, and inventing one after seeing the data is the
+      error this map exists to prevent. Minimum-volatility funds therefore fail
+      `mandate_in_map` and are recorded, exactly as they were in Experiment 002.
+  region_map:
+    description: >
+      Ken French publishes a developed-ex-US file and an emerging file and
+      nothing between them. A product spanning both cannot be priced by either
+      alone.
+    graded: [developed_ex_us, emerging]
+    recorded_but_not_graded: >
+      `world_ex_us`. A world-ex-US product holds both regions in proportions this
+      repository cannot observe, so grading it against the developed file would
+      be a misspecification chosen for convenience. Such funds fail
+      `region_in_map` and are recorded. The largest of them, VSS, still enters
+      the audit as a REPLICATION BASIS member, where only its return is used and
+      no factor panel is needed.
+    verification: >
+      Region is derived mechanically from the official series name. The tracked
+      index's own region words are read from the fund's SEC-filed prospectus and
+      recorded separately; every disagreement between the two is reported as a
+      finding rather than reconciled.
+  comparators:
+    developed_ex_us_market:
+      ticker: VEA
+      rationale: >
+        A cap-weighted developed-markets-ex-US index fund at a published expense
+        ratio of a few basis points, frozen before the audit. It is the cheapest
+        broad thing an investor could hold instead of any developed-ex-US fund in
+        this universe, and it is the model-misfit pedestal for that region.
+    emerging_market:
+      ticker: VWO
+      rationale: >
+        The same role for the emerging region. Every emerging fund's alpha
+        carries whatever misfit VWO shows against the emerging factor panel.
+    us_pedestal:
+      ticker: VTI
+      rationale: >
+        Experiment 002's pedestal, re-estimated here on the US panel over the
+        same months. The DIFFERENCE between VEA's pedestal on the ex-US panel and
+        VTI's on the US panel is this experiment's estimate of the ex-US
+        structural drag -- withholding tax plus index-construction differences --
+        that the US audit could not see. It is an upper bound on withholding
+        alone, because it also contains every difference between a FTSE
+        investable index and a French research portfolio.
+    synthetic_combination:
+      basis: [VEA, VWO, VSS, EFV, EFG]
+      construction: >
+        Non-negative weights summing to one, fitted by constrained least squares
+        on the SAME window as the exposure regression. A fund is never part of
+        the basis that replicates it. This is a LOOK-AHEAD construction and is
+        reported as such: an investor could not have known these weights in
+        advance, so the tracking difference against it is a BEST CASE for the
+        replication and a HARD test for the product.
+      rationale: >
+        The comparison that decides implementation value, and the one that is
+        withholding-neutral: every basis member is a US-domiciled 1940-Act fund
+        facing the same treaty rates as the product, so a difference between them
+        cannot be foreign tax. The basis deliberately includes the two cheapest
+        broad ex-US STYLE funds, because "a tilt is only worth what it beats" and
+        on this shelf the thing to beat is EFV at 33 basis points rather than VTV
+        at 3.
+
+sample_policy:
+  start: "2019-07"
+  end: "2025-12"
+  held_out: >
+    Nothing after 2025-12 is read. A filing that can only cover months after the
+    window is never downloaded, so the holdout is a property of the code rather
+    than a promise about what was ignored. Public N-PORT reporting begins with
+    the quarter ending 2019-09-30, whose Item B.5 reports July, August and
+    September 2019, so 2019-07 is the first month this source contains.
+  embargo: >
+    Each monthly return became public when its filing was accepted, 30 to 60 days
+    after the reporting period ended. No observation is treated as available on
+    the last day of the month it describes.
+  eras:
+    - name: common_period
+      start: "2019-07"
+      end: "2025-12"
+      rationale: >
+        The widest window the source supports. Each fund is evaluated on the
+        intersection of this window with its own filed coverage, and the
+        effective sample length and minimum detectable effect are reported per
+        fund rather than assumed equal. A short sample is a finding here, not a
+        defect to be papered over by dropping the fund.
+    - name: us_comparable_period
+      start: "2020-01"
+      end: "2025-12"
+      rationale: >
+        Experiment 002's exact window. Any fund whose filed history covers all 72
+        months is additionally estimated here, so its loading and tracking
+        difference are comparable fund-for-fund with the published US numbers
+        rather than approximately so.
+    - name: first_half
+      start: "2019-07"
+      end: "2022-09"
+      rationale: >
+        Fixed calendar split, frozen before any loading was estimated. A fund
+        whose history does not cover a half is reported as uncovered, never
+        extrapolated.
+    - name: second_half
+      start: "2022-10"
+      end: "2025-12"
+      rationale: The second limb of the same fixed split.
+    - name: value_reversal
+      start: "2022-01"
+      end: "2022-12"
+      rationale: >
+        A period in which value and momentum exposures diverged sharply. Included
+        because it is hostile to the hypothesis, not because it flatters it.
+
+benchmark:
+  primary: >
+    The fund's own region's Fama-French five factors plus momentum, from Ken
+    French's Developed ex US and Emerging files, in US dollars, joined on month
+    labels to the one-month Treasury bill distributed in the same files.
+  secondary: >
+    A constrained-least-squares combination of VEA, VWO, VSS, EFV and EFG,
+    excluding the fund itself, so that the question is what the product adds over
+    what is already cheaply available to a US investor buying ex-US exposure.
+  factor_model: FF5 plus momentum, per region, monthly
+  note: >
+    The regional panel is the whole point. Regressing an EAFE value fund on the
+    US factor panel would price it against the wrong market, the wrong size
+    spread and the wrong value spread, and would manufacture a loading or destroy
+    one depending only on how the two regions happened to co-move. The momentum
+    column is named WML in both international files and Mom in the US file; they
+    are the same 30/70 prior-return spread and are mapped to UMD here so the
+    three model specifications are identical to Experiment 002's.
+
+primary_metric:
+  name: intended factor loading over the fund's own common period
+  definition: >
+    OLS coefficient on the intended factor in a regression of the fund's monthly
+    excess return on its own region's Mkt-RF, SMB, HML, RMW, CMA and UMD, with
+    Newey-West HAC standard errors at 6 lags, over the intersection of the common
+    period with the fund's filed coverage.
+  units: loading (dimensionless)
+  uncertainty: >
+    HAC standard error and a stationary block-bootstrap 95% interval, mean block
+    6 months frozen and not tuned, with 3 and 12 as predeclared neighbours. The
+    minimum detectable loading and the minimum detectable alpha at 80% power are
+    reported beside every fund, because over a 40-month window an interval
+    containing the threshold is a statement about the window.
+
+secondary_metrics:
+  - name: tracking difference versus the regional broad-market comparator
+    units: percentage points per year
+  - name: tracking difference versus the fitted cheap combination
+    units: percentage points per year
+  - name: tracking difference versus the region's French market total return
+    units: percentage points per year
+    note: >
+      This one contains the foreign-withholding wedge and cannot separate it from
+      index-construction differences. It is reported as an upper bound on the
+      withholding drag and never as a measurement of it.
+  - name: implementation shortfall against the cheap combination
+    units: percentage points per year
+  - name: residual (Jensen) alpha, raw and shrunk, with the shrinkage factor
+    units: percentage points per year
+  - name: minimum detectable alpha at 80% power
+    units: percentage points per year
+  - name: sample length in filed months
+    units: months
+  - name: shelf depth per exposure per region
+    units: count of products
+
+cost_model:
+  applied: true
+  fund_level: >
+    Total return as actually experienced by a shareholder: the fund's own Item
+    B.5 monthly total return, already net of the published expense ratio, already
+    net of foreign dividend withholding deducted before net asset value is
+    struck, and already assuming reinvestment of distributions. The expense ratio
+    is NOT subtracted a second time.
+  trading_level: >
+    Not applicable to a buy-and-hold shareholder. The fund's internal trading
+    cost is unobservable and is NOT estimated; its effect sits inside the
+    tracking difference and is reported there.
+  foreign_withholding: >
+    NOT SEPARATELY OBSERVABLE and deliberately not estimated. It is inside every
+    fund return in this experiment, including every comparator, so a comparison
+    between two US-domiciled ex-US funds is withholding-neutral and a comparison
+    against a French research portfolio is not. The gap between the two is
+    reported as the ex-US structural drag with both of its components named.
+  foreign_tax_credit: >
+    OUT OF SCOPE. A taxable US shareholder may recover part of the withheld tax
+    through the foreign tax credit; a shareholder in a retirement account may
+    not. Neither case is modelled, and no return here is adjusted for either.
+  cash_rate: >
+    The one-month Treasury bill distributed in the same French files as the
+    factors, for every excess return in this experiment. Mkt-RF is defined as the
+    market return less that rate, so an intercept is interpretable as alpha only
+    when the dependent variable's excess return is taken over the same rate.
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  net_optimistic: The fund's reported total return as filed.
+  net_pessimistic: >
+    NOT COMPUTABLE from this source. Form N-PORT carries neither the split of a
+    fund's return between income and capital-gain distributions nor portfolio
+    turnover, and for an ex-US fund it also carries no foreign-tax-paid figure.
+    All three are recorded as GAPS. No constant tax haircut is applied to any
+    return under any circumstances.
+
+rebalance_rule:
+  shareholder: buy and hold the fund; no rebalancing within this experiment
+  comparator_combination: >
+    Monthly rebalance to the fitted approximating weights, so the comparator is
+    not flattered by drift.
+
+inference:
+  bootstrap: stationary block bootstrap on returns
+  block_length_policy: >
+    Mean block length frozen at 6 months for monthly fund data, with 3 and 12
+    reported as predeclared neighbours. Not tuned on the statistic tested.
+  multiple_testing_correction: >
+    Benjamini-Hochberg FDR at 0.10 across ALL funds with usable returns and ALL
+    model specifications estimated, not only the funds that survive and not only
+    the specification reported, with Holm-Bonferroni beside it because these
+    tests are not independent. The denominator is additionally widened to every
+    fund that passed the screen and to every mandate-matching series screened,
+    padding with p = 1.0, which cannot create a rejection and strictly tightens
+    both corrections.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Fund histories here run from 78 months down to about 40. The regression is
+    the estimand of interest; the alpha is a by-product whose standard error over
+    such windows is larger than any plausible true alpha. The minimum detectable
+    alpha at 80% power is reported for every fund because a wide interval read as
+    evidence of absence is the specific error this experiment is most exposed to.
+
+rejection_rule: >
+  Per fund: mark `rejected` when a falsifier clause fires. Mark `unresolved` when
+  no clause fires but the 95% interval on the intended loading contains 0.15.
+  Mark `exploratory` when the intended exposure is present, stable across the
+  fixed split where both halves are covered, and delivered at a total cost below
+  the materiality threshold; that permits the fund to be used as an
+  implementation proxy in a later experiment and permits nothing else. No fund is
+  promoted on residual alpha and none is rejected for a short window.
+
+parameters:
+  minimum_intended_loading: 0.15
+  materiality_threshold_annual_percent: 1.0
+  hac_lags: 6
+  minimum_monthly_observations: 36
+  minimum_monthly_observations_rationale: >
+    A six-factor regression plus an intercept spends seven degrees of freedom, so
+    36 months is the point below which a HAC standard error at six lags stops
+    meaning anything. It is NOT a claim that 36 months is enough to identify a
+    loading; the minimum detectable effect reported per fund is the statement
+    about that, and for most funds it is large.
+  minimum_net_assets_usd: 500000000
+  minimum_net_assets_rationale: >
+    Half of Experiment 002's floor. Chosen from the COUNT of qualifying series at
+    each level, which is visible in the census before any return is downloaded
+    and never from performance: at Experiment 002's 1,000 million the ex-US
+    screen returns 23 series and at 500 million it returns 39, and the question
+    this experiment exists to answer includes whether the shelf is deep enough to
+    matter. Using the US floor would have answered that question by assumption.
+  maximum_net_expense_ratio_percent: 0.60
+  maximum_net_expense_ratio_rationale: >
+    Identical to Experiment 002, so that "expensive" means the same thing in both
+    audits even though the ex-US shelf is dearer.
+  power_target: 0.80
+  rolling_window_months: 36
+  cash_series: french_rf_one_month_bill
+  regional_panels:
+    developed_ex_us:
+      factors: french_developed_ex_us_ff5
+      momentum: french_developed_ex_us_momentum
+    emerging:
+      factors: french_emerging_ff5
+      momentum: french_emerging_momentum
+    us_pedestal_only:
+      factors: french_us_ff5
+      momentum: french_us_momentum
+      used_for: >
+        The VTI pedestal alone, so that the ex-US structural drag is a difference
+        between two pedestals estimated on the same months rather than a
+        comparison against a number published from a different window.
+  alpha_shrinkage:
+    sigma_true_annual_percent: 1.25
+    reference_standard_error_annual_percent: 3.36
+    reference_shrinkage_factor: 0.121
+    description: >
+      Every alpha is shrunk before it means anything. With true gross alpha
+      normal with mean zero and cross-sectional standard deviation 1.25%/yr
+      (Fama and French 2010) and a single-fund standard error SE, the posterior
+      mean is shrinkage_factor * observed with
+      shrinkage_factor = 1.25^2 / (1.25^2 + SE^2), recomputed from each fund's
+      OWN standard error.
+    annualisation_trap: >
+      An annual alpha is TWELVE times a monthly intercept, so its standard error
+      annualises by x12 and never by sqrt(12). Using sqrt(12) understates the
+      standard error by 3.46 and shrinks far too little, which is the direction
+      that manufactures skill.
+  screening_patterns:
+    region_regex: >-
+      \b(international|intl|ex[- ]?u\.?\s?s\.?a?\.?|developed|emerging|eafe|world|global|acwi|foreign|non[- ]?u\.?s\.?)\b
+    factor_regex: >-
+      \b(value|growth|momentum|quality|profitab\w*|min(?:imum)?[- ]?vol\w*|low[- ]?vol\w*|multi-?factor|factor|small[- ]?cap|small|mid[- ]?cap|targeted|tilt)\b
+    exclusion_regex: >-
+      \b(bond|municipal|treasury|credit|corporate|high yield|target date|lifecycle|retirement|esg|sustainab\w*|social|climate|clean|carbon|health|technolog\w*|thematic|financial|energy|utilit\w*|real estate|reit|gold|commodit\w*|infrastructure|ultra|2x|3x|inverse|bear|leveraged|japan|china|india|brazil|korea|taiwan|canada|germany|switzerland|united kingdom|europe|euro|pacific|asia|latin|africa|mexico|israel|currency|hedged|balanced|allocation|money market|convertible|preferred|option|buffer|covered call|dividend|income|managed risk|variable insurance)\b
+    us_token_regex: >-
+      \b(u\.?\s?s\.?a?|america\w*|domestic)\b
+    global_token_regex: >-
+      \b(global|world|acwi|all[- ]?country)\b
+    ex_us_token_regex: >-
+      \bex[- ]?u\.?\s?s\.?a?\.?\b|\bex[- ]?us\b|\bnon[- ]?u\.?s\.?\b
+    emerging_regex: >-
+      \bemerging\b
+    world_ex_us_regex: >-
+      all[- ]?world|world ex|all international|total international|acwi ex|global ex|all[- ]?country
+    mandate_patterns:
+      - [small_cap_value, "small[- ]?cap value|small value|smallcap value|targeted value"]
+      - [small_cap, "small[- ]?cap|smallcap|small[- ]?mid|\\bsmall\\b"]
+      - [value, "\\bvalue\\b"]
+      - [growth, "\\bgrowth\\b"]
+      - [momentum, "\\bmomentum\\b"]
+      - [quality, "\\bquality\\b|profitab"]
+      - [min_vol, "min(?:imum)?[- ]?vol|low[- ]?vol"]
+      - [multifactor, "multi-?factor|\\bfactor\\b|\\btilt\\b"]
+    mandate_pattern_note: >
+      Ordered; the FIRST match wins, so "International Small Cap Value" is
+      small-cap value rather than small-cap or value. Derived from the official
+      series name so the criterion needs no sponsor document and cannot be
+      revised while reading one. The sponsor-stated mandate is recorded
+      separately and every disagreement is reported.
+
+  screen_changes_from_exp_002:
+    description: >
+      Exactly what differs from Experiment 002's screen, why, and what it does to
+      the published US numbers. Experiment 002's own module, specification,
+      committed universe and results are UNTOUCHED; this experiment asserts its
+      two regexes byte-for-byte before running and aborts if either has moved.
+    changes:
+      - id: mandate_requires_a_region_word
+        change: >
+          The mandate pattern requires a REGION word and a FACTOR word.
+          Experiment 002 required a factor word and its exclusion pattern removed
+          every region word.
+        why: >
+          The two screens are complements over the same census, so a fund can
+          appear in at most one of them and no fund can appear in both.
+        effect_on_published_us_results: none; exp_002's patterns are unchanged
+      - id: us_overlap_replaces_the_ex_us_exclusion
+        change: >
+          A `us_overlap` criterion excludes any fund whose name claims a mandate
+          including the United States -- an explicit US token outside an `ex-US`
+          qualifier, or global/world/ACWI with no `ex-US` qualifier at all.
+        why: >
+          A fund holding US stocks cannot be priced by a non-US factor panel. The
+          `ex-US` qualifier is stripped before the US token is looked for;
+          without that, "Hartford Multifactor Developed Markets (ex-US) ETF"
+          would exclude itself.
+        effect_on_published_us_results: none
+      - id: region_in_map_is_new
+        change: >
+          A `region_in_map` criterion admits only developed_ex_us and emerging.
+        why: >
+          Ken French publishes those two files and nothing between them. A
+          world-ex-US fund holds both in proportions this repository cannot
+          observe.
+        effect_on_published_us_results: none
+      - id: union_frame_replaces_the_2019q4_frame
+        change: The frame is the union of the 2019Q4 and 2025Q4 censuses.
+        why: >
+          Every product the question is about launched after 2019. A 2019Q4-only
+          frame would have excluded AVDV, AVIV, AVES, DISV, DFIV and DFEV by
+          construction. This follows Experiment 008, which faced the same problem
+          with DBMF, KMLM and CTA.
+        effect_on_published_us_results: none
+      - id: inception_cutoff_dropped
+        change: >
+          Experiment 002's `inception_on_or_before: 2016-12-31` criterion is not
+          applied. It is replaced by a per-fund reported sample length and
+          minimum detectable effect.
+        why: >
+          The cutoff exists so an audit is not measuring a launch. Applied here
+          it would delete the entire modern ex-US small-value shelf, which is the
+          subject of the experiment. Short history is reported as a finding
+          instead of being screened away, and no fund is rejected for it.
+        effect_on_published_us_results: none
+      - id: asset_floor_halved
+        change: 500 million USD rather than 1,000 million, on the maximum of two censuses.
+        why: >
+          Chosen from census counts visible before any return: 23 series clear
+          1,000 million and 39 clear 500 million. Whether the shelf is deep is
+          part of the question.
+        effect_on_published_us_results: none
+      - id: attrition_separates_renames_from_deaths
+        change: >
+          Attrition classifies a qualifying series absent from the later census
+          as a death and a qualifying series still filing under a non-qualifying
+          name as a rename.
+        why: >
+          Differencing name-qualified identifier sets counts a rename as a death.
+          Every iShares "Edge" product dropped that word inside the window.
+        effect_on_published_us_results: >
+          Experiment 002's published attrition figure is computed the naive way
+          and is therefore an OVERSTATEMENT of deaths by however many renames it
+          contains. This experiment recomputes that decomposition under
+          Experiment 002's own patterns and reports both numbers. It changes no
+          loading, tracking difference or verdict in Experiment 002; it corrects
+          the interpretation of one survivorship diagnostic.
+
+  return_source:
+    primary:
+      id: sec_form_nport_item_b5
+      what: >
+        The fund's own monthly total return for each month of the reporting
+        period, filed on Form NPORT-P per share class, in percent, already net of
+        the fund's fees and of foreign dividend withholding.
+      why_this_and_not_a_price_feed: >
+        Decision 0002 found that no free PRICE feed documents a total-return
+        contract, a corporate-action policy, delisting coverage or a revision
+        history. Form N-PORT is a signed regulatory disclosure of a defined
+        statistic, permanently archived, in which a correction is a separate
+        document and the original stays readable.
+      why_it_is_still_exploratory: >
+        Public N-PORT filings begin in 2019, the figures are fund-reported and
+        unaudited, General Instruction G lets each filer use its own methodology,
+        and for the ex-US shelf most histories are shorter still. Decision 0002
+        is NOT overturned.
+    secondary:
+      id: yahoo_chart_monthly
+      used_for: An independent cross-check over the same months, and nothing else.
+      status: >
+        EXPLORATORY and not research-grade, per decision 0002. No result depends
+        on it. Where it is unavailable the check is recorded as not run.
+
+  validation_gates:
+    month_alignment: >
+      Item B.5 reports rtn1 as the FIRST month of the reporting period and rtn3
+      as the month ending on repPdDate. A reversed reading would shift every
+      history by two months while leaving the numbers plausible, so alignment is
+      CHECKED against an independent series rather than assumed.
+    regional_market_gate: >
+      VEA's reconstructed series must correlate at least 0.97 with the French
+      developed-ex-US market total return and VWO's at least 0.95 with the
+      emerging one, and both must show their largest single-month loss in
+      2020-03. The thresholds are LOOSER than Experiment 002's 0.99 for VTI, and
+      the reason is stated rather than hidden: no investable ex-US fund is the
+      French research portfolio. FTSE and MSCI classify Korea, Poland and Canada
+      differently from Ken French, the investable indices exclude the smallest
+      deciles the research portfolios include, and the fund's return is net of
+      withholding while the research portfolio's construction is undocumented on
+      that point. A gate tight enough for a US total-market fund would fail here
+      for reasons that are about index definitions rather than about the data
+      path.
+    market_beta_gate: >
+      Each regional comparator's regression on its own Mkt-RF must produce a beta
+      within 0.10 of 1.00 and an R-squared of at least 0.93, for the same reasons
+      and with the same looser thresholds.
+    cross_source_gate: >
+      Where both sources have a month, the median absolute difference between the
+      N-PORT and secondary monthly returns is reported per fund. A large
+      disagreement is a finding about the data, reported rather than reconciled.
+
+  unobservable_in_the_primary_source:
+    - >
+      Realised taxable distributions and their split between qualified dividend,
+      ordinary income and capital gain. Form N-PORT reports one total return.
+    - >
+      Portfolio turnover, which lives in the annual report on Form N-CSR as
+      unstructured HTML.
+    - >
+      Foreign tax paid and foreign tax credit passed through to shareholders,
+      which is reported on Form 1099-DIV box 7 and in the annual report, not in
+      Form N-PORT. This is the single most important ex-US-specific gap and it is
+      recorded rather than estimated.
+    - >
+      Securities-lending revenue split, which is disclosed by sponsor policy
+      rather than per fund per year in this source and is already inside net
+      asset value.
+
+data_sources:
+  - id: french_developed_ex_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+  - id: french_developed_ex_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_Mom_Factor_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+  - id: french_emerging_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+  - id: french_emerging_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_MOM_Factor_CSV.zip
+    manifest: data-manifests/french_emerging_momentum_monthly.json
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: sec_nport_data_set_2019q4
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2019q4_nport.zip
+    manifest: data-manifests/sec_nport_data_set_2019q4.json
+  - id: sec_nport_data_set_2025q4
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2025q4_nport.zip
+    manifest: data-manifests/sec_nport_data_set_2025q4.json
+  - id: exp_009_product_universe
+    url: >
+      committed at data-manifests/exp_009/product_universe.json, built by
+      --build-universe from the union of the two N-PORT censuses before any
+      return was fetched
+  - id: exp_009_product_facts
+    url: >
+      committed at data-manifests/exp_009/product_facts.json, read from each
+      fund's own SEC-filed summary prospectus with a URL, an accession and a date
+      per fund
+  - id: fund_total_returns
+    url: >
+      https://www.sec.gov/Archives/edgar/data/<cik>/<accession>/primary_doc.xml,
+      one filing per fund per quarter, each accession and digest recorded
+
+hostile_tests:
+  - Re-estimate with CAPM, FF3 and FF5-plus-UMD per region, and report all three;
+    a loading that appears in only one specification is not an exposure.
+  - Re-estimate every developed-ex-US fund on the EMERGING panel and every
+    emerging fund on the DEVELOPED panel, and report what the wrong panel does to
+    the intended loading. If a loading survives the wrong regional panel intact,
+    the panel is not doing the work the specification claims it is.
+  - Re-estimate every fund on the US panel, which is the panel Experiment 002
+    would have used had it not excluded these funds, and report the difference.
+  - Re-estimate on the fixed calendar halves and on rolling 36-month windows
+    wherever the fund's history covers them.
+  - Report the minimum detectable loading and the minimum detectable alpha at 80%
+    power beside every estimate, so a wide interval cannot be read as evidence of
+    absence.
+  - Include every fund and every specification in the multiple-testing
+    denominator, then widen it to every fund that passed the screen and to every
+    mandate-matching series screened, padding with p = 1.0.
+  - Compare each fund against the fitted combination of cheap broad ex-US funds,
+    not only against the regional market, and state that the combination had
+    look-ahead.
+  - Measure the ex-US structural drag as the difference between VEA's pedestal on
+    the ex-US panel and VTI's on the US panel over the same months, and state
+    that it is an upper bound on withholding because it also contains every
+    index-construction difference.
+  - Separate renames from deaths in the attrition measurement, and recompute
+    Experiment 002's own published attrition figure the same way.
+  - Check every fund's first filed month against its prospectus inception date
+    and flag any fund whose N-PORT history begins materially earlier, which means
+    the series existed as a mutual fund before the ETF and its early months are
+    not the product being audited.
+  - Report the shelf depth per exposure per region, because an exposure available
+    from exactly one product at any price is a concentration risk and not a
+    choice.
+
+reporting_requirements:
+  - The complete screened-fund table, including every rejection and its reason.
+  - Sample length in filed months and minimum detectable effect for EVERY fund,
+    beside every estimate, never in a footnote.
+  - Loadings under all three specifications and under the wrong regional panel.
+  - Tracking difference against the regional comparator, against the fitted cheap
+    combination, and against the region's French market total return, in separate
+    columns with the withholding caveat attached to the third.
+  - Raw and shrunk alpha side by side, never the raw alpha alone.
+  - An explicit statement of which exposures are purchasable ex-US, at what fee,
+    and from how many distinct products.
+  - An explicit statement that a fund with a short history is `unresolved` and
+    not `rejected`, and that this is a statement about the window.
+  - An explicit statement that the binding constraint is the data contract and
+    the length of the available windows, not the evidence.
+  - An explicit statement of whether any previously published US result changed.
+
+notes: >
+  Promotion requires the intended exposure to be present, stable, economically
+  material and cheap. Residual alpha is not a promotion criterion in either
+  direction. Nothing here may raise a sleeve above `exploratory`.

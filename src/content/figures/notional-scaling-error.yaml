@@ -1,0 +1,13 @@
+label: What a 30% trend holding becomes if exposure figures are typed into a screen that wants shares of your money
+value: 22.7%
+unit: percent of the money you put in
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: The recommended portfolio, operating the portfolio
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: operating-the-portfolio
+note: >-
+  What you are exposed to adds to 132.2% of what you put in; a screen rescaling that to 100
+  shrinks every line by 24%, so 30 becomes 22.7. The loss is about a quarter of the position you
+  intended.

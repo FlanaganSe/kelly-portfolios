@@ -23,6 +23,10 @@ export default $config({
         command: "pnpm run build",
         output: "dist",
       },
+      // The client is a single-page app with real URLs (`/portfolios/candidate`).
+      // Without this, a direct load or a refresh of any route but `/` returns the
+      // bucket's 404 rather than the app.
+      errorPage: "index.html",
       environment: {
         VITE_API_URL: api.url,
       },

@@ -1,0 +1,600 @@
+# Frozen before any fund return was downloaded or any result examined.
+#
+# THIS IS A FUND-IMPLEMENTATION AUDIT ON A SIX-YEAR WINDOW. It answers whether
+# US-listed managed-futures ETFs DELIVER diversified trend exposure. It does not,
+# and cannot, answer whether they have alpha: see parameters.exposure_not_alpha.
+#
+# It exists because Experiment 004 evaluated AQR's TSMOM *index* and its rejection
+# was then repeated to the project owner as if it applied to KMLM, DBMF and CTA --
+# products that were never tested, one of which (DBMF) is an explicit replication
+# strategy. Two errors are being corrected: transferring an index verdict to
+# untested products, and transferring 2-and-20 hedge-fund CTA fee evidence
+# (Bhardwaj, Gorton and Rouwenhorst 2014: fee income ~4% of assets, net excess
+# returns insignificantly different from zero 1994-2012 against 6.1% gross) to an
+# 0.66-0.98% ETF. Neither transfer was licensed by any evidence.
+experiment_family: exp_008_managed_futures_products
+title: US-listed managed-futures ETFs -- exposure delivery, cost, and Experiment 004's clause (d) re-read
+entry_point: exp_008_managed_futures_products
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  US-listed managed-futures ETFs that pass a predeclared mechanical screen deliver
+  the diversified time-series-trend exposure that AQR's published TSMOM index
+  carries, at a tracking difference their expense ratio can account for. The claim
+  under test is EXPOSURE DELIVERY, measured as the loading on the AQR index and the
+  annualised difference from it. A residual return is not part of the hypothesis in
+  either direction, because a window of at most 78 monthly observations cannot
+  identify one.
+
+mechanism: >
+  A managed-futures ETF holds a portfolio of futures whose positions are set by
+  either a published index (KMLM tracks the KFA MLM Index), an in-house systematic
+  model (CTA, FMF, WTMF), or a regression-based replication of the largest
+  managed-futures hedge funds (DBMF). If the mechanism is real, the fund's return
+  should load on a diversified trend factor with a coefficient near its own
+  volatility ratio to that factor, and should differ from it by roughly its fee
+  plus its implementation friction. The competing explanation, and the one
+  Experiment 004 found decisive for the index itself, is Goyal and Jegadeesh
+  (2018): time-series momentum carries a large embedded time-varying market
+  position, so a static market beta plus a volatility-scaled market beta plus a
+  convexity term can reproduce a material share of it without any forecasting.
+  Both explanations are tested on every fund, on the same window, with the same
+  estimator.
+
+falsifier: >
+  A fund is rejected as a diversified-trend implementation when ANY of: (a) its
+  loading on the AQR TSMOM index over its own common period is below 0.50; (b) that
+  loading falls below 0.50 in either fixed half of its own history, or changes sign
+  between the halves; or (c) its annualised tracking difference against the AQR
+  index is worse than its own total expense ratio by more than 1.00 percentage
+  point per year. A fund is `unresolved` when no clause fires but the 95% bootstrap
+  interval on the loading contains 0.50, which is what a window this short is
+  expected to produce. A t-statistic on residual alpha is NOT a falsifier in either
+  direction: over at most 78 months it measures the window, not the fund. Realised
+  distributions and their tax character are measured and reported but are
+  DELIBERATELY NOT in any clause, because the prospectus after-tax figures were
+  read while assembling the product facts and a threshold chosen after seeing a
+  quantity is not a falsifier. Under no outcome may this specification produce a
+  status above `exploratory`: decision record 0002 fixes that ceiling for all
+  fund-level work, and the window fixes it again.
+
+universe:
+  description: >
+    Every fund series that filed a Form NPORT-P in either the 2019Q4 or the 2025Q4
+    SEC N-PORT structured data set, screened by name against a predeclared
+    managed-futures mandate pattern and a predeclared exclusion pattern, then by
+    exchange listing, asset floor, expense ratio, inception cutoff, stated mandate
+    and filed-return coverage. Every screened series is recorded with its outcome
+    and the FIRST criterion it failed, passing or not, because the
+    multiple-testing denominator is the whole screen.
+  frame_policy: >
+    The frame is the UNION of the first and the most recent public N-PORT census,
+    not a single quarter. Experiment 002 could take its frame at the START of its
+    window because every fund it audited already existed in 2019. Here it cannot:
+    DBMF launched 2019-05, KMLM 2020-12 and CTA 2022-03, so a 2019Q4-only frame
+    would exclude by construction the products the question is about. The union
+    frame admits funds that launched inside the window AND retains funds present in
+    2019Q4 that are absent in 2025Q4, so it is the least survivorship-selecting
+    frame the source can support. It is not survivorship-free: N-PORT begins in
+    2019, so any managed-futures fund that closed before 2019Q4 is invisible to
+    both censuses, and this is stated wherever attrition is reported.
+  net_assets_policy: >
+    The asset floor is applied to the MAXIMUM of a series' observed net assets
+    across the two censuses, so a fund that reached the floor and then shrank is
+    still screened in. Applying the floor to the latest census alone would select
+    on terminal size as well as on survival.
+  intended_exposure_map:
+    description: >
+      The stated mandate a fund must carry to be graded. Written down before any
+      return was downloaded so that no fund could be graded against whichever
+      exposure turned out largest. A fund whose sponsor-stated mandate is absent
+      from this map fails `mandate_in_map` and is recorded, not silently dropped.
+    mapping:
+      diversified_managed_futures:
+        target: aqr_tsmom
+        note: a multi-asset futures programme trading equities, rates, FX and commodities
+      managed_futures_replication:
+        target: aqr_tsmom
+        note: >
+          a strategy whose stated objective is to replicate the returns of managed
+          futures hedge funds rather than to forecast markets directly. DBMF is the
+          case that matters: Experiment 004 found that a static replica of the AQR
+          index captured 44% of its marginal benefit, so a product that sells
+          replication explicitly is the most informative product on this shelf.
+      trend_following:
+        target: aqr_tsmom
+        note: a diversified time-series-momentum programme across asset classes
+  comparators:
+    trend_index:
+      dataset: aqr_tsmom_factors
+      column: TSMOM
+      role: >
+        The exposure benchmark. The question this window CAN answer is whether a
+        product delivers this series' exposure and at what difference. It is not an
+        investable series and no fund can be blamed for its fee.
+    broad_market:
+      ticker: VTI
+      role: >
+        The model-misfit pedestal. VTI is a cap-weighted total-market fund, so
+        under a correctly specified factor model its alpha should be about minus
+        its three-basis-point fee. Whatever it is instead is carried by every fund
+        priced by the same factors over the same window, and every alpha in this
+        experiment must be read as a distance from it rather than from zero.
+    definitional_pedestal:
+      series: the AQR TSMOM index itself, put through the identical attribution
+      role: >
+        A second, degenerate-by-construction control. Regressed on itself the index
+        must show a loading of exactly 1.000 and a tracking difference of exactly
+        zero; printing that confirms the machinery carries no offset. Its loadings
+        under the Goyal-Jegadeesh static exposure set over the SAME short window are
+        the substantive control: each fund's static-exposure loadings are read as
+        distances from what a definitionally-trend series shows on these months, not
+        from zero.
+  excluded:
+    - Any claim that a residual return here is alpha, in either direction.
+    - >
+      Any hedge-fund CTA index or peer-group average. Their survivorship and
+      backfill distortion is of the order of the entire gross premium, and their
+      2-and-20 fee load does not transfer to an exchange-traded fund.
+    - >
+      Any use of the Bhardwaj-Gorton-Rouwenhorst net-of-fee result as evidence
+      about these products. It measures 1994-2012 hedge-fund CTAs whose fee income
+      was around 4% of assets. The funds here charge 0.66% to 0.98% and their
+      actual fee is read from their own SEC-filed summary prospectus.
+    - Leveraged, inverse and single-asset-class trend products, by the exclusion pattern.
+
+sample_policy:
+  start: "2019-07"
+  end: "2025-12"
+  held_out: >
+    Nothing after 2025-12 is read. A filing that can only cover months after the
+    window is not downloaded at all, so the holdout is a property of the code
+    rather than a promise about what was ignored. Public N-PORT reporting begins
+    with the quarter ending 2019-09-30, whose Item B.5 reports July, August and
+    September 2019, so 2019-07 is the first month that exists in this source and
+    no earlier start is possible.
+  embargo: >
+    Each monthly return became public when its filing was accepted, 30 to 60 days
+    after the reporting period ended. No observation is treated as available on the
+    last day of the month it describes. The AQR and Ken French inputs are pinned by
+    raw sha256 and a new vintage aborts the run.
+  eras:
+    - name: common_period
+      start: "2019-07"
+      end: "2025-12"
+      rationale: >
+        The widest window the source can support. Each fund is evaluated on the
+        intersection of this window with its own filed coverage, and the effective
+        sample is reported per fund rather than assumed equal.
+    - name: whole_years
+      start: "2020-01"
+      end: "2025-12"
+      rationale: >
+        Six complete calendar years. The certainty equivalent is computed from
+        non-overlapping calendar-year gross returns, so a partial year cannot be
+        silently dropped. Each fund uses the sub-window of these six years that its
+        own filings cover completely, and the number of years is reported beside
+        every marginal figure.
+    - name: first_half
+      start: "2019-07"
+      end: "2022-09"
+      rationale: >
+        Fixed calendar split, frozen before any loading was estimated, so the
+        stability test cannot be moved to where a loading looks better. A fund
+        whose history does not cover a half is reported as uncovered, never
+        extrapolated.
+    - name: second_half
+      start: "2022-10"
+      end: "2025-12"
+      rationale: The second limb of the same fixed split.
+
+benchmark:
+  primary: >
+    AQR's published monthly time-series-momentum index, as the exposure a
+    diversified-trend product claims to deliver.
+  rationale: >
+    Experiment 004 measured this exact series, so using it here makes the two
+    experiments commensurable and makes the owner's question -- "does the verdict on
+    the index transfer to these products?" -- answerable rather than assumed. It is
+    a vendor series maintained by a firm that sells the strategy, it is gross of
+    every cost by omission, and it is therefore a HARD benchmark for a fund that
+    charges a real fee. That direction is the conservative one for a tracking test.
+  secondary: >
+    A 60% US equity / 40% cash passive portfolio plus a risk-matched cash
+    comparator, exactly Experiment 004's five-way structure, so that a fund's
+    marginal portfolio contribution is measured against the same control the index
+    was measured against.
+
+primary_metric:
+  name: loading on the AQR TSMOM index, and the annualised tracking difference from it
+  definition: >
+    OLS of the fund's monthly excess return on a constant and the AQR TSMOM index
+    return, Newey-West standard errors, over the fund's own common period. The
+    loading is the exposure-delivery statistic. The tracking difference is
+    12 * mean(fund excess return - AQR index return) in percentage points per year,
+    reported beside the beta-adjusted intercept so that a fund which delivers less
+    of the exposure is not confused with one that delivers the exposure and loses
+    money against it.
+  units: loading (dimensionless); percentage points per year
+  uncertainty: >
+    Stationary block bootstrap on the joint monthly panel of the fund return and
+    the whole design, mean block 6 months frozen not tuned, with 3 and 12 as
+    predeclared neighbours. The minimum detectable alpha at 80% power is reported
+    beside every intercept, because over a window this short an interval containing
+    zero is a statement about the window.
+
+secondary_metrics:
+  - name: static-exposure attribution, Experiment 004's decisive set
+    units: loading (dimensionless)
+  - name: FF5+UMD attribution
+    units: loading (dimensionless)
+  - name: shrunk annual alpha, and the shrinkage factor that produced it
+    units: percentage points per year
+  - name: minimum detectable alpha at 80% power
+    units: percentage points per year
+  - name: marginal certainty-equivalent return over a risk-matched cash comparator
+    units: percentage points per year
+  - name: reinvested distributions as a fraction of net assets
+    units: percent per year
+  - name: prospectus after-tax return drag, SEC standardised methodology
+    units: percentage points per year
+  - name: effective sample, months and effective independent blocks
+    units: months
+
+cost_model:
+  applied: partially
+  fund_reported_basis: >
+    Form N-PORT Item B.5 is the fund's own monthly total return, already net of the
+    fund's ongoing expenses and assuming reinvested distributions. The expense
+    ratio is therefore NOT subtracted again anywhere. It is read from the fund's
+    own SEC-filed summary prospectus fee table, with the accession and the date
+    read committed in the product facts.
+  investor_level_costs:
+    net_expense_ratio: read per fund from its SEC-filed summary prospectus fee table
+    bid_ask_and_brokerage: >
+      NOT MODELLED and not available. Nothing here is a net-of-everything return.
+    taxes: >
+      Measured but not modelled. Two observables are reported: the fund's reinvested
+      distributions from Form N-PORT's monthly flow block, which is a LOWER BOUND on
+      distributions because a distribution taken in cash never appears in it; and
+      the prospectus's SEC-standardised return-after-taxes-on-distributions, which
+      assumes the highest individual federal marginal rates and no state or local
+      tax. Neither is applied as a haircut to any return in this experiment.
+  reporting_columns: [fund-reported net of ongoing expenses]
+  why_one_column: >
+    Unlike Experiment 004, this experiment does not choose a fee assumption. The fee
+    is observed. The single honest column is the filed return, with the observed fee
+    and the observed tax drag reported beside it rather than blended into it.
+
+rebalance_rule:
+  fund_level: >
+    Not applicable. Each fund's own trading is inside its filed return and is not
+    observable from Form N-PORT.
+  portfolio_level: >
+    For the marginal-contribution arm only: a 15% sleeve funded pro rata from a 60/40
+    equity/cash benchmark, monthly, identical to Experiment 004's frozen construction,
+    so the two experiments' marginal numbers are comparable. The risk-matched cash
+    comparator uses the same lagged exponentially weighted volatility estimator at
+    the same 60-day centre of mass translated to monthly frequency.
+
+inference:
+  bootstrap: >
+    stationary block bootstrap on the joint panel of the fund return and the whole
+    regression design, so the regressor-error dependence HAC exists for survives
+    inside each resample
+  block_length_policy: >
+    Mean block 6 months, frozen and not tuned, with 3 and 12 as predeclared
+    neighbours whose intervals are reported.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at 0.10 and Holm-Bonferroni at 0.10 over the WHOLE family of
+    usable funds times the three attribution specifications, not over the funds or
+    the specification anyone chose to report. Holm is the defensible one: the three
+    specifications are nested on the same months for the same fund and the funds all
+    trade the same futures, so Benjamini-Hochberg's independence assumption fails in
+    the direction that overstates rejections. A hostile denominator padded with
+    p = 1.0 to every screened series times three specifications is also reported,
+    because a fund that failed the screen was never regressed but the search still
+    passed over it.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    The effective sample is 78 months at most and 45 at least. Wide intervals are
+    the expected and honest outcome and are reported as `unresolved` rather than
+    narrowed by changing the estimator.
+
+rejection_rule: >
+  Mark a fund `rejected` when a falsifier clause fires: the AQR-index loading is
+  absent, unstable across the fixed halves, or the tracking difference exceeds the
+  fund's own fee by more than a percentage point a year. Mark it `unresolved` when
+  no clause fires but the 95% interval on the loading contains the 0.50 threshold,
+  or when its filed coverage is below the frozen minimum. Mark it `exploratory`
+  otherwise, which permits it to be used as an implementation proxy in a later
+  experiment and permits nothing else. The experiment-level status is `exploratory`
+  in every case: decision record 0002 forbids any fund-level result from promoting a
+  sleeve or appearing in the app as a finding, and this window forbids it again.
+
+parameters:
+  exposure_not_alpha: >
+    EXPOSURE DELIVERY AND ALPHA ARE DIFFERENT QUESTIONS AND ONLY ONE IS ANSWERABLE
+    HERE. Exposure delivery is a loading and a difference of means against a named
+    benchmark, and 45 to 78 months can measure it. Alpha is a small residual mean,
+    and the minimum detectable alpha at 80% power on a window this short is larger
+    than any plausible true alpha. Every reported intercept is shrunk by the fund's
+    OWN factor computed from its OWN standard error, is printed beside its raw value
+    and its detection threshold, and is never quoted alone. Experiment 002 measured
+    a median realised shrinkage factor of 0.431 on index funds against the
+    framework's 0.121 reference; the factor is measured here too and never
+    hardcoded.
+  clause_d_disclosure: >
+    Realised distributions and prospectus after-tax returns were read from sponsor
+    documents while the product facts were assembled, BEFORE any N-PORT return was
+    downloaded but AFTER they were visible to the author. Any threshold on them
+    chosen now would be a threshold chosen after seeing the quantity. They are
+    therefore measured and reported and are in NO falsifier clause. This is recorded
+    as a limitation rather than repaired by inventing a bar.
+  minimum_intended_loading: 0.50
+  loading_stability_floor: 0.50
+  tracking_difference_tolerance_annual_percent: 1.00
+  minimum_monthly_observations: 36
+  hac_lags: 6
+  power_target: 0.80
+  rolling_window_months: 36
+  alpha_shrinkage:
+    sigma_true_annual_percent: 1.25
+    source: >
+      Fama and French (2010) bootstrap of US active equity mutual funds, 1984-2006.
+      TRANSFERRED, NOT MEASURED: it comes from active equity funds and is applied
+      here to managed-futures ETFs, a different population in a different asset
+      class. It decides every shrunk number and its transfer is a stated assumption.
+    annualisation_warning: >
+      An annual alpha is TWELVE times a monthly intercept, so its standard error
+      annualises by x12 and never by sqrt(12). Using sqrt(12) would divide every
+      standard error by 3.46 and shrink far too little, which is the direction that
+      manufactures skill.
+  crra_gamma: 3
+  sleeve_weight: 0.15
+  equity_weight: 0.60
+  volatility_lookback_days: 60
+  marginal_materiality_annual_percent: 0.30
+  screening_patterns:
+    mandate_regex: >-
+      \b(managed\s+futures|trend|cta|systematic\s+macro|time[-\s]series\s+momentum|mlm\s+index)\b
+    exclusion_regex: >-
+      \b(equit\w*|stock\w*|bond\w*|fixed[-\s]income|income|dividend|credit|yield|municipal|treasur\w*|commodit\w*|currenc\w*|gold|silver|energy|utilit\w*|technolog\w*|health\w*|financ\w*|industrial\w*|staples|consumer|real\s+estate|sector|large[-\s]?cap|mid[-\s]?cap|small[-\s]?cap|allocation|balanced|target|buffer|option|covered\s+call|leverag\w*|inverse|ultra|[23]x|emerging|international|developed)\b
+    pattern_provenance: >
+      Both patterns were written by reading SERIES NAMES ONLY in the two censuses,
+      before any return was downloaded and with the data sets' return tables never
+      opened. A name carries no performance, so a pattern tuned on names cannot be
+      tuned on results. The exclusion pattern removes single-asset-class, sector,
+      size-segment, allocation, income, leveraged and inverse products; it is the
+      reason "Fidelity Trend Fund", a 1958 large-cap growth fund, and "Pacer
+      Trendpilot US Large Cap ETF", an equity-and-cash rotation, are not in this
+      audit.
+  minimum_net_assets_usd: 100000000.0
+  minimum_net_assets_rationale: >
+    One tenth of Experiment 002's billion-dollar floor. The listed managed-futures
+    shelf is an order of magnitude smaller than the listed factor shelf, and a
+    billion-dollar floor would leave two funds. Every fund below the floor is still
+    recorded with its assets so a reader can see exactly what a lower floor would
+    have admitted.
+  maximum_net_expense_ratio_percent: 1.50
+  maximum_net_expense_ratio_rationale: >
+    Two and a half times Experiment 002's 0.60% ceiling, because a futures programme
+    with a Cayman subsidiary genuinely costs more to run than an index equity fund.
+    The ceiling exists to keep the audit on the exchange-traded shelf rather than to
+    grade cost: a fund that clears it is not thereby cheap, and the realised fee of
+    every passing fund is reported.
+  inception_on_or_before: "2022-12-31"
+  inception_rationale: >
+    Three complete calendar years must exist inside the window, which is the least a
+    fixed-halves stability test can be run on. It is the criterion that excludes the
+    2023-2025 launches, and it excludes them for a stated reason rather than because
+    they looked bad.
+  criteria_order:
+    - mandate_regex
+    - exclusion_regex
+    - exchange_traded
+    - minimum_net_assets
+    - maximum_expense_ratio
+    - inception_cutoff
+    - mandate_in_map
+    - minimum_return_coverage
+  criteria_order_note: >
+    Applied in this fixed order, and only the FIRST failure is recorded, which is
+    what makes the funnel add up. A fund below the asset floor is never looked up
+    for a fee, so a missing fee cannot masquerade as a screen decision -- the
+    gathering gap Experiment 002 had to repair mid-flight.
+  attribution_specifications:
+    aqr_tsmom_tracking:
+      regressors: [constant, aqr_tsmom]
+      role: primary. exposure delivery against the benchmark Experiment 004 measured.
+    static_exposure_set:
+      regressors:
+        - constant
+        - market_excess_return
+        - volatility_scaled_market_excess_return
+        - absolute_market_excess_return
+        - lagged_market_excess_return
+      role: >
+        Experiment 004's decisive set, unchanged. Goyal and Jegadeesh (2018) show
+        time-series momentum carries a large embedded time-varying market position;
+        this is the specification under which an intercept-stripped replica
+        delivered 44% of the index's marginal benefit. Running it on the products
+        asks whether they are anything more than that.
+    ff5_umd:
+      regressors: [constant, Mkt-RF, SMB, HML, RMW, CMA, UMD]
+      role: >
+        The standard equity model, included so that the multiple-testing family is
+        every fund times every specification estimated and not only the one
+        reported. A loading that appears in one specification and not the others is
+        a specification artefact.
+  clause_d_rerun:
+    what: >
+      PART B. A re-run of Experiment 004's DECISION, not of its data. Experiment
+      004's frozen falsifier clause (d) reads "an attribution on static asset
+      exposures plus a volatility-scaled market position leaves a marginal benefit
+      below the materiality threshold, i.e. a simpler static exposure explains it".
+      That sentence admits an ABSOLUTE reading (the replica's own marginal benefit
+      clears 0.30 pp/yr, so reject) and a RELATIVE reading (the sleeve's margin over
+      the replica clears 0.30 pp/yr, so retain). Experiment 004 applied the absolute
+      reading as frozen and said in its own write-up that the relative reading gives
+      `unresolved`. Both verdicts are computed here, side by side, from the numbers
+      Experiment 004 ledgered.
+    source_run_id: 21a1517f295a44fd9ac213b502c1752a
+    source_spec_hash: e9e564f39ebd335808482db79558ddd9fd7f955e1ae3ce4267e9184f8d4a7473
+    source_artifact: artifacts/21a1517f295a44fd9ac213b502c1752a/result.json
+    expected_sleeve_marginal_percentage_points_per_year: 1.341825315439782
+    expected_replica_marginal_percentage_points_per_year: 0.5862468980901259
+    expected_residual_marginal_percentage_points_per_year: -0.4429267811245863
+    materiality_threshold_annual_percent: 0.30
+    verification_tolerance: 1.0e-06
+    correction_log:
+      - date: "2026-08-12"
+        change: >
+          expected_sleeve_marginal_percentage_points_per_year corrected from
+          1.3423954939676425 to 1.341825315439782.
+        reason: >
+          The first frozen value carried invented digits. The write-up of Experiment
+          004 prints +1.342 to three decimals and the remaining digits were supplied
+          from nothing rather than read from the artifact. The verification guard
+          described in `policy` refused the run at a drift of 0.00057 pp/yr, which is
+          exactly what it exists to do, and the ledgered `failed` entry for run
+          b718e47b014049eebc80a296ffe9f4b5 records the refusal. The corrected value is
+          read from Experiment 004's artifact.
+        made_before_any_result_was_examined: true
+        evidence: >
+          The refused run aborted inside the clause (d) block, before any result object
+          was constructed, before any artifact was written and before any
+          `results_viewed` entry existed. No number from Experiment 008 had been seen
+          when this correction was made. Neither the replica nor the residual value
+          moved, and no threshold, criterion or clause was touched.
+    policy: >
+      The three quantities above are quoted from Experiment 004's ledgered artifact
+      so that this decision is reproducible from Git alone, because artifacts are
+      not in Git. When the artifact is present it is read and the quoted values are
+      VERIFIED against it; a mismatch beyond the tolerance is a finding and aborts.
+      Experiment 004's own specification, ledger entries and status are not touched
+      by anything here. Its result stands as recorded; this is a second,
+      differently-specified look at the same decision, and the ledger shows both.
+  aqr_source_pin:
+    dataset_id: aqr_tsmom_factors
+    sheet: TSMOM Factors
+    column: TSMOM
+    expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+    committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    pin_policy: >
+      A raw-hash mismatch ABORTS. AQR reconstructs the full history each time the
+      returns are updated, so an unrecognised hash is a new vintage rather than a
+      corrupted download, and a tracking difference computed from an unrecognised
+      file looks exactly like a good one.
+  french_source_pin:
+    dataset_id: french_us_ff5
+    expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+    committed_manifest: data-manifests/french_us_ff5_monthly.json
+    pin_policy: A raw-hash mismatch ABORTS, for the same reason.
+  cash_rate: >
+    The one-month Treasury bill from the SAME Ken French file as the factors, so
+    that every intercept is interpretable as an alpha against the rate Mkt-RF is
+    defined against.
+
+data_sources:
+  - id: sec_nport_2019q4
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2019q4_nport.zip
+    manifest: data-manifests/sec_nport_data_set_2019q4.json
+    role: first limb of the union frame
+  - id: sec_nport_2025q4
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2025q4_nport.zip
+    manifest: data-manifests/sec_nport_data_set_2025q4.json
+    role: second limb of the union frame
+  - id: sec_nport_filings
+    url: https://www.sec.gov/cgi-bin/browse-edgar
+    role: >
+      Form N-PORT Item B.5 monthly total return per share class, and the monthly
+      flow block from which reinvested distributions are read. Fund-reported and
+      unaudited; General Instruction G lets each filer use its own methodology.
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    sheet: TSMOM Factors
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+  - id: french_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_us_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: product_facts
+    url: data-manifests/exp_008/product_facts.json
+    role: >
+      Expense ratio, inception date, index, stated mandate and the prospectus
+      after-tax return table, per fund, each with the SEC accession or sponsor URL
+      it was read from and the date it was read. None of it is in Form N-PORT.
+  - id: fred_tb3ms
+    url: https://fred.stlouisfed.org/series/TB3MS
+    manifest: data-manifests/fred_tb3ms.json
+    role: cash leg of the marginal-contribution arm, matching Experiment 004
+
+hostile_tests:
+  - >
+    Estimate every fund under all three attribution specifications and let the
+    multiple-testing family be every fund times every specification, not the one
+    reported.
+  - >
+    Pad the multiple-testing denominator with p = 1.0 to every screened series times
+    three specifications, which cannot create a rejection and strictly tightens both
+    corrections.
+  - >
+    Report the minimum detectable alpha at 80% power beside every intercept, and
+    refuse to conclude on any fund whose window cannot support the test.
+  - >
+    Run the model-misfit pedestal on VTI, a fund that IS the market portfolio, so
+    the attribution's own offset is measured rather than assumed to be zero.
+  - >
+    Run the identical attribution on the AQR TSMOM index itself over the SAME short
+    window, so each fund's static-exposure loadings are read as distances from what
+    a definitionally-trend series shows on these months.
+  - Fixed calendar halves and rolling 36-month windows on every loading.
+  - >
+    Report the tracking difference against the AQR index on BOTH a raw
+    difference-of-means basis and a beta-adjusted intercept basis, since a fund that
+    delivers less exposure is not the same as a fund that loses money against it.
+  - >
+    Compute each fund's marginal certainty-equivalent contribution using Experiment
+    004's five-way portfolio structure, and report the number of whole calendar
+    years it rests on beside it.
+  - >
+    Report reinvested distributions from the filings and the prospectus after-tax
+    drag, and state that the first is a lower bound and the second is not applied to
+    any return.
+  - >
+    Report every screened series with the first criterion it failed, including the
+    funds the project owner named if the screen excludes them.
+
+reporting_requirements:
+  - >
+    Every product result is `exploratory`. The binding constraint is the data
+    contract of decision record 0002 and the length of the window, not the evidence.
+  - >
+    Exposure delivery and alpha are distinguished in every sentence that reports a
+    number. A 45-to-78-month window can answer the first and cannot answer the
+    second.
+  - The effective sample and the minimum detectable alpha at 80% power, per fund.
+  - >
+    The realised shrinkage factor per fund, measured from its own standard error and
+    never the framework's reference value.
+  - The screened universe with every exclusion and the criterion that caused it.
+  - >
+    Experiment 004's clause (d) verdict under BOTH the absolute and the relative
+    reading, with the numbers that drive each, and a stated judgement of which
+    reading is better justified on grounds of what the clause was for.
+  - >
+    An explicit statement that the hedge-fund CTA fee evidence does not transfer to
+    these products, and that Experiment 004's verdict was about a vendor index and
+    not about any product.
+
+notes: >
+  Experiment 004's specification, its ledger entries and its recorded status are
+  not modified by this experiment. This is a second, differently-specified look; the
+  ledger shows both, and the two must never be described as one run.

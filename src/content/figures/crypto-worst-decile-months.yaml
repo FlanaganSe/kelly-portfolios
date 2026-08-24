@@ -1,0 +1,13 @@
+label: Worst-decile equity months in which bitcoin rose
+value: 2 of 12
+unit: worst 10% of S&P 500 months over 120 months
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Market scan 2026
+  docPath: docs/research/market-scan-2026.md
+  anchor: 41-is-the-repositorys-verdict-still-true
+note: >-
+  Recomputed 2026-08-23, updating the audit's 1 of 13. Mean bitcoin return in those months
+  −5.0%, not −7.51%. One of the two positives is May 2019 (+62.2% against the index's −6.6%), a
+  bull market in bitcoin overlapping an equity dip.

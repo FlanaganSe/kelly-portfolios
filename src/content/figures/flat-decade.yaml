@@ -1,0 +1,13 @@
+label: What a 30% trend holding added above the stocks it displaced, through the flat decade
+value: +9.5 points a year
+unit: percentage points per year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: The recommended portfolio, optional financed trend
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: optional-financed-trend
+note: >-
+  1999-03 to 2009-02, the one flat-to-negative decade in our data, US stocks −2.55% a year. It
+  turned that decade from −2.55% a year to about +0.05% a year. Against +0.21 points a year in ordinary
+  decades. One decade, in one panel.

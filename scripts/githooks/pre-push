@@ -1,2 +1,4 @@
 #!/bin/sh
-pnpm biome:check && pnpm typecheck
+set -e
+pnpm biome check
+pnpm typecheck

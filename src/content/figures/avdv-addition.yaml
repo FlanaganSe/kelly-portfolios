@@ -1,0 +1,14 @@
+label: What adding AVDV was worth, same portfolio, same total exposure
+value: +0.28 points, plausibly +0.05 to +0.56
+unit: percentage points per year
+interval: '[+0.05, +0.56]'
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: conclusion
+note: >-
+  The smallest gap the test could reliably see was 0.29, so it misses by 0.01. Positive in the
+  full window and in all seven declared sub-periods, adjusted p 0.033. The unborrowed pair of
+  leaning funds gives +0.29 independently.

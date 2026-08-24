@@ -1,0 +1,167 @@
+---
+/**
+ * The site's central idea, made playable.
+ *
+ * `T = (z·s/e)²` is four characters of algebra and it decides almost everything on this
+ * site: which claims are worth acting on, which are worth holding an opinion about, and
+ * which nobody alive will ever settle from their own account. A reader who can move the
+ * two numbers and watch the wait move learns it in about thirty seconds. A reader who
+ * only reads the sentence does not.
+ *
+ * The worked examples below are rendered on the server from the same functions the
+ * island runs, so the page carries its argument with scripting switched off.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import HowLongTool from "~/components/islands/HowLongTool";
+import { timeToKnow } from "~/components/islands/horizon-model";
+import { horizonPresets } from "~/components/islands/horizon-presets";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+import { confidenceAsOf, formulas, upperBoundWarning } from "~/content/confidence";
+import { citationHref } from "~/lib/citation";
+import { formatYears } from "~/lib/format";
+
+const CONFIDENCE = 0.9;
+
+const worked = horizonPresets.map((preset) => {
+  const outcome = timeToKnow({
+    edgeBp: preset.edgeBp,
+    trackingErrorBp: preset.trackingErrorBp,
+    confidence: CONFIDENCE,
+  });
+  return {
+    ...preset,
+    wait: outcome.kind === "years" ? formatYears(outcome.years) : "no horizon at all",
+    edgePercent: (preset.edgeBp / 100).toFixed(2),
+    driftPercent: (preset.trackingErrorBp / 100).toFixed(2),
+  };
+});
+
+const fees = worked[0];
+const whole = worked[2];
+const source = citationHref(formulas.source);
+
+/**
+ * Written once, read twice: into `<thead>`, and into the label each cell shows when
+ * the table becomes a list of cards below 40rem.
+ */
+const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as const;
+---
+
+<Base
+  title="How long before you would know"
+  description="Type in how much better you expect to do and how far your portfolio can wander from the index, and see how many years pass before your own account could tell you it worked. Fees settle in about four months. The whole portfolio takes about thirty-one years."
+>
+  <div class="prose">
+    <Rail>The tool</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How long before you would know</h1>
+
+    <MarginNote label="The question">
+      <p>
+        If I do this, how many years pass before my own account could tell me it worked? Checked against
+        <code>docs/research/</code> on <span data-numeric>{confidenceAsOf}</span>.
+      </p>
+    </MarginNote>
+
+    <p>Two things decide it. How much better you expect to do, and how far the thing can wander from what you
+    are comparing it against while it gets there. The wait goes up with the square of the second divided by the
+    first, so noise punishes you far harder than a small edge does.</p>
+
+    <p>That is the whole formula. Halve the edge and you wait four times as long. Double the wandering and you
+    wait four times as long. It is elementary and almost nobody prices it in.</p>
+  </div>
+
+  <div class="prose mt-10">
+    <Rail>Two claims, worth about the same</Rail>
+    <h2>{fees.edgePercent}% a year settles in {fees.wait}. {whole.edgePercent}% a year takes {whole.wait}.</h2>
+
+    <p>Both of those are a bit under a percentage point a year. On paper they look like the same size of prize.
+    They are nothing like the same bet, because the first wanders by {fees.driftPercent}% a year and the second
+    wanders by {whole.driftPercent}%.</p>
+
+    <p>Moving to cheaper funds and the right accounts is close to a contract. You know the fee you were paying
+    and you know the fee you will pay. A portfolio built differently from the index is a genuine bet, and thirty
+    years of your life is not enough data to grade it.</p>
+  </div>
+
+  <div class="prose mt-10">
+    <Rail>Play with it</Rail>
+    <h2>Your own numbers</h2>
+
+    <MarginNote label="Read it as a best case">
+      <p>{upperBoundWarning}</p>
+    </MarginNote>
+
+    <p>Pick one of the claims below, or type your own pair. Everything on screen is
+    <code>{formulas.horizon}</code>, run live.</p>
+  </div>
+
+  <Breakout class="mt-6">
+    <HowLongTool client:visible />
+  </Breakout>
+
+  <div class="prose mt-12">
+    <Rail>The four claims, worked</Rail>
+    <h2>Every pair this site publishes</h2>
+
+    <p>Rendered on the server, so this table is here whether or not the tool above loaded. Each row is the wait
+    until there is a 9-in-10 chance you are ahead of that row's own comparison. Rows are not comparable across
+    comparisons: beating the portfolio you already own is a far easier claim than beating a cheap index fund.</p>
+  </div>
+
+  <Breakout scroll class="mt-6">
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+      <caption class="sr-only">
+        Every published pair of expected advantage and drift, with the wait each implies
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i > 0 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          worked.map((row) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal text-ink">
+                {row.label}
+                <span class="block text-xs font-normal text-ink-faint">{row.against}</span>
+              </th>
+              <td role="cell" data-label={COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.edgePercent}%
+              </td>
+              <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {row.driftPercent}%
+              </td>
+              <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right font-semibold text-ink">
+                {row.wait}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-12">
+    <Callout kind="caveat">
+      <p>{formulas.variables} The arithmetic treats the edge as a known constant and assumes each year is
+      independent of the last. Neither holds. Every wait here is therefore the shortest one you could hope for,
+      and the real one is longer.</p>
+    </Callout>
+
+    <p class="text-sm">
+      <a class="link" href={source} rel="noopener noreferrer">Where outperformance can come from</a>, checked
+      <span data-numeric>{confidenceAsOf}</span>. The same arithmetic runs in
+      <code class="break-all">{formulas.implementation}</code>.
+    </p>
+  </div>
+</Base>

@@ -1,0 +1,13 @@
+label: Years to confirm the same 0.50-point-a-year edge, at two levels of drift
+value: 24 days at 0.10% of drift, 105 years at 4.00%
+unit: to 90% confidence
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  The closed form is T = (z·s/e)², so the wait grows with the square of noise over edge. Forty
+  times the noise is sixteen hundred times the wait. The formula assumes the edge is known,
+  which makes every probability derived from it a best case.

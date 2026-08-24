@@ -1,0 +1,14 @@
+label: Gold's return per unit of bumpiness over half a century
+value: '0.18'
+unit: against 0.42 to 0.59 for stocks
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Our audit of the alternatives
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts
+note: >-
+  0.12% a month over Treasury bills, bouncing around by 16.24% a year, with a 91.2% fall from a
+  peak. It moves with stocks at zero rather than against them, both overall and inside the falls
+  where you would want it. About 40% of the whole score comes from the forty months to December
+  1974, throughout which private US gold ownership was illegal.

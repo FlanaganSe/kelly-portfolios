@@ -1,0 +1,14 @@
+label: The trend premium this site quoted and withdrew
+value: '1.80'
+unit: percentage points a year, withdrawn
+status: rejected
+asOf: '2026-08-23'
+source:
+  label: Adversarial review
+  docPath: docs/research/adversarial-review.md
+  anchor: 1-the-forward-premium-argument-mixes-three-bases-and-correcting-it-flips-its-sign
+note: >-
+  Never measured. It was the 2012-2025 era's own geometric mean less a 1.50% fee, then restated
+  onto a basis where the same history reads 4.17%, with the fee charged again by the consuming
+  model. Its own 95% interval was [−2.67, +11.00]. Deleted, not replaced. Correcting it moved
+  the recommended trend weight to 25% and the modelled chance of abandonment to 17.2%.

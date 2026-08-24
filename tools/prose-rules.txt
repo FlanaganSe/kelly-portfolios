@@ -1,0 +1,98 @@
+# Instant fail: model artifacts
+(?i)\bas an? (AI|large) language model\b
+(?i)as of my last (knowledge|training) update
+(?i)\b(oaicite|contentReference|turn0search|attributableIndex|grok_render_citation_card_json)\b
+\[(cite|Your Name|Insert|Describe|link to)\b
+\b(INSERT_|PASTE_)[A-Z_]+
+\b20\d\d-(XX|xx)-(XX|xx)\b
+[【】]
+
+# Sentence shapes
+(?i)\bnot (just|only|merely|simply)\b[^.]{1,80}\b(but|;)\b
+(?i)\b(is|was|isn'?t|wasn'?t|it'?s) not\s+(a |an |the )?\w+\s*[,;—-]\s
+(?i)^No \w+\. No \w+\. (Just|Only)\b
+(?i), (highlighting|underscoring|emphasizing|reflecting|showcasing|demonstrating|marking|symbolizing|contributing to|ensuring|solidifying|cementing|illustrating|signaling|fostering|cultivating)\s
+(?i)\b(serves|stands|functions|operates|acts) as\b
+(?i)\bmore than (just )?an?\b
+(?i)\b(in connection with|in association with|associated with)\b
+(?i)^That (the|this|these)\b
+(?i)\bwhether you'?re\b
+(?i)\bfrom [\w\s]{1,40} to [\w\s]{1,40}, \w
+(?i)\b(the )?(result|answer|catch|problem|upshot|takeaway)\?\s
+(?i)\bthink of (it|this) (as|like)\b
+(?i)\bthe (truth|reality) is\b
+
+# Phrases
+(?i)\bit('s| is) (important|worth|crucial|essential) to (note|noting|mention|remember|consider)\b
+(?i)\bin today'?s (fast-paced|digital|modern|competitive)\b
+(?i)\bin (a|an) (world|era|age) (where|of)\b
+(?i)\b(stands|serves) as a (testament|reminder)\b
+(?i)\bis a testament to\b
+(?i)\bplays? an? (crucial|vital|pivotal|key|significant) role\b
+(?i)\b(paved the way|set the stage|laid the groundwork) for\b
+(?i)\bleft an indelible mark\b
+(?i)\b(rich|diverse) (tapestry|array|cultural heritage)\b
+(?i)\bnestled (in|within|among)\b
+(?i)\bin the heart of\b
+(?i)\bboasts? an?\b
+(?i)\b(experts|critics|observers|scholars) (agree|argue|say|note|have noted)\b
+(?i)\ba growing body of (research|evidence|literature)\b
+(?i)\b(studies|research) (have shown|suggests?)\b
+(?i)\bmaintains? an active social media presence\b
+(?i)\bhas been featured in\b
+(?i)\bdespite (these|those) challenges\b
+(?i)\bfaces (several|numerous|significant) challenges\b
+(?i)\b(in conclusion|in summary|to sum up|at the end of the day|the bottom line is)\b
+(?i)\b(looking ahead|only time will tell|in the years to come|as we move forward)\b
+(?i)\blet'?s (dive in|dive into|unpack|break it down|take a closer look)\b
+(?i)\b(deep dive|game.?changer|hidden gem|must-see|low-hanging fruit|elephant in the room|double-edged sword|perfect storm|tip of the iceberg|moving the needle)\b
+(?i)\b(great|excellent|fantastic) question\b
+(?i)\byou'?re absolutely right\b
+(?i)\b(would you like me to|is there anything else|let me know if you'?d like)\b
+(?i)\bthe (stakes could not be higher|possibilities are endless)\b
+(?i)\bnow more than ever\b
+
+# Finance slop, site-specific
+(?i)\bnavigate (market )?(volatility|uncertainty|the markets?)\b
+(?i)\bin these uncertain times\b
+(?i)\btime in the market\b
+(?i)\blet your money work for you\b
+(?i)\b(generational wealth|financial freedom|financial journey)\b
+(?i)\bthe power of compounding\b
+(?i)\bonly free lunch\b
+(?i)\b(headwinds|tailwinds|dry powder|war chest|de-risk|smart beta|high.conviction)\b
+(?i)\bthe market is pricing in\b
+
+# Connectives at sentence start
+(?im)^(Additionally|Moreover|Furthermore|Notably|Importantly|Crucially|Ultimately|Overall|Indeed|Conversely|Subsequently|Hence|Thus|As such|That said|That being said|To that end),
+
+# Words (subset; see section A for the full list)
+(?i)\b(delve|delving|delves|tapestry|realm|intricate|intricacies|underscore[sd]?|underscoring|showcase[sd]?|showcasing|pivotal|meticulous(ly)?|leverage[sd]?|leveraging|utilize[sd]?|utilizing|foster(ing|s|ed)?|bolster(ing|s|ed)?|garner(ing|s|ed)?|seamless(ly)?|vibrant|robust|holistic|multifaceted|nuanced|myriad|plethora|burgeoning|groundbreaking|cutting-edge|state-of-the-art|transformative|unwavering|palpable|camaraderie|cacophony|amidst|whilst|unparalleled|paramount|invaluable|indelible|testament|beacon|cornerstone|linchpin|treasure trove|paradigm shift|impactful|actionable)\b
+
+# Typography
+# Typography (em dash spacing is a density check, not a hard error)
+^\s*[-*•]\s*\*\*[^*]+:\*\*
+(?m)^(-{3,}|\*{3,})$
+[→⇒➡]
+[\x{1F300}-\x{1FAFF}\x{2600}-\x{27BF}]
+!(?!\=)
+
+# Jargon a casual investor does not have (reader-facing pages only)
+(?i)\bsleeves?\b
+(?i)\btilts?\b
+(?i)\boverlays?\b
+(?i)\bnotional\b
+(?i)\bpremia\b
+(?i)\bloadings?\b
+(?i)\bwrappers?\b
+(?i)\bdetection floors?\b
+(?i)\bestimands?\b
+(?i)\bconvexity\b
+(?i)\bout-of-sample\b
+(?i)\bCRRA\b
+(?i)\bHAC\b
+(?i)\bex-ante\b
+(?i)\bex-post\b
+(?i)\bidiosyncratic\b
+(?i)\bcapital-efficient\b
+(?i)\bsystematic(ally)? (long|short)\b

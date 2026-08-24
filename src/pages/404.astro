@@ -1,0 +1,44 @@
+---
+/**
+ * The not-found page.
+ *
+ * GitHub Pages serves `dist/404.html` for any path it cannot resolve, and so does every
+ * other static host worth using, so this file is the whole mechanism. It stays out of
+ * the search index and out of search results: a 404 that ranks is worse than no 404.
+ */
+import Base from "~/layouts/Base.astro";
+import { NAV_ITEMS } from "~/lib/site";
+---
+
+<Base
+  title="That page is not here"
+  description="The page you asked for does not exist on this site."
+  indexable={false}
+  noindex
+>
+  <p class="eyebrow">404</p>
+  <h1 class="mt-2 font-serif text-4xl tracking-[-0.02em] text-ink">That page is not here</h1>
+
+  <div class="prose mt-6">
+    <p>
+      Either the address has a typo in it, or something moved and we failed to leave a forwarding note. The second
+      one is our fault, and it is worth telling us about.
+    </p>
+  </div>
+
+  <nav aria-label="Everything on the site" class="mt-8">
+    <p class="eyebrow">Try one of these</p>
+    <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+      {
+        NAV_ITEMS.map((item) => (
+          <li>
+            <a href={item.href} class="link">
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+      <li><a href="/search/" class="link">Search the whole site</a></li>
+    </ul>
+  </nav>
+</Base>

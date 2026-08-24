@@ -1,20 +1,45 @@
-name: Check PR 
+# The gate on a pull request.
+#
+# This previously ran Biome, `tsc` and a build, and never ran a test. The repository
+# has 507 of them, most of them checking arithmetic against fixtures computed by the
+# Python research workspace, which is precisely the part a type checker cannot see.
+name: Check PR
+
 on:
   pull_request:
+  push:
+    branches: [main]
 
 jobs:
-  deploy:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: pnpm/action-setup@v3
+      - uses: pnpm/action-setup@v4
         with:
           version: 10
       - uses: actions/setup-node@v4
         with:
           node-version: 22
-          cache: 'pnpm'
+          cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm biome check
-      - run: pnpm tsc --noEmit
-      - run: pnpm build
+
+      - name: Format and lint
+        run: pnpm biome check .
+
+      - name: House voice
+        run: pnpm lint:prose
+
+      - name: Types
+        run: pnpm typecheck
+
+      - name: Tests
+        run: pnpm test
+
+      # Content-collection schemas are only evaluated during a build, so this is what
+      # catches a figure whose citation points at a file or heading that has moved.
+      - name: Build
+        run: pnpm build
+
+      - name: The legacy client still builds
+        run: pnpm build:legacy

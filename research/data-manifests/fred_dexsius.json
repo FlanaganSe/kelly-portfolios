@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_dexsius",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXSIUS",
+  "retrieved_utc": "2026-08-23T05:13:07Z",
+  "sha256_raw": "d229f2038c70a6c0c90f02072c54fd22f9dfd55b0afe1f028428bb3a775edda7",
+  "sha256_normalized": "f47c896b84ffb103c5a45bae9d229531c8c1b28428339e6fddeb8dd8951932a8",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "daily",
+  "units": "sgd_per_usd",
+  "source_units": "sgd_per_usd",
+  "unit_transform": "identity",
+  "first_observation": "1981-01-02",
+  "last_observation": "2026-08-14",
+  "rows": 11901,
+  "availability_policy": "H.10 noon buying rates are certified by the Federal Reserve Bank of New York for customs purposes and published the following business day. A month-end observation is the last BUSINESS day of the month, not the last calendar day, and a US holiday that is not a foreign one leaves a gap. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "Not point-in-time. The H.10 release republishes its full history and FRED serves the current vintage only; corrections overwrite in place. Rates are rarely revised in practice. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "455 observations were the FRED missing token '.' and became missing values, not zeros: ['1981-02-12', '1981-02-16', '1981-05-25', '1981-09-07', '1981-10-12', '1981-11-03']",
+    "series definition: Singapore Dollars to U.S. Dollar Spot Exchange Rate. Federal Reserve H.10, noon buying rate in New York City for cable transfers. Daily, 1981-01-02 to 2026-08-14, 11,900 observations. A NOON BUYING RATE IN NEW YORK, one quote a day for cable transfers, not a traded close and not a WM/Reuters 4pm London fix. An index or a fund prices against the 4pm London fix; the two differ by hours of trading, so a currency return computed here is close to but not identical with the one inside any product's NAV. QUOTED AS FOREIGN CURRENCY PER US DOLLAR \u2014 the H.10 has no single convention and this family contains both. MANAGED against an undisclosed trade-weighted basket by the MAS, which runs monetary policy through the exchange rate rather than through an interest rate.",
+    "release timing: H.10 noon buying rates are certified by the Federal Reserve Bank of New York for customs purposes and published the following business day. A month-end observation is the last BUSINESS day of the month, not the last calendar day, and a US holiday that is not a foreign one leaves a gap.",
+    "revision behaviour: Not point-in-time. The H.10 release republishes its full history and FRED serves the current vintage only; corrections overwrite in place. Rates are rarely revised in practice.",
+    "transformation applied by the source: none (rate of exchange, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: None months (construction: noon_buying_rate). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable."
+  ]
+}

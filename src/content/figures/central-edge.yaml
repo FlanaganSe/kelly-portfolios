@@ -1,0 +1,13 @@
+label: Central estimate of the portfolio's edge over that benchmark
+value: 92 basis points
+unit: basis points a year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth, is p even 55%
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: 2-is-p-even-55
+note: >-
+  One basis point under the floor beside it, which is the finding. Against a cheap index rather
+  than this same-split benchmark the honest budget is 5.4 basis points against 313 of drift, and
+  the three benchmarks on this site never add together.

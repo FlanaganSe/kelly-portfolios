@@ -1,0 +1,11 @@
+label: The same $100 fee, on a $10,000 purchase
+value: 100 basis points
+unit: basis points, one time
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Market scan 2026, costs an investor actually pays
+  docPath: docs/research/market-scan-2026.md
+note: >-
+  Larger than the yearly fee of every fund in this portfolio except the trend fund, paid on day
+  one.

@@ -1,0 +1,16 @@
+label: The value exposure this site published, and why it was wrong
+value: '0.213'
+unit: withdrawn; the delivered exposure alone is 0.410
+status: rejected
+asOf: '2026-08-23'
+source:
+  label: Long-only capture
+  docPath: docs/research/long-only-capture.md
+  anchor: conclusion
+note: >-
+  A delivered exposure of 0.410 multiplied by 0.520, the share of the textbook version an
+  ordinary investor can get. The two measure the same exposure: the algebra gives
+  capture = h + (α + Σb·mean(f))/mean(HML), exact to 4.4e-16, and 94% of the measured 0.520 is
+  that same 0.4891. The product is smaller than the exposure delivered by every value fund we
+  have audited. The code now raises CaptureDoubleCountError rather than accepting a capture
+  argument.

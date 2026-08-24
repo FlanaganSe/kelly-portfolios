@@ -1,0 +1,518 @@
+{
+  "schema_version": "1",
+  "built_utc": "2026-08-17T00:00:00Z",
+  "what_this_is": "Per-fund facts that Form N-PORT does not carry, for the four retail families audited in docs/research/alternative-sleeves-audit.md: dividend and dividend-growth, REITs, buffer / defined-outcome, and spot bitcoin. Expense ratios, inception dates, indices, the prospectus's standardised average-annual-total-return table including its after-tax rows, and the fiscal-year distribution tax character. Every figure is read from the fund's own SEC-filed document, never from a sponsor marketing page, because a filing carries an accession number, a filing date and an immutable document.",
+  "after_tax_methodology": "Item 4(b)(2)(iii) of Form N-1A. After-tax returns are computed by the fund using the HIGHEST individual federal marginal income and capital-gains rates in effect at the time of each distribution, and reflect NO state or local tax. They assume a taxable account and are irrelevant to an IRA. They are the fund's own figures, not this repository's estimate. Two funds' tables end 2024-12-31 and the rest end 2025-12-31; a drag computed across that line is not a like-for-like comparison and the period is stated on every row.",
+  "period_mismatch_note": "SCHD, DGRO, NOBL and USRT report through 2024-12-31 because their fiscal years end 8/31, 4/30, 5/31 and 4/30 respectively, so their annual prospectus update lands using the last completed calendar year. This was checked on 2026-08-17: no newer table exists. It is a genuine absence, not an access failure. VTI and VOO are therefore recorded at BOTH period ends so that every comparison has a period-matched control.",
+  "no_threshold_uses_these": "Every after-tax figure here was read while assembling this file and before any verdict was written. No falsifier in this study is placed on them; they are measured and reported.",
+  "unreachable": [
+    "SCHD 30-day SEC yield and trailing distribution yield: schwabassetmanagement.com returned HTTP 403 to an automated client on 2026-08-17 and the figure appears in no SEC filing. Bot protection was not circumvented. The distribution yield below is COMPUTED from the fund's own N-CSR distribution total and net assets instead, and is labelled as such.",
+    "NOBL qualified-dividend-income percentage: the ProShares N-CSR states only that the fund 'designated up to the maximum amount' with no per-fund figure. Not found.",
+    "Qualified-dividend / Section 199A / dividends-received-deduction split for VNQ, SCHH and USRT: the N-CSR tax notes report only ordinary income, long-term gain and return of capital. The 199A share lives in each issuer's year-end tax-character statement, which was not retrieved. Not found. This matters and it runs in the REITs' favour: a REIT dividend eligible for the 20% Section 199A deduction is taxed below the ordinary rate, so every REIT tax figure in this study is an UPPER bound on the cost.",
+    "POCT's inaugural 2018 outcome-period starting cap: no 497K located for that period. Not found.",
+    "POCT's net-of-fee cap for the 2025-10-01 period: only the gross 11.81% was extracted. Not found.",
+    "FT Vest starting caps for the twelve funds inside BUFR and BUFD: not retrieved. The buffer levels were (10% for BUFR's underlying funds, -5% to -30% for BUFD's) and are recorded; the caps are not found, so no cap-pricing figure in this study is attributed to BUFR."
+  ],
+  "funds": {
+    "SCHD": {
+      "family": "dividend",
+      "name": "Schwab U.S. Dividend Equity ETF",
+      "net_expense_ratio_percent": 0.06,
+      "gross_expense_ratio_percent": 0.06,
+      "expense_detail": "Management 0.06%, Other 0.00%, Total 0.06%, no waiver",
+      "inception_date": "2011-10-20",
+      "index_name": "Dow Jones U.S. Dividend 100 Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1454889/000110465925123308/tm2526338d1_485bpos.htm",
+      "source_form": "485BPOS, Schwab Strategic Trust, prospectus dated 2025-12-22",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 11.60, "after_tax_on_distributions_percent": 10.64, "after_tax_on_distributions_and_sale_percent": 7.53},
+          {"period": "5_year", "before_tax_percent": 11.03, "after_tax_on_distributions_percent": 10.10, "after_tax_on_distributions_and_sale_percent": 8.63},
+          {"period": "10_year", "before_tax_percent": 11.03, "after_tax_on_distributions_percent": 10.17, "after_tax_on_distributions_and_sale_percent": 8.91}
+        ]
+      },
+      "distribution_character": {
+        "fiscal_year_end": "2025-08-31",
+        "ordinary_income_usd": 2469946295,
+        "long_term_capital_gain_usd": 0,
+        "return_of_capital_usd": 0,
+        "qualified_dividend_income_usd": 2469946295,
+        "qualified_share": 1.0,
+        "net_assets_usd": 72622000000,
+        "computed_distribution_yield_percent": 3.40,
+        "yield_note": "COMPUTED here as ordinary income divided by fiscal-year-end net assets, both from the same N-CSR. It is not a published yield and is not the SEC 30-day yield.",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1454889/000119312525262698/d78826dncsr.htm",
+        "date_read": "2026-08-17"
+      }
+    },
+    "VYM": {
+      "family": "dividend",
+      "name": "Vanguard High Dividend Yield ETF",
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2006-11-10",
+      "index_name": "FTSE High Dividend Yield Index",
+      "index_provider": "FTSE",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1004655/000119312526077482/f44052d1.htm",
+      "source_form": "485BPOS, prospectus dated 2026-02-27",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 15.43, "after_tax_on_distributions_percent": 14.73, "after_tax_on_distributions_and_sale_percent": 9.58},
+          {"period": "5_year", "before_tax_percent": 12.68, "after_tax_on_distributions_percent": 11.90, "after_tax_on_distributions_and_sale_percent": 9.99},
+          {"period": "10_year", "before_tax_percent": 11.32, "after_tax_on_distributions_percent": 10.51, "after_tax_on_distributions_and_sale_percent": 9.15}
+        ]
+      },
+      "distribution_character": {
+        "fiscal_year_end": "2025-10-31",
+        "ordinary_income_usd": 2029898000,
+        "long_term_capital_gain_usd": 0,
+        "return_of_capital_usd": 0,
+        "qualified_dividend_income_usd": 1988012000,
+        "qualified_share": 0.979,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1004655/000110465925125080/tm2530396d8_ncsr.htm",
+        "date_read": "2026-08-17",
+        "note": "The report designates the qualified amount 'for calendar year 2024' while the identically formatted VIG note says 2025. Quoted as filed; not corrected."
+      },
+      "sec_30_day_yield_percent": 2.22,
+      "yield_as_of": "2026-07-31",
+      "yield_source_url": "https://investor.vanguard.com/investment-products/etfs/profile/api/vym/profile"
+    },
+    "DGRO": {
+      "family": "dividend",
+      "name": "iShares Core Dividend Growth ETF",
+      "net_expense_ratio_percent": 0.08,
+      "gross_expense_ratio_percent": 0.08,
+      "inception_date": "2014-06-10",
+      "index_name": "Morningstar US Dividend Growth Index",
+      "index_provider": "Morningstar, Inc.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312525187621/d934972d485bpos.htm",
+      "source_form": "485BPOS, prospectus dated 2025-08-29",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 16.61, "after_tax_on_distributions_percent": 15.97, "after_tax_on_distributions_and_sale_percent": 10.26},
+          {"period": "5_year", "before_tax_percent": 10.45, "after_tax_on_distributions_percent": 9.82, "after_tax_on_distributions_and_sale_percent": 8.19},
+          {"period": "10_year", "before_tax_percent": 11.39, "after_tax_on_distributions_percent": 10.76, "after_tax_on_distributions_and_sale_percent": 9.28}
+        ]
+      },
+      "sec_30_day_yield_percent": 1.97,
+      "yield_as_of": "2026-07-31",
+      "yield_source_url": "https://www.ishares.com/us/products/264623/ishares-core-dividend-growth-etf"
+    },
+    "VIG": {
+      "family": "dividend",
+      "name": "Vanguard Dividend Appreciation ETF",
+      "net_expense_ratio_percent": 0.04,
+      "gross_expense_ratio_percent": 0.04,
+      "inception_date": "2006-04-21",
+      "index_name": "S&P U.S. Dividend Growers Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/734383/000073438326000129/f45325d1.htm",
+      "source_form": "485BPOS, prospectus dated 2026-05-28",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 14.18, "after_tax_on_distributions_percent": 13.72, "after_tax_on_distributions_and_sale_percent": 8.69},
+          {"period": "5_year", "before_tax_percent": 11.27, "after_tax_on_distributions_percent": 10.78, "after_tax_on_distributions_and_sale_percent": 8.88},
+          {"period": "10_year", "before_tax_percent": 13.09, "after_tax_on_distributions_percent": 12.57, "after_tax_on_distributions_and_sale_percent": 10.82}
+        ]
+      },
+      "distribution_character": {
+        "fiscal_year_end": "2026-01-31",
+        "ordinary_income_usd": 1896211000,
+        "long_term_capital_gain_usd": 0,
+        "return_of_capital_usd": 0,
+        "qualified_dividend_income_usd": 1896211000,
+        "qualified_share": 1.0,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/734383/000110465926036006/tm265717d4_ncsr.htm",
+        "date_read": "2026-08-17"
+      },
+      "sec_30_day_yield_percent": 1.44,
+      "yield_as_of": "2026-07-31",
+      "yield_source_url": "https://investor.vanguard.com/investment-products/etfs/profile/api/vig/profile"
+    },
+    "NOBL": {
+      "family": "dividend",
+      "name": "ProShares S&P 500 Dividend Aristocrats ETF",
+      "net_expense_ratio_percent": 0.35,
+      "gross_expense_ratio_percent": 0.35,
+      "inception_date": "2013-10-09",
+      "index_name": "S&P 500 Dividend Aristocrats Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1174610/000119312525213457/f42758d1.htm",
+      "source_form": "485BPOS, prospectus dated 2025-09-26",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 6.71, "after_tax_on_distributions_percent": 6.19, "after_tax_on_distributions_and_sale_percent": 4.34},
+          {"period": "5_year", "before_tax_percent": 7.94, "after_tax_on_distributions_percent": 7.39, "after_tax_on_distributions_and_sale_percent": 6.18},
+          {"period": "10_year", "before_tax_percent": 9.39, "after_tax_on_distributions_percent": 8.81, "after_tax_on_distributions_and_sale_percent": 7.55}
+        ]
+      },
+      "distribution_character": {
+        "tax_year_end": "2025-10-31",
+        "ordinary_income_usd": 246274897,
+        "long_term_capital_gain_usd": 0,
+        "return_of_capital_usd": 0,
+        "qualified_share": null,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1174610/000139834426013614/primary-document.htm",
+        "date_read": "2026-08-17",
+        "note": "ProShares reports tax character on an October 31 tax year, distinct from the May 31 financial-reporting year. The qualified share is not disclosed."
+      },
+      "trailing_12_month_yield_percent": 2.04,
+      "yield_as_of": "2026-07-31",
+      "yield_source_url": "https://www.proshares.com/our-etfs/strategic/nobl"
+    },
+    "DIVO": {
+      "family": "dividend",
+      "name": "Amplify CWP Enhanced Dividend Income ETF",
+      "net_expense_ratio_percent": 0.56,
+      "gross_expense_ratio_percent": 0.56,
+      "expense_detail": "Management 0.55%, acquired fund fees 0.01%, Total 0.56%",
+      "inception_date": "2016-12-13",
+      "index_name": "none; actively managed",
+      "index_provider": "Amplify Investments LLC, with Capital Wealth Planning LLC as sub-adviser",
+      "stated_strategy_quote": "CWP seeks to lower risk and enhance total return by tactically selling short-term call option contracts on some, or all, of the Equity Securities in the Portfolio. Specifically, CWP seeks to provide gross income of approximately 2-3% from dividend income and 2-4% from option premium, plus the potential for capital appreciation.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1633061/000121390026008327/ea0273008-01_485bpos.htm",
+      "source_form": "485BPOS, prospectus dated 2026-01-28",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 17.57, "after_tax_on_distributions_percent": 15.11, "after_tax_on_distributions_and_sale_percent": 10.94},
+          {"period": "5_year", "before_tax_percent": 12.07, "after_tax_on_distributions_percent": 10.63, "after_tax_on_distributions_and_sale_percent": 9.10},
+          {"period": "since_inception", "before_tax_percent": 12.50, "after_tax_on_distributions_percent": 11.09, "after_tax_on_distributions_and_sale_percent": 9.75}
+        ]
+      },
+      "distribution_character": {
+        "fiscal_year_end": "2025-09-30",
+        "ordinary_income_usd": 143284642,
+        "long_term_capital_gain_usd": 62451313,
+        "return_of_capital_usd": 0,
+        "qualified_share": 0.4104,
+        "net_assets_usd": 5246165843,
+        "computed_distribution_yield_percent": 3.92,
+        "yield_note": "COMPUTED here as total distributions over fiscal-year-end net assets, both from the same N-CSR.",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1633061/000113322825013241/aet-efp19615_ncsr.htm",
+        "date_read": "2026-08-17"
+      },
+      "sec_30_day_yield_percent": 1.51,
+      "distribution_rate_percent": 4.82,
+      "yield_source_url": "https://amplifyetfs.com/divo/",
+      "yield_note": "Amplify's own footnote states the SEC yield 'reflects the income earned from dividends - excluding option income'. The gap between 1.51% and 4.82% is the option premium, and it is not qualified dividend income."
+    },
+    "VNQ": {
+      "family": "reit",
+      "name": "Vanguard Real Estate ETF",
+      "net_expense_ratio_percent": 0.13,
+      "gross_expense_ratio_percent": 0.13,
+      "expense_detail": "Management 0.11%, other 0.01%, acquired fund fees 0.01%, Total 0.13%",
+      "inception_date": "2004-09-23",
+      "index_name": "MSCI US Investable Market Real Estate 25/50 Index",
+      "index_provider": "MSCI",
+      "holdings": 159,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/734383/000073438326000129/f45325d1.htm",
+      "source_form": "485BPOS, prospectus dated 2026-05-28",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 3.18, "after_tax_on_distributions_percent": 2.18, "after_tax_on_distributions_and_sale_percent": 2.10},
+          {"period": "5_year", "before_tax_percent": 4.62, "after_tax_on_distributions_percent": 3.62, "after_tax_on_distributions_and_sale_percent": 3.20},
+          {"period": "10_year", "before_tax_percent": 5.13, "after_tax_on_distributions_percent": 3.99, "after_tax_on_distributions_and_sale_percent": 3.55}
+        ]
+      },
+      "distribution_character": {
+        "fiscal_year_end": "2026-01-31",
+        "ordinary_income_usd": 1880629000,
+        "long_term_capital_gain_usd": 0,
+        "return_of_capital_usd": 611591000,
+        "ordinary_share": 0.755,
+        "return_of_capital_share": 0.245,
+        "net_assets_usd": 65742000000,
+        "computed_distribution_yield_percent": 3.79,
+        "yield_note": "COMPUTED here as total distributions over fiscal-year-end net assets, both from the same N-CSR. Ordinary income includes short-term capital gains, if any.",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/734383/000110465926036013/tm265717d2_ncsr.htm",
+        "date_read": "2026-08-17"
+      }
+    },
+    "SCHH": {
+      "family": "reit",
+      "name": "Schwab U.S. REIT ETF",
+      "net_expense_ratio_percent": 0.07,
+      "gross_expense_ratio_percent": 0.07,
+      "inception_date": "2011-01-13",
+      "index_name": "Dow Jones Equity All REIT Capped Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "holdings": 119,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1454889/000088454626000298/R26.htm",
+      "source_form": "485BPOS, Schwab Strategic Trust, prospectus dated 2026-06-26",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 2.27, "after_tax_on_distributions_percent": 1.25, "after_tax_on_distributions_and_sale_percent": 1.57},
+          {"period": "5_year", "before_tax_percent": 4.79, "after_tax_on_distributions_percent": 3.83, "after_tax_on_distributions_and_sale_percent": 3.41},
+          {"period": "10_year", "before_tax_percent": 3.41, "after_tax_on_distributions_percent": 2.36, "after_tax_on_distributions_and_sale_percent": 2.25}
+        ]
+      },
+      "distribution_character": {
+        "fiscal_year_end": "2026-02-28",
+        "ordinary_income_usd": 245021945,
+        "long_term_capital_gain_usd": 0,
+        "return_of_capital_usd": 0,
+        "source_url": "https://www.sec.gov/Archives/edgar/data/1454889/000119312526201326/d94932dncsr.htm",
+        "date_read": "2026-08-17",
+        "note": "Ordinary income is the only category reported. Schwab's note explains that REIT distributions are re-designated internally for income-recognition purposes; that re-designation is not disclosed as a distribution character."
+      }
+    },
+    "USRT": {
+      "family": "reit",
+      "name": "iShares Core U.S. REIT ETF",
+      "net_expense_ratio_percent": 0.08,
+      "gross_expense_ratio_percent": 0.08,
+      "inception_date": "2007-05-01",
+      "index_name": "FTSE Nareit Equity REITs 40 Act Capped Index",
+      "index_provider": "FTSE International Ltd",
+      "holdings": 129,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1100663/000119312525187621/R148.htm",
+      "source_form": "485BPOS, iShares Trust, filed 2025-08-25",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 8.60, "after_tax_on_distributions_percent": 7.58, "after_tax_on_distributions_and_sale_percent": 5.31},
+          {"period": "5_year", "before_tax_percent": 4.19, "after_tax_on_distributions_percent": 3.08, "after_tax_on_distributions_and_sale_percent": 2.82},
+          {"period": "10_year", "before_tax_percent": 5.71, "after_tax_on_distributions_percent": 4.30, "after_tax_on_distributions_and_sale_percent": 3.87}
+        ]
+      }
+    },
+    "BUFR": {
+      "family": "buffer",
+      "name": "FT Vest Laddered Buffer ETF",
+      "net_expense_ratio_percent": 0.95,
+      "gross_expense_ratio_percent": 0.95,
+      "expense_detail": "Management 0.10%, 12b-1 0.00%, other 0.00%, ACQUIRED FUND FEES AND EXPENSES 0.85%, Total 0.95%. There is no waiver line.",
+      "inception_date": "2020-08-10",
+      "index_name": "none; a laddered fund-of-funds holding twelve FT Vest U.S. Equity Buffer ETFs",
+      "reference_asset": "SPDR S&P 500 ETF Trust (SPY), PRICE return",
+      "buffer_percent": 10.0,
+      "cap_percent": null,
+      "structure_quote": "a laddered portfolio of twelve FT Vest U.S. Equity Buffer ETFs ... which seek to provide investors with returns (before fees and expenses) that match the price return of SPY, up to a predetermined upside cap, while providing a buffer (before fees and expenses) against the first 10% of SPY losses, over a defined one-year period.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1667919/000144554625008542/R178.htm",
+      "source_form": "485BPOS, First Trust Exchange-Traded Fund VIII, prospectus dated 2026-01-02, fee data for FY ended 2025-08-31",
+      "date_read": "2026-08-17"
+    },
+    "BUFD": {
+      "family": "buffer",
+      "name": "FT Vest Laddered Deep Buffer ETF",
+      "net_expense_ratio_percent": 0.95,
+      "gross_expense_ratio_percent": 0.95,
+      "expense_detail": "Management 0.10%, acquired fund fees 0.85%, Total 0.95%",
+      "inception_date": "2021-01-20",
+      "reference_asset": "SPDR S&P 500 ETF Trust (SPY), PRICE return",
+      "buffer_percent": 25.0,
+      "buffer_note": "A deep buffer absorbs losses BETWEEN -5% and -30%, so the first 5% of loss is borne by the shareholder and the buffered band is 25 points wide. It is not comparable with a 10% or 15% first-loss buffer and is not priced with them here.",
+      "cap_percent": null,
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1667919/000144554625008542/R28.htm",
+      "source_form": "485BPOS, prospectus dated 2026-01-02",
+      "date_read": "2026-08-17"
+    },
+    "PJUL": {
+      "family": "buffer",
+      "name": "Innovator U.S. Equity Power Buffer ETF - July",
+      "net_expense_ratio_percent": 0.79,
+      "gross_expense_ratio_percent": 0.79,
+      "inception_date": "2018-08-07",
+      "reference_asset": "SPDR S&P 500 ETF Trust (SPY), PRICE return",
+      "buffer_percent": 15.0,
+      "buffer_net_of_fee_percent": 14.21,
+      "current_outcome_period": "2026-07-01 to 2027-06-30",
+      "current_cap_percent": 13.98,
+      "current_cap_net_of_fee_percent": 13.19,
+      "starting_caps_percent": {
+        "2018-08-08": 8.11,
+        "2019-07-01": 8.88,
+        "2020-07-01": 11.55,
+        "2021-07-01": 7.80,
+        "2022-07-01": 17.42,
+        "2023-07-01": 14.28,
+        "2024-07-01": 13.70,
+        "2025-07-01": 12.09,
+        "2026-07-01": 13.98
+      },
+      "starting_caps_note": "Each figure is taken from that outcome period's own Innovator 497K summary prospectus and is GROSS of the 0.79% fee. The 2018-08-08 entry is the inaugural stub period.",
+      "no_dividend_quote": "If the Fund invests solely in FLEX Options that reference the Underlying ETF, the Cap and Buffer will be provided on a price return basis (i.e., the returns will be provided based on changes in the share price of the Underlying ETF), and the Fund will not receive the benefit of any dividends.",
+      "buffer_only_over_full_period_quote": "The Fund's strategy seeks to provide the sought-after protection of the Buffer if Shares are held at the time at which the Fund enters into the FLEX Options and held until those FLEX Options expire at the end of the Outcome Period. In the event an investor purchases Shares after the FLEX Options were entered into or sells Shares prior to the expiration of the FLEX Options, the Buffer that the Fund seeks to provide may not be available.",
+      "multi_period_quote": "the imposition of a new Cap on future gains in subsequent Outcome Periods may make it difficult to recoup any losses from the prior Outcome Periods such that, over multiple Outcome Periods, the Fund may have losses that exceed those of the Underlying ETF.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1415726/000121390026074361/ea0295901-15_497k.htm",
+      "source_form": "497K summary prospectus, Innovator ETFs Trust, dated 2026-07-01",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 12.83, "after_tax_on_distributions_percent": 12.83, "after_tax_on_distributions_and_sale_percent": 7.59},
+          {"period": "5_year", "before_tax_percent": 10.02, "after_tax_on_distributions_percent": 10.02, "after_tax_on_distributions_and_sale_percent": 7.95},
+          {"period": "since_inception", "before_tax_percent": 8.76, "after_tax_on_distributions_percent": 8.71, "after_tax_on_distributions_and_sale_percent": 7.03}
+        ]
+      }
+    },
+    "POCT": {
+      "family": "buffer",
+      "name": "Innovator U.S. Equity Power Buffer ETF - October",
+      "net_expense_ratio_percent": 0.79,
+      "gross_expense_ratio_percent": 0.79,
+      "inception_date": "2018-09-28",
+      "reference_asset": "SPDR S&P 500 ETF Trust (SPY), PRICE return",
+      "buffer_percent": 15.0,
+      "current_outcome_period": "2025-10-01 to 2026-09-30",
+      "current_cap_percent": 11.81,
+      "starting_caps_percent": {
+        "2019-10-01": 9.20,
+        "2020-10-01": 12.07,
+        "2021-10-01": 9.16,
+        "2022-10-01": 20.72,
+        "2023-10-01": 15.50,
+        "2024-10-01": 11.36,
+        "2025-10-01": 11.81
+      },
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1415726/000121390025094534/ea0258140-12_497k.htm",
+      "source_form": "497K summary prospectus, dated 2025-10-01",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2024-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 10.94, "after_tax_on_distributions_percent": 10.94, "after_tax_on_distributions_and_sale_percent": 6.48},
+          {"period": "5_year", "before_tax_percent": 9.54, "after_tax_on_distributions_percent": 9.54, "after_tax_on_distributions_and_sale_percent": 7.56},
+          {"period": "since_inception", "before_tax_percent": 8.71, "after_tax_on_distributions_percent": 8.61, "after_tax_on_distributions_and_sale_percent": 6.96}
+        ]
+      }
+    },
+    "VTI": {
+      "family": "control",
+      "name": "Vanguard Total Stock Market ETF",
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2001-05-24",
+      "index_name": "CRSP US Total Market Index, becoming the Morningstar US Total Market Index effective 2026-07-29",
+      "index_provider": "CRSP, then Morningstar",
+      "index_change_source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000386/f45788d1.htm",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/f45032d1.htm",
+      "source_form": "485BPOS, prospectus dated 2026-04-28",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 17.14, "after_tax_on_distributions_percent": 16.79, "after_tax_on_distributions_and_sale_percent": 10.34},
+          {"period": "5_year", "before_tax_percent": 13.08, "after_tax_on_distributions_percent": 12.69, "after_tax_on_distributions_and_sale_percent": 10.38},
+          {"period": "10_year", "before_tax_percent": 14.25, "after_tax_on_distributions_percent": 13.78, "after_tax_on_distributions_and_sale_percent": 11.85}
+        ]
+      },
+      "after_tax_returns_prior_period": {
+        "as_of": "2024-12-31",
+        "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640525000000/",
+        "source_form": "485BPOS, Vanguard Index Funds, CIK 0000036405, filed 2025-04-29",
+        "date_read": "2026-08-17",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 23.75, "after_tax_on_distributions_percent": 23.34, "after_tax_on_distributions_and_sale_percent": 14.29},
+          {"period": "5_year", "before_tax_percent": 13.80, "after_tax_on_distributions_percent": 13.38, "after_tax_on_distributions_and_sale_percent": 10.98},
+          {"period": "10_year", "before_tax_percent": 12.50, "after_tax_on_distributions_percent": 12.02, "after_tax_on_distributions_and_sale_percent": 10.28}
+        ]
+      },
+      "sec_30_day_yield_percent": 1.03,
+      "yield_as_of": "2026-07-31",
+      "yield_source_url": "https://investor.vanguard.com/investment-products/etfs/profile/api/vti/profile"
+    },
+    "VOO": {
+      "family": "control",
+      "name": "Vanguard S&P 500 ETF",
+      "net_expense_ratio_percent": 0.03,
+      "gross_expense_ratio_percent": 0.03,
+      "inception_date": "2010-09-07",
+      "index_name": "S&P 500 Index",
+      "index_provider": "S&P Dow Jones Indices LLC",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/36405/000003640526000181/f45032d1.htm",
+      "source_form": "485BPOS, prospectus dated 2026-04-28",
+      "date_read": "2026-08-17",
+      "after_tax_returns": {
+        "as_of": "2025-12-31",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 17.84, "after_tax_on_distributions_percent": 17.50, "after_tax_on_distributions_and_sale_percent": 10.77},
+          {"period": "5_year", "before_tax_percent": 14.38, "after_tax_on_distributions_percent": 13.99, "after_tax_on_distributions_and_sale_percent": 11.48},
+          {"period": "10_year", "before_tax_percent": 14.78, "after_tax_on_distributions_percent": 14.32, "after_tax_on_distributions_and_sale_percent": 12.34}
+        ]
+      },
+      "after_tax_returns_prior_period": {
+        "as_of": "2024-12-31",
+        "source_form": "485BPOS, Vanguard Index Funds, CIK 0000036405, filed 2025-04-29",
+        "date_read": "2026-08-17",
+        "rows": [
+          {"period": "1_year", "before_tax_percent": 24.98, "after_tax_on_distributions_percent": 24.58, "after_tax_on_distributions_and_sale_percent": 15.03},
+          {"period": "5_year", "before_tax_percent": 14.48, "after_tax_on_distributions_percent": 14.06, "after_tax_on_distributions_and_sale_percent": 11.55},
+          {"period": "10_year", "before_tax_percent": 13.06, "after_tax_on_distributions_percent": 12.59, "after_tax_on_distributions_and_sale_percent": 10.79}
+        ]
+      },
+      "sec_30_day_yield_percent": 1.00,
+      "yield_as_of": "2026-07-31",
+      "yield_source_url": "https://investor.vanguard.com/investment-products/etfs/profile/api/voo/profile"
+    },
+    "TLT": {
+      "family": "control",
+      "name": "iShares 20+ Year Treasury Bond ETF",
+      "role": "duration factor for the REIT spanning regression, not a candidate sleeve",
+      "net_expense_ratio_percent": null,
+      "note": "Fee not sourced for this study because TLT appears only as a right-hand-side variable. Its Item B.5 returns are already net of whatever it charges, which is the property the regression needs."
+    },
+    "IBIT": {
+      "family": "bitcoin",
+      "name": "iShares Bitcoin Trust ETF",
+      "cik": "0001980994",
+      "structure": "Delaware statutory trust registered under the Securities Act; NOT a registered investment company under the Investment Company Act of 1940 and NOT a commodity pool under the CEA. It files 10-K and 10-Q and has never filed a Form N-PORT, N-CSR or N-CEN.",
+      "structure_quote": "The Trust is not registered as an investment company for purposes of U.S. federal securities laws and is not subject to regulation by the SEC as an investment company. Consequently, the owners of Shares do not have the regulatory protections provided to investors in registered investment companies.",
+      "sponsor_fee_percent": 0.25,
+      "fee_waiver": "0.12% on the first $5.0bn of trust assets, from listing through 2025-01-10. EXPIRED. FY2025 expenses were 0.25% before and after waiver; only $178,082 was waived in FY2025 against $5,958,429 in FY2024.",
+      "inception_date": "2024-01-11",
+      "listing_approval": "SEC Release 34-99306, 2024-01-10, granting accelerated approval to eleven spot bitcoin ETP listings",
+      "listing_approval_url": "https://www.sec.gov/files/rules/sro/nysearca/2024/34-99306.pdf",
+      "bitcoin_held": 734261,
+      "net_assets_usd": 43386012125,
+      "as_of": "2026-06-30",
+      "nav_index": "CME CF Bitcoin Reference Rate - New York Variant, administered by CF Benchmarks Ltd. (FCA-regulated). Observation window 3-4 p.m. ET, twelve 5-minute volume-weighted medians equally averaged, across Bitstamp, Coinbase, itBit, Kraken, Gemini, LMAX Digital, Crypto.com and Bullish.",
+      "custodian": "Coinbase Custody Trust Company, LLC, with Anchorage Digital Bank N.A. as an additional available custodian; Coinbase, Inc. as prime execution agent, an affiliate of the custodian",
+      "distributions": "none. 'The Trust did not declare any cash distributions to Shareholders during the fiscal years ended December 31, 2025 and 2024.' The sponsor's fee is paid by selling or delivering bitcoin, which is itself a taxable event for holders.",
+      "tax_treatment": "Grantor trust, opinion of Clifford Chance US LLP, 'although not free from doubt due to the lack of directly governing authority'. Holders are treated as owning a pro rata share of the bitcoin directly. Most trust expenses are miscellaneous itemized deductions and are therefore not deductible by individuals.",
+      "collectibles_rate": "NOT FOUND, and this is a clean negative. The words 'collectible' and '28%' appear nowhere in either trust's 10-K tax discussion, and EDGAR full-text search over the whole registrant history returns zero hits for IBIT. The filings say only that bitcoin is property that may be held as a capital asset and that the treatment is uncertain and may change with retroactive effect. Do NOT attribute a collectibles position to these filings.",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1980994/000143774926006058/bit20251231_10k.htm",
+      "source_form": "FY2025 Form 10-K, filed 2026-02-27; Q2-2026 Form 10-Q filed 2026-08-06",
+      "date_read": "2026-08-17"
+    },
+    "FBTC": {
+      "family": "bitcoin",
+      "name": "Fidelity Wise Origin Bitcoin Fund",
+      "cik": "0001852317",
+      "structure": "Delaware statutory trust registered under the Securities Act; not a registered investment company and not a commodity pool. Files 10-K and 10-Q; has never filed a Form N-PORT.",
+      "structure_quote": "Shareholders do not have the protections associated with ownership of shares in an investment company registered under the 1940 Act or commodity pools under the Commodity Exchange Act.",
+      "sponsor_fee_percent": 0.25,
+      "fee_basis": "0.25% of the Trust's Bitcoin Holdings, not of dollar net asset value",
+      "fee_waiver": "entire fee waived from 2024-01-09 through 2024-07-31. EXPIRED; FY2025 waived $0.",
+      "inception_date": "2024-01-11",
+      "bitcoin_held": 174383,
+      "net_assets_usd": 10304103000,
+      "as_of": "2026-06-30",
+      "nav_index": "Fidelity Bitcoin Reference Rate, methodology developed by Fidelity Product Services LLC - an affiliate of the sponsor - and calculated by Coin Metrics, Inc. Volume-weighted median over rolling sixty-minute increments, struck at 4 p.m. ET. It is NOT the CME CF rate IBIT uses.",
+      "custodian": "Fidelity Digital Assets, N.A., a national trust bank supervised by the OCC and an affiliate of the sponsor. Assets are held in an omnibus account.",
+      "distributions": "none. 'The Trust made no distributions to Shareholders during the year ended December 31, 2025.'",
+      "source_url": "https://www.sec.gov/Archives/edgar/data/1852317/000119312526071484/ck0001852317-20251231.htm",
+      "source_form": "FY2025 Form 10-K, filed 2026-02-25; Q2-2026 Form 10-Q filed 2026-08-06",
+      "date_read": "2026-08-17"
+    }
+  }
+}

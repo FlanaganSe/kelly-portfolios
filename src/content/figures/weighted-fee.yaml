@@ -1,0 +1,12 @@
+label: Weighted expense ratio of the recommended seven funds
+value: 38 basis points
+unit: basis points per year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Part A, the portfolio for one investor
+  docPath: docs/research/portfolio-for-one-investor.md
+note: >-
+  38.2 basis points at a 30% trend weight, 33.4 at 25%. Fees before lending income, from each
+  fund's own filing; 016e's frozen run reports 33.9 for the 25% arm on a slightly different fee
+  grid.

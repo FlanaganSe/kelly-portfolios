@@ -1,0 +1,37 @@
+{
+  "files": [
+    {
+      "kind": "json",
+      "path": "1e504717fa664a0dabf1cceca5c0a7d6/result.json",
+      "sha256": "b6d15e9879f4ea2e10d0cce0cb4efebb7558a0be028022010179af98197f87d8",
+      "size_bytes": 126132
+    },
+    {
+      "kind": "markdown",
+      "path": "1e504717fa664a0dabf1cceca5c0a7d6/summary.md",
+      "sha256": "9b2ffd7e343f57826ec88847141a0959738742a97a48bf00ee59f0e74378a945",
+      "size_bytes": 11613
+    },
+    {
+      "kind": "parquet",
+      "path": "1e504717fa664a0dabf1cceca5c0a7d6/frames/admission_test.parquet",
+      "sha256": "6662e7a9f726faf993388d63d42cfd6761038f6768a4d46b99e0b239fd411037",
+      "size_bytes": 7279
+    },
+    {
+      "kind": "parquet",
+      "path": "1e504717fa664a0dabf1cceca5c0a7d6/frames/haircut_sweep.parquet",
+      "sha256": "f390c72ea4a2792f24d10bcd5f687f038c59a78782af605ed44d9d4c811093ff",
+      "size_bytes": 4423
+    },
+    {
+      "kind": "parquet",
+      "path": "1e504717fa664a0dabf1cceca5c0a7d6/frames/portfolios.parquet",
+      "sha256": "071b9dc70ef9d688c743fe618f21769a0247f99437cbfb1b07979dee26c554e5",
+      "size_bytes": 12185
+    }
+  ],
+  "run_id": "1e504717fa664a0dabf1cceca5c0a7d6",
+  "spec_hash": "7f493481f23d22dbd0b82949603dffc8d30c764383703c3bfc8d5125242fbd28",
+  "status": "unresolved"
+}

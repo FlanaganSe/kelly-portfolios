@@ -1,0 +1,291 @@
+---
+/**
+ * The front page: what to do, and how much of it can be demonstrated.
+ *
+ * The argument is one contrast, made under one rule. Fees, taxes and account placement
+ * settle against your own old portfolio in about three and a half months; the whole construction
+ * against a cheap index fund takes about thirty-one years. Both are `T = (z·s/e)²` at
+ * 90% confidence, and holding them to one rule is the point — the detection question,
+ * which asks when a *study* could separate an effect from zero, lives on `/how-sure/`
+ * and is labelled as such there.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Rung from "~/components/Rung.astro";
+import Base from "~/layouts/Base.astro";
+import type { RungLevel } from "~/lib/rungs";
+
+/**
+ * The three yardsticks, as data. The column headings and each cell's own label on a
+ * narrow screen are read from the same array, which is what stops the stacked card
+ * list and the table drifting apart: there is only one copy of each heading.
+ */
+const BENCHMARK_COLUMNS = ["Compared with", "Edge, a year", "Drift, a year", "How sure"] as const;
+
+const BENCHMARK_ROWS = [
+  { against: "The portfolio you hold now", edge: "1.09%", drift: "0.46%", rung: "settled" },
+  { against: "A cheap total-market index", edge: "0.054%", drift: "3.13%", rung: "cant-tell" },
+  { against: "What the average investor actually gets", edge: "0.15%", drift: "1.50%", rung: "might" },
+] as const satisfies readonly { against: string; edge: string; drift: string; rung: RungLevel }[];
+---
+
+<Base
+  title="Do the certain things first"
+  bareTitle
+  description="Fees, accounts and where you hold things are worth about 1.09% a year against the portfolio you already own. Beating a cheap index fund is a different question, and we cannot demonstrate it."
+>
+  <div class="prose">
+    <Rail>The answer</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Do the certain things first</h1>
+
+    <MarginNote label="What this page is">
+      <p>
+        An answer to one question: what should I actually do with my money, and how much of it can be
+        demonstrated? Checked against <code>docs/research/</code> on <span data-numeric>2026-08-23</span>.
+      </p>
+    </MarginNote>
+
+    <p>Cut your fees. Use the tax-advantaged accounts you already have. Put each fund in whichever account taxes
+    it least.</p>
+
+    <MarginNote label="Where this comes from">
+      <p>
+        Fund filings and tax statute, not a backtest. The largest single line is the capital gain an active mutual
+        fund hands you in December and an exchange-traded fund does not. It read 0.89% before the ledger was
+        revised.
+      </p>
+    </MarginNote>
+
+    <p>Against the portfolio a normal person would otherwise be holding, those three moves save about
+    <Figure id="structural-budget" inline />. They are close to certain, because they come out of contracts, tax
+    statutes and arithmetic rather than out of a forecast about markets. And you would find out whether you got
+    them right in roughly <Figure id="structural-budget-horizon" inline />, which is the shortest honest answer
+    anywhere on this site.</p>
+
+    <p>Do those first. Then read the rest of this page, which is mostly about how much less we can prove than you
+    would like.</p>
+  </div>
+
+  <Breakout label="The three yardsticks, never added" class="mt-10">
+    <div class="grid gap-8 sm:grid-cols-3">
+      <Figure id="structural-budget" />
+      <Figure id="edge-vs-cheap-index" />
+      <Figure id="behaviour-gap" />
+    </div>
+  </Breakout>
+
+  <div class="prose mt-14">
+    <Rail>Better than what</Rail>
+
+    <h2>Better than what, exactly</h2>
+
+    <MarginNote>
+      <p>
+        A saving measured against your own current holdings says nothing about whether you beat an index fund.
+        The two never add, and the research code raises rather than summing them.
+      </p>
+    </MarginNote>
+
+    <p>That figure is measured against the portfolio you would otherwise own. It is not measured against an index,
+    and the difference decides whether the number applies to you at all.</p>
+
+    <p>Say your money sits in an employer plan full of actively managed funds charging
+    <Figure id="active-fund-fee" inline />, plus a taxable account that hands you a capital-gains distribution
+    every December you never asked for, plus an IRA quietly holding an international fund whose foreign
+    withholding you can never claim back. Then most of that 1.09% is genuinely sitting there. Go and take it.</p>
+
+    <p>Now say you already own one cheap total-market index fund, in one account, and you never touch it.</p>
+
+    <p>Your number is close to zero. We have nothing to sell you.</p>
+
+    <MarginNote label="Read as a bound">
+      <p>
+        An outer bound rather than a distribution. The bottom assumes a sheltered account, an index-fund starting
+        point and a static investor already paying 0.40%. The top assumes every condition holds at once, and the
+        conditions are correlated.
+      </p>
+    </MarginNote>
+
+    <p>Most people sit between those two, which is why the honest outer bound on the package runs
+    <Figure id="structural-budget-range" inline />. That spread is wide because the bottom of it assumes every
+    condition fails at once and the top assumes they all hold at once, and the conditions are not independent of
+    each other.</p>
+  </div>
+
+  <Callout kind="do-this">
+    <p>
+      Open your plan statement and read one number: the yearly fee on the fund holding most of your money. Under
+      0.10% a year, skip to the next section. Over 0.50%, you have just found the largest reliable gain available
+      to you today.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>The hard part</Rail>
+
+    <h2>Beating a cheap index fund is a different question, and the answer is no</h2>
+
+    <p>Here is the part that costs us something to write.</p>
+
+    <MarginNote label="Source">
+      <p>
+        <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/expected-edge-decomposition.md"
+          >Where outperformance can come from</a
+        >, as of <span data-numeric>2026-08-17</span>. The drift is assumed rather than measured: the components
+        are combined as though independent, and inside one portfolio they are not, so the real dispersion is
+        wider.
+      </p>
+    </MarginNote>
+
+    <p>Add up everything this project has measured that might plausibly beat a plain cheap index fund, keep only
+    what survives its own error bars, and you are left with a defensible advantage of about
+    <Figure id="edge-vs-cheap-index" inline />. The drift around that is
+    <Figure id="index-tracking-error" inline />. In a normal year you would finish somewhere within roughly three
+    percentage points either side of the index, for no reason except that you own different things.</p>
+
+    <p>About sixty times as much noise as signal. Hold it for thirty years and your chance of ending ahead of the
+    index is <Figure id="odds-ahead-of-cheap-index" inline />.</p>
+
+    <p>This is a coin flip, and saying so is the finding.</p>
+
+    <MarginNote label="One rule, twice">
+      <p>
+        Both waits are <code>T = (z·s/e)²</code> at 90% confidence, the closed form in
+        <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/expected-edge-decomposition.md"
+          >the edge decomposition</a
+        >. When a <em>study</em> could separate an effect from zero is a different question with a different
+        answer, and <a href="/how-sure/">how sure we are</a> keeps the two apart.
+      </p>
+    </MarginNote>
+
+    <p>The arithmetic underneath is not a matter of opinion, and it is worth understanding once. At that much
+    drift, the smallest yearly advantage that thirty years of your own account could actually demonstrate at 90%
+    confidence is <Figure id="smallest-demonstrable-edge" inline />, roughly fourteen times what we can defend.
+    Point the same rule at the whole recommended portfolio, measured against a plain cheap index fund holding the
+    same mix, and the wait comes out at <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
+
+    <p>Four months for the fees. Thirty-one years for the rest of it, on one rule applied twice, and that contrast
+    is the entire argument for doing the boring things first.</p>
+
+    <p>None of this says a cheap index fund cannot be beaten. It says we cannot show you that we can beat one, on
+    the data anyone has, and that a site claiming otherwise is either measuring against something easier or has
+    not checked how long its own claim would take to prove.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>How sure</Rail>
+
+    <h2>Three yardsticks, three answers, and they never add up</h2>
+
+    <MarginNote label="Why not colour">
+      <p>
+        A green badge would say two things at once: how sure we are, and whether the news is good. Those are
+        different axes, and merging them is the mistake this vocabulary exists to avoid.
+      </p>
+    </MarginNote>
+
+    <p>Every claim about a portfolio has to finish the sentence "better than what". Three endings make sense, and
+    they are three different questions with three unrelated answers.</p>
+
+    <p>Against a cheap index fund, the answer is the coin flip above. Against the portfolio you already hold, the
+    answer is the number at the top of this page, and it settles quickly because it carries only
+    <Figure id="own-portfolio-tracking-error" inline /> of drift around it. Against what the typical investor
+    actually achieves, after buying late and selling into falls, Morningstar's measured ten-year gap is
+    <Figure id="behaviour-gap" inline />, and the odds of staying ahead of that for thirty years are
+    <Figure id="odds-ahead-of-average-investor" inline />.</p>
+
+    <p>Three answers. Never one total.</p>
+  </div>
+
+  <Breakout scroll class="mt-6">
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[32rem]">
+      <caption class="sr-only">
+        The three benchmarks, their edges, their drift, and how sure we are of each
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            BENCHMARK_COLUMNS.map((heading, i) => (
+              <th
+                role="columnheader"
+                scope="col"
+                class:list={["eyebrow py-2", i < BENCHMARK_COLUMNS.length - 1 && "pr-4", i > 0 && i < 3 && "text-right"]}
+              >
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          BENCHMARK_ROWS.map((row) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {row.against}
+              </th>
+              <td role="cell" data-label={BENCHMARK_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.edge}
+              </td>
+              <td role="cell" data-label={BENCHMARK_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {row.drift}
+              </td>
+              <td role="cell" data-label={BENCHMARK_COLUMNS[3]} class="py-2">
+                <Rung level={row.rung} />
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <MarginNote label="What it cost us">
+      <p>
+        Four defects in one line: a truncated range, a rebalancing hurdle avoided booked as a saving, two mutually
+        exclusive tactics both counted, and 94.7% of the top figure resting on one holding's undistributed
+        accrual. <a href="/how-sure/">The corrections log</a> carries all eight.
+      </p>
+    </MarginNote>
+
+    <p>Adding them is the most common way a result on this site has turned out to be wrong, and we know because we
+    did it. An internal re-derivation found that our own account-placement headline of roughly 0.38% to 0.55% a
+    year had been built partly from lines measured against different yardsticks, with a rebalancing cost avoided
+    booked as though it were a saving, and two mutually exclusive tactics both counted. The defensible figure
+    against a yardstick a real investor could reach is <Figure id="placement-value" inline />. The research code
+    now raises an error rather than adding across yardsticks, because a rule nobody can forget to follow is the
+    only kind that holds.</p>
+  </div>
+
+  <Callout kind="change-your-mind">
+    <p>
+      A fund shelf that cut its published edge below 0.20% a year, or a decade of real returns in which the funds
+      leaning toward cheap and profitable companies trailed the index by more than their stated drift, would move
+      the second row of that table from a coin flip to a rejection.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>Next</Rail>
+
+    <h2>Where to go from here</h2>
+
+    <p>The ordered checklist is at <a href="/start/">start here</a>, and it is the page to read if you only read
+    one. Fees, then accounts, then placement, then your savings rate and your stock-versus-safe split, then
+    leaving it alone, and only then anything clever.</p>
+
+    <p><a href="/portfolio/">The portfolio</a> is the concrete version: seven holdings, and which account each one
+    belongs in. <a href="/doesnt-work/">What does not work</a> covers market timing, crypto as ballast, crash
+    insurance and direct indexing, each rejected on a measurement rather than on principle, each with the number
+    that would change our mind. <a href="/stacking/">Stacking</a> explains why owning seven clever things does not
+    compound into certainty, and why the way you pay for an add-on matters more than the add-on.
+    <a href="/how-sure/">How sure we are</a> sets out the four levels of confidence used everywhere here, and
+    lists every error this project caught in itself.</p>
+
+    <p>Start with the fees. That part we can prove.</p>
+  </div>
+</Base>

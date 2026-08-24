@@ -1,0 +1,502 @@
+# The evidence base: what this repository can measure, and what it cannot
+
+**Question.** What sources does this repository hold, what can each resolve, and what new
+instrument is needed when the current one cannot answer a decision-relevant question?
+
+**Decision it informs.** Which instrument fits a proposed question. A question below the
+measured resolution of every current instrument remains open. Repeating the same design is
+unlikely to help, but a new source, estimand, model, window, or lower-variance design may.
+
+**Out of scope.** Whether any return source is real
+([framework](portfolio-edge-research-framework.md)); what to hold
+([recommendation](portfolio-recommendation.md)).
+
+`as of 2026-08-17`. Every hash below is pinned in a committed manifest under
+`research/data-manifests/`, and every experiment aborts rather than reporting numbers
+if a hash moves.
+
+---
+
+## 1. Resolution of the instruments already tested
+
+
+For each question the repository has asked, the smallest effect its instrument could
+detect at 80% power, against the effect size that would matter. **Where the floor exceeds
+that effect, a null carries little information about the decision. This is a design prompt,
+not a prohibition on research.**
+
+**The bar column is a reporting reference point, not a rejection threshold.** The two
+constants in it — 2.0 pp/yr materiality and the 0.30 pp/yr sleeve bar — are derived nowhere,
+and until they are they may not be the operative clause of a falsifier frozen after
+2026-08-22 ([decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md), clause 4).
+A new specification derives its bar from its own design and states its relation to this
+floor **before** freezing. A confirmatory design should change when its threshold is below
+its floor; an exploratory screen may still measure the effect if the limitation is explicit.
+
+| Question | Instrument | Measured floor (MDE₈₀) | Bar that matters | Can it answer? |
+| --- | --- | ---: | ---: | --- |
+| Closed-form identities (Kelly, `gamma_star`, ERC, costs) | none — algebra | machine precision | — | **yes** |
+| Reproducing a published factor table | French file vs printed table | ±0.005 pp/mo rounding | first moments | **yes**, first moments only |
+| US post-publication factor premium | 384 months, one region | 5.0 pp/yr (HML) | 2.0 pp/yr | **no**, by ~2.5× |
+| Same, pooled over three regions | + 2 regional files | **2.62** best of twelve cells | 2.0 pp/yr | **no**, narrowly and measured |
+| Same, momentum pooled | 3 regional momentum files | **4.98**, the worst here | 2.0 pp/yr | **no**, by ~2.5× |
+| Long-only capture fraction | 6 sorted portfolios, 750 mo | interval width ≈ 0.29 | a factor of 2 | **yes**, once a benchmark is named — but it may not multiply a loading, being one |
+| Size premium, US quintile/decile sorts | 750 mo, one region | 4.7 pp/yr | 2.0 pp/yr | **no** |
+| **Size premium, SMB pooled over three regions** | 384 joint months, 3 five-factor files | **2.47** pp/yr | 2.0 pp/yr | **no**, narrowly — and the ex-US legs are **measured, not transferred**: developed ex-US +0.49 against 2.83, emerging −0.05 against 3.07 |
+| Fund **factor loading** | N-PORT, 46–78 months | interval half-width ≈ 0.10 | 0.15 loading | **yes** |
+| Fund **alpha**, US factor shelf | N-PORT, 72 months | median **4.52** pp/yr | ≈1.25 pp/yr true dispersion | **no**, by ~3.6× |
+| Fund alpha, ex-US shelf | N-PORT, 27–78 months | median 3.23 pp/yr | ≈1.25 pp/yr | **no** |
+| Fund alpha, managed futures | N-PORT, 46–78 months | median **12.75** pp/yr | ≈1.25 pp/yr | **no**, by ~10× |
+| Rebalancing policy difference | 420 months, 3 sleeves | — | 0.25 pp/yr | **yes** — the effect is large and negative |
+| Marginal sleeve growth at 10% weight | 420 months | ≈0.58 pp/yr typical | 0.30 pp/yr | **no** — all ten sleeve estimates lie inside ±0.58, so six verdicts are [restated `unresolved`](marginal-sleeve-value.md#the-sleeve-table); see [search coverage](search-coverage.md) |
+| Crisis-conditional trend benefit | 53 crisis months | ≈4.4 effective observations | — | **no** |
+| Financed 50% trend overlay, vendor leg | 485 months | 2.82 pp/yr | 0.30 pp/yr | gap +4.79, but the leg's decay exceeds its break-even |
+| Same, **live fund leg** | N-PORT, 78 months | **4.76** pp/yr | 0.30 pp/yr | **no** — the window, not the series, now binds |
+| **Vendor index against live funds** | 78 paired months, ρ = 0.72 | interval half-width ≈ 8.3 pp/yr | the 7.7 pp/yr bias bound | **yes, narrowly** — 7.7 is outside the interval |
+| **BAB full-sample premium** | AQR US leg, 1,146 mo | 3.45 pp/yr | 2.0 pp/yr | **yes** — measured +7.77, `[+5.05, +10.48]` |
+| Same, **post-2015 publication** | 137 mo | **5.86** pp/yr | 2.0 pp/yr | **no**, by ~2.9× |
+| Short-term reversal, full sample | French, 1,205 mo | 3.20 pp/yr | 2.0 pp/yr | **yes** — +7.46 |
+| Same, **post-1991 publication** | 426 mo | 4.39 pp/yr | 2.0 pp/yr | **no** — +1.71, well inside the floor |
+| Accruals / net issuance, post-publication | 354 and 210 mo | 5.36 and 9.00 pp/yr | 2.0 pp/yr | **no**, by 2.7–4.5× |
+| **Correlation among candidate engines** | 497 aligned months | SE ≈ 0.045 on ρ ≈ 0 | 0.3 for breadth | **yes** — this is the resolvable question |
+| **Marginal gold sleeve at 10% weight, pro rata** | 618–658 months | **0.94–1.04 pp/yr** | 0.30 pp/yr | **no**, by ~3× — the measured effect is +0.04 to −0.42 |
+| Same, **financed overlay** — the rule that matters | 618 months | **0.63–0.73 pp/yr** | 0.30 pp/yr | **no**, by ~2× — the measured effect is +0.18 to +0.22 and **the funding rule flips its sign** |
+| **Gold added to a 30% trend overlay** | 605 joint months | **1.67–1.68 pp/yr** | 0.30 pp/yr | **no**, by ~5× — the measured increment is +0.09 to +0.10 |
+| **Correlation between trend and gold** | 605 joint months | SE ≈ 0.041 on ρ ≈ 0.1 | 0.3 for breadth | **yes** — measured +0.072 to +0.141, so they are distinct engines |
+| **Gold's correlation to equity, unconditional** | 658 months | SE ≈ 0.039 on ρ ≈ 0 | 0.3 for breadth | **yes** — measured −0.03 to +0.03 |
+| **Gold's correlation to equity, inside drawdowns** | 294 crisis months | SE ≈ 0.058 on ρ ≈ 0 | **+0.20**, the falsifier in [capital efficiency](capital-efficiency-and-breadth.md) §5b | **yes** — measured −0.011 to +0.084; the bar sits 3.4 SEs above zero and 2.0 above the worst reading |
+| **Dividend fund against VTI, matched volatility** | N-PORT, 79–81 months | **4.73 to 10.93 pp/yr** | 0.30 pp/yr | **no**, by 16 to 36× — every measured gap is −0.58 to −4.51 |
+| **REIT fund against VTI, matched volatility** | N-PORT, 79–81 months | **9.82 to 11.27 pp/yr** | 0.30 pp/yr | **no** by the floor, **yes narrowly by the interval** — VNQ `[−16.64, −1.16]` and SCHH `[−19.91, −2.14]` exclude zero at less than 80% power |
+| **Buffer fund against VTI, matched volatility** | N-PORT, 63–74 months | **3.73 to 6.64 pp/yr** | 0.30 pp/yr | **no**, by 12 to 22× |
+| **Cap-and-buffer option value** | 1,183 overlapping 12-month price returns, 1926-07 onward | means only; overlap forbids an interval without a block bootstrap | — | **yes on the mean** — the package is worth −2.4 to −4.1 pp/yr, and the funds' realised −4.1 lands inside it from disjoint data |
+| **Real-estate equity FF3 alpha, long proxy** | French `RlEst`, 750 mo | **5.00 pp/yr** | 2.0 pp/yr | **yes** — measured −6.66, *t* = −3.31. **But the proxy tracks VNQ at ρ = 0.797 and a 7.61 pp/yr difference**, so it does not transfer |
+| **Bitcoin's correlation to equity** | 137 months | SE ≈ 0.085 on ρ ≈ 0.34 | **0.5**, the boundary at which equation (4) stops being usable | **yes, narrowly** — +0.342 sits 1.9 SE inside the boundary and the 81-month sub-window reads +0.531, outside it |
+| **Bitcoin against equity, matched volatility** | 81 months | **15.58 pp/yr** | 0.30 pp/yr | **no**, by 52× — the measured gap is +0.10 |
+| **TIPS fund against VTI, matched volatility** | N-PORT, 79 months | **14.89 to 16.01 pp/yr** | 0.30 pp/yr | **no**, by ~50× — but SCHP's `[−24.22, −0.74]` excludes zero at less than 80% power, the same shape as the REIT funds |
+| **Nominal Treasury fund against VTI, matched volatility** | N-PORT, 79 months | **19.90 to 20.97 pp/yr** | 0.30 pp/yr | **no**, by ~66×. Every fund's excess return over this window is negative; it is a bond bear market and it settles nothing about returns |
+| **Credit fund against VTI, matched volatility** | N-PORT, 79 months | **6.74 to 12.23 pp/yr** | 0.30 pp/yr | **no** by the floor, **yes by the interval** — LQD, VCIT and HYG all exclude zero |
+| **Marginal bond sleeve at 10% weight, measured `ltr`** | 420 months | **0.868 pp/yr** | 0.30 pp/yr | **no**, by ~2.9× — measured −0.136 pro rata and +0.375 financed overlay, both inside the floor |
+| **TIPS against the nominal bond leg — one engine or two?** | 79 investable months; 275 modelled | SE ≈ 0.032 and 0.022 on ρ ≈ 0.8 | 0.75, the threshold [capital efficiency §3](capital-efficiency-and-breadth.md) uses | **yes** — +0.761 to +0.851 on funds, +0.798 modelled. **One engine** |
+| **TIPS' correlation to equity against nominal's, identical months** | 275 months | SE ≈ 0.060 on each | the sign difference | **yes** — **+0.131 against −0.076**, a gap of 3.5 SE, and TIPS' five-year-block dispersion is 0.200 against 0.114 |
+| **Is nominal bonds' correlation to equity era-dependent?** | 750 months, twelve 60-month blocks | block SE ≈ 0.13 at ρ ≈ 0 | a sign change | **yes, decisively** — span **0.802** across the twelve blocks, seven positive then five negative. The compact form, **+0.352 to 1998-06 and −0.206 after**, splits on a date chosen by eye and is descriptive |
+| **Equity timing rule (10-month SMA) against a beta-matched control** | 1,190 months, one region | **3.03** pp/yr | 0.30 pp/yr | **no**, by ~4× — measured **+0.74** `[−1.38, +2.87]`, and the beta-matched active Sharpe fails deflation at 14.8 effective trials (DSR 0.33) and at 10,000 (0.04) |
+| Same rule, **pooled over 16 countries** at annual frequency | 148 years, JST | **0.99** pp/yr | 0.30 pp/yr | **yes, narrowly** — measured **+0.97**, HAC *t* = 2.74, so power against the effect found is about 70%. Annual, pretax, and not investable |
+
+Three entries in that table are the whole shape of the programme's results. **Exposure is
+measurable and alpha is not** — 96 of 109 US funds reject a zero intended loading under
+Benjamini–Hochberg, while 5 of 327 alpha tests survive Holm and all five are negative.
+**The public factor library has a floor above this repository's own materiality
+threshold**, so a premium between zero and about 2.6 pp/yr is invisible in it however
+the regions are pooled. And **a correlation is not a mean**: the same files that cannot
+sign a post-publication premium resolve a correlation to two decimal places, which is
+why the breadth question is answerable here and the return question is not.
+
+### The model-misfit pedestals
+
+Any alpha quoted here is a distance from these, never from zero. A cap-weighted market
+fund *is* its region's market portfolio, so under a correctly specified model its alpha
+should be about minus its fee.
+
+| Region | Fund | Fee | FF5+UMD alpha | Window |
+| --- | --- | ---: | ---: | --- |
+| US | VTI | 0.03% | **−0.55 pp/yr** (HAC *t* = −3.41) | 2020-01…2025-12 |
+| Developed ex-US | VEA | 0.03% | −0.31 pp/yr | 2019-07…2025-12 |
+| Emerging | VWO | 0.06% | **+1.50 pp/yr** | 2019-07…2025-12 |
+
+The emerging pedestal is the uncomfortable one: the standard six-factor model misprices
+a cap-weighted emerging index fund by a percentage and a half a year, which is larger
+than any alpha anyone would claim.
+
+---
+
+## 2. What is held
+
+### Ken French data library — factors and sorted portfolios
+
+Free, monthly, USD, gross, and **not investable**. The long-short files are
+zero-net-investment academic spreads with no fee, spread, borrow, capacity or tax. Ken
+French rebuilds the entire history from the current CRSP or Bloomberg vintage on every
+release and **publishes no vintage archive**, so a sha256 identifies which file was used
+and makes no point-in-time claim.
+
+| File | Coverage | sha256 (prefix) | Second moment gated? |
+| --- | --- | --- | --- |
+| `F-F_Research_Data_5_Factors_2x3` | 1963-07…2026-06 | `cbc37248` | **`unresolved`** — HML −3.03%, RMW +5.09% |
+| `F-F_Research_Data_Factors` (3-factor) | 1926-07…2026-06 | `cd6d8e0d` | no |
+| `F-F_Momentum_Factor` | 1927-01…2026-06 | `f405ee2d` | **never gated** |
+| `Developed_ex_US_5_Factors` | 1990-07…2026-06 | `54ffd319` | **never gated** |
+| `Emerging_5_Factors` | 1989-07…2026-06 | `ea71c1f5` | **never gated** |
+| `Developed_ex_US_Mom_Factor` | 1990-11…2026-06 | `ca8297c3` | **never gated** |
+| `Emerging_MOM_Factor` | 1990-01…2026-06 | `5e684176` | **never gated** |
+| `Developed_Mom_Factor` | 1990-11…2026-06 | `2bee31ed` | registered, **excluded** — includes the US |
+| `6_Portfolios_2x3` | 1926-07…2026-06 | `06108313` | — |
+| `25_Portfolios_5x5` | 1926-07…2026-06 | `43cfc360` | — |
+| `6_Portfolios_ME_Prior_12_2` | 1927-01…2026-06 | `8c3ae277` | — |
+| `Portfolios_Formed_on_ME` | 1926-07…2026-06 | `d731dea9` | — |
+| `Developed_ex_US_6_Portfolios_ME_BE-ME` | 1990-07…2026-06 | `2b79a263` | — |
+| `Emerging_Markets_6_Portfolios_ME_BE-ME` | 1989-07…2026-06 | `2b5fa424` | — |
+| `F-F_ST_Reversal_Factor` | 1926-02…2026-06 | `dc40286c` | **never gated** |
+| `F-F_LT_Reversal_Factor` | 1931-01…2026-06 | `48d8615e` | **never gated** |
+| `Portfolios_Formed_on_NI` (net share issues) | 1963-07…2026-06 | `f9b9f25b` | — |
+| `49_Industry_Portfolios` | 1926-07…2026-06 | `a0b23457` | — |
+| `Portfolios_Formed_on_AC` (accruals) | 1963-07…2026-06 | `df8ec2d2` | — |
+| `Portfolios_Formed_on_BETA` | 1963-07…2026-06 | `39ee17df` | — |
+
+**The library publishes no long-short factor file for net issuance, accruals or prior
+beta.** Only sorted legs exist, so any spread built from them is *this repository's*
+construction and inherits no external replication. Two further traps in the new files:
+`Portfolios_Formed_on_NI` carries `< 0` (net repurchasers) and `ZERO` buckets that sit
+**outside** its quintile and decile splits, so `Lo 10` is not the buyback portfolio;
+and the `F-F_LT_Reversal_Factor` preamble says "It contains a momentum factor" — Ken
+French reused the momentum file's header text and the first line is simply wrong.
+
+Three traps this library has already set here, each caught and each cheap to reset:
+
+- **`Developed_5_Factors` includes the United States** at roughly half its weight
+  (measured: 0.460 US + 0.549 developed-ex-US, summing to 1.009). Use the `ex_US` files
+  in anything that also holds a US sleeve.
+- **The five-factor `SMB` is not the three-factor `SMB`.** It averages size legs across
+  three sorts and is not rebuildable from the six 2×3 portfolios; attempting it leaves a
+  3.5 pp/month residual.
+- **Emerging sorted portfolios are published under the prefix `Emerging_Markets_`**, not
+  the `Emerging_` prefix the emerging *factor* files use. There is **no emerging
+  small-value 5×5 corner in the library at all**.
+
+**The Phase 1 systematic band.** Thirteen of fifteen gating cells reproduce Fama and
+French (2015) Table 4; the standard deviations of HML and RMW do not, by variance ratios
+of 0.940 and 1.104, against two independently typeset vintages
+([Phase 1](fama-french-reproduction.md)). That is a vintage disagreement, not sampling
+error: it does not shrink with more data and appears in no bootstrap interval. **Anything
+that divides by an HML or RMW volatility carries ±3–5% systematically.** Five of the
+series above carry no measured band at all, which is weaker than a band of zero.
+
+### SEC filings — the only fund-level source held
+
+| Source | What it gives | What it cannot give |
+| --- | --- | --- |
+| **N-PORT structured data sets**, 2019Q4 (8,563 series, `f8e10bce`) and 2025Q4 (12,552, `4ebb169e`) | The fund census, net assets, and Item B.5 **monthly total return per share class**, already net of fees and reinvested distributions | Anything before 2019. Audited figures — these are unaudited and General Instruction G lets each filer use its own methodology. Any independent corroboration: the cross-source check returned an HTTP error for **all 44 US, all 25 ex-US and all 109 corrected-frame tickers** |
+| **N-PORT Item B.6** | nothing usable | Distributions *reinvested in shares*. Identically zero across 321 ETF fund-months, because ETF distributions are paid in cash. **This field cannot measure distributions for an exchange-traded product** |
+| **Form 497K summary prospectus** | Fee tables and SEC-standardised **after-tax returns**, read by hand with the accession committed | Anything at scale — unstructured, read per fund |
+| **Form N-CSR** | Securities-lending income, capital-gain distributions from Financial Highlights, foreign taxes passed through | Anything at scale — unstructured HTML |
+| **Form N-CEN**, acquired 2026-08-17. 110 filings, 25 core funds, 8 fiscal years (`data-manifests/core_beta_shelf/`) | The only **structured** fund-cost source held: Item C.3.b tracking difference against the fund's own index, Item C.6 securities lending, Item C.8 **recoupable** waiver flags — per series, per fiscal year, as XML | Treat as audited. Every figure is filer-reported: BlackRock filed the before- and after-expense tracking difference *identically* for eight funds; Item C.3.b never says which share class a multi-class fund answered for; and Schwab's Item C.8 recoupment flag contradicts its own prospectus |
+| **N-PORT Item B.5, fixed-income shelf**, acquired 2026-08-17. 18 bond and TIPS ETFs, 79 common months 2019-09…2026-03 (`data-manifests/fixed_income_shelf/`) | The **only investable bond total-return history held**: TIPS, Treasuries by maturity bucket, aggregate and credit, each net of its own fee | Resolve a return. Every fund's excess return over the window is negative and the matched-volatility floor runs 6.7 to 21.0 pp/yr. It resolves correlations and nothing else |
+| **N-PORT holdings** | Position-level holdings, **not yet used by any experiment** | — |
+
+The 2019 start is the binding limitation and it selects on survival in the direction
+that flatters: a fund that closed before 2019Q4 is invisible to both censuses, so every
+attrition figure here is a **lower bound**. Measured, separating a death from a rename:
+**312 of 1,513 US mandate-qualifying series (20.6%, $138.7bn)** and **88 of 322 ex-US
+(27.3%, $19.5bn)** vanished between the censuses, against naive rates of 23.7% and 32.3%
+that count renames as deaths.
+
+**A second hole, found while building [Experiment 012](live-managed-futures.md) and worse
+than the first for anything that follows funds through time: a fund that both launched
+after 2019Q4 and closed before 2025Q4 appears in *neither* census, so a union frame drops
+it entirely.** It removes funds from *inside* the window rather than before it. Closing it
+needs the intermediate quarterly data sets, which no experiment reads yet, and it is the
+cheapest single improvement available to this source.
+
+**Item B.5 is more than an audit input: it is a usable live return series.** Experiment 012
+assembles 46 managed-futures funds' monthly net total returns into an equal-weight index
+over 78 months and finds **52% of the opening cohort stopped filing** inside the window —
+again a lower bound. That is the only survivorship-bounded, net-of-fee, backfill-free return
+series this repository holds for any strategy.
+
+### FRED, AQR, and modelled series
+
+| Source | Series | Status |
+| --- | --- | --- |
+| FRED | `TB3MS` (used as cash), `DGS3MO`, `DFF` (registered, not interchangeable) | measured |
+| FRED | `GS10` → a **modelled** rolled par-bond total return | **modelled, `research_grade = False`**, and **superseded as a measurement** by Goyal–Welch `ltr` — see the bond-leg section below |
+| FRED | `FII10` ten-year **real** constant-maturity yield, `fa8082c5`, 2003-01…2026-07 | **modelled** when turned into a return. Not interchangeable with `GS10`; **negative in 45 of 283 months**; carries a documented 2008-12-01 curve methodology break |
+| FRED | `T10YIE` ten-year breakeven inflation, `8ec9064b`, daily from 2003-01 | measured **price**, never a forecast — it contains an inflation risk premium and a TIPS liquidity premium of unknown sign |
+| FRED | `CPIAUCNS` non-seasonally-adjusted CPI-U, `ff0e1a1b`, monthly from 1913-01 | measured. **This, not `CPIAUCSL`, is the index 31 CFR 356 names for a TIPS principal**, with a three-month lag |
+| FRED | `CPIAUCSL` | measured; ends two months before the equity series |
+| FRED | `CBBTCUSD` (Coinbase bitcoin), `f48960f9`, 2014-12-01…2026-08-16, 4,277 daily rows | **exploratory.** One venue's 5 p.m. PST print, not the CME CF rate an ETP prices against, and **not redistributable** — Coinbase prohibits reproduction, so bytes stay uncommitted |
+| AQR | `Time-Series-Momentum-Factors-Monthly.xlsx`, sheet `TSMOM Factors`, `33470930`, 1985-01…2026-05 | **vendor series, author-maintained, reconstructed on every update** |
+| AQR | `Betting-Against-Beta-Equity-Factors-Monthly.xlsx`, sheet `BAB Factors`, `b0b1a214`, 1930-12…2026-05 | same flags, **and self-financing**: it borrows to lever the low-beta leg and states no financing rate |
+| AQR | `Quality-Minus-Junk-Factors-Monthly.xlsx`, sheet `QMJ Factors`, `4eedd523`, 1957-07…2026-05 | same flags; **overlaps RMW at ρ = 0.72** and is not a separate engine from it |
+| AQR | `Value-and-Momentum-Everywhere-Factors-Monthly.xlsx`, sheet `VME Factors`, `a2351d03`, 1972-01…2026-05 | same flags. **The asset-allocation legs stop at 2025-01, sixteen months before the file's last row, and their volatility falls from 13.1% to 4.2% after 2014** — a construction change, so nothing may be quoted from them |
+
+Two warnings that have already cost time. **AQR ships its methodology as embedded
+pictures** — the Definitions, Data Sources and Disclosures sheets carry 2, 1 and 0
+substantive text cells; the reader recovers text from the EMF record stream, and what it
+recovers documents a 60-day volatility centre of mass, a 40% per-position volatility
+target and a 58-instrument universe, and **states no fee, transaction-cost, slippage or
+financing basis anywhere**. And **the sheet name must be pinned as well as the hash**:
+AQR changes URLs, workbook names and sheet names, and a manifest without a sheet is not
+reproducible.
+
+### The bond leg — resolved 2026-08-17, and the source was already here
+
+**This repository does hold an investable bond total-return history, and it did before
+anyone went looking**: two of the sources listed above already carried one. Search
+`data-manifests/` before recording a source as absent.
+
+| Leg | Source | Coverage | Investable? | Status |
+| --- | --- | --- | --- | --- |
+| Long-term US government total return | **Goyal–Welch `ltr`**, `1e4b6527` | monthly, **1926-01…2025-12, 1,200 months** | no — an index, gross of fee | **measured** |
+| Long-term US IG corporate total return | **Goyal–Welch `corpr`**, same file | monthly, 1926-01…2025-12 | no | **measured** |
+| Standalone credit | `corpr − ltr` | monthly, 1926-01…2025-12 | no | **measured**, and it carries a duration residual because the two indices are not duration-matched |
+| Eighteen bond and TIPS ETFs | **N-PORT Item B.5** | monthly, 2019-07…2026-05, **79 common months** | **yes**, net of each fund's own fee | **exploratory** |
+| Ten-year TIPS | **modelled** from FRED `FII10` + `CPIAUCNS` | monthly, 2003-02…2026-06, 279 months | no | **modelled** |
+| The `GS10` ten-year par bond | FRED `GS10` | monthly, 1953-04…2026-06 | no | **modelled — superseded as a measurement** |
+
+**`ltr` and `corpr` had been downloaded, parsed, hashed and manifested here since
+2026-08-16** and read by one page for one table, while every diversification, correlation
+and marginal-sleeve figure in the programme used the modelled proxy instead. **They are
+not the same exposure**: on the 750 months both cover they correlate **+0.663**, and the
+proxy runs at 6.73%/yr of volatility against `ltr`'s 10.11% and 1.63%/yr of excess return
+against 2.47%. `GS10` is a ten-year point and `ltr` a roughly twenty-year index, so most
+of that is exposure rather than error — but the substitution moves Experiment 010's bond
+cell from −0.328 to −0.136 pp/yr pro rata and from +0.258 to +0.450 financed.
+
+Three FRED series were added the same day and each is registered with the trap it carries:
+**`FII10`** (`fa8082c5`), the ten-year real constant-maturity yield, monthly 2003-01
+onward — **negative in 45 of 283 months** and carrying the Treasury's documented
+**2008-12-01 curve methodology break**; **`T10YIE`** (`8ec9064b`), the ten-year breakeven,
+which is a market price containing an inflation risk premium and a TIPS liquidity premium
+and is **never used here as a forecast**; and **`CPIAUCNS`** (`ff0e1a1b`), the
+non-seasonally-adjusted CPI-U, which is the index **31 CFR 356** actually names for a
+TIPS principal, applied with a three-month lag — the seasonally adjusted twin is the wrong
+series for that job and is rewritten every year besides.
+
+What is still absent is a *measured* TIPS total-return index of any length, and any bond
+history at all outside the United States beyond JST's annual panel.
+
+### Gold — acquired 2026-08-17, and the first asset held outside equity and cash
+
+Two samplings of one regulated benchmark. Adapters, unit tests and manifests are in
+`research/src/portfolio_edge/data/{worldbank,lbma}.py`.
+
+| Source | Coverage | sha256 (prefix) | Licence | What it is |
+| --- | --- | --- | --- | --- |
+| **World Bank Pink Sheet**, `Gold` ([landing page](https://www.worldbank.org/en/research/commodity-markets)) | monthly, 1960-01…2026-07, 799 rows | `7902a775` | **CC BY 4.0** | USD per troy ounce. The source's own definition: *"spot average of daily rates, from June 2025; previously (UK), 99.5% fine, **London afternoon fixing, average of daily rates**"* |
+| **LBMA Gold Price PM** | daily, 1968-04-01…2026-08-14, 14,662 rows | `fa986c0a` | **licence required from IBA** | The month-end auction fix, USD/GBP/EUR. Administered by ICE Benchmark Administration, FCA-regulated under the UK Benchmarks Regulation |
+| **LBMA Gold Price AM** | daily, 1968-01-02…2026-08-14, 14,814 rows | `a26883fb` | same | The 10:30 auction. **Never spliced with the PM series** |
+
+**Why this is not a violation of [decision 0002](../decisions/0002-no-research-grade-free-price-source.md), and why it is still `exploratory`.** That decision's two named
+failure modes are a silently dropped distribution and a mishandled corporate action.
+Bullion has neither, so `total return = price return − carry cost` is *exact* and the only
+free parameter is a carry cost the caller must state. What keeps it exploratory is
+different and weaker: no vintage archive, an auction price that is not a retail execution,
+and an assumed rather than measured carry. **The distinction matters because it is the
+first time a price series has been admitted here at all**, and it was admitted on a
+property of the asset rather than on a relaxed standard.
+
+Four properties decide what may be quoted:
+
+- **The Pink Sheet is a monthly AVERAGE of daily rates, not a month-end level** — the same
+  trap Shiller's `P` carries. Averaging induces positive autocorrelation and understates
+  volatility, so **a Sharpe ratio from it is biased upward**. Measured: AC(1) is **+0.274**
+  on the average against **+0.053** on the month-end fix, and the two monthly return series
+  correlate only **+0.673**. Every gold figure in this repository reports both and quotes
+  the less favourable.
+- **The LBMA data are licence-restricted and the restriction is enforced.** LBMA: *"A
+  licence from IBA is required in order to obtain, use or redistribute real-time or
+  historical benchmark data."* IBA: *"None of IBA's benchmark and other information may be
+  used without a written licence from IBA."* In March 2025 IBA had the World Gold Council
+  remove its historical LBMA series. **The bytes stay in the uncommitted cache and only
+  hashes are manifested**, which is the treatment `fred.BAMLCC0A0CMTRIV` already gets from
+  the same administrator. The Pink Sheet is primary precisely because it is redistributable.
+- **There is no market price before 1971-08-15.** The dollar price was an administered peg;
+  the par value was reset by PL 92-268 (86 Stat. 116) and PL 93-110 (87 Stat. 352), and
+  **private US gold ownership was illegal until 1974-12-31** (PL 93-373, 88 Stat. 445).
+  `lbma.BRETTON_WOODS_END` exists so a study cannot pick the cut-off by eye.
+- **The Pink Sheet's URL is release-specific and a stale one serves a stale vintage with
+  HTTP 200.** The path this repository first fetched was stamped January 2025 and is no
+  longer linked from the landing page. The parser therefore compares the sheet's own
+  `"Updated on ..."` stamp against the registry verbatim, and a network test fails on a
+  mismatch. **This is the only source here where a wrong URL is silent rather than a 404.**
+
+### Long-horizon and multi-country — acquired 2026-08-16
+
+Three sources recorded here as *failed acquisitions* had merely moved. Adapters, unit
+tests and manifests are in
+`research/src/portfolio_edge/data/{macrohistory,shiller,goyal_welch}.py`.
+
+| Source | Coverage | sha256 (prefix) | What it is |
+| --- | --- | --- | --- |
+| **Jordà–Schularick–Taylor Macrohistory, release R6** ([macrohistory.net/database](https://www.macrohistory.net/database/)) | annual, 1870–2020 | `c1bb91fe` | **Nominal, local-currency** total returns on equity, long-term government bonds, bills and housing, plus a consumer price index (1990 = 100). CC BY-NC-SA 4.0, citation required |
+| **Shiller `ie_data`** ([shillerdata.com](https://shillerdata.com/)) | monthly, 1871-01–2026-08 | `71c3636d` | US S&P price, dividend, earnings, CPI, GS10, CAPE, TR CAPE, excess CAPE yield, and a real total-return index |
+| **Goyal–Welch `PredictorData2025`** ([Amit Goyal's page](https://sites.google.com/view/agoyal145)) | monthly/quarterly/annual, 1871–2025 | `1e4b6527` | The Welch and Goyal (2008) predictor set, annually updated |
+| **Goyal–Welch–Zafirov `Data2025`**, same page | monthly/quarterly/annual, 1871–2025 | `bbd61678` | The 56-predictor extension behind Goyal, Welch and Zafirov (2024) |
+
+**The panel is 16 countries, not the 18 the landing page advertises.** Canada and Ireland
+appear in JST for their macro series only and carry no equity, bond, bill or housing
+return at all.
+
+**Shiller's `P` is a monthly average of daily closes, and that disqualifies the file for
+any rule that trades on serial correlation.** Measured on the same 1,124 months against Ken
+French's month-end total returns: AC(1) **+0.274 against +0.103**, and a 10-month
+moving-average timing rule's beta-matched gap reads **+2.71 pp/yr (HAC *t* = 2.87) on
+Shiller against +0.88 (*t* = 0.78) on French**
+([timing rules](timing-rules-on-the-equity-sleeve.md)). The averaging manufactures the
+autocorrelation the rule monetises, so it turns a null into a significant result. Use it
+for valuation levels, dividends and the long CPI, not for a trading rule.
+
+Four properties decide what may be quoted from these, and each is attached to the
+manifests as a warning rather than left in prose:
+
+- **JST is annual and nominal.** A drawdown from it cannot see an intra-year peak or
+  trough, so it is a **lower bound**, and it is not comparable with a monthly figure.
+  Real returns require deflating by the `cpi` table — `macrohistory.real_total_return`
+  is where that is written down.
+- **Exchange closures are filled, and the source says which.** `eq_tr_interp = 1` marks
+  Portugal 1975–1977 (Carnation Revolution) and Spain 1937–1940 (Civil War). Portugal's
+  published `eq_tr` is *literally the same number* in 1975 and 1976. Japan's 1946–1947
+  are simply **absent** ("stock exchange closed; no data") — and that hole sits inside
+  the largest loss in the panel. Two one-year returns span more than a year: the
+  Netherlands' 1945 covers August 1944 to April 1946, Switzerland's 1915 covers July 1914
+  to July 1916.
+- **Germany 1922–1923 is hyperinflation arithmetic**, not a realisable return: `eq_tr`
+  1923 is 2.6e9 against consumer-price inflation of 1.06e9, and the 1948 currency reform
+  then shows as a −88% nominal equity return.
+- **Goyal–Welch carries seven columns the source itself marks as full-sample estimates**
+  — `cay`, `pce`, `ogap`, `sntm`, `fbm`, `tchi`, `shtint` — written back over history.
+  Predicting with any of them is look-ahead by construction, and **no hash or
+  availability timestamp can catch it**: the file is honest and the column is not. The
+  Google Drive endpoint also returns **no `Last-Modified` header**, so these are the only
+  datasets here whose sole availability bound is the retrieval timestamp.
+
+### Read by hand, dated, not automated
+
+Vendor and statutory sources behind the cost, tax and structure work, each with its URL
+and retrieval date recorded beside the claim it supports: Morningstar's 2026 fee study
+and *Mind the Gap 2026*; ICI's expense trends; Vanguard's 2025 foreign tax credit
+worksheet and published fund endpoints; the iShares tax supplement; MSCI index dividend
+yields; a dealer republication of the MMD municipal curve; and the US Code, Treasury
+Regulations and Revenue Rulings cited in
+[structural and tax-aware edges](structural-and-tax-edges.md). These decay on a
+timescale of months and carry review triggers rather than a promise of currency.
+
+---
+
+### The named stress episodes
+
+The episodes a stress test is expected to reach, and which instruments here can reach
+them. This list is the standing denominator: a stress result states which of these it
+covered and which it could not.
+
+**1929–1932 · 1973–1974 · the late-1970s inflation · 1987 · 1998 · 2000–2002 · 2008–2009 ·
+Q1 2020 · 2022**, plus recent sharp trend reversals.
+
+Coverage is uneven and the gaps are structural, not oversights. The French monthly files
+reach 1926 for US equity and 1990 for the regional legs. The rebuilt trend leg starts
+1934-07 because of a 96-month burn-in, so **no trend result reaches 1929–1932**. The gold
+panel is holdable only from 1975-01, so it reaches neither 1929–32 nor 1973–74 as an
+investable series. Fund-level Item B.5 begins 2019, so **no product result reaches
+anything before Q1 2020**.
+
+Two rules travel with the list. A synthetic stress is not a substitute for an episode and
+is labelled as one — and a univariate synthetic table may not be quoted as a worst case,
+because varying one axis at a time understates the fifth percentile by about 30%
+([capital efficiency §5b](capital-efficiency-and-breadth.md)). And a result should be
+re-read with its best decade, its strongest crisis, its best market and its best sleeve
+removed, one at a time.
+
+## 3. What was tried and does not work
+
+Named so nobody re-spends the budget discovering it.
+
+**No free price source is research-grade** — this is
+[decision 0002](../decisions/0002-no-research-grade-free-price-source.md), and
+reachability was never the real problem. Stooq returns a JavaScript proof-of-work
+interstitial to `curl` and HTTP 404 to `requests` for the same URL; the Yahoo chart API
+answers `curl` and returns HTTP 429 to `requests` under every header combination (the
+difference is TLS fingerprinting, not headers); `yfinance` is the same source behind a
+parser. None of them publishes a documented total-return contract, corporate-action
+treatment, delisting coverage or revision history, which is what a product audit needs.
+The adapters are kept rather than deleted because the refusal is the finding: the Stooq
+adapter detects the interstitial and raises rather than parsing HTML into prices.
+
+**That decision is scoped to its own reasoning, and gold falls outside it.** Its two named
+failure modes are a dropped distribution and a mishandled corporate action; bullion has
+neither, so a gold price plus a stated carry cost *is* a total return. See the gold section
+above. **This is not a general licence to admit price feeds** — it turns on a property of
+the asset that no fund, index or equity shares.
+
+
+**A 404 is not evidence of absence.** Goyal–Welch and Shiller `ie_data` were both recorded
+here as failed acquisitions on the strength of an HTTP 404. Neither dataset had gone
+anywhere: Goyal–Welch moved to Google Drive and Shiller moved to `shillerdata.com`, and
+both were landed on 2026-08-16 by re-reading the author's own page. The old Yale path for
+`ie_data.xls` still answers, which is worse than a 404 — on 2026-08-16 it served a file
+last modified in October 2023. **Re-read the publisher's landing page before recording a
+source as gone, and check `Last-Modified` before trusting one that answers.**
+
+**Other acquisitions that failed:**
+
+| Target | Result |
+| --- | --- |
+| Ken French 2013–14 vintage of the 5-factor file | Does not exist publicly. It is the single observation that would settle the Phase 1 band, and it changes no conclusion anywhere |
+| Dimson–Marsh–Staunton (Global Investment Returns Yearbook) | Not free and not chased. The underlying series are licensed through Morningstar; only summary tables are public |
+| Barro–Ursúa macroeconomic data at `barro.scholars.harvard.edu` | HTTP 403 to every client tried on 2026-08-16. Recorded as blocked, not circumvented ([decision 0002](../decisions/0002-no-research-grade-free-price-source.md)). It would have added consumption and GDP disasters, not equity total returns — its return series come from Global Financial Data and are not redistributable |
+| Goyal–Welch zipped-CSV and MATLAB copies | Behind Google Drive's large-file confirmation interstitial. Not needed: the spreadsheet holds the same data and was landed |
+| Cross-source check on every ETF return | HTTP error for 44 of 44, 25 of 25 and 109 of 109. **Item B.5 is the sole measurement of every fund return here** |
+| Jensen–Kelly–Pedersen internet appendix | Not publicly reachable. Without it the +20.6pp construction step in their replication decomposition cannot be attributed |
+| A Hou–Xue–Zhang reply to JKP; a rebuttal to Huang et al. on time-series momentum | Searched for and absent, not merely uncited |
+| CME Group; congress.gov; MSRB EMMA; Berkeley CDAR; Parametric | IP-blocked, 403, JS-only, or DNS failure |
+| ~15 paywalled papers | Named individually on the pages that wanted them, with the version actually used stated |
+
+---
+
+## 4. What a next round would have to acquire
+
+Stated now so the specification exists before the budget does.
+
+**The single unlock for anything investable** is a licensed, survivorship-free,
+point-in-time total-return source. Its required contents:
+
+- fund and share-class total returns net of fees, monthly or finer, covering the listed
+  shelf **from at least 2003 so the window is 240 months rather than 72**;
+- post-delisting observations and a **coded exit reason**;
+- stable economic fund identity across share class, ticker change, merger and vendor
+  migration;
+- inception, first-trade and vendor first-seen dates, so backfill is detectable;
+- point-in-time expense ratios, net assets and index-mandate history;
+- documented total-return, distribution and corporate-action treatment;
+- a stated revision policy with retrievable vintages.
+
+A source supplying returns but not exit reasons or vintages does not lift fund-level
+work above `exploratory`, and paying for one that does not would be the most expensive
+way to learn nothing.
+
+**Three cheaper acquisitions would each open a question that is currently closed by
+absence rather than by evidence**, and none of them is a price feed:
+
+**All three of the cheaper acquisitions named here have since been made or partly made** —
+see the two acquisition sections above. What they open is now an experiment backlog rather
+than a budget question:
+
+| Acquisition | Status | Opens |
+| --- | --- | --- |
+| A documented total-return series for bonds, gold, commodities and REITs | **complete, 2026-08-17, and it cost nothing** — gold from the World Bank Pink Sheet, commodities already held via AQR CLR, REITs from N-PORT and French `RlEst`, and **bonds, TIPS and credit last**, from Goyal–Welch `ltr`/`corpr` and eighteen funds' Item B.5 | Gold reaches the credit ceiling exactly and the ceiling was never the binding term ([marginal sleeve value § Gold, tested](marginal-sleeve-value.md#gold-tested)). The bond leg is measured back to 1926-01 and investable back to 2019-09 ([alternative sleeves audit §8](alternative-sleeves-audit.md)), and it moves Experiment 010's bond cell. **This item is closed, and the closing acquisition was already inside `data-manifests/`** |
+| Long-horizon non-US equity histories | **landed 2026-08-16** (JST R6) | The drawdown ladder underneath the equity-share decision was **one country**. It is now sixteen, and −50.3% is measurably not a bound |
+| Goyal–Welch at its current URL, and an inflation series | **landed 2026-08-16** (Goyal–Welch, Shiller, and JST's 18-country CPI) | Any conditional or valuation-dependent allocation, none of which has ever been tested here |
+
+The ranked case for spending on any of these is in
+[search coverage](search-coverage.md), which is also where the argument sits that the
+repository's null result is partly a property of where it has looked.
+
+---
+
+## Consequence for this repository
+
+1. **Check the resolution table before freezing a specification.** If the question's
+   floor exceeds its bar, the experiment will return a null result that means nothing,
+   and the honest move is to change the instrument or not run it.
+2. **Every alpha carries its pedestal.** −0.55 pp/yr in the US, −0.31 developed ex-US,
+   **+1.50 emerging**. An alpha quoted as a distance from zero is overstated by that much.
+3. **Any ex-US factor loading names its panel.** Substituting the US panel puts 16 of 25
+   ex-US funds below the 0.15 bar rather than 5, and moves individual loadings by up to
+   0.480. A loading without its panel is not a number.
+4. **The HML/RMW volatility band propagates, and five series carry no band at all.**
+   Anything that divides by one of those volatilities states the band or states that it
+   did not.
+5. **Nothing here is point-in-time.** A sha256 proves which file was used, never what was
+   available at an earlier date.
+6. **Search `data-manifests/` before recording a source as absent.** Five sources this page
+   called unavailable were published the whole time; the sixth, the bond leg, was already
+   downloaded, parsed and manifested here. That is the cheapest failure mode in the
+   repository and the only one with a one-line remedy.

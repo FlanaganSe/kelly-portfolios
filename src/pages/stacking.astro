@@ -1,0 +1,512 @@
+---
+/**
+ * The flagship page: why a stack of good bets stops paying, and why the funding rule
+ * decides whether edges add or average.
+ *
+ * The correlation-ceiling chart carries the argument here rather than the hand-written
+ * grid the copy started with — the chart's own `table` slot prints that grid, so the
+ * numbers are still reachable without the picture and there is only one copy of them.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import StackingCeiling from "~/components/charts/StackingCeiling.astro";
+import Figure from "~/components/Figure.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Rung from "~/components/Rung.astro";
+import Base from "~/layouts/Base.astro";
+
+/**
+ * The three funding routes, as data. The second column heading is written once and
+ * read twice: into `<thead>`, and into the label the cell shows when the table
+ * becomes a list of cards below 40rem.
+ */
+const FUNDING_COLUMNS = ["How it is paid for", "Portfolio edge, a year"] as const;
+
+const FUNDING_ROUTES = [
+  { label: "All of it into the single best of the four, funded by selling", figure: "substitution-best" },
+  { label: "All four as actually weighted, funded by selling", figure: "candidate-as-weighted" },
+  { label: "All four financed on top of what you already own", figure: "financed-overlay" },
+] as const;
+---
+
+<Base
+  title="Why more good bets stop helping"
+  description="Stacking strategies has a ceiling, the ceiling arrives early, and how you pay for each new one decides whether your edges add up or average out."
+>
+  <div class="prose">
+    <Rail>The question</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Why more good bets stop helping</h1>
+
+    <MarginNote label="The question">
+      <p>
+        If I hold a lot of strategies that each beat the market 55 times out of a hundred, am I not close to
+        certain to beat it? Checked against <code>docs/research/</code> on <span data-numeric>2026-08-23</span>.
+      </p>
+    </MarginNote>
+
+    <p>Say you find a strategy that beats a cheap index fund 55 times out of a hundred. On its own that is nearly
+    nothing. So find another one, and another, and keep going.</p>
+
+    <p>Each is a slightly loaded coin. Flip enough loaded coins and the average has to come out ahead, and the
+    more of them you flip the tighter the result gets. Twelve looks safe. A hundred looks certain.</p>
+
+    <p>That is a good instinct, and it is not folk wisdom. It is a theorem. Richard Grinold wrote it down in 1989
+    and quantitative firms have been built on it since: how good your record gets rises with the square root of
+    the number of independent bets you place. Every word of that sentence is doing work, and one word is doing all
+    of it.</p>
+
+    <p>Independent.</p>
+  </div>
+
+  <div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2">
+    <Rung level="settled" showGloss />
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The mechanism</Rail>
+
+    <h2>Averaging cannot touch the part they share</h2>
+
+    <p>Your strategies are not separate coins. Cheap US stocks and cheap Japanese stocks are one idea in two
+    postcodes, and they had their bad decade at the same time. A fund that buys stocks which have been going up,
+    and a managed-futures fund that buys bonds and currencies which have been going up, are the same instruction
+    pointed at different markets.</p>
+
+    <MarginNote label="Source">
+      <p>
+        <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/stacking-and-effective-breadth.md"
+          >Stacking and effective breadth</a
+        >, 422 months to <span data-numeric>2025-12</span>. Measured on modelled returns rather than on the funds'
+        own: each piece is built from the exposure that kind of fund really delivers, applied to its own region's
+        academic factor series.
+      </p>
+    </MarginNote>
+
+    <p>We measured this on the active parts of one real portfolio: three funds buying cheap stocks, one buying
+    recent winners, and a trend fund, month by month over 422 months to December 2025. The average pair moves
+    together at <Figure id="sleeve-correlation" inline />.</p>
+
+    <p>That number is a measurement of that portfolio and of nothing else. It is not a constant of investing, and
+    every figure on this page that depends on it inherits the same scope. Four cheap-and-rising stock funds plus a
+    trend fund are close relatives. A genuinely wider stack, one holding stock styles and trend and credit and
+    catastrophe risk, would come in lower and reach higher. What is general here is the shape, not the level: the
+    ceiling is always <code>Φ(z₁/√ρ)</code>, and ρ is the whole game.</p>
+
+    <p>Here is why that single number decides everything, and it is worth a minute, because the rest of the page
+    is a consequence of it.</p>
+
+    <MarginNote label="Why it flattens">
+      <p>
+        The shared part of a stack's noise cannot be averaged away, because it is present in every term. So the
+        effective count of separate bets converges on 1 divided by the correlation. At 0.435 that is 2.3.
+      </p>
+    </MarginNote>
+
+    <p>When you average several things, the part they do not share gets quieter fast. It falls away roughly in
+    proportion to how many you have, which is the coin-flip intuition you already trust. The part they do share
+    does not get quieter at all. You cannot average away something that is present in every term. So the noise in
+    your stack falls, then flattens, then sits on a floor made of whatever the strategies have in common. That
+    floor is the correlation. Which is why the number of genuinely separate bets you own converges on 1 divided by
+    the correlation, and then stops.</p>
+
+    <p>At the 0.435 measured in that portfolio, the limit is 2.3 bets. Not eventually. Almost immediately. Halve
+    the correlation and the limit doubles, which is why the honest instruction is to lower ρ rather than to raise
+    the count.</p>
+  </div>
+
+  <Breakout>
+    <StackingCeiling />
+  </Breakout>
+
+  <div class="prose mt-4">
+    <MarginNote label="Read the whole grid">
+      <p>
+        The row you are on is a fact about your own holdings rather than about investing. At 0.2 the ceiling is
+        61.1%; at 0.1 it is 65.4%. Open the table under the chart for every cell.
+      </p>
+    </MarginNote>
+
+    <p>The top row is your mental model, and your mental model is correct. With truly unrelated bets a hundred of
+    them reach <Figure id="independent-hundred" inline showUnit={false} />, which is a portfolio worth having.
+    Read the row underneath it. A fifth of a point of shared behaviour costs you the entire top half of the
+    table.</p>
+
+    <p>At the 0.435 measured in this particular portfolio, an unlimited stack of 55% strategies reaches
+    <Figure id="stacking-ceiling" inline showUnit={false} /> and stops. The portfolio's eight tickers turn out to
+    be five active positions worth <Figure id="effective-bets" inline />, because three of the eight hold no
+    active position at all. They are the benchmark.</p>
+
+    <p>How many truly unrelated 55% bets would it take to be 90% sure? <Figure id="bets-for-ninety" inline />.
+    That is a market maker's order book, not a brokerage account.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Two omissions</Rail>
+
+    <h2>A win rate leaves out two things</h2>
+
+    <p>Both of them can flip the sign.</p>
+
+    <MarginNote label="The same sentence, twice">
+      <p>
+        Both readings invert <code>P = Φ(IR √T)</code> on the repository's own identity. Every stacking figure on
+        this page uses the one-year reading, which is the most flattering one available.
+      </p>
+    </MarginNote>
+
+    <p>The first is a horizon. Over one year, beating the index 55% of the time is a genuinely good strategy. Over
+    thirty years, the identical English sentence describes something roughly five times weaker, because you had
+    three decades of evidence and the coin still only came up 55. Measured as edge per unit of drift, the one-year
+    version is <Figure id="strength-at-one-year" inline /> and the thirty-year version is
+    <Figure id="strength-at-thirty-years" inline />. Same words. Same number. Nothing else in common.</p>
+
+    <MarginNote label="Source">
+      <p>
+        Read from the funds' own published rates and 19a-1 notices,
+        <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/alternative-sleeves-audit.md"
+          >our audit of the alternatives</a
+        >, <span data-numeric>2026-08-23</span>. A distribution rate is not a return.
+      </p>
+    </MarginNote>
+
+    <p>The second is size. A win rate says nothing about how much you win. Win 55 times by a point and lose 45
+    times by two points, and you have lost money while winning most of the time. Every product sold on a high win
+    rate has that shape, because the shape is what produces the win rate. The crypto covered-call funds are the
+    current example: headline distribution rates of
+    <Figure id="covered-call-distribution-rates" inline showUnit={false} /> a year against 30-day SEC yields of
+    <Figure id="covered-call-sec-yields" inline showUnit={false} />, and one fund's own filed notice estimates the
+    whole payout as your own money handed back to you.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The crux</Rail>
+
+    <h2>The benefit grows slowly and the cost grows in a straight line</h2>
+
+    <p>Now the crux, and it is arithmetic rather than opinion.</p>
+
+    <p>The benefit of adding a strategy grows with the square root of your effective breadth, and your effective
+    breadth is capped, as above. The cost of adding a strategy grows in a straight line, forever. Fee, turnover,
+    spread, tax. Nothing about a fee gets cheaper because you already own eleven other funds.</p>
+
+    <MarginNote label="Grinold, 1989">
+      <p>
+        The fundamental law says a record improves with the square root of the number of <em>independent</em>
+        bets. Everything on this page is a consequence of that one word.
+      </p>
+    </MarginNote>
+
+    <p>You also buy your best idea first. Nobody starts with their fourth-favourite. So every strategy after the
+    first drags your average edge down at exactly the point where the breadth benefit is flattening out.</p>
+
+    <MarginNote label="Stated, not measured">
+      <p>
+        The twelve candidate edges are a stated ladder rather than twelve funds we priced. The optimisation is
+        exact and reproducible under a frozen specification; the inputs are assumptions, so the answer is a
+        property of that ladder and not of markets.
+      </p>
+    </MarginNote>
+
+    <p>So put twelve strategies on a ladder to see what that trade-off does. Ranked best to worst, gross edges
+    running from 3.0% a year down to nothing, each costing 40 basis points, each drifting 6% a year, all as alike
+    as the ones measured above. Those twelve edges are a stated example rather than twelve funds we measured — the
+    point is the shape, and the shape holds for any shelf whose candidates differ in quality. What is not invented
+    is the optimisation: it is solved exactly, under a frozen specification, and you can run it yourself.</p>
+
+    <p>The best equal-weighted portfolio holds <Figure id="ladder-equal-weight-optimum" inline />. Holding all
+    twelve is about two thirds worse than holding only the best one. The same shape appears with the costs set to
+    zero, because dilution alone does it; costs only sharpen it.</p>
+
+    <p>The obvious objection is that nobody has to hold them equally. Weight them properly, with no restrictions,
+    and adding strategies really does keep helping. So look at what the optimiser does when you hand it twelve
+    correlated strategies. It goes long the best five and sells the other seven short. Almost all of the extra
+    value lives in the short leg.</p>
+
+    <p>Then put back the one restriction you actually have. You buy funds in a brokerage account and you cannot
+    sell anything short. Run it again.</p>
+
+    <MarginNote label="Scope">
+      <p>
+        Solved by enumerating all 4,095 supports, so the count carries no convergence tolerance. It falls to two
+        at a correlation of 0.50 and rises to five at 0.10, and it depends on the candidates having different
+        edges.
+      </p>
+    </MarginNote>
+
+    <p>The best long-only portfolio holds <Figure id="ladder-long-only-optimum" inline /> and never improves past
+    three, however many candidates you offer it. Nine of the twelve sit at zero. That is the honest answer to
+    "stack a ton": most of the benefit of breadth lives in positions a retail investor is not permitted to
+    take.</p>
+
+    <p>Two things move that count and both are worth knowing. Lower the correlation to 0.10 and the optimiser
+    holds five; raise it to 0.70 and it holds two. And give all twelve candidates the <em>same</em> edge and it
+    holds all twelve, at no loss at all — which is the version of the idea you were arguing for, and the version
+    no real shelf offers. It is the spread in quality that lets an optimiser throw nine of them away. The ceiling
+    of 57.6% is unchanged either way, so the two cases are different routes to one wall rather than an escape from
+    it.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The funding rule</Rail>
+
+    <h2>How you pay for it decides whether the edges add or average</h2>
+
+    <p>This is the most useful thing on this page, and almost everybody conflates the two cases.</p>
+
+    <MarginNote label="Why the two differ">
+      <p>
+        An average can never exceed its largest member, and a sum has no ceiling. The expression for the gap
+        contains no property of the strategy being added.
+      </p>
+    </MarginNote>
+
+    <p><strong>Sell to buy.</strong> You have $100. You sell $20 of stocks and buy $20 of a trend fund. Your
+    weights still add to 100. Your portfolio's edge is now the weighted average of the edges of its parts, and an
+    average can never be larger than its largest member. You cannot stack your way past your own best idea. Every
+    strategy you add pulls the average toward the newcomer, which is why adding your fifth-best idea makes your
+    portfolio more like your fifth-best idea.</p>
+
+    <p><strong>Finance it.</strong> You have $100 and you buy a fund that holds $100 of stocks and $50 of managed
+    futures inside one share, using borrowing you never see. Your money is still $100. Your exposure is $150. Now
+    the edges add rather than average, and a sum has no ceiling. Here "stack a ton" is literally the right
+    instruction.</p>
+
+    <p>Same four leaning stock funds, three ways of paying for them, priced on the portfolio in question under the
+    most generous assumption about what the leaning earns:</p>
+  </div>
+
+  <Breakout scroll class="my-8">
+    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+      <caption class="sr-only">Portfolio edge under three ways of paying for the same four funds</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            FUNDING_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i === 1 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          FUNDING_ROUTES.map((route) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {route.label}
+              </th>
+              <td role="cell" data-label={FUNDING_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                <Figure id={route.figure} inline showUnit={false} />
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <MarginNote label="Scope">
+      <p>
+        All three rows are priced against a cheap index fund holding the same mix, under the assumptions most
+        favourable to the portfolio, with 35% of your money available to move. Compared with each other they are
+        informative. Compared with anything else on the site they are not.
+      </p>
+    </MarginNote>
+
+    <p>The portfolio in question is about 93% the first kind.</p>
+
+    <MarginNote label="The test">
+      <p>
+        Add up your target weights. If they come to 100, every new fund competes with the funds you already hold,
+        and the question is never whether a candidate is good.
+      </p>
+    </MarginNote>
+
+    <p>Here is the test you can run on your own account tonight. Add up your target weights. If they come to 100,
+    then every new fund is competing with the funds you already hold, and the right question about a candidate is
+    never "is this good?" It is "is this better than whatever I would sell to buy it?" Most people ask the first
+    question and then quietly answer the second one by selling whatever has done worst lately.</p>
+
+    <p>If instead you hold a fund that delivers two exposures per dollar, the second exposure is genuinely added
+    rather than swapped, and the only question is whether it covers its own financing.</p>
+
+    <p>The gap between those two ways of paying is worth about <Figure id="funding-gap" inline showUnit={false} />
+    a year on an all-stock starting portfolio. It contains nothing whatever about the strategy being added. It is
+    larger than almost any extra return this project has managed to measure, which is a slightly embarrassing
+    thing to discover after a year spent measuring them.</p>
+  </div>
+
+  <Callout kind="caveat" label="Three warnings, or this becomes a pitch for borrowing">
+    <p>
+      Financing costs money, and the fee table will not price it. One fund on the shelf files a 0.10% net expense
+      ratio while holding 95.17% of its assets in a swap on an affiliated fund that charges 0.75%, which the fee
+      table does not reach. All-in it costs about 0.81% a year today and about 0.99% when its waiver lapses in
+      December 2026, against a plainly-labelled competitor at 0.99%. Two fact sheets report that near-tie as a
+      ten-to-one gap.
+    </p>
+    <p>
+      Size it by what you can hold through a bad decade rather than by what the arithmetic prefers, because the
+      growth arithmetic never returns an interior answer. It rates 30% of exposure better than 10%, and 50% better
+      than 30%, and it keeps going past the tested range and past the drawdown that would end you.
+    </p>
+    <p>
+      And watch the concentration you are buying. In the portfolio measured here,
+      <Figure id="active-variance-concentration" inline showUnit={false} /> of the active risk sits inside one
+      fund from a boutique issuer, in a category where
+      <Figure id="managed-futures-attrition" inline showUnit={false} /> of the funds filing at the start of our
+      window had stopped filing within six and a half years.
+    </p>
+  </Callout>
+
+  <div class="prose mt-14">
+    <Rail>The objection</Rail>
+
+    <h2>Where the instinct is right, and what happened when we checked</h2>
+
+    <p>You may already have the objection, and it is the best part of the original idea: a fund can look bad alone
+    and still help, and a fund can look good alone and add nothing. Both are true. Both have exact formulas.</p>
+
+    <p>What matters about a candidate is not its own return. It is the part of its return that your existing
+    portfolio does not already provide, divided by the part of its risk your existing portfolio does not already
+    carry. A fund that loses money by itself improves the whole if it loses at the right moments, which is all a
+    hedge has ever been. A fund with a real edge adds nothing if you already own that edge under another name.</p>
+
+    <MarginNote label="Order of the five">
+      <p>
+        What the holding is worth inside the portfolio, less what it is worth on its own. Exactly zero when a
+        holding is unrelated to everything else held. In order: cheap US stocks, cheap developed foreign stocks,
+        the international momentum fund, cheap emerging-market stocks, and trend.
+      </p>
+    </MarginNote>
+
+    <p>Then we measured it on the actual portfolio, and it is barely there. For the five active positions, the
+    difference between judging a holding alone and judging it inside the portfolio reads
+    <Figure id="conditioning-terms" inline showUnit={false} />. Four of the five are negative. Nothing in this
+    portfolio is rescued by the company it keeps, and the largest single effect is a penalty: the international
+    momentum fund is <Figure id="idmo-trend-correlation" inline /> correlated with the managed-futures fund,
+    because a trend fund is momentum wearing a different coat.</p>
+
+    <p>The mechanism is real. Check it every time. On this portfolio it is not what is going wrong, and what is
+    going wrong is duller: the edges are small on their own, they rest on rewards nobody can show are still
+    positive, and stacking repairs neither problem.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The record</Rail>
+
+    <h2>What it has looked like with real money</h2>
+
+    <MarginNote label="Issuer evidence">
+      <p>
+        The issuer's own standardised NAV returns beside the benchmark the issuer itself prints, read
+        <span data-numeric>2026-08-23</span> as of <span data-numeric>2026-07-31</span>. The window is 2.9 years
+        and the benchmark holds one asset and borrows nothing, so it answers whether the second leg
+        covered its own cost.
+      </p>
+    </MarginNote>
+
+    <p>The Return Stacked funds are this exact trade, sold retail. For five of them the benchmark the issuer
+    prints on its own website is the base leg of the stack, which makes it an unusually clean read on whether the
+    second dollar paid for itself. On the issuer's own standardised numbers to 31 July 2026, six of the seven
+    scoreable funds trailed. The stocks-plus-managed-futures fund trailed the S&amp;P 500 by
+    <Figure id="rsst-stack-drag" inline showUnit={false} /> a year since it launched, and the bond version trailed
+    US aggregate bonds by <Figure id="rsbt-stack-drag" inline showUnit={false} /> a year.</p>
+
+    <p>Then trend fired. Over the twelve months to July 2026 that same stocks-plus-trend fund returned
+    <Figure id="rsst-trailing-year" inline showUnit={false} /> against the S&amp;P 500's
+    <Figure id="rsst-trailing-year-benchmark" inline showUnit={false} />.</p>
+
+    <MarginNote label="Exposure, not return">
+      <p>
+        <span data-numeric>+0.681</span>, 95% range <span data-numeric>+0.406 to +0.955</span>, on 31 filed
+        monthly returns to <span data-numeric>2026-04</span>. That is exposure delivered, never return earned.
+        Nothing here says the reward is still on the table.
+      </p>
+    </MarginNote>
+
+    <p>Both of those are one fact, not two. The engineering works. We measured the fund's delivered trend exposure
+    out of its own SEC filings at <Figure id="rsst-trend-loading" inline showUnit={false} />, with a sister fund
+    holding no trend at all as a control, so it really does hold what it claims to hold. The patience is the
+    product, and the patience is priced in years.</p>
+
+    <MarginNote label="A forecast, not a record">
+      <p>
+        Asness's table is an explicitly hypothetical exercise on stated capital-market assumptions, with no sample
+        period, no named index and no fund. Read it beside the Return Stacked rows above, which are a record and
+        disagree.
+      </p>
+    </MarginNote>
+
+    <p>How big is the prize when it does work? About seventy basis points a year, and that is not our figure.
+    Cliff Asness published it in March 2025, in the paper where he endorses this idea by name: a 60/40 portfolio
+    compounds at <Figure id="asness-6040" inline showUnit={false} />; add a quarter in alternatives and sell
+    stocks and bonds to fund them and it compounds at <Figure id="asness-funded" inline showUnit={false} />, no
+    better than the 60/40 it came from; add the same alternatives financed and it compounds at
+    <Figure id="asness-financed" inline showUnit={false} />. That middle number is this page's averaging point,
+    arrived at independently, by the idea's most committed advocate.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>What is reachable</Rail>
+
+    <h2>What is actually on the table</h2>
+
+    <p>Count return engines, not tickers. An engine is a distinct economic mechanism with its own way of failing,
+    and two funds that lose money in the same crisis are one engine.</p>
+
+    <MarginNote label="Scope">
+      <p>
+        The lower end of the geography figure is momentum across three regions, the upper end value. All sixteen
+        factor-and-region combinations plus trend are worth 10.23 of 16. An international allocation may be right
+        for currency or valuation reasons, and should not be defended as diversification.
+      </p>
+    </MarginNote>
+
+    <p>Spreading a single strategy across the US, developed markets and emerging markets buys about half an extra
+    bet: <Figure id="geography-breadth" inline showUnit={false} /> of three. Adding a second style inside one
+    region buys a whole extra bet and change, <Figure id="style-breadth" inline showUnit={false} /> of five,
+    because cheap stocks and rising stocks are frequently opposites. Geography is nearly free breadth. Style is
+    the real thing.</p>
+
+    <p>On our count an ordinary investor can reach <Figure id="engines-reachable" inline showUnit={false} />:
+    broad stocks, leaning toward one kind of stock, government bonds, corporate credit with the interest-rate risk
+    stripped out, managed futures, catastrophe risk. Gold,
+    commodities, crypto, tail hedges, buffered funds, volatility selling, merger arbitrage and market-neutral
+    funds were each tested and set aside, either because they duplicate something you already own or because the
+    retail container costs more than the mechanism pays.</p>
+
+    <MarginNote label="One rule, twice">
+      <p>
+        Both of these come out of <code>T = (z·s/e)²</code> at 90% confidence.
+        <a href="/how-sure/">How sure we are</a> separates that question from the different one of when a study
+        could separate the same edge from zero.
+      </p>
+    </MarginNote>
+
+    <p>Which brings the last number, and it is the one that should reframe the whole exercise. This portfolio
+    drifts from a comparable cheap index fund by about <Figure id="tracking-error" inline showUnit={false} /> a
+    year. At that much drift, thirty years of holding it can only demonstrate an edge of about
+    <Figure id="thirty-year-floor" inline showUnit={false} /> a year, against a central estimate of
+    <Figure id="central-edge" inline showUnit={false} />.</p>
+
+    <p>It is built so that a lifetime of owning it cannot tell you whether it worked.</p>
+
+    <p>Which is not an argument for doing nothing. It is an argument that your own account will never be your
+    evidence, so each decision has to be justified before you make it rather than after. Pay less. Defer tax. Put
+    each fund in whichever account taxes it least. Save more. Buy nothing you could not hold through a decade in
+    which it does nothing at all.</p>
+
+    <p>Stacking works. It runs out at about four good ideas.</p>
+  </div>
+
+  <Callout kind="change-your-mind">
+    <p>
+      A correlation between holdings measured under 0.2 on a wider stack, or a fund you can actually buy that
+      borrows to add a genuinely different engine at a cost the fee table can see, would raise the ceiling on this
+      page. Nothing about the arithmetic changes. The input does.
+    </p>
+  </Callout>
+</Base>

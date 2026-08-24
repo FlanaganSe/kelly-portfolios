@@ -1,0 +1,239 @@
+---
+/**
+ * The shell every page renders inside: head, masthead, navigation, footer.
+ *
+ * `styles.css` is imported here and nowhere else, so the design system loads once and
+ * the pre-paint theme script below can rely on it being the only source of colour.
+ */
+import ThemeToggle from "~/components/ThemeToggle.astro";
+import { ogAlt, OG_HEIGHT, ogImagePath, OG_WIDTH } from "~/lib/og";
+import {
+  canonicalPath,
+  CORPUS_AS_OF,
+  isCurrent,
+  NAV_ITEMS,
+  type NavItem,
+  REPO_URL,
+  SITE_DESCRIPTION,
+  SITE_NAME,
+} from "~/lib/site";
+import "~/styles.css";
+
+interface Props {
+  title: string;
+  description?: string;
+  /** Suppress the site name suffix when the page title already carries it. */
+  bareTitle?: boolean;
+  /**
+   * Put this page in the search index. Off for the search page and the 404, which have
+   * no words of their own and would otherwise match every query.
+   */
+  indexable?: boolean;
+  /** Keep the page out of search-engine results. Used by the 404. */
+  noindex?: boolean;
+}
+
+const {
+  title,
+  description = SITE_DESCRIPTION,
+  bareTitle = false,
+  indexable = true,
+  noindex = false,
+} = Astro.props;
+
+const pageTitle = bareTitle ? title : `${title} · ${SITE_NAME}`;
+const pathname = Astro.url.pathname;
+
+// `Astro.url` carries only the path — its origin is the dev server. The real origin is
+// `site` in `astro.config.mjs`, which is what `Astro.site` returns and what the sitemap
+// uses, so canonical and sitemap can never disagree.
+const origin = Astro.site ?? new URL("https://kellyportfolios.com");
+const canonical = new URL(canonicalPath(pathname), origin).href;
+
+// Absolute, because every crawler that reads these resolves them from its own origin
+// rather than from the page. Width, height and alt travel with the URL: a card whose
+// dimensions a client cannot know gets rendered as a small square by several of them.
+const ogImage = new URL(ogImagePath(pathname), origin).href;
+const ogImageAlt = ogAlt(pathname);
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  name: SITE_NAME,
+  url: origin.href,
+  description: SITE_DESCRIPTION,
+  inLanguage: "en",
+  license: `${REPO_URL}/blob/main/README.md`,
+  publisher: {
+    "@type": "Organization",
+    name: SITE_NAME,
+    url: origin.href,
+  },
+};
+
+const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
+
+/**
+ * The footer's own links, which are about the site rather than about investing.
+ *
+ * They live here rather than beside `NAV_ITEMS` on purpose: the masthead order is the
+ * argument the site is making, and these five pages are not part of it. A reader
+ * reaches them when they want to know who wrote this and what it is worth, which is a
+ * different errand from reading the research.
+ */
+const FOOTER_ITEMS = [
+  { href: "/about/", label: "About" },
+  { href: "/methodology/", label: "Methodology" },
+  { href: "/corrections/", label: "Corrections" },
+  { href: "/disclosures/", label: "Disclosures" },
+  { href: "/disclaimer/", label: "Disclaimer" },
+] as const satisfies readonly NavItem[];
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#faf9f6" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#141311" />
+    <meta name="generator" content={Astro.generator} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE_NAME} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content="en_US" />
+    {/* Generated at build time by `src/pages/og/[...route].ts`. Every card is well
+        under Bluesky's 1,000,000-byte thumbnail cap, which binds long before
+        Facebook's 8MB one. */}
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content={String(OG_WIDTH)} />
+    <meta property="og:image:height" content={String(OG_HEIGHT)} />
+    <meta property="og:image:alt" content={ogImageAlt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image:alt" content={ogImageAlt} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={description} />
+
+    <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+
+    {/* Applies the stored theme before first paint. Anything other than "light" or
+        "dark" means "follow the system", which is the CSS default. Inline and
+        unbundled on purpose: a deferred module would paint the wrong theme first. */}
+    <script is:inline>
+      try {
+        var t = localStorage.getItem("pe-theme");
+        if (t === "light" || t === "dark") document.documentElement.setAttribute("data-theme", t);
+      } catch (_) {}
+    </script>
+  </head>
+
+  <body>
+    <div class="flex min-h-screen flex-col bg-paper text-ink">
+      <a
+        href="#main"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-[3px] focus:bg-raised focus:px-3 focus:py-2 focus:text-sm"
+      >
+        Skip to content
+      </a>
+
+      <header class="border-b border-rule">
+        <div class="page-rail">
+          <div class="flex items-center justify-between gap-4 py-4">
+            <a href="/" class="font-serif text-xl tracking-[-0.01em] text-ink transition-colors hover:text-accent">
+              {SITE_NAME}
+            </a>
+            <div class="flex items-center gap-4">
+              <span data-numeric class="hidden text-xs text-ink-faint sm:inline">as of {CORPUS_AS_OF}</span>
+              <a href="/search/" class="text-sm text-ink-muted transition-colors hover:text-ink">Search</a>
+              <ThemeToggle />
+            </div>
+          </div>
+
+          <nav aria-label="Sections">
+            <ul class="flex flex-wrap gap-x-6 border-t border-rule pb-2 lg:border-t-0 lg:pb-0">
+              {
+                NAV_ITEMS.map((item) => {
+                  const current = isCurrent(item.href, pathname);
+                  return (
+                    <li>
+                      <a
+                        href={item.href}
+                        aria-current={current ? "page" : undefined}
+                        class:list={[
+                          navLink,
+                          current
+                            ? "border-accent font-medium text-ink"
+                            : "border-transparent text-ink-muted hover:border-rule-strong hover:text-ink",
+                        ]}
+                      >
+                        {item.label}
+                      </a>
+                    </li>
+                  );
+                })
+              }
+            </ul>
+          </nav>
+        </div>
+      </header>
+
+      {/* `data-pagefind-body` scopes the search index to the page's own words. Without
+          it Pagefind indexes the masthead and footer on every page and every query
+          matches everything. */}
+      {/* The three-track canvas: a rail for section labels, the reading column, and a
+          margin for sources, dates and caveats. Both outer tracks collapse to zero width
+          below 62rem, at which point every child is a single clean column. */}
+      <main id="main" data-pagefind-body={indexable ? true : undefined} class="canvas flex-1 py-12 sm:py-16">
+        <slot />
+      </main>
+
+      {/* The two-line disclaimer sits on every page because the condition it states is a
+          condition of the whole site, not of one essay. `/disclaimer/` carries the full
+          text and the reasoning; these two sentences are the part a reader has to see
+          without clicking. */}
+      <footer class="mt-16 border-t border-rule">
+        <div class="page-rail flex flex-col gap-6 py-8 text-sm text-ink-muted">
+          <p class="max-w-measure">
+            General information about investing, and no part of it is personalised advice. This site does not
+            answer questions about an individual reader&rsquo;s portfolio.{" "}
+            <a href="/disclaimer/" class="link">Read the full disclaimer</a>.
+          </p>
+
+          <div class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
+            <nav aria-label="About this site">
+              <ul class="flex flex-wrap gap-x-5 gap-y-2">
+                {
+                  FOOTER_ITEMS.map((item) => (
+                    <li>
+                      <a href={item.href} class="link">
+                        {item.label}
+                      </a>
+                    </li>
+                  ))
+                }
+              </ul>
+            </nav>
+
+            <p class="flex items-baseline gap-4 whitespace-nowrap">
+              <a href={REPO_URL} rel="noopener noreferrer" class="link">GitHub</a>
+              <span data-numeric class="text-ink-faint">Research as of {CORPUS_AS_OF}</span>
+            </p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,122 +1,128 @@
-import { A, Route, Router } from "@solidjs/router";
-import { createSignal, For, type ParentComponent, Show } from "solid-js";
-import { Icon } from "~/components/Icon";
-import { ErrorBoundary } from "./components/ErrorBoundary";
-import AboutComponent from "./routes/about";
-import ArticlesComponent from "./routes/articles";
-import CalculatorComponent from "./routes/calculator";
-import IndexComponent from "./routes/index";
+import { Meta, MetaProvider, Title } from "@solidjs/meta";
+import { A, Navigate, Route, Router, useLocation } from "@solidjs/router";
+import { createEffect, createSignal, For, lazy, type ParentComponent } from "solid-js";
+import { ErrorBoundary } from "~/components/ErrorBoundary";
+import { ThemeToggle } from "~/components/ThemeToggle";
+import { CORPUS_AS_OF, NAV_ITEMS, REPO_URL } from "~/lib/nav";
 
-const navItems = [
-  { href: "/", label: "Home" },
-  { href: "/about", label: "About" },
-  { href: "/calculator", label: "Calculator" },
-  { href: "/articles", label: "Articles" },
-] as const;
+const StartHere = lazy(() => import("~/routes/start-here"));
+const Portfolios = lazy(() => import("~/routes/portfolios"));
+const PortfolioDetail = lazy(() => import("~/routes/portfolio-detail"));
+const Research = lazy(() => import("~/routes/research"));
+const Funds = lazy(() => import("~/routes/funds"));
+const Lab = lazy(() => import("~/routes/lab"));
+const FundDetail = lazy(() => import("~/routes/fund-detail"));
+const ResearchDetail = lazy(() => import("~/routes/research-detail"));
+const Portfolio = lazy(() => import("~/routes/portfolio"));
+const EdgeBudget = lazy(() => import("~/routes/edge-budget"));
+const Placement = lazy(() => import("~/routes/placement"));
+const Confidence = lazy(() => import("~/routes/confidence"));
+const Evidence = lazy(() => import("~/routes/evidence"));
+const Concepts = lazy(() => import("~/routes/concepts"));
+const Method = lazy(() => import("~/routes/method"));
+const NotFound = lazy(() => import("~/routes/not-found"));
+
+const linkBase = "inline-block py-2 text-sm transition-colors border-b-2 -mb-px";
+const linkActive = `${linkBase} border-accent font-medium text-ink`;
+const linkInactive = `${linkBase} border-transparent text-ink-muted hover:text-ink hover:border-rule-strong`;
 
 const Layout: ParentComponent = (props) => {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = createSignal(false);
-  const closeMobileMenu = () => setIsMobileMenuOpen(false);
+  const [menuOpen, setMenuOpen] = createSignal(false);
+  const location = useLocation();
+
+  // A route change closes the collapsed menu. No overlay, nothing to dismiss.
+  createEffect(() => {
+    void location.pathname;
+    setMenuOpen(false);
+  });
 
   return (
-    <div class="min-h-screen bg-slate-50 flex flex-col">
-      <header class="glass sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-5">
-          <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-              <div class="icon-gradient w-12 h-12">
-                <Icon name="portfolio" size={8} class="text-white" aria-label="Portfolio logo" />
-              </div>
-              <A href="/" class="text-2xl font-bold gradient-text hover:scale-105 transition-transform">
-                Portfolio Optimizer
-              </A>
-            </div>
-            <div class="flex items-center gap-4">
-              <nav class="hidden md:flex gap-8">
-                <For each={navItems}>
-                  {({ href, label }) => (
-                    <A href={href} class="text-slate-600 hover:text-slate-900 transition-all font-medium text-lg">
-                      {label}
-                    </A>
-                  )}
-                </For>
-              </nav>
+    <div class="flex min-h-screen flex-col bg-paper text-ink">
+      <a
+        href="#main"
+        class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-[3px] focus:bg-raised focus:px-3 focus:py-2 focus:text-sm"
+      >
+        Skip to content
+      </a>
 
+      <header class="border-b border-rule">
+        <div class="mx-auto w-full max-w-page px-5 sm:px-8">
+          {/* Masthead. */}
+          <div class="flex items-center justify-between gap-4 py-4">
+            <A href="/" class="font-serif text-xl tracking-[-0.01em] text-ink transition-colors hover:text-accent">
+              Portfolio Edge
+            </A>
+
+            <div class="flex items-center gap-2">
+              <span data-numeric class="hidden text-xs text-ink-faint sm:inline">
+                as of {CORPUS_AS_OF}
+              </span>
+              <ThemeToggle />
               <button
                 type="button"
-                class="md:hidden p-2 rounded-lg text-slate-600 hover:text-slate-900 hover:bg-slate-100 transition-all"
-                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen())}
-                aria-label="Toggle mobile menu"
+                class="inline-flex h-8 items-center gap-1.5 rounded-[3px] border border-rule px-2.5 text-sm text-ink-muted transition-colors hover:border-rule-strong hover:text-ink lg:hidden"
+                aria-expanded={menuOpen()}
+                aria-controls="sections"
+                onClick={() => setMenuOpen(!menuOpen())}
               >
-                <Icon name={isMobileMenuOpen() ? "close" : "menu"} size={6} aria-label="Menu" />
+                Sections
+                <svg
+                  viewBox="0 0 12 12"
+                  width="10"
+                  height="10"
+                  aria-hidden="true"
+                  class="transition-transform"
+                  style={{ transform: menuOpen() ? "rotate(180deg)" : "none" }}
+                >
+                  <path
+                    d="M2.5 4.5 6 8l3.5-3.5"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
+                </svg>
               </button>
             </div>
           </div>
+
+          {/* Sections. A row on wide screens, a list under the masthead on narrow ones. */}
+          <nav
+            id="sections"
+            aria-label="Sections"
+            class={`border-t border-rule lg:block lg:border-t-0 ${menuOpen() ? "block" : "hidden"}`}
+          >
+            <ul class="flex flex-col gap-x-6 pb-2 lg:flex-row lg:flex-wrap lg:pb-0">
+              <For each={NAV_ITEMS}>
+                {(item) => (
+                  <li>
+                    <A href={item.href} end={item.href === "/"} activeClass={linkActive} inactiveClass={linkInactive}>
+                      {item.label}
+                    </A>
+                  </li>
+                )}
+              </For>
+            </ul>
+          </nav>
         </div>
       </header>
 
-      <Show when={isMobileMenuOpen()}>
-        <button
-          type="button"
-          class="fixed inset-0 bg-black/20 backdrop-blur-sm z-40 md:hidden"
-          onClick={closeMobileMenu}
-          onKeyDown={(e) => e.key === "Escape" && closeMobileMenu()}
-          aria-label="Close mobile menu"
-        />
-        <div class="fixed top-[85px] left-0 right-0 md:hidden glass border-t border-slate-200/60 z-40">
-          <div class="container mx-auto px-6 py-4">
-            <nav class="flex flex-col space-y-4">
-              <For each={navItems}>
-                {({ href, label }) => (
-                  <A
-                    href={href}
-                    class="text-slate-600 hover:text-slate-900 transition-all font-medium text-lg py-2"
-                    onClick={closeMobileMenu}
-                  >
-                    {label}
-                  </A>
-                )}
-              </For>
-            </nav>
-          </div>
-        </div>
-      </Show>
+      <main id="main" class="mx-auto w-full max-w-page flex-1 px-5 py-12 sm:px-8 sm:py-16">
+        {props.children}
+      </main>
 
-      <main class="flex-1">{props.children}</main>
-
-      <footer class="glass border-t border-slate-200/60 mt-auto">
-        <div class="container mx-auto px-6 py-12">
-          <div class="flex flex-col md:flex-row items-center justify-between gap-8">
-            <div class="flex items-center gap-4">
-              <div class="icon-gradient w-10 h-10">
-                <Icon name="portfolio" size={6} class="text-white" aria-label="Portfolio logo" />
-              </div>
-              <div>
-                <div class="text-slate-900 font-bold text-lg">Portfolio Optimizer</div>
-                <div class="text-slate-600">Mathematical precision for investment success</div>
-              </div>
-            </div>
-            <div class="flex items-center gap-8">
-              <a
-                href="https://github.com/FlanaganSe/investing-portfolio"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-3 text-slate-600 hover:text-slate-900 transition-all font-medium group"
-              >
-                <svg
-                  class="w-6 h-6 group-hover:scale-110 transition-transform"
-                  fill="currentColor"
-                  viewBox="0 0 24 24"
-                  role="img"
-                  aria-label="GitHub"
-                >
-                  <path d="M12 0C5.374 0 0 5.373 0 12 0 17.302 3.438 21.8 8.207 23.387c.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0112 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-                </svg>
-                View on GitHub
-              </a>
-              <div class="text-slate-500 font-medium">© 2025 Portfolio Optimizer</div>
-            </div>
-          </div>
+      <footer class="mt-16 border-t border-rule">
+        <div class="mx-auto flex w-full max-w-page flex-col gap-3 px-5 py-8 text-sm text-ink-muted sm:flex-row sm:items-baseline sm:justify-between sm:px-8">
+          <p class="max-w-measure">Nothing here is advice, and no sleeve in the underlying research is promoted.</p>
+          <p class="flex items-baseline gap-4 whitespace-nowrap">
+            <a href={REPO_URL} target="_blank" rel="noopener noreferrer" class="link">
+              GitHub
+            </a>
+            <span data-numeric class="text-ink-faint">
+              Research as of {CORPUS_AS_OF}
+            </span>
+          </p>
         </div>
       </footer>
     </div>
@@ -126,12 +132,36 @@ const Layout: ParentComponent = (props) => {
 export default function App() {
   return (
     <ErrorBoundary>
-      <Router root={Layout}>
-        <Route path="/" component={IndexComponent} />
-        <Route path="/about" component={AboutComponent} />
-        <Route path="/calculator" component={CalculatorComponent} />
-        <Route path="/articles" component={ArticlesComponent} />
-      </Router>
+      {/* The defaults. A route's own <Title> or <Meta> cascades over these and
+          is restored when that route unmounts. */}
+      <MetaProvider>
+        <Title>Portfolio Edge</Title>
+        <Meta
+          name="description"
+          content="A reading of the portfolio research in this repository: what was tested, what survived, and what it is worth."
+        />
+        <Router root={Layout}>
+          <Route path="/" component={StartHere} />
+          <Route path="/portfolios" component={Portfolios} />
+          <Route path="/portfolios/:id" component={PortfolioDetail} />
+          <Route path="/research" component={Research} />
+          <Route path="/research/:slug" component={ResearchDetail} />
+          <Route path="/funds" component={Funds} />
+          <Route path="/funds/:ticker" component={FundDetail} />
+          <Route path="/lab" component={Lab} />
+          <Route path="/reference" component={Portfolio} />
+          {/* `/portfolio` was this page's address before the portfolio library existed.
+              One character apart from `/portfolios` is a trap, so it redirects. */}
+          <Route path="/portfolio" component={() => <Navigate href="/reference" />} />
+          <Route path="/edge-budget" component={EdgeBudget} />
+          <Route path="/placement" component={Placement} />
+          <Route path="/confidence" component={Confidence} />
+          <Route path="/evidence" component={Evidence} />
+          <Route path="/concepts" component={Concepts} />
+          <Route path="/method" component={Method} />
+          <Route path="*" component={NotFound} />
+        </Router>
+      </MetaProvider>
     </ErrorBoundary>
   );
 }

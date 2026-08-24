@@ -1,0 +1,14 @@
+label: The whole portfolio against a cheap index fund that borrows as much as it does
+value: +2.2 points ahead, plausibly +0.1 to +4.6
+unit: percentage points per year
+interval: '[+0.05, +4.57]'
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+note: >-
+  427 months, 1990-11 to 2026-05. The control is a cheap 65/35 index borrowed to the same total
+  exposure and charged the same interest. Funds are modelled rather than simulated from their own
+  returns, which is the largest single source of error in the figure.

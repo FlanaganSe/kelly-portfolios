@@ -1,0 +1,14 @@
+label: What that policy returned against never trading at all
+value: −0.09%
+unit: a year
+status: unresolved
+asOf: '2026-08-21'
+source:
+  label: Rebalancing as a source of return
+  docPath: docs/research/rebalancing-policy.md
+  anchor: conclusion-part-a-rebalancing-as-a-source-of-return
+note: >-
+  Against a smallest detectable difference of 1.81 percentage points, so this is a shrug with a
+  number attached rather than a finding of zero. A separate 420-month measurement of a monthly
+  policy came out at −0.39% a year. Buy rebalancing for exposure control, which is settled, and
+  expect nothing else from it.

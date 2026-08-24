@@ -1,0 +1,264 @@
+---
+/**
+ * How a result earns the status the site prints beside it.
+ *
+ * Five rules do most of the work, and each one is here because breaking it produced a
+ * published number that later had to be withdrawn. The sixth section is the AI
+ * disclosure, which is on this page rather than buried on `/about/` because the way
+ * this site was built is part of how much weight its numbers can carry.
+ *
+ * Counts come from `uv run python -m portfolio_edge.reporting.programme_status`.
+ */
+import Callout from "~/components/Callout.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+import { REPO_URL } from "~/lib/site";
+---
+
+<Base
+  title="How a result earns its status here"
+  description="Specifications frozen before anyone sees the result, every attempt logged including the failures, costs inside the trading rule, a null measured against what the design could have seen, and an honest account of how AI tools were used to build all of it."
+>
+  <div class="prose">
+    <Rail>Method</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How a result earns its status here</h1>
+
+    <MarginNote label="The question">
+      <p>
+        What had to happen before that number went on the page? Checked against <code>docs/research/</code> and
+        the ledger on <span data-numeric>2026-08-23</span>.
+      </p>
+    </MarginNote>
+
+    <p>Five rules, and every one of them is here because breaking it put a wrong number on this site.</p>
+
+    <p>The full working agreement is <a href={`${REPO_URL}/blob/main/AGENTS.md`} rel="noopener noreferrer"
+    >AGENTS.md</a> and <a href={`${REPO_URL}/blob/main/docs/AGENTS.md`} rel="noopener noreferrer"
+    >docs/AGENTS.md</a> in the repository, which are the versions a machine reads before it is allowed to touch
+    anything. This page is the same content in a language a person would use.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Rule one</Rail>
+
+    <h2 id="frozen-specifications">The specification is frozen before the result exists</h2>
+
+    <MarginNote label="What a specification pins">
+      <p>
+        The data and its hash, the window, the benchmark, the primary outcome, the costs charged, the inference
+        procedure, the hostile tests, and the random seed. There are <span data-numeric>27</span> of them under
+        <code>research/specs/</code>.
+      </p>
+    </MarginNote>
+
+    <p>Before a measurement runs, the thing it is measuring is written down and hashed: which data, which window,
+    which yardstick, which costs, what would count as a pass, and what would count as a failure. Then it runs. The
+    file is never edited afterwards.</p>
+
+    <p>The reason is unglamorous. A bar you can move after seeing the number stops being a bar. Nobody moves one
+    on purpose. What people do is notice, entirely sincerely, that the original bar was poorly chosen, which is a
+    thought that only ever arrives in one direction.</p>
+
+    <p>When a frozen specification turns out to have a defect in it, the defect is recorded and the specification
+    is left alone. One experiment carried a rule whose bar got <em>easier</em> to clear as the thing being tested
+    got better. Holding one quantity fixed, a candidate delivering 0.50 percentage points a year passed and one
+    delivering 50 was rejected for being explained away. That specification still sits in the repository with its
+    original hash and its original verdict, and the re-reading of it is logged as a separate entry.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Rule two</Rail>
+
+    <h2 id="the-ledger">Every attempt is logged, including the ones that failed</h2>
+
+    <p>Test twenty coins for fairness and one will look rigged. Same with portfolios, and the only defence is
+    counting.</p>
+
+    <MarginNote label="Where the count goes">
+      <p>
+        <span data-numeric>27</span> is the number a multiple-testing correction starts from here, and it is a
+        lower bound on the real search, because it counts the attempts that were registered rather than every
+        thought anybody had.
+      </p>
+    </MarginNote>
+
+    <p>The ledger holds <span data-numeric>134</span> entries across <span data-numeric>47</span> runs and
+    <span data-numeric>23</span> experiment families. Nine runs reached a rejection, nine reached "we can't tell",
+    <span data-numeric>21</span> are exploratory, and <span data-numeric>8</span> never reached a terminal verdict
+    at all. Abandoned attempts stay in. So does the run that was thrown away because someone spotted a bug in it
+    afterwards.</p>
+
+    <p>That count is then used against the results. A backtest quoted without its search count is not evidence.
+    Keeping the count is the only way to have one.</p>
+
+    <p>The ledger is also the reason there is a rung for exploratory work. Under the protocol here, exploration
+    establishes a mechanism, its rough size, its costs and its limits, and it explicitly <em>cannot</em> support a
+    claim the site ships as settled. Evaluation freezes the specification first. Promotion needs independent or
+    forward evidence on top of that. Twenty-one of the runs are exploratory, which is a large fraction of the
+    corpus and a fair description of how much of this is finished.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Rule three</Rail>
+
+    <h2 id="costs-inside-the-rule">Costs go inside the rule, before any claim about what you would have got</h2>
+
+    <p>A strategy's return is easy to compute and mostly fictional. What matters is what it pays after the fee,
+    the spread, the tax on the trades it forces, and the trades themselves.</p>
+
+    <p>So a claim about what an investor would have received has to come out of a rule you could have executed,
+    with the costs charged inside the loop rather than subtracted from the answer at the end. The two are not the
+    same, because a cost charged inside the loop changes which trades the rule makes.</p>
+
+    <MarginNote label="Both directions">
+      <p>
+        The same rule caught a fee charged to a series that had already paid one. A fund's filed total return is
+        net of its own fee, its trading and its slippage, so modelling a second fee on top of it charges the
+        investor twice.
+      </p>
+    </MarginNote>
+
+    <p>This cuts in both directions and the site reports it both ways. A cost assumption of 20% to 40% turnover a
+    year was carried over to funds an investor would actually buy, implying 0.20 to 0.68 percentage points a year
+    of trading cost. Reading the funds' own filings instead: eight of nine US systematic value funds file
+    <span data-numeric>5%</span> to <span data-numeric>9%</span> turnover a year, which is 0.09 to 0.15 points and
+    only 0.05 above the plain index fund. The assumption was right about how an index reconstitutes and wrong
+    about the products on the shelf, and the correction made the case <em>better</em> rather than worse.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Rule four</Rail>
+
+    <h2 id="nulls-against-resolution">A null is compared against what the design could have seen</h2>
+
+    <p>"We found nothing" and "we could not have found anything" are different sentences, and only one of them is
+    a finding.</p>
+
+    <p>Before a result showing no effect is interpreted, the design is asked how large an effect it could have
+    resolved at all. The moving-average timing rule is the cleanest case on the site. It beat a properly matched
+    control by 0.74 percentage points a year, and the smallest gap that design could reliably have separated from
+    luck was 3.03. Both numbers are real. The verdict is that we cannot see, and publishing the 0.74 on its own
+    would be reporting the width of our own ignorance as a result.</p>
+
+    <MarginNote label="What the rule cost">
+      <p>
+        Applying it closed two factor results and restated six rejections as "we can't tell", which is now the
+        most common verdict on the site. It is an expensive rule, and it is the one that most often stops this
+        project believing itself.
+      </p>
+    </MarginNote>
+
+    <p>The rule is also applied to the project's own bars. One experiment rejected seven candidates against a bar
+    of 0.30 percentage points a year on a design whose smallest visible effect was 1.039, printed on the same
+    page. A verdict may not be stronger than the instrument that produced it, so six of ten verdicts were restated
+    and the specification was recorded as defective rather than rewritten.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Rule five</Rail>
+
+    <h2 id="fixtures">When a number and its check disagree, both sides get investigated</h2>
+
+    <p>Every piece of arithmetic here is pinned by a test against an independently computed value. Sometimes the
+    two disagree. The tempting move at that moment is to widen the tolerance until the test passes, and it is
+    forbidden here.</p>
+
+    <p>Instead the fixture, the implementation, the units, the tolerance and the conditioning are each examined on
+    their own, the broken one is fixed, and the evidence is written down. Sometimes the answer is that neither is
+    broken and the disagreement is the finding. Rebuilding the five-factor size series from its published parts
+    left a residual of 3.517 percentage points a month against a tolerance of 0.015, which established that the
+    five-factor size series is a different object from the three-factor one that shares its name. The failed check
+    is the result.</p>
+
+    <p>The first thing this project ever ran was a reproduction gate against a published table. Thirteen of
+    fifteen cells reproduce. Two do not, against two independently typeset editions of the same source, so the
+    disagreement is systematic rather than luck. That gate is still recorded as unresolved, four months and
+    <span data-numeric>46</span> runs later, because pretending otherwise would have been the first correction on
+    the list.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Machines</Rail>
+
+    <h2 id="ai">How AI tools are used here</h2>
+
+    <p>Heavily. Saying so is more useful than the alternative, which you would work out anyway.</p>
+
+    <MarginNote label="Why say it">
+      <p>
+        A reader who suspects a page was machine-written and is told it wasn't has learned something worse about
+        the site than a reader who is told it was.
+      </p>
+    </MarginNote>
+
+    <p>Almost every line of Python, TypeScript and prose in this repository was drafted by a large language model
+    working under the written agreement linked at the top of this page. The analyses were run by machine. The
+    tests were written by machine. These sentences were drafted by machine, then cut and rearranged by a person
+    who is responsible for what they say.</p>
+
+    <h3>What is checked, and how</h3>
+
+    <p>The checking is deliberately mechanical, because a model that wrote a number is exactly the wrong reviewer
+    for it.</p>
+
+    <ul>
+      <li>Every search over portfolio weights runs in Python under a frozen specification with a ledger entry. The
+      site itself only ports closed-form arithmetic, and each port is tested against fixtures generated by the
+      Python it came from.</li>
+      <li>No number is typed into a paragraph. A sentence names a record, the record carries the value, its range,
+      its date, its status and the file that owns it, and the build fails on a record that names a file or a
+      heading which does not exist. Rename a section in the research and the site stops building.</li>
+      <li>Data is hashed on the way in, and the hash goes in the ledger. That identifies the bytes used. It does
+      not establish that the source was correct or that it was available at the time, and the difference has bitten
+      this project.</li>
+      <li>A prose linter fails the build on the vocabulary language models reach for, and a second check fails any
+      performance figure written without naming what it was measured against.</li>
+      <li>No page is published unread. Every one of these was read line by line by a person before it went up.</li>
+    </ul>
+
+    <h3>What none of that catches</h3>
+
+    <p>A model produces a plausible wrong number far more readily than an implausible one, and plausible wrong
+    numbers survive review by other models.</p>
+
+    <Callout kind="caveat">
+      <p>
+        Nine agents sharing one repository, one data cache and one house style converged on a portfolio
+        recommendation in August 2026. An adversarial review of that session found two of its five conclusions
+        unsafe as stated and one mis-sized by an order of magnitude. Agreement between models proves nothing,
+        and this project has the receipt.
+      </p>
+    </Callout>
+
+    <p>That review is the origin of four entries on <a href="/corrections/">the corrections log</a>, including the
+    largest one. It is also the reason the site's method now leans on things a model cannot talk its way past: a
+    frozen hash, a build that fails, a test with a number in it that came from somewhere else.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Limits</Rail>
+
+    <h2 id="limits">What none of this protects you from</h2>
+
+    <p>All of the above is process. Process is cheap insurance against a few specific failures and no insurance at
+    all against the rest.</p>
+
+    <p>The data is US-heavy and stops where the files stop. The tax arithmetic assumes a US federal individual
+    investor and ignores every state. Nothing here has been reviewed by a securities lawyer, a tax adviser or an
+    accountant. No fund return series and no per-fund exposure vector is committed to the repository, because the
+    licences do not allow it, so the site's own backtest runs on data a reader supplies.</p>
+
+    <p>And the largest limit is not a process failure. Most of the questions this site asks cannot be settled by
+    the data that exists, and no amount of care about specifications changes that. <a href="/how-sure/">How sure we
+    are</a> puts numbers on it.</p>
+
+  </div>
+</Base>

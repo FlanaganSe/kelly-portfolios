@@ -1,0 +1,12 @@
+label: Chance of being ahead of a cheap index fund after thirty years
+value: 54 in 100
+status: unresolved
+asOf: '2026-08-17'
+source:
+  label: Where outperformance can come from
+  docPath: docs/research/expected-edge-decomposition.md
+  anchor: 3-what-probability-is-actually-attainable
+note: >-
+  52 in 100 at ten years. Read it as a best case: the arithmetic behind it treats the edge as
+  known, which removes the largest source of uncertainty, so the real chance is lower by an
+  amount nobody here can state.

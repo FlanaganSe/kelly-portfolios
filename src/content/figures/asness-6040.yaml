@@ -1,0 +1,18 @@
+label: Compound return on a 60/40 portfolio in Asness's own worked example
+value: 8.9%
+unit: percent a year
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Live stacked fund records, Asness's own arithmetic
+  docPath: docs/research/live-stacked-fund-records.md
+  anchor: 2-asnesss-own-arithmetic-about-70-basis-points-and-it-is-a-forecast
+note: >-
+  From Cliff Asness, "Should Hedge Funds Hedge?: Why Some Alts Should Have a Beta of 1.0", AQR,
+  2025-03-28, the paper in which he endorses return stacking by name and credits Corey Hoffstein
+  for it. Verified against the paper itself on 2026-08-23, not against a summary. It is an
+  outside corroboration of this repository's funding algebra and is not a repository
+  measurement. IT IS ALSO NOT A BACKTEST: the table is an explicitly hypothetical exercise on
+  stated capital-market assumptions — stocks at 6.0% excess return and 15% volatility, bonds at
+  2.1% and 7%, alternatives at 3.0% and 10% — with no sample period, no named index and no fund.
+  Read it beside the Return Stacked rows, which are a record and disagree.

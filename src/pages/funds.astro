@@ -1,0 +1,156 @@
+---
+/**
+ * The shelf: every product this repository has priced or regressed.
+ *
+ * A listing, not a recommendation. `src/content/shelf.ts` is the canonical record for a
+ * ticker and this page prints the four fields that need no window attached to be read —
+ * category, fee, net cost, and the verdict. Delivered exposures and beat-the-market figures
+ * are deliberately absent: each of those names a panel and a window, they were fitted on
+ * different months, and a column of them side by side would be the comparison `rankLoadings`
+ * refuses to make.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+import { shelf, shelfAsOf, shelfAudit } from "~/content/shelf";
+import type { ShelfCategory } from "~/content/shelf";
+import { statusMeta } from "~/content/types";
+
+const CATEGORY_LABEL = {
+  "us-core": "US core",
+  "us-value": "US value",
+  "us-small": "US small",
+  "us-momentum": "US momentum",
+  "us-quality": "US quality",
+  "intl-core": "International core",
+  "intl-value": "International value",
+  "intl-small-value": "International small value",
+  "intl-momentum": "International momentum",
+  "emerging-core": "Emerging core",
+  "emerging-value": "Emerging value",
+  bonds: "Bonds",
+  "managed-futures": "Managed futures",
+  "capital-efficient": "Funds that stack two exposures on one dollar",
+  alternative: "Alternatives",
+} as const satisfies Readonly<Record<ShelfCategory, string>>;
+
+const ORDER = Object.keys(CATEGORY_LABEL) as readonly ShelfCategory[];
+
+const groups = ORDER.map((category) => ({
+  category,
+  label: CATEGORY_LABEL[category],
+  funds: shelf.filter((fund) => fund.category === category),
+})).filter((group) => group.funds.length > 0);
+
+const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2));
+
+/**
+ * Written once, read twice: into `<thead>`, and into the label each cell shows when
+ * the table becomes a list of cards below 40rem. Five columns at 42rem is the widest
+ * table on the site and the one a phone can least afford to scroll.
+ */
+const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis points a year", "Status"] as const;
+---
+
+<Base
+  title="The shelf"
+  description="Every fund this project has priced or measured, with its fee, its cost after the money it earns lending out shares, and the verdict attached to it."
+>
+  <div class="prose">
+    <Rail>The shelf</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The shelf</h1>
+
+    <MarginNote label="What is here">
+      <p>
+        <span data-numeric>{shelf.length}</span> funds, read as of <span data-numeric>{shelfAsOf}</span>. Cost is
+        the expense ratio less median net securities-lending income from Form N-CEN, so it can sit below the
+        sticker fee and occasionally below zero.
+      </p>
+    </MarginNote>
+
+    <p>
+      Every fund this project has actually priced or measured, and nothing else. A fund appearing here is
+      not a recommendation, and most of these were read in order to reject them. Seven of them are in
+      <a href="/portfolio/">the portfolio</a>; the other <span data-numeric>{shelf.length - 7}</span> are here because
+      somebody had to price them before they could be ruled out.
+    </p>
+
+    <MarginNote label="Why there is no beat-the-market column">
+      <p>
+        We ran <span data-numeric>{shelfAudit.alphaTests}</span> tests for whether a fund beat the model it is
+        graded against, and <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> survived correction, all of
+        them negative. The smallest such gap this instrument can usually see is about
+        <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span> percentage points a year, against
+        roughly <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span> of real spread between funds.
+      </p>
+    </MarginNote>
+
+    <p>
+      Two columns are missing on purpose. How much of a thing a fund actually delivers is a number that belongs to
+      the months it was measured over, and those windows differ. VTV carries 72 months and DFLV 36. On the 36 they
+      share, VTV's cheap-stock exposure rises from +0.337 to +0.520, which takes the published ordering of the US
+      value shelf apart. So a column of those figures side by side would compare answers to different questions.
+      A beat-the-market figure has the same problem twice over: it reads as a finding when it is noise, unless the
+      smallest gap the test could see is printed beside it, together with the error the model makes on a fund that
+      simply is the market. Both live in the research pages that own them.
+    </p>
+  </div>
+
+  <Callout kind="caveat">
+    <p>
+      Fund facts go stale. Every figure below was read on or before 2026-08-17, from a filing or an issuer page,
+      and the right move a year from now is to re-read rather than to re-quote. One example of why: SPY files a
+      0.0945% cost against 0.0182% to 0.0294% for every other S&amp;P 500 tracker audited, entirely because it is
+      a 1993 trust that cannot lend its holdings.
+    </p>
+  </Callout>
+
+  {
+    groups.map((group) => (
+      <Breakout scroll class="mt-10" label={group.label}>
+        <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[42rem]">
+          <caption class="sr-only">
+            {group.label}: fee, cost after lending income, and verdict
+          </caption>
+          <thead role="rowgroup">
+            <tr role="row" class="border-b border-rule-strong text-left">
+              {COLUMNS.map((heading, i) => (
+                <th
+                  role="columnheader"
+                  scope="col"
+                  class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", (i === 2 || i === 3) && "text-right"]}
+                >
+                  {heading}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody role="rowgroup" class="text-ink-muted">
+            {group.funds.map((fund) => (
+              <tr role="row" class="border-b border-rule last:border-0 align-top">
+                <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-medium text-ink">
+                  {fund.ticker}
+                </th>
+                <td role="cell" data-label={COLUMNS[1]} class="py-2 pr-4">
+                  {fund.name}
+                  <span class="block max-w-[52ch] text-xs text-ink-faint">{fund.mandate}</span>
+                </td>
+                <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                  {bp(fund.expenseRatioBp)}
+                </td>
+                <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
+                  {bp(fund.netCostBp)}
+                </td>
+                <td role="cell" data-label={COLUMNS[4]} class="py-2 text-xs">
+                  {fund.status ? statusMeta[fund.status].label : "Not scored"}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </Breakout>
+    ))
+  }
+</Base>

@@ -1,0 +1,664 @@
+# Frozen before any replication was fitted under any new basis and before any
+# result of this experiment was examined.
+#
+# THIS IS EXPERIMENT 009 RE-SCORED UNDER SEVEN REPLICATION BASES. Experiment 014
+# did this for the US shelf and found two things: 27% of the systematic-value
+# shortfall magnitude was the comparator rather than the fund, and -- the larger
+# finding -- two PLACEBO bases that add columns without adding a size-by-style
+# cell moved MORE verdicts than the expressive bases did. Decision record 0003
+# now requires a fitted comparator to carry a placebo comparator beside it.
+# Experiment 009's ex-US basis has never been varied and is owed that treatment.
+#
+# WHY THE EX-US CASE MATTERS MORE. Experiments 005 and 006 located value at
+# +4.7 pp/yr and momentum at +7.3 pp/yr pooled across three regions, both carried
+# by the two NON-US regions. The ex-US products are the implementation path for
+# the only premia that reached `exploratory` at all. And the ex-US clause (c)
+# rejections look fragile on their face: GWX carries the largest intended loading
+# in the entire ex-US audit at +0.856 and is rejected on clause (c) alone.
+#
+# EXACTLY ONE VARIABLE MOVES: the list of tickers in the replicating basis.
+# Everything else is byte-identical to Experiment 009 and asserted as such before
+# this run -- the same committed universe file and the same committed product
+# facts by sha256, the same 25 audited funds, the same 2019-07..2025-12 window
+# and the same per-fund windows, the same REGIONAL factor panels, HAC 6 lags,
+# mean block 6 months, 10,000 resamples, seed 20260812, the same four falsifier
+# clauses at the same thresholds, and the same regional comparators VEA and VWO.
+# Every loading, alpha, MDE, bootstrap interval and pedestal in this run is
+# IDENTICAL BY CONSTRUCTION across all seven bases, because the basis enters
+# nowhere except clauses (c) and (d).
+#
+# NEITHER EXPERIMENT 002 NOR EXPERIMENT 009 IS MODIFIED. Experiment 002's two
+# screening regexes are asserted byte-for-byte and Experiment 009's
+# specification, universe and product facts by sha256, before anything is
+# fetched.
+#
+# THE PANEL IS NAMED EVERYWHERE. Experiment 009's fifth conclusion is that
+# grading these funds on the US panel instead of their own would put 16 of 25
+# below the 0.15 bar rather than 5, moving loadings by up to 0.480. An ex-US
+# loading without its panel named is not a number. Every loading reported here is
+# on the fund's OWN region's French panel, reproduced from Experiment 009 and
+# never re-estimated.
+#
+# WHICH DIRECTION THIS CUTS. Every basis here is fitted IN SAMPLE, so every one
+# is a best case for the replication and a HARD test for the product. A richer
+# basis is a HARDER test, not a fairer one in the investor's favour.
+experiment_family: exp_015_exus_replication_basis
+title: How much of Experiment 009's clause (c) was the ex-US basis
+entry_point: exp_015_exus_replication_basis
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  Experiment 009's five clause (c) rejections, and in particular GWX's, are
+  substantially an artefact of a replicating basis of five funds -- VEA, VWO,
+  VSS, EFV, EFG -- that cannot express developed-ex-US small value, any emerging
+  style, developed quality or developed momentum, and that carries ONE emerging
+  fund for a whole asset class. Under a basis that can express those cells the
+  clause (c) verdicts move materially, and some of the twelve products that
+  reached `exploratory` fail to survive the harder comparator.
+
+mechanism: >
+  Clause (c) compares a product against a long-only combination of cheap broad
+  ex-US funds fitted by constrained least squares on the product's own months.
+  The combination can only express what some column of its basis carries.
+  Experiment 009 chose five columns for a shelf spanning developed and emerging
+  markets, value, size, momentum, quality and multifactor, across two regions
+  that its own wrong-panel test proves are not interchangeable. A product whose
+  exposure no column carries has the unexpressible part of its return land in the
+  mean difference, and clause (c) reads that as implementation value in whichever
+  direction it happens to fall. There is a second, structural channel this
+  experiment must measure separately: Experiment 009 DROPS a basis constituent
+  that does not cover a fund's own months, so its basis silently varies fund by
+  fund, and GWX and RODM -- whose filed history begins in 2019-07, one month
+  before every constituent except VEA -- were replicated by VEA ALONE. That is a
+  coverage artefact rather than a span artefact and the two are separated here.
+
+falsifier: >
+  This experiment does not grade funds; it grades Experiment 009's sensitivity to
+  a choice, so its falsifier is about the measurement rather than about a
+  product. The hypothesis above is REJECTED if, under every expressive basis, the
+  clause (c) verdicts and the shortfall magnitudes are substantially unchanged.
+  It is SUPPORTED if the shortfalls collapse towards zero or the statuses move.
+  Two results would invalidate the experiment itself rather than decide it:
+  (i) the frozen basis failing to reproduce Experiment 009's published
+  shortfalls, weights and statuses to ZERO difference, which would mean something
+  other than the basis moved and the run must be abandoned rather than reported;
+  and
+  (ii) the three placebo bases -- which add columns WITHOUT adding any
+  region-by-style cell the frozen basis does not already carry -- moving as many
+  verdicts as their column-count-matched expressive partners, which would mean
+  clause (c) responds to the NUMBER of columns rather than to what they can
+  express, and that clause (c) tells us nothing about the ex-US shelf. On the US
+  shelf this is exactly what Experiment 014 found, so it is the expected result
+  here and must be reported as the headline if it recurs.
+
+universe:
+  inherited_from: exp_009_exus_factor_products
+  rule: >
+    The 25 audited funds of Experiment 009, taken from its committed universe
+    file without re-screening and without rebuilding. This experiment never
+    writes a universe. The screen is not re-run, no fund is added and none is
+    removed; a fund's window, its month count and its launch-stub treatment are
+    produced by Experiment 009's own functions on Experiment 009's own
+    parameters.
+  frozen_inputs:
+    exp_002_specification_sha256: ede6fb48868990c3b3fd6e34f5c31508586865ec1948506706b77d860d578fe4
+    exp_009_specification_sha256: 2d2eb329c006738bd82d6c4fb38453d93cedfb6fe27128fec7231a0090473365
+    exp_009_specification_hash: e99e2a6e27fbf301a351ed7863820a3f5fb56e99a7183f30321444721d899687
+    exp_009_universe_sha256: 5ad15e610834ffdd0e8c59e9164c4d6a827fd54bfd4ef141b8736428f510566c
+    exp_009_product_facts_sha256: c948e38f7aea27a1bd39d5a27caf9a134a54f144ac0d9592ecc4f8b507110fc1
+    note: >
+      All five are asserted before anything is fetched. Editing Experiment 002 or
+      Experiment 009 fails this experiment loudly instead of silently making the
+      comparison meaningless. The specification HASH is the canonical-JSON hash
+      the ledger counts; the specification SHA256 is of the YAML file's raw bytes,
+      and both are recorded because they answer different questions. The product
+      facts file is asserted too, and not only the universe, because EVERY basis
+      constituent's fee is read from it: all fifteen tickers used by any basis
+      below are already in Experiment 009's committed facts, so this experiment
+      introduces no new product fact and no new fee.
+  comparators:
+    developed_ex_us_market:
+      ticker: VEA
+      rationale: Experiment 009's developed-ex-US comparator and pedestal, unchanged. It is not a variable here.
+    emerging_market:
+      ticker: VWO
+      rationale: Experiment 009's emerging comparator and pedestal, unchanged. It is not a variable here.
+    us_pedestal:
+      ticker: VTI
+      rationale: Experiment 009's US pedestal, unchanged and reproduced.
+    basis_rule_common_to_every_basis: >
+      Non-negative weights summing to one, fitted by constrained least squares on
+      the SAME months as the exposure regression, by the same
+      exp_002_fund_exposure.replicating_weights used by all three earlier audits.
+      A fund is NEVER in its own basis. A basis constituent that does not cover a
+      product's whole window is dropped from that product's basis. That last rule
+      is EXPERIMENT 009'S OWN and is kept unchanged here, because changing it
+      would be a second variable -- but it means the basis varies fund by fund,
+      so the number of columns each fund actually saw is reported per fund per
+      basis, and the funds whose basis was reduced are named.
+    coverage_is_frozen_not_discovered:
+      note: >
+        The first month each declared constituent covers is written down here
+        before the run and asserted against the filings at run time. Coverage is
+        therefore part of the frozen design rather than something discovered
+        after seeing which fund moved.
+      first_month_covered:
+        VEA: 2019-07
+        EWX: 2019-07
+        MFEM: 2019-07
+        VWO: 2019-08
+        VSS: 2019-08
+        EFV: 2019-08
+        EFG: 2019-08
+        IEFA: 2019-08
+        IVLU: 2019-08
+        SCZ: 2019-08
+        IDHQ: 2019-08
+        IDMO: 2019-08
+        AVDV: 2019-09
+        SCHC: 2019-09
+        FNDC: 2019-09
+      consequence: >
+        Only VEA, EWX and MFEM carry a 2019-07 filing. GWX (78 months from
+        2019-07) and RODM (77 months from 2019-07) therefore see a REDUCED basis
+        under every basis below, and under the frozen basis they saw exactly one
+        column: VEA, a developed large-cap fund, standing in for a developed
+        SMALL-CAP fund. MFEM, an emerging fund whose history also begins
+        2019-07, has no replication at all in any basis, because Experiment 009
+        requires the region's comparator VWO to cover the window and it does not.
+        None of that is fixable by a basis and none of it is hidden here.
+    bases:
+      - id: A_frozen
+        role: control
+        tickers: [VEA, VWO, VSS, EFV, EFG]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+        why: >
+          Experiment 009's basis, unchanged. It is reproduced here to zero
+          difference or this experiment is abandoned. If it does not reproduce,
+          the difference is not the basis.
+      - id: B_plus_developed_small_value
+        role: minimal expressive change
+        tickers: [VEA, VWO, VSS, EFV, EFG, AVDV]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+          - developed ex-US small value
+        why: >
+          One fund added, and it is the cell most obviously missing: the frozen
+          basis carries a LARGE value fund and a small BLEND fund and cannot
+          express their interaction, which is precisely what AVDV, DISV, FNDC and
+          GWX are sold as. AVDV at 0.36% is the cheapest developed-ex-US
+          small-value ETF in Experiment 009's committed facts with a window long
+          enough to serve as a column at all; DISV at 0.42% has 47 months and
+          would make the basis vary far more than it already does. AVDV is an
+          audited product, exactly as VBR was in Experiment 014, so it becomes
+          degenerate in its own row.
+      - id: B_placebo_one_column
+        role: placebo matched to B
+        tickers: [VEA, VWO, VSS, EFV, EFG, IEFA]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+        why: >
+          Six columns, exactly as many as B, and NOT ONE new region-by-style
+          cell: IEFA is a second cap-weighted developed-ex-US market fund at
+          0.07% sitting in the cell VEA already occupies. Whatever this moves is
+          what one extra column alone moves.
+      - id: C_plus_emerging_blocks
+        role: expressive, emerging
+        tickers: [VEA, VWO, VSS, EFV, EFG, EWX, MFEM]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+          - emerging small blend
+          - emerging multifactor tilt
+        why: >
+          The frozen basis carries ONE emerging fund for a whole asset class,
+          against which four emerging products are scored. EWX is the only
+          emerging small-cap ETF in the committed facts covering the window;
+          MFEM is the cheapest emerging multifactor fund covering it, tied at
+          0.49% with JHEM and taken on the declared tiebreak of longer coverage.
+          EWX at 0.65% is ABOVE the 0.60% expense cap Experiment 009's screen
+          applies to GRADED products; it is admitted here as a building block and
+          not as an investment, and the consequence is recorded: a dearer basis
+          lowers the fee-premium term and so pushes every shortfall a few basis
+          points more negative, which is one to two orders of magnitude smaller
+          than the tracking-difference term and is reported separately.
+      - id: C_placebo_two_columns
+        role: placebo matched to C
+        tickers: [VEA, VWO, VSS, EFV, EFG, IEFA, SCZ]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+        why: >
+          Seven columns, exactly as many as C, and no new cell: a second
+          developed-market fund and a second ex-US small-blend fund.
+      - id: D_expressive_ex_us
+        role: maximally expressive cheap ex-US basis
+        tickers: [VEA, VWO, VSS, EFV, EFG, AVDV, IDHQ, IDMO, EWX, MFEM]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+          - developed ex-US small value
+          - developed ex-US quality
+          - developed ex-US momentum
+          - emerging small blend
+          - emerging multifactor tilt
+        why: >
+          Every region-by-style cell any product in this audit claims, at the
+          cheapest fund per cell that covers a usable window, chosen on FEE and
+          DECLARED MANDATE alone and before any loading was read. VEA 0.03, VWO
+          0.06, VSS 0.06, EFV 0.31, EFG 0.34 are Experiment 009's own five. AVDV
+          0.36 is the only long-window developed small-value fund. IDHQ 0.29 is
+          the cheapest developed-ex-US quality fund with a full window, ahead of
+          IQLT at 0.30 and DIHP at 0.27 which has 47 months. IDMO 0.25 is the
+          cheapest developed-ex-US momentum fund, ahead of IMTM at 0.30. EWX 0.65
+          and MFEM 0.49 are the emerging blocks, as in C. This is "cheap" on the
+          ex-US shelf and nowhere near cheap on the US one: the cheapest ex-US
+          style exposure costs 25 to 65 basis points against 3 to 5 in the United
+          States, and that asymmetry is a property of the shelf rather than of
+          this design.
+      - id: D_placebo_five_columns
+        role: placebo matched to D
+        tickers: [VEA, VWO, VSS, EFV, EFG, IEFA, IVLU, SCZ, SCHC, FNDC]
+        cells:
+          - developed ex-US market
+          - emerging market
+          - ex-US small blend
+          - developed ex-US large value
+          - developed ex-US large growth
+        why: >
+          Ten columns, exactly as many as D, and NOT ONE new region-by-style
+          cell: a second developed-market fund, a second developed large-value
+          fund and three more ex-US small-blend funds. If clause (c) moves as
+          much here as under D then what moved it is the number of free
+          parameters handed to a look-ahead fit and not the ability to express an
+          exposure. Three placebos rather than one, each matched to an expressive
+          basis on column count, because a single placebo cannot show how much a
+          placebo itself varies.
+    basis_constituent_facts:
+      note: >
+        Fee, index and region are Experiment 009's committed product facts,
+        unchanged and asserted by sha256. Every constituent of every basis is
+        already in that file, so this experiment introduces no new product fact.
+      constituents:
+        - {ticker: VEA, fee_percent: 0.03, index: FTSE Developed All Cap ex US Index, cell: developed ex-US market}
+        - {ticker: VWO, fee_percent: 0.06, index: FTSE Emerging Markets All Cap China A Inclusion Index, cell: emerging market}
+        - {ticker: VSS, fee_percent: 0.06, index: FTSE Global Small Cap ex US Index, cell: ex-US small blend}
+        - {ticker: EFV, fee_percent: 0.31, index: MSCI EAFE Value Index, cell: developed ex-US large value}
+        - {ticker: EFG, fee_percent: 0.34, index: MSCI EAFE Growth Index, cell: developed ex-US large growth}
+        - {ticker: AVDV, fee_percent: 0.36, index: none; actively managed, cell: developed ex-US small value}
+        - {ticker: IDHQ, fee_percent: 0.29, index: S&P Quality Developed ex-U.S. LargeMidCap Index, cell: developed ex-US quality}
+        - {ticker: IDMO, fee_percent: 0.25, index: S&P World Ex-U.S. Momentum Index, cell: developed ex-US momentum}
+        - {ticker: EWX, fee_percent: 0.65, index: S&P Emerging Under USD2 Billion Index, cell: emerging small blend}
+        - {ticker: MFEM, fee_percent: 0.49, index: RAFI Dynamic Multi-Factor Emerging Markets Index, cell: emerging multifactor tilt}
+        - {ticker: IEFA, fee_percent: 0.07, index: MSCI EAFE IMI Index, cell: developed ex-US market}
+        - {ticker: IVLU, fee_percent: 0.31, index: MSCI World ex USA Enhanced Value Index, cell: developed ex-US large value}
+        - {ticker: SCZ, fee_percent: 0.40, index: MSCI EAFE Small Cap Index, cell: ex-US small blend}
+        - {ticker: SCHC, fee_percent: 0.06, index: FTSE Developed Small Cap ex US Liquid Index, cell: ex-US small blend}
+        - {ticker: FNDC, fee_percent: 0.39, index: RAFI Fundamental High Liquidity Developed ex US Small Company Index, cell: ex-US small blend}
+    degenerate_cases: >
+      Every basis constituent except VEA, VWO, VSS, IEFA and EWX is itself an
+      audited product here, and a fund is never in its own basis, so the
+      replication degenerates for more funds as the basis grows. Under the frozen
+      basis it degenerates for TWO -- EFV and EFG, each replicated by VEA at
+      weight 1.000, which is the same pattern the US audit shows for VUG. For
+      those funds the "implementation shortfall" is the realised style return of
+      2019-2025 rather than an implementation cost, and their clause (c) outcomes
+      must be read that way in every basis. The set therefore CHANGES with the
+      basis, and a status change on such a fund is a change in what is being
+      measured rather than a change in the fund. The affected tickers are
+      recorded per basis in the result.
+
+sample_policy:
+  start: "2019-07"
+  end: "2025-12"
+  held_out: >
+    Observations after 2025-12 are not read. No filing is downloaded that can only
+    report months after it. Nothing new is fetched that Experiment 009 did not
+    already fetch except the basis constituents IEFA and EWX, both of which are
+    already in Experiment 009's committed product facts.
+  embargo: >
+    None; no forecast is made across a boundary. The fixed calendar halves are
+    Experiment 009's, unchanged.
+  eras:
+    - name: common_period
+      start: "2019-07"
+      end: "2025-12"
+      rationale: Experiment 009's window, unchanged. Each fund is scored on the part of it that fund covers.
+    - name: us_comparable_period
+      start: "2020-01"
+      end: "2025-12"
+      rationale: Experiment 009's era, carried unchanged so the era set is identical.
+    - name: first_half
+      start: "2019-07"
+      end: "2022-09"
+      rationale: Experiment 009's fixed split for clause (b), unchanged and fitted only where a fund covers it.
+    - name: second_half
+      start: "2022-10"
+      end: "2025-12"
+      rationale: Second half of the same fixed split.
+    - name: value_reversal
+      start: "2022-01"
+      end: "2022-12"
+      rationale: Experiment 009's era, carried unchanged.
+
+benchmark:
+  primary: >
+    Experiment 009's own published clause (c) shortfalls and statuses under the
+    frozen VEA/VWO/VSS/EFV/EFG basis. This experiment is a difference against
+    that, and the difference is only interpretable if the control reproduces it
+    exactly.
+  secondary: >
+    The three placebo bases, each matched on column count to one expressive
+    basis, which bound how much of any difference is the number of columns rather
+    than what they span.
+  factor_model: >
+    FF5 plus UMD on each fund's OWN region's French file -- developed ex-US or
+    emerging -- exactly as in Experiment 009, plus the US file for the VTI
+    pedestal alone. The panel is not a variable here and is named on every
+    reported loading, because Experiment 009 measured that grading these funds on
+    the US panel instead of their own moves loadings by up to 0.480 and would put
+    16 of 25 below the bar rather than 5.
+  note: >
+    The factor model is present only because clauses (a) and (b) still have to be
+    evaluated in order to produce a status. Every loading, alpha, MDE, interval
+    and pedestal in this run is identical to Experiment 009's for every fund and
+    is reported as a reproduction, never as a new measurement.
+
+primary_metric:
+  name: basis attribution of the implementation shortfall
+  definition: >
+    For each audited fund, the implementation shortfall under a candidate basis
+    minus the implementation shortfall under the frozen basis. A POSITIVE
+    difference means the frozen basis made the product look better than a basis
+    that can express its exposure does -- that part of the fund's advantage was
+    the comparator, not the fund.
+  units: percentage points per year
+  uncertainty: >
+    NONE, and none may be invented. Both quantities are look-ahead fits on the
+    same months, so their difference is a deterministic property of the two bases
+    over that window and has no sampling distribution that this construction
+    identifies. What bounds it instead is the placebo spread, which is reported
+    beside every difference.
+
+secondary_metrics:
+  - name: status under each basis
+    units: categorical
+    note: One of `exploratory`, `rejected`, `unresolved`, produced by Experiment 009's frozen falsifier applied unchanged.
+  - name: count of the 25 verdicts that change
+    units: count
+  - name: clause (c) and clause (d) firing counts
+    units: count
+  - name: columns a fund's basis actually contained
+    units: count
+    note: >
+      Experiment 009 drops a constituent that does not cover a fund's window, so
+      this is reported per fund per basis and the reduced set is named. It is the
+      difference between a basis that could not express something and a basis
+      that was not there.
+  - name: tracking error against the fitted combination
+    units: percentage points per year
+    note: A basis that reduces tracking error without moving the mean difference is fitting variance and not level.
+  - name: number of non-zero weights in the fitted combination
+    units: count
+    note: How much of the added freedom the fit actually used. A corner solution uses one column however many are offered.
+
+cost_model:
+  applied: true
+  fund_level: >
+    Experiment 009's, unchanged. The fund's own Item B.5 monthly total return,
+    already net of the published expense ratio, already assuming reinvested
+    distributions and already net of foreign dividend withholding. The expense
+    ratio is NOT subtracted a second time.
+  basis_level: >
+    The fee premium subtracted in clause (c) is the fund's net expense ratio less
+    the WEIGHTED fee of its fitted basis, so a richer and dearer basis
+    mechanically lowers the fee premium and pushes the shortfall a few basis
+    points more negative. That term is reported separately per basis so it is not
+    confused with the tracking-difference term, which is one to two orders of
+    magnitude larger.
+  withholding: >
+    UNCHANGED AND STILL NOT SEPARABLE. Every basis constituent is a US-domiciled
+    1940-Act fund facing the same treaty rates as the product, so a difference
+    between a product and its replication cannot be foreign tax. Experiment 009's
+    attempt to bound the drag failed in the wrong direction and this experiment
+    does not retry it.
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  net_optimistic: The fund's reported total return as filed.
+  net_pessimistic: NOT COMPUTABLE from Form N-PORT, exactly as in Experiments 002, 009, 013 and 014.
+  unobservable_in_the_primary_source: >
+    Realised taxable distributions, portfolio turnover and foreign tax paid are
+    absent from Form N-PORT and are recorded as gaps. Clause (d) is evaluated
+    without the distribution term the falsifier names, in every basis alike.
+
+rebalance_rule:
+  shareholder: buy and hold the fund; no rebalancing within this experiment
+  comparator_combination: >
+    Monthly rebalance to the fitted approximating weights, identical across all
+    seven bases, so no basis is flattered by a different drift treatment.
+
+inference:
+  bootstrap: stationary block bootstrap on returns
+  block_length_policy: >
+    Mean block 6 months, frozen and not tuned, identical to Experiments 002 and
+    009. The bootstrap here bears only on the intended-loading interval, which is
+    basis-invariant, so it is computed once and reused across all seven bases; it
+    is not part of the basis comparison. It is nonetheless computed in Experiment
+    009's own order over Experiment 009's own fund list, so the interval that
+    decides an `unresolved` status is reproduced bit for bit rather than
+    approximately.
+  multiple_testing_correction: >
+    NO NEW ALPHA TEST IS PERFORMED. The alpha family is Experiment 009's fits
+    exactly, reproduced and not re-corrected, because re-running an identical test
+    under a different comparator does not create a new hypothesis about alpha. The
+    multiplicity this experiment DOES create is in the basis dimension: seven
+    bases are declared here before any of them is scored, and all seven are
+    reported, so the count of bases tried is fixed by this file and cannot be
+    reconstructed favourably afterwards.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    The primary metric has no interval by construction and the specification says
+    so above rather than leaving a reader to assume one was omitted by accident.
+
+rejection_rule: >
+  Per fund and per basis: Experiment 009's frozen falsifier, applied unchanged.
+  `rejected` when a clause fires, `unresolved` when none fires and the intended
+  loading's 95% bootstrap interval contains 0.15, `exploratory` otherwise. NOTHING
+  IS PROMOTED under any basis: decision record 0002 caps every fund-level result
+  here at `exploratory`, and a change of comparator cannot lift that ceiling. The
+  experiment as a whole is abandoned rather than reported if the control basis
+  fails to reproduce Experiment 009 to zero difference.
+
+parameters:
+  minimum_intended_loading: 0.15
+  materiality_threshold_annual_percent: 1.0
+  clause_c_threshold_annual_percent: 0.50
+  hac_lags: 6
+  minimum_monthly_observations: 36
+  power_target: 0.80
+  rolling_window_months: 36
+  cash_series: french_rf_one_month_bill
+  reproduction_tolerance: 0.0
+  reproduction_tolerance_note: >
+    ZERO. The control basis must reproduce every one of Experiment 009's
+    published implementation shortfalls, tracking differences, fitted weights and
+    statuses exactly, because the same functions are run over the same bytes. A
+    tolerance would hide exactly the failure this check exists to catch.
+  regional_panels:
+    developed_ex_us:
+      factors: french_developed_ex_us_ff5
+      momentum: french_developed_ex_us_momentum
+    emerging:
+      factors: french_emerging_ff5
+      momentum: french_emerging_momentum
+    us_pedestal_only:
+      factors: french_us_ff5
+      momentum: french_us_momentum
+    note: >
+      Experiment 009's, unchanged. Every loading reported here carries the name of
+      the panel it was estimated on, because an ex-US loading without its panel
+      named is not a number.
+  what_changes_from_exp_009:
+    changed:
+      - id: replicating_basis
+        was: VEA, VWO, VSS, EFV, EFG, fitted in sample
+        now: >
+          seven declared bases, one of which IS VEA, VWO, VSS, EFV, EFG and is
+          used as the control
+        why: >
+          Experiment 014 measured, for the US shelf, how much of clause (c) was
+          the comparator, and found that placebo bases moved more verdicts than
+          expressive ones. Decision 0003 now requires a fitted comparator to carry
+          a placebo comparator. Experiment 009's basis has never been varied, and
+          the ex-US shelf is where the only premia that reached `exploratory` at
+          all would have to be implemented.
+    not_changed:
+      - the committed Experiment 009 universe file and product facts, by sha256
+      - the 25 audited funds, their windows, their month counts and the launch-stub rule
+      - the regional comparators VEA and VWO and the US pedestal VTI
+      - the regional factor panels and the rule that each fund is graded on its own
+      - the falsifier's four clauses and their thresholds 0.15, sign flip, 0.50 pp/yr, 1.0 pp/yr
+      - the frozen window 2019-07..2025-12 and every era
+      - HAC 6 lags, block length 6, resamples 10000, confidence 0.95, seed 20260812
+      - sigma_true_annual_percent 1.25 for alpha shrinkage
+      - the rule that a basis constituent not covering a fund's window is dropped for that fund
+      - every exposure, alpha, MDE, bootstrap interval and pedestal, which are basis-invariant
+    consequence_for_exp_002_and_exp_009: >
+      None to either. Both specification hashes, both committed universes and
+      every published number are untouched. What changes is how Experiment 009's
+      clause (c) column should be READ.
+  alpha_shrinkage:
+    description: Experiment 009's, unchanged and reproduced rather than re-derived.
+    sigma_true_annual_percent: 1.25
+    transferred_not_measured: >
+      Still an assumption transferred from a bootstrap of US active mutual funds
+      over 1984-2006. It decides every shrunk alpha here exactly as it did there,
+      and no alpha is a promotion criterion in either direction. Experiment 009's
+      median ex-US MDE at 80% power is 3.23 pp/yr: alpha is unmeasurable on this
+      shelf and must not become a criterion.
+  look_ahead_direction:
+    statement: >
+      EVERY basis in this experiment is fitted in sample. A richer basis is a
+      HARDER test of the product, not a fairer one in the investor's favour: it
+      hands the hindsight combination more columns to fit with. No number here
+      describes a portfolio anybody could have held.
+    asymmetry: >
+      The harder test cuts in opposite directions for opposite signs. A product
+      that LOST to the frozen replication may be rescued by a richer basis, and a
+      product that BEAT it may lose that advantage. Twelve products reached
+      `exploratory` in Experiment 009 and the interesting question is whether they
+      survive, not whether the five rejections are reversed.
+  coverage_versus_span:
+    statement: >
+      Two different defects can move clause (c) and this experiment separates
+      them. SPAN is what the basis can express. COVERAGE is which constituents
+      were present for a given fund at all, and Experiment 009's rule drops a
+      constituent that does not cover a fund's months. GWX and RODM saw ONE
+      column under the frozen basis for a coverage reason, not a span reason.
+    diagnostic: >
+      For every fund whose basis was reduced under a given basis, the reduced set
+      is named and the columns lost are listed. In addition, and labelled as a
+      SECOND-VARIABLE DIAGNOSTIC that is not a verdict, GWX's and RODM's clause
+      (c) is recomputed on their windows trimmed to 2019-08 so that the whole
+      declared basis is available to them. That diagnostic moves the window as
+      well as the basis and therefore cannot produce a status; it exists because
+      GWX carries the largest intended loading in the entire ex-US audit at
+      +0.856 and is rejected on cost alone, and a reader is entitled to know
+      whether that rejection is a property of the fund or of one month of filing
+      history.
+  prior_exploration:
+    declared_before_this_run: true
+    statement: >
+      Experiment 009's committed artifact was read before this specification was
+      frozen, in order to extract the reproduction fixture and to establish which
+      constituents cover which months. What was read is the CONTROL basis's own
+      published output -- the same figures the page already publishes -- and the
+      per-ticker first month of filed coverage, which is a property of the SEC
+      filing calendar and not of any return. No candidate basis was scored before
+      this file was frozen, and the effective number of looks is therefore the
+      seven bases declared here. It is recorded rather than left in nobody's
+      memory.
+
+data_sources:
+  - id: french_developed_ex_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+  - id: french_developed_ex_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_MOM_Factor_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+  - id: french_emerging_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+  - id: french_emerging_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_MOM_Factor_CSV.zip
+    manifest: data-manifests/french_emerging_momentum_monthly.json
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: sec_edgar_nport_p_filings
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=NPORT-P
+  - id: exp_009_committed_universe
+    url: data-manifests/exp_009/product_universe.json
+  - id: exp_009_committed_product_facts
+    url: data-manifests/exp_009/product_facts.json
+
+hostile_tests:
+  - Assert Experiment 002's two screening regexes byte-for-byte, and Experiment 009's specification, universe and product facts by sha256, before anything is fetched.
+  - Reproduce Experiment 009's frozen basis to ZERO difference in every shortfall, every tracking difference, every fitted weight and every status, and abandon the run if it does not.
+  - Assert the frozen first month of filed coverage for every declared basis constituent against the filings actually retrieved, so coverage is part of the design rather than a discovery.
+  - Run three placebo bases, each matched on column count to one expressive basis, with NO new region-by-style cell, and report how many verdicts each moves BESIDE its partner rather than after it. If the placebos move as many as their partners, say so as the headline: clause (c) would then tell us nothing about the ex-US shelf.
+  - Report per fund per basis how many columns the basis actually contained for that fund, and name every fund whose basis was reduced by the coverage rule.
+  - Recompute GWX's and RODM's clause (c) on windows trimmed to 2019-08 so the whole basis is available, labelled a second-variable diagnostic and never a verdict.
+  - Report the number of non-zero fitted weights per basis, so a corner solution is not read as the basis being used.
+  - Record which funds are degenerate under each basis, since a fund excluded from its own basis is measuring a style return rather than an implementation cost.
+  - Report the fee-premium term separately from the tracking-difference term, so a mechanical few-basis-point shift from a dearer basis is not read as a fund result.
+  - Report MDE at 80% power beside every alpha, unchanged from Experiment 009, and state again that alpha is not a promotion criterion and that the median ex-US MDE is 3.23 pp/yr.
+  - Name the regional panel beside every loading, since grading these funds on the US panel would move 16 of 25 across the bar.
+  - State whether any emerging product can reach `exploratory` under any basis, and whether that is decidable by a basis at all.
+
+reporting_requirements:
+  - Whether the frozen basis reproduced Experiment 009 exactly, stated before any other number.
+  - The decomposition table for every fund whose clause (c) fired, shortfall under every basis and the difference from the frozen basis.
+  - The same aggregate for all 25 audited funds.
+  - How many of the 25 statuses change under each basis, named individually.
+  - The placebo movements beside their column-count-matched expressive partners, never after them.
+  - Whether GWX survives, with the coverage diagnostic beside the basis result.
+  - Whether any emerging product reaches `exploratory`, and which clause decides it.
+  - Whether the twelve products that already reached `exploratory` survive the harder bases.
+  - An explicit statement of which direction a richer basis cuts.
+  - The panel every loading was estimated on.
+
+notes: >
+  Nothing here may be promoted. Decision record 0002 caps all fund-level work at
+  `exploratory` until a source with a documented total-return and corporate-action
+  contract is licensed, and no change of comparator affects that. This experiment
+  cannot make a product better or worse; it can only say how much of a published
+  number was a property of the thing it was compared against.

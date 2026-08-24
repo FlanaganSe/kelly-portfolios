@@ -1,0 +1,31 @@
+{
+  "files": [
+    {
+      "kind": "json",
+      "path": "946844e68ba4455a9975c89baeaba8e9/result.json",
+      "sha256": "5ac6e6084b097f2b17a51715aac9aceb6400cabbb74ee83353b26fb97094279a",
+      "size_bytes": 8572
+    },
+    {
+      "kind": "markdown",
+      "path": "946844e68ba4455a9975c89baeaba8e9/summary.md",
+      "sha256": "654ad8caab2bfa414af213af173670bdba668fcec448b167619b2e81ed2516bf",
+      "size_bytes": 5254
+    },
+    {
+      "kind": "parquet",
+      "path": "946844e68ba4455a9975c89baeaba8e9/frames/correlation_sweep.parquet",
+      "sha256": "965ef7539c5ce08388fac8a735ee5b0923da56f68ee88ed17b6acef933d36dca",
+      "size_bytes": 4295
+    },
+    {
+      "kind": "parquet",
+      "path": "946844e68ba4455a9975c89baeaba8e9/frames/ladder.parquet",
+      "sha256": "1c51b0241e19b62ab3dea43b66d1f4a889d8414c5aeface231dbebb73e828822",
+      "size_bytes": 8597
+    }
+  ],
+  "run_id": "946844e68ba4455a9975c89baeaba8e9",
+  "spec_hash": "7c3822a2dcc0810b2efc0039f6af24630204951b0b927b33ff67c26893f57c67",
+  "status": "exploratory"
+}

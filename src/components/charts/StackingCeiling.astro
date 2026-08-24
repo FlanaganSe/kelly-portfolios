@@ -1,0 +1,406 @@
+---
+/**
+ * Why stacking more 55% bets stops paying.
+ *
+ * The central argument of the flagship page, and prose cannot make anyone *feel* an
+ * asymptote. The y-axis therefore runs the whole way to 100% and is not clipped: the
+ * empty upper two thirds is the picture's actual content. Three of the four curves are
+ * flat before the fifth strategy and never leave the bottom tenth of the frame.
+ *
+ * Everything is drawn in ink at four intensities. Identity is carried by a **direct
+ * label on every curve**, by stroke weight, and by a dash on the one hypothetical curve;
+ * the ink step only reinforces it. Nobody has to match a shade to a legend, and the
+ * figure survives a greyscale printout, full colour blindness and `forced-colors`.
+ *
+ * Two renderings, one dataset. The wide one puts the curve labels in the right gutter on
+ * leader lines. Below 40rem a viewBox 960 units across would shrink 12px type to under
+ * 5px, so the narrow one is a separate SVG with the labels moved inside the plot, above
+ * each curve's right-hand end.
+ */
+import ChartFrame from "~/components/charts/ChartFrame.astro";
+import { linearScale, linePath, logScale } from "~/components/charts/scale";
+import { captureOfCeiling, stackingCeiling, stackingProbability } from "~/lib/stacking";
+
+interface Props {
+  /** The chance one such strategy beats the benchmark. The investor's premise is 55%. */
+  single?: number;
+  class?: string;
+}
+
+const { single = 0.55, class: className } = Astro.props;
+
+const MIN_K = 1;
+const MAX_K = 100;
+const K_TICKS = [1, 2, 3, 5, 10, 25, 50, 100] as const;
+const P_TICKS = [0.5, 0.6, 0.7, 0.8, 0.9, 1] as const;
+const SAMPLES = 160;
+/** The strategy count the one annotation sits on. */
+const ANNOTATED_K = 5;
+
+/**
+ * `wideLabelY` and `narrowLabelY` are hand-nudged in viewBox units. Three of these four
+ * curves converge inside four percentage points of each other, so an automatic placement
+ * either overlaps or fans the labels so far from their curves that the leader stops
+ * meaning anything. The nudges are small and they are checked in a screenshot.
+ */
+const SERIES = [
+  {
+    rho: 0,
+    key: "rho-0",
+    label: "ρ = 0",
+    gloss: "hypothetical",
+    tableLabel: "0 — independent, hypothetical",
+    width: 1.4,
+    dash: "6 5",
+    ink: "var(--plot-quieter)",
+    wideLabelY: 108,
+    narrowLabelY: 70,
+  },
+  {
+    rho: 0.2,
+    key: "rho-20",
+    label: "ρ = 0.20",
+    gloss: "ceiling 61.1%",
+    tableLabel: "0.20",
+    width: 1.4,
+    dash: undefined,
+    ink: "var(--plot-quieter)",
+    wideLabelY: 348,
+    narrowLabelY: 243,
+  },
+  {
+    rho: 0.435,
+    key: "rho-435",
+    label: "ρ = 0.435",
+    gloss: "measured · ceiling 57.6%",
+    tableLabel: "0.435 — measured on this portfolio",
+    width: 2.6,
+    dash: undefined,
+    ink: "var(--plot-ink)",
+    wideLabelY: 376,
+    narrowLabelY: 264,
+  },
+  {
+    rho: 0.7,
+    key: "rho-70",
+    label: "ρ = 0.70",
+    gloss: "ceiling 56.0%",
+    tableLabel: "0.70",
+    width: 1.4,
+    dash: undefined,
+    ink: "var(--plot-quiet)",
+    wideLabelY: 400,
+    narrowLabelY: 293,
+  },
+] as const;
+
+type Layout = {
+  readonly w: number;
+  readonly h: number;
+  readonly left: number;
+  readonly right: number;
+  readonly top: number;
+  readonly bottom: number;
+};
+
+const WIDE: Layout = { w: 1000, h: 500, left: 48, right: 272, top: 20, bottom: 58 };
+const NARROW: Layout = { w: 390, h: 360, left: 32, right: 12, top: 14, bottom: 44 };
+
+function geometry(layout: Layout) {
+  const x = logScale([MIN_K, MAX_K], [layout.left, layout.w - layout.right]);
+  const y = linearScale([0.5, 1], [layout.h - layout.bottom, layout.top]);
+  const step = Math.log10(MAX_K) / (SAMPLES - 1);
+  const curves = SERIES.map((series) => {
+    const points: Array<[number, number]> = [];
+    for (let i = 0; i < SAMPLES; i += 1) {
+      const k = 10 ** (i * step);
+      points.push([x(k), y(stackingProbability({ count: k, correlation: series.rho, single }))]);
+    }
+    const endProbability = stackingProbability({ count: MAX_K, correlation: series.rho, single });
+    return { ...series, d: linePath(points), endY: y(endProbability), endProbability };
+  });
+  return { x, y, curves, plotRight: layout.w - layout.right, plotBottom: layout.h - layout.bottom };
+}
+
+const wide = geometry(WIDE);
+const narrow = geometry(NARROW);
+
+const annotated = stackingProbability({ count: ANNOTATED_K, correlation: 0.435, single });
+const annotatedCapture = captureOfCeiling({ count: ANNOTATED_K, correlation: 0.435, single });
+const measuredCeiling = stackingCeiling({ correlation: 0.435, single });
+
+const pct = (value: number, digits = 0) => `${(value * 100).toFixed(digits)}%`;
+
+const titleId = "stacking-ceiling-title";
+const descId = "stacking-ceiling-desc";
+const description =
+  `A log-scaled x-axis runs from 1 to 100 stacked strategies and a linear y-axis runs from 50% to 100%. ` +
+  `Four curves start together at ${pct(single)}. The hypothetical independent curve climbs to ` +
+  `${pct(stackingProbability({ count: MAX_K, correlation: 0, single }), 1)} at a hundred strategies and is still ` +
+  `climbing. The three correlated curves are flat by the fifth strategy and never rise above ` +
+  `${pct(stackingCeiling({ correlation: 0.2, single }), 1)}. The measured curve, at a correlation of 0.435, stops ` +
+  `at ${pct(measuredCeiling, 1)}. The upper two thirds of the frame is empty.`;
+
+/** Every table row: the published grid, plus the limit the curves are heading for. */
+const tableRows = SERIES.map((series) => ({
+  label: series.tableLabel,
+  cells: K_TICKS.map((k) => pct(stackingProbability({ count: k, correlation: series.rho, single }), 1)),
+  ceiling: series.rho === 0 ? "certainty, never reached" : pct(stackingCeiling({ correlation: series.rho, single }), 1),
+}));
+---
+
+<ChartFrame
+  title="More bets raise the odds. Correlation decides how far, and it is not far."
+  subtitle={`Chance of finishing ahead of a cheap index, against how many ${pct(single)} strategies you stack. Log scale.`}
+  tableSummary="The same curves as a table"
+  class={className}
+>
+  {/* ---------------------------------------------------------------- wide */}
+  <svg
+    class="plot hidden lg:block"
+    viewBox={`0 0 ${WIDE.w} ${WIDE.h}`}
+    role="img"
+    aria-labelledby={`${titleId} ${descId}`}
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title id={titleId}>Chance of beating a cheap index against the number of stacked strategies</title>
+    <desc id={descId}>{description}</desc>
+
+    {
+      P_TICKS.map((p) => (
+        <>
+          <line class="plot-grid" x1={WIDE.left} y1={wide.y(p)} x2={wide.plotRight} y2={wide.y(p)} />
+          <text class="plot-axis-text" x={WIDE.left - 8} y={wide.y(p) + 4} text-anchor="end">
+            {pct(p)}
+          </text>
+        </>
+      ))
+    }
+
+    {/* The reader's starting point. Labelled on the left, where k = 1 actually is. */}
+    <line
+      class="plot-guide"
+      x1={WIDE.left}
+      y1={wide.y(single)}
+      x2={wide.plotRight}
+      y2={wide.y(single)}
+      stroke-dasharray="2 3"
+    />
+    <text class="plot-label plot-halo" x={WIDE.left + 6} y={wide.y(single) + 18}>
+      one strategy on its own · {pct(single)}
+    </text>
+
+    {
+      K_TICKS.map((k) => (
+        <>
+          <line class="plot-grid" x1={wide.x(k)} y1={wide.plotBottom} x2={wide.x(k)} y2={wide.plotBottom + 5} />
+          <text class="plot-axis-text" x={wide.x(k)} y={wide.plotBottom + 19} text-anchor="middle">
+            {k}
+          </text>
+        </>
+      ))
+    }
+    <line class="plot-grid" x1={WIDE.left} y1={wide.plotBottom} x2={wide.plotRight} y2={wide.plotBottom} />
+    <text class="plot-axis-text" x={WIDE.left} y={wide.plotBottom + 40}>strategies stacked</text>
+
+    {
+      wide.curves.map((curve) => (
+        <>
+          {/* The ceiling each correlated curve is asymptotic to, drawn dashed because
+              it is a limit rather than a value anything reaches. */}
+          {curve.rho > 0 && (
+            <line
+              class="plot-line"
+              x1={WIDE.left}
+              y1={wide.y(stackingCeiling({ correlation: curve.rho, single }))}
+              x2={wide.plotRight + 10}
+              y2={wide.y(stackingCeiling({ correlation: curve.rho, single }))}
+              stroke={curve.ink}
+              stroke-width="0.8"
+              stroke-dasharray="1 4"
+            />
+          )}
+          <path class="plot-line" d={curve.d} stroke={curve.ink} stroke-width={curve.width} stroke-dasharray={curve.dash} />
+          <polyline
+            class="plot-line"
+            points={`${wide.plotRight},${curve.endY} ${wide.plotRight + 14},${curve.endY} ${wide.plotRight + 26},${curve.wideLabelY - 4} ${wide.plotRight + 34},${curve.wideLabelY - 4}`}
+            stroke={curve.ink}
+            stroke-width="0.8"
+          />
+          <text class="plot-label" x={wide.plotRight + 40} y={curve.wideLabelY}>
+            <tspan class="plot-label-lead">{curve.label}</tspan>
+            <tspan dx="6">{curve.gloss}</tspan>
+          </text>
+        </>
+      ))
+    }
+
+    {/* The one annotation. It sits in the empty upper half on purpose: the space is the
+        argument, and a single line of text there stops it reading as a blank panel. */}
+    <line
+      class="plot-guide"
+      x1={wide.x(ANNOTATED_K)}
+      y1={wide.y(annotated) - 8}
+      x2={wide.x(ANNOTATED_K)}
+      y2={244}
+      stroke-dasharray="2 3"
+    />
+    <circle cx={wide.x(ANNOTATED_K)} cy={wide.y(annotated)} r="4" fill="var(--plot-ink)" stroke="var(--paper)" stroke-width="2" />
+    <text class="plot-note plot-halo" x={wide.x(ANNOTATED_K) - 6} y="216" text-anchor="start">
+      <tspan x={wide.x(ANNOTATED_K) - 6} class="plot-label-lead">Five strategies are already {pct(annotatedCapture)} of the way there.</tspan>
+      <tspan x={wide.x(ANNOTATED_K) - 6} dy="16">The other ninety-five buy the remaining {pct(1 - annotatedCapture)}.</tspan>
+    </text>
+  </svg>
+
+  {/* -------------------------------------------------------------- narrow */}
+  <svg
+    class="plot max-w-[30rem] lg:hidden"
+    viewBox={`0 0 ${NARROW.w} ${NARROW.h}`}
+    role="img"
+    aria-label={description}
+    preserveAspectRatio="xMidYMid meet"
+  >
+    {
+      P_TICKS.map((p) => (
+        <>
+          <line class="plot-grid" x1={NARROW.left} y1={narrow.y(p)} x2={narrow.plotRight} y2={narrow.y(p)} />
+          <text class="plot-axis-text" x={NARROW.left - 6} y={narrow.y(p) + 4} text-anchor="end" style="font-size: 10px">
+            {pct(p)}
+          </text>
+        </>
+      ))
+    }
+
+    <line
+      class="plot-guide"
+      x1={NARROW.left}
+      y1={narrow.y(single)}
+      x2={narrow.plotRight}
+      y2={narrow.y(single)}
+      stroke-dasharray="2 3"
+    />
+
+    {
+      [1, 3, 10, 30, 100].map((k) => (
+        <>
+          <line class="plot-grid" x1={narrow.x(k)} y1={narrow.plotBottom} x2={narrow.x(k)} y2={narrow.plotBottom + 4} />
+          <text
+            class="plot-axis-text"
+            x={narrow.x(k)}
+            y={narrow.plotBottom + 16}
+            text-anchor="middle"
+            style="font-size: 10px"
+          >
+            {k}
+          </text>
+        </>
+      ))
+    }
+    <line class="plot-grid" x1={NARROW.left} y1={narrow.plotBottom} x2={narrow.plotRight} y2={narrow.plotBottom} />
+    <text class="plot-axis-text" x={NARROW.left} y={narrow.plotBottom + 34} style="font-size: 10px">
+      strategies stacked
+    </text>
+
+    {
+      narrow.curves.map((curve) => (
+        <>
+          {curve.rho > 0 && (
+            <line
+              class="plot-line"
+              x1={NARROW.left}
+              y1={narrow.y(stackingCeiling({ correlation: curve.rho, single }))}
+              x2={narrow.plotRight}
+              y2={narrow.y(stackingCeiling({ correlation: curve.rho, single }))}
+              stroke={curve.ink}
+              stroke-width="0.7"
+              stroke-dasharray="1 4"
+            />
+          )}
+          <path
+            class="plot-line"
+            d={curve.d}
+            stroke={curve.ink}
+            stroke-width={curve.rho === 0.435 ? 2.2 : 1.3}
+            stroke-dasharray={curve.dash}
+          />
+          <text
+            class="plot-label plot-halo"
+            x={narrow.plotRight - 2}
+            y={curve.narrowLabelY}
+            text-anchor="end"
+            style="font-size: 11px"
+          >
+            <tspan class="plot-label-lead">{curve.label}</tspan>
+            <tspan dx="5">{curve.rho === 0 ? "hypothetical" : pct(stackingCeiling({ correlation: curve.rho, single }), 1)}</tspan>
+          </text>
+        </>
+      ))
+    }
+
+    <circle
+      cx={narrow.x(ANNOTATED_K)}
+      cy={narrow.y(annotated)}
+      r="3.5"
+      fill="var(--plot-ink)"
+      stroke="var(--paper)"
+      stroke-width="2"></circle>
+    <line
+      class="plot-guide"
+      x1={narrow.x(ANNOTATED_K)}
+      y1={narrow.y(annotated) - 6}
+      x2={narrow.x(ANNOTATED_K)}
+      y2="160"
+      stroke-dasharray="2 3"></line>
+    <text class="plot-note plot-halo" x={narrow.x(ANNOTATED_K) - 4} y="150" style="font-size: 11px">
+      <tspan x={narrow.x(ANNOTATED_K) - 4} class="plot-label-lead">Five strategies are</tspan>
+      <tspan x={narrow.x(ANNOTATED_K) - 4} dy="14" class="plot-label-lead">{pct(annotatedCapture)} of the way</tspan>
+      <tspan x={narrow.x(ANNOTATED_K) - 4} dy="14" class="plot-label-lead">to the ceiling.</tspan>
+    </text>
+  </svg>
+
+  <div slot="caption">
+    <p>
+      Correlation is measured between the modelled returns of this portfolio's own four long-only leaning funds
+      plus its trend fund, over <span data-numeric>422</span> months to <span data-numeric>2025-12</span>. The horizon
+      cancels out of the relation, so one curve holds at every holding period at once.
+    </p>
+    <p class="font-mono text-xs text-ink-faint">
+      P = &Phi;(z&#8321; &radic;(k / (1 + (k&minus;1)&rho;))) &nbsp;&rarr;&nbsp; &Phi;(z&#8321; / &radic;&rho;)
+    </p>
+    <p>
+      The arithmetic treats the edge as <em>known</em>. A real edge is estimated, and that error never diversifies
+      away — it caps the answer again, lower, at the probability that the edge is positive at all. Every curve here
+      is a best case, including the dashed one.
+    </p>
+  </div>
+
+  <table slot="table" class="w-full min-w-[34rem] border-collapse text-sm">
+    <caption class="sr-only">
+      Chance of finishing ahead of a cheap index, by correlation and number of stacked strategies
+    </caption>
+    <thead>
+      <tr class="border-b border-rule-strong text-left">
+        <th scope="col" class="eyebrow py-2 pr-4">Correlation</th>
+        {K_TICKS.map((k) => <th scope="col" class="eyebrow py-2 pr-3 text-right">{k}</th>)}
+        <th scope="col" class="eyebrow py-2 text-right">Limit</th>
+      </tr>
+    </thead>
+    <tbody class="text-ink-muted">
+      {
+        tableRows.map((row) => (
+          <tr class="border-b border-rule last:border-0">
+            <th scope="row" class="py-2 pr-4 text-left font-normal">{row.label}</th>
+            {row.cells.map((cell) => (
+              <td data-numeric class="py-2 pr-3 text-right">
+                {cell}
+              </td>
+            ))}
+            <td data-numeric class="py-2 text-right font-semibold text-ink">
+              {row.ceiling}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</ChartFrame>

@@ -1,0 +1,188 @@
+---
+/**
+ * The full disclaimer. The two-line version lives in the footer of every page.
+ *
+ * NOT LEGAL ADVICE. Nothing here has been reviewed by a lawyer. The structure follows
+ * the publisher's exclusion from the Investment Advisers Act as read in Lowe v. SEC,
+ * 472 U.S. 181 (1985), which turns on three conditions: general and impersonal,
+ * regular in cadence rather than timed to market events, and disinterested. The
+ * footer sentence is the least important of the three. The impersonal condition is the
+ * one that actually breaks, so it is stated on the page and on `/about/`.
+ *
+ * Securities counsel should review this page, and the whole site, before anything here
+ * is monetised in any way — advertising, affiliate links, sponsorship, subscription or
+ * paid consultation. Adding revenue changes which exclusion applies, and this wording
+ * was not written for that case.
+ */
+import Callout from "~/components/Callout.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Disclaimer"
+  description="General information about investing, published impersonally and on a schedule. Not advice, not a recommendation to buy or sell anything, and never an answer to an individual reader's question about their own portfolio."
+>
+  <div class="prose">
+    <Rail>Disclaimer</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Disclaimer</h1>
+
+    <MarginNote label="The short version">
+      <p>
+        The two lines in the footer of every page: general information about investing, and no part of it is
+        personalised advice. This site does not answer questions about an individual reader's portfolio.
+      </p>
+    </MarginNote>
+
+    <p>Everything on this site is general information about how investing works. None of it is advice, and none of
+    it takes any account of your situation.</p>
+
+    <p>Three sections below matter more than the rest. They are the conditions this site actually lives under, and
+    breaking one of them would change what the site is.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>General</Rail>
+
+    <h2 id="general">It is general, and it is impersonal</h2>
+
+    <p>The research here was measured against reference cases: a US federal individual investor, particular tax
+    brackets, particular account types, particular windows of history. You are not that person.</p>
+
+    <p>Nothing on this site knows your age, your income, your tax bracket, your state, your debts, your job
+    security, when you plan to stop working, what your employer's plan actually offers, or how you behaved the
+    last time your account fell by a third. Every one of those changes the answer, and several of them change it
+    more than anything this site has measured.</p>
+
+    <p>None of it is a recommendation to buy or sell any security. Fund tickers appear here because somebody read
+    the filings of the funds behind them; naming a fund is a measurement, never a suggestion that you own it. No
+    offer and no solicitation of any kind is being made.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The condition</Rail>
+
+    <h2 id="impersonal">This site never answers your question about your portfolio</h2>
+
+    <p>Not by email. Not in an issue, not in a comment, not privately, not as a favour, not hypothetically, and
+    not with the names changed.</p>
+
+    <MarginNote label="Why this one is on the page">
+      <p>
+        The publisher's exclusion from the Investment Advisers Act holds as long as the writing stays "entirely
+        impersonal". Reading someone's actual portfolio and telling them what to do with it is where it stops
+        holding, and no footer text repairs that.
+      </p>
+    </MarginNote>
+
+    <p>An author who reads your holdings and tells you what to do with them has started giving personal investment
+    advice, whatever the page says at the bottom. That is the condition that decides whether a publication is a
+    publication, and it is a line rather than a spectrum.</p>
+
+    <p>Questions about the method, an error in a number, a source that does not say what a page claims it says, or
+    a piece of arithmetic you think is wrong: all welcome, and the answer will be a correction rather than a
+    recommendation.</p>
+
+    <Callout kind="do-this">
+      <p>
+        If you want somebody to look at your own portfolio and tell you what to do, hire a fee-only fiduciary
+        adviser who is paid by you and by nobody else. That is a different service from this one, and it is the
+        right one for that question.
+      </p>
+    </Callout>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Cadence</Rail>
+
+    <h2 id="cadence">It is published on a schedule, and never because the market moved</h2>
+
+    <p>Pages here are revised when new evidence lands or on a date that was written into the page in advance. The
+    trend page says it looks again at 48 filed months, around September 2027, and it will look then whether or not
+    anything exciting has happened by then.</p>
+
+    <p>Nothing on this site will ever be published in response to a market event. That is partly the legal
+    condition and partly the project's own finding: a rule reviewed on price is indistinguishable from a rule
+    abandoned in a drawdown, and this research has measured what that costs. Anchoring an annual rebalance in
+    December, in June or in March moves the measured result by 0.19 percentage points a year, which is as large
+    as the effect being measured. Reviewing on the calendar is the only review that means anything.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Risk</Rail>
+
+    <h2 id="risk">Investing can lose you everything</h2>
+
+    <p>All investing carries risk, including the total loss of the money you put in. Past performance tells you
+    what happened; it does not tell you what will happen, and the difference between those two sentences is where
+    most of the damage in this field gets done.</p>
+
+    <p>Diversification reduces some risks and creates others. Every portfolio described here has spent long
+    stretches behind a plain index fund, and the site says by how much: the lean toward cheap US companies has
+    been behind by 54% over 17.7 years and has not caught up. Foreign stocks, 69% behind over 18.2 years. Those
+    are the record rather than a simulated bad case.</p>
+
+    <h3 id="backtests">Backtested results are hypothetical</h3>
+
+    <p>A backtest is what a rule would have produced if somebody had run it, on data chosen after the fact, by
+    someone who already knows how the story ends. It is hindsight with a chart attached. Nobody earned those
+    returns, no fee was actually paid, no trade was actually filled, and no investor had to sit through the
+    drawdown in the middle without knowing how it turned out.</p>
+
+    <p>Every backtested number on this site should be read down for that, on top of the ranges and the search
+    counts already printed beside it.</p>
+
+    <h3 id="kelly">Position sizing assumes numbers nobody has</h3>
+
+    <MarginNote label="Read every probability as a best case">
+      <p>
+        The arithmetic behind every probability here assumes the size of the advantage is known exactly. It is
+        not. That assumption removes the largest source of uncertainty, so the real chance is lower than the
+        printed one, and by an amount nobody can state.
+      </p>
+    </MarginNote>
+
+    <p>This site is named after the Kelly criterion, which computes the bet size that maximises long-run growth
+    when you know the odds. The catch is the condition. You do not know the odds, nobody does, and the arithmetic
+    does not degrade gently when you are wrong about them.</p>
+
+    <p>Overestimate your advantage by a factor of two and the same formula that maximised growth now destroys it,
+    while producing drawdowns most people cannot sit through on the way. Every position size on this site inherits
+    that, and every probability derived from one is an upper bound rather than an estimate.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Scope</Rail>
+
+    <h2 id="scope">Tax, jurisdiction and accuracy</h2>
+
+    <p>The tax arithmetic here assumes a US federal individual investor at particular brackets, and it ignores
+    every state and every local tax. It is not tax advice, and a result that holds in a US taxable account is
+    sometimes exactly backwards elsewhere. Talk to somebody licensed before acting on any of it.</p>
+
+    <p>No warranty is given on any of this: not on the accuracy of a number, not on a source still saying what it
+    said when it was read, and not on the site being available. Data providers restate their own history without
+    notice, and this project has been caught by that. The author accepts no liability for any loss arising from
+    anything on this site, to the fullest extent the law allows.</p>
+
+    <h3 id="uk">United Kingdom</h3>
+
+    <p>This site is not directed at retail consumers in the United Kingdom, and nothing on it is a financial
+    promotion under section 21 of the Financial Services and Markets Act 2000. The author is not authorised or
+    regulated by the Financial Conduct Authority and gives no advice to anyone in the UK.</p>
+
+    <h3 id="not-legal-advice">And this page is not legal advice either</h3>
+
+    <p>It was written by the same non-lawyer who wrote the rest of the site, and it describes the conditions this
+    project intends to keep rather than a legal opinion that it has kept them. Do not copy it for your own site.
+    <a href="/about/">Who writes this</a> and <a href="/disclosures/">what it is paid for</a> are the two pages
+    that put the rest of it in context.</p>
+
+  </div>
+</Base>

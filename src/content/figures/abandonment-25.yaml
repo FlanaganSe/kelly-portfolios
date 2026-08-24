@@ -1,0 +1,12 @@
+label: Chance a 25% trend holding is sold within thirty years, at our middle guess for what trend pays
+value: 11%
+unit: percent of simulated thirty-year paths
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: The recommended portfolio, optional financed trend
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: optional-financed-trend
+note: >-
+  Same −20% trigger. The trend-weight page's own ladder reads 7.6% at a weight of exactly 0.25;
+  the recommendation page states about 11%, and that is the figure quoted here.

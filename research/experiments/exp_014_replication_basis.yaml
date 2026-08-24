@@ -1,0 +1,481 @@
+# Frozen before any replication was fitted under any new basis and before any
+# result of this experiment was examined.
+#
+# THIS IS EXPERIMENT 013 RE-SCORED UNDER SIX REPLICATION BASES. Experiment 013
+# audited the corrected US factor shelf and reported, against itself, that the
+# comparator basis it inherited from Experiment 002 -- VTI, VUG, VTV, VB --
+# contains NO SMALL-VALUE FUND. VBR is an audited product in that experiment, not
+# a building block. So every small-value product is scored on clause (c) against
+# a basis that structurally cannot express small value, and part of every
+# negative shortfall is that limitation rather than the manager. Experiment 013
+# stated the caveat and did not measure it. This experiment measures it.
+#
+# EXACTLY ONE VARIABLE MOVES: the list of tickers in the replicating basis.
+# Everything else is byte-identical to Experiment 013 and asserted as such before
+# this run -- the same committed universe file by sha256, the same 109 funds, the
+# same 2020-01..2025-12 window, FF5+UMD from the same pinned French vintage,
+# HAC 6 lags, mean block 6 months, 10,000 resamples, seed 20260812, the same four
+# falsifier clauses at the same thresholds, and the same comparator VTI. The
+# exposure regressions, the alphas, the MDEs, the bootstrap intervals and the
+# pedestals are IDENTICAL BY CONSTRUCTION across all six bases, because the basis
+# enters nowhere except clauses (c) and (d).
+#
+# NEITHER EXPERIMENT 002 NOR EXPERIMENT 013 IS MODIFIED. Both specification
+# hashes, both committed universes and every published number are untouched, and
+# both are asserted by sha256 before this run.
+#
+# WHICH DIRECTION THIS CUTS. Every basis here is fitted IN SAMPLE, so every one
+# is a best case for the replication and a hard test for the product. A richer
+# basis is a HARDER test, not a fairer one in the investor's favour: it hands the
+# hindsight combination more freedom. The result of that is asymmetric and is the
+# reason the placebos exist -- a richer basis rescues a product that was LOSING
+# to its replication and takes away the advantage of a product that was BEATING
+# it, and both movements are look-ahead.
+experiment_family: exp_014_replication_basis
+title: How much of Experiment 013's clause (c) was the basis
+entry_point: exp_014_replication_basis
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  Experiment 013's clause (c) verdicts, and in particular the large negative
+  implementation shortfalls of the systematic value and small-value products, are
+  substantially an artefact of a replicating basis that cannot express small
+  value. Under a basis that can express it, the negative shortfalls shrink
+  materially and a material number of the 48 `exploratory` statuses fail to
+  survive.
+
+mechanism: >
+  Clause (c) compares a product against a long-only combination of cheap broad
+  funds fitted by constrained least squares on the product's own months. The
+  combination can only express exposures that some column of its basis carries.
+  Experiment 002 chose VTI, VUG, VTV and VB in 2026-08, when its 2019Q4 census
+  frame carried no systematic small-value product, and Experiment 013 carried
+  that basis forward verbatim precisely so its numbers would be comparable. The
+  corrected frame then admitted nine high-loading systematic value and small-value
+  products, and scored every one of them against a basis whose only size tilt is
+  a small-cap BLEND fund. A small-value product's return is then attributed to
+  the nearest expressible combination, the unexpressible part lands in the mean
+  difference, and clause (c) reads it as implementation value. The size of that
+  attribution error is unknown and is what this experiment measures, by holding
+  everything else fixed and varying only the basis.
+
+falsifier: >
+  This experiment does not grade funds; it grades Experiment 013's sensitivity to
+  a choice, so its falsifier is about the measurement rather than about a
+  product. The hypothesis above is REJECTED if, under a basis containing VBR, the
+  nine systematic value and small-value products keep the great majority of their
+  shortfall magnitude and keep their statuses. It is SUPPORTED if the shortfalls
+  collapse towards zero or the statuses move.
+  Two results would invalidate the experiment itself rather than decide it:
+  (i) the frozen basis failing to reproduce Experiment 013's published shortfalls
+  and statuses to zero difference, which would mean something other than the
+  basis moved and the run must be abandoned rather than reported; and
+  (ii) the two placebo bases -- which add columns WITHOUT adding any size-by-style
+  cell the frozen basis does not already carry -- moving as many verdicts as the
+  expressive bases do, which would mean clause (c) responds to the NUMBER of
+  columns rather than to what they can express, and that no basis comparison of
+  this kind identifies what it claims to.
+
+universe:
+  inherited_from: exp_013_us_products_union_frame
+  rule: >
+    The 109 audited funds of Experiment 013, taken from its committed universe
+    file without re-screening and without rebuilding. This experiment never
+    writes a universe. The screen is not re-run, no fund is added and none is
+    removed; a fund's window, its month count and its launch-stub treatment are
+    produced by Experiment 013's own functions on Experiment 013's own
+    parameters.
+  frozen_inputs:
+    exp_002_specification_sha256: ede6fb48868990c3b3fd6e34f5c31508586865ec1948506706b77d860d578fe4
+    exp_013_specification_sha256: 2d82688536315630a73180542e45b8eb5fbd725a520fbb3f7df717dbeeb8351f
+    exp_013_specification_hash: 79f4e7628a3aadf9aa4f6c8c6c32c59ff4e0144982e8063c01e55058f325c3ca
+    exp_013_universe_sha256: 42f89b3a7495423a0ef5639b0c96791578afe61df87bf2e85aa8359ad6c84cf5
+    exp_013_product_facts_sha256: b51817a2f5fed18c2212323f86fea26a28ef9b271ecd6baf1c38922a9f2c5584
+    note: >
+      All five are asserted before anything is fetched. Editing Experiment 002 or
+      Experiment 013 fails this experiment loudly instead of silently making the
+      comparison meaningless. The specification HASH is the canonical-JSON hash
+      the ledger counts; the specification SHA256 is of the YAML file's raw bytes,
+      and both are recorded because they answer different questions.
+  comparators:
+    broad_market:
+      ticker: VTI
+      rationale: >
+        Experiment 013's comparator, unchanged. It is not a variable here.
+    basis_rule_common_to_every_basis: >
+      Non-negative weights summing to one, fitted by constrained least squares on
+      the SAME months as the exposure regression, by the same
+      exp_002_fund_exposure.replicating_weights used by both earlier audits. A
+      fund is NEVER in its own basis. A basis fund that does not cover a
+      product's whole window is dropped from that product's basis, which is why
+      every basis constituent here is required to cover all 72 months: a basis
+      that silently varied fund by fund would reintroduce the very confound this
+      experiment exists to remove.
+    bases:
+      - id: A_frozen
+        role: control
+        tickers: [VTI, VUG, VTV, VB]
+        cells: [total market, large growth, large value, small blend]
+        why: >
+          Experiment 002's basis, carried into Experiment 013 verbatim. It is
+          reproduced here to zero difference or this experiment is abandoned. If
+          it does not reproduce, the difference is not the basis.
+      - id: B_plus_small_value
+        role: minimal expressive change
+        tickers: [VTI, VUG, VTV, VB, VBR]
+        cells: [total market, large growth, large value, small blend, small value]
+        why: >
+          One fund added, and it is the exact cell Experiment 013's caveat names.
+          VBR is the cheapest small-value ETF on the shelf at 0.05% and is already
+          in the audited universe, so no new product fact is introduced. This
+          basis isolates the flagged defect and nothing else: any change from the
+          control is attributable to the ability to express small value.
+      - id: C_style_grid
+        role: complete cheap style grid
+        tickers: [VTI, VUG, VTV, VO, VOT, VOE, VB, VBK, VBR]
+        cells:
+          - total market
+          - large growth
+          - large value
+          - mid blend
+          - mid growth
+          - mid value
+          - small blend
+          - small growth
+          - small value
+        why: >
+          The complete Vanguard size-by-style grid, every constituent 0.03% to
+          0.05% and every one tracking a Morningstar US index, so the grid is one
+          index family rather than an assembly of incompatible definitions. It is
+          chosen by construction and not by result: it is every cell of a
+          three-by-three style box plus the market, at the cheapest fee at which
+          each cell is available from a single sponsor. Every size-by-style
+          exposure any product in this audit claims is expressible in it.
+      - id: D_expressive
+        role: maximally expressive cheap basis
+        tickers: [VTI, VUG, VTV, VO, VOT, VOE, VB, VBK, VBR, JQUA]
+        cells:
+          - total market
+          - large growth
+          - large value
+          - mid blend
+          - mid growth
+          - mid value
+          - small blend
+          - small growth
+          - small value
+          - profitability
+        why: >
+          C plus a profitability leg, so the basis spans market, size, value,
+          growth AND profitability. JQUA at 0.12% is the cheapest fund with a
+          declared quality mandate that covers all 72 months; QVML at 0.11% is
+          cheaper and is excluded because it has 54 months, which would make the
+          basis vary fund by fund. The leg is chosen on fee and declared mandate
+          alone, before any loading is read, and NOT on which quality product
+          turned out to carry the largest RMW loading.
+      - id: E_placebo_same_cell
+        role: placebo, column count without span
+        tickers: [VTI, VUG, VTV, VB, SCHG, SPYG, IUSG, SCHV, SPYV, IUSV]
+        cells: [total market, large growth, large value, small blend]
+        why: >
+          Ten columns, exactly as many as D, and NOT ONE new size-by-style cell:
+          three more large-growth funds and three more large-value funds on top
+          of the frozen four. If clause (c) moves as much here as under C and D,
+          then what moved it is the number of free parameters handed to a
+          look-ahead fit, not the ability to express an exposure. Without this
+          control the experiment cannot separate the two and must not claim to.
+      - id: F_placebo_cheap_duplicates
+        role: second placebo, independent draw
+        tickers: [VTI, VUG, VTV, VB, SCHG, SCHV, SCHA, SPYG, SPYV, SPSM]
+        cells: [total market, large growth, large value, small blend]
+        why: >
+          A second ten-column placebo over the same four cells, drawn differently:
+          the Schwab and SPDR large-style and small-blend funds. Two placebos
+          rather than one because a single placebo cannot show how much a placebo
+          itself varies, and the spread between them is the noise floor against
+          which the expressive bases must be read.
+    basis_constituent_facts:
+      note: >
+        Fee and index are the committed Experiment 013 product facts, unchanged.
+        Every constituent covers all 72 months of the frozen window, which is
+        checked at run time.
+      constituents:
+        - {ticker: VTI, fee_percent: 0.03, index: Morningstar US Total Market Index, cell: total market}
+        - {ticker: VUG, fee_percent: 0.03, index: Morningstar US Large Cap Growth Index, cell: large growth}
+        - {ticker: VTV, fee_percent: 0.03, index: Morningstar US Large Cap Value Index, cell: large value}
+        - {ticker: VO, fee_percent: 0.03, index: Morningstar US Mid Cap Index, cell: mid blend}
+        - {ticker: VOT, fee_percent: 0.05, index: Morningstar US Mid Cap Growth Index, cell: mid growth}
+        - {ticker: VOE, fee_percent: 0.05, index: Morningstar US Mid Cap Value Index, cell: mid value}
+        - {ticker: VB, fee_percent: 0.03, index: Morningstar US Small Cap Index, cell: small blend}
+        - {ticker: VBK, fee_percent: 0.05, index: Morningstar US Small Cap Growth Index, cell: small growth}
+        - {ticker: VBR, fee_percent: 0.05, index: Morningstar US Small Cap Value Index, cell: small value}
+        - {ticker: JQUA, fee_percent: 0.12, index: JP Morgan US Quality Factor Index, cell: profitability}
+        - {ticker: SCHG, fee_percent: 0.04, index: Dow Jones U.S. Large-Cap Growth Total Stock Market Index, cell: large growth}
+        - {ticker: SPYG, fee_percent: 0.04, index: S&P 500 Growth Index, cell: large growth}
+        - {ticker: IUSG, fee_percent: 0.04, index: S&P 900 Growth Index, cell: large growth}
+        - {ticker: SCHV, fee_percent: 0.04, index: Dow Jones U.S. Large-Cap Value Total Stock Market Index, cell: large value}
+        - {ticker: SPYV, fee_percent: 0.04, index: S&P 500 Value Index, cell: large value}
+        - {ticker: IUSV, fee_percent: 0.04, index: S&P 900 Value Index, cell: large value}
+        - {ticker: SCHA, fee_percent: 0.03, index: Dow Jones U.S. Small-Cap Total Stock Market Index, cell: small blend}
+        - {ticker: SPSM, fee_percent: 0.03, index: S&P SmallCap 600 Index, cell: small blend}
+    degenerate_cases: >
+      Every basis constituent except VTI is itself an audited product, and a fund
+      is never in its own basis, so the replication degenerates for more funds as
+      the basis grows. Under the frozen basis it degenerated for three -- VUG
+      replicated by VTI alone, VB by VTI and VTV, VTV by VTI and VB. Under C it
+      degenerates for eight and under D for nine. For every one of those funds the
+      "implementation shortfall" is the realised style return of 2020-2025 rather
+      than an implementation cost, and their clause (c) outcomes must be read that
+      way in every basis. The set of degenerate funds therefore CHANGES with the
+      basis, and a status change on such a fund is a change in what is being
+      measured rather than a change in the fund. The affected tickers are recorded
+      per basis in the result.
+
+sample_policy:
+  start: 2020-01
+  end: 2025-12
+  held_out: >
+    Observations after 2025-12 are not read. No filing is downloaded that can only
+    report months after it. Nothing new is fetched that Experiment 013 did not
+    already fetch except the basis constituents, all of which are themselves in
+    Experiment 013's audited universe.
+  embargo: >
+    None; no forecast is made across a boundary. The fixed calendar halves are
+    Experiment 013's, unchanged.
+  eras:
+    - name: common_period
+      start: 2020-01
+      end: 2025-12
+      rationale: Experiment 013's window, unchanged. Each fund is scored on the part of it that fund covers.
+    - name: first_half
+      start: 2020-01
+      end: 2022-12
+      rationale: Experiment 013's fixed split for clause (b), unchanged and fitted only where a fund covers it in full.
+    - name: second_half
+      start: 2023-01
+      end: 2025-12
+      rationale: Second half of the same fixed split.
+
+benchmark:
+  primary: >
+    Experiment 013's own published clause (c) shortfalls and statuses under the
+    frozen VTI/VUG/VTV/VB basis. This experiment is a difference against that, and
+    the difference is only interpretable if the control reproduces it exactly.
+  secondary: >
+    The two placebo bases, which bound how much of any difference is the number of
+    columns rather than what they span.
+  factor_model: FF5 plus UMD, US, monthly, from the same pinned French vintage as exp_002 and exp_013
+  note: >
+    The factor model is not a variable here and is present only because clause (a)
+    and clause (b) still have to be evaluated in order to produce a status. Every
+    loading, alpha, MDE, interval and pedestal in this run is identical to
+    Experiment 013's for every fund and is reported as a reproduction, never as a
+    new measurement.
+
+primary_metric:
+  name: basis attribution of the implementation shortfall
+  definition: >
+    For each audited fund, the implementation shortfall under a candidate basis
+    minus the implementation shortfall under the frozen basis. A POSITIVE
+    difference means the frozen basis made the product look better than a basis
+    that can express its exposure does -- that part of the fund's advantage was
+    the comparator, not the fund.
+  units: percentage points per year
+  uncertainty: >
+    NONE, and none may be invented. Both quantities are look-ahead fits on the
+    same months, so their difference is a deterministic property of the two
+    bases over that window and has no sampling distribution that this
+    construction identifies. What bounds it instead is the placebo spread, which
+    is reported beside every difference.
+
+secondary_metrics:
+  - name: status under each basis
+    units: categorical
+    note: One of `exploratory`, `rejected`, `unresolved`, produced by Experiment 013's frozen falsifier applied unchanged.
+  - name: count of the 109 verdicts that change
+    units: count
+  - name: clause (c) and clause (d) firing counts
+    units: count
+  - name: tracking error against the fitted combination
+    units: percentage points per year
+    note: Reported per basis, because a basis that reduces tracking error without moving the mean difference is fitting variance and not level.
+  - name: number of non-zero weights in the fitted combination
+    units: count
+    note: How much of the added freedom the fit actually used. A corner solution uses one column however many are offered.
+
+cost_model:
+  applied: true
+  fund_level: >
+    Experiment 013's, unchanged. The fund's own Item B.5 monthly total return,
+    already net of the published expense ratio and already assuming reinvested
+    distributions. The expense ratio is NOT subtracted a second time.
+  basis_level: >
+    The fee premium subtracted in clause (c) is the fund's net expense ratio less
+    the WEIGHTED fee of its fitted basis, so a richer and slightly dearer basis
+    mechanically lowers the fee premium and pushes the shortfall a few basis
+    points more negative. That term is reported separately per basis so it is not
+    confused with the tracking-difference term, which is two orders of magnitude
+    larger.
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  net_optimistic: The fund's reported total return as filed.
+  net_pessimistic: >
+    NOT COMPUTABLE from Form N-PORT, exactly as in Experiments 002 and 013, and
+    recorded as a gap rather than estimated.
+  unobservable_in_the_primary_source: >
+    Realised taxable distributions and portfolio turnover are absent from Form
+    N-PORT and are recorded as gaps. Clause (d) is evaluated without the
+    distribution term the falsifier names, in every basis alike.
+
+rebalance_rule:
+  shareholder: buy and hold the fund; no rebalancing within this experiment
+  comparator_combination: >
+    Monthly rebalance to the fitted approximating weights, identical across all
+    six bases, so no basis is flattered by a different drift treatment.
+
+inference:
+  bootstrap: stationary block bootstrap on returns
+  block_length_policy: >
+    Mean block 6 months, frozen and not tuned, identical to Experiments 002 and
+    013. The bootstrap here bears only on the intended-loading interval, which is
+    basis-invariant, so it is computed once and reused across all six bases; it is
+    not part of the basis comparison.
+  multiple_testing_correction: >
+    NO NEW ALPHA TEST IS PERFORMED. The alpha family is Experiment 013's 327 fits
+    exactly, reproduced and not re-corrected, because re-running an identical test
+    under a different comparator does not create a new hypothesis about alpha. The
+    multiplicity this experiment DOES create is in the basis dimension: six bases
+    are declared here before any of them is scored, and all six are reported, so
+    the count of bases tried is fixed by this file and cannot be reconstructed
+    favourably afterwards. Reporting only the basis with the most convenient
+    answer is the specific failure this declaration prevents.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    The primary metric has no interval by construction and the specification says
+    so above rather than leaving a reader to assume one was omitted by accident.
+
+rejection_rule: >
+  Per fund and per basis: Experiment 013's frozen falsifier, applied unchanged.
+  `rejected` when a clause fires, `unresolved` when none fires and the intended
+  loading's 95% bootstrap interval contains 0.15, `exploratory` otherwise. NOTHING
+  IS PROMOTED under any basis: decision record 0002 caps every fund-level result
+  here at `exploratory`, and a change of comparator cannot lift that ceiling. The
+  experiment as a whole is abandoned rather than reported if the control basis
+  fails to reproduce Experiment 013 to zero difference.
+
+parameters:
+  minimum_intended_loading: 0.15
+  materiality_threshold_annual_percent: 1.0
+  clause_c_threshold_annual_percent: 0.50
+  hac_lags: 6
+  minimum_monthly_observations: 36
+  power_target: 0.8
+  rolling_window_months: 36
+  cash_series: french_rf_one_month_bill
+  reproduction_tolerance: 0.0
+  reproduction_tolerance_note: >
+    ZERO. The control basis must reproduce every one of Experiment 013's
+    published implementation shortfalls, tracking differences, fitted weights and
+    statuses exactly, because the same functions are run over the same bytes. A
+    tolerance would hide exactly the failure this check exists to catch.
+  what_changes_from_exp_013:
+    changed:
+      - id: replicating_basis
+        was: VTI, VUG, VTV, VB, fitted in sample
+        now: >
+          six declared bases, one of which IS VTI, VUG, VTV, VB and is used as the
+          control
+        why: >
+          Experiment 013 recorded, against itself, that its basis contains no
+          small-value fund and that part of every negative shortfall on its
+          systematic value and small-value table is therefore the basis rather
+          than the manager. It did not measure how much. A caveat standing next to
+          a number is not a correction.
+    not_changed:
+      - the committed Experiment 013 universe file, by sha256
+      - the 109 audited funds, their windows, their month counts and the launch-stub rule
+      - the comparator VTI
+      - the falsifier's four clauses and their thresholds 0.15, sign flip, 0.50 pp/yr, 1.0 pp/yr
+      - the frozen window 2020-01..2025-12 and both fixed halves
+      - FF5+UMD from the same pinned French vintage, HAC 6 lags
+      - block length 6, resamples 10000, confidence 0.95, seed 20260812
+      - sigma_true_annual_percent 1.25 for alpha shrinkage
+      - every exposure, alpha, MDE, bootstrap interval and pedestal, which are basis-invariant
+    consequence_for_exp_002_and_exp_013: >
+      None to either. Both specification hashes, both committed universes, both
+      sets of artifacts and every published number are untouched. What changes is
+      how Experiment 013's clause (c) column should be READ, and Experiment 013
+      itself asked for that reading in the caveat this experiment replaces.
+  alpha_shrinkage:
+    description: Experiment 013's, unchanged and reproduced rather than re-derived.
+    sigma_true_annual_percent: 1.25
+    transferred_not_measured: >
+      Still an assumption transferred from a bootstrap of US active mutual funds
+      over 1984-2006. It decides every shrunk alpha here exactly as it did there,
+      and no alpha is a promotion criterion in either direction.
+  look_ahead_direction:
+    statement: >
+      EVERY basis in this experiment is fitted in sample. A richer basis is a
+      HARDER test of the product, not a fairer one in the investor's favour: it
+      hands the hindsight combination more columns to fit with. No number here
+      describes a portfolio anybody could have held.
+    asymmetry: >
+      The harder test cuts in opposite directions for opposite signs. A product
+      that LOST to the frozen replication may be rescued by a richer basis, and a
+      product that BEAT it may lose that advantage. Reading the second as
+      "the product was worse than we thought" while ignoring the first would be
+      reading a comparator change as a fund result.
+  prior_exploration:
+    declared_before_this_run: true
+    statement: >
+      An uncommitted scratch script computed the same quantities for four
+      candidate bases before this specification was frozen, and its results were
+      seen. The effective number of looks cannot be reconstructed after the fact,
+      so it is recorded here. Two consequences: the placebo E was rewritten after
+      that look, to hold every column inside a cell the frozen basis already
+      carries, because the first draft of it added small-blend variants and so was
+      not a clean placebo; and that first draft is retained as basis F rather than
+      discarded, so the discarded design is reported alongside the one that
+      replaced it instead of vanishing. No threshold, no fund and no clause was
+      changed after the look.
+
+data_sources:
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: sec_edgar_nport_p_filings
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=NPORT-P
+  - id: exp_013_committed_universe
+    url: data-manifests/exp_013/product_universe.json
+  - id: exp_013_committed_product_facts
+    url: data-manifests/exp_013/product_facts.json
+
+hostile_tests:
+  - Assert Experiment 002's two screening regexes byte-for-byte, and Experiment 013's specification, universe and product facts by sha256, before anything is fetched.
+  - Reproduce Experiment 013's frozen basis to ZERO difference in every shortfall, every tracking difference, every fitted weight and every status, and abandon the run if it does not.
+  - Run two placebo bases with the same column count as the most expressive basis and NO new size-by-style cell, and report how many verdicts each moves. If the placebos move as many as the expressive bases, say so as the headline.
+  - Report the number of non-zero fitted weights per basis, so a corner solution is not read as the basis being used.
+  - Record which funds are degenerate under each basis, since a fund excluded from its own basis is measuring a style return rather than an implementation cost, and the degenerate set grows with the basis.
+  - Report the fee-premium term separately from the tracking-difference term, so a mechanical few-basis-point shift from a dearer basis is not read as a fund result.
+  - Report MDE at 80% power beside every alpha, unchanged from Experiment 013, and state again that alpha is not a promotion criterion.
+
+reporting_requirements:
+  - The decomposition table for the nine systematic value and small-value products, shortfall under every basis and the difference from the frozen basis.
+  - The same aggregate for all 109 audited funds.
+  - How many of the 109 statuses change under each basis, named individually.
+  - Whether the frozen basis reproduced Experiment 013 exactly, stated before any other number.
+  - The placebo movements beside the expressive ones, never after them.
+  - An explicit statement of which direction a richer basis cuts.
+
+notes: >
+  Nothing here may be promoted. Decision record 0002 caps all fund-level work at
+  `exploratory` until a source with a documented total-return and corporate-action
+  contract is licensed, and no change of comparator affects that. This experiment
+  cannot make a product better or worse; it can only say how much of a published
+  number was a property of the thing it was compared against.

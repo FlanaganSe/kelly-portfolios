@@ -1,0 +1,103 @@
+---
+/**
+ * One figure, looked up by id from the `figures` collection.
+ *
+ * No number is ever typed into a paragraph. A page names a record; the record carries
+ * the value as the source printed it, plus the interval, the window, the evidence
+ * status, an `as of` date and a link back to the file that owns the fact.
+ *
+ *     <Figure id="sleeve-correlation" />
+ *
+ * Two renderings. The default is a block: label, value, interval, note, status, date and
+ * a link to the file that owns the fact. `inline` is the one a sentence uses, and it
+ * prints the value and its unit as running text. Without an inline form the site's own
+ * rule — that no number is ever typed into a paragraph — cannot be kept, because every
+ * page here states its numbers in prose and qualifies them in the margin.
+ *
+ * A missing id throws at build time rather than rendering an empty box, because a
+ * silently absent figure is the one failure a reader cannot detect.
+ */
+import { getCollection, getEntry } from "astro:content";
+import { citationHref } from "~/lib/citation";
+import { statusMeta } from "~/content/types";
+
+interface Props {
+  id: string;
+  size?: "sm" | "md" | "lg";
+  /** Print the evidence status. The figure keeps its source and date either way. */
+  showStatus?: boolean;
+  /** Render as running text inside a sentence rather than as a block. */
+  inline?: boolean;
+  /**
+   * Print the unit after the value in the inline rendering. Turn it off where the
+   * sentence already supplies the units, or where a record carries its comparison in
+   * `unit` and the sentence has already named the comparison.
+   */
+  showUnit?: boolean;
+  class?: string;
+}
+
+const { id, size = "md", showStatus = true, inline = false, showUnit = true, class: className } = Astro.props;
+
+const entry = await getEntry("figures", id);
+if (!entry) {
+  const known = (await getCollection("figures")).map((f) => f.id).sort();
+  throw new Error(
+    `<Figure id="${id}"> has no record. Add src/content/figures/${id}.yaml, ` +
+      `or use one of the ${known.length} that exist: ${known.join(", ")}.`
+  );
+}
+
+const figure = entry.data;
+const valueSize = { sm: "text-xl", md: "text-2xl", lg: "text-3xl" }[size];
+const status = statusMeta[figure.status];
+const href = citationHref({ docPath: figure.source.docPath, anchor: figure.source.anchor });
+
+// The whole record, for a reader who hovers. The block rendering shows all of this on
+// the page; inline it would swallow the sentence, so the margin note beside the
+// paragraph is where a page states the source it wants read.
+const inlineTitle = [
+  figure.label,
+  figure.interval ? `Interval ${figure.interval}` : undefined,
+  `${status.label}, as of ${figure.asOf}`,
+  figure.source.label,
+]
+  .filter(Boolean)
+  .join(". ");
+
+const inlineText = showUnit && figure.unit ? `${figure.value} ${figure.unit}` : figure.value;
+---
+{
+  inline ? (
+    <span data-numeric title={inlineTitle} class={className}>{inlineText}</span>
+  ) : (
+<figure class:list={["flex flex-col gap-1", className]}>
+  <figcaption class="eyebrow">{figure.label}</figcaption>
+
+  <div class="flex items-baseline gap-1.5">
+    <span data-numeric class:list={["font-sans font-semibold tracking-[-0.02em] text-ink", valueSize]}>
+      {figure.value}
+    </span>
+    {figure.unit && <span class="text-sm text-ink-muted">{figure.unit}</span>}
+  </div>
+
+  {
+    figure.interval && (
+      <div data-numeric class="text-sm text-ink-muted">
+        <span class="sr-only">Interval </span>
+        {figure.interval}
+      </div>
+    )
+  }
+
+  {figure.note && <p class="max-w-[42ch] text-sm text-ink-muted">{figure.note}</p>}
+
+  <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-xs text-ink-faint">
+    {showStatus && <span title={status.gloss}>{status.label}</span>}
+    {figure.period && <span data-numeric>{figure.period}</span>}
+    <span data-numeric>as of {figure.asOf}</span>
+    <a href={href} class="link" rel="noopener noreferrer">{figure.source.label}</a>
+  </div>
+</figure>
+  )
+}

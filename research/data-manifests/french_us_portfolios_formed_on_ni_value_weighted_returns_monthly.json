@@ -1,0 +1,30 @@
+{
+  "schema_version": "1",
+  "dataset_id": "french_us_portfolios_formed_on_ni_value_weighted_returns_monthly",
+  "source_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Portfolios_Formed_on_NI_CSV.zip",
+  "retrieved_utc": "2026-08-17T05:18:33Z",
+  "sha256_raw": "f9b9f25b6b6f3691bd8afdbec7e36062ef40245b4dad26fb0856eef6ae7cdbcd",
+  "sha256_normalized": "90f27a310cd9c5e10ab20772d423c2fa611c788fc7a64425a3a31f412a58c92a",
+  "content_type": "application/x-zip-compressed",
+  "source_last_modified": "Mon, 03 Aug 2026 19:16:48 GMT",
+  "source_etag": "\"1e2162a17c23dd1:0\"",
+  "parser_version": "french/1.0.0",
+  "frequency": "monthly",
+  "units": "decimal",
+  "source_units": "percent",
+  "unit_transform": "value / 100",
+  "first_observation": "1963-07",
+  "last_observation": "2026-06",
+  "rows": 756,
+  "availability_policy": "Rebuilt from a CRSP vintage after month end and posted without a published release timestamp. The HTTP Last-Modified header of the zip is the only upper bound this code can observe on when a row became available; the row for month M was certainly not available during month M. Treat every observation as unavailable until at least the month after its period, and do not treat Last-Modified as the availability date of older rows.",
+  "revision_policy": "Not point-in-time. The entire history is recomputed from the current source vintage on every rebuild, so observations from the 1920s can and do change between downloads. Ken French publishes no vintage archive, so a value here cannot be assumed equal to the value published at any earlier date. A sha256 identifies the file used; it does not establish what was historically available.",
+  "license_or_terms_url": "https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/data_library.html",
+  "warnings": [
+    "classified as returns from the banner 'Value Weighted Returns -- Monthly'. The file never declares its units in machine-readable form; percent is the Ken French Data Library convention and was divided by 100 to give decimals. If the source ever changes convention this parser is silently wrong, so validation.validate_table's plausibility check is not optional.",
+    "member parsed from zip: Portfolios_Formed_on_NI.csv",
+    "source table banner (verbatim): 'Value Weighted Returns -- Monthly'",
+    "source file preamble (verbatim, the only place the file describes itself): 'This file was created using the 202606 CRSP database.\\nIt contains value- and equal-weighted returns for portfolios formed on NI.\\n\\nThe portfolios are constructed at the end of June. NI (net stock issues), the change in the natural\\nlog of the split-adjusted shares outstanding from the fiscal year-end in t-2 to t-1.\\n\\nAnnual returns are from January to December.\\n\\nMissing data are indicated by -99.99 or -999.\\n\\nThe break points include utilities and include financials.\\n\\nThe  portfolios  include utilities and include financials.'",
+    "trailing non-data lines after the last table: ['Copyright 2026 Eugene F. Fama and Kenneth R. French']",
+    "7 separate tables were found in one file: ['value_weighted_returns_monthly', 'equal_weighted_returns_monthly', 'value_weighted_returns_annual_from_january_to_december_annual', 'equal_weighted_returns_annual_from_january_to_december_annual', 'number_of_firms_in_portfolios_monthly', 'average_firm_size_monthly', 'value_weighted_average_of_ni_annual']. Tables in one Ken French file differ in frequency and can differ in units. Never concatenate them and never assume the first one is the one you want."
+  ]
+}

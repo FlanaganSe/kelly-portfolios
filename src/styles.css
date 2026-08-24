@@ -1,89 +1,747 @@
 @import "tailwindcss";
 
-html {
+/* ---------------------------------------------------------------------------
+   Palette.
+
+   The complete light palette is defined on bare `:root`. The dark blocks below
+   redefine only the tokens that change. No colour's sole definition lives
+   inside a media query, so a browser that ignores `prefers-color-scheme` still
+   gets a working page.
+   --------------------------------------------------------------------------- */
+
+:root {
   color-scheme: light;
-  scroll-behavior: smooth;
+
+  /* Surfaces: warm off-white paper. */
+  --paper: #faf9f6;
+  --paper-raised: #ffffff;
+  --paper-sunken: #f1efe9;
+
+  /* Ink. */
+  --ink: #1a1917;
+  --ink-muted: #57544d;
+  --ink-faint: #6e6b62;
+
+  /* Hairlines. */
+  --rule: #e2dfd6;
+  --rule-strong: #c9c5b9;
+
+  /* The one accent. Links, focus, interactive affordances. Nothing else. */
+  --accent: #12507f;
+  --accent-hover: #0c3a5c;
+  --accent-soft: #e7eff6;
+
+  /* Tones. Never the only carrier of meaning — always paired with a mark. */
+  --tone-positive: #1e6b41;
+  --tone-caution: #8a5a08;
+  --tone-negative: #9b2c2c;
+  --tone-neutral: #57544d;
+
+  --selection: #d8e6f2;
 }
 
-*, *::before, *::after {
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+
+    --paper: #141311;
+    --paper-raised: #1d1b18;
+    --paper-sunken: #0f0e0c;
+
+    --ink: #edeae3;
+    --ink-muted: #aaa69c;
+    --ink-faint: #858177;
+
+    --rule: #2e2c27;
+    --rule-strong: #46433c;
+
+    --accent: #8fbce4;
+    --accent-hover: #b4d4f0;
+    --accent-soft: #1b2a38;
+
+    --tone-positive: #74c08e;
+    --tone-caution: #d9ac5e;
+    --tone-negative: #e88e8e;
+    --tone-neutral: #aaa69c;
+
+    --selection: #2a3d4d;
+  }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --paper: #141311;
+  --paper-raised: #1d1b18;
+  --paper-sunken: #0f0e0c;
+
+  --ink: #edeae3;
+  --ink-muted: #aaa69c;
+  --ink-faint: #858177;
+
+  --rule: #2e2c27;
+  --rule-strong: #46433c;
+
+  --accent: #8fbce4;
+  --accent-hover: #b4d4f0;
+  --accent-soft: #1b2a38;
+
+  --tone-positive: #74c08e;
+  --tone-caution: #d9ac5e;
+  --tone-negative: #e88e8e;
+  --tone-neutral: #aaa69c;
+
+  --selection: #2a3d4d;
+}
+
+/* ---------------------------------------------------------------------------
+   Theme. `inline` so utilities emit `var(--paper)` directly and pick up the
+   swap above rather than freezing the light value.
+   --------------------------------------------------------------------------- */
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-raised: var(--paper-raised);
+  --color-sunken: var(--paper-sunken);
+
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+
+  --color-rule: var(--rule);
+  --color-rule-strong: var(--rule-strong);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-soft: var(--accent-soft);
+
+  --color-positive: var(--tone-positive);
+  --color-caution: var(--tone-caution);
+  --color-negative: var(--tone-negative);
+  --color-neutral: var(--tone-neutral);
+}
+
+@theme {
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-serif: ui-serif, "Iowan Old Style", Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+  /* Type scale. Tight leading climbs with size. */
+  --text-2xs: 0.6875rem;
+  --text-2xs--line-height: 1.45;
+  --text-2xs--letter-spacing: 0.07em;
+  --text-xs: 0.75rem;
+  --text-xs--line-height: 1.5;
+  --text-sm: 0.875rem;
+  --text-sm--line-height: 1.55;
+  --text-base: 1rem;
+  --text-base--line-height: 1.65;
+  --text-lg: 1.125rem;
+  --text-lg--line-height: 1.7;
+  --text-xl: 1.3125rem;
+  --text-xl--line-height: 1.5;
+  --text-2xl: 1.625rem;
+  --text-2xl--line-height: 1.32;
+  --text-3xl: 2.0625rem;
+  --text-3xl--line-height: 1.2;
+  --text-4xl: 2.625rem;
+  --text-4xl--line-height: 1.12;
+
+  /* Measure for long-form prose, and the outer page rail. */
+  --container-measure: 70ch;
+  --container-page: 78rem;
+
+  /* Interaction only. No entrance animation anywhere. */
+  --default-transition-duration: 150ms;
+}
+
+/* ---------------------------------------------------------------------------
+   Base.
+   --------------------------------------------------------------------------- */
+
+*,
+*::before,
+*::after {
   box-sizing: border-box;
 }
 
+html {
+  scroll-behavior: smooth;
+  accent-color: var(--accent);
+  -webkit-text-size-adjust: 100%;
+}
+
 body {
-  @apply bg-slate-50 text-slate-900 antialiased;
-  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-  line-height: 1.6;
+  margin: 0;
+  background-color: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.glass {
-  @apply bg-white/95 backdrop-blur-xl border border-slate-200/60 shadow-lg shadow-slate-900/5;
+::selection {
+  background-color: var(--selection);
 }
 
-.card {
-  @apply bg-white border border-slate-200/80 shadow-lg shadow-slate-900/5 rounded-2xl;
+/* Every number in a column lines up. */
+table,
+[data-numeric] {
+  font-variant-numeric: tabular-nums lining-nums;
 }
 
-.card-hover {
-  @apply transition-all duration-300 ease-out hover:shadow-xl hover:shadow-slate-900/10 hover:border-slate-300 hover:-translate-y-1;
+/* Zero specificity so a component can still override it. */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 2px;
 }
 
-.gradient-text {
-  @apply bg-gradient-to-r from-slate-900 via-blue-900 to-slate-900 bg-clip-text text-transparent;
-}
-
-.gradient-primary {
-  @apply bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700;
-}
-
-.gradient-accent {
-  @apply bg-gradient-to-r from-emerald-600 to-cyan-600;
-}
-
-.btn-primary {
-  @apply cursor-pointer bg-gradient-to-r from-blue-600 via-blue-700 to-indigo-700 hover:from-blue-700 hover:via-blue-800 hover:to-indigo-800 text-white font-semibold px-8 py-4 rounded-xl shadow-lg shadow-blue-900/25 hover:shadow-xl hover:shadow-blue-900/40 transition-all duration-300 ease-out transform hover:-translate-y-0.5 disabled:opacity-60 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-lg;
-}
-
-.btn-secondary {
-  @apply cursor-pointer bg-white hover:bg-slate-50 text-slate-700 font-semibold px-8 py-4 rounded-xl border border-slate-200 shadow-lg shadow-slate-900/5 hover:shadow-xl hover:shadow-slate-900/10 transition-all duration-300 ease-out transform hover:-translate-y-0.5;
-}
-
-.input-field {
-  @apply w-full px-4 py-3 bg-white border border-slate-300 rounded-xl text-slate-900 placeholder-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200;
-}
-
-.hero-gradient {
-  @apply bg-gradient-to-br from-slate-50 via-blue-50/50 to-indigo-50/50;
-}
-
-.text-balance {
-  text-wrap: balance;
-}
-
-.animate-fade-up {
-  animation: fadeUp 0.6s ease-out forwards;
-}
-
-.animate-fade-up-delay {
-  animation: fadeUp 0.6s ease-out 0.2s forwards;
-  opacity: 0;
-}
-
-@keyframes fadeUp {
-  from {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
+/* Layered on purpose. Unlayered rules beat every layered one whatever their
+   specificity, and Tailwind emits `@utility` into `@layer utilities` — so leaving this
+   reset unlayered silently killed `.prose > * + *` site-wide and set every paragraph
+   flush against the last. Specificity was never the problem; layer order was. */
+@layer base {
+  :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) {
+    margin: 0;
   }
 }
 
-.metric-card {
-  @apply bg-gradient-to-br from-white to-slate-50/50 border border-slate-200/80 rounded-2xl p-6 shadow-lg shadow-slate-900/5;
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }
 
-.icon-gradient {
-  @apply bg-gradient-to-br from-blue-600 to-indigo-700 rounded-xl flex items-center justify-center shadow-lg shadow-blue-900/25;
+/* ---------------------------------------------------------------------------
+   The four component classes. Everything else is a utility in markup.
+   --------------------------------------------------------------------------- */
+
+/* Inline link. Underline offset far enough to clear descenders. */
+@utility link {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.18em;
+  text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  transition: color 150ms ease, text-decoration-color 150ms ease;
+
+  &:hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentcolor;
+  }
+}
+
+/* Small uppercase label. Used by PageHeader, Callout, Figure, StatusChip. */
+@utility eyebrow {
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+/* Shared shell for text inputs and number fields. */
+@utility control {
+  background-color: var(--paper-raised);
+  color: var(--ink);
+  border: 1px solid var(--rule-strong);
+  border-radius: 3px;
+  padding: 0.4rem 0.55rem;
+  font: inherit;
+  font-variant-numeric: tabular-nums lining-nums;
+  transition: border-color 150ms ease;
+
+  &:hover:not(:disabled) {
+    border-color: var(--ink-faint);
+  }
+
+  &:disabled {
+    color: var(--ink-faint);
+    background-color: var(--paper-sunken);
+    cursor: not-allowed;
+  }
+}
+
+/* Long-form text. Applied by <Prose>; content agents write plain HTML inside. */
+@utility prose {
+  max-width: var(--container-measure);
+  font-family: var(--font-serif);
+  font-size: var(--text-lg);
+  line-height: 1.72;
+  color: var(--ink);
+
+  & > * + * {
+    margin-top: 1.1em;
+  }
+
+  & h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    margin-top: 2.2em;
+    margin-bottom: -0.4em;
+  }
+
+  & h3 {
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 600;
+    margin-top: 1.9em;
+    margin-bottom: -0.5em;
+  }
+
+  & a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.18em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+    transition: color 150ms ease, text-decoration-color 150ms ease;
+  }
+
+  & a:hover {
+    color: var(--accent-hover);
+    text-decoration-color: currentcolor;
+  }
+
+  & strong {
+    font-weight: 600;
+  }
+
+  & em {
+    font-style: italic;
+  }
+
+  & ul,
+  & ol {
+    padding-left: 1.35em;
+  }
+
+  & ul {
+    list-style: disc;
+  }
+
+  & ol {
+    list-style: decimal;
+  }
+
+  & li::marker {
+    color: var(--ink-faint);
+  }
+
+  & li + li {
+    margin-top: 0.4em;
+  }
+
+  & code {
+    font-family: var(--font-mono);
+    font-size: 0.85em;
+    background-color: var(--paper-sunken);
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    padding: 0.1em 0.32em;
+  }
+
+  & blockquote {
+    border-left: 2px solid var(--rule-strong);
+    padding-left: 1.1em;
+    color: var(--ink-muted);
+  }
+
+  & hr {
+    border: 0;
+    border-top: 1px solid var(--rule);
+    margin-block: 2.2em;
+  }
+
+  /* Numbers inside prose still line up. */
+  & [data-numeric] {
+    font-variant-numeric: tabular-nums lining-nums;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   The page grid.
+
+   Three tracks: a narrow left rail for section labels, the reading column, and a
+   right margin for the source, the date, the rung and the caveat that this site
+   attaches to almost every claim. Those belong beside the line rather than inside
+   it, and putting them there is also what stops a 1440px screen from being a 70ch
+   column with a third of the window empty beside it.
+
+   The track widths live on `:root` so the masthead and the footer can size
+   themselves to the same composition without knowing how it is built. `--canvas`
+   is a `calc` over custom properties, which are substituted where they are used,
+   so it picks up each breakpoint's override on its own.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --edge: 1.25rem;
+  --rail: 0rem;
+  --rail-gap: 0rem;
+  --note: 0rem;
+  --note-gap: 0rem;
+  --measure-track: 44rem;
+  --canvas: calc(
+    var(--edge) * 2 + var(--rail) + var(--rail-gap) + var(--measure-track) + var(--note-gap) + var(--note)
+  );
+}
+
+@media (min-width: 40rem) {
+  :root {
+    --edge: 2rem;
+  }
+}
+
+/* The margin opens first. It is the track that carries meaning. */
+@media (min-width: 62rem) {
+  :root {
+    --note: 13rem;
+    --note-gap: 1.75rem;
+  }
+}
+
+/* The rail opens second, once the margin no longer has to be cramped for it. */
+@media (min-width: 78rem) {
+  :root {
+    --rail: 7.5rem;
+    --rail-gap: 2rem;
+    --note: 15rem;
+    --note-gap: 2.25rem;
+  }
+}
+
+@media (min-width: 96rem) {
+  :root {
+    --rail: 9rem;
+    --note: 17rem;
+  }
+}
+
+/* The outer rail every band of the page aligns to. */
+@utility page-rail {
+  width: 100%;
+  max-width: var(--canvas);
+  margin-inline: auto;
+  padding-inline: var(--edge);
+}
+
+@utility canvas {
+  display: grid;
+  /* `main` is a flex child with `flex-1`, so on a short page the grid box is taller
+     than its rows. Without this the default stretch spreads every row down the
+     viewport and a two-paragraph page reads as though it were double-spaced. */
+  align-content: start;
+  width: 100%;
+  max-width: var(--canvas);
+  margin-inline: auto;
+  grid-template-columns:
+    [full-start] minmax(var(--edge), 1fr)
+    [rail-start] var(--rail)
+    [rail-end] var(--rail-gap)
+    [body-start] minmax(0, var(--measure-track))
+    [body-end] var(--note-gap)
+    [note-start] var(--note)
+    [note-end] minmax(var(--edge), 1fr)
+    [full-end];
+
+  /* Everything lands in the reading column unless it says otherwise. `min-width: 0`
+     stops a wide table from blowing the track out past its own grid line. */
+  & > * {
+    grid-column: body;
+    min-width: 0;
+  }
+
+  /* A table, a chart or a figure row, allowed the whole three-track width. Below the
+     first breakpoint the rail and the margin are zero wide, so this is the reading
+     column again and nothing overflows. */
+  & > .breakout {
+    grid-column: rail-start / note-end;
+  }
+
+  & > .bleed {
+    grid-column: full-start / full-end;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Margin notes.
+
+   A float rather than a grid child. Grid auto-placement gives a note its own row,
+   which leaves a hole in the reading column beside it; a float pulled out by its
+   own width sits level with the paragraph that follows it in source order and
+   costs the measure nothing. `clear` keeps two consecutive notes from stacking on
+   top of each other.
+
+   Below 62rem the float is dropped and the note becomes an indented block in the
+   flow, which is the only honest way to render it on a phone.
+   --------------------------------------------------------------------------- */
+
+@utility margin-note {
+  display: block;
+  margin-block: 1.25rem;
+  border-left: 2px solid var(--rule-strong);
+  padding-left: 0.9rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink-muted);
+
+  & > * + * {
+    margin-top: 0.4rem;
+  }
+
+  & a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 0.16em;
+    text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
+  }
+}
+
+@media (min-width: 62rem) {
+  .margin-note {
+    float: right;
+    clear: right;
+    width: var(--note);
+    margin-right: calc(-1 * (var(--note) + var(--note-gap)));
+    margin-top: 0.3rem;
+    margin-bottom: 1.5rem;
+    border-left: 0;
+    padding-left: 0;
+    font-size: var(--text-xs);
+    line-height: 1.55;
+    color: var(--ink-faint);
+  }
+
+  /* The hairline sits above the note in the margin, echoing the rule under a
+     section heading rather than fencing the note off in a box. */
+  .margin-note::before {
+    content: "";
+    display: block;
+    width: 1.75rem;
+    border-top: 1px solid var(--rule-strong);
+    margin-bottom: 0.5rem;
+  }
+}
+
+/* A section label in the left rail. Same mechanism, mirrored. */
+@utility rail-label {
+  display: block;
+  margin-bottom: 0.35rem;
+  font-family: var(--font-sans);
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-faint);
+}
+
+@media (min-width: 78rem) {
+  .rail-label {
+    float: left;
+    clear: left;
+    width: var(--rail);
+    margin-left: calc(-1 * (var(--rail) + var(--rail-gap)));
+    margin-top: 0.55rem;
+    margin-bottom: 0;
+    text-align: right;
+  }
+}
+
+/* A horizontal scroller for content that genuinely cannot shrink: a table with six
+   numeric columns, a wide chart. `position: relative` is not decoration — without a
+   positioned ancestor, an absolutely positioned descendant such as a `.sr-only` label
+   resolves against the initial containing block, escapes the scroller's clipping and
+   pushes the *page* sideways by however far the unclipped content reaches. That is
+   exactly the horizontal scroll this layout must never produce, and it is invisible
+   until you measure `document.documentElement.scrollWidth`. */
+@utility scroller {
+  position: relative;
+  overflow-x: auto;
+}
+
+/* ---------------------------------------------------------------------------
+   Charts.
+
+   Monochrome, always. Identity is carried by a direct label on every curve, by
+   stroke weight and by dash pattern; the ink step only reinforces it. Nothing on
+   this site is ever green for good news or red for bad, and a confidence reading
+   that depended on hue would be wrong on a printout anyway.
+   --------------------------------------------------------------------------- */
+
+:root {
+  --plot-ink: var(--ink);
+  --plot-quiet: color-mix(in srgb, var(--ink) 55%, var(--paper));
+  --plot-quieter: color-mix(in srgb, var(--ink) 38%, var(--paper));
+  --plot-grid: var(--rule);
+  --plot-guide: var(--rule-strong);
+}
+
+@utility plot {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+
+  & .plot-grid {
+    stroke: var(--plot-grid);
+    stroke-width: 1;
+    shape-rendering: crispEdges;
+  }
+
+  & .plot-guide {
+    stroke: var(--plot-guide);
+    stroke-width: 1;
+    fill: none;
+  }
+
+  & .plot-axis-text {
+    font-family: var(--font-sans);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums lining-nums;
+    fill: var(--ink-faint);
+  }
+
+  & .plot-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-variant-numeric: tabular-nums lining-nums;
+    fill: var(--ink-muted);
+  }
+
+  & .plot-label-lead {
+    font-weight: 600;
+    fill: var(--ink);
+  }
+
+  & .plot-note {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    fill: var(--ink-muted);
+  }
+
+  & .plot-line {
+    fill: none;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+
+  & .plot-halo {
+    stroke: var(--paper);
+    stroke-width: 3.5;
+    paint-order: stroke;
+  }
+}
+
+/* ---------------------------------------------------------------------------
+   Comparison tables on a narrow screen.
+
+   A four-column table with a confidence mark is 32rem across at its narrowest and
+   a phone is 24rem, so the scroller does its job and the reading is still poor:
+   you cannot compare two rows you have to scroll between, and a heading you have
+   scrolled away from stops labelling anything. Below the first breakpoint a
+   `.stack-table` becomes one card per row — the row header as the card's title,
+   every other cell as a labelled line.
+
+   **One piece of markup, not two.** The visible label comes from `data-label`,
+   which each page fills from the same array it fills `<thead>` from, so the header
+   and the card label cannot drift apart.
+
+   `display` other than a `table-*` value drops the implicit table roles from the
+   accessibility tree in every engine, which is why each of these tables carries
+   explicit `role` attributes. Above the breakpoint they restate the implicit
+   roles and change nothing; below it they are the only thing keeping the rows and
+   cells related to each other.
+   --------------------------------------------------------------------------- */
+
+@media (width < 40rem) {
+  .stack-table,
+  .stack-table > tbody,
+  .stack-table > tbody > tr > th,
+  .stack-table > tbody > tr > td {
+    display: block;
+    width: auto;
+    min-width: 0;
+  }
+
+  /* The column headings are carried by each cell's own label below. */
+  .stack-table > thead {
+    display: none;
+  }
+
+  /* A column: the row header is pulled to the top whatever its source order, so a
+     rank or an index cell cannot end up above the name of the thing it ranks. */
+  .stack-table > tbody > tr {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    background-color: var(--paper-raised);
+    padding: 0.7rem 0.85rem 0.75rem;
+  }
+
+  .stack-table > tbody > tr + tr {
+    margin-top: 0.5rem;
+  }
+
+  .stack-table > tbody > tr > th[scope="row"] {
+    order: -1;
+    margin-bottom: 0.55rem;
+    border-bottom: 1px solid var(--rule);
+    padding: 0 0 0.45rem;
+    font-family: var(--font-sans);
+    font-size: var(--text-base);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--ink);
+    text-align: left;
+  }
+
+  .stack-table > tbody > tr > td {
+    display: grid;
+    grid-template-columns: minmax(0, 7.5rem) minmax(0, 1fr);
+    align-items: baseline;
+    gap: 0.1rem 0.85rem;
+    padding: 0.25rem 0;
+    text-align: left;
+  }
+
+  /* The label owns the first column and the first row; everything the cell actually
+     contains stacks down the second. Without the explicit placement a cell holding a
+     name and a sub-line — a fund and its mandate — drops the sub-line into the label
+     column, under the label, where it reads as a second heading. */
+  .stack-table > tbody > tr > td > * {
+    grid-column: 2;
+  }
+
+  .stack-table > tbody > tr > td::before {
+    grid-column: 1;
+    grid-row: 1;
+    content: attr(data-label);
+    font-family: var(--font-sans);
+    font-size: var(--text-2xs);
+    line-height: 1.5;
+    letter-spacing: var(--text-2xs--letter-spacing);
+    text-transform: uppercase;
+    font-weight: 600;
+    color: var(--ink-faint);
+    text-wrap: balance;
+  }
 }

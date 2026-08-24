@@ -1,0 +1,611 @@
+# Frozen before any fund return was downloaded for this experiment and before any
+# result was examined.
+#
+# THIS IS EXPERIMENT 002 RE-RUN ON A FRAME THAT CAN SEE THE SHELF. Experiment 002
+# screened the US factor shelf against the 2019Q4 N-PORT census alone. Experiment
+# 009 later took the UNION of the 2019Q4 and 2025Q4 censuses for the ex-US shelf,
+# and said why: "A 2019Q4-only frame would have excluded exactly the products the
+# question is about." That correction was never applied to the US shelf, and the
+# same launch wave hit it -- AVUV in 2019, AVLV and AVSC in 2021, the Dimensional
+# ETF conversions DFAT, DFAS, DFAC and DFUS in 2021 and the launches DFSV, DFLV
+# and DUHP in 2022 -- along with a long tail of Schwab, Vanguard and Fidelity
+# products whose registrants simply do not appear in the 2019Q4 file because
+# N-PORT is filed on each registrant's own fiscal calendar.
+#
+# The omission is not random. It removes the newest, cheapest and highest-loading
+# systematic products, which is the direction that makes "the exposure is
+# delivered, the value is not" easier to conclude. So the frame is corrected and
+# the audit is re-run.
+#
+# EXPERIMENT 002'S SCREEN IS NOT MODIFIED. Its two regexes are asserted
+# byte-for-byte by exp_009_universe.exp_002_screen_is_unmodified before this
+# experiment runs, exactly as Experiment 009 does, so "no previously published US
+# result changed" is a checked claim rather than an assurance. Exactly two
+# criteria move and they are recorded in parameters.screen_changes_from_exp_002.
+experiment_family: exp_013_us_products_union_frame
+title: US factor product audit on the union-census frame
+entry_point: exp_013_us_products_union_frame
+run_kind: exploratory
+evidence_class: fund-implementation-audit
+consumes_final_holdout: false
+seed: 20260812
+
+hypothesis: >
+  Among funds that pass the predeclared screen below -- now including every US
+  factor product that launched, converted or began filing after 2019, which
+  Experiment 002's frame excluded by construction -- at least one delivers its
+  intended factor exposure with a loading that is materially different from a
+  cheap broad-market fund, stable across subperiods, and at a total cost that
+  leaves the exposure worth buying. This is a hypothesis about EXPOSURE DELIVERY,
+  not about alpha. A fund with zero alpha passes if it delivers the intended
+  exposure cheaply and reliably; a fund with positive estimated alpha over a
+  short history fails if its exposure is absent or unstable. The newly admitted
+  funds have the SHORTEST histories on the shelf, so the hypothesis is being
+  tested with less power on exactly the products it is most about, and that is a
+  property of the data rather than a choice.
+
+mechanism: >
+  A factor product is a manufacturing problem, not a forecasting one. The index
+  methodology, rebalance frequency, breakpoint choice, capacity, securities
+  lending policy and fee together determine how much of a published long-short
+  premium reaches a shareholder. Since the published premium is gross and
+  long-short, and the product is net and long-only, the delivered exposure is the
+  only thing that can be audited directly. Any residual return is a small
+  difference between large numbers: Fama and French (2010) estimate the average
+  standard error on a single fund's alpha at about 3.36% per year against a
+  cross-sectional standard deviation of true gross alpha of about 1.25% per year,
+  so the noise is roughly 2.7 times the signal and any observed alpha must be
+  shrunk hard before it is believed. The frame matters to this mechanism and not
+  only to the arithmetic: a systematic value manager that reaches deeper into the
+  value spread, trades it patiently and charges 25 basis points is a different
+  manufacturing choice from a 0.18% index tracker rebalanced annually on a
+  published index, and every product of that first kind on the US shelf launched
+  after 2019.
+
+falsifier: >
+  Experiment 002's falsifier, verbatim and with no threshold changed. A fund is
+  rejected as an implementation candidate when ANY of: (a) the point estimate of
+  its loading on its intended factor is below 0.15 over its common period; (b)
+  the intended loading's sign flips between the first and second half of the
+  fund's common-period history, evaluated only where its filed history covers
+  both; (c) its tracking difference versus a cheap broad-market fund plus the
+  same combination of broad funds that approximates its exposures is worse than
+  its stated expense ratio advantage by more than 0.50 percentage points per
+  year; or (d) its total realised cost of ownership, including expense ratio,
+  tracking difference and realised taxable distributions, exceeds the materiality
+  threshold of 1.0 percentage point per year above the broad-market comparator
+  without a corresponding exposure. Clause (b) is a SIGN test on two point
+  estimates, so it is evaluated ONLY where the fund's window covers BOTH fixed
+  halves in full -- the situation Experiment 002 was always in, because every
+  fund it audited had all 72 months. A fund that covers only part of a half has
+  clause (b) recorded as NOT EVALUABLE, never as passed and never as fired: a
+  loading estimated on nine months can change sign on noise alone, and rejecting
+  a fund on that would be rejecting it for the shortness of its window. A
+  t-statistic on residual alpha below 2 is NOT a falsifier: it usually means the
+  sample cannot identify a small residual return, not that the fund is useless.
+  SHORT HISTORY IS ALSO NOT A FALSIFIER. A fund whose window cannot detect its
+  own intended loading is reported with its sample length and its minimum
+  detectable effect and marked `unresolved`, never rejected for the shortness of
+  a window it did not choose. Under no outcome may this specification produce a
+  status above `exploratory`; decision record 0002 fixes that ceiling for all
+  fund-level work.
+
+universe:
+  description: >
+    Every fund series that filed a Form NPORT-P in either the 2019Q4 or the
+    2025Q4 SEC N-PORT structured data set, whose official name in either census
+    matches Experiment 002's factor-mandate pattern, screened in Experiment 002's
+    fixed order by its exclusion pattern, exchange listing, asset floor, net
+    expense ratio and stated mandate. Every screened series is recorded with its
+    outcome and the FIRST criterion it failed, because the multiple-testing
+    denominator is the whole screen.
+  frame_policy: >
+    The frame is the UNION of the first and the most recent public N-PORT census,
+    as in Experiments 008 and 009 and unlike Experiment 002. Experiment 002 took
+    its frame at the START of its window, on the correct general principle that
+    screening today's listings selects on survival. That principle is preserved
+    here -- the union RETAINS every series present in 2019Q4 and absent in
+    2025Q4, so a fund that died inside the window is still screened and still
+    counted in the attrition -- while the frame additionally admits series that
+    the 2019Q4 file did not carry. Both failure modes are avoided at once, and the
+    frame is the least survivorship-selecting one this source can support. It is
+    not survivorship-free: public N-PORT filings begin in 2019, so a US factor
+    fund that closed before 2019Q4 is invisible to both censuses and the measured
+    attrition remains a LOWER BOUND.
+  net_assets_policy: >
+    The $1bn floor is applied to the MAXIMUM of a series' observed net assets
+    across the two censuses. Applying it to the later census alone would select on
+    terminal size as well as on survival; applying it to the 2019 census alone,
+    as Experiment 002 did, excludes every fund that launched small and grew,
+    which is most of the population this experiment exists to admit.
+  inception_policy: >
+    Experiment 002's inception cutoff of 2016-12-31 is DELETED. Admitting
+    post-2019 launches into the frame and then rejecting them for being post-2019
+    launches would be the same exclusion wearing a different name, and the cutoff
+    was written to serve a purpose the frame correction now serves better: "so
+    that the fund had at least three full years of operating history before the
+    observation window opens and the audit is not measuring a launch". What
+    replaces it is a SAMPLE LENGTH requirement applied at estimation time --
+    minimum_monthly_observations, set to 36 as in Experiment 009 -- plus the
+    launch-stub rule below. A young fund is therefore `unresolved` on a short
+    window rather than absent from the audit, which is the honest treatment: an
+    underpowered estimate is a wide interval, not a missing product.
+  window_policy: >
+    Each fund is estimated on the intersection of the frozen common period with
+    its own filed and panel-covered coverage, taking the longest contiguous run of
+    months so that a Newey-West lag structure is never laid across a gap that does
+    not exist. Two launch cuts are applied and the later wins. First, where the
+    committed facts carry a date on which the EXCHANGE-TRADED product began, the
+    floor is the first WHOLE calendar month after it; a fund that commenced on the
+    24th files an Item B.5 return for that month covering four trading days, which
+    regressed against a whole month of factor returns is not a small observation
+    but a differently-scaled one whose beta is attenuated by the fraction of the
+    month the product did not exist. Second, and needing no external fact, the
+    first filed month of any fund whose history inside the window does not reach
+    the window start is dropped, because for such a fund that month is a launch or
+    conversion stub. The second rule costs one observation for a fund that
+    happened to list on the first of a month and that is the conservative
+    direction.
+  conversion_policy: >
+    An SEC fund series survives a conversion from a mutual fund into an ETF, so a
+    converted product's series carries filings from a predecessor that charged a
+    different fee and was not exchange traded. The ETF share class is a distinct
+    class identifier and Item B.5 is reported per class, so in practice the
+    predecessor's months are already absent from the class history this experiment
+    reads; where they are not, the ETF inception date in the committed facts cuts
+    them. Both the conversion flag and the number of months cut are reported per
+    fund, because a silent truncation is indistinguishable from a fund that had no
+    history.
+  intended_factor_map:
+    description: >
+      Which factor each stated mandate must deliver, and its sign, declared before
+      any regression is run so no fund can be graded against whichever loading
+      turned out largest. IDENTICAL to Experiment 002's map, key for key and sign
+      for sign, so that a newly admitted value fund is graded exactly as an
+      incumbent value fund was.
+    mapping:
+      value: {factor: HML, sign: 1}
+      growth: {factor: HML, sign: -1}
+      momentum: {factor: UMD, sign: 1}
+      quality: {factor: RMW, sign: 1}
+      small_cap: {factor: SMB, sign: 1}
+      mid_cap: {factor: SMB, sign: 1}
+      small_cap_value: {factor: HML, sign: 1}
+      small_cap_growth: {factor: HML, sign: -1}
+      mid_cap_value: {factor: HML, sign: 1}
+      mid_cap_growth: {factor: HML, sign: -1}
+      multifactor: {factor: HML, sign: 1}
+    note: >
+      A growth mandate is graded on a NEGATIVE HML loading of the same magnitude,
+      because growth is the short leg of value and not an independent factor. A
+      size-and-style mandate is graded on its STYLE leg, because the plain size
+      index is separately present in this universe and the style tilt is the only
+      thing that distinguishes the two; the size loading is reported for every
+      fund but does not decide a size-and-style fund's outcome. A multifactor
+      mandate is graded on HML because every multifactor product in this universe
+      names value first in its own objective.
+    reserved_mandates: >
+      `min_volatility` and `mandate_changed` are deliberately ABSENT from this
+      map, exactly as in Experiment 002. A minimum-volatility product does not
+      claim any of the six factors as its objective, and a fund whose stated
+      objective changed inside the window has no single mandate to be graded
+      against. Both fail the mandate_in_map criterion and are recorded rather
+      than dropped. The union frame admits several large minimum-volatility
+      products for the first time and they are recorded as such; adding a mandate
+      to the map after seeing which funds the frame admits would be exactly the
+      discretionary edit this experiment exists to avoid.
+  comparators:
+    broad_market:
+      ticker: VTI
+      rationale: >
+        Experiment 002's comparator, unchanged. A cap-weighted total US market
+        fund at a published 0.03% expense ratio. It is the cheapest broad thing
+        an investor could hold instead of any fund in this universe, and it is
+        also the model-misfit pedestal: VTI IS the market portfolio, so its alpha
+        under a correctly specified model must be about minus its fee, and
+        whatever it is instead is carried by every alpha in the audit.
+    synthetic_combination:
+      basis: [VTI, VUG, VTV, VB]
+      construction: >
+        Experiment 002's comparator, UNCHANGED so that the new results are
+        comparable to its published ones. Non-negative weights summing to one,
+        fitted by constrained least squares on the SAME months as the exposure
+        regression, so the combination is the best in-sample replication of the
+        product from cheap broad building blocks. This is a LOOK-AHEAD
+        construction and is reported as such: an investor could not have known
+        these weights in advance, so the tracking difference against it is a BEST
+        CASE for the replication and therefore a HARD test for the product.
+      degenerate_cases: >
+        Three of the four building blocks are themselves audited products and a
+        fund is never in its own basis, so the replication degenerates for VUG,
+        VTV and VB. For those three the "implementation shortfall" is the realised
+        style return of the window rather than an implementation cost, and their
+        clause (c) outcomes must be read that way. This warning is carried
+        forward from Experiment 002 verbatim because the comparator is carried
+        forward verbatim.
+      window_note: >
+        The weights are fitted on each fund's OWN window, which for a fund that
+        launched inside the period is shorter than 72 months. The basis funds all
+        cover the whole period, so the fit is always on the same months the
+        product is scored on, which is the property that matters.
+
+sample_policy:
+  start: 2020-01
+  end: 2025-12
+  held_out: >
+    Observations after 2025-12 are not read; filings that can only report months
+    after it are not even downloaded. Returns are never downloaded for a fund
+    that failed the screen, so a screen decision cannot be revised after seeing
+    performance.
+  embargo: >
+    None; no forecast is made across a boundary. Subperiod splits are calendar
+    halves fixed in advance and identical to Experiment 002's.
+  eras:
+    - name: common_period
+      start: 2020-01
+      end: 2025-12
+      rationale: >
+        Experiment 002's window, unchanged, so that a fund common to both audits
+        is estimated on exactly the same 72 months and reproduces its published
+        numbers by construction rather than by luck. Unlike Experiment 002 this
+        is not a window in which every audited fund has a filed return: funds
+        that launched inside it are estimated on the part of it they cover, and
+        the month count is printed beside every estimate.
+    - name: first_half
+      start: 2020-01
+      end: 2022-12
+      rationale: >
+        Fixed calendar split for the stability test, chosen before estimation and
+        identical to Experiment 002's. A half is fitted only where the fund covers
+        it IN FULL, so clause (b) compares two 36-month loadings or is recorded as
+        not evaluable. Fitting a partial half would let a nine-month estimate flip
+        a sign and reject a fund for the shortness of its window.
+    - name: second_half
+      start: 2023-01
+      end: 2025-12
+      rationale: Second half of the same fixed split.
+    - name: covid_drawdown
+      start: 2020-01
+      end: 2020-06
+      rationale: >
+        Conditional exposure check. Reported as a diagnostic, never as an
+        independent observation, and unavailable to every fund that launched
+        after it.
+    - name: value_reversal
+      start: 2022-01
+      end: 2022-12
+      rationale: >
+        A period in which value and momentum exposures diverged sharply. Included
+        because it is hostile to the hypothesis, not because it is favourable, and
+        because most of the newly admitted systematic value products were already
+        trading through it.
+
+benchmark:
+  primary: >
+    VTI total return as reported by the fund on Form N-PORT, net of its own fee.
+  secondary: >
+    A constrained-least-squares combination of VTI, VUG, VTV and VB approximating
+    the product's exposures, so that the question is what the product adds over
+    what is already cheaply available.
+  factor_model: FF5 plus UMD, US, monthly, from the same French vintage as exp_001 and exp_002
+  note: >
+    The benchmark is frozen here because the choice decides the answer, and it is
+    frozen to Experiment 002's choice because the point of this run is
+    comparability with it. A factor fund compared against the market alone will
+    look like alpha whenever its factor is in favour.
+
+primary_metric:
+  name: intended factor loading over the fund's own common period
+  definition: >
+    OLS coefficient on the intended factor in a regression of the fund's monthly
+    excess return on Mkt-RF, SMB, HML, RMW, CMA and UMD, with Newey-West HAC
+    standard errors at 6 lags, or at one lag per six observations where the
+    window is too short to support six.
+  units: loading (dimensionless)
+  uncertainty: >
+    HAC 95% interval, and a stationary block-bootstrap 95% interval, with the
+    minimum detectable LOADING at 80% power reported beside every point estimate
+    because unequal windows make loadings differently powered across funds.
+
+secondary_metrics:
+  - name: residual (Jensen) alpha
+    units: percentage points per year
+    note: >
+      Reported with its HAC standard error, its minimum detectable value at 80%
+      power, the model-misfit pedestal on the SAME window, and shrunk toward zero
+      using the Fama-French (2010) dispersion. Never quoted alone.
+  - name: model-misfit pedestal on each distinct fund window
+    units: percentage points per year
+    note: >
+      VTI's own alpha over exactly the months the fund was estimated on. A short
+      window has its own pedestal and comparing a 45-month fund's alpha against a
+      72-month pedestal would be a comparison of two different quantities.
+  - name: residual volatility
+    units: percentage points per year
+  - name: tracking difference versus each comparator
+    units: percentage points per year
+  - name: total cost of ownership
+    units: percentage points per year
+  - name: maximum drawdown over the fund's own window
+    units: percent
+  - name: rolling 36-month loadings on the intended factor
+    units: loading
+
+cost_model:
+  applied: true
+  fund_level: >
+    Total return is constructed as actually experienced by a shareholder: the
+    fund's own Item B.5 monthly total return, which is already net of the
+    published expense ratio and already assumes reinvestment of distributions.
+    The expense ratio is NOT subtracted a second time. Subtracting it again is
+    the most common error available here and would double-count the whole fee.
+  trading_level: >
+    Not applicable to a buy-and-hold shareholder of the fund itself. The fund's
+    internal trading cost is unobservable and is NOT estimated; its effect is
+    inside the tracking difference and is reported as such rather than modelled.
+  cash_rate: >
+    One consistently defined cash series for every excess return in this
+    experiment: the one-month Treasury bill distributed in the SAME French file as
+    the factors, so the intercept is interpretable as alpha. TB3MS, DGS3MO and DFF
+    are not interchangeable and none is substituted here. Experiment 002 already
+    ran that substitution and showed the effect is a constant shift of at most
+    0.20 pp/yr on the intercept and exactly zero on every loading.
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  net_optimistic: >
+    The fund's reported total return as filed. Already net of the expense ratio
+    and of any securities-lending revenue the fund kept, because both are inside
+    net asset value before the return is computed.
+  net_pessimistic: >
+    The same return less the tax on realised distributions at the declared
+    hypothetical rates. NOT COMPUTABLE from this source and reported as a gap.
+  unobservable_in_the_primary_source: >
+    Form N-PORT carries neither the split of a fund's return between income and
+    capital gain distributions nor portfolio turnover. Item B.5 reports a single
+    total return; the turnover ratio and the distribution history live in the
+    annual report on Form N-CSR, which is unstructured HTML. So realised taxable
+    distributions and reported turnover are recorded as GAPS for every fund
+    rather than estimated, and clause (d) is evaluated without the distribution
+    term the falsifier names. No constant tax haircut is applied to any return
+    under any circumstances.
+
+rebalance_rule:
+  shareholder: buy and hold the fund; no rebalancing within this experiment
+  comparator_combination: >
+    Monthly rebalance to the fitted approximating weights, so the comparator is
+    not flattered by drift.
+
+inference:
+  bootstrap: stationary block bootstrap on returns
+  block_length_policy: >
+    Mean block length frozen at 6 months for monthly fund data, with 3 and 12
+    reported as predeclared neighbours. Not tuned on the statistic tested.
+    Identical to Experiment 002's.
+  multiple_testing_correction: >
+    Benjamini-Hochberg FDR at 0.10 across ALL funds with usable returns and ALL
+    model specifications, with Holm-Bonferroni reported beside it. BH assumes
+    independence and this family has almost none -- three nested specifications
+    per fund, the same six factors, overlapping windows, and several pairs of
+    funds tracking one index under two sponsors -- so the BH count is an
+    OPTIMISTIC bound and Holm is the defensible one, and both are reported with
+    that labelling. The denominator is additionally widened to every fund that
+    passed the screen and to every mandate-matching series screened, padded with
+    p = 1.0, which cannot create a rejection and strictly tightens both.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Windows here are UNEQUAL and run from the 36-month minimum to 72 months,
+    where Experiment 002's were a uniform 72. The regression is the estimand of
+    interest; the alpha is a by-product with a standard error large enough that
+    most funds will be `unresolved` on alpha and decidable only on exposure, and
+    the newly admitted funds have the shortest windows and therefore the largest
+    standard errors. The minimum detectable alpha at 80% power is reported for
+    every fund, because a wide interval read as evidence of absence is the
+    specific error this experiment is most exposed to and the frame correction
+    makes it worse rather than better.
+
+rejection_rule: >
+  Per fund: mark `rejected` when a falsifier clause fires. Mark `unresolved` when
+  no clause fires but the intended loading's 95% bootstrap interval contains
+  0.15, which is expected for short histories and is what most of the newly
+  admitted funds should produce. Mark `exploratory` when the intended exposure is
+  present, stable across the fixed split where the split is evaluable,
+  economically material, and delivered at a total cost below the materiality
+  threshold; that permits the fund to be used as an implementation proxy in a
+  later experiment and permits nothing else. No fund is promoted on residual
+  alpha, no fund is rejected solely because its alpha t-statistic is below two,
+  and no fund is rejected for having a short history.
+
+parameters:
+  minimum_intended_loading: 0.15
+  materiality_threshold_annual_percent: 1.0
+  hac_lags: 6
+  minimum_monthly_observations: 36
+  minimum_net_assets_usd: 1000000000
+  maximum_net_expense_ratio_percent: 0.6
+  power_target: 0.8
+  rolling_window_months: 36
+  cash_series: french_rf_one_month_bill
+  cash_series_rationale: >
+    The one-month Treasury bill rate distributed in the SAME French file as the
+    factors, so that Mkt-RF and the fund's excess return are taken over the same
+    rate and the intercept is interpretable as alpha.
+  screen_changes_from_exp_002:
+    description: >
+      Exactly two criteria move, and they are the same change twice. Everything
+      else is byte-identical, including both regexes, the exchange-traded
+      criterion, the $1bn floor, the 0.60% cap, the intended-factor map, the four
+      falsifier clauses and their thresholds, the comparator and its basis, the
+      window, the HAC lag count, the block length, the resample count and the
+      seed.
+    changed:
+      - id: frame
+        was: the 2019Q4 N-PORT census alone, with the asset floor read at that date
+        now: >
+          the union of the 2019Q4 and 2025Q4 censuses, with the asset floor read
+          on the maximum of a series' two observed figures
+        why: >
+          Experiment 009 established the point for the ex-US shelf and it applies
+          unchanged here: a 2019Q4-only frame excludes by construction every
+          product that launched, converted or began filing after 2019, and on the
+          US shelf that is the entire systematic-value wave -- AVUV, AVLV, AVSC,
+          DFAT, DFAS, DFUV, DFLV, DFSV, DUHP -- plus every product whose
+          registrant's fiscal calendar put no filing in that quarter. The
+          exclusion points in a known direction: it removes the newest, cheapest
+          and highest-loading products, which biases the audit towards concluding
+          that the shelf delivers exposure but not value.
+      - id: inception_cutoff
+        was: inception on or before 2016-12-31
+        now: deleted; replaced by minimum_monthly_observations = 36 at estimation time
+        why: >
+          Admitting post-2019 launches into the frame and then rejecting them for
+          being post-2019 launches is the same exclusion under another name. The
+          cutoff existed so the audit "is not measuring a launch"; the
+          launch-stub rule in universe.window_policy serves that purpose directly
+          and the sample-length requirement serves the rest of it, while leaving
+          a young fund `unresolved` rather than absent.
+    not_changed:
+      - mandate_regex and exclusion_regex, asserted byte-for-byte against exp_002_fund_exposure.yaml before the run
+      - exchange_traded, from the consolidated symbol directory's ETF flag
+      - minimum_net_assets_usd 1000000000
+      - maximum_net_expense_ratio_percent 0.6
+      - the intended-factor map and every sign in it
+      - falsifier clauses (a) 0.15, (b) sign flip, (c) 0.50 pp/yr, (d) 1.0 pp/yr
+      - comparator VTI and basis VTI/VUG/VTV/VB, fitted in sample on the scored months
+      - sample window 2020-01..2025-12 and both fixed halves
+      - hac_lags 6, block length 6, resamples 10000, confidence 0.95, seed 20260812
+      - sigma_true_annual_percent 1.25 for alpha shrinkage
+    consequence_for_exp_002: >
+      None. Experiment 002's specification hash, committed universe, artifacts and
+      published numbers are untouched. What changes is the READING of them: they
+      describe the shelf its frame could see, which is not the US factor shelf.
+  alpha_shrinkage:
+    description: >
+      Every alpha is shrunk before it means anything. Taking true gross alpha as
+      normal with mean zero and cross-sectional standard deviation sigma_true,
+      the posterior mean is observed * sigma_true^2 / (sigma_true^2 + SE^2),
+      computed with each fund's OWN HAC standard error. Identical to Experiment
+      002's treatment, including the dispersion.
+    sigma_true_annual_percent: 1.25
+    reference_standard_error_annual_percent: 3.36
+    reference_shrinkage_factor: 0.121
+    worked_example: >
+      At the reference standard error the factor is 1.25^2 / (1.25^2 + 3.36^2) =
+      0.121, so an observed 5%/yr alpha implies a posterior near 0.6%/yr. A
+      shorter window has a LARGER standard error and therefore a SMALLER
+      shrinkage factor, so the newly admitted funds are shrunk harder than the
+      incumbents and their shrunk alphas are closer to zero for that reason
+      alone.
+    annualisation_trap: >
+      An annual alpha is TWELVE times a monthly intercept, so its standard error
+      annualises by x12 and never by sqrt(12). Using sqrt(12) would divide every
+      standard error by 3.46 and shrink far too little, which is the direction
+      that manufactures skill.
+    transferred_not_measured: >
+      sigma_true = 1.25%/yr comes from a bootstrap of US active mutual funds over
+      1984-2006 and is applied here to index-tracking and systematic ETFs over
+      2020-2025. It is an assumption, it decides every shrunk number, and it is
+      carried unchanged from Experiment 002 so the two audits shrink identically.
+  screening_patterns:
+    mandate_regex: \b(value|growth|momentum|quality|profitab\w*|min(?:imum)?\s+volatility|low\s+volatility|multi-?factor|factor|small[- ]?cap|mid[- ]?cap)\b
+    exclusion_regex: \b(bond|municipal|treasury|credit|corporate|high yield|target|lifecycle|retirement|esg|sustainab\w*|social|climate|clean|carbon|health|technolog\w*|financial|energy|utilit\w*|real estate|reit|gold|commodit\w*|ultra|2x|3x|inverse|bear|leveraged|emerging|international|intl|global|world|ex-?u\.?s|developed|japan|china|europe|eafe|acwi|currency|hedged|balanced|allocation|money market|convertible|preferred|option|buffer|covered call|dividend|income)\b
+    provenance: >
+      Copied byte-for-byte from exp_002_fund_exposure.yaml. The run asserts they
+      still match that file before it does anything, so an edit to Experiment 002
+      fails this experiment loudly instead of making the two audits silently
+      incomparable.
+  product_facts:
+    source: >
+      Net expense ratio, inception date, tracked index and stated mandate are not
+      in Form N-PORT. They are read from each fund's own SEC-FILED summary
+      prospectus (Form 497K), registration statement (Form 485BPOS) or prospectus
+      supplement (Form 497) and committed to
+      data-manifests/exp_013/product_facts.json with a source URL, the form and
+      filing date, and the date read, per fund. An SEC filing is used in
+      preference to a sponsor web page for the reason Experiments 008 and 009
+      gave: a filing has an accession number and a permanent archive, and a web
+      page has neither.
+    carried_forward: >
+      Every fund Experiment 002 already recorded keeps that experiment's facts
+      verbatim, flagged carried_from_exp_002, so a fee or a stated mandate cannot
+      differ between the two audits for a fund they share.
+    gathering_policy: >
+      The criterion order puts every census-evaluable criterion before the two
+      that need a filing, so the set of funds requiring a prospectus read is
+      fixed by the census and not by how much looking was done. A fund whose fee
+      could not be verified from an SEC filing FAILS maximum_expense_ratio and is
+      recorded with that reason, so a gathering gap is visible in the committed
+      universe rather than invisible. Experiment 002 had to correct exactly this
+      once, before any return was read, and the correction is why its universe
+      file carries a rebuild note.
+  validation_gates:
+    month_alignment: >
+      Item B.5 reports rtn1 as the FIRST month of the reporting period and rtn3
+      as the month ending on the reporting date. Reading it backwards shifts
+      every history by two months and leaves every number looking plausible, so
+      the alignment is tested and not trusted: VTI reconstructed from its own
+      filings must correlate at least 0.99 with the French market total return
+      and must show its worst month in 2020-03. Experiment 002's gate, unchanged,
+      on the same comparator and the same months.
+    market_beta_gate: >
+      The broad-market comparator's regression on Mkt-RF must produce a beta
+      within 0.05 of 1.00 and an R-squared of at least 0.98.
+    french_vintage_gate: >
+      Both French files are pinned by raw sha256 through the committed dataset
+      manifests. A new vintage aborts the run rather than silently re-deriving
+      every loading against different factor history.
+  tax_rates:
+    qualified_dividend: 0.15
+    ordinary_income: 0.32
+    long_term_capital_gain: 0.15
+    note: >
+      Declared for completeness and NOT APPLIED, because the distribution split
+      they would be applied to is not in this source. Every figure in this
+      experiment is pretax.
+
+data_sources:
+  - id: french_us_ff5_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_us_momentum_monthly
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: sec_nport_data_set_2019q4
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2019q4_nport.zip
+    manifest: data-manifests/sec_nport_data_set_2019q4.json
+  - id: sec_nport_data_set_2025q4
+    url: https://www.sec.gov/files/dera/data/form-n-port-data-sets/2025q4_nport.zip
+    manifest: data-manifests/sec_nport_data_set_2025q4.json
+  - id: sec_company_tickers_mf
+    url: https://www.sec.gov/files/company_tickers_mf.json
+  - id: nasdaq_consolidated_symbol_directory
+    url: https://www.nasdaqtrader.com/dynamic/SymDir/nasdaqtraded.txt
+  - id: sec_edgar_nport_p_filings
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=NPORT-P
+  - id: sec_edgar_prospectus_filings
+    url: https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&type=497K
+
+hostile_tests:
+  - Assert Experiment 002's two screening regexes byte-for-byte before the run, so an edit there fails here loudly instead of making the audits incomparable.
+  - Re-estimate with CAPM, FF3 and FF5-plus-UMD and report all three; every p-value enters the correction.
+  - Re-estimate on the fixed calendar halves and on rolling 36-month windows, and report where a window is too short to support either.
+  - Report Benjamini-Hochberg AND Holm-Bonferroni, labelled optimistic and defensible respectively, and widen the denominator to every screened series padded with p = 1.0.
+  - Report the model-misfit pedestal on the full window AND on every distinct fund window, so a short-window alpha is compared against a short-window pedestal.
+  - Report the minimum detectable ALPHA and the minimum detectable LOADING at 80% power beside every estimate, and state plainly where the instrument is blunter than the effect.
+  - Count separately the funds added because the 2019Q4 census did not carry the series and those added because a moved criterion had excluded them, so "the frame was the problem" is decomposed rather than asserted.
+  - Cross-check every N-PORT return against an independent source over the same months and report the disagreement, or report that the check could not run.
+
+reporting_requirements:
+  - The complete screened-series table, including every rejection and its reason.
+  - Each fund's usable month count beside its loading, its alpha and both minimum detectable effects.
+  - Raw and shrunk alpha side by side, never the raw alpha alone, and never without the pedestal for the same window.
+  - Statistical alpha and implementation value reported as separate findings.
+  - How many funds the corrected frame admits, decomposed by why, and what their statuses are.
+  - An explicit statement of whether the corrected frame changes Experiment 002's conclusion.
+
+notes: >
+  Promotion requires the intended exposure to be present, stable, economically
+  material and cheap. Residual alpha is not a promotion criterion in either
+  direction. Nothing in this experiment may be promoted: decision record 0002
+  caps all fund-level work at `exploratory` until a source with a documented
+  total-return and corporate-action contract is licensed, and the windows here
+  are shorter than Experiment 002's rather than longer.

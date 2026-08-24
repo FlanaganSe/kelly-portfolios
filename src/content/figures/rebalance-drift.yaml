@@ -1,0 +1,11 @@
+label: Average distance from target under an annual review with a quarter-wide band
+value: 0.94 percentage points
+status: source-reproduced
+asOf: '2026-08-21'
+source:
+  label: What policy, and what is it worth
+  docPath: docs/research/rebalancing-policy.md
+  anchor: b3-what-policy-and-what-is-it-worth
+note: >-
+  427 months, eight holdings, sheltered trades only. Roughly 2.9 trades a year, 0.0009% of
+  spread, and no realisation tax. Left alone the same portfolio drifts 6.39 points on average.

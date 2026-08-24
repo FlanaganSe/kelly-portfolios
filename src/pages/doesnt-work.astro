@@ -1,0 +1,484 @@
+---
+/**
+ * The rejections, each scoped to a design, a window, an instrument and a yardstick.
+ *
+ * Three of the ten are a measured result pointing the wrong way. The rest are the
+ * design failing to resolve anything, which is a different sentence and is typeset as
+ * one: every section carries the floor its null is measured against.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Rung from "~/components/Rung.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Things we tested that did not earn a place"
+  description="Market timing, crypto, crash insurance, direct indexing and six more, each with the data, the window and the yardstick its rejection is scoped to. Several are us reporting that we could not tell, which is a different answer from no."
+>
+  <div class="prose">
+    <Rail>The other file</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Things we tested that did not earn a place</h1>
+
+    <MarginNote label="The question">
+      <p>
+        What have you tried that did not work? Checked against <code>docs/research/</code> on
+        <span data-numeric>2026-08-23</span>. Several of these are us reporting that we could not tell, which is a
+        different answer from no.
+      </p>
+    </MarginNote>
+
+    <p>Most investing sites publish their winners. This is the other file.</p>
+
+    <p>Nothing below is in the portfolio. But the reasons differ enormously, and if you read all of them as "that
+    doesn't work" you will have learned the wrong thing from every one.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Read the verdicts</Rail>
+
+    <h2>Three kinds of nothing</h2>
+
+    <MarginNote label="How to read a null">
+      <p>
+        A null is only informative against the design's own resolution. Where an effect of a given size would have
+        been visible, the section says what that size was.
+      </p>
+    </MarginNote>
+
+    <p>The first kind is that we never looked. No measurement, so no verdict, and saying so takes one
+    sentence.</p>
+
+    <p>The second kind is that we looked and the instrument could not see. Our data could only have picked out a
+    gap of 3.03 percentage points a year or wider, and the gap we measured was 0.74. That is a shrug with a number
+    attached. It is not a no.</p>
+
+    <p>The third kind is that we looked and found something real, pointing the wrong way. Bitcoin made this
+    portfolio's worst loss deeper at every weight we tried. That is a result, and it gets typeset as confidently
+    as any result we liked.</p>
+
+    <p>Two items below are the third kind. Most are the second. Read the verdicts, not the headings.</p>
+  </div>
+
+  <div class="mt-6">
+    <p class="eyebrow mb-2">The two verdicts below</p>
+    <div class="flex flex-col gap-2">
+      <Rung level="cant-tell" showGloss />
+      <Rung level="settled" showGloss />
+    </div>
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Timing</Rail>
+
+    <h2>Selling when the market drops below its own long-run average</h2>
+
+    <MarginNote label="Source">
+      <p>
+        <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/timing-rules-on-the-equity-sleeve.md"
+          >Timing rules on the stock holdings</a
+        >: 1,190 months of US data, 46 variants, as of <span data-numeric>2026-08-23</span>. The effective sample
+        is 73 round trips, which is why a century resolves so little.
+      </p>
+    </MarginNote>
+
+    <p>The rule is simple, which is most of its appeal. Hold the index while it trades above its own long-run
+    average, sell to cash when it drops below, buy back when it crosses over. The ten-month and 200-day versions
+    are close cousins. We tested 46 variants of it.</p>
+
+    <p>Against a control holding the same average amount of stock-market exposure, over 1,190 months of US data,
+    it gained <Figure id="timing-rule-gap" inline />. The smallest gain that design could have detected was
+    <Figure id="timing-rule-floor" inline />. Put those two side by side and the honest verdict is that we cannot
+    tell. The reason we cannot tell is that the effective sample is 73 round trips in 99 years, not 1,190 monthly
+    observations, and no amount of US history fixes that.</p>
+
+    <p>Two other things decided it anyway.</p>
+
+    <MarginNote label="Tax, by account third">
+      <p>
+        In a Roth the rule trails simply holding by 1.04 percentage points a year. In a top-bracket taxable
+        account held until death, by 2.96. The difference is the tax the rule itself creates.
+      </p>
+    </MarginNote>
+
+    <p>The first is tax. In a top-bracket taxable account the rule costs
+    <Figure id="timing-rule-tax-cost" inline />, two and a half times the entire pre-tax gap it was hired to
+    produce. Over 36 years it realises $16.04 of long-term and $2.44 of short-term gain per dollar invested, and
+    pays $5.15 of tax against $1.53 for simply holding.</p>
+
+    <p>The second is that you would have to sit through it. Across 1927 to 2026,
+    <Figure id="timing-rule-losing-exits" inline showUnit={false} /> exits lost money, meaning the market was
+    higher when the rule bought back in than when it sold. Since 1990
+    that is 21 of 25. The worst run is twelve losing exits in a row, March 1948 to November 1960. And the rule's
+    wealth relative to simply holding peaked in June 1932 and has sat under that peak for all 1,128 months
+    since.</p>
+
+    <p>One part of it is real and we want to say so plainly. It cuts the worst fall a long way, it does so
+    mechanically, and it repeats in developed markets, in emerging markets and in the 1871 to 1926 sample:
+    <Figure id="timing-rule-drawdown" inline />. Cutting off the worst outcomes cuts off the worst outcomes. That
+    is arithmetic rather than a reward for taking risk, which is exactly why it survives when the average return
+    does not.</p>
+
+    <p>The trouble is that three cheaper things buy the same protection. Holding less stock buys it free, with no
+    tax and no discipline required. A trend fund buys the same signal across roughly fifty markets, betting both
+    ways, paid for by borrowing rather than by selling your stocks; and the timing rule's own returns turn out to
+    be 0.232 of that same signal, with less than nothing left over. Rebalancing, the fourth candidate, buys no
+    reduction in the worst fall at any price: every policy we tested had an equal or worse worst loss than leaving
+    the portfolio alone.</p>
+
+    <MarginNote label="The one part that survives">
+      <p>
+        Cutting the worst fall is the single claim on that page that clears its own floor, because cutting off the
+        worst outcomes is arithmetic rather than a reward for taking risk. It repeats in developed markets outside
+        the US, in emerging markets and in 1871 to 1926.
+      </p>
+    </MarginNote>
+
+    <p>What would reopen it. An investor who holds no trend fund, has no taxable account, and cannot get the fall
+    he can live with down far enough by simply holding less stock. That person exists. If it is you, the rule is
+    defensible and the tax figure above is not your tax figure.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Crypto</Rail>
+
+    <h2>Bitcoin as the thing that zigs when stocks zag</h2>
+
+    <MarginNote label="Updated">
+      <p>
+        The count over the market's worst months was recomputed on <span data-numeric>2026-08-23</span> and
+        moved in bitcoin's favour, from 1 of 13 to 2 of 12. Bitcoin's average return in those months is −5.0%, not
+        −7.51%.
+      </p>
+    </MarginNote>
+
+    <p>Give this one a fair hearing, because parts of the case have genuinely improved. The spot ETFs hold real
+    money, with IBIT alone holding $58.78bn. It now bounces around by about 42% a year, the narrowest gap to the
+    S&amp;P 500 on record. Regulation opened up in September 2025. A fund that borrows to hold it now exists.</p>
+
+    <p>None of that is the diversification claim, and the diversification claim is what we tested.</p>
+
+    <p>For every move in US stocks, bitcoin moves
+    <Figure id="crypto-up-down-beta" inline showUnit={false} />. The relationship is not weak.
+    It is strong and steep in both directions, which is backwards for something bought as ballast. Across the
+    worst 10% of months for the S&amp;P 500 over the last decade, bitcoin was positive in
+    <Figure id="crypto-worst-decile-months" inline showUnit={false} />. Our older pages say one month in thirteen; a March 2026
+    observation moved it in bitcoin's favour and we have updated it.</p>
+
+    <p>The part of that table worth staring at is the other positive month. In May 2019 bitcoin rose 62.2% while
+    the index fell 6.6%. That was not crisis behaviour. It was a bull market in bitcoin that happened to overlap
+    an equity dip. When a diversifier's best showing is a coincidence of calendars, you own two bets rather than a
+    hedge.</p>
+
+    <p>It was also the only thing we tested that made the whole portfolio's worst loss deeper at every weight we
+    tried.</p>
+
+    <MarginNote label="Read on a date">
+      <p>
+        Prices to <span data-numeric>2026-08-22</span>: $115,384 to $77,118 over the year. Realised volatility
+        42.2% against the index's 12.9%, so it trailed at roughly four times the risk.
+      </p>
+    </MarginNote>
+
+    <p>Then the returns, which are what has changed most since we last wrote this up. Over the year to 2026-08-22,
+    bitcoin returned <Figure id="bitcoin-one-year" inline showUnit={false} />. Over five years,
+    <Figure id="bitcoin-five-year" inline showUnit={false} />. That five-year window is not a cherry-picked one: it covers the
+    spot-ETF launch, the 2024 halving and the entire institutional-adoption story, and across it bitcoin trailed
+    the index at roughly four times the volatility.</p>
+
+    <p>Hold it if you want to. One or two per cent, funded by selling stocks, kept in the taxable account,
+    labelled a speculation, which is what it is. Zero is also defensible. What we will not do is call it a
+    diversifier and let it displace something that pays you.</p>
+
+    <p>What would reopen it. A correlation to stocks below +0.2 on a window containing a recession, a contractual
+    payer, or an equity bear market in which bitcoin does not fall harder than equity. 2020 and 2022 both went the
+    other way. The three-year daily correlation reads +0.170 today, which is under the threshold, but there is no
+    recession in that window and the same three years read +0.363 monthly.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Tail hedges</Rail>
+
+    <h2>Funds that promise to pay off in a crash</h2>
+
+    <MarginNote label="Method">
+      <p>
+        Each engine's return fitted to the stock market plus a separate term for the market's down months only,
+        over 137 to 1,194 months, with error bars that allow for calm clustering with calm and panic with panic.
+        Across the seven engines other than betting-against-beta, the strongest bend is 1.37 times the noise
+        around it.
+      </p>
+    </MarginNote>
+
+    <p>The pitch is a fund that pays enormously when the market falls apart, so you can hold more stock the rest
+    of the time. What would make one worth buying is a payoff that bends: modest help in an ordinary fall, huge
+    help in a real crash. The bend is the entire product.</p>
+
+    <p>We went looking for it across eight candidate engines, fitting each one's return to the market's return
+    plus a separate term for the market's down months only, with error bars that allow for markets clustering calm
+    with calm and panic with panic. <Figure id="tail-hedge-convexity" inline />. The only bend we could measure at
+    all belongs to betting-against-beta, and it points the wrong way: it gets worse as stocks get worse.</p>
+
+    <p>The products bear it out. Cambria's TAIL has compounded at <Figure id="tail-fund-bleed" inline /> since
+    April 2017. In 2020, when stocks fell about a third inside five weeks, it made 7.0%. In 2022, when stocks fell
+    18%, it lost 13.1%. Simplify's CYA launched in September 2021, fell <Figure id="cya-total-loss" inline />, and
+    was liquidated in March 2024, which is a total loss on a product sold as crash protection over a stretch that
+    contained a 25% equity decline.</p>
+
+    <MarginNote label="Do not use the web page">
+      <p>
+        TAIL's since-inception figures are taken from the issuer's PDF factsheet at
+        <span data-numeric>2026-06-30</span>. The numbers rendered on the fund's own web page do not reconcile
+        with it.
+      </p>
+    </MarginNote>
+
+    <p>One detail cuts against TAIL rather than for it. The fund is about 91% ten-year Treasuries and about 5%
+    put options, so most of that loss is the worst bond market in forty years rather than the options decaying.
+    The Treasury part you can buy for 0.03% a year. The part you are paying 0.59% a year to obtain is the part
+    designed to lose money on average, because buying a put puts you on the paying side of an insurance market and
+    it is the seller who collects.</p>
+
+    <p>Insurance is worth buying when the premium costs less than the payout you expect. We cannot find the
+    payout, and the premium is charged every year whether or not anything happens. The cheapest crash hedge on our
+    panel was cash, which pays you to hold it.</p>
+
+    <p>What would reopen it. A change in the sign of the variance risk premium, or an engine that is not on this
+    shelf.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Direct indexing</Rail>
+
+    <h2>Owning the shares yourself so a computer can bank the tax losses</h2>
+
+    <MarginNote label="The binding rule">
+      <p>
+        26 U.S.C. §1211(b) caps the deduction of net capital loss against ordinary income at $3,000 a year and has
+        not been indexed since 1978. §67(h) struck the sunset date on the fee's non-deductibility.
+      </p>
+    </MarginNote>
+
+    <p>Instead of owning one index fund you own the individual stocks behind it in a managed account, and a
+    computer sells the ones that are down so you collect the tax losses. The idea is real, the vendors are
+    competent, and the fee has come down to about 9 basis points. It still does not work inside a plan whose whole
+    content is that the taxable account never sells.</p>
+
+    <p>Losses only save you money if you have gains for them to cancel. Without gains you fall back on §1211(b),
+    which caps the deduction of net capital loss against ordinary income at $3,000 a year and has not been raised
+    since 1978. Break-even needs <Figure id="direct-indexing-breakeven" inline showUnit={false} />. At a zero fee the exercise is
+    still worth −0.2 basis points a year, so this is a structural problem and no cheaper provider fixes it.</p>
+
+    <MarginNote label="Modelled">
+      <p>
+        The lock-in figure assumes each individual stock bounces around by 35% a year on its own, below the 45.9%
+        actually measured, so it understates rather than overstates the cage.
+      </p>
+    </MarginNote>
+
+    <p>It also doubles the cage it exists to exploit. After thirty years the harvested account holds
+    <Figure id="direct-indexing-lock-in" inline showUnit={false} />, and walking away from it with ten years left costs about 1.42%
+    a year at the top rate, roughly ten times the best case for running it. Several hundred low-basis lots cannot
+    be moved to another manager's model without realising gains, and cannot be turned back into a fund at all.</p>
+
+    <p>Two smaller facts finish it. The fee is permanently non-deductible, because §67(h) struck the sunset date,
+    so you pay it in after-tax dollars forever. And the strategy drifts from the index it is copying by
+    <Figure id="direct-indexing-tracking-error" inline />, which is noise three times louder than the thing it is
+    listening for.</p>
+
+    <p>What would reopen it. A stream of realised gains from somewhere else worth more than about 2.5% of the
+    taxable account a year: restricted stock vesting, a concentrated position being unwound, a business sale, a
+    house sale. If that is you, ask before executing anything.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Harvesting</Rail>
+
+    <h2>Tax-loss harvesting, inside a plan that never sells</h2>
+
+    <p>The same trap one level down, and it catches people who would never open a managed account.</p>
+
+    <p>Selling a loser, booking the loss and buying something similar is close to free money in the right
+    circumstances. Here the two good ideas cancel each other out. A never-sell plan produces no realised gains, so
+    harvested losses queue behind that $3,000 cap, and <Figure id="harvest-losses-used" inline showUnit={false} /> of every dollar
+    harvested over thirty years ever produces a tax saving. The other 99.8% sits as a carryforward. And a
+    carryforward dies with the taxpayer: IRS Publication 559 says unused capital losses can be deducted only on
+    the decedent's final return. So the step-up that makes harvesting permanent is the same event that destroys
+    the unused stock of it. Harvesting into a carryforward you never use is worth exactly nothing, twice.</p>
+
+    <p>Where it pays, the whole value is in never selling. At 3% of the account a year in gains from elsewhere, at
+    the top bracket, the same strategy is worth <Figure id="harvest-step-up-gap" inline showUnit={false} /> against the same
+    account left alone.</p>
+
+    <MarginNote label="Publication 559">
+      <p>
+        A carryforward dies with the taxpayer: unused capital losses may be deducted only on the decedent's final
+        return. The step-up that makes harvesting permanent is the same event that destroys the unused stock of it.
+      </p>
+    </MarginNote>
+
+    <p>The plain version survives, for what it is worth. Sell one total-market fund at a loss, buy a different
+    sponsor's total-market fund. No fee, and reversible at any time. Compared with direct indexing it wins at
+    every rate of offsetting gains below 2.5% at the top bracket.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Gold</Rail>
+
+    <h2>Gold, at the weights anyone would actually hold</h2>
+
+    <MarginNote label="A digression worth the space">
+      <p>
+        About 40% of gold's full half-century score comes from the forty months to December 1974. Private US gold
+        ownership was illegal throughout that stretch.
+      </p>
+    </MarginNote>
+
+    <p>Gold pays 0.12% a month over Treasury bills, bounces around by 16.24% a year, and has fallen 91.2% from a
+    peak. Measured as return per unit of that bumpiness, over half a century it scores
+    <Figure id="gold-sharpe" inline />. It moves with stocks at zero rather than against them, both overall and
+    inside the falls where you would want it.</p>
+
+    <p>Gold does diversify. Cash diversifies nearly as well and costs nothing.</p>
+
+    <p>How you pay for it decides the sign, as it does everywhere on this site. At a 10% weight paid for by
+    selling stocks, gold subtracts 0.404 percentage points a year against the same portfolio without it. Bought
+    with borrowed money on top, it adds 0.18 to 0.22 against that same comparison. The smallest gap this design
+    could reliably see is 0.63 to 1.04, and both readings sit inside it, so neither is resolved.</p>
+
+    <p>Now the digression, because it is too good to leave out. About 40% of that half-century score comes from
+    the forty months between September 1971 and December 1974. Private US gold ownership was illegal for the whole
+    of that stretch. The strongest evidence for gold in an American portfolio is a period in which an American
+    could not lawfully hold it.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Anti-beta</Rail>
+
+    <h2>Funds that own the boring stocks and bet against the exciting ones</h2>
+
+    <MarginNote label="The one bend we can measure">
+      <p>
+        How much it moves with the market runs −0.264 in up months against +0.118 in down months, and the
+        difference is about three and a half times the noise around it. It is the one bend on the whole panel we
+        can measure, and it bends the wrong way.
+      </p>
+    </MarginNote>
+
+    <p>Sold as the defensive move: own the boring stocks, bet against the exciting ones, sleep at night. The
+    mechanism is selling borrowing capacity to investors who cannot borrow, and it measurably bends the wrong way,
+    which makes it the only bend on our whole panel we can see at all. How much it moves with the market runs
+    −0.264 in up months against +0.118 in down months, and that difference is about three and a half times the
+    size of the noise around it. The strategy fell 31.6% through the global financial crisis and 30.6% through
+    1929 to 1932, because a crisis is precisely when borrowing gets withdrawn.</p>
+
+    <p>The fund you can buy makes it worse. BTAL charges 1.65% before waivers and 1.40% after, and the advertised
+    0.45% leaves out the dividend and brokerage expense on the shares it sells short, which is where the cost
+    lives. Since it launched it has returned <Figure id="btal-return" inline />.</p>
+
+    <p>Over its whole history it moves with stocks at −0.139, which reads as ballast and is a trap. A low average
+    correlation is a reason to look. It is never on its own a reason to buy.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Three products</Rail>
+
+    <h2>Two momentum funds and a deep-value fund, rejected on measurement</h2>
+
+    <MarginNote label="Rejected here, not everywhere">
+      <p>
+        Each of these is rejected against this portfolio at this moment. SPMO replaces MTUM as the shelf's US
+        momentum reference and is still not bought.
+      </p>
+    </MarginNote>
+
+    <p>These are well-built products. They lost on arithmetic that has little to do with whether the underlying
+    factor is real.</p>
+
+    <p>MTUM delivers genuine momentum exposure, +0.437 over a total-market fund. It also files 116% turnover a
+    year against that fund's 3%, costing 1.25 to 2.06 percentage points a year, which is more than the whole gross
+    exposure gain of +1.78 the turnover was bought for.</p>
+
+    <p>SPMO is the same idea built better: 13 basis points against MTUM's 15, 44% turnover against 116%, and a
+    distribution tax drag below the total-market fund's own. At a 5% weight it is worth
+    <Figure id="spmo-sleeve-line" inline />. Two things sink it. Since the idea was published, US momentum has
+    paid +4.19 percentage points a year, and the smallest gap that test could reliably see is 7.27, so we cannot
+    even tell you the direction. And SPMO's active position moves with the international momentum fund we already
+    hold at +0.626, a tighter overlap than MTUM's. SPMO replaces MTUM as the reference product on our shelf and is
+    not bought.</p>
+
+    <p>RPV holds the deepest value exposure available, +0.369 over a plain value fund. It pays for that by selling
+    profitability and momentum, at −0.204 and −0.173, on 42% annual turnover against the plain fund's 8%. Its
+    active leg is −0.370 correlated with the international momentum fund's, which makes it the anti-momentum
+    position inside a portfolio that holds momentum deliberately. At a 15% weight it comes out at −0.10% a year
+    against the portfolio without it, and negative under all four of our premium scenarios.</p>
+
+    <p>We expected to reject RPV on tax and could not. Its distribution drag is 0.62 percentage points a year
+    against VTV's 0.67, so it is the more tax-efficient of the two. The verdict does not use its measured return
+    either, which came in at −0.58 against a floor of 5.70 and therefore says nothing about anything.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>A date range</Rail>
+
+    <h2>A foreign value result that turned out to be a date range</h2>
+
+    <p>This one is a lesson rather than a product, and it is the reason every rejection above carries a
+    window.</p>
+
+    <MarginNote label="Why every rejection carries a window">
+      <p>
+        On the 55 months two funds impose, all four large-cap ex-US value funds read −2.3 to −2.9 with intervals
+        excluding zero. The small-minus-large gap falls from +4.5, resolvable, to +2.0, not.
+      </p>
+    </MarginNote>
+
+    <p>Large-cap developed international value funds looked clearly bad. Over the 55 months that two of them
+    impose on the comparison, all four read between −2.3 and −2.9 percentage points a year against the model, with
+    intervals excluding zero. Widen the window to the 78 months that two other funds also cover and the same funds
+    read <Figure id="exus-value-window" inline showUnit={false} /> percentage points a year against the model,
+    with neither interval excluding zero. The small-minus-large gap that had
+    looked like a finding drops to +2.0 and stops being resolvable.</p>
+
+    <p>Same funds, same method, different date range, opposite verdict. Over the months the small-cap and
+    large-cap funds both existed, their plain returns differed by −0.30 percentage points a year with a standard
+    error of 5.16. The small-cap fund never out-returned the large-cap one. It out-returned the model's prediction
+    for it, which is a statement about the model.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The pattern</Rail>
+
+    <h2>What these have in common</h2>
+
+    <p>Every rejection above is scoped to a design, a window, an instrument and a yardstick, and every one carries
+    the condition that would reopen it. Most are waiting on something specific: another decade of data, a cheaper
+    vehicle, a different tax position, a correlation that moves.</p>
+
+    <p>So if you catch yourself quoting one of these as proof that something cannot work, check which kind of
+    nothing it was. Two are the strong kind.</p>
+
+    <p>Most of them are us saying what we could not see.</p>
+  </div>
+
+  <Callout kind="change-your-mind">
+    <p>
+      Each section above states its own reopening condition, and they are specific: another decade of data, a
+      cheaper vehicle, a different tax position, a correlation below +0.2 on a window containing a recession.
+      Quote a rejection here without its window and you have quoted something we did not say.
+    </p>
+  </Callout>
+</Base>

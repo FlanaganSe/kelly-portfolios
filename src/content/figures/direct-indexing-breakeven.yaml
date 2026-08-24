@@ -1,0 +1,12 @@
+label: Gains from elsewhere needed to break even
+value: 1.2% a year held to death, 3.0% if ever sold
+unit: of the taxable account per year, top bracket
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Harvesting and direct indexing
+  docPath: docs/research/harvesting-and-direct-indexing.md
+  anchor: conclusion
+note: >-
+  1.5% and 3.8% at the 18.8% bracket; 1.9% and 5.9% at 15%. Gains the direct-index account
+  creates for itself do not count, because a fund holder never had them.

@@ -1,0 +1,12 @@
+label: Moving a portfolio from 60/40 to 90/10 stocks and bonds
+value: +1.27% a year against 4.85% of drift
+unit: basis points per year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Setting the equity share
+  docPath: docs/research/setting-the-equity-share.md
+note: >-
+  US, 1963-07 to 2025-12, 750 months, modelled ten-year bond leg. One country. Probability of
+  being ahead at thirty years 0.924; 90% confidence at 24 years. Larger than every lean in this
+  portfolio put together.

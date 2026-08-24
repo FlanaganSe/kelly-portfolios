@@ -1,0 +1,590 @@
+# FREEZE NOTE — READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# THIS SPECIFICATION IS NOT CONFIRMATORY AND CANNOT BE MADE CONFIRMATORY LATER.
+# The panel below was assembled by hand and its sample means, correlations and
+# portfolio Sharpe ratios were examined BEFORE this file existed. The weight
+# vectors, the two leverage-matched controls and the 0-to-12 pp/yr haircut grid
+# were all chosen after that inspection. `run_kind: exploratory` is therefore a
+# statement of fact about the order events happened in, not a conservative
+# label, and no re-run of this file can convert it: the freezing step that a
+# confirmatory claim rests on did not happen. A confirmatory version of this
+# question needs a specification frozen against data this repository has not yet
+# looked at.
+#
+# THIS IS A VENDOR-SERIES EVALUATION, NOT AN INDEPENDENT REPLICATION.
+# The trend leg and the commodity leg are AQR-authored series, reconstructed in
+# full on every vendor update, published by a firm that sells the strategy, and
+# stating NO fee, transaction-cost, slippage, roll-cost or financing basis
+# anywhere in either workbook. Every figure below is gross of the vendor's own
+# trading costs BY OMISSION, not by choice. See parameters.evaluation_disclosure.
+experiment_family: exp_011_overlay_stack
+title: >
+  Does a financed overlay of non-equity return engines raise portfolio growth
+  over the leverage-matched control? A vendor-series evaluation.
+entry_point: exp_011_overlay_stack
+run_kind: exploratory
+evidence_class: vendor-series-evaluation
+consumes_final_holdout: false
+seed: 20260816
+
+hypothesis: >
+  Holding one unit of US equity and financing additional notional in treasury
+  duration, corporate credit, broad commodities and a diversified time-series
+  trend series raises net geometric growth by more than levering the equity
+  position to the same volatility does. The claim is about the FUNDING RULE and
+  the COMPARATOR, not about whether any sleeve has a positive standalone mean:
+  `portfolio_edge.studies.overlay_growth` equation (5) shows that at matched
+  volatility the variance terms cancel exactly and only the Sharpe ratio decides,
+  so an overlay that raises growth over the UNLEVERED equity control while
+  lowering the portfolio's Sharpe ratio has bought its gain with leverage and is
+  leveraged beta, not alpha.
+
+mechanism: >
+  Equation (1) of `overlay_growth`: an overlay of weight w on a base held at
+  exposure L adds `w (a_net - L rho sigma_p sigma_d) - w^2 sigma_d^2 / 2` to
+  growth, where `a_net = a_d - s - phi` is what a unit of notional earns after
+  the financing spread and the fee. Dividing by sigma_d gives the admission test
+  `S_d > L rho sigma_p`, equation (4): a sleeve belongs in the stack when its
+  NET Sharpe ratio exceeds its correlation with the base times the base's
+  volatility times the base's exposure. At negative correlation the threshold is
+  negative, so a sleeve with a small negative net expected excess return can
+  still raise growth. That is the mechanism, and it is also the reason the
+  leverage-matched control is mandatory: the same algebra says levering the base
+  raises growth too, and only the Sharpe comparison separates the two.
+  The mechanism is disputed at its root for the trend leg. Huang, Li, Wang and
+  Zhou (2020) find the original pooled time-series-momentum t of 4.34 sits BELOW
+  its own bootstrap critical values, and Kim, Tse and Wald (2016) show that
+  removing volatility scaling collapses the pooled statistic to 1.68. The
+  defensible prior is that the published series may be profitable while returns
+  are not predictable, which is a weaker claim than the one the sleeve name
+  implies.
+
+falsifier: >
+  The overlay stack is rejected as a growth improvement when ANY of:
+  (a) the matched-volatility gap `sigma_p (S_portfolio - S_equity)` is at or
+  below zero for the headline `equity_plus_trend_50` portfolio on the full
+  window, net of the declared costs charged inside the simulation;
+  (b) `equity_levered_150` or `equity_levered_135` attains a Sharpe ratio at or
+  above the overlay portfolio's, in which case the gain is leveraged beta;
+  (c) the post-publication sub-period gap is negative while the pre-publication
+  gap is positive.
+  Three separate conditions instead make the outcome `unresolved` rather than a
+  confirmation, and each is checked in this order after the rejection clauses:
+  (i) the gap's bootstrap interval includes zero; (ii) the gap is smaller than
+  the minimum detectable effect reported beside it, because a positive point
+  estimate below the resolution of the instrument is not evidence of an effect;
+  (iii) the MEASURED pre-to-post-publication decay in the trend leg's arithmetic
+  mean exceeds the break-even haircut, in which case the full-window figure is a
+  description of 1985-2025 and not a forecast. The decay is computed from the
+  panel rather than asserted here, because asserting it would be a number chosen
+  after seeing the data. Under no outcome may this specification produce a status
+  above `exploratory`.
+
+universe:
+  description: >
+    Five monthly return series, all EXCESS OF CASH, intersected on non-missing
+    periods, plus one cash series. No contract-level data, no rolls, no
+    collateral assumptions and no fund shares: this experiment therefore cannot
+    and does not reimplement any of the strategies it prices.
+  series:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly table, column `Mkt-RF`
+      basis: >
+        Excess of the US one-month bill, as published. It is NOT re-based onto
+        the Goyal-Welch cash series used elsewhere here; French subtracts his own
+        `RF` and unpicking that would substitute one cash rate for another inside
+        a published spread.
+    - id: treasury
+      source: Goyal-Welch `PredictorData`, monthly sheet, `ltr` minus `Rfree`
+      basis: >
+        Long-term government bond total return less the risk-free rate, both from
+        the same file and the same row, so the difference is an excess return
+        with no cross-source date alignment in it.
+    - id: credit
+      source: Goyal-Welch `PredictorData`, monthly sheet, `corpr` minus `Rfree`
+      basis: >
+        Long-term CORPORATE bond total return less the risk-free rate. This is a
+        credit-plus-duration excess return, not a duration-hedged credit spread.
+        It must never be confused with AQR's `CORP_XS`, which is excess of
+        DURATION-MATCHED governments and is measured against a different
+        benchmark entirely; the two may not appear in the same ledger.
+    - id: commodity
+      source: >
+        AQR `Commodities for the Long Run`, monthly sheet, column
+        `Excess return of equal-weight commodities portfolio`
+      basis: >
+        EXCESS OF CASH, NOT a collateralised total return. The registry records
+        this trap explicitly and it is respected here: nothing adds a cash rate
+        to this series, and no figure derived from it is described as a
+        commodity total return.
+    - id: trend
+      source: "AQR `Time Series Momentum: Factors`, monthly sheet, column `TSMOM`"
+      basis: >
+        Excess of cash per the workbook's own header row. Internally
+        volatility-scaled to a 40% per-position target by the vendor; it is NOT
+        re-scaled here, because scaling it twice would double-count.
+    - id: cash
+      source: Goyal-Welch `PredictorData`, monthly sheet, `Rfree`
+      basis: >
+        The funding rate added back to every portfolio's excess return to make a
+        total return, so that the wealth path, the drawdown and the geometric
+        return are those of a funded portfolio rather than of a spread.
+  excluded:
+    - Any claim of independent replication of trend or of commodities.
+    - >
+      AQR's `Credit-Risk-Premium` file. Its `CORP_XS` is excess of duration-
+      matched governments rather than of cash, so it answers a different question
+      from the `corpr - Rfree` leg above and the two cannot be pooled.
+    - >
+      Any CTA index, peer-group average or fund share class. Survivorship and
+      backfill distortions there are of the order of the entire gross premium.
+    - >
+      Any weight search. No optimiser runs in this experiment: the six weight
+      vectors are enumerated in parameters.portfolios and nothing is fitted.
+
+sample_policy:
+  start: "1985-01"
+  end: "2025-05"
+  held_out: >
+    Nothing is held out, and that is a limitation rather than a design. The
+    window is the intersection of what the sources publish: the trend series
+    begins 1985-01 and the commodity series ends 2025-05, so the panel is
+    485 months and neither boundary was chosen. Observations after 2025-05 exist
+    in the trend and Goyal-Welch files and are clipped before any statistic is
+    computed, so a later vendor update cannot silently extend the window. A
+    genuine holdout for this question does not exist in this repository, which is
+    the main reason no confirmatory version of this specification can be written
+    against these files.
+  embargo: >
+    None, and none is needed: no parameter is estimated on one window and applied
+    to another. Every weight vector is a constant, the costs are constants, and
+    no signal is computed from the panel. The look-ahead this design DOES carry
+    is of a different kind and is not removable by an embargo — the weights and
+    the sleeve list were chosen by a human who had already seen these sample
+    means. See the freeze note at the top of this file.
+  eras:
+    - name: pre_publication
+      start: "1985-01"
+      end: "2011-12"
+      rationale: >
+        Before Moskowitz, Ooi and Pedersen (2012) and before the strategy was
+        widely marketed. The boundary is approximate and the approximation is
+        part of the result.
+    - name: post_publication
+      start: "2012-01"
+      end: "2025-05"
+      rationale: >
+        After publication. McLean and Pontiff (2016) predict decay here, and the
+        sub-period split is reported for every sleeve rather than only for the
+        one where it is convenient.
+    - name: full_window
+      start: "1985-01"
+      end: "2025-05"
+      rationale: >
+        The full intersected panel, reported alongside the splits and never
+        instead of them.
+    - name: no_trend_long_window
+      start: "1926-07"
+      end: "2025-05"
+      rationale: >
+        Equity, treasury, credit and commodity intersect from 1926-07, which is
+        the only window long enough to show that the treasury leg's Sharpe ratio
+        over 1985-2025 is a property of one bond bull market rather than of bonds.
+        The trend leg does not exist here and no portfolio containing it is
+        evaluated on this window.
+
+benchmark:
+  primary:
+    id: equity_levered_150
+    definition: 1.50 units of US equity, financed at cash plus the declared borrow spread
+    rationale: >
+      The leverage-matched control is the one that decides. Comparing an overlay
+      portfolio with UNLEVERED equity flatters it by exactly the amount the extra
+      risk earns, and the charter requires such a gain be labelled
+      leveraged beta rather than alpha.
+  secondary:
+    id: equity_only
+    definition: 1.00 unit of US equity
+    rationale: >
+      The unlevered control answers a different question — what an investor who
+      will not borrow gives up — and is reported beside the primary, never
+      combined with it.
+  aggregation_rule: >
+    THE TWO CONTROLS MAY NEVER BE ADDED, AVERAGED OR PRESENTED AS ONE LINE. They
+    are measured against different counterfactuals and a figure that mixes them
+    is the double-counting error `aggregate()` in
+    `portfolio_edge.studies.outperformance_horizon` raises on. The implementation
+    carries the same guard: every reported comparison names its benchmark and the
+    code refuses to combine comparisons whose benchmarks differ.
+
+primary_metric:
+  name: matched-volatility growth gap
+  definition: >
+    `sigma_p (S_portfolio - S_benchmark)`, equation (5) of
+    `portfolio_edge.studies.overlay_growth`. At equal volatility the `-V/2` term
+    is common to both portfolios and cancels exactly, so the growth difference is
+    the volatility times the Sharpe difference and nothing else matters. Sharpe
+    ratios are computed on EXCESS returns net of every declared cost, and the
+    volatility in both the numerator and the multiplier is the excess-return
+    volatility, so the identity holds exactly rather than approximately.
+  units: percentage points per year
+  uncertainty: >
+    Stationary block bootstrap on the joint monthly panel, resampling whole rows
+    so the cross-sleeve correlation structure survives, 10000 resamples, mean
+    block length 12 months, 95% percentile interval. A minimum detectable effect
+    at 80% power is reported beside every gap, computed from the paired
+    difference series rather than assumed.
+
+secondary_metrics:
+  - name: net geometric return of the funded portfolio
+    units: percent per year
+    note: the metric decision 0008 makes deciding
+  - name: CRRA certainty equivalent at gamma 3
+    units: percent per year
+    note: >
+      Reported BESIDE growth and never alone, per decision 0008. Computed over
+      non-overlapping calendar years 1985-2024, which is 480 of the 485 months;
+      the five months of 2025 cannot form a year and are excluded from this
+      statistic only.
+  - name: annualised volatility of the excess return
+    units: percent per year
+  - name: annualised volatility of the total return
+    units: percent per year
+    note: >
+      Reported separately because it differs from the excess-return volatility
+      whenever the cash rate moves, and because mixing the two inside one Sharpe
+      ratio breaks the equation (5) identity.
+  - name: maximum drawdown of the funded wealth path
+    units: percent
+  - name: longest run of months below the running peak
+    units: months
+  - name: gross notional
+    units: multiple of net asset value
+  - name: net Sharpe ratio against the admission threshold L rho sigma_p
+    units: ratio
+  - name: break-even haircut on the trend leg's arithmetic mean
+    units: percentage points per year
+  - name: sleeve correlation matrix, full window and both sub-periods
+    units: correlation
+
+cost_model:
+  applied: fully, inside the simulation, on held notional, every month
+  charged_on: >
+    A management fee on the ABSOLUTE NOTIONAL of each sleeve, plus a borrow
+    spread on gross notional above 1.0. Both are divided by 12 and subtracted
+    from the portfolio's monthly excess return before any statistic is computed.
+    Neither is ever applied as a post-hoc haircut to an annual figure.
+  sleeve_fee_annual_percent:
+    equity: 0.0
+    treasury: 0.0
+    credit: 0.0
+    commodity: 0.0
+    trend: 1.45
+  sleeve_fee_basis: >
+    1.45% is the midpoint of the accessible managed-futures fee range this
+    repository has already used (0.65% net-optimistic, 1.50% plus a performance
+    fee net-pessimistic, exp_004). The equity, treasury, credit and commodity
+    legs carry ZERO fee, which is deliberately optimistic: it is the assumption
+    most favourable to the hypothesis, so a rejection under it is robust and a
+    confirmation under it is not.
+  borrow_spread_annual_percent: 0.59
+  borrow_spread_basis: >
+    58.70 bp, the Fleckenstein-Longstaff funding basis averaged over 28 years,
+    recorded in `docs/research/structural-and-tax-edges.md` section 3 and rounded
+    to 0.59%. It is an average, not a guarantee, and it was not available at that
+    level in every one of these 485 months.
+  charged_uniformly: >
+    THE BORROW SPREAD IS CHARGED TO THE LEVERAGE-MATCHED CONTROLS ON THE SAME
+    TERMS AS TO THE OVERLAY PORTFOLIOS. Charging financing to the overlay's
+    geometric return but not to its Sharpe ratio, or charging it to the overlay
+    but not to the levered control, changes the sign of the comparison equation
+    (5) decides; both are recorded here as errors this specification forbids
+    rather than as choices.
+  not_charged:
+    - >
+      The vendor's own trading costs inside the trend and commodity series. They
+      are not observable and the workbooks state no basis, so every figure here
+      is gross of them BY OMISSION. This is the single largest unpriced item and
+      it matters most for the commodity leg, where rolling futures is where the
+      costs live.
+    - >
+      Portfolio-level rebalancing costs. The weights are constant and the
+      simulation rebalances to them monthly at no charge, which flatters every
+      portfolio equally except the unlevered control, which needs no trades at
+      all.
+    - >
+      Tax. The simulation holds no tax lots, so it cannot know a basis, so it may
+      not price a realisation. PRETAX everywhere.
+
+rebalance_rule:
+  frequency: monthly, back to the frozen constant weights
+  execution: >
+    Weights are constants and returns are monthly, so there is no signal, no lag
+    and no execution convention to choose. The overlay legs are financed rather
+    than funded by sale: the equity weight stays at its stated value and the
+    sleeve notional is added on top, which is the funding rule `overlay_growth`
+    calls OVERLAY and the rule experiments 004 and 010 did NOT test.
+  no_optimiser: >
+    Nothing searches a weight space. The six vectors in parameters.portfolios are
+    enumerated constants and no free parameter is fitted to the panel.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, with 6 and 24 as predeclared
+    neighbours reported as a robustness arm. The Politis-White automatic rule is
+    computed and reported for each sleeve but is NOT used to set the block
+    length, because a data-chosen block length is a tuned parameter.
+  multiple_testing_correction: >
+    Holm family-wise error rate at 0.05 across the four candidate portfolios
+    against each benchmark separately. The two benchmarks are two families, not
+    one, because they are two different null hypotheses.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval that includes zero is reported as `unresolved` and never narrowed
+    by changing the estimator. The minimum detectable effect at 80% power is
+    reported beside every gap so that a null can be told apart from an absence.
+
+rejection_rule: >
+  Mark `rejected` when a falsifier clause fires. Mark `unresolved` when the
+  matched-volatility gap against the leverage-matched benchmark is positive but
+  its 95% interval includes zero, or when it is smaller than the minimum
+  detectable effect, or when the break-even haircut on the trend leg is inside
+  the range that plausible unpriced vendor trading costs occupy. `unresolved` is
+  the expected outcome for a question answered on two vendor-reconstructed series
+  with no stated cost basis, and it is not a failure of the experiment. Under no
+  outcome may this specification produce a status above `exploratory`; see the
+  freeze note.
+
+parameters:
+  evaluation_disclosure:
+    is_vendor_series_evaluation: true
+    is_independent_replication: false
+    is_confirmatory: false
+    statement: >
+      Two of the five legs are published, author-maintained vendor series from a
+      firm that sells the strategies they describe. Neither workbook states a
+      fee, transaction-cost, slippage, roll-cost or financing basis anywhere, in
+      cells or in the embedded pictures its methodology is shipped as, so both
+      are gross of every internal cost BY OMISSION. AQR reconstructs the full
+      history on every update and publishes no vintage archive, so the sha256
+      pins below identify the file used and make no point-in-time claim. Any
+      write-up describing this as a replication of trend following or of a
+      commodity index is wrong.
+    order_of_operations: >
+      The sample moments of this panel were examined before this file was
+      written. That is recorded here, in run_kind, and in the freeze note,
+      because it is the fact most likely to be lost when the numbers are quoted.
+  materiality_threshold_annual_percent: 0.30
+  crra_gamma: 3
+  certainty_equivalent_years: [1985, 2024]
+  sleeves: [equity, treasury, credit, commodity, trend]
+  overlay_sleeves: [treasury, credit, trend]
+  portfolio_sleeve_order: [equity, treasury, credit, trend]
+  portfolios:
+    - name: equity_only
+      weights: [1.0, 0.0, 0.0, 0.0]
+      role: unlevered control
+    - name: equity_plus_trend_50
+      weights: [1.0, 0.0, 0.0, 0.50]
+      role: headline candidate
+    - name: equity_plus_treasury_trend
+      weights: [1.0, 0.25, 0.0, 0.25]
+      role: candidate
+    - name: equity_plus_all_three
+      weights: [1.0, 0.30, 0.15, 0.30]
+      role: candidate
+    - name: equity_levered_135
+      weights: [1.35, 0.0, 0.0, 0.0]
+      role: leverage-matched control
+    - name: equity_levered_150
+      weights: [1.50, 0.0, 0.0, 0.0]
+      role: leverage-matched control, primary benchmark
+  portfolio_note: >
+    The commodity leg carries a weight of zero in every portfolio. It is in the
+    panel because the admission test has to be able to show a sleeve FAILING;
+    a stack that only ever reports the sleeves it kept is not a test.
+  haircut_sweep:
+    applies_to: trend
+    start_percent_per_year: 0.0
+    stop_percent_per_year: 12.0
+    step_percent_per_year: 1.0
+    portfolio: equity_plus_trend_50
+    rationale: >
+      The trend leg's arithmetic mean is the input the conclusion is most
+      sensitive to and the one the vendor's unpriced trading costs attack
+      directly. The sweep subtracts a constant from every monthly observation
+      inside the simulation, so volatility and every correlation are unchanged
+      and the gap falls linearly at exactly half the haircut, the overlay weight.
+      The break-even is reported by linear interpolation between the two grid
+      points that bracket zero, which is exact for this construction.
+  admission_test:
+    base_exposures: [1.0, 1.35, 1.5]
+    definition: >
+      Equation (4) of `overlay_growth`: report each sleeve's net Sharpe ratio
+      against the threshold `L rho sigma_p`, where rho is its correlation with
+      the equity leg, sigma_p is the equity leg's volatility, and L is the
+      exposure the base is held at. Reported at all three exposures because the
+      threshold scales with L and a sleeve can pass at L = 1 and fail at L = 1.5.
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    definition: >
+      2.8016 times the standard error of the annualised mean of the paired
+      difference series `r_portfolio - (sigma_portfolio / sigma_benchmark)
+      r_benchmark`, whose mean IS the matched-volatility gap. The scaling ratio
+      is a plug-in estimate and is treated as known, which understates the
+      interval slightly; that is recorded rather than corrected.
+    resolution_table_reference: >
+      `docs/research/evidence-base.md` section 1 carries no row for a financed
+      overlay at 50% weight over 485 months. The nearest is "marginal sleeve
+      growth at 10% weight, 420 months, MDE 0.58 pp/yr against a 0.30 pp/yr bar",
+      which cannot answer its question. This experiment's weight is five times
+      larger and its window 65 months longer, so its floor should be lower; the
+      measured floor is reported beside every gap rather than inferred from that
+      row.
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch ABORTS before any statistic is computed. AQR
+      reconstructs its entire history on every update, Goyal-Welch rebuilds the
+      full file on each annual release, and Ken French recomputes his from each
+      new CRSP vintage. An unrecognised hash is therefore a NEW VINTAGE rather
+      than a corrupted download, and a result computed from an unrecognised file
+      looks exactly like a good one. A normalised-hash mismatch when the raw hash
+      matched means the parser changed behaviour, which is a finding and not a
+      hash to update.
+    expected_frequency: monthly
+    series:
+      - name: equity
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF"]
+        combination: identity
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        expected_sha256_normalized: ece4319672bc2bd5c59195db71cc1b970b33d8db2043e727d0e06db51719443f
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - name: treasury
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "Rfree"]
+        combination: difference
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        expected_sha256_normalized: 42d40c513e687ff8eb810eb8d82ebf02ec5811771cba254e431cef5a5a9461de
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - name: credit
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["corpr", "Rfree"]
+        combination: difference
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        expected_sha256_normalized: 42d40c513e687ff8eb810eb8d82ebf02ec5811771cba254e431cef5a5a9461de
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - name: commodity
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        combination: identity
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        expected_sha256_normalized: 44a18fc33298098cd863b6f997106708b11588adca36f580a8fe0e0ce2956ae6
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+      - name: trend
+        source: aqr
+        dataset_id: aqr_tsmom_factors
+        table_id: monthly
+        columns: ["TSMOM"]
+        combination: identity
+        expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+        expected_sha256_normalized: b58b9f527de8fa1aff06c292895b53ed6a5c69bf8331f7c9c367cf84b104e03e
+        committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+      - name: cash
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["Rfree"]
+        combination: identity
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        expected_sha256_normalized: 42d40c513e687ff8eb810eb8d82ebf02ec5811771cba254e431cef5a5a9461de
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+
+data_sources:
+  - id: french_us_market_excess_return
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF, used as published, not re-based onto another cash rate
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr - Rfree, corpr - Rfree, and Rfree itself
+    note: >
+      The Google Drive endpoint returns NO Last-Modified header, so the retrieval
+      timestamp is the only observable bound on when any row became available.
+      That is weaker provenance than every other source used here.
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    sheet: Commodities for the Long Run
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: excess return of the equal-weight portfolio, used as published
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    sheet: TSMOM Factors
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    construction: TSMOM, used as published and not re-scaled
+
+hostile_tests:
+  - >
+    Charge the borrow spread to the leverage-matched controls on the same terms
+    as to the overlay portfolios, and report how much of the headline gap
+    survives. Not charging it is the error this test exists to catch.
+  - >
+    Sweep a 0 to 12 pp/yr haircut on the trend leg's arithmetic mean and report
+    where the 50% overlay stops paying against each benchmark separately.
+  - >
+    Split every sleeve at 2011/2012 and report the post-publication moments, so
+    that a full-window Sharpe ratio driven entirely by the first two thirds of
+    the sample is visible.
+  - >
+    Report the treasury leg on the 1926-07 window, where the trend leg does not
+    exist. A bond Sharpe ratio measured only over 1985-2025 is a measurement of
+    one bond bull market.
+  - >
+    Report the admission test for the commodity leg even though it carries zero
+    weight, so that the reader can see a sleeve failing the same bar the others
+    pass.
+  - Repeat the bootstrap at mean block lengths of 6 and 24 months.
+  - >
+    Report the minimum detectable effect beside every gap and mark any gap below
+    it `unresolved` rather than positive.
+
+reporting_requirements:
+  - The freeze note and the vendor disclosure, printed with every table.
+  - >
+    The benchmark named beside every gap, and NEVER a figure combining the
+    unlevered and the leverage-matched control.
+  - Geometric growth as the deciding figure, with the gamma-3 certainty
+    equivalent beside it and never instead of it.
+  - The minimum detectable effect beside every gap.
+  - >
+    Gross notional beside every portfolio, so that a reader can see which figures
+    require borrowing and how much.
+  - The sha256 of every source file, the sheet or table read, and the observed
+    first and last observation.
+  - >
+    An explicit statement that both AQR series are gross of the vendor's own
+    trading costs by omission, and that the commodity series is excess of cash
+    rather than a collateralised total return.
+  - The full correlation matrix, not only the correlations with equity.
+
+notes: >
+  Retain `unresolved` rather than `rejected` when the instrument cannot separate
+  the overlay from its leverage-matched control. The two findings are different
+  and collapsing them would destroy the distinction this layer exists to keep.
+  The result of this experiment cannot promote a sleeve; decision 0004 stands
+  until a confirmatory specification exists, and none can be written against
+  these files.

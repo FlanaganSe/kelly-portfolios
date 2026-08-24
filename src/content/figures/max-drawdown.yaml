@@ -1,0 +1,12 @@
+label: Worst peak-to-trough fall of the recommended portfolio
+value: −50.3%
+unit: percent
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: 1-the-tournament-on-the-portfolio-actually-recommended
+note: >-
+  Against −64.6% for a control that borrows as much, and −52.7% for a cheap control that borrows nothing, over
+  the same 427 months. Longest run under water 42 months.

@@ -1,0 +1,92 @@
+[
+ [
+  "World Bank Commodity Price Data (The Pink Sheet)",
+  null,
+  null,
+  null
+ ],
+ [
+  "monthly prices in nominal US dollars, 1960 to present",
+  null,
+  null,
+  null
+ ],
+ [
+  "(monthly series are available only in nominal US dollars)",
+  null,
+  null,
+  null
+ ],
+ [
+  "Updated on August 04, 2026",
+  null,
+  null,
+  null
+ ],
+ [
+  null,
+  "Crude oil, average",
+  "Crude oil, Brent",
+  "Gold"
+ ],
+ [
+  null,
+  "($/bbl)",
+  "($/bbl)",
+  "($/troy oz)"
+ ],
+ [
+  "1960M01",
+  1.6,
+  1.6,
+  35
+ ],
+ [
+  "1960M02",
+  1.6,
+  1.6,
+  35
+ ],
+ [
+  "1960M03",
+  1.6,
+  1.6,
+  35
+ ],
+ [
+  "1960M04",
+  1.6,
+  1.6,
+  35
+ ],
+ [
+  "1960M05",
+  1.6,
+  1.6,
+  35
+ ],
+ [
+  "1960M06",
+  1.6,
+  1.6,
+  35
+ ],
+ [
+  "2026M05",
+  100.4,
+  107.5,
+  4587
+ ],
+ [
+  "2026M06",
+  81.7,
+  85.4,
+  4228
+ ],
+ [
+  "2026M07",
+  79.8,
+  83.4,
+  4073
+ ]
+]

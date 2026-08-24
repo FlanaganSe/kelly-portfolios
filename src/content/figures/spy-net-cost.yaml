@@ -1,0 +1,14 @@
+label: What SPY costs to own once securities-lending income is counted
+value: 0.0945%
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: The core beta shelf, audited on cost rather than on fee
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: 6-the-core-beta-shelf-audited-on-cost-rather-than-on-fee
+note: >-
+  Against 0.0182% to 0.0294% for every other S&P 500 tracker audited. SPY is a trust that is
+  barred from lending its holdings at all, and it holds dividends in a non-interest-bearing
+  account until it pays them out. Read from 110 annual filings to the SEC covering 25 funds and
+  eight fiscal years. SPY also has the tightest spread on the shelf, and a spread is paid once
+  where a fee is paid every year.

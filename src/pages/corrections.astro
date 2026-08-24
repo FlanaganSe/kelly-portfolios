@@ -1,0 +1,324 @@
+---
+/**
+ * The corrections policy, and the dated log it commits to.
+ *
+ * Eight entries, newest first, each one an error that moved a recommendation rather
+ * than a decimal. The narrative versions of several of these also appear on
+ * `/how-sure/`, which reached them from the confidence vocabulary; this page is the
+ * dated record with permanent anchors, and it owns the policy.
+ *
+ * Every date is the day the corrected figure landed in the repository, which is
+ * checkable in the commit history. Do not invent one for an entry whose date cannot be
+ * established: leave the entry off instead.
+ */
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import Base from "~/layouts/Base.astro";
+import { REPO_URL } from "~/lib/site";
+---
+
+<Base
+  title="Corrections"
+  description="What this project published, what turned out to be wrong with it, what caught the error, and what changed. Eight dated entries, including a return figure that was never measured and was deleted rather than replaced with a better guess."
+>
+  <div class="prose">
+    <Rail>Corrections</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Corrections</h1>
+
+    <MarginNote label="The question">
+      <p>
+        What have you published that turned out to be wrong? Dates are the day the corrected figure landed in
+        <a href={REPO_URL} rel="noopener noreferrer">the repository</a>.
+      </p>
+    </MarginNote>
+
+    <p>Thirty-two errors have been found in this project's own published numbers. Eight are below, chosen because
+    each moved a recommendation rather than a decimal.</p>
+
+    <p>If you read one, read <a href="#trend-premium">the trend-following return</a>. It was quoted confidently on
+    this site for most of the project's life, nobody had ever measured it, it had three separate errors stacked
+    inside it, and when we worked out what it actually was we deleted it instead of printing a better guess.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>Policy</Rail>
+
+    <h2 id="policy">What happens when we find one</h2>
+
+    <p>Six rules, written down before they were needed and revised twice since.</p>
+
+    <MarginNote label="Why not just edit it">
+      <p>
+        A site that quietly fixes its numbers is indistinguishable from a site that was right all along, which is
+        the impression a reader has no way to check.
+      </p>
+    </MarginNote>
+
+    <p>The number is corrected everywhere it appears, and an entry lands here with its date. We do not edit a
+    figure and say nothing.</p>
+
+    <p>A frozen specification is never edited, even when it is the thing that was wrong. Its defect is recorded on
+    the page that reads it, and the original keeps its own hash and its own verdict, because a specification you
+    can revise after seeing its result is worth nothing as a specification.</p>
+
+    <p>A withdrawn number is deleted rather than replaced with a better guess. Where we do not know, the page says
+    so and prints nothing in the gap. This is harder than it sounds, because a blank looks like an oversight and a
+    plausible number looks like work.</p>
+
+    <p>Where a correction has a mechanical fix, the fix is code that refuses rather than a note asking future
+    readers to remember. Three of the entries below ended with a function raising an exception on the exact
+    mistake that produced them.</p>
+
+    <p>Typos, broken links and clumsy sentences are fixed silently. An entry appears here when an error moved a
+    number, a verdict or a recommendation.</p>
+
+    <p>The other twenty-four corrections live on the research page that owns the number, each beside the figure it
+    changed, along with the commit that made the change. They are smaller, and they are all in the same
+    repository.</p>
+
+    <Callout kind="do-this">
+      <p>
+        Found one we missed? <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">Open an issue</a>. A number
+        with its source and the sentence you think it contradicts is enough; you do not need to be polite about
+        it.
+      </p>
+    </Callout>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The log</Rail>
+
+    <h2 id="log">The log</h2>
+
+    <p>Newest first.</p>
+
+    <h3 id="two-horizons">"How long before you would know" was two questions wearing one label</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-23</p>
+
+    <p><strong>What we believed.</strong> That the site could put about three and a half months for the fee and tax savings
+    beside <span data-numeric>59</span> years for the whole construction and call it one comparison. It was the
+    site's signature line and it appeared on the home page.</p>
+
+    <p><strong>What was wrong.</strong> The two numbers answer different questions. Four months comes from
+    <code>T = (z·s/e)²</code>, which is when your own account would separate an effect from the thing you are
+    comparing it against. The 59 years came from scaling a design's smallest visible effect across its 427-month
+    panel, which is when a study could separate that effect from zero. Different question, different arithmetic,
+    one label on top of both.</p>
+
+    <MarginNote label="Both are still published">
+      <p>
+        Neither number was wrong. What was wrong was contrasting them with each other, which is why both survive
+        and each one now says which question it answers.
+      </p>
+    </MarginNote>
+
+    <p><strong>What caught it.</strong> Writing every horizon on the site into one table, in order to build the
+    figure records, and finding two that could not both be following the same rule.</p>
+
+    <p><strong>What changed.</strong> The headline contrast is now three and a half months against <span data-numeric>31</span>
+    years, both under the first rule. The construction's own-account horizon is
+    <Figure id="time-to-know-construction" inline showUnit={false} />, not 59. The
+    <Figure id="detection-horizon-construction" inline showUnit={false} /> survives on
+    <a href="/how-sure/">how sure we are</a>, labelled as the second question and never contrasted with the first.
+    Two records carrying 59 years under an own-account heading were withdrawn.</p>
+
+    <h3 id="tracking-error">One name holding two different facts</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-23</p>
+
+    <p><strong>What we believed.</strong> That <code>tracking-error</code> named one quantity.</p>
+
+    <p><strong>What was wrong.</strong> It named two. Six percent is how far the portfolio drifts from a
+    borrowing-matched control in a typical year. Four hundred basis points is how far it drifts from a cheap index
+    fund holding the same split. Both are real, both are published, and any sentence reaching for the identifier
+    got whichever one had been written most recently.</p>
+
+    <p><strong>What caught it.</strong> A checker that walks every figure record and refuses to let one identifier
+    carry two different facts. It was written for a different reason and found this on its first run.</p>
+
+    <p><strong>What changed.</strong> Split in two, with the comparison named in each record. The checker runs in
+    the build, so the collision cannot come back.</p>
+
+    <h3 id="trend-premium">A trend-following return we had never measured</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-22</p>
+
+    <MarginNote label="Source">
+      <p>
+        <a href={`${REPO_URL}/blob/main/docs/research/adversarial-review.md`} rel="noopener noreferrer"
+          >Adversarial review of the August 2026 construction session</a
+        >, as of <span data-numeric>2026-08-22</span>.
+      </p>
+    </MarginNote>
+
+    <p><strong>What we believed.</strong> That trend following would return
+    <Figure id="trend-premium-withdrawn" inline showUnit={false} /> percentage points a year from here. The figure
+    sized a position, and then it was used to argue against holding that position at all.</p>
+
+    <p><strong>What was wrong.</strong> Nobody had measured it. It was the 2012 to 2025 stretch's own compounded
+    average with a 1.50% fee taken off, and it was then compared against a break-even computed on a completely
+    different basis, with the same fee charged a second time by the model that consumed it. Three errors inside
+    one number: a variance term worth 0.77 points, a fee counted twice, and a point estimate used with no range
+    when its own 95% range ran from −2.67 to +11.00 and therefore contained the 10.98 it was being used to
+    overturn.</p>
+
+    <p><strong>What caught it.</strong> Running the arithmetic backwards. Add the fee back and add the variance
+    term back and 1.80 returns 4.07, which is that same file's own mean on the basis the break-even used. A
+    forecast that reconstructs an in-sample average to the second decimal is not a forecast.</p>
+
+    <p><strong>What changed.</strong> The sign of the recommendation. On the published basis the position
+    subtracted 0.35 percentage points a year against the same portfolio without it; corrected, it adds 0.34
+    against that same comparison. The recommended weight moved to <span data-numeric>25%</span>, and the modelled
+    chance of giving up on it at a <span data-numeric>30%</span> weight fell to
+    <span data-numeric>17.2%</span>.</p>
+
+    <p>And the number itself is gone. Nothing replaced it, because the defensible estimates run
+    <span data-numeric>2.84</span> to <span data-numeric>7.18</span> percentage points a year depending on which
+    construction you believe, the break-even is <span data-numeric>2.96</span>, and picking one out of that spread
+    would be choosing the answer rather than measuring it.</p>
+
+    <h3 id="borrowed-comparison">A borrowed portfolio compared against an index that borrowed nothing</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-22</p>
+
+    <p><strong>What we believed.</strong> That the construction beat the index, so the construction was doing
+    something.</p>
+
+    <p><strong>What was wrong.</strong> The construction holds $1.32 of assets for every dollar put into it and
+    the index holds $1.00. You beat that index in good years and trail it in bad ones whatever else you do. Take
+    the credit on the way up and you will take the blame on the way down, and you will be wrong both times.</p>
+
+    <MarginNote label="What matched exposure showed">
+      <p>
+        Sharpe over the same window: the trend route rose 0.538 to 0.641 while the borrowed-equity route fell to
+        0.530. A gross exposure figure cannot tell the two routes apart, which is the whole point.
+      </p>
+    </MarginNote>
+
+    <p><strong>What caught it.</strong> Building a control that borrows exactly as much as the portfolio does, and
+    running everything again against it.</p>
+
+    <p><strong>What changed.</strong> At matched exposure the worst loss was
+    <Figure id="levered-comparison-drawdown" inline showUnit={false} />. The consequence is printed even though it
+    is unflattering: the single whole-portfolio comparison in the entire programme that clears its own resolution,
+    the recommended portfolio against the investor's original at −0.50 percentage points a year, is mostly
+    measuring 5.4 points of borrowing rather than anything about how the portfolio is built.</p>
+
+    <h3 id="mismatched-inference">A visibility bar on one statistical basis, printed beside a range on another</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-22</p>
+
+    <p><strong>What we believed.</strong> That the strongest measurement on the site cleared the smallest
+    difference its test could see by 68%.</p>
+
+    <p><strong>What was wrong.</strong> The range had been computed with error bars that allow for markets
+    clustering, calm with calm and panic with panic. The bar printed beside it had been computed with error bars
+    that treat every month as a fresh coin flip. Two bases, one sentence.</p>
+
+    <p><strong>What caught it.</strong> Reading the run's own output file rather than the page. Both numbers were
+    in it. Only the narrower one had been published.</p>
+
+    <p><strong>What changed.</strong> On matched error bars the bar is
+    <Figure id="detection-floor-restated" inline showUnit={false} /> percentage points a year rather than 0.47.
+    The result still clears, by <span data-numeric>10%</span> rather than 68%. The data a study would need before
+    it could separate the effect from zero goes to <Figure id="tilt-horizon" inline showUnit={false} />. The
+    implied signal-to-noise ratio drops 4.73 to 3.05, which lands exactly on the published hurdle for a result
+    that was found by searching. One arm of the tournament stops clearing altogether.</p>
+
+    <h3 id="cross-benchmark-sum">Adding up savings measured against different comparisons</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-22</p>
+
+    <p><strong>What we believed.</strong> That putting each fund in the account that taxes it least was worth +38
+    to +55 basis points a year. It was the largest new number in the recommendation.</p>
+
+    <p><strong>What was wrong.</strong> Four things at once. The range had been truncated, dropping the entire
+    distributed reading, worth 18 basis points. A rebalancing hurdle avoided had been booked as a saving, worth
+    14, on the same page that says a hurdle avoided is not one. Choosing which shares to sell and never selling at
+    all had both been booked, and each one excludes the other. And 94.7% of the top figure came from a single
+    holding's undistributed foreign accrual.</p>
+
+    <MarginNote label="The structural error">
+      <p>
+        Underneath all four: some lines were measured against a cheap index fund and some against the portfolio
+        you would otherwise own. A cheap index, your own counterfactual and the average investor are three
+        different questions, and their answers never add.
+      </p>
+    </MarginNote>
+
+    <p><strong>What caught it.</strong> An independent re-derivation of the arithmetic, which reproduced every
+    priority, the credit cap and all twelve cells exactly. The calculation was right. What was booked from it was
+    not.</p>
+
+    <p><strong>What changed.</strong> The line reads <Figure id="placement-restated" inline showUnit={false} />
+    basis points a year against a control an investor could actually hold, with the conditional +19 to +49
+    reported beside it and added to nothing. The aggregating function raises an exception on a cross-benchmark
+    sum, and the function that reports one component of the placement result refuses to return a negative value
+    and says so in the exception.</p>
+
+    <h3 id="qualified-dividends">Assuming every dividend was the good kind</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-22</p>
+
+    <p><strong>What we believed.</strong> That fund dividends qualify for the long-term rate. It is the standard
+    simplifying assumption and nobody had checked it.</p>
+
+    <p><strong>What was wrong.</strong> It had reversed the account-placement ranking for emerging-market stocks,
+    which is exactly the decision the section existed to make.</p>
+
+    <p><strong>What caught it.</strong> Reading the sponsors' own filed fractions, which took an afternoon. VEA
+    files 66.27%. VWO files <Figure id="qualified-fraction-vwo" inline showUnit={false} />. IEMG 34.82%, AVES
+    44.48%, IDMO 25%, DFIV 100%.</p>
+
+    <p><strong>What changed.</strong> Every placement conclusion that predated the filed fractions had to be
+    worked again rather than restated, which is slow and unpleasant and the only honest option. A placement
+    ranking that assumes a qualified fraction has assumed its own answer.</p>
+
+    <h3 id="capture-double-count">Two measurements of the same thing, multiplied together</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-17</p>
+
+    <p><strong>What we believed.</strong> That a fund's measured value exposure of 0.410 should be discounted by a
+    long-only capture fraction of 0.520, giving
+    <Figure id="capture-double-count" inline showUnit={false} />. That product was used in five places.</p>
+
+    <p><strong>What was wrong.</strong> The two numbers measure the same exposure, so multiplying them discounts
+    it twice. Work through the algebra and the capture fraction turns out to be the exposure plus a small
+    residual, exact to sixteen decimal places on our own files: 94% of the measured 0.520 is the 0.4891 coming
+    back around. The product also sits below the measured exposure of every audited value product on the shelf,
+    which should have been the tell and was not.</p>
+
+    <p><strong>What caught it.</strong> Deriving the identity between the two quantities instead of accepting two
+    published numbers as independent.</p>
+
+    <p><strong>What changed.</strong> The value line had been understated by roughly a factor of two. The chain is
+    three terms now: weight, times the difference in exposure between the fund and the thing it replaces, times
+    the return, minus cost. The research code raises <code>CaptureDoubleCountError</code> rather than accepting a
+    capture argument, so nobody can do it by hand again. The 0.40 sitting in the edge budget was deleted rather
+    than replaced.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>The pattern</Rail>
+
+    <h2 id="pattern">What the eight have in common</h2>
+
+    <p>Six were caught by the project arguing with itself: an adversarial review, a re-derivation of arithmetic
+    somebody had already done once, a control built to have a known answer. One was caught by reading a filing
+    instead of a summary. One was caught by a build check that had been written for something else.</p>
+
+    <p>Seven of the eight were arithmetic that was correct when somebody did it. What broke was what happened
+    afterwards, when the number left the page that made it true and travelled without its window, its comparison
+    or its error bars. That is the failure this site's whole content model is built against, and it is why every
+    number here drags its source along behind it.</p>
+
+    <p>None of that means the current numbers are right.</p>
+
+  </div>
+</Base>

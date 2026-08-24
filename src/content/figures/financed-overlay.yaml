@@ -1,0 +1,13 @@
+label: Portfolio edge from the same four financed on top of what is already owned
+value: 297.4 basis points
+unit: basis points a year
+status: exploratory
+asOf: '2026-08-23'
+source:
+  label: Stacking and effective breadth, funding
+  docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: funding-the-thesis-is-a-statement-about-overlays
+note: >-
+  35% of exposure in each of the four, before financing cost, fund fee and tax. It is the ceiling
+  of the financed case rather than a number you can buy, and no fund of this shape exists for
+  ordinary investors.

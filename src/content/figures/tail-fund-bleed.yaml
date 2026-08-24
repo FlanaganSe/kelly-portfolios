@@ -1,0 +1,12 @@
+label: Cambria's TAIL since inception
+value: −7.15% a year
+unit: against SPY's +15.35% a year on the issuer's own factsheet
+status: source-reproduced
+asOf: '2026-06-30'
+source:
+  label: Our audit of the alternatives
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 4-tail-hedging-the-bleed-is-measured-and-the-cheaper-substitutes-win
+note: >-
+  −49.59% cumulative since 2017-04-06. Windows differ by 0.77 years. Do not use the figures
+  rendered on the fund's own web page; they do not reconcile with the issuer's PDF.

@@ -1,0 +1,13 @@
+label: Fidelity's per-purchase fee on ETFs from non-participating issuers
+value: $100
+unit: US dollars per trade
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Market scan 2026, costs an investor actually pays
+  docPath: docs/research/market-scan-2026.md
+note: >-
+  Effective 2026-06-01, described as roughly 5% of trade value capped at $100. Schwab has
+  confirmed a comparable programme for year-end 2026. Fidelity's live service-fee list returns
+  HTTP 403 to automated fetches, so whether any fund here is on it is unverified rather than
+  cleared.

@@ -1,0 +1,392 @@
+---
+/**
+ * How long you would have to hold something before your own account could tell you
+ * whether it worked.
+ *
+ * `T = (z s / e)^2`, straight out of {@link horizonForConfidence}. The wait scales with
+ * the **square** of noise over edge, which is why two claims worth about the same on
+ * paper — a percentage point a year each — settle three and a half months apart and
+ * thirty-one years apart. That contrast is the site's headline and it deserves a picture
+ * rather than a sentence.
+ *
+ * **Form.** A dot plot on a log time axis, not a surface. The reader does not need to
+ * understand a ratio to read a row; they need to see that one dot is near the left edge
+ * and another is four decades to the right of it. The middle group carries the
+ * mechanism: the same 0.50 pp/yr edge, measured against forty times the noise, takes
+ * sixteen hundred times as long.
+ *
+ * **One estimand, on purpose.** Every row is the time until there is a 90% chance you
+ * are actually ahead of that row's own benchmark. Rows are *not* comparable across
+ * benchmarks in size — beating your own old portfolio is a different and much easier
+ * claim than beating a cheap index — and the labels say which is which. What is
+ * comparable is the wait, which is what this chart is about.
+ */
+import ChartFrame from "~/components/charts/ChartFrame.astro";
+import { logScale } from "~/components/charts/scale";
+import { formatYears } from "~/lib/format";
+import { horizonForConfidence } from "~/lib/horizon";
+
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+
+const CONFIDENCE = 0.9;
+
+interface Row {
+  readonly id: string;
+  readonly label: string;
+  readonly against: string;
+  readonly edgeBp: number;
+  readonly trackingErrorBp: number;
+  /** A real claim this site makes, or an illustration of the arithmetic. */
+  readonly kind: "claim" | "illustration";
+}
+
+const CLAIMS: readonly Row[] = [
+  {
+    id: "structural",
+    label: "Fees, taxes and account placement",
+    against: "vs the portfolio you hold now · 1.09% edge, 0.46% drift",
+    edgeBp: 109,
+    trackingErrorBp: 46,
+    kind: "claim",
+  },
+  {
+    id: "construction",
+    label: "The clever construction",
+    against: "against an index fund that borrows as much · 2.20% ahead, 6.0% wander",
+    edgeBp: 220,
+    trackingErrorBp: 600,
+    kind: "claim",
+  },
+  {
+    id: "same-split-core",
+    label: "The whole portfolio against a cheap index fund",
+    against: "against a cheap index fund holding the same mix · 0.92% ahead, 4.00% wander",
+    edgeBp: 92,
+    trackingErrorBp: 400,
+    kind: "claim",
+  },
+  {
+    id: "cheap-index",
+    label: "The edge budget's own reading of the same question",
+    against: "vs a cheap total-market index · 0.054% edge, 3.13% error",
+    edgeBp: 5.4,
+    trackingErrorBp: 313,
+    kind: "claim",
+  },
+];
+
+const ILLUSTRATIONS: readonly Row[] = [
+  {
+    id: "quiet",
+    label: "Half a point a year, measured quietly",
+    against: "0.50% edge against 0.10% of noise",
+    edgeBp: 50,
+    trackingErrorBp: 10,
+    kind: "illustration",
+  },
+  {
+    id: "loud",
+    label: "The same half point, in a moving market",
+    against: "0.50% edge against 4.00% of noise",
+    edgeBp: 50,
+    trackingErrorBp: 400,
+    kind: "illustration",
+  },
+];
+
+const years = (row: Row) =>
+  horizonForConfidence({ edgeBp: row.edgeBp, trackingErrorBp: row.trackingErrorBp, confidence: CONFIDENCE });
+
+const solved = [...CLAIMS, ...ILLUSTRATIONS].map((row) => ({ ...row, years: years(row) }));
+const byId = new Map(solved.map((row) => [row.id, row]));
+const claims = CLAIMS.map((row) => byId.get(row.id) as (typeof solved)[number]);
+const illustrations = ILLUSTRATIONS.map((row) => byId.get(row.id) as (typeof solved)[number]);
+
+/** Where the wait stops being a wait and becomes the rest of your life. */
+const WORKING_LIFE = 40;
+const DOMAIN: [number, number] = [0.03, 30_000];
+const AXIS_TICKS = [
+  { years: 1 / 12, label: "1 month" },
+  { years: 1, label: "1 year" },
+  { years: 10, label: "10" },
+  { years: 100, label: "100" },
+  { years: 1000, label: "1,000" },
+  { years: 10_000, label: "10,000 years" },
+] as const;
+
+/**
+ * Both layouts place rows by hand rather than by a formula with a group gap in it. The
+ * divider between the two groups carries a line of text, and the only way to be sure
+ * that line never lands on a row label is to write the coordinates down.
+ */
+/* ------------------------------------------------------------------ wide */
+const W = {
+  w: 1000,
+  h: 410,
+  labelRight: 320,
+  plotLeft: 342,
+  plotRight: 900,
+  bandRight: 940,
+  claimYs: [44, 98, 152, 206],
+  dividerY: 244,
+  dividerTextY: 262,
+  illustrationYs: [290, 344],
+  axisY: 378,
+} as const;
+const wx = logScale(DOMAIN, [W.plotLeft, W.plotRight]);
+const wideRows = [
+  ...claims.map((row, i) => ({ ...row, y: W.claimYs[i] as number })),
+  ...illustrations.map((row, i) => ({ ...row, y: W.illustrationYs[i] as number })),
+];
+
+/* ---------------------------------------------------------------- narrow */
+const N = {
+  w: 390,
+  h: 390,
+  plotLeft: 10,
+  plotRight: 380,
+  claimYs: [30, 82, 134, 186],
+  dividerY: 226,
+  dividerTextY: 242,
+  illustrationYs: [264, 316],
+  axisY: 352,
+} as const;
+const nx = logScale(DOMAIN, [N.plotLeft, N.plotRight]);
+const narrowRows = [
+  ...claims.map((row, i) => ({ ...row, y: N.claimYs[i] as number })),
+  ...illustrations.map((row, i) => ({ ...row, y: N.illustrationYs[i] as number })),
+];
+
+const description =
+  `A dot plot on a logarithmic time axis running from one month to ten thousand years. ` +
+  solved.map((row) => `${row.label}: ${formatYears(row.years)}.`).join(" ") +
+  ` Everything past forty years is shaded as longer than a working life.`;
+
+const titleId = "time-to-know-title";
+const descId = "time-to-know-desc";
+
+/**
+ * The fallback table's headings, written once and read twice: into `<thead>`, and
+ * into the label each cell shows when the table becomes a list of cards below 40rem.
+ */
+const COLUMNS = ["Claim", "Edge", "Tracking error", "Time to know"] as const;
+---
+
+<ChartFrame
+  title="Two claims worth about a point a year. One settles over a summer, the other takes thirty-one years."
+  subtitle="Years of holding before there is a 90% chance you are genuinely ahead of that row's own benchmark. Log scale."
+  tableSummary="The same waits as a table"
+  class={className}
+>
+  {/* ---------------------------------------------------------------- wide */}
+  <svg
+    class="plot hidden lg:block"
+    viewBox={`0 0 ${W.w} ${W.h}`}
+    role="img"
+    aria-labelledby={`${titleId} ${descId}`}
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <title id={titleId}>Time to know, by claim</title>
+    <desc id={descId}>{description}</desc>
+
+    <rect
+      x={wx(WORKING_LIFE)}
+      y="12"
+      width={W.bandRight - wx(WORKING_LIFE)}
+      height={W.axisY - 12}
+      fill="var(--ink)"
+      opacity="0.045"></rect>
+    <text class="plot-axis-text plot-halo" x={wx(WORKING_LIFE) + 6} y="24">longer than a working life</text>
+
+    {
+      AXIS_TICKS.map((tick) => (
+        <>
+          <line class="plot-grid" x1={wx(tick.years)} y1="12" x2={wx(tick.years)} y2={W.axisY} />
+          <text class="plot-axis-text" x={wx(tick.years)} y={W.axisY + 16} text-anchor="middle">
+            {tick.label}
+          </text>
+        </>
+      ))
+    }
+
+    {
+      wideRows.map((row) => (
+        <>
+          <text class="plot-label" x={W.labelRight} y={row.y} text-anchor="end">
+            <tspan class={row.kind === "claim" ? "plot-label-lead" : undefined}>{row.label}</tspan>
+          </text>
+          <text class="plot-axis-text" x={W.labelRight} y={row.y + 14} text-anchor="end" style="font-size: 10.5px">
+            {row.against}
+          </text>
+          <line
+            class="plot-line"
+            x1={W.plotLeft}
+            y1={row.y - 4}
+            x2={wx(row.years)}
+            y2={row.y - 4}
+            stroke="var(--plot-quieter)"
+            stroke-width="1"
+          />
+          <circle
+            cx={wx(row.years)}
+            cy={row.y - 4}
+            r={row.kind === "claim" ? 5.5 : 4.5}
+            fill={row.kind === "claim" ? "var(--plot-ink)" : "var(--paper)"}
+            stroke={row.kind === "claim" ? "var(--paper)" : "var(--plot-ink)"}
+            stroke-width="1.8"
+          />
+          <text class="plot-label plot-label-lead plot-halo" x={wx(row.years) + 11} y={row.y}>
+            {formatYears(row.years)}
+          </text>
+        </>
+      ))
+    }
+
+    <line class="plot-grid" x1={W.plotLeft} y1={W.axisY} x2={W.bandRight} y2={W.axisY} />
+    <line class="plot-grid" x1="20" y1={W.dividerY} x2={W.bandRight} y2={W.dividerY} />
+    <text class="plot-axis-text" x="20" y={W.dividerTextY}>
+      the same edge, measured two ways — forty times the noise, sixteen hundred times the wait
+    </text>
+  </svg>
+
+  {/* -------------------------------------------------------------- narrow */}
+  <svg
+    class="plot max-w-[30rem] lg:hidden"
+    viewBox={`0 0 ${N.w} ${N.h}`}
+    role="img"
+    aria-label={description}
+    preserveAspectRatio="xMidYMid meet"
+  >
+    <rect
+      x={nx(WORKING_LIFE)}
+      y="6"
+      width={N.plotRight - nx(WORKING_LIFE)}
+      height={N.axisY - 6}
+      fill="var(--ink)"
+      opacity="0.045"></rect>
+    <text class="plot-axis-text plot-halo" x={nx(WORKING_LIFE) + 4} y="14" style="font-size: 9.5px">
+      longer than a working life
+    </text>
+
+    {
+      AXIS_TICKS.map((tick) => (
+        <line class="plot-grid" x1={nx(tick.years)} y1="6" x2={nx(tick.years)} y2={N.axisY} />
+      ))
+    }
+
+    <line class="plot-grid" x1={N.plotLeft} y1={N.dividerY} x2={N.plotRight} y2={N.dividerY} />
+    <text class="plot-axis-text" x={N.plotLeft} y={N.dividerTextY} style="font-size: 9.5px">
+      the same edge · 40&#215; the noise, 1,600&#215; the wait
+    </text>
+
+    {
+      narrowRows.map((row) => (
+        <>
+          <text class="plot-label plot-halo" x={N.plotLeft} y={row.y} style="font-size: 11px">
+            <tspan class={row.kind === "claim" ? "plot-label-lead" : undefined}>{row.label}</tspan>
+          </text>
+          <line
+            class="plot-line"
+            x1={N.plotLeft}
+            y1={row.y + 18}
+            x2={nx(row.years)}
+            y2={row.y + 18}
+            stroke="var(--plot-quieter)"
+            stroke-width="1"
+          />
+          <circle
+            cx={nx(row.years)}
+            cy={row.y + 18}
+            r={row.kind === "claim" ? 4.5 : 3.8}
+            fill={row.kind === "claim" ? "var(--plot-ink)" : "var(--paper)"}
+            stroke={row.kind === "claim" ? "var(--paper)" : "var(--plot-ink)"}
+            stroke-width="1.6"
+          />
+          <text
+            class="plot-label plot-label-lead plot-halo"
+            x={nx(row.years) > 250 ? nx(row.years) - 8 : nx(row.years) + 9}
+            y={nx(row.years) > 250 ? row.y + 10 : row.y + 22}
+            text-anchor={nx(row.years) > 250 ? "end" : "start"}
+            style="font-size: 11px"
+          >
+            {formatYears(row.years)}
+          </text>
+        </>
+      ))
+    }
+
+    <line class="plot-grid" x1={N.plotLeft} y1={N.axisY} x2={N.plotRight} y2={N.axisY} />
+    {
+      AXIS_TICKS.map((tick) => (
+        <text
+          class="plot-axis-text"
+          x={nx(tick.years)}
+          y={N.axisY + 14}
+          text-anchor="middle"
+          style="font-size: 9.5px"
+        >
+          {tick.label}
+        </text>
+      ))
+    }
+  </svg>
+
+  <div slot="caption">
+    <p>
+      <code class="font-mono text-xs">T = (z&nbsp;s / e)&sup2;</code> at <span data-numeric>z = &Phi;&#8315;&sup1;(0.90)</span>,
+      the same closed form the client's own horizon module runs. The square is the whole result: forty times the
+      noise is sixteen hundred times the wait, and it is why arguing about which value fund to hold is not the same
+      kind of question as reading your expense ratio.
+    </p>
+    <p>
+      Each row is measured against its own benchmark and the sizes must never be added. It assumes annual relative
+      returns are independent and that the edge is <em>known</em>, which is false and flatters every row: a real
+      edge is estimated, and the estimate's error does not wash out with time. Read every wait as the shortest one
+      you could hope for.
+    </p>
+  </div>
+
+  <table slot="table" role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[38rem]">
+    <caption class="sr-only">Time to 90% confidence, by claim, with the edge and tracking error behind it</caption>
+    <thead role="rowgroup">
+      <tr role="row" class="border-b border-rule-strong text-left">
+        {
+          COLUMNS.map((heading, i) => (
+            <th
+              role="columnheader"
+              scope="col"
+              class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", i > 0 && "text-right"]}
+            >
+              {heading}
+            </th>
+          ))
+        }
+      </tr>
+    </thead>
+    <tbody role="rowgroup" class="text-ink-muted">
+      {
+        solved.map((row) => (
+          <tr role="row" class="border-b border-rule last:border-0">
+            <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+              {row.label}
+              <span class="block text-xs font-normal text-ink-faint">{row.against}</span>
+            </th>
+            <td role="cell" data-label={COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+              {(row.edgeBp / 100).toFixed(2)}%
+            </td>
+            <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+              {(row.trackingErrorBp / 100).toFixed(2)}%
+            </td>
+            <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 text-right font-semibold text-ink">
+              {formatYears(row.years)}
+            </td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</ChartFrame>

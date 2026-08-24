@@ -1,0 +1,148 @@
+---
+// What the author personally owns is the one fact on this page that cannot be checked
+// against anything in the repository, and it has not been stated yet.
+//
+// It was filled in twice by inference — once as "holds a portfolio resembling this one",
+// once as "holds none of these funds" — and both were guesses, in opposite directions.
+// Nothing here can settle it. An account split says where money sits, not what it is
+// invested in, and a portfolio derived *for* someone is not a record of what they hold.
+//
+// So the page says that it has not been stated, which is true, and publishes the rest,
+// which is also true. An earlier version threw at build time instead. That was the wrong
+// trade: it stopped sixty-one honest pages from shipping over one open question, and it
+// turned every unanswered build into a red CI run. A reader is better served by a page
+// that says "this part is not disclosed yet" than by no page at all.
+//
+// To set it: replace the empty string with the true sentence, in the owner's own words.
+// Nothing else needs changing. If it later stops being true, change it in the same commit
+// as the trade — a stale disclosure is worse than none, because a reader trusts it.
+const AUTHOR_HOLDINGS = "";
+
+/**
+ * The conflict-of-interest statement, written as a verifiable negative.
+ *
+ * A site that says nothing about how it makes money has answered the question badly.
+ * Everything claimed here can be checked against the repository or the served HTML,
+ * which is the point: "no affiliate links" is worth something because you can grep for
+ * one. The positive interests are on the same page and given the same weight.
+ *
+ * The fund count comes from the shelf so it cannot drift out of date in prose.
+ */
+import Callout from "~/components/Callout.astro";
+import MarginNote from "~/components/MarginNote.astro";
+import Rail from "~/components/Rail.astro";
+import { shelf } from "~/content/shelf";
+import Base from "~/layouts/Base.astro";
+import { REPO_URL } from "~/lib/site";
+---
+
+<Base
+  title="Disclosures"
+  description="No advertising, no affiliate links, no sponsors, no paid placement and no compensation from any fund company, broker or data provider. The interests that do exist, including the author's own holdings, are stated here too."
+>
+  <div class="prose">
+    <Rail>Disclosures</Rail>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Disclosures</h1>
+
+    <MarginNote label="The question">
+      <p>
+        Who is paying for this, and what do they want? As of <span data-numeric>2026-08-23</span>. Every negative
+        below can be checked against <a href={REPO_URL} rel="noopener noreferrer">the repository</a>.
+      </p>
+    </MarginNote>
+
+    <p>Nobody pays for this site and nobody is paid for it.</p>
+
+    <p>That sentence beats a paragraph of assurance, because you can check it yourself. The whole site is a few
+    hundred kilobytes of static HTML in a public repository, and an affiliate link is a thing you can search
+    for.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>What is absent</Rail>
+
+    <h2 id="no-money">The negatives, in full</h2>
+
+    <p>None of the following exists anywhere on this site or behind it.</p>
+
+    <ul>
+      <li>Advertising, of any kind, in any position.</li>
+      <li>Affiliate links, referral links, broker sign-up bonuses, and tracking parameters on an outbound link.
+      An external link here goes to a filing, a data source, a paper, a news report or a repository, and carries
+      no code that identifies where you came from.</li>
+      <li>Sponsors, underwriters, grants, and anyone with the right to see a page before it is published.</li>
+      <li>Compensation, in cash or in kind, from any fund company, index provider, broker, custodian, adviser or
+      data vendor. No product was placed here for money and no product was placed here as a favour.</li>
+      <li>Anything for sale. There is no subscription, no newsletter, no course, no book, no consulting, no
+      software, and no waiting list to join.</li>
+      <li>Analytics. The site ships no measurement JavaScript, sets no cookie, and runs no fingerprinting. Traffic
+      is monitored, when it is monitored at all, through public aggregate data that never touches the page.</li>
+    </ul>
+
+    <MarginNote label="The one thing stored">
+      <p>
+        Your light or dark preference is kept in the browser under <code>pe-theme</code>. It never leaves the
+        browser and there is nothing on the other end to send it to.
+      </p>
+    </MarginNote>
+
+    <p>The site names <span data-numeric>{shelf.length}</span> specific funds by ticker, which is worth something
+    to the companies that run them. They are named because somebody read their filings, several are named
+    unkindly, and not one of those companies knows this site exists.</p>
+
+  </div>
+
+  <div class="prose mt-14">
+    <Rail>What is present</Rail>
+
+    <h2 id="interests">The interests that do exist</h2>
+
+    <p>Having no revenue removes one way of being wrong. It leaves the others alone, and these are the ones that
+    apply here.</p>
+
+    <h3 id="holdings">What the author owns</h3>
+
+    <p>
+      {AUTHOR_HOLDINGS ||
+        "Not stated yet. The author has not published whether he holds any of the funds named on this site, and nothing here should be read as saying that he does or that he does not."}
+    </p>
+
+    <p>Whatever that answer turns out to be, it belongs here, because a person who owns what they are
+    arguing for has a real financial interest in the argument being correct. Exact
+    amounts and account balances are private and are not going to appear on this page.</p>
+
+    <h3 id="reputation">The author would like the work to be right</h3>
+
+    <p>Months went into this. Nobody who spends months on an argument is neutral about it afterwards, and no
+    disclosure fixes that. What the project does instead is make disagreement cheap:
+    <a href="/corrections/">the corrections log</a> is the record of it working, and an
+    <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue</a> is the way to add to it.</p>
+
+    <h3 id="tools">Tools and data</h3>
+
+    <p>The AI tools used to build this were bought at retail like anyone else buys them. No vendor was consulted,
+    none has seen a page before publication, and none has any involvement in what the pages say.</p>
+
+    <MarginNote label="Sources">
+      <p>
+        Ken French's data library, FRED, SEC EDGAR, AQR's public data sets, Robert Shiller's series, Goyal and
+        Welch, the Jordà-Schularick-Taylor macrohistory database, LBMA and the World Bank. Free, public, and used
+        under their own published terms.
+      </p>
+    </MarginNote>
+
+    <p>Every data source here is free and public, and each one is recorded in
+    <code>research/data-manifests/</code> with the hash of the exact bytes used. There is no paid data feed, no
+    licensed return series and no commercial arrangement with any provider. That is also a limitation rather than
+    a virtue, and <a href="/methodology/">the method page</a> says which questions it leaves unanswerable.</p>
+
+    <Callout kind="caveat">
+      <p>
+        If any of this changes, it changes here first and on the same day, with the old wording left visible in
+        the commit history. A disclosure that quietly acquires an exception is worse than no disclosure.
+      </p>
+    </Callout>
+
+  </div>
+</Base>

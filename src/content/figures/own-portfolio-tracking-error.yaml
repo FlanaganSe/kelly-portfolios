@@ -1,0 +1,12 @@
+label: Drift around the fee and tax package, against the portfolio you already own
+value: 0.46%
+status: exploratory
+asOf: '2026-08-17'
+source:
+  label: Structural and tax-aware edges
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: the-ledger
+note: >-
+  Assumed, not measured. It combines the component drifts as though they were independent of
+  each other, and they are not, so the true dispersion is wider and every probability derived
+  from it is an upper bound.

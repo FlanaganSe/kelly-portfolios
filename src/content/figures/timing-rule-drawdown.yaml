@@ -1,0 +1,14 @@
+label: Worst loss under the rule
+value: −43.1%
+unit: against −71.6% for a control taking the same average market risk, and −83.7% for simply holding
+status: source-reproduced
+asOf: '2026-08-23'
+source:
+  label: Timing rules on the stock holdings
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: conclusion
+note: >-
+  The one claim on that page that clears the smallest gap its own test could see. A mechanical
+  property of cutting off the worst outcomes rather than a reward for taking risk, which is why
+  it survives when the average return does not. Repeats in developed markets outside the US, in
+  emerging markets and in 1871-1926.

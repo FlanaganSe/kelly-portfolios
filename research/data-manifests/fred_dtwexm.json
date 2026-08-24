@@ -1,0 +1,31 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_dtwexm",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=DTWEXM",
+  "retrieved_utc": "2026-08-23T05:13:21Z",
+  "sha256_raw": "e08d00d921ed00460ec9cc7b4c9ee027d9a9ed4c7b7376d23dacccce727b332c",
+  "sha256_normalized": "f308c8a65b7d99caa7affaaef2b2c03d081797409f4b43938a7dbbdaaa0c0e77",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "daily",
+  "units": "index_1973_03_eq_100",
+  "source_units": "index_1973_03_eq_100",
+  "unit_transform": "identity",
+  "first_observation": "1973-01-02",
+  "last_observation": "2019-12-31",
+  "rows": 12261,
+  "availability_policy": "H.10 noon buying rates are certified by the Federal Reserve Bank of New York for customs purposes and published the following business day. A month-end observation is the last BUSINESS day of the month, not the last calendar day, and a US holiday that is not a foreign one leaves a gap. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "Discontinued, so the history no longer changes. While it was live its weights were revised annually and rewrote recent history in the same way DTWEXAFEGS's do. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "427 observations were the FRED missing token '.' and became missing values, not zeros: ['1973-02-12', '1973-02-13', '1973-02-14', '1973-02-19', '1973-03-02', '1973-03-05']",
+    "series definition: The Federal Reserve's former nominal major-currencies dollar index, goods-only trade weights, DISCONTINUED at the January 2019 restructuring and last published 2019-12-31. Measured 2026-08-22: daily, 1973-01-02 to 2019-12-31, 12,260 observations, index March 1973 = 100. A RISE IS A STRONGER DOLLAR. Registered for one reason: it is the only free daily developed-currency series in this repository that reaches back to the collapse of Bretton Woods, and the currency question needs the longest window it can defend. It ENDS IN 2019 and so sees neither 2020 nor 2022 nor 2025; DTWEXAFEGS covers those and the two overlap 2006-2019 but are NOT the same index and must not be chained without saying so.",
+    "release timing: H.10 noon buying rates are certified by the Federal Reserve Bank of New York for customs purposes and published the following business day. A month-end observation is the last BUSINESS day of the month, not the last calendar day, and a US holiday that is not a foreign one leaves a gap.",
+    "revision behaviour: Discontinued, so the history no longer changes. While it was live its weights were revised annually and rewrote recent history in the same way DTWEXAFEGS's do.",
+    "transformation applied by the source: none (index level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: None months (construction: trade_weighted_index). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable."
+  ]
+}

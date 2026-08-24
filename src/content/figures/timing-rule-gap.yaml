@@ -1,0 +1,15 @@
+label: The 200-day rule's gain over a matched control
+value: '+0.74'
+unit: percentage points a year against a control taking the same average market risk
+interval: '[−1.38, +2.87]'
+status: unresolved
+asOf: '2026-08-23'
+source:
+  label: Timing rules on the stock holdings
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: conclusion
+note: >-
+  1,190 months of US data; the signal is 0.69 times the noise around it. The range covers zero,
+  so even the direction is not settled.
+  Unresolved, not rejected: the rule is not shown to fail, it is shown to be unreadable on this
+  instrument.

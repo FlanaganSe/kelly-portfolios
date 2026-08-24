@@ -1,0 +1,15 @@
+label: Trailing twelve-month return on the stocks-plus-managed-futures fund
+value: +41.77%
+unit: percent
+status: source-reproduced
+asOf: '2026-08-23'
+period: twelve months to 2026-07-31
+source:
+  label: Live stacked fund records, then trend fired
+  docPath: docs/research/live-stacked-fund-records.md
+  anchor: then-trend-fired
+note: >-
+  Issuer standardised NAV return, read on 2026-08-23. Quotable only beside the benchmark figure
+  below and beside the since-launch shortfall above; one without the others is the marketing
+  version. Twelve months of trend is far below the resolution of any test in this repository, so
+  it says what happened and nothing about what to expect.

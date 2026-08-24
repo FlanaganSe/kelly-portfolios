@@ -1,0 +1,33 @@
+{
+  "schema_version": "1",
+  "dataset_id": "fred_t10yie",
+  "source_url": "https://fred.stlouisfed.org/graph/fredgraph.csv?id=T10YIE",
+  "retrieved_utc": "2026-08-18T03:02:15Z",
+  "sha256_raw": "8ec9064b31e89ce9e6384266232822c6726d70e6ce78fa92d6300265c9111dfb",
+  "sha256_normalized": "9fd35aca400e9e98a46fbb78cf2abcbd788ad6bcb96f846bb363edf0810fc1eb",
+  "content_type": "application/csv",
+  "source_last_modified": null,
+  "source_etag": null,
+  "parser_version": "fred/1.0.0",
+  "frequency": "daily",
+  "units": "decimal_per_year",
+  "source_units": "percent_per_year",
+  "unit_transform": "value / 100",
+  "first_observation": "2003-01-02",
+  "last_observation": "2026-08-17",
+  "rows": 6163,
+  "availability_policy": "Next business day. The retrieval timestamp in this manifest is when the file was downloaded, which is an upper bound on availability for the last observation and says nothing about when earlier observations became available.",
+  "revision_policy": "Revised whenever either input yield curve is revised, and it inherits the TIPS curve's 2008-12-01 methodology break. Not point-in-time. FRED serves only the current vintage of a series; revisions overwrite history in place and this endpoint exposes no vintage. Historical vintages exist in ALFRED (https://alfred.stlouisfed.org) and are not read by this module. A sha256 here identifies the file downloaded, not what the series looked like on any earlier date.",
+  "license_or_terms_url": "https://fred.stlouisfed.org/legal/",
+  "warnings": [
+    "253 observations were the FRED missing token '.' and became missing values, not zeros: ['2003-01-20', '2003-02-17', '2003-04-18', '2003-05-26', '2003-07-04', '2003-09-01']",
+    "values are an annualised rate expressed as a decimal after dividing the published percent by 100, on a not applicable (a difference of two quoted yields) basis. This is a rate, not a period return: converting it to a monthly or daily return requires an explicit, recorded compounding or day-count assumption that this parser does not make.",
+    "series definition: The daily difference between the ten-year nominal and ten-year real constant-maturity Treasury yields. It is a MARKET-IMPLIED BREAKEVEN, not an inflation forecast and not an expectation: it contains an inflation risk premium and a TIPS liquidity premium of unknown and time-varying sign, so quoting it as 'expected inflation' overstates what it measures. Registered here for one purpose only -- to state what real return a TIPS holder is buying against what a nominal Treasury holder is buying on a given date -- and never as a predictor. Measured 2026-08-17: daily from 2003-01-02.",
+    "release timing: Next business day.",
+    "revision behaviour: Revised whenever either input yield curve is revised, and it inherits the TIPS curve's 2008-12-01 methodology break.",
+    "transformation applied by the source: none (level, as published)",
+    "seasonal adjustment: not seasonally adjusted",
+    "maturity: 120.0 months (construction: breakeven_inflation_spread). TB3MS, DGS3MO and DFF are not interchangeable; see fred.check_interchangeable.",
+    "A BREAKEVEN, NOT A FORECAST. It contains an inflation risk premium and a TIPS liquidity premium of unknown and time-varying sign. Nothing here predicts with it."
+  ]
+}

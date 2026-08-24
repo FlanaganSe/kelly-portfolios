@@ -1,0 +1,835 @@
+# Frozen before any result is examined.
+#
+# THIS IS A PUBLIC-SERIES EVALUATION, NOT AN INVESTABLE BACKTEST. Ken French's
+# research portfolios and factor series are paper portfolios; AQR's trend series
+# is a vendor series; the long-duration Treasury sleeve is a MODELLED PROXY. See
+# evidence_class and parameters.evaluation_disclosure.
+#
+# WHY THIS EXPERIMENT EXISTS. Every sleeve this repository has judged except
+# trend was judged by a STANDALONE chain -- premium x loading x capture - cost --
+# which asks "does this asset beat the market on its own?" and sets the
+# covariance term to zero by construction. The portfolio question is different:
+# does adding weight w to an EXISTING portfolio raise its growth rate? To first
+# order, funding weight w in sleeve i out of funding leg f inside portfolio p,
+#
+#     dg/dw|_{w=0} = (mu_i - mu_f) - (sigma_ip - sigma_fp)
+#
+# The first term is the standalone alpha the existing chain already measures. The
+# second is a DIVERSIFICATION CREDIT the standalone chain omits. With f = p it
+# collapses to the form this repository already uses for volatility harvesting,
+# (mu_i - mu_p) + sigma_p^2 (1 - beta_ip). The credit can be POSITIVE or
+# NEGATIVE: beta_ip > 1 makes it negative, which would make the portfolio view
+# HARSHER than the standalone view rather than kinder. Which way it goes is the
+# question, and it is not assumed here.
+experiment_family: exp_010_marginal_sleeve_value
+title: Marginal sleeve value inside a real portfolio, decomposed into standalone alpha and diversification credit
+entry_point: exp_010_marginal_sleeve_value
+run_kind: exploratory
+evidence_class: public-series-evaluation
+consumes_final_holdout: false
+seed: 20260909
+
+hypothesis: >
+  For at least one candidate sleeve, adding a small long-only weight to a
+  realistic base portfolio raises the portfolio's certainty-equivalent return by
+  a materially positive amount NET of costs, and the improvement survives a
+  family-wise correction across every sleeve tested. The claim under test is
+  MARGINAL portfolio value at a constrained optimal weight, never standalone
+  significance and never the derivative at zero weight, which favours any
+  low-beta asset by construction and overstates the case.
+
+mechanism: >
+  The proposed mechanism is the excess-growth identity. A portfolio's geometric
+  growth rate is not the weighted average of its constituents' growth rates; the
+  gap is 0.5 * (sum_i w_i sigma_i^2 - sigma_p^2), which is strictly positive
+  whenever the constituents are less than perfectly correlated. An asset whose
+  standalone arithmetic mean is BELOW the portfolio's can therefore still raise
+  the portfolio's growth rate, provided its covariance with the portfolio is low
+  enough. The mechanism is real algebra, not an empirical claim; what is
+  empirical, and what this experiment measures, is whether the credit is large
+  enough at REALISTIC correlations to change any verdict this repository has
+  already reached. The prior recorded before any result -- see
+  parameters.predeclared_prediction -- is that it is NOT, because
+  beta_ip = rho_ip * sigma_i / sigma_p, and an equity sleeve's higher volatility
+  typically more than offsets its correlation being below one.
+
+falsifier: >
+  A sleeve's marginal portfolio value is REJECTED when ANY of: (a) its marginal
+  certainty-equivalent gain at the frozen reference weight, funded pro rata from
+  the base portfolio, under the net-pessimistic cost column, is below the
+  materiality threshold of 0.30 percentage points per year; (b) its
+  diversification credit term 12*(sigma_fp - sigma_ip) at the declared funding
+  leg is zero or negative, meaning the portfolio-level view supplies no credit
+  the standalone chain omitted and the existing standalone dismissal stands
+  unaltered; (c) the constrained optimal weight under net-pessimistic costs is
+  zero at the long-only boundary; or (d) the sleeve does not survive Holm
+  family-wise error control at 0.05 across the declared family of ten sleeves.
+  The outcome is `unresolved`, NOT `rejected`, when no clause fires but any of:
+  (u1) the two-sided 95% bootstrap interval on the marginal certainty equivalent
+  contains zero; (u2) the measured marginal certainty equivalent is smaller in
+  magnitude than the minimum detectable effect at 80% power, so the test could
+  not have seen an effect of the size it reports; (u3) the sign of the marginal
+  certainty equivalent differs between the two frozen funding legs, because a
+  result that depends on the funding convention is not a finding about the
+  sleeve; (u4) the diversification credit evaluated at the two ends of the 95%
+  bootstrap interval for the correlation spans zero; or (u5) the sleeve is a
+  declared PROXY series, since a modelled series may never resolve anything.
+
+universe:
+  description: >
+    One base portfolio built from three non-overlapping regional equity markets
+    and cash, plus ten candidate sleeves and one calibration control. Every
+    series is a published monthly return series. No security-level data, no
+    prices, no futures contracts.
+  base_portfolios:
+    - id: global_equity_core
+      role: primary
+      description: >
+        60% US / 30% developed ex-US / 10% emerging equity total return, monthly
+        rebalanced to fixed weights. The weights are a frozen, round approximation
+        of global equity market capitalisation and are NOT optimised; they are
+        declared here so that no reader mistakes them for a result. The three
+        regions are the non-overlapping Ken French files, so nothing is double
+        counted. Equity total return is Mkt-RF + RF from the region's own file.
+    - id: balanced_60_40
+      role: secondary
+      description: >
+        60% global_equity_core / 40% cash (FRED TB3MS), monthly rebalanced. Cash,
+        not bonds: decision record 0002 establishes that no free price source is
+        research grade and no investable bond total-return history is available to
+        this repository. This portfolio exists to show how the diversification
+        credit scales with the base portfolio's own variance, since the credit is
+        sigma_p^2 (1 - beta_ip) under pro-rata funding and must shrink when
+        sigma_p falls.
+  sleeves:
+    - id: us_small_value
+      kind: long-only
+      series: Ken French US 6 Portfolios 2x3, value-weighted, SMALL HiBM
+      funding_leg: us_equity
+      funding_rationale: >
+        A small-value tilt is funded out of the US equity allocation, which is what
+        an investor holding a global core actually does. This is the sleeve the
+        key sub-question is about: at a correlation near 0.9 to a global equity
+        core and a higher volatility, its beta should EXCEED one and its credit
+        should be negative.
+      cost_tier: long_only_equity
+    - id: dev_ex_us_small_value
+      kind: long-only
+      series: Ken French Developed ex-US 6 Portfolios 2x3, value-weighted, SMALL HiBM
+      funding_leg: dev_ex_us_equity
+      funding_rationale: funded out of the region it belongs to, as above
+      cost_tier: long_only_equity
+    - id: emerging_small_value
+      kind: long-only
+      series: Ken French Emerging Markets 6 Portfolios 2x3, value-weighted, SMALL HiBM
+      funding_leg: emerging_equity
+      funding_rationale: funded out of the region it belongs to, as above
+      cost_tier: long_only_equity
+    - id: dev_ex_us_equity
+      kind: long-only
+      series: Ken French Developed ex-US Mkt-RF + RF
+      funding_leg: us_equity
+      funding_rationale: >
+        The classic "diversify away from the United States" trade is funded from
+        the US allocation, not pro rata, because pro rata would partly fund the
+        sleeve out of itself.
+      cost_tier: long_only_equity
+    - id: emerging_equity
+      kind: long-only
+      series: Ken French Emerging Mkt-RF + RF
+      funding_leg: us_equity
+      funding_rationale: as above
+      cost_tier: long_only_equity
+    - id: us_momentum_overlay
+      kind: funded long-short overlay
+      series: Ken French US Mom factor, plus cash to make it a funded position
+      funding_leg: us_equity
+      funding_rationale: >
+        An overlay is carved out of the equity allocation: sell equity, hold cash
+        and the self-financing long-short position against it. Funding it from
+        cash instead is reported as the third leg.
+      cost_tier: long_short_overlay
+    - id: dev_ex_us_momentum_overlay
+      kind: funded long-short overlay
+      series: Ken French Developed ex-US WML factor, plus cash
+      funding_leg: dev_ex_us_equity
+      funding_rationale: as above
+      cost_tier: long_short_overlay
+    - id: emerging_momentum_overlay
+      kind: funded long-short overlay
+      series: Ken French Emerging WML factor, plus cash
+      funding_leg: emerging_equity
+      funding_rationale: as above
+      cost_tier: long_short_overlay
+    - id: us_momentum_long_only
+      kind: long-only
+      series: Ken French US 6 Portfolios ME x Prior 12-2, value-weighted, BIG HiPRIOR
+      funding_leg: us_equity
+      funding_rationale: >
+        The large-cap winners portfolio is the closest public analogue of an
+        investable long-only momentum tilt. It is registered separately from the
+        long-short overlay because the two have different betas to an equity core
+        and the whole question here is about beta.
+      cost_tier: long_only_equity
+    - id: trend_aqr
+      kind: funded long-short overlay, vendor series
+      series: AQR published monthly time-series momentum factor, plus cash
+      funding_leg: us_equity
+      funding_rationale: >
+        The usual pitch is that trend is funded out of bonds. No investable bond
+        total-return history exists here (decision record 0002), so the frozen
+        funding leg is US equity and the bond form is not available. This is a
+        limitation and is reported as one.
+      cost_tier: long_short_overlay
+      note: >
+        Already evaluated standalone-in-a-portfolio by exp_004 against a
+        risk-matched cash comparator. It is re-run here inside the SAME
+        decomposition as every other sleeve so that its credit is comparable with
+        theirs; this is not an independent replication of that experiment.
+  proxy_sleeves:
+    - id: long_duration_treasury_proxy
+      kind: MODELLED PROXY, not investable, research_grade false
+      proxy_for: >
+        A long-duration Treasury sleeve -- the asset most likely to carry a beta
+        near or below zero to an equity core, and therefore the asset most likely
+        to earn a real diversification credit.
+      construction: >
+        Ten-year par-bond total return reconstructed from FRED GS10 by the
+        standard duration-and-convexity approximation, identical in form to the
+        robustness arm of exp_004: r_t = y_{t-1}/12 - D(y_{t-1}) (y_t - y_{t-1})
+        + 0.5 C(y_{t-1}) (y_t - y_{t-1})^2.
+      funding_leg: us_equity
+      cost_tier: long_duration_proxy
+      contract: >
+        A modelled series has no total-return contract, no coupon reinvestment
+        convention and no transaction costs. Falsifier clause (u5) forces this
+        sleeve to `unresolved` whatever it measures. It is included because
+        omitting the one asset class with a plausibly negative beta would bias the
+        whole experiment toward the conclusion that no credit exists anywhere.
+  calibration_control:
+    - id: cash_control
+      kind: null sleeve
+      description: >
+        Cash, added to the equity core and funded from US equity. Its marginal
+        certainty equivalent MUST be materially negative: it gives up the equity
+        premium and earns a credit only equal to sigma_p^2 minus roughly zero
+        covariance. If this control does not come out negative, the machinery is
+        wrong and no other number in this experiment may be read. It is a
+        control, not a hypothesis, and is excluded from the Holm family.
+  excluded:
+    - >
+      GOLD. No research-grade gold price series is reachable from this repository.
+      Decision record 0002 establishes that no free price source carries a
+      documented total-return or corporate-action contract, and no gold series is
+      registered in portfolio_edge.data.fred. Gold is the other asset with a
+      plausibly low equity beta and it is NOT TESTED here. That is a gap in this
+      experiment, reported as one, and not filled by reaching for a free feed.
+    - >
+      SEC Form N-PORT fund return series. Public filings begin in 2019, so the
+      longest common history is about 78 months. At the realised monthly
+      dispersion of a marginal sleeve return that is far short of the sample the
+      minimum-detectable-effect arithmetic in parameters.power requires, and a
+      sleeve tested on it could only ever come back `unresolved`. Adding it would
+      spend a multiple-testing trial to buy nothing.
+    - >
+      Any long-short factor evaluated as if it were investable. The Ken French
+      factor files are paper portfolios with no shorting cost, no borrow, no
+      capacity limit and no rebalancing friction inside the factor.
+    - >
+      Any weight above the frozen cap, and any short weight. The long-only
+      constraint is part of the question, not a simplification of it.
+
+sample_policy:
+  start: "1991-01"
+  end: "2025-12"
+  held_out: >
+    Observations after 2025-12 are not read. Every input file reaches at least
+    2026-05, so between five and seven months exist beyond the boundary and are
+    clipped before any statistic is computed.
+  embargo: >
+    No estimator in this experiment uses a future observation: every weight is a
+    frozen constant and every statistic is computed on the realised path. The
+    constrained optimal weight IS chosen in sample, which is a selection effect
+    rather than a look-ahead, and it is handled by re-selecting the weight inside
+    every bootstrap replicate rather than by pretending it was not chosen.
+  eras:
+    - name: first_half
+      start: "1991-01"
+      end: "2008-12"
+      rationale: >
+        Eighteen whole calendar years ending with the global financial crisis.
+        Split at a round boundary chosen before any result was seen, not at the
+        point where any sleeve's performance changed.
+    - name: second_half
+      start: "2009-01"
+      end: "2025-12"
+      rationale: >
+        Seventeen whole calendar years. Most of the candidate sleeves were
+        published and widely marketed before this era began, so McLean and
+        Pontiff (2016) predict decay here.
+    - name: full_period
+      start: "1991-01"
+      end: "2025-12"
+      rationale: >
+        The full 35-year window, reported alongside the halves and never instead
+        of them.
+
+benchmark:
+  primary: >
+    The base portfolio itself, at zero sleeve weight, on the identical monthly
+    grid and the identical cost column. The marginal metric is a PAIRED
+    difference against this benchmark, which is why the bootstrap resamples the
+    joint panel rather than the two series independently.
+  rationale: >
+    The benchmark choice decides the answer. Comparing a portfolio-plus-sleeve
+    against cash, or against an unlevered index the sleeve is not funded from,
+    flatters the sleeve. The only honest control for "what does adding this do" is
+    the same portfolio without it, funded from a declared leg, at the same cost.
+  secondary: >
+    The same comparison under each of the three frozen funding legs, because the
+    funding source determines which covariance enters the credit and can flip its
+    sign.
+
+primary_metric:
+  name: marginal certainty-equivalent return at the frozen reference weight
+  definition: >
+    CRRA gamma = 3 certainty-equivalent annual return of the base portfolio with
+    the sleeve at the frozen reference weight of 0.10, funded pro rata from the
+    base portfolio, MINUS the certainty equivalent of the same base portfolio at
+    zero sleeve weight, both computed from non-overlapping calendar-year gross
+    returns over the same 35 years and both charged the same cost column.
+  gamma: 3
+  units: percentage points per year
+  cost_basis: net-pessimistic
+  why_a_frozen_weight_and_not_the_optimum: >
+    The optimum is chosen from the same sample it is evaluated on. A marginal
+    figure reported at the in-sample optimum is a selected maximum and its naive
+    interval is too narrow. The frozen reference weight carries the primary
+    inference; the constrained optimum and its own interval, re-selected inside
+    every bootstrap replicate, are reported beside it and never instead of it.
+  uncertainty: >
+    Paired stationary block bootstrap on the joint monthly panel, so the pairing
+    between the portfolio with and without the sleeve is preserved. Resampling
+    them independently would produce an interval for the difference of two
+    unrelated portfolios, which is a much wider and entirely different statement.
+
+secondary_metrics:
+  - name: standalone alpha term, 12*(mu_i - mu_f)
+    units: percentage points per year
+  - name: diversification credit term, 12*(sigma_fp - sigma_ip)
+    units: percentage points per year
+  - name: exact first-order growth derivative, 12*E[(r_i - r_f)/(1 + r_p)]
+    units: percentage points per year per unit weight
+  - name: higher-moment residual, exact derivative minus the two-moment decomposition
+    units: percentage points per year per unit weight
+  - name: beta of the sleeve to the base portfolio
+    units: beta
+  - name: correlation of the sleeve to the base portfolio, with a bootstrap interval
+    units: correlation
+  - name: credit re-evaluated at both ends of the correlation interval
+    units: percentage points per year
+  - name: constrained optimal long-only weight
+    units: fraction of portfolio value
+  - name: certainty-equivalent gain at the constrained optimal weight
+    units: percentage points per year
+  - name: flatness of the certainty-equivalent surface near its peak
+    units: fraction of portfolio value
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+  - name: Holm-adjusted p-value across the declared family
+    units: probability
+
+cost_model:
+  applied: yes
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  default_reported_column: net-pessimistic
+  gross_column_definition: >
+    No investor-level fee and no portfolio trading cost. It is not an achievable
+    outcome and exists only to size the gap to the net columns.
+  source_series_basis: >
+    Ken French research portfolios and factor series are gross of every cost and
+    are paper portfolios. AQR states no fee, transaction-cost, slippage or
+    financing basis anywhere in its archived workbook -- established as a finding
+    by exp_004 -- so its series is also treated as gross. The fee tiers below are
+    THIS REPOSITORY'S assumptions about the cost of an accessible implementation,
+    not any provider's disclosure.
+  spread_and_commission:
+    net_optimistic:
+      one_way_bps: 2.0
+    net_pessimistic:
+      one_way_bps: 8.0
+    basis: >
+      Charged on the portfolio-level trades that rebalance to the fixed base
+      weights and that fund and maintain the sleeve, on the traded notional, every
+      month. Costs alter the realised path before any statistic touches it; they
+      are never a constant haircut applied afterwards. They are NOT charged on the
+      trades inside a Ken French portfolio or inside the AQR sleeve, which are not
+      observable. Identical to exp_003 and exp_004, so the columns are comparable.
+  fee_tiers:
+    long_only_equity:
+      net_optimistic_management_fee_annual_percent: 0.15
+      net_pessimistic_management_fee_annual_percent: 0.40
+      performance_fee_percent_of_gains: 0.0
+      assumption: >
+        A broad or factor-tilted index fund at the cheap end, and a small-cap or
+        emerging-market factor fund at the dear end. Both are observable fee
+        levels for products of this shape.
+    long_short_overlay:
+      net_optimistic_management_fee_annual_percent: 0.65
+      net_pessimistic_management_fee_annual_percent: 1.50
+      performance_fee_percent_of_gains: 10.0
+      performance_fee_basis: >
+        Charged monthly on gains above a high-water mark, which is the standard
+        contract and is strictly more favourable to the strategy than charging on
+        every up month. The favourable convention is chosen deliberately: the
+        conclusion must not depend on an unnecessarily harsh fee model. Identical
+        to exp_004.
+      assumption: >
+        Typical accessible fee for a liquid alternative. It does NOT include the
+        shorting cost, borrow, capacity limit or internal rebalancing friction
+        that a real long-short implementation pays and that the Ken French files
+        omit entirely, so it is an underestimate of unknown size.
+    long_duration_proxy:
+      net_optimistic_management_fee_annual_percent: 0.05
+      net_pessimistic_management_fee_annual_percent: 0.15
+      performance_fee_percent_of_gains: 0.0
+      assumption: a Treasury index fund, at fee levels that are observable
+    calibration_control:
+      net_optimistic_management_fee_annual_percent: 0.0
+      net_pessimistic_management_fee_annual_percent: 0.0
+      performance_fee_percent_of_gains: 0.0
+      assumption: cash pays no fund fee; the control must not be flattered or penalised
+
+rebalance_rule:
+  base_weights: frozen at 0.60 US / 0.30 developed ex-US / 0.10 emerging equity
+  balanced_arm: frozen at 0.60 of the equity core and 0.40 cash
+  sleeve_weight: >
+    Frozen reference weight 0.10 for the primary metric; the constrained optimum
+    is searched over [0, 0.20] and reported separately.
+  funding: >
+    The sleeve is funded from a declared leg. Three legs are reported for every
+    sleeve: `pro_rata` from the whole base portfolio, `named_leg` as frozen per
+    sleeve in universe.sleeves, and `cash`. The funding leg determines which
+    covariance enters the credit and can flip its sign, so it is named beside
+    every figure and never left implicit.
+  frequency: monthly, rebalanced to the fixed targets at the end of each month
+  execution_lag_months: 0
+  execution_lag_hostile_test_months: 1
+  drift: >
+    The trade each month is the distance from the weights the previous month
+    drifted to, so a portfolio whose targets never move still pays for the drift
+    it corrects. The initial purchase is not charged: every comparison starts from
+    the same cash and an identical entry cost cannot change a difference.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel of the base portfolio and the sleeve
+  block_length_policy: >
+    Mean block length frozen at 12 months, with 6 and 24 as predeclared
+    neighbours, matching exp_004 so that the intervals are comparable. The block
+    length is NOT selected from the data, because a data-selected block length is
+    a tuned parameter that narrows an interval.
+  multiple_testing_correction: >
+    Holm family-wise error rate at 0.05 across the declared family of ten sleeves,
+    on the one-sided p-value that the marginal certainty equivalent is positive,
+    computed at the frozen reference weight on the primary base portfolio under
+    the primary funding leg and the net-pessimistic column. Holm is valid under
+    arbitrary dependence, which is what is needed here because the sleeves share
+    a base portfolio and overlapping data. The calibration control is excluded
+    from the family: it is a machine check, not a hypothesis. The family of ten
+    is a LOWER bound on the correction the whole search requires, because it
+    counts neither the funding legs, the base portfolios, the cost columns, the
+    eras, nor the eight experiments this repository has already run.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    The marginal-value framing does not escape the power problem this repository
+    keeps meeting; it changes its shape. A covariance estimated from 420 months is
+    noisy, and the credit is a difference of two covariances. The minimum
+    detectable effect at 80% power is reported beside every marginal figure, and a
+    marginal figure smaller than its own minimum detectable effect is reported as
+    `unresolved` rather than as evidence of anything.
+
+rejection_rule: >
+  Apply the falsifier clause by clause, per sleeve, in the order (a) to (d), then
+  the `unresolved` triggers (u1) to (u5). Mark `rejected` when any of (a) to (d)
+  fires. Mark `unresolved` when none fires but any of (u1) to (u5) does. Under no
+  outcome may this specification produce a status above `exploratory`: every input
+  is a public paper portfolio, a vendor series or a modelled proxy, the weights are
+  evaluated in sample, and no walk-forward or shadow-live test is performed.
+  `unresolved` and `rejected` are different findings and are never collapsed. The
+  EXPERIMENT's status is the least favourable outcome across the family unless at
+  least one sleeve clears every clause, in which case it is that sleeve's status.
+
+parameters:
+  evaluation_disclosure:
+    is_investable_backtest: false
+    is_independent_replication: false
+    statement: >
+      This experiment evaluates published research portfolios, one vendor series
+      and one modelled proxy. Ken French's files are paper portfolios rebuilt from
+      the current CRSP or Bloomberg vintage on every release and carry no trading
+      cost, no capacity limit and no borrow. The AQR series is maintained by a
+      firm that sells the strategy. The long-duration sleeve is modelled from a
+      yield and is not a total-return history at all. No figure here is an
+      achievable investor outcome, and no write-up may describe one as such.
+    what_would_make_this_confirmatory: >
+      Investable total-return histories with a documented corporate-action
+      contract, a walk-forward weight-selection rule fitted only on data before
+      each evaluation window, and a cost model calibrated to executed trades
+      rather than assumed. None of the three exists in this repository today.
+  predeclared_prediction:
+    recorded_before_any_result: true
+    statement: >
+      Because beta_ip = rho_ip * sigma_i / sigma_p, an equity sleeve's higher
+      volatility is expected to more than offset its correlation being below one.
+      Worked example at plausible numbers: rho = 0.88, sigma_i = 20%, sigma_p =
+      15% gives beta = 1.173 and a credit of 2.25% * (1 - 1.173) = -0.39
+      percentage points per year. The prediction is therefore that every
+      long-only equity sleeve -- small-value, regional equity, long-only momentum
+      -- shows a beta at or above one to the equity core and a credit at or below
+      zero, and that only trend and the long-duration proxy show a positive
+      credit. This is recorded so that the result can CONTRADICT it. A
+      contradiction is the more interesting outcome and must be reported at least
+      as loudly as a confirmation.
+    how_it_is_scored: >
+      Per sleeve, record predicted sign of the credit, realised sign, and whether
+      the realised credit's correlation-sensitivity band excludes the predicted
+      sign. Report the tally.
+  sample_start_rationale: >
+    1991-01 is the first January on or after the latest first observation among
+    the eleven monthly inputs. Developed ex-US momentum begins 1990-11, which is
+    the binding constraint; a momentum factor needs twelve months of prior returns
+    before it can be formed, so the regional momentum files start later than the
+    five-factor files. The window is exactly 35 whole calendar years = 420 months,
+    which is required because the certainty equivalent is computed from
+    non-overlapping calendar-year gross returns and a partial year cannot be
+    silently dropped.
+  materiality_threshold_annual_percent: 0.30
+  materiality_rationale: >
+    The same threshold exp_004 froze, so that a marginal figure from this
+    experiment is directly comparable with the one from that one. It is a
+    threshold on the NET marginal certainty equivalent, not on a gross premium.
+  crra_gamma: 3
+  reference_weight: 0.10
+  weight_cap: 0.20
+  weight_cap_half: 0.10
+  weight_grid_step: 0.005
+  bootstrap_weight_grid_step: 0.02
+  weight_cap_rationale: >
+    A satellite sleeve inside a diversified portfolio. Twenty per cent is the
+    largest weight a single non-core sleeve plausibly takes; ten per cent is the
+    hostile arm. Both were chosen before any result and neither is optimised.
+  flatness_definition: >
+    The certainty-equivalent surface is reported on the whole weight grid. Three
+    flatness statistics accompany every optimum: the width of the plateau on which
+    the gain is at least 90% of its maximum; the gain at the cap as a fraction of
+    the gain at the optimum; and the width of the region on which the gain exceeds
+    the materiality threshold. A large optimal weight sitting on a wide plateau is
+    not evidence that the weight is large; it is evidence that the data cannot
+    locate a weight.
+  base_weights:
+    us: 0.60
+    developed_ex_us: 0.30
+    emerging: 0.10
+    rationale: >
+      A frozen, round approximation of global equity market capitalisation, not an
+      optimisation. The exact split is not load-bearing: the credit depends on
+      beta to the core, and the three regional markets correlate above 0.7 with
+      each other, so a reasonable reweighting moves sigma_p by well under a
+      percentage point. That claim is checked as a hostile test rather than
+      asserted.
+  balanced_equity_share: 0.60
+  cash_series: TB3MS
+  cash_series_rationale: >
+    TB3MS is the monthly average secondary-market three-month Treasury bill rate
+    on a discount basis: the conventional monthly cash proxy in the US
+    asset-pricing literature and the series exp_004 froze, so cash is the same
+    asset in both experiments. DGS3MO and DFF are registered in this repository
+    and were NOT used; they are different maturities on different constructions.
+    Ken French's own RF column is used to turn Mkt-RF into a total return, because
+    that is the only sum that reconstructs the market's total return, and is not
+    used as the cash asset.
+  power:
+    definition: >
+      The minimum detectable effect is the smallest true marginal
+      certainty-equivalent gain that a one-sided test of size alpha would reject
+      the null for with probability power_target. Two forms are reported for every
+      sleeve and neither is allowed to stand alone: MDE_bootstrap =
+      (z_{1-alpha} + z_{power}) * sd(bootstrap replicates of the marginal figure),
+      which carries the serial dependence and the nonlinearity of the certainty
+      equivalent; and MDE_normal = (z_{1-alpha} + z_{power}) * 12 * sigma_d /
+      sqrt(T) on the monthly incremental return d_t, which is the form exp_001 and
+      exp_005 report and is included so the figures are comparable with theirs.
+    alpha_one_sided: 0.05
+    power_target: 0.80
+    reported_for_every_cell: true
+    also_report:
+      - the realised marginal figure as a multiple of its own minimum detectable effect
+      - the number of months and the effective number of independent 12-month blocks
+      - the minimum detectable effect on the diversification credit alone
+  decomposition:
+    identity: >
+      For portfolio p, sleeve i and funding leg f, funding weight w of i out of f:
+      dg/dw|_{w=0} = E[(r_i - r_f)/(1 + r_p)] exactly, and to second order in the
+      moments = (mu_i - mu_f) - (sigma_ip - sigma_fp). With f = p the second term
+      is sigma_p^2 (1 - beta_ip), the diversification credit. For a CRRA investor
+      with risk aversion gamma the same expansion gives (mu_i - mu_f) - gamma *
+      (sigma_ip - sigma_fp), and gamma = 1 recovers the growth case.
+    reported_terms:
+      - alpha_term = 12 * (mu_i - mu_f)
+      - credit_term = 12 * gamma * (sigma_fp - sigma_ip)
+      - moment_total = alpha_term + credit_term
+      - exact_derivative = 12 * mean((r_i - r_f) / (1 + r_p))
+      - higher_moment_residual = exact_derivative - moment_total at gamma = 1
+    why_both: >
+      The exact derivative is the true first-order effect on the growth rate and
+      needs no distributional assumption. The two-moment decomposition is what
+      SPLITS that effect into the standalone term and the credit. Reporting only
+      the split would hide how much of it the two moments actually capture;
+      reporting only the exact figure would answer the wrong question. The residual
+      between them is reported so a reader can see the approximation error rather
+      than trust it.
+    fixture_policy: >
+      The decomposition is a pure function of five scalars and is intended to be
+      checked against a closed form derived independently of this implementation.
+      If an independently derived closed form disagrees with these numbers, the
+      closed form wins until proven otherwise, and the disagreement is a finding
+      rather than a tolerance to loosen.
+  correlation_sensitivity:
+    definition: >
+      credit_term = 12 * gamma * (sigma_fp - rho_ip * sigma_i * sigma_p), so
+      d(credit)/d(rho_ip) = -12 * gamma * sigma_i * sigma_p. Report the derivative
+      per 0.10 of correlation, and the credit re-evaluated at both ends of the
+      correlation's own block-bootstrap 95% interval with the volatilities held at
+      their point estimates.
+    rationale: >
+      A credit of a few tens of basis points that moves by more than itself when
+      the correlation moves by 0.10 is not a finding. The samples here cannot pin
+      a correlation tightly, and that has to be visible in the output rather than
+      inferred from it.
+  sleeves_not_tested:
+    - id: gold
+      reason: >
+        NOT TESTED. No research-grade gold price or total-return series is
+        reachable. Decision record 0002 governs; no gold series is registered in
+        portfolio_edge.data.fred and no free price feed may be substituted. Gold
+        is one of only two candidate assets with a plausibly low equity beta, so
+        its absence biases this experiment toward finding no credit anywhere, and
+        that direction is stated rather than left for a reader to notice.
+    - id: nport_fund_returns
+      reason: >
+        NOT TESTED. Public N-PORT filings begin in 2019, giving at most about 78
+        months of common history. The minimum-detectable-effect arithmetic in
+        parameters.power shows what that buys, and it is not enough to distinguish
+        a 0.30 percentage-point marginal effect from zero. exp_002 and exp_008
+        already use N-PORT for what it can answer, which is what funds hold and
+        what they charge, not whether a sleeve adds growth.
+    - id: investable_bond_sleeve
+      reason: >
+        NOT TESTED as an investable series. Decision record 0002. The modelled
+        GS10 duration proxy stands in its place and is forced to `unresolved` by
+        falsifier clause (u5).
+  source_pin:
+    policy: >
+      Every French and AQR input is pinned by the sha256 of its raw bytes AND by
+      the sha256 of the derived table, and a mismatch ABORTS. Both sources rebuild
+      their entire history in place on every update, so an unrecognised hash is a
+      new vintage rather than a corrupt download, and a marginal figure computed
+      from an unrecognised file looks exactly like a good one. FRED appends rather
+      than rewrites, so its hashes are recorded and reported without aborting.
+    french:
+      - dataset_id: french_us_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        committed_manifest: data-manifests/french_us_ff5_monthly.json
+        expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+        expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+      - dataset_id: french_developed_ex_us_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        committed_manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+        expected_sha256_raw: 54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d
+        expected_sha256_normalized: 8e09ae56db0222f8f633b448f54690cb0f18a3f43282e11e77a183a9a5820fd2
+      - dataset_id: french_emerging_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        committed_manifest: data-manifests/french_emerging_ff5_monthly.json
+        expected_sha256_raw: ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8
+        expected_sha256_normalized: 300e14451a59af3e4a34dc4db6d4f9677052672373a7f9f860ab68bf58182406
+      - dataset_id: french_us_momentum
+        table_id: monthly
+        columns: ["Mom"]
+        committed_manifest: data-manifests/french_us_momentum_monthly.json
+        expected_sha256_raw: f405ee2d47a5c75ce05025f789733d0599879361e9836a553504240b89159871
+        expected_sha256_normalized: 488da69c6890bc86f1993b2ccf65cfdfa12b17011dd4d5cd5405c7869005b506
+      - dataset_id: french_developed_ex_us_momentum
+        table_id: monthly
+        columns: ["WML"]
+        committed_manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+        expected_sha256_raw: ca8297c338b45cc2121b81ac23f0bba9cd8b8cf3c6afb523a413542fd1557bb6
+        expected_sha256_normalized: faef3644e3da9d2d348c3aa8c7e098c8a6b02cf03bc16a171fbc761e77d82adc
+      - dataset_id: french_emerging_momentum
+        table_id: monthly
+        columns: ["WML"]
+        committed_manifest: data-manifests/french_emerging_momentum_monthly.json
+        expected_sha256_raw: 5e684176192fb88e9103e6393e293f73d3aad265873224558f9532ccb0bb0f4e
+        expected_sha256_normalized: da32dd8a21f2c8fc439c5a3ef8ea0f6d05503302c5d80ced3fa0a796dea90430
+      - dataset_id: french_us_6_portfolios_2x3
+        table_id: average_value_weighted_returns_monthly
+        columns: ["SMALL HiBM"]
+        committed_manifest: data-manifests/french_us_6_portfolios_2x3_value_weighted_monthly.json
+        expected_sha256_raw: 06108313811fe1fd230600f59da30eae279f043b4b1edeee658c18e3be0cd326
+        expected_sha256_normalized: 151301ccac8d16f846c48d2fddf93bac5f1440b363fee374805be78af56fd58c
+      - dataset_id: french_developed_ex_us_6_portfolios_2x3
+        table_id: average_value_weighted_returns_monthly
+        columns: ["SMALL HiBM"]
+        committed_manifest: data-manifests/french_developed_ex_us_6_portfolios_2x3_value_weighted_monthly.json
+        expected_sha256_raw: 2b79a26326eb699bdd5946ffdd90f5674494b8cd684bd5977459325a91153faa
+        expected_sha256_normalized: 73c0160ed5f98bde3e85084b2233237a3231fd9aeabe03401f21a3d510c7dbbb
+      - dataset_id: french_emerging_6_portfolios_2x3
+        table_id: average_value_weighted_returns_monthly
+        columns: ["SMALL HiBM"]
+        committed_manifest: data-manifests/french_emerging_6_portfolios_2x3_value_weighted_monthly.json
+        expected_sha256_raw: 2b5fa424fd368430bec353a6fef35bd5a989551aac3004b781d814f12bc2aedb
+        expected_sha256_normalized: 0a5ce7388ba63c0f94c65b9f80eb1f5ffb694247982c42e92c8fb3890f660c00
+      - dataset_id: french_us_6_portfolios_me_prior_12_2
+        table_id: average_value_weighted_returns_monthly
+        columns: ["BIG HiPRIOR"]
+        committed_manifest: data-manifests/french_us_6_portfolios_me_prior_12_2_value_weighted_monthly.json
+        expected_sha256_raw: 8c3ae277bb2c598d01d94c3b4902e8370e833ff70a89851e30fb8f90d063d67b
+        expected_sha256_normalized: 1b2901b9757e3b4d1daf1805ef9181f24b298556178163a34cf3206b1570fb3b
+    aqr:
+      dataset_id: aqr_tsmom_factors
+      sheet: TSMOM Factors
+      column: TSMOM
+      committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+      expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+      expected_sha256_normalized: b58b9f527de8fa1aff06c292895b53ed6a5c69bf8331f7c9c367cf84b104e03e
+    fred:
+      - series_id: TB3MS
+        committed_manifest: data-manifests/fred_tb3ms.json
+        expected_sha256_raw: a44dc72332a838dac7a9f1fc0731e4927a7b3217431b3e012bd88dff4b6986fa
+        abort_on_mismatch: false
+      - series_id: GS10
+        committed_manifest: data-manifests/fred_gs10.json
+        expected_sha256_raw: a875d88b7ed6a413f697ddb6332f13e61ac58ac7ae0ef52d66a62174995ec6f7
+        abort_on_mismatch: false
+        note: robustness arm only; feeds the modelled long-duration proxy, which is not research grade
+
+data_sources:
+  - id: french_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+    construction: US equity total return = Mkt-RF + RF
+  - id: french_developed_ex_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+    construction: developed ex-US equity total return = Mkt-RF + RF
+  - id: french_emerging_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+    construction: emerging equity total return = Mkt-RF + RF
+  - id: french_us_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Momentum_Factor_CSV.zip
+    manifest: data-manifests/french_us_momentum_monthly.json
+  - id: french_developed_ex_us_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_Mom_Factor_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+  - id: french_emerging_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_MOM_Factor_CSV.zip
+    manifest: data-manifests/french_emerging_momentum_monthly.json
+  - id: french_us_6_portfolios_2x3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_2x3_CSV.zip
+    manifest: data-manifests/french_us_6_portfolios_2x3_value_weighted_monthly.json
+  - id: french_developed_ex_us_6_portfolios_2x3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_6_Portfolios_ME_BE-ME_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_6_portfolios_2x3_value_weighted_monthly.json
+  - id: french_emerging_6_portfolios_2x3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_Markets_6_Portfolios_ME_BE-ME_CSV.zip
+    manifest: data-manifests/french_emerging_6_portfolios_2x3_value_weighted_monthly.json
+  - id: french_us_6_portfolios_me_prior_12_2
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/6_Portfolios_ME_Prior_12_2_CSV.zip
+    manifest: data-manifests/french_us_6_portfolios_me_prior_12_2_value_weighted_monthly.json
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    sheet: TSMOM Factors
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+  - id: fred_tb3ms
+    url: https://fred.stlouisfed.org/series/TB3MS
+    manifest: data-manifests/fred_tb3ms.json
+  - id: fred_gs10
+    url: https://fred.stlouisfed.org/series/GS10
+    manifest: data-manifests/fred_gs10.json
+    note: robustness arm only; feeds the modelled long-duration proxy
+
+hostile_tests:
+  - >
+    Report the calibration control. Cash added to an equity core and funded from
+    US equity MUST show a materially negative marginal certainty equivalent. If it
+    does not, the machinery is wrong and no other figure may be read.
+  - >
+    Re-select the constrained optimal weight INSIDE every bootstrap replicate, and
+    report that interval beside the naive one computed at the in-sample optimum.
+    The gap between them is the selection effect, made visible.
+  - Halve the weight cap from 0.20 to 0.10 and re-report every optimum.
+  - Double every cost and fee assumption and re-report every marginal figure.
+  - >
+    Delay the sleeve by one month, which is the smallest delay a monthly series
+    can express, and re-report every marginal figure.
+  - >
+    Remove the sleeve's single best calendar year and re-report, since a marginal
+    figure driven by one year is a description of that year.
+  - Split the sample into the two frozen halves and report both.
+  - >
+    Report all three funding legs for every sleeve and flag every sleeve whose
+    marginal figure changes sign between them.
+  - >
+    Report the credit at both ends of the correlation's bootstrap interval, and
+    the derivative of the credit per 0.10 of correlation.
+  - >
+    Re-run the whole family against the second base portfolio, the 60/40, and
+    check that the pro-rata credit falls roughly in proportion to sigma_p^2 as the
+    identity requires. A credit that does not scale that way indicates an error in
+    the decomposition rather than a discovery.
+  - >
+    Perturb the frozen base weights to equal-weight across the three regions and
+    report how far sigma_p and every credit move, to check the claim in
+    parameters.base_weights.rationale that the split is not load-bearing.
+
+reporting_requirements:
+  - The evaluation disclosure above, printed with every table.
+  - >
+    The alpha term and the credit term separately for every sleeve, never their
+    sum alone, since the entire purpose of this experiment is to show which of the
+    two carries the result.
+  - The funding leg named beside every marginal figure.
+  - >
+    The minimum detectable effect beside every marginal figure, and the figure
+    expressed as a multiple of it.
+  - The Holm-adjusted p-value and the declared family size beside every sleeve.
+  - >
+    The constrained optimal weight, the certainty-equivalent gain at it, and all
+    three flatness statistics together. A weight reported without its flatness is
+    incomplete.
+  - >
+    The word PROXY, and what the series is a proxy for, on every figure derived
+    from the modelled long-duration sleeve.
+  - >
+    An explicit statement that gold was not tested and why, in the result itself
+    and not only in this specification.
+  - >
+    The predeclared prediction and its scorecard, including any sleeve that
+    contradicted it.
+  - >
+    A statement of how many sleeves were tested, because that number feeds the
+    trial count of every later experiment in this repository.
+
+notes: >
+  Retain `unresolved` rather than `rejected` whenever the sample cannot answer the
+  question, and `rejected` rather than `unresolved` whenever the frozen falsifier
+  fires on a quantity the sample CAN measure. A negative diversification credit is
+  a measurable fact about a sleeve's beta, not a power failure, so clause (b)
+  rejects rather than leaving the matter open. That asymmetry is deliberate: the
+  portfolio-level view was proposed as a possible rescue of sleeves the standalone
+  chain dismissed, and if it instead makes them worse, that is a finding this
+  repository should be able to state plainly.

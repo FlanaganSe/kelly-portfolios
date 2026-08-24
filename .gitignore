@@ -3,6 +3,10 @@
 
 /build/
 dist
+dist-legacy
+
+# Astro's generated types and content-collection cache.
+.astro/
 
 # IDE/Editor
 .vscode/settings.json
@@ -13,7 +17,8 @@ dist
 sst-env.d.ts
 
 # AI
-CLAUDE.md
+CLAUDE.local.md
+.claude/settings.local.json
 
 # Environment variables
 .env
@@ -22,7 +27,28 @@ CLAUDE.md
 .env.development
 .env.production
 
-# Keep .env.example in version control
-infra/
-functions/
-*.md
+# Keep source and documentation in version control.
+
+# Python research workspace
+research/.venv/
+research/cache/
+# Artifact bytes are regenerable and large; the compact summary and the manifest
+# are the durable record of a result and are committed, as reporting/artifacts.py
+# states. Without them a fresh clone holds the ledger (what ran) and no results
+# (what was found), which is what pushed docs/research/ into archival duty.
+research/artifacts/*
+!research/artifacts/*/
+research/artifacts/*/frames/
+research/artifacts/*/result.json
+research/**/__pycache__/
+research/.pytest_cache/
+research/.mypy_cache/
+research/.ruff_cache/
+research/*.egg-info/
+
+# Working plans and orchestration prompts are not durable documentation
+# (docs/AGENTS.md). What the last one held that was load-bearing is now in
+# docs/charter.md, docs/research/search-coverage.md and docs/research/evidence-base.md.
+docs/the-plan.md
+docs/*-plan.md
+.claude/scratch/
