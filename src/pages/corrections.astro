@@ -2,7 +2,7 @@
 /**
  * The corrections policy, and the dated log it commits to.
  *
- * Eight entries, newest first, each one an error that moved a recommendation rather
+ * Nine entries, newest first, each one an error that moved a recommendation rather
  * than a decimal. The narrative versions of several of these also appear on
  * `/how-sure/`, which reached them from the confidence vocabulary; this page is the
  * dated record with permanent anchors, and it owns the policy.
@@ -21,7 +21,7 @@ import { REPO_URL } from "~/lib/site";
 
 <Base
   title="Corrections"
-  description="What this project published, what turned out to be wrong with it, what caught the error, and what changed. Eight dated entries, including a return figure that was never measured and was deleted rather than replaced with a better guess."
+  description="What this project published, what turned out to be wrong with it, what caught the error, and what changed. Nine dated entries, including a return figure that was never measured and was deleted rather than replaced with a better guess."
 >
   <div class="prose">
     <Rail>Corrections</Rail>
@@ -34,7 +34,7 @@ import { REPO_URL } from "~/lib/site";
       </p>
     </MarginNote>
 
-    <p>Thirty-two errors have been found in this project's own published numbers. Eight are below, chosen because
+    <p>Thirty-three errors have been found in this project's own published numbers. Nine are below, chosen because
     each moved a recommendation rather than a decimal.</p>
 
     <p>If you read one, read <a href="#trend-premium">the trend-following return</a>. It was quoted confidently on
@@ -95,6 +95,40 @@ import { REPO_URL } from "~/lib/site";
     <h2 id="log">The log</h2>
 
     <p>Newest first.</p>
+
+    <h3 id="two-portfolios">Two different portfolios, both called the recommendation</h3>
+
+    <p class="eyebrow" data-numeric>Corrected 2026-08-24</p>
+
+    <p><strong>What we believed.</strong> That the portfolio on this site had been run through the full test as a
+    single object, and that the test said holding 30% of the trend fund beat holding 25% of it.</p>
+
+    <MarginNote label="What the arms actually were">
+      <p>
+        Seven funds at 25%, against an earlier eight-fund draft at 30%. Four of the holdings differ as well as
+        the trend weight. The frozen file names them, and nobody had read the list beside the sentence it was
+        being quoted for.
+      </p>
+    </MarginNote>
+
+    <p><strong>What was wrong.</strong> Two things, and the second is the one that matters. The frozen
+    specification calls a 25% portfolio "the recommendation", because that is what we recommended on the day it
+    was frozen; we then moved to 30% and never relabelled anything, so a reader could find two different
+    seven-fund portfolios each presented as the portfolio. And the half-point-a-year result that moved the weight
+    was never a comparison between those two. It scored the seven funds at 25% against an earlier eight-fund
+    draft at 30%, which differs in four of its holdings as well. The figure record said "same seven funds". It was
+    not the same seven funds, and nobody has ever run these seven at 30%.</p>
+
+    <p><strong>What caught it.</strong> Reading the frozen file's own list of what it scored, instead of the
+    sentence the result was quoted in. The two are eleven hundred lines apart in the same file.</p>
+
+    <p><strong>What changed.</strong> The 30% portfolio is named as the recommendation everywhere, the 25% one as
+    what was tested, and every figure drawn from that run says which of the two it belongs to. The half-point
+    result is still published and still the only whole-portfolio comparison here that clears its own resolution,
+    now with what it compared printed beside it. The reason to read it as the trend weight rather than as the
+    holdings survives — strip the trend and the borrowing out of both and the two sets of holdings are worth 0.80
+    and 0.79 percentage points a year — but that is an argument rather than a measurement, and the test that
+    would settle it has not been run.</p>
 
     <h3 id="two-horizons">"How long before you would know" was two questions wearing one label</h3>
 
