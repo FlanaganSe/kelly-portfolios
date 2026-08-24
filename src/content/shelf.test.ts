@@ -208,14 +208,64 @@ describe("the two fund records may not drift apart", () => {
 
     const lending = bareNumber(inPortfolio.securitiesLendingBp);
     if (lending !== null) expect(onShelf.securitiesLendingBp).toBe(lending);
+
+    // Both files now read the Rule 6c-11 spread, and a spread read twice is one spread.
+    // Absent on either side means nobody read it there, which is not a disagreement.
+    if (inPortfolio.spreadBp !== null && onShelf.spread !== undefined) {
+      expect(onShelf.spread.bp, `${ticker} spread`).toBe(inPortfolio.spreadBp);
+    }
+  });
+
+  /**
+   * The clause above is vacuous unless both files actually carry a spread for the same
+   * fund, so the six that do are pinned. VBR and DBMF have none on either side. Dropping
+   * a spread from `portfolio.ts` or from the shelf would otherwise silently retire the
+   * invariant rather than fail it.
+   */
+  it("compares a spread for the six shared funds that carry one on both sides", () => {
+    const compared = shared
+      .filter((fund) => fund.spreadBp !== null && fundByTicker(fund.ticker).spread !== undefined)
+      .map((fund) => fund.ticker)
+      .sort();
+    expect(compared).toEqual(["BND", "VB", "VEA", "VTI", "VWO", "VXUS"]);
   });
 });
 
 describe("wrappers report structure and cost, never a sleeve", () => {
   const wrappers = shelf.filter((fund) => fund.category === "capital-efficient");
 
-  it("covers the seven wrappers the candidate portfolio reaches for", () => {
-    expect(wrappers.map((fund) => fund.ticker).sort()).toEqual(["CTAP", "GDE", "JPFP", "MATE", "NTSX", "RSSB", "RSST"]);
+  it("covers the whole stacked-wrapper shelf", () => {
+    expect(wrappers.map((fund) => fund.ticker).sort()).toEqual([
+      "CTAP",
+      "GDE",
+      "JPFP",
+      "MATE",
+      "NTSX",
+      "RSBA",
+      "RSBT",
+      "RSBY",
+      "RSIT",
+      "RSSB",
+      "RSST",
+      "RSSX",
+      "RSSY",
+    ]);
+  });
+
+  /**
+   * Category is a mandate and `wrapper` is a measurement, and the pair is what the roster
+   * assertion above used to conflate. A `wrapper` block carries `delta`, funding capture
+   * and gross notional, all of which come off a Form N-PORT; the six Return Stacked funds
+   * added on 2026-08-24 have filed none, so they have no block. Pinning both lists means
+   * a new fund cannot acquire wrapper facts it has not filed, nor quietly lose the ones
+   * it has, which is the invariant the single list was standing in for.
+   */
+  it("gives a wrapper block only to the funds whose legs were read off a filing", () => {
+    const measured = wrappers
+      .filter((fund) => fund.wrapper !== undefined)
+      .map((fund) => fund.ticker)
+      .sort();
+    expect(measured).toEqual(["CTAP", "GDE", "JPFP", "MATE", "NTSX", "RSSB", "RSST"]);
   });
 
   /**

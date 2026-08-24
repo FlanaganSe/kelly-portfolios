@@ -185,9 +185,11 @@ pro-rata construction only, and a financed one now exists at 0.67%.
 
 ### 2.2 Managed futures and trend
 
-- **FFUT — Fidelity Managed Futures ETF.** Inception **2025-06-05**, **0.80%** (0.83% gross
-  with a waiver through 2026-05-31), **$346.23m**. Trend-following across equity, rates, FX
-  and commodities.
+- **FFUT — Fidelity Managed Futures ETF.** Inception **2025-06-05**, **$346.23m**, and
+  **0.80%** — which is an expense cap running to **2027-05-31**, not a fee: the table reads
+  0.80% management plus 0.02% other expenses for 0.82% gross, and FDS may recoup within the
+  fiscal year what it reimburses (summary prospectus dated 2026-05-30, read 2026-08-24).
+  Trend-following across equity, rates, FX and commodities.
   ([etf.com](https://www.etf.com/sections/etf-watch/fidelity-adds-managed-futures-etf-growing-lineup),
   [StockAnalysis](https://stockanalysis.com/etf/ffut/), read 2026-08-22.) **Not on the shelf,
   and it is now the fourth- or fifth-largest managed-futures ETF.** Verdict: repackaging of a
@@ -225,23 +227,35 @@ coverage gap, not a null result.**
 
 ### 2.5 Catastrophe bonds — the vehicle is now three times the size the audit recorded
 
-The **Brookmont Catastrophic Bond ETF trades as `ILS`, not `ROAR`** — the ROAR ticker
-appeared in pre-launch coverage and was not used. It listed on NYSE in **April 2025**, the
-first US-listed cat bond fund, at a **1.58% total expense ratio**, advised by Brookmont with
-King Ridge Capital Advisors as sub-adviser
+The Brookmont Catastrophic Bond ETF trades as **`ILS`**, which is the ticker
+[`alternative-sleeves-audit.md` §5](alternative-sleeves-audit.md#5-catastrophe-bonds-the-vehicle-problem-is-solved-and-a-price-problem-has-replaced-it)
+already uses throughout. `ROAR` appeared in pre-launch coverage and was never used; it is
+recorded here only so that a reader who meets it in an article knows which fund it means.
+The fund listed on NYSE in **April 2025**, the first US-listed cat bond fund, advised by
+Brookmont with King Ridge Capital Advisors as sub-adviser
 ([ETFGI](https://etfgi.com/news/stories/2025/04/brookmont-capital-management-launches-first-us-listed-catastrophe-bond-etf),
 [ilsetf.com](https://ilsetf.com/)).
 
+**What is new here is the size, and only the size.**
+
 - AUM was **~$12m in August 2025**, **$25.3m at 2025-11-26**
   ([Artemis](https://www.artemis.bm/news/brookmont-cat-bond-etf-gains-momentum-as-trading-volume-rises-assets-surpass-25m/)),
-  and is **$88.44m as of 2026-08-22** ([StockAnalysis](https://stockanalysis.com/etf/ils/)).
+  and **$88.44m at 2026-08-22** ([StockAnalysis](https://stockanalysis.com/etf/ils/)). The
+  audit's $88.2m is dated 2026-08-20; the two readings are two days apart and both are
+  current for their date.
 - Average daily trading volume rose ~672% between September and November 2025.
 
-The audit's fee figure (1.58%) is right. Its access finding is now understated: the vehicle
-has survived eighteen months and tripled in nine. That does not touch the audit's actual
-objection, which is **price** — the risk spread has compressed by roughly half since 2023 —
-and the reopening condition there is a spread level, not an AUM level. But "the retail
-history is short" is nine months shorter than it was.
+**The fee belongs to the audit and is not restated here.** The audit's figure is not a flat
+1.58%: it is **2.65% gross and 1.58% net under a cap running to 2027-04-30**, against
+**costs actually paid of 2.00% annualised** in the fund's own tailored shareholder report.
+Three numbers, all of them true at once, and quoting the middle one alone understates what
+a holder has actually paid. Nothing in this scan revises any of them.
+
+The audit's access finding is now understated: the vehicle has survived eighteen months and
+tripled in nine. That does not touch the audit's actual objection, which is **price** — the
+risk spread has compressed by roughly half since 2023 — and the reopening condition there is
+a spread level, not an AUM level. But "the retail history is short" is nine months shorter
+than it was.
 
 ### 2.6 Crypto ETPs
 
@@ -253,7 +267,9 @@ futures for six months, or an existing ETF already holds 40% of its assets in it
 ([CNBC](https://www.cnbc.com/2025/09/30/crypto-etfs-sec-generic-listing-new-boom-solana-xrp.html),
 read 2026-08-22). Spot **Solana** and **XRP** ETPs reached the market from **November 2025**.
 
-Current fees and net assets, from StockAnalysis fund pages read 2026-08-22:
+Current fees and net assets, from StockAnalysis fund pages read 2026-08-22 — except HODL's and
+EZBC's fees, which are from those trusts' own Q2-2026 Forms 10-Q, read 2026-08-24, because the
+aggregator's readings for both were wrong:
 
 | Ticker | Asset | Fee | AUM |
 | --- | --- | ---: | ---: |
@@ -263,9 +279,9 @@ Current fees and net assets, from StockAnalysis fund pages read 2026-08-22:
 | BTC (Grayscale Mini) | BTC | 0.15% | $4.12bn |
 | BITB | BTC | 0.20% | $2.91bn |
 | ARKB | BTC | 0.21% | $2.70bn |
-| HODL | BTC | **0.25%** | $1.18bn |
+| HODL | BTC | **0.20%** | $1.18bn |
 | BRRR | BTC | 0.25% | $443.27m |
-| EZBC | BTC | **0.29%** | $423.22m |
+| EZBC | BTC | **0.19%** | $423.22m |
 | ETHA | ETH | 0.25% | $7.68bn |
 | ETHE | ETH | 2.50% | $1.84bn |
 | ETHB (BlackRock staked) | ETH | 0.25% | $795.50m |
@@ -274,10 +290,15 @@ Current fees and net assets, from StockAnalysis fund pages read 2026-08-22:
 | GSOL (Grayscale) | SOL | 0.35% | $123.22m |
 | XRPC (Canary) | XRP | 0.50% | $319.03m |
 
-Two divergences from the audit's Q2-2026 10-Q table, both plausibly the waiver expiry it
-already flagged: **HODL now shows 0.25%, not 0.20%** (the audit noted the full waiver expired
-2026-07-31 — this is that expiry landing), and **EZBC shows 0.29%, not 0.19%**. Both should
-be re-read off the next 10-Q rather than accepted from a data aggregator.
+**The two divergences from the audit's Q2-2026 10-Q table are the aggregator's, not the
+audit's.** The table above shows HODL at 0.25% and EZBC at 0.29%; both trusts' own Q2-2026
+Forms 10-Q, read 2026-08-24, say **0.20%** and **0.19%** respectively, and HODL's filing states
+in terms that after 2026-07-31 — the waiver expiry the audit already flagged — "the Sponsor Fee
+will be 0.20%". The audit's figures stand, the table above carries the filed ones, and the
+aggregator's 0.25% and 0.29% appear nowhere in either trust's filings; see **C-16**. The
+generalisation is the useful part: a spot-ETP sponsor fee under waiver is the single field a
+data aggregator here got wrong twice out of sixteen, and it is cheap to check in the trust's
+own quarterly filing.
 
 **IBIT went from $43.4bn at 2026-06-30 to $58.78bn** — roughly +35%, against bitcoin's
 +31.6% price move over the same stretch, so most of that is mark-to-market rather than flow.
@@ -825,7 +846,8 @@ the funding rule nor the fee table separates the candidates"* — is drawn from 
 fee table. **The spread does separate them: 33 bp against RSST's 9 bp is a 24 bp/yr difference
 on a one-year hold, on a shelf where the entire fee dispersion among the three wrappers is
 18 bp.** For any investor who rebalances, CTAP is the most expensive of the three, not the
-cheapest.
+cheapest. `src/content/shelf.ts` now carries a `spread` field, populated for the funds whose
+Rule 6c-11 disclosure was read here and absent for the rest.
 
 The general point for the site rewrite: **the shelf models `fee − securities lending` and calls
 it net cost.** For a fund with a 1 bp spread that is nearly complete. For a fund with a 33 bp
@@ -855,8 +877,9 @@ inception **2026-05-06**, **0.98%**, **$68.53m**, median spread **0.15%**, equit
 international twin of RSST and it lands directly on the intersection of two live repository
 recommendations (add AVDV; trend is the best-supported financed diversifier). Also missing:
 **RSSX** (US Stocks & Gold/Bitcoin, 2025-05-29, 0.67%, $70.59m, spread 0.28%), RSSY, RSBT,
-RSBY, RSBA. Source: [returnstackedetfs.com](https://www.returnstackedetfs.com/), read
-2026-08-22.
+RSBY, RSBA. All six are now on the shelf, at the fees their own Forms 497K dated 2026-04-27
+(RSIT 2026-05-05) print, and none carries a measured structure. Source:
+[returnstackedetfs.com](https://www.returnstackedetfs.com/), read 2026-08-22.
 
 **C-3 — Section 6 of everything: two brokers are introducing a $100-per-trade fee and the
 repository's cost model has no broker in it.** Fidelity began charging **$100 per purchase**
@@ -903,11 +926,16 @@ the updated count. Related: the 3-year *daily* correlation is now **+0.170**, th
 panel, which is below the page's own +0.2 reopening threshold; the trigger is still not met
 because the window contains no recession and the 3-year monthly reading is +0.363.
 
-**C-8 — `docs/research/alternative-sleeves-audit.md` §5: the cat bond ETF's ticker is `ILS`,
-not `ROAR`, and it is now $88.44m.** It listed on NYSE in April 2025 at 1.58%; AUM went ~$12m
-(Aug 2025) → $25.3m (2025-11-26) → **$88.44m (2026-08-22)**, with average daily volume up ~672%
-Sept–Nov 2025. The fee is right, the price objection is untouched, but "retail history is
-short" is nine months shorter. Sources:
+**C-8 — `docs/research/alternative-sleeves-audit.md` §5: the cat bond ETF is now $88.44m, and
+that is the only figure in that section this scan changes.** AUM went ~$12m (Aug 2025) →
+$25.3m (2025-11-26) → **$88.44m (2026-08-22)**, against the audit's $88.2m at 2026-08-20 —
+two readings two days apart, both current for their date. Average daily volume was up ~672%
+Sept–Nov 2025. The ticker is `ILS`, which is what the audit already uses; `ROAR` was
+pre-launch coverage only and is worth recording just so a reader who meets it can place it.
+The fee is the audit's and is not restated: 2.65% gross, 1.58% net under a cap to
+2027-04-30, and 2.00% actually paid. The price objection is untouched and the reopening
+condition is still a spread level, but "retail history is short" is nine months shorter.
+Sources:
 [ETFGI](https://etfgi.com/news/stories/2025/04/brookmont-capital-management-launches-first-us-listed-catastrophe-bond-etf),
 [Artemis](https://www.artemis.bm/news/brookmont-cat-bond-etf-gains-momentum-as-trading-volume-rises-assets-surpass-25m/),
 [StockAnalysis](https://stockanalysis.com/etf/ils/).
@@ -919,16 +947,32 @@ repository has actually documented. Four shelf funds are under $50m: **MATE $39.
 **SDMF $39.16m**, **JPFP $32.75m**, and (off-shelf but discussed) **ILS $88.44m**. A verdict
 that a fund is a candidate should print its size.
 
-**C-10 — `src/content/shelf.ts`: two expense ratios are off by 1–3 bp.** **IVLU is 0.30%, the
-shelf says 31 bp.** **EFV is 0.33%, the shelf says 31 bp.** Both from
-[StockAnalysis](https://stockanalysis.com/etf/efv/), read 2026-08-22; re-read from the iShares
-prospectus before amending. Every other fee among the 59 verified exactly.
+**C-10 — IVLU and EFV: the shelf's 31 bp is right for both, and an aggregator reading is not.**
+Read from the funds' own summary prospectuses, both dated 2025-11-28, on 2026-08-24:
+**IVLU** files 0.30% management, 0.01% other expenses, **0.31% total**
+([Form 497K](https://www.sec.gov/Archives/edgar/data/1100663/000119312525302146/d90140d497k.htm));
+**EFV** files 0.31% management, 0.00% other expenses, **0.31% total**
+([Form 497K](https://www.sec.gov/Archives/edgar/data/1100663/000119312525302176/d949816d497k.htm)).
+Neither has a waiver line. A 0.30% quote for IVLU is its management fee with the other-expenses
+line dropped, and 0.33% is not a number in EFV's fee table at all. **Do not amend the shelf on
+either.** The general lesson is worth more than the two numbers: an aggregator's "expense ratio"
+and a fee table's total annual fund operating expenses are different fields, and they diverge by
+exactly the other-expenses line. Every other fee among the 59 verified exactly.
 
-**C-11 — `src/content/shelf.ts`: three funds carry `null` where a public fee exists.**
-**GWX = 0.40%**, **DFEV = 0.43%**, and TIP's `expenseRatioBp` is null against a published
-**0.18%**. The shelf's own docstring says a `null` means "no experiment in this repository read
-it," which is a defensible convention — but a public site should not print a blank where the
-issuer prints a number.
+**C-11 — `src/content/shelf.ts`: three funds carried `null` where a public fee exists.** All
+three were read from the funds' own summary prospectuses on 2026-08-24 and are now on the shelf.
+**GWX = 0.40%** total, no waiver, per its 497K dated 2026-01-31
+([filing](https://www.sec.gov/Archives/edgar/data/1168164/000119312526031217/d833468d497k.htm)) —
+the registrant now styles it *State Street* SPDR S&P International Small Cap ETF.
+**DFEV = 0.46% gross less a 0.03% waiver = 0.43% net**, the waiver running only to **2027-02-28**,
+per its 497K dated 2026-02-28
+([filing](https://www.sec.gov/Archives/edgar/data/1816125/000181612526000066/c497k.htm)); a bare
+0.43% hides an expiry date. **TIP = 0.18%** total, per its 497K dated 2026-02-27
+([filing](https://www.sec.gov/Archives/edgar/data/1100663/000119312526081826/d191245d497k.htm)).
+One arithmetic loose end travels with the last of these: TIP's `netCostBp` is 17.92 against an
+18 bp fee, which implies 0.08 bp of securities lending nobody has read. The gap is the size of
+the unread term, not a measurement of it, and `securitiesLendingBp` stays null rather than
+carrying a number obtained by subtraction.
 
 **C-12 — `docs/research/current-regime-and-pricing.md` §1.7: gold is at the 98.5th percentile
 of its real price *and* 17% below its own January high.** Gold futures set a record
@@ -957,18 +1001,34 @@ page's existing conclusion; it is missing evidence, not a contradiction.
 
 **C-15 — `docs/research/factor-products.md` and the managed-futures shelf: FFUT is missing and
 it is now among the largest funds in the category.** **Fidelity Managed Futures ETF**,
-inception **2025-06-05**, **0.80%** (0.83% gross, waiver through 2026-05-31), **$346.23m**
+inception **2025-06-05**, **$346.23m**
 ([etf.com](https://www.etf.com/sections/etf-watch/fidelity-adds-managed-futures-etf-growing-lineup),
-[StockAnalysis](https://stockanalysis.com/etf/ffut/)). Category context the shelf also lacks:
+[StockAnalysis](https://stockanalysis.com/etf/ffut/)). Its current fee table, read from the
+summary prospectus dated 2026-05-30 on 2026-08-24, is **0.80% management plus 0.02% other
+expenses = 0.82% gross, less a 0.02% reimbursement, for 0.80% net**
+([Form 497K](https://www.sec.gov/Archives/edgar/data/1898391/000189839126000077/filing11811.htm)).
+The 0.80% is an **expense cap running to 2027-05-31**, not a plain waiver, and FDS may recoup
+within the fiscal year anything it reimbursed. Two net-asset figures for this fund are in the
+repository and both are current for their date: **$255.9m at 2026Q2**
+(`trend-marginal-value.md`, second census table) and **$346.23m at 2026-08-22**.
+Category context the shelf also lacks:
 managed-futures ETFs total roughly **$6bn across ~13 funds as of March 2026**, of which DBMF
 alone is $4.0bn — so the rest of the shelf's trend funds are competing for about $2bn, in a
 category whose documented failure mode is closure.
 
-**C-16 — `docs/research/alternative-sleeves-audit.md` §3 crypto table: two fees have moved.**
-**HODL now shows 0.25%** (the page's own note that the full waiver expired 2026-07-31 is the
-cause) and **EZBC shows 0.29%, not 0.19%**. Also **IBIT is now $58.78bn**, against the page's
-$43.4bn at 2026-06-30. Re-read all eight from the next Form 10-Q rather than from an
-aggregator. Source: StockAnalysis fund pages, read 2026-08-22.
+**C-16 — the crypto table's fees did not move, and the aggregator readings that said they had
+are wrong.** StockAnalysis showed HODL at 0.25% and EZBC at 0.29% on 2026-08-22. Both trusts'
+own Q2-2026 Forms 10-Q, read on 2026-08-24, say otherwise. **HODL's Sponsor Fee is 0.20%**, and
+the filing states the waiver of that fee on the first $2.5bn ran "from November 25, 2024 through
+July 31, 2026" and that "[a]fter July 31, 2026, the Sponsor Fee will be 0.20%"
+([10-Q filed 2026-08-13](https://www.sec.gov/Archives/edgar/data/1838028/000093041326002505/c117299_10q-ixbrl.htm)) —
+so the waiver expiry the audit already flagged takes the fee from an effective zero to 0.20%,
+not to 0.25%. **EZBC's Sponsor fee accrues "at an annualized rate equal to 0.19%"**
+([10-Q filed 2026-08-14](https://www.sec.gov/Archives/edgar/data/1992870/000114036126033208/ef20077161_10q.htm)).
+**The audit's table stands unamended.** What is genuinely new is **IBIT at $58.78bn** against the
+$43.4bn the audit records at 2026-06-30 — a different date, not a different fact, and mostly
+mark-to-market. The rule this entry earns: a 1933-Act trust's fee is in its own 10-Q, and a
+sponsor-fee waiver is the field an aggregator is most likely to get wrong.
 
 **C-17 — `src/content/shelf.ts` name fields now embed a benchmark-provider brand that changed
 once and could change again.** The "Vanguard Morningstar …" names are **correct** — Morningstar
@@ -1020,5 +1080,8 @@ Stated plainly so nothing here is read as more complete than it is.
 7. **Bid-ask spreads for KMLM, MATE, JPFP, NTSX, GDE, ILS, and the Avantis and Dimensional
    funds** — their issuer pages did not yield the Rule 6c-11 field to automated parsing. Every
    one of these publishes it and it is worth collecting properly.
-8. **HODL's and EZBC's fee changes** were read from an aggregator, not from the trusts' own
-   Form 10-Q. Re-read before publishing.
+8. **The six Return Stacked funds' and FFUT's holdings.** Their fees and sizes are filed or
+   issuer-published and are now on the shelf; not one of them has had a Form N-PORT read here,
+   so none has a computed `delta`, and RSIT's "75% SPDW + 25% MSCI EAFE futures" is an
+   issuer-page description rather than a filed measurement. **No structure claim about any of
+   the seven is verified.**

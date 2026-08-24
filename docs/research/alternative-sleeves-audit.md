@@ -306,6 +306,18 @@ trust's Q2-2026 Form 10-Q, net assets as of 2026-06-30, read 2026-08-22:
 | FBTC | Fidelity | 0.25% | $10.3bn | Fidelity Bitcoin Reference Rate |
 | GBTC | Grayscale | **1.50%** | $8.14bn | CoinDesk Bitcoin Benchmark Rate |
 
+**Two rows have been re-read since, and both hold.** HODL's waiver expiry has now passed, and
+the same Form 10-Q (filed 2026-08-13, read 2026-08-24) states the rate on the far side of it:
+the Sponsor Fee is 0.20% of average daily net assets, the waiver of it on the first $2.5bn ran
+"from November 25, 2024 through July 31, 2026", and "[a]fter July 31, 2026, the Sponsor Fee will
+be 0.20%". EZBC's Q2-2026 10-Q (filed 2026-08-14, read 2026-08-24) accrues its sponsor fee "at
+an annualized rate equal to 0.19%". **Data aggregators showed 0.25% and 0.29% for these two on
+2026-08-22 and both readings are wrong**; the fee of a 1933-Act grantor trust is in its own
+quarterly filing, and a fee under waiver is where an aggregator is most likely to be stale.
+Sizes move faster than fees: **IBIT was $58.78bn at 2026-08-22** against the $43.4bn above,
+which is a later date and mostly mark-to-market rather than flow, and every other net-asset
+figure in the table is still as of 2026-06-30.
+
 **Only six of eleven US spot bitcoin ETPs price against the CME CF rate**, and the
 methodologies genuinely differ: at 4:00 p.m. ET on 2026-06-30 the same bitcoin was marked at
 $58,605 (BRRNY, an hour-long volume-weighted median across seven venues), $58,717 (Lukka
