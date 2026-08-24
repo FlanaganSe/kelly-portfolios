@@ -21,7 +21,18 @@
 //
 // The owner sets it, in their own words, in one line. Then delete the throw.
 const AUTHOR_HOLDINGS = "";
-if (!AUTHOR_HOLDINGS) {
+
+// Local escape hatch, so an unanswered disclosure does not stop anyone building the
+// other sixty-one pages. `ALLOW_UNSET_DISCLOSURE=1 pnpm build` renders the page with a
+// visible "not set" notice instead of throwing.
+//
+// CI never sets it, so `main` cannot ship an unanswered disclosure this way; and the
+// notice it renders is impossible to mistake for a real statement, so a build that
+// escaped with it cannot quietly claim anything about anyone. That is the point: the
+// previous unblock was an editable placeholder string one `git add -A` away from being
+// published as fact.
+const allowUnset = import.meta.env.ALLOW_UNSET_DISCLOSURE === "1";
+if (!AUTHOR_HOLDINGS && !allowUnset) {
   throw new Error(
     "src/pages/disclosures.astro: AUTHOR_HOLDINGS is unset. State what the author owns, " +
       "or state that he owns none of it. Do not publish this page without one of the two.",
@@ -112,7 +123,9 @@ import { REPO_URL } from "~/lib/site";
 
     <h3 id="holdings">What the author owns</h3>
 
-    <p>{AUTHOR_HOLDINGS}</p>
+    <p>
+      {AUTHOR_HOLDINGS || "This disclosure has not been set. This build is not publishable."}
+    </p>
 
     <p>Whatever that answer is, it belongs here, because a person who owns what they are
     arguing for has a real financial interest in the argument being correct. Exact
