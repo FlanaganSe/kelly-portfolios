@@ -27,9 +27,9 @@ export interface NavItem {
  * Every href carries its trailing slash, because the build emits only that form
  * (`trailingSlash: "always"`). A link without one costs the reader a redirect.
  *
- * Every item resolves to a page that exists. `/tools/` is not here: the calculators are
- * still Solid routes in the client being ported from, and a masthead link into a 404 is
- * worse than a missing one. Add it back with the page.
+ * Every item resolves to a page that exists. `/tools/` sits next to the funds it ranks
+ * and before the research it runs on, because a reader who has read the argument and
+ * wants their own numbers is at that point in the page order.
  */
 export const NAV_ITEMS = [
   { href: "/start/", label: "Start" },
@@ -38,6 +38,7 @@ export const NAV_ITEMS = [
   { href: "/doesnt-work/", label: "What doesn't work" },
   { href: "/how-sure/", label: "How sure" },
   { href: "/funds/", label: "Funds" },
+  { href: "/tools/", label: "Tools" },
   { href: "/research/", label: "Research" },
 ] as const satisfies readonly NavItem[];
 
