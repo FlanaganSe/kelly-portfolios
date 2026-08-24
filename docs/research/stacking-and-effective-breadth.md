@@ -11,11 +11,14 @@ premium is real ([factor persistence](factor-persistence.md)), what a wrapper's 
 is worth ([capital efficiency](capital-efficiency-and-breadth.md)), and what to hold
 ([the recommendation](portfolio-recommendation.md)).
 
-**Status: `exploratory`.** No specification was frozen before these numbers were seen and
-no experiment was registered. The arithmetic is closed-form and tested; the correlations
-are measured on 422 months of committed data; every expected return is an **input**
-carried across four scenarios, because this repository cannot sign most of the premia
-involved.
+**Status: `exploratory`.** For sections 1 to 4, no specification was frozen before the
+numbers were seen and no experiment was registered. [Section 5](#5-how-many-candidates-a-long-only-optimiser-actually-holds)
+is the exception: its weight-space search runs under
+[Experiment 017](../../research/experiments/exp_017_longonly_ladder.yaml) with a frozen
+grid and a ledger entry, and it reads no market data at all. Throughout, the arithmetic is
+closed-form and tested; the correlations are measured on 422 months of committed data;
+every expected return is an **input** carried across four scenarios, because this
+repository cannot sign most of the premia involved.
 
 ---
 
@@ -28,7 +31,7 @@ bought. Stacking an unlimited number of 55% sleeves at the correlation this repo
 measures between the candidate's own value tilts, **0.435**, reaches **0.576** and stops.
 Not 0.9, not 1.
 
-Five results, in the order they bind.
+Six results, in the order they bind.
 
 1. **`P = Phi(z_1 sqrt(k / (1 + (k-1) rho)))`, and the ceiling is `Phi(z_1 / sqrt(rho))`.**
    Correlation of *excess* returns, not sleeve count, is the whole quantity being bought.
@@ -53,7 +56,15 @@ Five results, in the order they bind.
    recommendation is withdrawn.** What survives all three alpha settings is moving the
    AVLV weight into **IDMO**, and the version this page recommends is the partial one —
    see [the recommendation](#the-construction-change-that-survives-its-own-worst-case).
-5. **Geography is nearly free breadth; style is real breadth.** One factor spread across
+5. **On a stated shelf of twelve candidates at that correlation, the best equal-weighted
+   portfolio holds two and the exact long-only optimum holds three — and it does not
+   improve past three however many further candidates are offered**
+   ([§5](#5-how-many-candidates-a-long-only-optimiser-actually-holds), Experiment 017).
+   The unconstrained optimum keeps rising, to 0.727 against long-only 0.463, and the whole
+   difference is a short leg of seven positions. **Every edge in that ladder is an
+   assumption, and the count depends on their dispersion**: give all eight candidates the
+   same edge and the optimiser holds all eight.
+6. **Geography is nearly free breadth; style is real breadth.** One factor spread across
    three regions is worth **1.35 to 1.55 of 3**; five factors inside one region are worth
    **5.52 of 5**. The candidate's 35% international allocation may be right for currency,
    valuation, home-bias or regret reasons — **it should not be defended as
@@ -106,8 +117,27 @@ hundredth is worth nothing at all.
 Two further limits sit underneath the table and neither is a correlation.
 
 **Independence is not enough either.** Even at `rho = 0` exactly, a hundred 55% sleeves
-reach 0.896, not certainty. Converging on "you will beat the market" needs thousands of
-independent bets, which is a description of a market maker, not a portfolio of eight ETFs.
+reach 0.896, not certainty. Inverting the `rho = 0` row gives the count directly: at
+`rho = 0` the probability is `Phi(z_1 sqrt(k))`, so reaching a target `P` needs
+`k = (z_P / z_1)**2` genuinely independent bets, with `z_1 = Phi^-1(0.55) = 0.12566`.
+
+| Target probability of being ahead | `(z_P / z_1)**2` | Whole bets that clear it |
+| ---: | ---: | ---: |
+| 60% | 4.06 | 5 |
+| 70% | 17.41 | 18 |
+| 80% | 44.86 | 45 |
+| 90% | **104.01** | **105** |
+| 95% | **171.34** | **172** |
+| 99% | **342.73** | **343** |
+
+The 90% row is worth reading twice: **104 independent 55% bets reach 0.89997** and the
+hundred-and-fifth is what clears the target, so "about a hundred" is the right size and the
+exact integer depends on which side of the threshold is being asked for.
+
+"Stack a ton and you will beat the market" is arithmetically true at roughly **170 to 340
+truly uncorrelated bets**, which is a description of a market maker, not a portfolio of
+eight ETFs — and the table above says those bets have to be uncorrelated, which the next
+section says these are not.
 
 **The edge is estimated, and that error never averages away.** Path noise accumulates as
 `s**2 T` and washes out; an error in the *mean* accumulates as `tau**2 T**2` and does not.
@@ -583,6 +613,92 @@ buys about half an extra independent bet; adding a second *style* to one region 
 than a whole one.
 
 
+## 5. How many candidates a long-only optimiser actually holds
+
+[Experiment 017](../../research/experiments/exp_017_longonly_ladder.yaml), `exploratory`,
+run artifact
+[`946844e6`](../../research/artifacts/946844e68ba4455a9975c89baeaba8e9/summary.md).
+
+Sections 1 to 4 price a stack whose weights are given. This section asks what an optimiser
+does with a *shelf*, because that is the form the thesis is usually argued in — offer me
+more candidates and I will be better off. **Every number in this section is computed on a
+stated ladder of assumed edges. It reads no market data and estimates no premium**, so what
+it establishes is a property of that ladder, not of markets. The ladder is frozen in the
+specification and reproduced here in full: twelve candidates at **3.0, 2.4, 1.9, 1.5, 1.2,
+0.9, 0.7, 0.5, 0.35, 0.2, 0.1 and 0.0 pp/yr gross**, each charged **40 bp**, each with
+**6% tracking error**, all pairwise correlated at the **0.435 measured in §1** — which is
+this portfolio's number and not a market constant.
+
+Three weighting rules, one shelf.
+
+| Candidates offered | Mean net edge | Available bets | Equal-weight IR | Long-only IR | Unconstrained IR | Transfer coefficient | Held long-only |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 1 | 2.60 | 1.00 | **0.433** | 0.433 | 0.433 | 1.000 | 1 |
+| 2 | 2.30 | 1.39 | **0.453** | 0.462 | 0.462 | 1.000 | 2 |
+| 3 | 2.03 | 1.60 | 0.429 | **0.463** | 0.463 | 1.000 | **3** |
+| 5 | 1.60 | 1.82 | 0.360 | **0.463** | 0.481 | 0.963 | **3** |
+| 8 | 1.11 | 1.98 | 0.261 | **0.463** | 0.574 | 0.807 | **3** |
+| 12 | 0.66 | 2.07 | 0.159 | **0.463** | 0.727 | 0.636 | **3** |
+
+**The equal-weighted optimum is two, and it is not a cost result.** Setting every cost to
+zero and re-running leaves the optimum at two: dilution alone produces the shape, because
+the benefit factor is bounded by `1/sqrt(rho)` while the mean edge falls linearly. Raising
+the charge to 100 bp also leaves it at two. Holding all twelve equally is about **a third**
+of the information ratio of holding the best one alone.
+
+**The long-only optimum holds three and does not improve past three.** It is 0.463 at three
+candidates and 0.463 at twelve; the nine additional candidates receive zero weight. The
+unconstrained optimum meanwhile rises from 0.463 to 0.727, and the whole difference is the
+short leg: the unconstrained weights at twelve candidates are
+`+0.217, +0.152, +0.098, +0.054, +0.022, −0.011, −0.032, −0.054, −0.070, −0.086, −0.097,
+−0.108` normalised on gross — **seven of twelve short, and net long exposure is 8.4% of
+gross**. That is the technical statement behind the whole section: **when candidates are
+positively correlated, most of the incremental benefit of breadth lives in the short leg,
+and a long-only investor cannot reach it.**
+
+The optimum is exact rather than iterative. It is found by enumerating all `2^k - 1 = 4,095`
+supports and keeping those whose `Sigma_S^-1 e_S` is non-negative, so it carries no
+convergence tolerance and no starting point. A dense Dirichlet search over the simplex,
+40,000 draws, reaches 0.400 — **below** it, as it must be.
+
+### It is monotone in correlation, and that is not a knife-edge
+
+| `rho` | Unconstrained IR | Long-only IR | Transfer coefficient | Held |
+| ---: | ---: | ---: | ---: | ---: |
+| 0.10 | 0.621 | 0.564 | 0.908 | 5 |
+| 0.20 | 0.633 | 0.518 | 0.819 | 4 |
+| 0.30 | 0.663 | 0.489 | 0.737 | 3 |
+| **0.435** | **0.727** | **0.463** | **0.636** | **3** |
+| 0.50 | 0.769 | 0.454 | 0.590 | 2 |
+| 0.70 | 0.982 | 0.435 | 0.443 | 2 |
+
+The two columns move in **opposite** directions, and that is the mechanism rather than a
+curiosity: shorting correlated candidates against each other becomes *more* valuable as
+correlation rises, while a long-only investor's reachable set shrinks. They diverge exactly
+where the thesis needs them to converge.
+
+### The scope limit that must travel with the count
+
+The held count is set by **edge dispersion** at least as much as by correlation. Same
+correlation, same cost, eight candidates, three dispersion settings:
+
+| Candidate edges | Long-only IR | Unconstrained IR | Transfer coefficient | Held |
+| --- | ---: | ---: | ---: | ---: |
+| Identical, all 2.0 | 0.375 | 0.375 | **1.000** | **8** |
+| Mild, 2.4 down to 1.7 | 0.412 | 0.413 | 0.997 | 6 |
+| Realistic, 3.0 down to 0.5 | 0.463 | 0.574 | 0.807 | **3** |
+
+**Give every candidate the same edge and equal weighting is optimal, the transfer
+coefficient is 1.000, and the optimiser holds all eight.** The investor's own phrasing —
+*"a ton of strategies that are 55% likely"* — assumes exactly that. Real shelves do not have
+it, and this repository's own sleeve edges span +0.32 to +3.35 pp/yr. **The count is a
+statement about dispersed shelves; it is not a law.** Note also that the identical-edge
+case escapes nothing: the `Phi(z_1/sqrt(rho))` ceiling of §1 is unchanged at 0.576. There
+are two routes to the same wall.
+
+The ladder omits skew, fat tails, time-varying correlation and estimation error in the
+edges. **Each omission favours the thesis**, so this is the generous case.
+
 ---
 
 ## Verified, assumed, open
@@ -677,11 +793,18 @@ Experiment 005's 1.49 for the same factor over a different era.
 cd research
 uv run python -m portfolio_edge.studies._stacking_tables
 uv run pytest tests/unit/test_studies_stacking.py
+uv run python -m portfolio_edge.experiments.exp_017_longonly_ladder --view-results
+uv run pytest tests/unit/test_studies_longonly_ladder.py
 ```
 
-The arithmetic is [`studies/stacking.py`](../../research/src/portfolio_edge/studies/stacking.py),
-pure and dependency-light; the measured tables are
+The arithmetic for sections 1 to 4 is
+[`studies/stacking.py`](../../research/src/portfolio_edge/studies/stacking.py), pure and
+dependency-light; the measured tables are
 [`studies/_stacking_tables.py`](../../research/src/portfolio_edge/studies/_stacking_tables.py),
 which is the only half that touches the cache. **Neither is an experiment**: no
-specification was frozen, nothing is ledgered, and nothing here may promote a sleeve.
+specification was frozen and nothing is ledgered. Section 5 is
+[`studies/longonly_ladder.py`](../../research/src/portfolio_edge/studies/longonly_ladder.py)
+run through [Experiment 017](../../research/experiments/exp_017_longonly_ladder.yaml),
+which *is* ledgered, and which reads no market data. **Nothing on this page may promote a
+sleeve.**
 Input file hashes and coverage are in [the evidence base](evidence-base.md) §2.

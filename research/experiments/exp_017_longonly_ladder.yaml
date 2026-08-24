@@ -1,0 +1,333 @@
+# Frozen before any result is examined.
+#
+# THIS EXPERIMENT READS NO MARKET DATA AND ESTIMATES NO PREMIUM. It is a
+# weight-space search over a STATED ladder of candidate edges. Every input below
+# is an assumption; the only measured number in the file is the correlation,
+# 0.435, which comes from Experiment 010's covariance of the candidate
+# portfolio's own active sleeves and is carried in here as a parameter rather
+# than re-measured. A conclusion produced by this experiment is a property of
+# the stated assumption set, and the specification exists so that the assumption
+# set cannot be adjusted after the answer is seen.
+#
+# WHY IT EXISTS. The public /stacking page quotes a finding -- "the best
+# long-only portfolio holds three strategies and never improves past three" --
+# that had no home in this repository. It came from a worked example with no
+# specification, no ledger entry and no code, which the root working agreement
+# forbids for a weight-space search however cheap the search is. The maximisation
+# is real: `max w'e / sqrt(w' Sigma w)` subject to `w >= 0` is a constrained
+# optimisation over weights, solved here exactly by enumerating supports, and it
+# is the constraint rather than the arithmetic that produces the answer. So it
+# runs here, under a frozen specification, like any other search.
+#
+# WHAT WOULD MAKE THE ANSWER DIFFERENT. Three things, all declared and all swept:
+# the correlation, the dispersion of the candidate edges, and the cost. The
+# hostile tests below fix each of them in turn, because the headline count is
+# not robust to any of them and a page that quotes the count without the
+# dispersion caveat is quoting an artefact.
+experiment_family: exp_017_longonly_ladder
+title: How many correlated strategies a long-only optimiser actually holds
+entry_point: exp_017_longonly_ladder
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260823
+
+hypothesis: >
+  On a ranked shelf of candidate strategies with dispersed edges, a common
+  tracking error and a common positive pairwise correlation, three things hold
+  at once and are usually confused for one another. (1) The best EQUAL-WEIGHTED
+  portfolio holds a small number of candidates and gets worse as more are added,
+  because the breadth benefit grows as a square root and asymptotes while the
+  mean net edge falls linearly and does not. (2) The best UNCONSTRAINED
+  portfolio improves monotonically as candidates are added, which is the
+  Fundamental Law and is not in dispute. (3) The best LONG-ONLY portfolio stops
+  improving at a small count and stays there however many further candidates are
+  offered, because at a positive correlation most of the benefit of breadth is
+  carried by the short leg. The gap between (3) and (2) is the Clarke-de Silva-
+  Thorley transfer coefficient, and it FALLS as the shelf grows.
+
+mechanism: >
+  For k candidates of common tracking error sigma and common pairwise
+  correlation rho, effective breadth is k / (1 + (k-1) rho), which converges to
+  1/rho. An equal-weighted portfolio therefore earns
+  mean(e) / sigma * sqrt(k / (1 + (k-1) rho)): a bounded, sublinear factor
+  multiplying a plain average. An investor buys their best idea first, so each
+  further candidate lowers the average. A bounded benefit against an unbounded
+  dilution has an interior optimum.
+
+  The unconstrained optimum is w* proportional to Sigma^-1 e, giving
+  IR_max = sqrt(e' Sigma^-1 e), which is monotone in the candidate set. At a
+  positive rho, Sigma^-1 has large negative off-diagonals, so the optimum
+  finances the good candidates by SHORTING the poor ones. Removing the short leg
+  therefore removes most of the incremental value, and it removes more of it the
+  more correlated the candidates are -- which is why the unconstrained and
+  long-only columns move in OPPOSITE directions as rho rises.
+
+  The long-only problem is solved exactly rather than iteratively. The objective
+  is scale-invariant, so the budget constraint fixes size and not the ratio; the
+  optimum's own support S is interior in the problem restricted to S, so
+  w_S is proportional to Sigma_S^-1 e_S. Enumerating all 2^k - 1 supports,
+  discarding those whose solution has a negative entry, and taking the largest
+  information ratio is therefore exact and carries no convergence tolerance.
+
+falsifier: >
+  This experiment CANNOT be falsified by data, and saying so is part of freezing
+  it: the arithmetic is deterministic and exact given the inputs, so there is no
+  sampling distribution, no p-value, no detection floor and no interval. What can
+  be falsified is the CLAIM the page makes from it, and the falsifiers are:
+
+  (a) THE COUNT IS NOT ROBUST TO DISPERSION. If the candidates are given
+  identical edges, equal weighting is optimal, the transfer coefficient is 1.000
+  and the optimiser holds all of them. The declared dispersion is therefore
+  load-bearing and the run must report the identical-edge case beside the
+  headline. If the identical-edge case does NOT recover a transfer coefficient
+  of 1.000, the implementation is wrong.
+
+  (b) THE COUNT IS NOT A CONSTANT. It is monotone in rho and the run must report
+  the sweep. If the held count does not fall as rho rises, or if the
+  unconstrained and long-only columns do not diverge, the mechanism above is
+  wrong.
+
+  (c) THE EQUAL-WEIGHT OPTIMUM IS NOT A COST RESULT. If setting every cost to
+  zero moves the equal-weighted optimum, then the claim that dilution alone
+  produces the shape is false and must be withdrawn.
+
+  (d) THE OPTIMISER MUST BE EXACT. If a dense random search over the
+  non-negative simplex beats the enumerated optimum by more than floating-point
+  noise, the enumeration is wrong and the run is void.
+
+universe:
+  description: >
+    A STATED ladder of twelve candidate strategies. There are no tickers, no
+    funds and no return series. The ladder is a plausible retail shelf ranked
+    best to worst and is declared here in full so it cannot be reshaped later.
+  gross_edges_percentage_points_per_year: [3.0, 2.4, 1.9, 1.5, 1.2, 0.9, 0.7, 0.5, 0.35, 0.2, 0.1, 0.0]
+  ranking: >
+    Supplied already ranked, and the implementation refuses an unranked shelf.
+    Sorting inside the optimiser would beg the question, because the mechanism
+    under test is precisely that the investor buys their best idea first.
+  provenance_of_the_ladder: >
+    NOT MEASURED. The top of the ladder is set near this repository's own
+    largest resolvable sleeve edges (the tilt result at +0.79 pp/yr against a
+    cheap core, the pooled HML premium at +4.74 and UMD at +7.33 before any
+    long-only capture or fee), and the tail is set near zero because a real
+    shelf contains candidates that do nothing. No claim is made that any
+    particular rung corresponds to any particular strategy.
+  what_is_deliberately_absent: >
+    Skew, fat tails, time-varying correlation, estimation error in the edges,
+    and any difference in tracking error between candidates. Each of them makes
+    the answer WORSE for the thesis, so the ladder is the favourable case.
+
+sample_policy:
+  start: not-applicable
+  end: not-applicable
+  held_out: >
+    NOTHING IS HELD OUT BECAUSE NOTHING IS SAMPLED. This experiment reads no
+    observations, so there is no window to withhold and no holdout to spend. The
+    corresponding discipline is that the parameter grid below is declared in this
+    file before the run, and the run reports every cell of it. Adding a rung, a
+    correlation or a cost after seeing the answer would require a new
+    specification with a new hash.
+  embargo: >
+    None, and none is meaningful: no forecast crosses a boundary. Note that an
+    "era" below is a declared PARAMETER REGION rather than a time window, because
+    this experiment consumes no time series: the start and end fields carry a
+    correlation instead of a date, and this sentence is here so that a reader
+    does not mistake one for the other.
+  eras:
+    - name: headline_correlation
+      start: rho=0.435
+      end: rho=0.435
+      rationale: >
+        The correlation measured on the candidate portfolio's own four active
+        tilts plus the trend overlay, 422 months 1990-11 to 2025-12, carried in
+        from `docs/research/stacking-and-effective-breadth.md` section 1 as a
+        parameter. It is this portfolio's number and not a market constant.
+    - name: low_correlation
+      start: rho=0.10
+      end: rho=0.20
+      rationale: >
+        A genuinely wider stack -- equity styles, trend, credit spread,
+        catastrophe risk -- would sit here. It is the region in which the thesis
+        works best, so it is declared before the run rather than discovered after.
+    - name: high_correlation
+      start: rho=0.30
+      end: rho=0.70
+      rationale: >
+        Where a retail shelf of long-only equity funds actually sits once the
+        common market exposure is netted out. The upper end is declared so the
+        result is not quoted only where it is most favourable.
+
+benchmark:
+  primary: >
+    The UNCONSTRAINED optimum on the same shelf, sqrt(e' Sigma^-1 e). This is the
+    only honest comparator: it is exactly what the Fundamental Law promises, so
+    the shortfall against it is the cost of the constraint and nothing else.
+  secondary: >
+    The one-candidate portfolio, so that "adding candidates makes it worse" is
+    measured against a real starting point rather than against zero.
+  note: >
+    There is no market benchmark, no cheap index and no investor counterfactual
+    in this experiment, and no number it produces may be added to a figure
+    measured against one of those. `outperformance_horizon.aggregate` raises on
+    that error and the rule applies here by hand.
+
+primary_metric:
+  name: number of candidates held at the long-only optimum
+  definition: >
+    The count of strictly positive weights in the exact solution of
+    max w'e / sqrt(w' Sigma w) subject to w >= 0, reported for each shelf size k
+    and each declared correlation.
+  units: count
+  uncertainty: >
+    NONE, AND NONE MAY BE INVENTED. The result is a deterministic function of the
+    stated inputs. There is no sampling distribution to bootstrap, so an interval
+    would be a fabrication. What stands in for uncertainty is the declared
+    parameter sweep: the count is reported at six correlations and under three
+    dispersion settings, and the spread across those cells IS the reported
+    sensitivity.
+
+secondary_metrics:
+  - name: transfer coefficient
+    units: ratio
+    note: >
+      IR achieved over IR unconstrained, which is what the Clarke-de Silva-Thorley
+      identity IR = TC x IC x sqrt(BR) makes it. Reported for equal weights and
+      for the long-only optimum separately, because they are different failures.
+  - name: equal-weight information ratio by shelf size
+    units: ratio
+    note: The column whose maximum is the equal-weighted optimum.
+  - name: unconstrained information ratio by shelf size
+    units: ratio
+  - name: mean net edge by shelf size
+    units: percentage points per year
+    note: The factor that falls linearly. Reported so the mechanism is visible and not merely asserted.
+  - name: available effective bets
+    units: count
+    note: k / (1 + (k-1) rho). The factor that grows as a square root and stops. Not the same quantity as the held count and never to be reported as if it were.
+  - name: count of short positions at the unconstrained optimum
+    units: count
+    note: The direct measure of where the incremental benefit lives.
+  - name: net long exposure as a share of gross at the unconstrained optimum
+    units: ratio
+
+cost_model:
+  applied: true
+  charge: >
+    A flat 40 basis points a year subtracted from every candidate's gross edge,
+    covering expense ratio, turnover, spread and tax drag together. It is inside
+    the objective, not applied afterwards as a haircut.
+  why_flat: >
+    A per-candidate cost would let the answer be produced by the cost schedule
+    rather than by the constraint. Charging every candidate identically isolates
+    the count from every other difference between candidates.
+  calibration: >
+    Chosen as a round retail number of the right order rather than measured. This
+    repository's own comparable figures span a 10 bp index fund, a 99 bp stacked
+    wrapper, IDMO's 1.94 pp/yr turnover cost and a 1.62 pp/yr deferral hurdle. 40
+    bp is inside that range and is not derived from it.
+  reporting_columns: [gross, net-optimistic, net-pessimistic]
+  gross: Every cost set to zero. Reported because the claim that dilution alone produces the equal-weight optimum is only checkable against it.
+  net_optimistic: The declared 40 bp.
+  net_pessimistic: 100 bp, the order of a stacked wrapper's all-in fee.
+  unobservable: >
+    Nothing is unobservable here, because nothing is observed. The cost is an
+    assumption in full and is labelled as one.
+
+rebalance_rule:
+  weights: >
+    Static. Every portfolio in this experiment is a fixed weight vector held for
+    the whole (notional) horizon, so no rebalancing rule is exercised and none is
+    charged. A dynamic version would need turnover inside the cost model and is
+    not attempted.
+
+inference:
+  bootstrap: none
+  block_length_policy: >
+    Not applicable. There is no series to block and inventing one would
+    manufacture an interval around a deterministic quantity.
+  multiple_testing_correction: >
+    Not applicable in the usual sense, and the reason should be stated rather
+    than left blank: no hypothesis is tested against data, so there is no family
+    of tests to correct. The multiplicity this experiment DOES create is in the
+    parameter grid -- twelve shelf sizes, six correlations, three dispersion
+    settings and three cost settings -- and it is controlled by declaring the
+    entire grid in this file and reporting every cell, so a favourable cell
+    cannot be selected afterwards.
+  confidence_level: 0.95
+  resamples: 40000
+  notes: >
+    The resample count is NOT an estimator sample size and no interval is built
+    from it. It is the number of Dirichlet draws in the dense simplex search that
+    CHECKS the enumerated long-only optimum. That search can only falsify the
+    optimum; it can never set it, and the 0.95 confidence level above is inert
+    because nothing here has a confidence interval.
+
+rejection_rule: >
+  There is no statistical rejection rule because there is no statistic. The run
+  is VOID, and must be discarded rather than reported, if any of the following
+  holds: the identical-edge case fails to return a transfer coefficient of 1.000
+  with every candidate held; the zero-cost equal-weighted optimum differs from
+  the 40 bp one in a way that changes the claim about dilution; the random
+  simplex search exceeds the enumerated long-only optimum by more than 1e-9; or
+  the enumeration examines fewer than 2^k - 1 supports at any shelf size.
+
+  The CLAIM the run supports is rejected -- meaning the page must stop making it
+  -- if the held count is not monotone non-increasing in correlation, or if the
+  unconstrained and long-only information ratios do not diverge as correlation
+  rises.
+
+parameters:
+  gross_edges: [3.0, 2.4, 1.9, 1.5, 1.2, 0.9, 0.7, 0.5, 0.35, 0.2, 0.1, 0.0]
+  cost_percentage_points_per_year: 0.40
+  cost_sensitivity: [0.0, 0.40, 1.00]
+  tracking_error_percentage_points_per_year: 6.0
+  headline_correlation: 0.435
+  correlation_grid: [0.10, 0.20, 0.30, 0.435, 0.50, 0.70]
+  reported_shelf_sizes: [1, 2, 3, 5, 8, 12]
+  dispersion_settings:
+    identical: [2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0, 2.0]
+    mild: [2.4, 2.3, 2.2, 2.1, 2.0, 1.9, 1.8, 1.7]
+    realistic: [3.0, 2.4, 1.9, 1.5, 1.2, 0.9, 0.7, 0.5]
+  probability_horizon_years: 30.0
+  units: >
+    Edges, costs and tracking errors are percentage points a year throughout,
+    matching `studies/value_tilt` and `studies/stacking`. Weights are fractions.
+    Information ratios are annual and dimensionless, and scaling every input by a
+    constant must leave every one of them unchanged.
+
+data_sources:
+  - id: none
+    url: not-applicable
+    note: >
+      No file is read, no endpoint is called and no manifest is consumed. The one
+      number carried in from a measurement is the 0.435 correlation, which is
+      Experiment 010's and is cited rather than recomputed here.
+
+hostile_tests:
+  - Give every candidate an identical edge and confirm the transfer coefficient is exactly 1.000 with every candidate held. If the count survives that, the implementation is wrong rather than the finding being strong.
+  - Set every cost to zero and re-report the equal-weighted optimum, so a dilution result cannot be sold as a cost result.
+  - Sweep the correlation across the declared grid and report the held count at each, so the headline count is never quoted at one correlation.
+  - Sweep the dispersion across identical, mild and realistic and report the held count at each, because dispersion and not correlation is the assumption the investor's own phrasing violates.
+  - Beat the enumerated long-only optimum with 40,000 Dirichlet draws on the simplex. It must fail.
+  - Report the number of supports examined, so an exhaustive search cannot be confused with a heuristic one.
+  - Report the unconstrained weight vector in full, including how many entries are short and what the net-to-gross ratio is, so the claim that the benefit lives in the short leg is checkable and not merely stated.
+  - Restate the whole shelf in basis points and confirm every ratio and every count is unchanged, so no result is a unit artefact.
+
+reporting_requirements:
+  - The ladder table -- shelf size, mean net edge, available bets, Sharpe multiple, equal-weight IR, 30-year probability -- before any optimisation result.
+  - The three information ratios (equal, long-only, unconstrained) in one table, never one without the others.
+  - The held count beside the transfer coefficient at every shelf size.
+  - The correlation sweep and the dispersion sweep, both in full.
+  - The zero-cost equal-weight column.
+  - An explicit statement, in the summary, that every edge is an assumption and that the conclusion is a property of the stated ladder.
+  - An explicit statement that the 0.435 correlation is this portfolio's measurement and not a market constant.
+
+notes: >
+  Nothing here may be promoted, and the reason is structural rather than
+  procedural: an experiment with no data cannot supply evidence about markets. It
+  can only make an argument reproducible. What it establishes is that a
+  particular constrained optimisation, on a particular stated shelf, returns a
+  particular count -- and that the count moves in known directions when the
+  assumptions move. The page that quotes it must carry the assumption set with
+  it.

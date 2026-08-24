@@ -45,6 +45,15 @@ randomness the generator seed is an explicit argument with a committed default.
   appraisal ratio that decides whether one more sleeve earns its place, and the
   arithmetic difference between funding a sleeve by substitution and by overlay. Reads no
   market data; ``_stacking_tables`` is the companion that touches the cache.
+* :mod:`longonly_ladder` — the question :mod:`stacking` leaves open: given a shelf of
+  candidates ranked best to worst, how many does an optimiser hold? Equal weights, the
+  unconstrained ``Sigma^-1 e`` optimum, and the exact long-only optimum solved by
+  enumerating every support rather than by an iterative solver, so the count carries no
+  convergence tolerance. The ratio of the last two is the Clarke-de Silva-Thorley transfer
+  coefficient. Every edge is an argument: the module estimates no premium and reads no
+  market data, and the answer depends on edge dispersion as much as on correlation, which
+  is why the held count and the dispersion setting are always reported together.
+  Experiment 017 runs it under a frozen specification.
 * :mod:`rebalancing_operations` — whether the stacked candidate can be *run*: the map
   between capital weights and notional exposure and the two ways an investor gets it
   wrong, the exact condition under which a portfolio target is restorable using only
