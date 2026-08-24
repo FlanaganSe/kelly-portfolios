@@ -1,4 +1,4 @@
-label: Average correlation between the portfolio's own active slices
+label: Average correlation between the eight-fund proposal's active slices
 value: '0.435'
 status: exploratory
 asOf: '2026-08-23'
@@ -8,6 +8,7 @@ source:
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: correlation-measured
 note: >-
-  Measured on four modelled leaning stock funds plus AQR's trend index standing in for trend. It
-  is this portfolio's number, not a constant of nature. A genuinely wider stack would sit lower
-  and have a higher ceiling.
+  Measured on the earlier eight-fund proposal: four modelled leaning stock funds plus AQR's trend
+  index standing in for trend. Two of those four are not in the seven funds published now, so read
+  it as the size of the problem rather than as today's number. It is one portfolio's measurement
+  and not a constant of nature. A genuinely wider stack would sit lower and reach higher.

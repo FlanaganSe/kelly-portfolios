@@ -47,7 +47,7 @@ const SERIES = [
   {
     rho: 0,
     key: "rho-0",
-    label: "ρ = 0",
+    label: "0 alike",
     gloss: "hypothetical",
     tableLabel: "0 — independent, hypothetical",
     width: 1.4,
@@ -59,7 +59,7 @@ const SERIES = [
   {
     rho: 0.2,
     key: "rho-20",
-    label: "ρ = 0.20",
+    label: "0.20 alike",
     gloss: "ceiling 61.1%",
     tableLabel: "0.20",
     width: 1.4,
@@ -71,9 +71,9 @@ const SERIES = [
   {
     rho: 0.435,
     key: "rho-435",
-    label: "ρ = 0.435",
+    label: "0.435 alike",
     gloss: "measured · ceiling 57.6%",
-    tableLabel: "0.435 — measured on this portfolio",
+    tableLabel: "0.435, measured on the eight-fund proposal",
     width: 2.6,
     dash: undefined,
     ink: "var(--plot-ink)",
@@ -83,7 +83,7 @@ const SERIES = [
   {
     rho: 0.7,
     key: "rho-70",
-    label: "ρ = 0.70",
+    label: "0.70 alike",
     gloss: "ceiling 56.0%",
     tableLabel: "0.70",
     width: 1.4,
@@ -360,12 +360,14 @@ const tableRows = SERIES.map((series) => ({
 
   <div slot="caption">
     <p>
-      Correlation is measured between the modelled returns of this portfolio's own four long-only leaning funds
-      plus its trend fund, over <span data-numeric>422</span> months to <span data-numeric>2025-12</span>. The horizon
-      cancels out of the relation, so one curve holds at every holding period at once.
+      Correlation is measured between the modelled returns of the earlier eight-fund proposal's four long-only
+      leaning funds plus its trend fund, over <span data-numeric>422</span> months to <span data-numeric>2025-12</span>.
+      How long you hold drops out of the arithmetic, so one curve holds at every holding period at once.
     </p>
-    <p class="font-mono text-xs text-ink-faint">
-      P = &Phi;(z&#8321; &radic;(k / (1 + (k&minus;1)&rho;))) &nbsp;&rarr;&nbsp; &Phi;(z&#8321; / &radic;&rho;)
+    <p>
+      Each curve flattens because the part your holdings share cannot be averaged away. It is in every one of
+      them. Add more and the unshared part gets quieter while the shared part does not, so the line runs into a
+      ceiling set by how alike they are.
     </p>
     <p>
       The arithmetic treats the edge as <em>known</em>. A real edge is estimated, and that error never diversifies
