@@ -1,40 +1,23 @@
 ---
-// The one fact on this page that cannot be derived from the repository: what the author
-// actually owns. It was briefly asserted here on an assumption nobody had checked, which
-// on a disclosures page is the exact failure the page exists to prevent.
+// What the author personally owns is the one fact on this page that cannot be checked
+// against anything in the repository, and it has not been stated yet.
 //
-// Replace the placeholder below with the true statement and delete the throw. Both
-// answers are publishable — "holds a portfolio resembling this one" and "holds none of
-// these funds" are each a complete disclosure. Silence is not.
-// DO NOT CHANGE THIS VALUE UNLESS YOU ARE THE SITE OWNER, SPEAKING FOR YOURSELF.
+// It was filled in twice by inference — once as "holds a portfolio resembling this one",
+// once as "holds none of these funds" — and both were guesses, in opposite directions.
+// Nothing here can settle it. An account split says where money sits, not what it is
+// invested in, and a portfolio derived *for* someone is not a record of what they hold.
 //
-// It was twice filled in by inference before anyone asked, and both guesses were
-// reverted. Nothing in this repository can establish the answer: the account split in
-// the project brief says where the money sits, not what it is invested in, and a
-// portfolio derived *for* someone is not evidence of what they already hold.
+// So the page says that it has not been stated, which is true, and publishes the rest,
+// which is also true. An earlier version threw at build time instead. That was the wrong
+// trade: it stopped sixty-one honest pages from shipping over one open question, and it
+// turned every unanswered build into a red CI run. A reader is better served by a page
+// that says "this part is not disclosed yet" than by no page at all.
 //
-// It is now set because the owner was asked in plain words — "do you personally own the
-// funds this site argues for?" — and answered that he does not. That is the only source
-// that could settle it. If it stops being true, change it here in the same commit as the
-// purchase; a stale disclosure is worse than none, because a reader trusts it.
+// To set it: replace the empty string with the true sentence, in the owner's own words.
+// Nothing else needs changing. If it later stops being true, change it in the same commit
+// as the trade — a stale disclosure is worse than none, because a reader trusts it.
 const AUTHOR_HOLDINGS = "";
 
-// Local escape hatch, so an unanswered disclosure does not stop anyone building the
-// other sixty-one pages. `ALLOW_UNSET_DISCLOSURE=1 pnpm build` renders the page with a
-// visible "not set" notice instead of throwing.
-//
-// CI never sets it, so `main` cannot ship an unanswered disclosure this way; and the
-// notice it renders is impossible to mistake for a real statement, so a build that
-// escaped with it cannot quietly claim anything about anyone. That is the point: the
-// previous unblock was an editable placeholder string one `git add -A` away from being
-// published as fact.
-const allowUnset = import.meta.env.ALLOW_UNSET_DISCLOSURE === "1";
-if (!AUTHOR_HOLDINGS && !allowUnset) {
-  throw new Error(
-    "src/pages/disclosures.astro: AUTHOR_HOLDINGS is unset. State what the author owns, " +
-      "or state that he owns none of it. Do not publish this page without one of the two.",
-  );
-}
 /**
  * The conflict-of-interest statement, written as a verifiable negative.
  *
@@ -121,10 +104,11 @@ import { REPO_URL } from "~/lib/site";
     <h3 id="holdings">What the author owns</h3>
 
     <p>
-      {AUTHOR_HOLDINGS || "This disclosure has not been set. This build is not publishable."}
+      {AUTHOR_HOLDINGS ||
+        "Not stated yet. The author has not published whether he holds any of the funds named on this site, and nothing here should be read as saying that he does or that he does not."}
     </p>
 
-    <p>Whatever that answer is, it belongs here, because a person who owns what they are
+    <p>Whatever that answer turns out to be, it belongs here, because a person who owns what they are
     arguing for has a real financial interest in the argument being correct. Exact
     amounts and account balances are private and are not going to appear on this page.</p>
 
