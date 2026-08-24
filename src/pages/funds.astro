@@ -4,18 +4,35 @@
  *
  * A listing, not a recommendation. `src/content/shelf.ts` is the canonical record for a
  * ticker and this page prints the four fields that need no window attached to be read —
- * category, fee, net cost, and the verdict. Delivered exposures and beat-the-market figures
- * are deliberately absent: each of those names a panel and a window, they were fitted on
- * different months, and a column of them side by side would be the comparison `rankLoadings`
- * refuses to make.
+ * fee, cost after lending income, the Rule 6c-11 spread, and the verdict. Delivered
+ * exposures and beat-the-market figures are deliberately absent: each of those names a
+ * panel and a window, they were fitted on different months, and a column of them side by
+ * side would be the comparison `rankLoadings` refuses to make.
+ *
+ * Three things this file must keep doing:
+ *
+ * 1. **Every number is read from the module.** A fee, a cost or a spread typed into the
+ *    markup is a number with no source and no `as of`, and it drifts the first time a
+ *    filing is re-read. The `feeOf` / `costOf` / `spreadOf` helpers throw rather than
+ *    coalescing a missing field to zero, because a silent zero here is a false quote.
+ * 2. **The mandate line is deliberately not rendered.** It carried 936 of the page's
+ *    2,315 rendered words, it pushed the card layout past what a phone can read once a
+ *    sixth column arrived, and one of the 66 (RSSX) is written in vocabulary the prose
+ *    linter bans on a reader-facing page. The category heading and the fund name carry
+ *    what a reader scanning a cost table needs; the research pages carry the rest.
+ * 3. **`nothingMeasured` is derived, never listed.** A ticker list would have to be
+ *    edited every time a young fund files for the first time, and would be wrong in the
+ *    window between the filing and the edit.
  */
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
 import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
-import { shelf, shelfAsOf, shelfAudit } from "~/content/shelf";
-import type { ShelfCategory } from "~/content/shelf";
+import { funds as portfolioFunds } from "~/content/portfolio";
+import { fundByTicker, shelf, shelfAsOf, shelfAudit } from "~/content/shelf";
+import type { ShelfCategory, ShelfFund } from "~/content/shelf";
 import { statusMeta } from "~/content/types";
 
 const CATEGORY_LABEL = {
@@ -46,17 +63,102 @@ const groups = ORDER.map((category) => ({
 
 const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2));
 
-/**
- * Written once, read twice: into `<thead>`, and into the label each cell shows when
- * the table becomes a list of cards below 40rem. Five columns at 42rem is the widest
- * table on the site and the one a phone can least afford to scroll.
+/** Basis points a year turned into dollars a year on a round hundred thousand. */
+const perHundredThousand = (basisPoints: number) => Math.round(basisPoints * 10);
+
+/*
+ * Three readers that refuse rather than coalesce. A sentence on this page names these
+ * funds by ticker, so a field that disappears from the shelf has to break the build; a
+ * `?? 0` would quietly print a fee of zero and a spread of zero as though they were read.
  */
-const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis points a year", "Status"] as const;
+function feeOf(fund: ShelfFund): number {
+  if (fund.expenseRatioBp === null) throw new Error(`${fund.ticker} has no fee on the shelf; this page may not quote one.`);
+  return fund.expenseRatioBp;
+}
+
+function costOf(fund: ShelfFund): number {
+  if (fund.netCostBp === null) throw new Error(`${fund.ticker} has no net cost on the shelf; this page may not quote one.`);
+  return fund.netCostBp;
+}
+
+function spreadOf(fund: ShelfFund): number {
+  if (!fund.spread) throw new Error(`${fund.ticker} has no Rule 6c-11 spread on the shelf; this page may not quote one.`);
+  return fund.spread.bp;
+}
+
+function recheckOn(fund: ShelfFund): string {
+  if (!fund.reviewTrigger) throw new Error(`${fund.ticker} has no dated recheck on the shelf; this page may not name one.`);
+  return fund.reviewTrigger.on;
+}
+
+/**
+ * A fund nothing here has measured: no exposure fitted, no alpha, no cost read, and no
+ * structure computed from a holdings filing. All eight are young enough that the filing
+ * which would answer any of those does not exist yet, which is why the shelf carries a
+ * dated recheck for some of them rather than a verdict.
+ *
+ * A fee and a spread do not disqualify a fund from this set. Both are read off a
+ * prospectus or a Rule 6c-11 disclosure; neither is a measurement made here.
+ */
+const nothingMeasured = (fund: ShelfFund) =>
+  fund.status === null &&
+  fund.loadings.length === 0 &&
+  fund.alphaPpYr === null &&
+  fund.netCostBp === null &&
+  (fund.wrapper?.delta ?? null) === null;
+
+const unmeasured = shelf.filter(nothingMeasured);
+const withSpread = shelf.filter((fund) => fund.spread !== undefined).length;
+
+/** Held, as opposed to priced and passed over. Derived so the two pages cannot disagree. */
+const heldCount = portfolioFunds.filter((fund) => fund.role !== "priced-but-not-held").length;
+
+const spy = fundByTicker("SPY");
+const voo = fundByTicker("VOO");
+const bnd = fundByTicker("BND");
+const spab = fundByTicker("SPAB");
+const ctap = fundByTicker("CTAP");
+const rsst = fundByTicker("RSST");
+const dfev = fundByTicker("DFEV");
+const ffut = fundByTicker("FFUT");
+
+/** What one year of the CTAP-versus-RSST spread gap costs, which is the whole point of the column. */
+const spreadGapBp = spreadOf(ctap) - spreadOf(rsst);
+
+/*
+ * The all-in charge of the three stacked funds that were actually candidates: fee plus
+ * what the funds they hold charge, which is the only figure the three can be compared on.
+ * Its range is what the spread gap above has to be read against.
+ */
+const stackedAllIn = [ctap, rsst, fundByTicker("MATE")]
+  .map((fund) => fund.wrapper?.allInCostBp ?? null)
+  .filter((value): value is number => value !== null);
+if (stackedAllIn.length < 3) {
+  throw new Error("the three stacked candidates no longer all carry an all-in cost; the comparison below is stale.");
+}
+const stackedAllInRangeBp = Math.max(...stackedAllIn) - Math.min(...stackedAllIn);
+
+/**
+ * Written once, read twice: into `<thead>`, and into the label each cell shows when the
+ * table becomes a list of cards below 40rem. The three numeric headings are parallel on
+ * purpose, so "a year" against "once" teaches the distinction in the header itself.
+ */
+const COLUMNS = [
+  "Ticker",
+  "Fund",
+  "Fee, basis points a year",
+  "Cost, basis points a year",
+  "Spread, basis points once",
+  "Status",
+] as const;
+
+/** The three money columns, right-aligned above the breakpoint. */
+const NUMERIC = new Set([2, 3, 4]);
 ---
 
 <Base
   title="The shelf"
-  description="Every fund this project has priced or measured, with its fee, its cost after the money it earns lending out shares, and the verdict attached to it."
+  description="Every fund this project has priced or measured: what it charges, what it really costs once lending income is counted, what you pay to get in, and the verdict attached to it."
 >
   <div class="prose">
     <Rail>The shelf</Rail>
@@ -64,55 +166,129 @@ const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis poin
 
     <MarginNote label="What is here">
       <p>
-        <span data-numeric>{shelf.length}</span> funds, read as of <span data-numeric>{shelfAsOf}</span>. Cost is
-        the expense ratio less median net securities-lending income from Form N-CEN, so it can sit below the
-        sticker fee and occasionally below zero.
+        <span data-numeric>{shelf.length}</span> funds, read as of <span data-numeric>{shelfAsOf}</span>. A basis
+        point is a hundredth of one percent. So 10 basis points on $100,000 is $100 a year, and 100 basis points
+        is 1%.
       </p>
     </MarginNote>
 
     <p>
-      Every fund this project has actually priced or measured, and nothing else. A fund appearing here is
-      not a recommendation, and most of these were read in order to reject them. Seven of them are in
-      <a href="/portfolio/">the portfolio</a>; the other <span data-numeric>{shelf.length - 7}</span> are here because
-      somebody had to price them before they could be ruled out.
-    </p>
-
-    <MarginNote label="Why there is no beat-the-market column">
-      <p>
-        We ran <span data-numeric>{shelfAudit.alphaTests}</span> tests for whether a fund beat the model it is
-        graded against, and <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> survived correction, all of
-        them negative. The smallest such gap this instrument can usually see is about
-        <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span> percentage points a year, against
-        roughly <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span> of real spread between funds.
-      </p>
-    </MarginNote>
-
-    <p>
-      Two columns are missing on purpose. How much of a thing a fund actually delivers is a number that belongs to
-      the months it was measured over, and those windows differ. VTV carries 72 months and DFLV 36. On the 36 they
-      share, VTV's cheap-stock exposure rises from +0.337 to +0.520, which takes the published ordering of the US
-      value shelf apart. So a column of those figures side by side would compare answers to different questions.
-      A beat-the-market figure has the same problem twice over: it reads as a finding when it is noise, unless the
-      smallest gap the test could see is printed beside it, together with the error the model makes on a fund that
-      simply is the market. Both live in the research pages that own them.
+      Every fund this project has priced or measured, and nothing else. Most of them were read in order to rule
+      them out. <span data-numeric>{heldCount}</span> are in <a href="/portfolio/">the portfolio</a>; the other
+      <span data-numeric>{shelf.length - heldCount}</span> are here because somebody had to price them before
+      they could be ruled out.
     </p>
   </div>
 
-  <Callout kind="caveat">
+  <Callout kind="do-this">
     <p>
-      Fund facts go stale. Every figure below was read on or before 2026-08-17, from a filing or an issuer page,
-      and the right move a year from now is to re-read rather than to re-quote. One example of why: SPY files a
-      0.0945% cost against 0.0182% to 0.0294% for every other S&amp;P 500 tracker audited, entirely because it is
-      a 1993 trust that cannot lend its holdings.
+      Read the Cost column rather than the Fee column. If you are buying to hold for years, cost is what you
+      actually pay. If you might sell inside a year, add the Spread column to it once and compare that instead.
+    </p>
+  </Callout>
+
+  <div class="prose">
+    <h2>What a fund costs is its fee less what it earns lending</h2>
+
+    <p>
+      Funds <a href="/glossary/#securities-lending">lend the shares they hold</a> to other investors and keep
+      part of the payment. That income comes back to you inside the fund, so the fee on the label overstates
+      what you hand over. The Cost column is the fee less that income, and it does not order the funds the way
+      the fee does. Almost nobody publishes the second number.
+    </p>
+
+    <p>
+      SPY is the clearest case. It costs <Figure id="spy-net-cost" inline /> a year to own, about five times any
+      other fund tracking the same index, because a 1993 trust of its kind cannot lend at all. On $100,000 that
+      is about <span data-numeric>${perHundredThousand(costOf(spy))}</span> a year against about
+      <span data-numeric>${perHundredThousand(costOf(voo))}</span> for VOO, which holds the same 500 companies.
+    </p>
+
+    <p>
+      The same thing happens on an identical sticker price. BND and SPAB both charge
+      <span data-numeric>{bp(feeOf(bnd))}</span> basis points. BND lends nothing at all, so it costs
+      <span data-numeric>{bp(costOf(bnd))}</span>; SPAB lends, so it costs
+      <span data-numeric>{bp(costOf(spab))}</span>. Same fee, and the dearest broad bond fund audited here.
+    </p>
+
+    <MarginNote label="Where the spreads come from">
+      <p>
+        Every ETF has to publish its own 30-day median spread. <span data-numeric>{withSpread}</span> of these
+        <span data-numeric>{shelf.length}</span> funds have had that disclosure read. The rest show a dash, which
+        means nobody read it rather than that the spread is small.
+      </p>
+    </MarginNote>
+
+    <h2>A spread is paid once. A fee is paid every year.</h2>
+
+    <p>
+      The spread is the gap between the price you buy at and the price you could sell at, and you pay it on the
+      way in. Over a long hold the yearly fee wins: SPY has the tightest spread on this shelf and still costs the
+      most to own. Shorten the hold and it turns around.
+    </p>
+
+    <p>
+      CTAP's spread is <Figure id="ctap-spread" inline /> of the price against RSST's
+      <Figure id="rsst-spread" inline />. Hold either for a year and that gap costs about
+      <span data-numeric>{spreadGapBp}</span> basis points a year, on a group of three funds whose all-in
+      charges (the fee, plus what the funds inside them charge) differ by only
+      <span data-numeric>{stackedAllInRangeBp}</span>. Count the entry cost and CTAP is the dearest of the three
+      rather than the cheapest. The two columns never add up, because one is paid once and the other every year.
+      Which of them decides is a question about how long you hold.
+    </p>
+
+    <h2>Some fees have an end date</h2>
+
+    <p>
+      DFEV's <span data-numeric>{bp(feeOf(dfev))}</span> basis points holds only while a waiver runs, through
+      <span data-numeric>{recheckOn(dfev)}</span>. FFUT's <span data-numeric>{bp(feeOf(ffut))}</span> is a cap its
+      board can let lapse after <span data-numeric>{recheckOn(ffut)}</span>. CTAP charges less than the
+      <span data-numeric>{bp(feeOf(ctap))}</span> shown until its own waiver ends on
+      <span data-numeric>{recheckOn(ctap)}</span>, and the full figure afterwards. If you still hold any of the
+      three past those dates, read the fee again.
+    </p>
+
+    <MarginNote label="Why the tests were thrown out">
+      <p>
+        We ran <span data-numeric>{shelfAudit.alphaTests}</span> of them.
+        <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> survived the correction for having run so
+        many, and all <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> came out negative.
+      </p>
+    </MarginNote>
+
+    <h2>There is no beat-the-market column</h2>
+
+    <p>
+      That is deliberate. The smallest gap a test like this can usually see is about
+      <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span> percentage points a year, against
+      roughly <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span> of real difference between funds.
+      So the test mostly reports noise, and a column of it would read as a finding.
+    </p>
+
+    <p>
+      How much of a thing each fund delivers is missing for a plainer reason. Each of those figures was fitted on
+      the months that fund had filed, and the runs of months do not match. VTV carries 72 of them and DFLV 36. On
+      the 36 they share, VTV's cheap-stock exposure rises from +0.337 to +0.520, which takes the published order
+      of the US value funds apart. Two such figures side by side would compare answers to two different questions.
+    </p>
+  </div>
+
+  <Callout kind="caveat" label={`${unmeasured.length} of these have nothing measured behind them`}>
+    <p>
+      <span data-numeric>{unmeasured.map((fund) => fund.ticker).join(", ")}</span> are new enough that the
+      filings showing what they hold do not exist yet. You get a fee, because a fee is printed in a prospectus,
+      and sometimes a spread, because every ETF publishes one. You do not get a cost, an exposure or a verdict,
+      because none of those has been produced. They are marked <em>Nothing measured</em> below, and that is a
+      statement about the evidence rather than about the funds.
     </p>
   </Callout>
 
   {
     groups.map((group) => (
       <Breakout scroll class="mt-10" label={group.label}>
-        <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[42rem]">
+        <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[46rem]">
           <caption class="sr-only">
-            {group.label}: fee, cost after lending income, and verdict
+            {group.label}: fee, cost after lending income, spread paid on the way in, and verdict
           </caption>
           <thead role="rowgroup">
             <tr role="row" class="border-b border-rule-strong text-left">
@@ -120,7 +296,7 @@ const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis poin
                 <th
                   role="columnheader"
                   scope="col"
-                  class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", (i === 2 || i === 3) && "text-right"]}
+                  class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", NUMERIC.has(i) && "text-right"]}
                 >
                   {heading}
                 </th>
@@ -135,7 +311,6 @@ const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis poin
                 </th>
                 <td role="cell" data-label={COLUMNS[1]} class="py-2 pr-4">
                   {fund.name}
-                  <span class="block max-w-[52ch] text-xs text-ink-faint">{fund.mandate}</span>
                 </td>
                 <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
                   {bp(fund.expenseRatioBp)}
@@ -143,8 +318,15 @@ const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis poin
                 <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
                   {bp(fund.netCostBp)}
                 </td>
-                <td role="cell" data-label={COLUMNS[4]} class="py-2 text-xs">
-                  {fund.status ? statusMeta[fund.status].label : "Not scored"}
+                <td role="cell" data-label={COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
+                  {bp(fund.spread ? fund.spread.bp : null)}
+                </td>
+                <td role="cell" data-label={COLUMNS[5]} class="py-2 text-xs">
+                  {fund.status
+                    ? statusMeta[fund.status].label
+                    : nothingMeasured(fund)
+                      ? "Nothing measured"
+                      : "Not scored"}
                 </td>
               </tr>
             ))}
@@ -153,4 +335,13 @@ const COLUMNS = ["Ticker", "Fund", "Fee, basis points a year", "Cost, basis poin
       </Breakout>
     ))
   }
+
+  <Callout kind="caveat" label="Where this comes from">
+    <p>
+      Fees and lending income are read from each fund's own filings to the SEC. Spreads are read from the
+      disclosure every ETF has to publish. Everything here was read on or before
+      <span data-numeric>{shelfAsOf}</span>. Fund facts go stale, so a year from now the right move is to read
+      them again rather than to quote this page.
+    </p>
+  </Callout>
 </Base>
