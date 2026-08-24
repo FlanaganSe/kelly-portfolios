@@ -4,9 +4,10 @@
  *
  * A listing, not a recommendation. `src/content/shelf.ts` is the canonical record for a
  * ticker and this page prints the four fields that need no window attached to be read —
- * category, fee, net cost, and the verdict. Loadings and alphas are deliberately absent:
- * each of those names a panel and a window, they were fitted on different months, and a
- * column of them side by side would be the comparison `rankLoadings` refuses to make.
+ * category, fee, net cost, and the verdict. Delivered exposures and beat-the-market figures
+ * are deliberately absent: each of those names a panel and a window, they were fitted on
+ * different months, and a column of them side by side would be the comparison `rankLoadings`
+ * refuses to make.
  */
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
@@ -31,7 +32,7 @@ const CATEGORY_LABEL = {
   "emerging-value": "Emerging value",
   bonds: "Bonds",
   "managed-futures": "Managed futures",
-  "capital-efficient": "Capital-efficient wrappers",
+  "capital-efficient": "Funds that stack two exposures on one dollar",
   alternative: "Alternatives",
 } as const satisfies Readonly<Record<ShelfCategory, string>>;
 
@@ -48,7 +49,7 @@ const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2))
 
 <Base
   title="The shelf"
-  description="Every fund this project has priced or regressed, with its fee, its cost after securities lending, and the verdict attached to it."
+  description="Every fund this project has priced or measured, with its fee, its cost after the money it earns lending out shares, and the verdict attached to it."
 >
   <div class="prose">
     <Rail>The shelf</Rail>
@@ -63,29 +64,30 @@ const bp = (value: number | null) => (value === null ? "—" : value.toFixed(2))
     </MarginNote>
 
     <p>
-      Every product this repository has actually priced or regressed, and nothing else. A fund appearing here is
+      Every fund this project has actually priced or measured, and nothing else. A fund appearing here is
       not a recommendation, and most of these were read in order to reject them. Seven of them are in
       <a href="/portfolio/">the portfolio</a>; the other <span data-numeric>{shelf.length - 7}</span> are here because
       somebody had to price them before they could be ruled out.
     </p>
 
-    <MarginNote label="Why no alpha column">
+    <MarginNote label="Why there is no beat-the-market column">
       <p>
-        <span data-numeric>{shelfAudit.alphaTests}</span> alpha tests were run and
-        <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> survived correction, all of them negative. The
-        median alpha this instrument can detect is about <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span>
-        percentage points a year against roughly <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span> of
-        true dispersion between funds.
+        We ran <span data-numeric>{shelfAudit.alphaTests}</span> tests for whether a fund beat the model it is
+        graded against, and <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> survived correction, all of
+        them negative. The smallest such gap this instrument can usually see is about
+        <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span> percentage points a year, against
+        roughly <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span> of real spread between funds.
       </p>
     </MarginNote>
 
     <p>
-      Two columns are missing on purpose. A factor loading names the panel it was fitted on and the months it was
-      fitted over. Those windows differ: VTV carries 72 months and DFLV 36, and on the 36 they share VTV's value
-      loading rises from +0.337 to +0.520, which takes the published ordering of the US value shelf apart. So a
-      column of loadings side by side would compare answers to different questions. An alpha needs its detection
-      floor and its model-misfit pedestal printed beside it or it reads as a finding when it is noise. Both live
-      in the research pages that own them.
+      Two columns are missing on purpose. How much of a thing a fund actually delivers is a number that belongs to
+      the months it was measured over, and those windows differ. VTV carries 72 months and DFLV 36. On the 36 they
+      share, VTV's cheap-stock exposure rises from +0.337 to +0.520, which takes the published ordering of the US
+      value shelf apart. So a column of those figures side by side would compare answers to different questions.
+      A beat-the-market figure has the same problem twice over: it reads as a finding when it is noise, unless the
+      smallest gap the test could see is printed beside it, together with the error the model makes on a fund that
+      simply is the market. Both live in the research pages that own them.
     </p>
   </div>
 

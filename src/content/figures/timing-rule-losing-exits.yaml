@@ -4,7 +4,7 @@ unit: round trips, 1927 to 2026
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: Timing rules on the equity sleeve
+  label: Timing rules on the stock holdings
   docPath: docs/research/timing-rules-on-the-equity-sleeve.md
   anchor: the-behavioural-cost
 note: >-

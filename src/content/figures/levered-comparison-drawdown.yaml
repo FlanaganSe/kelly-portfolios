@@ -1,13 +1,13 @@
 label: Worst loss, trend route against borrowed equity at matched gross exposure
 value: −49.3% against −60.8%
-unit: at matched gross notional
+unit: at the same total exposure
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: Leverage and the notional budget
+  label: Borrowing, and how much exposure it buys
   docPath: docs/research/leverage-and-the-notional-budget.md
   anchor: 3-what-the-record-says-measured
 note: >-
-  Sharpe over the same window: the trend route rose 0.538 to 0.641 while the borrowed-equity
-  route fell to 0.530. A gross notional figure cannot tell the two apart, which is why an
-  unlevered index is not a fair yardstick for a levered portfolio.
+  Return per unit of risk over the same window: the trend route rose from 0.538 to 0.641 while
+  the borrowed-stocks route fell to 0.530. A total-exposure figure cannot tell the two apart,
+  which is why an index that borrows nothing is not a fair yardstick for a portfolio that does.

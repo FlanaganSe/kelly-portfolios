@@ -101,13 +101,18 @@ import Base from "~/layouts/Base.astro";
       </p>
     </MarginNote>
 
-    <p>We can't tell you this beats a cheap index fund. Against a borrowing-matched cheap index it came out
-    <Figure id="portfolio-vs-control" inline showUnit={false} /> a year over 427 months, and the smallest gap that test could
-    reliably see was <Figure id="portfolio-floor" inline showUnit={false} />. So the honest reading is that we measured something
-    positive and our instrument is not sharp enough to confirm it. Your own account would need
-    <Figure id="time-to-know-construction" inline showUnit={false} /> to separate the portfolio from that control, and
-    <Figure id="time-to-know-portfolio" inline showUnit={false} /> to separate it from a plain cheap core holding the same split.
-    That is longer than you have.</p>
+    <p>We can't tell you this beats a cheap index fund.</p>
+
+    <p>Set it beside an index fund that borrows as much as it does, and over 427 months it came out
+    <Figure id="portfolio-vs-control" inline showUnit={false} /> a year. The smallest gap that test could reliably
+    see was <Figure id="portfolio-floor" inline showUnit={false} />. So we measured something positive, and our
+    instrument is not sharp enough to confirm it.</p>
+
+    <p>Two comparisons, two different waits. Against that borrowing index fund, your own account would need
+    <Figure id="time-to-know-construction" inline showUnit={false} /> before it could tell. Against a plain cheap
+    index fund holding the same mix, <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
+
+    <p>Both are longer than you have.</p>
 
     <p>What we can tell you is why each line is there, where it goes, and what it will do to you in a bad
     decade.</p>
@@ -122,11 +127,11 @@ import Base from "~/layouts/Base.astro";
 
     <h2>What each piece is for</h2>
 
-    <MarginNote label="Loading, not return">
+    <MarginNote label="Exposure, not return">
       <p>
-        RSST's delivered trend exposure reads <span data-numeric>+0.681</span> on 31 filed monthly returns, with a
-        sister fund holding no trend at all reading <span data-numeric>−0.10</span> as a control. A loading is
-        exposure delivered, never return earned.
+        RSST delivers <span data-numeric>+0.681</span> of trend on 31 filed monthly returns, with a sister fund
+        holding no trend at all reading <span data-numeric>−0.10</span> as a control. That number is how much
+        trend you get, never how much it earns.
       </p>
     </MarginNote>
 
@@ -140,28 +145,29 @@ import Base from "~/layouts/Base.astro";
 
     <p><strong>VXUS</strong> is the same idea outside the United States, developed and emerging together.</p>
 
-    <p><strong>VTV</strong> tilts the US half toward cheap companies. Cheap here means a low price against book
-    value, and the tilt is measured rather than assumed: its value exposure reads +0.337 over six years of its own
-    filed returns.</p>
+    <p><strong>VTV</strong> leans the US half toward cheap companies. Cheap here means a low price against what
+    the books say the company owns, and the lean is measured rather than assumed: how much cheap-stock exposure
+    you actually get reads +0.337 over six years of its own filed returns.</p>
 
     <MarginNote label="The most annoying number here">
       <p>
-        Positive in the full window and in all seven declared sub-periods, adjusted p 0.033, and it misses its own
-        detection floor by <span data-numeric>0.01</span> points. Calling that unresolved is correct and is the
-        least interesting true thing about it.
+        Positive in the full window and in all seven declared sub-periods, adjusted p 0.033, and it falls
+        <span data-numeric>0.01</span> points short of what the test could reliably see. Calling that unresolved
+        is correct and is the least interesting true thing about it.
       </p>
     </MarginNote>
 
     <p><strong>AVDV</strong> does the same thing in smaller foreign companies, which is the only place a fund can
-    express that particular cell. Adding it was worth <Figure id="avdv-addition" inline showUnit={false} /> a year against the same
-    portfolio without it, against a detection floor of 0.29. That misses being a real result by a hundredth of a
+    buy you that particular corner of the market. Adding it was worth
+    <Figure id="avdv-addition" inline showUnit={false} /> a year against the same portfolio without it, and the
+    smallest gap that test could reliably see was 0.29. So it misses being a real result by a hundredth of a
     point, which is the most annoying number on this page.</p>
 
     <p><strong>IDMO</strong> buys foreign shares that have been going up. Momentum is the least comfortable
     holding here and it is only 5%.</p>
 
-    <p><strong>AVES</strong> buys cheap emerging-market shares. Emerging markets carry the biggest measured value
-    premium in our data and the least reliable one.</p>
+    <p><strong>AVES</strong> buys cheap emerging-market shares. Emerging markets pay the biggest measured reward
+    for owning cheap stocks in our data, and the least reliable one.</p>
 
     <p>Two of those seven lines carry no bet at all. VTI and VXUS are the benchmark, and most of RSST is US stocks
     you would have owned anyway. The active part of this portfolio is worth about
@@ -306,11 +312,11 @@ import Base from "~/layouts/Base.astro";
     traditional balance is shared with the government at whatever rate you eventually withdraw at. At a 24%
     withdrawal rate, $100,000 of traditional IRA is <Figure id="deferred-is-not-yours" inline showUnit={false} /> of your money. So
     the Roth should hold the highest expected return, and the traditional should hold the thing you are least sure
-    about. That puts the tilts in the Roth and the trend wrapper in the traditional, which is the reverse of the
-    naive rule. Two smaller facts point the same way: the government sharing in RSST's dispersion as well as its
-    mean is a feature when the sleeve is the least established thing you own, and required minimum distributions
-    force the traditional account and never the Roth. RSST after a strong trend year is exactly the position you
-    would be trimming.</p>
+    about. That puts the funds leaning toward cheap and profitable companies in the Roth and the trend fund in the
+    traditional, which is the reverse of the usual rule. Two smaller facts point the same way. The government
+    shares in RSST's swings as well as its average, which is a feature when that fund is the least established
+    thing you own. And required minimum distributions force the traditional account and never the Roth. RSST after
+    a strong trend year is exactly the position you would be trimming.</p>
 
     <p>Getting this ordering right is worth <Figure id="placement-value" inline /> against what you would
     otherwise have done. Not more. Numbers like "asset location is worth 75 basis points" come from comparing
@@ -364,24 +370,25 @@ import Base from "~/layouts/Base.astro";
 
     <p>How much RSST. We recommend 30%. The alternative is 25%, and here is the actual trade.</p>
 
-    <MarginNote label="Borrowing, not construction">
+    <MarginNote label="Borrowing, not clever building">
       <p>
-        The two portfolios differ by 5.4 points of gross exposure, and against a panel whose US equity leg
-        returned 9.83% a year that difference is worth about what the measured gap is. It is a statement about the
-        trend weight rather than about how the thing is built.
+        The two portfolios differ by 5.4 points of exposure, and over a stretch where US stocks returned 9.83% a
+        year that difference is worth about what the measured gap is. It says something about how much trend you
+        hold rather than about how the thing is built.
       </p>
     </MarginNote>
 
-    <p>Holding 30% beat holding 25% by <Figure id="thirty-over-twenty-five" inline showUnit={false} /> a year against the same
-    portfolio at a lower weight, with a detection floor of <Figure id="thirty-over-twenty-five-floor" inline showUnit={false} />.
-    That is the only whole-portfolio comparison in this entire programme that clears its own resolution. Almost
-    everything else here is a shrug. It is also mostly a statement about borrowing rather than about trend: the
-    30% version runs 132% of gross exposure against the 25% version's 127%, and on a panel where US stocks
-    returned 9.83% a year, more exposure wins.</p>
+    <p>Holding 30% beat holding 25% by <Figure id="thirty-over-twenty-five" inline showUnit={false} /> a year
+    against the same portfolio at the lower weight, and the smallest gap that test could reliably see was
+    <Figure id="thirty-over-twenty-five-floor" inline showUnit={false} />. That is the only whole-portfolio
+    comparison in this entire project that clears its own resolution. Almost everything else here is a shrug. It
+    is also mostly a statement about borrowing rather than about trend: the 30% version leaves you exposed to 132%
+    of your money against the 25% version's 127%, and over a stretch where US stocks returned 9.83% a year, more
+    exposure wins.</p>
 
-    <p>The cost is that you might sell it. Over thirty years, at a trigger where you quit after the sleeve has run
+    <p>The cost is that you might sell it. Over thirty years, at a trigger where you quit once the fund has run
     20% behind, a 30% weight ends the position in about <Figure id="abandonment-30" inline showUnit={false} /> of simulated paths
-    against <Figure id="abandonment-25" inline showUnit={false} /> at 25%. If the trend premium has gone entirely, 30% ends it in
+    against <Figure id="abandonment-25" inline showUnit={false} /> at 25%. If trend following has stopped paying entirely, 30% ends it in
     <Figure id="abandonment-30-dead" inline showUnit={false} />. Read that last number properly. Whether you can hold the position
     and whether it pays are the same bet, made twice.</p>
 
@@ -390,13 +397,13 @@ import Base from "~/layouts/Base.astro";
     <ol>
       <li>The comparison that favours it is the only resolved one we have. Throwing that away for four methods that disagree with each other is choosing the weaker evidence.</li>
       <li>You are contributing 5% to 15% of the portfolio a year. New money at low prices is the thing that carries a position through a drought, and it covers the one rebalancing move this portfolio cannot make internally two and a half to seven and a half times over.</li>
-      <li>Zero is the worse mistake. Through the one flat decade in our panel, March 1999 to February 2009, US stocks returned −2.55% a year and a 30% trend sleeve added about <Figure id="flat-decade" inline showUnit={false} /> above the stocks it displaced, turning that decade positive. Against +0.21 points a year in ordinary decades, that single state is what decides whether a plan survives.</li>
+      <li>Zero is the worse mistake. Through the one flat decade in our data, March 1999 to February 2009, US stocks returned −2.55% a year and a 30% trend holding added about <Figure id="flat-decade" inline showUnit={false} /> above the stocks it displaced, turning that decade positive. Against +0.21 points a year in ordinary decades, that one decade is what decides whether a plan survives.</li>
     </ol>
 
     <p>Take 25% if you think you would sell it. A portfolio you keep beats a better one you abandon, and the half
-    point a year you give up is invisible against a tracking error of
-    <Figure id="construction-tracking-error" inline showUnit={false} />. The switch is one swap: RSST 25, VTI 24, everything else
-    unchanged.</p>
+    point a year you give up is invisible against the
+    <Figure id="construction-tracking-error" inline showUnit={false} /> your returns already wander from the
+    comparison in a typical year. The switch is one swap: RSST 25, VTI 24, everything else unchanged.</p>
 
   </div>
 
@@ -461,23 +468,24 @@ import Base from "~/layouts/Base.astro";
 
     <p>Read this bit twice.</p>
 
-    <p><strong>The seven numbers in the first table are capital weights. They are the only numbers you ever type
-    into a brokerage screen.</strong> Elsewhere you will see this portfolio described by its exposure: 66% US
-    stocks, 36% international, 30% managed futures, 132% gross. Those are audit figures. They are recomputed every
-    quarter from RSST's latest filing, and they add to 132 rather than 100 on purpose, because RSST gives you two
-    dollars of exposure per dollar of capital.</p>
+    <p><strong>The seven numbers in the first table are shares of the money you put in. They are the only numbers
+    you ever type into a brokerage screen.</strong> Elsewhere you will see this portfolio described by what it
+    leaves you exposed to: 66% US stocks, 36% international, 30% managed futures, 132% in total. Those are audit
+    figures. They are recomputed every quarter from RSST's latest filing, and they add to 132 rather than 100 on
+    purpose, because RSST gives you two dollars of exposure for every dollar you put in.</p>
 
     <MarginNote label="The trap">
       <p>
-        Exposure sums to 132.2% of capital. A screen that normalises to 100 scales every line down by 24%, so a
-        30% sleeve silently becomes 22.7% and nothing errors.
+        What you are exposed to adds to 132.2% of what you put in. A screen that rescales to 100 shrinks every
+        line by 24%, so a 30% holding silently becomes 22.7% and nothing errors.
       </p>
     </MarginNote>
 
-    <p>Type them into a screen that wants weights adding to 100 and it will quietly scale everything down by 24%.
-    Your 30% trend sleeve becomes <Figure id="notional-scaling-error" inline showUnit={false} />. You will have bought roughly
-    three quarters of the thing you decided to buy and you will never notice, because nothing will error and the
-    pie chart will look right.</p>
+    <p>Type the exposure figures into a screen that wants weights adding to 100 and it will quietly scale
+    everything down by 24%. Your 30% trend holding becomes
+    <Figure id="notional-scaling-error" inline showUnit={false} />. You will have bought roughly three quarters of
+    the thing you decided to buy and you will never notice, because nothing will error and the pie chart will look
+    right.</p>
 
     <MarginNote label="Measured">
       <p>
@@ -492,7 +500,7 @@ import Base from "~/layouts/Base.astro";
     test.</p>
 
     <p>Do every trade inside the Roth or the traditional account. All four foreign funds and the whole trend
-    sleeve already live there, so selling them realises nothing. The one move you cannot make internally is
+    holding already live there, so selling them realises nothing. The one move you cannot make internally is
     selling US stocks to buy international, because your US holdings are mostly in the taxable account. It needs
     about two points of the portfolio a year, and your contributions cover it several times over.</p>
 
@@ -527,15 +535,15 @@ import Base from "~/layouts/Base.astro";
     <table class="w-full min-w-[34rem] border-collapse text-sm">
       <thead>
         <tr class="border-b border-rule-strong text-left">
-          <th scope="col" class="eyebrow py-2 pr-4">Sleeve</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Worst run behind its comparator</th>
+          <th scope="col" class="eyebrow py-2 pr-4">Holding</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">Worst run behind what it is measured against</th>
           <th scope="col" class="eyebrow py-2 pr-4 text-right">For how long</th>
           <th scope="col" class="eyebrow py-2 pr-4">Recovered</th>
         </tr>
       </thead>
       <tbody class="text-ink-muted">
         <tr class="border-b border-rule last:border-0">
-          <th scope="row" class="py-2 pr-4 text-left font-normal">US value tilt</th>
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Cheap US stocks</th>
           <td data-numeric class="py-2 pr-4 text-right"><Figure id="value-drawdown" inline showUnit={false} /></td>
           <td data-numeric class="py-2 pr-4 text-right">17.7 years</td>
           <td class="py-2 pr-4">No</td>
@@ -574,19 +582,20 @@ import Base from "~/layouts/Base.astro";
       </p>
     </MarginNote>
 
-    <p><strong>At this portfolio's tracking error, thirty years of holding it cannot establish whether it
-    worked.</strong> Tracking error is how far your returns wander from your comparator's in a typical year, and
-    here it is <Figure id="construction-tracking-error" inline showUnit={false} />. The arithmetic is exact and there is no way
-    around it: the time you need to demonstrate an edge grows with the square of tracking error divided by the
-    edge. Against a same-split cheap core, thirty years of data would let us detect an edge of
+    <p><strong>This portfolio drifts so far from the thing you would compare it against that thirty years of
+    holding it cannot establish whether it worked.</strong> Drift is how far your returns wander from that
+    comparison in a typical year, and here it is
+    <Figure id="construction-tracking-error" inline showUnit={false} />. The arithmetic is exact and there is no
+    way around it: the time you need to demonstrate an edge grows with the square of the drift divided by the
+    edge. Against a plain cheap index fund holding the same mix, thirty years of data would let us spot an edge of
     <Figure id="thirty-year-floor" inline />. The edge we think is there is
     <Figure id="thirty-year-edge" inline showUnit={false} />, which puts the wait at
     <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
 
     <p>You will not find out. Not in thirty years, not from your own account. That is not a reason to hold
-    nothing, and it is a reason to stop checking. If you set a performance review on the trend sleeve you will
-    delete it for doing its job: at a 30% weight it trails in 43.8% of simulated ten-year histories even when its
-    premium is positive.</p>
+    nothing, and it is a reason to stop checking. If you set a performance review on the trend fund you will
+    delete it for doing its job: at a 30% weight it trails in 43.8% of simulated ten-year histories even when the
+    extra return it is supposed to earn is really there.</p>
 
     <p>The one discipline that matters: whatever you compare this against must have the same borrowing in it.
     Comparing a portfolio carrying 132% of exposure against a plain index fund credits the extra exposure to the
@@ -612,14 +621,14 @@ import Base from "~/layouts/Base.astro";
     research question. Your tax bracket.</p>
 
     <p>Then the split between stocks and everything else, which this portfolio sets at all stocks by omission.
-    Moving from 60/40 to 90/10 was worth <Figure id="equity-share-step" inline showUnit={false} />, larger than every tilt here
-    combined. This portfolio holds no bonds. Decide that on purpose.</p>
+    Moving from 60/40 to 90/10 was worth <Figure id="equity-share-step" inline showUnit={false} />, larger than
+    every lean in this portfolio put together. This portfolio holds no bonds. Decide that on purpose.</p>
 
     <p>Then four measurements with dates on them.</p>
 
     <ul>
-      <li>RSST's trend exposure, currently <Figure id="rsst-loading" inline showUnit={false} /> on 31 months of filings, which is roughly one market regime. We look again at 48 months, around September 2027.</li>
-      <li>The financing cost inside the wrapper, which no issuer discloses because it lives in the futures basis. It decides the sign of the whole sleeve.</li>
+      <li>How much trend RSST actually delivers, currently <Figure id="rsst-loading" inline showUnit={false} /> on 31 months of filings, which is roughly one kind of market. We look again at 48 months, around September 2027.</li>
+      <li>The borrowing cost inside RSST, which no issuer discloses because it is buried in the price of a futures contract rather than printed on a statement. It decides whether the trend part helps you at all.</li>
       <li>RSST's next December distribution, which settles how much tax that fund is really storing up.</li>
       <li>Whether your broker charges $100 a trade on it.</li>
     </ul>

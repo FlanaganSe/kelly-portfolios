@@ -1,16 +1,16 @@
 label: The trend fund's first measured trend exposure, against a 0.70 sell bar
 value: '0.681'
-unit: loading on the trend factor, against a monitoring bar of 0.70
+unit: of trend delivered, against a monitoring bar of 0.70
 interval: '[0.406, 0.955]'
 status: unresolved
 asOf: '2026-08-23'
 source:
-  label: Loading comparability and wrapper exposure
+  label: What a delivered exposure can and cannot be compared with
   docPath: docs/research/loading-comparability-and-wrapper-exposure.md
   anchor: conclusion
 note: >-
   0.019 under a bar the interval spans twice over in both directions. The reading neither fires
   the rule nor clears it. The bar is left in place, unfired and recorded as unresolved, because
   moving it after seeing the number would be worse. It should be re-derived from the break-even
-  delivery the wrapper needs at a 25% weight, 0.19 to 0.27. Review at 48 filed months, around
+  delivery the fund needs at a 25% weight, 0.19 to 0.27. Review at 48 filed months, around
   2027-09.

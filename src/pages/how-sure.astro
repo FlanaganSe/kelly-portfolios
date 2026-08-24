@@ -92,8 +92,8 @@ import Base from "~/layouts/Base.astro";
       </p>
     </MarginNote>
 
-    <p>The tilt part of the recommended portfolio lives here: <Figure id="tilt-edge" inline />. The gap: 86% of it
-    is measured on series that start in November 1990, and it has never been checked on years the idea had not
+    <p>The lean toward cheap and profitable companies lives here: <Figure id="tilt-edge" inline />. The gap: 86%
+    of it is measured on data starting in November 1990, and nobody has ever run it on years the idea had not
     already seen.</p>
 
     <h3>Might</h3>
@@ -101,9 +101,10 @@ import Base from "~/layouts/Base.astro";
     <p><Rung level="might" /></p>
 
     <p>Roughly 50% to 75%. The evidence points one way and keeps pointing that way, but at least one thing is
-    wrong with the design. The effect sits under the detection floor, or the window is short, or there is no
-    out-of-sample test, or it rests on an assumption a reasonable person would argue with. A "might" always
-    carries the floor and a plan for settling it. Otherwise it is a guess wearing a lab coat.</p>
+    wrong with the design. The effect is smaller than the smallest difference the test could see, or the window
+    is short, or nobody has run it on years the idea had not already seen, or it rests on an assumption a
+    reasonable person would argue with. A "might" always carries that smallest difference and a plan for settling
+    it. Otherwise it is a guess wearing a lab coat.</p>
 
     <h3>We can't tell</h3>
 
@@ -143,8 +144,9 @@ import Base from "~/layouts/Base.astro";
     <MarginNote label="Source">
       <p>
         <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/timing-rules-on-the-equity-sleeve.md"
-          >Timing rules on the equity sleeve</a
-        >, as of <span data-numeric>2026-08-23</span>. The gap's interval spans zero, so the sign is unsettled.
+          >Timing rules on the stock holdings</a
+        >, as of <span data-numeric>2026-08-23</span>. The range around the gap covers zero, so even the direction
+        is unsettled.
       </p>
     </MarginNote>
 
@@ -155,15 +157,15 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="What it cost">
       <p>
-        Applying this rule closed two factor premia and restated six sleeve verdicts from rejected to unresolved.
-        Publishing a gap smaller than the floor beside it would be reporting the width of our own ignorance as a
-        finding.
+        Applying this rule closed two of the rewards we thought we had measured on factors, and moved six
+        verdicts from rejected to we can't tell. Publishing a gap smaller than the smallest one the test could see
+        would be reporting the width of our own ignorance as a finding.
       </p>
     </MarginNote>
 
-    <p>This is why so many pages here end in a shrug. It closed two factor premia. It restated six sleeve verdicts
-    from rejected to unresolved. And it is why we can say that a century of monthly US data cannot settle a
-    question, which sounds like an excuse and is a measurement.</p>
+    <p>This is why so many pages here end in a shrug. It closed two of the rewards we thought we had measured on
+    factors. It moved six verdicts from rejected to we can't tell. And it is why we can say that a century of
+    monthly US data cannot settle a question, which sounds like an excuse and is a measurement.</p>
 
   </div>
 
@@ -237,10 +239,10 @@ import Base from "~/layouts/Base.astro";
     <Figure id="detection-horizon-construction" inline showUnit={false} />. Same portfolio, same data, two questions, and nearly
     five times the answer.</p>
 
-    <p>The tilts run the other way about. Against a cheap 65/35 index they wander by only about a percentage point
-    a year, so your own account would see a gap of <Figure id="tilt-edge" inline showUnit={false} /> percentage
-    points a year inside a few years. Getting a
-    study to say that gap differs from zero takes <Figure id="tilt-horizon" inline showUnit={false} />.</p>
+    <p>The lean toward cheap and profitable companies runs the other way about. Against a cheap 65/35 index those
+    funds wander by only about a percentage point a year, so your own account would see the gap of
+    <Figure id="tilt-edge" inline showUnit={false} /> percentage points a year inside a few years. Getting a study
+    to say that gap differs from zero takes <Figure id="tilt-horizon" inline showUnit={false} />.</p>
 
     <p>We print both, and we say which question each number answers. Contrasting four months from the first
     question with fifty-nine years from the second is the specific error this section exists to stop, and it is
@@ -287,17 +289,18 @@ import Base from "~/layouts/Base.astro";
     100 comes to 4.17, which is exactly the era's own arithmetic mean, and that is not a coincidence with an
     innocent explanation.</p>
 
-    <p>Correcting it flipped the sign of the recommendation. On one basis the overlay was subtracting 0.35
+    <p>Correcting it flipped the sign of the recommendation. On one basis the trend add-on was subtracting 0.35
     percentage points a year against the same portfolio without it. Corrected, it adds 0.34 against that same
     comparison. The recommended trend weight moved from 20% to 25%. The estimated chance of giving up on it fell
     from 42.3% to 17.2%. The number itself is gone, and nothing replaced it.</p>
 
     <h3>Multiplying two measurements of the same thing</h3>
 
-    <p>To price a value tilt you need to know how much value exposure a fund really delivers. We had two numbers
-    for it: a loading of 0.410 from a regression, and a long-only capture fraction of 0.520 from the literature.
-    We multiplied them, which gives <Figure id="capture-double-count" inline showUnit={false} />, and used the product in five
-    places.</p>
+    <p>To price a fund that leans toward cheap stocks you need to know how much cheap-stock exposure it really
+    delivers. We had two numbers for it. One was 0.410, measured off the fund's own returns. The other was 0.520,
+    the share of the textbook version an ordinary investor can actually get, taken from the literature. We
+    multiplied them, which gives <Figure id="capture-double-count" inline showUnit={false} />, and used the
+    product in five places.</p>
 
     <MarginNote label="Now enforced in code">
       <p>
@@ -307,16 +310,16 @@ import Base from "~/layouts/Base.astro";
       </p>
     </MarginNote>
 
-    <p>They measure the same exposure. Work through the algebra and the capture fraction turns out to equal the
-    loading plus a small residual, exact to 4.4 times ten to the minus sixteenth on our own files: 94% of the
-    measured 0.520 is the loading 0.4891 coming back again. Multiplying them discounts the exposure twice, and it
-    produces a number below the loading of every audited value product on the shelf, which should have been the
-    tell.</p>
+    <p>They are the same exposure, measured two ways. Work through the algebra and the second number turns out to
+    equal the first plus a small remainder, exact to 4.4 times ten to the minus sixteenth on our own files: 94% of
+    the measured 0.520 is that same 0.4891 coming back again. Multiplying them discounts the exposure twice, and
+    it produces a number smaller than the exposure delivered by every value fund we have audited, which should
+    have been the tell.</p>
 
-    <p>The gross factor line had been understated by roughly a factor of two. The chain is now three terms, weight
-    times the difference in loadings times the premium, minus cost. The code raises an exception rather than
-    accepting a capture argument, so nobody can make the mistake by hand again. The 0.40 sitting in the edge
-    budget was deleted rather than replaced.</p>
+    <p>Before costs, that line had been understated by roughly a factor of two. The chain is now three terms: the
+    weight, times how much more of the thing the new fund delivers than the one it replaces, times the reward,
+    minus the cost. The code raises an exception rather than accepting a capture argument, so nobody can make the
+    mistake by hand again. The 0.40 sitting in the edge budget was deleted rather than replaced.</p>
 
     <h3>Comparing a borrowed portfolio against one that borrowed nothing</h3>
 
@@ -331,16 +334,16 @@ import Base from "~/layouts/Base.astro";
     everyone quotes cannot tell the two routes apart.</p>
 
     <p>The consequence is uncomfortable and we print it anyway. The single whole-portfolio comparison in the
-    entire programme that clears its own detection floor, the recommended portfolio against the investor's
-    original at −0.50 percentage points a year, is mostly measuring 5.4 points of borrowing rather than anything
-    about how the thing is built.</p>
+    entire project that clears the smallest gap its own test could see, the recommended portfolio against the
+    investor's original at −0.50 percentage points a year, is mostly measuring 5.4 points of borrowing rather than
+    anything about how the thing is built.</p>
 
     <h3>A floor and a range computed with different error bars</h3>
 
-    <p>The tilt result is the strongest measurement here, so it is the one that most needed checking. Beside its
-    range we printed a detection floor of 0.47 percentage points a year. The range had been computed with error
-    bars that allow for markets clustering, calm with calm and panic with panic. The floor had been computed with
-    error bars that treat every month as a fresh coin flip.</p>
+    <p>The lean toward cheap and profitable companies is the strongest measurement here, so it is the one that
+    most needed checking. Beside its range we printed a smallest visible gap of 0.47 percentage points a year. The
+    range had been computed with error bars that allow for markets clustering, calm with calm and panic with
+    panic. That 0.47 had been computed with error bars that treat every month as a fresh coin flip.</p>
 
     <MarginNote label="Both were stored">
       <p>
@@ -351,12 +354,12 @@ import Base from "~/layouts/Base.astro";
 
     <p>Both numbers were sitting in the run's own output file. Only the narrower one got published.</p>
 
-    <p>On matched error bars the floor is <Figure id="detection-floor-restated" inline showUnit={false} />
-    percentage points a year. The result still clears
-    it, by 10% rather than by 68%. The data needed before a study could separate it from zero becomes
-    <Figure id="tilt-horizon" inline showUnit={false} />. The implied signal-to-noise ratio falls from 4.73 to 3.05, landing
-    exactly on the published hurdle for a result that was found by searching. And one arm of the tournament stops
-    clearing altogether.</p>
+    <p>On matched error bars the smallest visible gap is
+    <Figure id="detection-floor-restated" inline showUnit={false} /> percentage points a year. The result still
+    clears it, by 10% rather than by 68%. The data needed before a study could separate it from zero becomes
+    <Figure id="tilt-horizon" inline showUnit={false} />. The signal drops from 4.73 times the noise to 3.05,
+    landing exactly on the published bar for a result that was found by searching. And one arm of the tournament
+    stops clearing altogether.</p>
 
     <h3>Adding up numbers measured against different starting points</h3>
 
@@ -401,19 +404,19 @@ import Base from "~/layouts/Base.astro";
     49.8% of net assets. Read that line and stop, and the fund looks worse than simply selling stocks to buy
     trend.</p>
 
-    <p>The same filing shows a long E-mini S&amp;P 500 future at 61.8%. The base leg is
-    <Figure id="mate-base-leg" inline showUnit={false} />, and the funding arithmetic flips from bad to slightly better than
-    break-even.</p>
+    <p>The same filing shows a bet on the S&amp;P 500 through a futures contract at another 61.8%. The stock leg
+    is <Figure id="mate-base-leg" inline showUnit={false} />, and the arithmetic flips from bad to slightly better
+    than break-even.</p>
 
     <p>Two quarters later the same mistake was available on a second fund and we nearly walked into it again. CTAP
-    shows an S&amp;P 500 ETF at 70.41%, which looks damning until you notice the 32.23% E-mini underneath, taking
-    the base leg to 102.64% and making CTAP the tightest wrapper on the shelf. A stacked fund's base leg is the
-    sum of every instrument delivering the base, and on these products at least one of them is always a
-    future.</p>
+    shows an S&amp;P 500 ETF at 70.41%, which looks damning until you notice the 32.23% futures position
+    underneath, taking the stock leg to 102.64% and making CTAP the most tightly packed fund on the shelf. A
+    stacked fund's stock leg is everything delivering stocks added together, and on these products at least one of
+    those is always a futures contract.</p>
 
     <h3>A monitoring bar finer than the instrument that reads it</h3>
 
-    <p>We wrote a rule for ourselves. If the trend fund's measured exposure to trend falls below 0.70, sell
+    <p>We wrote a rule for ourselves. If the amount of trend the fund actually delivers falls below 0.70, sell
     it.</p>
 
     <p>The first measurement came back at <Figure id="trend-loading-first-read" inline />. It sits 0.019 under the
@@ -422,20 +425,20 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="Review date">
       <p>
-        The bar should have been derived from the break-even exposure the wrapper needs at a 25% weight, which is
-        0.19 to 0.27. Next reading at 48 filed months, around <span data-numeric>2027-09</span>.
+        The bar should have come from the exposure the fund needs to deliver at a 25% weight just to break even,
+        which is 0.19 to 0.27. Next reading at 48 filed months, around <span data-numeric>2027-09</span>.
       </p>
     </MarginNote>
 
     <p>The bar stays where it is, unfired, recorded as unresolved, because moving a bar after seeing the number it
     was written for is worse than setting it badly in the first place. It should never have been a round number.
-    It should have been derived from the break-even exposure the wrapper needs at the weight we hold, which is
-    0.19 to 0.27. We look again at 48 filed months, around September 2027.</p>
+    It should have come from the exposure the fund needs to deliver at the weight we hold just to break even,
+    which is 0.19 to 0.27. We look again at 48 filed months, around September 2027.</p>
 
-    <p>This is the same defect twice. An earlier experiment rejected seven sleeves against a bar of 0.30
-    percentage points a year when the smallest effect that design could see was 1.039, on a page that had already
-    measured and printed the floor. Six of ten verdicts were restated to unresolved. The specification was
-    recorded as defective rather than quietly rewritten.</p>
+    <p>This is the same defect twice. An earlier experiment rejected seven candidate holdings against a bar of
+    0.30 percentage points a year when the smallest effect that design could see was 1.039, on a page that had
+    already measured and printed that number. Six of ten verdicts were restated to we can't tell. The
+    specification was recorded as defective rather than quietly rewritten.</p>
 
   </div>
 

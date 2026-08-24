@@ -9,5 +9,5 @@ source:
   anchor: funding-algebra
 note: >-
   The expression is the base portfolio's arithmetic return less its variance and contains no
-  property of the strategy being added. A wrapper keeps only what is left after financing, fee,
-  collateral, rebalancing and tax.
+  property of the strategy being added. A fund like that keeps only what is left after financing,
+  fee, collateral, rebalancing and tax.

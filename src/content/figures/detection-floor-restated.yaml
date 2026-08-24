@@ -1,6 +1,6 @@
-label: The tilt result's detection floor, on matched error bars
+label: The smallest gap that test could see, on matched error bars
 value: '0.72'
-unit: pp/yr, block bootstrap; the published figure was 0.47 on i.i.d. inference
+unit: percentage points a year, on error bars that allow for markets clustering; we published 0.47, computed as though every month were a fresh coin flip
 status: source-reproduced
 asOf: '2026-08-23'
 source:
@@ -10,6 +10,6 @@ source:
     3-the-published-detection-floors-use-a-different-inference-basis-from-the-intervals-beside-them
 note: >-
   Both values were computed and both were stored in the run artifact. Only the narrower one was
-  published. The result still clears, by 10% rather than 68%; the implied t falls from 4.73 to
-  3.05, which is exactly the Harvey-Liu-Zhu multiple-testing hurdle. One arm of the tournament
-  stops clearing altogether.
+  published. The result still clears, by 10% rather than 68%; the signal falls from 4.73 times
+  the noise to 3.05, which is exactly the published bar for a result found by searching. One arm
+  of the tournament stops clearing altogether.

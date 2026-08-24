@@ -64,20 +64,21 @@ import Base from "~/layouts/Base.astro";
       <p>
         <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/stacking-and-effective-breadth.md"
           >Stacking and effective breadth</a
-        >, 422 months to <span data-numeric>2025-12</span>. Measured on modelled excess returns rather than fund
-        returns: each sleeve is its delivered loading applied to its own region's French factors.
+        >, 422 months to <span data-numeric>2025-12</span>. Measured on modelled returns rather than on the funds'
+        own: each piece is built from the exposure that kind of fund really delivers, applied to its own region's
+        academic factor series.
       </p>
     </MarginNote>
 
-    <p>We measured this on the active slices of one real portfolio: four stock tilts plus a trend fund, month by
-    month over 422 months to December 2025. The average pair moves together at
-    <Figure id="sleeve-correlation" inline />.</p>
+    <p>We measured this on the active parts of one real portfolio: three funds buying cheap stocks, one buying
+    recent winners, and a trend fund, month by month over 422 months to December 2025. The average pair moves
+    together at <Figure id="sleeve-correlation" inline />.</p>
 
     <p>That number is a measurement of that portfolio and of nothing else. It is not a constant of investing, and
-    every figure on this page that depends on it inherits the same scope. Four value-and-momentum tilts plus a
-    trend fund are close relatives; a genuinely wider stack — stock styles, trend, credit spread, catastrophe risk
-    — would come in lower and reach higher. What is general here is the shape, not the level: the ceiling is
-    always Φ(z₁/√ρ), and ρ is the whole game.</p>
+    every figure on this page that depends on it inherits the same scope. Four cheap-and-rising stock funds plus a
+    trend fund are close relatives. A genuinely wider stack, one holding stock styles and trend and credit and
+    catastrophe risk, would come in lower and reach higher. What is general here is the shape, not the level: the
+    ceiling is always <code>Φ(z₁/√ρ)</code>, and ρ is the whole game.</p>
 
     <p>Here is why that single number decides everything, and it is worth a minute, because the rest of the page
     is a consequence of it.</p>
@@ -151,7 +152,7 @@ import Base from "~/layouts/Base.astro";
       <p>
         Read from the funds' own published rates and 19a-1 notices,
         <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/alternative-sleeves-audit.md"
-          >alternative sleeves audit</a
+          >our audit of the alternatives</a
         >, <span data-numeric>2026-08-23</span>. A distribution rate is not a return.
       </p>
     </MarginNote>
@@ -168,7 +169,7 @@ import Base from "~/layouts/Base.astro";
   <div class="prose mt-14">
     <Rail>The crux</Rail>
 
-    <h2>Square root against straight line</h2>
+    <h2>The benefit grows slowly and the cost grows in a straight line</h2>
 
     <p>Now the crux, and it is arithmetic rather than opinion.</p>
 
@@ -258,29 +259,29 @@ import Base from "~/layouts/Base.astro";
     the edges add rather than average, and a sum has no ceiling. Here "stack a ton" is literally the right
     instruction.</p>
 
-    <p>Same four stock tilts, three ways of paying for them, priced on the portfolio in question at the premia
-    most favourable to it:</p>
+    <p>Same four leaning stock funds, three ways of paying for them, priced on the portfolio in question under the
+    most generous assumption about what the leaning earns:</p>
   </div>
 
   <Breakout scroll class="my-8">
     <table class="w-full min-w-[34rem] border-collapse text-sm">
-      <caption class="sr-only">Portfolio edge under three ways of paying for the same four tilts</caption>
+      <caption class="sr-only">Portfolio edge under three ways of paying for the same four funds</caption>
       <thead>
         <tr class="border-b border-rule-strong text-left">
-          <th scope="col" class="eyebrow py-2 pr-4">How the tilt is paid for</th>
+          <th scope="col" class="eyebrow py-2 pr-4">How it is paid for</th>
           <th scope="col" class="eyebrow py-2 pr-4 text-right">Portfolio edge, a year</th>
         </tr>
       </thead>
       <tbody class="text-ink-muted">
         <tr class="border-b border-rule">
           <th scope="row" class="py-2 pr-4 text-left font-normal">
-            All of it into the single best tilt, funded by selling
+            All of it into the single best of the four, funded by selling
           </th>
           <td data-numeric class="py-2 pr-4 text-right"><Figure id="substitution-best" inline showUnit={false} /></td>
         </tr>
         <tr class="border-b border-rule">
           <th scope="row" class="py-2 pr-4 text-left font-normal">
-            The four tilts as actually weighted, funded by selling
+            All four as actually weighted, funded by selling
           </th>
           <td data-numeric class="py-2 pr-4 text-right">
             <Figure id="candidate-as-weighted" inline showUnit={false} />
@@ -288,7 +289,7 @@ import Base from "~/layouts/Base.astro";
         </tr>
         <tr>
           <th scope="row" class="py-2 pr-4 text-left font-normal">
-            The same four tilts financed on top of what you already own
+            All four financed on top of what you already own
           </th>
           <td data-numeric class="py-2 pr-4 text-right"><Figure id="financed-overlay" inline showUnit={false} /></td>
         </tr>
@@ -299,9 +300,9 @@ import Base from "~/layouts/Base.astro";
   <div class="prose mt-8">
     <MarginNote label="Scope">
       <p>
-        All three rows are priced against a same-split cheap core at the premium set most favourable to the
-        portfolio, with 35% of capital available to tilt. Compared with each other they are informative, and
-        compared with anything else on the site they are not.
+        All three rows are priced against a cheap index fund holding the same mix, under the assumptions most
+        favourable to the portfolio, with 35% of your money available to move. Compared with each other they are
+        informative. Compared with anything else on the site they are not.
       </p>
     </MarginNote>
 
@@ -323,9 +324,9 @@ import Base from "~/layouts/Base.astro";
     rather than swapped, and the only question is whether it covers its own financing.</p>
 
     <p>The gap between those two ways of paying is worth about <Figure id="funding-gap" inline showUnit={false} />
-    a year on an all-stock base. It contains nothing whatever about the strategy being added. It is larger than
-    almost any premium this project has managed to measure, which is a slightly embarrassing thing to discover
-    after measuring premia for a year.</p>
+    a year on an all-stock starting portfolio. It contains nothing whatever about the strategy being added. It is
+    larger than almost any extra return this project has managed to measure, which is a slightly embarrassing
+    thing to discover after a year spent measuring them.</p>
   </div>
 
   <Callout kind="caveat" label="Three warnings, or this becomes a pitch for borrowing">
@@ -365,9 +366,9 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="Order of the five">
       <p>
-        Appraisal ratio less standalone information ratio, exactly zero when a holding is unrelated to everything
-        else held. In order: the US value tilt, the developed ex-US value tilt, the international momentum fund,
-        the emerging value tilt, and trend.
+        What the holding is worth inside the portfolio, less what it is worth on its own. Exactly zero when a
+        holding is unrelated to everything else held. In order: cheap US stocks, cheap developed foreign stocks,
+        the international momentum fund, cheap emerging-market stocks, and trend.
       </p>
     </MarginNote>
 
@@ -379,8 +380,8 @@ import Base from "~/layouts/Base.astro";
     because a trend fund is momentum wearing a different coat.</p>
 
     <p>The mechanism is real. Check it every time. On this portfolio it is not what is going wrong, and what is
-    going wrong is duller: the standalone edges are small, they depend on premia nobody can sign, and stacking
-    does not repair either problem.</p>
+    going wrong is duller: the edges are small on their own, they rest on rewards nobody can show are still
+    positive, and stacking repairs neither problem.</p>
   </div>
 
   <div class="prose mt-14">
@@ -408,11 +409,11 @@ import Base from "~/layouts/Base.astro";
     <Figure id="rsst-trailing-year" inline showUnit={false} /> against the S&amp;P 500's
     <Figure id="rsst-trailing-year-benchmark" inline showUnit={false} />.</p>
 
-    <MarginNote label="Loading, not return">
+    <MarginNote label="Exposure, not return">
       <p>
         <span data-numeric>+0.681</span>, 95% range <span data-numeric>+0.406 to +0.955</span>, on 31 filed
-        monthly returns to <span data-numeric>2026-04</span>. A loading is exposure delivered, never return
-        earned. Nothing here signs a premium.
+        monthly returns to <span data-numeric>2026-04</span>. That is exposure delivered, never return earned.
+        Nothing here says the reward is still on the table.
       </p>
     </MarginNote>
 
@@ -460,8 +461,9 @@ import Base from "~/layouts/Base.astro";
     because cheap stocks and rising stocks are frequently opposites. Geography is nearly free breadth. Style is
     the real thing.</p>
 
-    <p>On our count a retail investor can reach <Figure id="engines-reachable" inline showUnit={false} />: broad
-    stocks, style tilts, government bonds, duration-hedged credit, managed futures, catastrophe risk. Gold,
+    <p>On our count an ordinary investor can reach <Figure id="engines-reachable" inline showUnit={false} />:
+    broad stocks, leaning toward one kind of stock, government bonds, corporate credit with the interest-rate risk
+    stripped out, managed futures, catastrophe risk. Gold,
     commodities, crypto, tail hedges, buffered funds, volatility selling, merger arbitrage and market-neutral
     funds were each tested and set aside, either because they duplicate something you already own or because the
     retail container costs more than the mechanism pays.</p>
@@ -492,9 +494,9 @@ import Base from "~/layouts/Base.astro";
 
   <Callout kind="change-your-mind">
     <p>
-      A sleeve correlation measured under 0.2 on a wider stack, or a retail wrapper that finances a genuinely
-      different engine at a cost the fee table can see, would raise the ceiling on this page. Nothing about the
-      arithmetic changes. The input does.
+      A correlation between holdings measured under 0.2 on a wider stack, or a fund you can actually buy that
+      borrows to add a genuinely different engine at a cost the fee table can see, would raise the ceiling on this
+      page. Nothing about the arithmetic changes. The input does.
     </p>
   </Callout>
 </Base>

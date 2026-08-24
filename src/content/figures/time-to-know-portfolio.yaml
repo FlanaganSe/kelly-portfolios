@@ -1,6 +1,6 @@
 label: Time before your own account could separate the whole portfolio from a cheap index fund
 value: 31 years
-unit: to 90% confidence, at 92 bp of edge against 400 bp of tracking error
+unit: to 90% confidence, at 0.92% of edge against 4.00% of drift
 status: unresolved
 asOf: '2026-08-23'
 source:
@@ -8,7 +8,7 @@ source:
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: 2-is-p-even-55
 note: >-
-  Against a same-split cheap core, of which 372 of the 400 basis points of drift is the trend
-  overlay alone. The same rule applied to the fee, tax and placement package returns about four
+  Against a cheap index fund holding the same mix, of which 372 of the 400 basis points of drift
+  is the trend fund alone. The same rule applied to the fee, tax and placement package returns about four
   months, and that contrast is the argument for doing the certain things first. Read it as a
   best case: the arithmetic treats the edge as known.

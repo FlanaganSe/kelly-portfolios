@@ -8,5 +8,5 @@ source:
   docPath: docs/research/harvesting-and-direct-indexing.md
   anchor: conclusion
 note: >-
-  It more than doubles the lock-in it exists to exploit. Modelled, on a 35%
-  idiosyncratic-volatility assumption that is itself below the measured 45.9%.
+  It more than doubles the lock-in it exists to exploit. Modelled, assuming each stock bounces
+  around by 35% a year on its own, which is below the 45.9% actually measured.

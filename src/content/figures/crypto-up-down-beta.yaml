@@ -1,10 +1,10 @@
 label: Bitcoin's move for each move in stocks
 value: 1.53x up, 1.62x down
-unit: beta to US equity, up months and down months
+unit: for each move in US stocks, up months and down months
 status: rejected
 asOf: '2026-08-23'
 source:
-  label: Alternative sleeves audit
+  label: Our audit of the alternatives
   docPath: docs/research/alternative-sleeves-audit.md
   anchor: 3-crypto-the-investor-asked-so-here-is-the-arithmetic
 note: >-

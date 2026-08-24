@@ -4,7 +4,7 @@ unit: since inception, on the issuer's own site at 2023-12-31
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: Alternative sleeves audit, tail hedging
+  label: Our audit of the alternatives, crash hedging
   docPath: docs/research/alternative-sleeves-audit.md
   anchor: 4-tail-hedging-the-bleed-is-measured-and-the-cheaper-substitutes-win
 note: >-

@@ -1,5 +1,5 @@
 label: SPMO added at a 5% weight
-value: +0.02%/yr
+value: +0.02% a year
 unit: against the same portfolio without it
 interval: '[−0.14%, +0.18%]'
 status: rejected
@@ -11,5 +11,5 @@ source:
 note: >-
   Rejected against this portfolio at this moment, not as a fund. Its active leg is +0.626
   correlated with the international momentum position already held, and the US momentum premium
-  since publication is +4.19 pp/yr against a 7.27 floor. SPMO replaces MTUM as the shelf's US
+  since publication is +4.19 percentage points a year against a 7.27 floor. SPMO replaces MTUM as the shelf's US
   momentum reference and is not bought.

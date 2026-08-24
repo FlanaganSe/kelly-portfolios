@@ -1,12 +1,13 @@
-label: Candidate crash-hedge engines with resolvable convexity
+label: Crash-hedge engines whose bend we could actually measure
 value: None of eight
 status: rejected
 asOf: '2026-08-23'
 source:
-  label: Alternative sleeves audit
+  label: Our audit of the alternatives
   docPath: docs/research/alternative-sleeves-audit.md
   anchor: 14-nothing-on-this-panel-is-convex-and-the-only-measured-convexity-has-the-wrong-sign
 note: >-
-  Fitting each engine to equity plus a separate term for equity's down months, with Newey-West
-  errors, over 137 to 1,194 months. The largest absolute t on the kink among the seven non-BAB
-  engines is 1.37. BAB's kink is resolvable at t = +3.49 and its sign is concave.
+  Fitting each engine to the stock market plus a separate term for the market's down months, over
+  137 to 1,194 months, with error bars that allow for calm clustering with calm. Among the seven
+  engines other than betting-against-beta, the strongest bend is 1.37 times the noise around it.
+  Betting-against-beta's bend is 3.49 times the noise, and it bends the wrong way.

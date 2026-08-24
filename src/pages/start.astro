@@ -17,7 +17,7 @@ import Base from "~/layouts/Base.astro";
 
 <Base
   title="Start here"
-  description="The six things to do, in the order that the size and the certainty of the payoff dictate. Fees first, because you would know in about four months. Clever construction last, because you would know in about thirty-one years."
+  description="The six things to do, in the order the size and the certainty of the payoff dictate. Fees first, because you would know in about four months. The clever parts last, because you would know in about thirty-one years."
 >
   <div class="prose">
     <Rail>The order</Rail>
@@ -229,8 +229,8 @@ import Base from "~/layouts/Base.astro";
   <Callout kind="open-question">
     <p>
       This research models a portfolio rather than a household. If you carry debt costing more than the after-tax
-      Treasury yield, paying it down is very likely the best risk-adjusted move available to you, and no fund on
-      any shelf competes with it. Nothing here prices that comparison.
+      Treasury yield, paying it down is very likely the best return available to you for the risk you take, and no
+      fund on any shelf competes with it. Nothing here prices that comparison.
     </p>
   </Callout>
 
@@ -291,9 +291,9 @@ import Base from "~/layouts/Base.astro";
     <p>Two traps worth precommitting against. Never move your review month once you have picked it, because the
     measured result moves 0.19 percentage points a year depending on whether you anchor in December, June or
     March, which is as large as the thing being measured, and because moving it is indistinguishable from reacting
-    to a fall. And never set a performance trigger on a holding you bought for diversification: at a 30% weight
-    such a holding trails in 43.8% of resampled ten-year histories even when its premium is positive, so the
-    trigger removes it precisely for doing its job.</p>
+    to a fall. And never set a performance trigger on a holding you bought as ballast: at a 30% weight such a
+    holding trails in 43.8% of simulated ten-year histories even when the extra return it is supposed to earn is
+    really there, so the trigger deletes it precisely for doing its job.</p>
   </div>
 
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
@@ -325,16 +325,16 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="The gap in it">
       <p>
-        86% of the tilt result comes from series beginning <span data-numeric>1990-11</span>, with no test on
-        years the idea had not already seen. Charging the funds their own fitted alphas moves it to 0.60% or
-        0.30% depending on the estimator.
+        86% of this result comes from data starting <span data-numeric>1990-11</span>, and nobody has ever run it
+        on years the idea had not already seen. Charge each fund the shortfall we measured for it and the number
+        falls to 0.60% or 0.30%, depending on the method.
       </p>
     </MarginNote>
 
-    <p>Tilting the equity toward cheap and profitable companies probably beats a cheap index fund by
-    <Figure id="tilt-gap" inline />, on an honest range of 0.30 to 1.32. That clears the smallest difference the
+    <p>Leaning your stock holdings toward cheap and profitable companies probably beats a cheap index fund by
+    <Figure id="tilt-gap" inline />, and the honest range is 0.30 to 1.32. That clears the smallest difference the
     test could see, narrowly, once you use error bars that allow for markets going quiet for years and then going
-    wild. It would take <Figure id="tilt-horizon" inline showUnit={false} /> before a test could separate that gap from zero, and
+    wild. It would take <Figure id="tilt-horizon" inline showUnit={false} /> before a study could separate that gap from zero, and
     86% of the result rests on data beginning in November 1990, which is also the only data the idea has ever been
     tested on.</p>
 
@@ -346,20 +346,21 @@ import Base from "~/layouts/Base.astro";
       </p>
     </MarginNote>
 
-    <p>The whole recommended portfolio, tilts and a trend fund together, reads 2.20 percentage points a year ahead
-    of a borrowing-matched index. The range runs 0.05 to 4.57, the smallest difference the design could see is
-    2.83, and the honest verdict is that we cannot tell. Set it against a cheap core holding the same split and
-    your own account would need <Figure id="time-to-know-portfolio" inline showUnit={false} /> to settle it, which is the
-    thirty-one years at the top of this page.</p>
+    <p>The whole recommended portfolio, that lean plus a trend fund, reads 2.20 percentage points a year ahead of
+    an index fund that borrows as much as it does. The range runs 0.05 to 4.57, the smallest difference the design
+    could see is 2.83, and the honest verdict is that we cannot tell. Set it against a plain cheap index fund
+    holding the same mix and your own account would need
+    <Figure id="time-to-know-portfolio" inline showUnit={false} /> to settle it, which is the thirty-one years at
+    the top of this page.</p>
 
     <p>If you do add anything, notice how you are paying for it. Selling 25% of your stocks to buy a trend fund
     and buying a fund that holds the stocks and the trend position at once, using borrowing inside the fund, are
     completely different purchases. The gap between them is <Figure id="funding-rule-swing" inline /> in the
-    arithmetic, which is larger than any premium this project has ever measured. Confusing the two has flipped
-    more conclusions here than any other single mistake.</p>
+    arithmetic, which is larger than any extra return this project has ever measured. Confusing the two has
+    flipped more conclusions here than any other single mistake.</p>
 
-    <p>And know what this feels like before you buy it. A US value tilt has run
-    <Figure id="value-tilt-drought" inline /> and has still not caught up. That is not a simulated worst case.
+    <p>And know what this feels like before you buy it. Owning cheap US stocks rather than the whole US market has
+    run <Figure id="value-tilt-drought" inline /> and still has not caught up. That is not a simulated worst case.
     That is the record, and you would have been checking it every month.</p>
   </div>
 
@@ -371,7 +372,8 @@ import Base from "~/layouts/Base.astro";
         <Rung level="cant-tell" showGloss />
       </div>
       <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">
-        Probably on the tilts. Can't tell on the whole construction, which is the honest verdict and not a no.
+        Probably on the lean toward cheap and profitable companies. Can't tell on the whole portfolio, which is
+        the honest verdict and not a no.
       </p>
     </div>
     <div>

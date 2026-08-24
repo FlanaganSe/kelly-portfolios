@@ -103,8 +103,8 @@ import Base from "~/layouts/Base.astro";
 
   <Callout kind="do-this">
     <p>
-      Open your plan statement and read one number: the expense ratio on the fund holding most of your money.
-      Under 10 basis points, skip to the next section. Over 50, you have found the largest reliable gain available
+      Open your plan statement and read one number: the yearly fee on the fund holding most of your money. Under
+      0.10% a year, skip to the next section. Over 0.50%, you have just found the largest reliable gain available
       to you today.
     </p>
   </Callout>
@@ -150,8 +150,8 @@ import Base from "~/layouts/Base.astro";
     <p>The arithmetic underneath is not a matter of opinion, and it is worth understanding once. At that much
     drift, the smallest yearly advantage that thirty years of your own account could actually demonstrate at 90%
     confidence is <Figure id="smallest-demonstrable-edge" inline />, roughly fourteen times what we can defend.
-    Point the same rule at the whole recommended portfolio, measured against a cheap core holding the same split,
-    and the wait comes out at <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
+    Point the same rule at the whole recommended portfolio, measured against a plain cheap index fund holding the
+    same mix, and the wait comes out at <Figure id="time-to-know-portfolio" inline showUnit={false} />.</p>
 
     <p>Four months for the fees. Thirty-one years for the rest of it, on one rule applied twice, and that contrast
     is the entire argument for doing the boring things first.</p>
@@ -192,28 +192,28 @@ import Base from "~/layouts/Base.astro";
       <thead>
         <tr class="border-b border-rule-strong text-left">
           <th scope="col" class="eyebrow py-2 pr-4">Compared with</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Edge</th>
-          <th scope="col" class="eyebrow py-2 pr-4 text-right">Drift</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">Edge, a year</th>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">Drift, a year</th>
           <th scope="col" class="eyebrow py-2">How sure</th>
         </tr>
       </thead>
       <tbody class="text-ink-muted">
         <tr class="border-b border-rule">
           <th scope="row" class="py-2 pr-4 text-left font-normal">The portfolio you hold now</th>
-          <td data-numeric class="py-2 pr-4 text-right">109 bp/yr</td>
-          <td data-numeric class="py-2 pr-4 text-right">46 bp</td>
+          <td data-numeric class="py-2 pr-4 text-right">1.09%</td>
+          <td data-numeric class="py-2 pr-4 text-right">0.46%</td>
           <td class="py-2"><Rung level="settled" /></td>
         </tr>
         <tr class="border-b border-rule">
           <th scope="row" class="py-2 pr-4 text-left font-normal">A cheap total-market index</th>
-          <td data-numeric class="py-2 pr-4 text-right">5.4 bp/yr</td>
-          <td data-numeric class="py-2 pr-4 text-right">313 bp</td>
+          <td data-numeric class="py-2 pr-4 text-right">0.054%</td>
+          <td data-numeric class="py-2 pr-4 text-right">3.13%</td>
           <td class="py-2"><Rung level="cant-tell" /></td>
         </tr>
         <tr>
-          <th scope="row" class="py-2 pr-4 text-left font-normal">The average investor's behaviour</th>
-          <td data-numeric class="py-2 pr-4 text-right">15 bp/yr</td>
-          <td data-numeric class="py-2 pr-4 text-right">150 bp</td>
+          <th scope="row" class="py-2 pr-4 text-left font-normal">What the average investor actually gets</th>
+          <td data-numeric class="py-2 pr-4 text-right">0.15%</td>
+          <td data-numeric class="py-2 pr-4 text-right">1.50%</td>
           <td class="py-2"><Rung level="might" /></td>
         </tr>
       </tbody>
@@ -240,9 +240,9 @@ import Base from "~/layouts/Base.astro";
 
   <Callout kind="change-your-mind">
     <p>
-      A fund shelf that cut its published edge below 20 basis points a year, or a decade of live returns in which
-      the tilted sleeves trailed the index by more than their stated drift, would move the second row of that
-      table from a coin flip to a rejection.
+      A fund shelf that cut its published edge below 0.20% a year, or a decade of real returns in which the funds
+      leaning toward cheap and profitable companies trailed the index by more than their stated drift, would move
+      the second row of that table from a coin flip to a rejection.
     </p>
   </Callout>
 

@@ -7,6 +7,6 @@ source:
   label: Part A, the portfolio for one investor
   docPath: docs/research/portfolio-for-one-investor.md
 note: >-
-  36.2 bp at a 30% wrapper, 31.3 at 25%. Net cost is expense ratio less median net
+  36.2 basis points at a 30% trend weight, 31.3 at 25%. Net cost is the fee less median net
   securities-lending income, from 50 fiscal years of Form N-CEN. RSST's lending was not read and
-  is carried at its full 99 bp.
+  is carried at its full 99 basis points.

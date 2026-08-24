@@ -1,4 +1,4 @@
-label: The equity tilts alone, against a cheap 65/35 index
+label: Leaning the stocks toward cheap and profitable companies, against a cheap 65/35 index
 value: 0.79%
 unit: a year
 interval: +0.30% to +1.32%
@@ -11,6 +11,6 @@ source:
 note: >-
   427 months to 2026-05, at 1.0% of drift. Positive in all five declared sub-periods and
   reproduced at 0.80% on a different fund list. Two things to carry with it: 86% of the result
-  comes from series beginning in November 1990, with no test on years the idea had not already
-  seen; and charging the funds their own fitted alphas moves it to 0.60% or 0.30% depending on
-  the estimator.
+  comes from data beginning in November 1990, and nobody has run it on years the idea had not
+  already seen; and charging each fund the shortfall measured for it moves the number to 0.60% or
+  0.30%, depending on the method.

@@ -7,6 +7,6 @@ source:
   label: Market scan 2026, bid-ask spreads
   docPath: docs/research/market-scan-2026.md
 note: >-
-  3.3 times its displayed net fee, and a round trip of about 66 bp. Against RSST's 9 bp it is a
-  24 bp/yr difference on a one-year hold, on a shelf where the entire fee dispersion among the
-  three wrapper candidates is 18 bp.
+  3.3 times its displayed net fee, and a round trip of about 66 basis points. Against RSST's 9
+  it is a 24 basis point a year difference on a one-year hold, on a shelf where the entire fee
+  spread among the three candidate funds is 18.

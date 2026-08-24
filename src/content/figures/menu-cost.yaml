@@ -7,6 +7,6 @@ source:
   label: Part A, the portfolio for one investor
   docPath: docs/research/portfolio-for-one-investor.md
 note: >-
-  9.12 bp/yr at a 30% wrapper and 6.00 at 25%, against the same plan at a rollover share of 1.
-  The repository's figure for the eight-fund original is 9.09 bp, which this reproduces. Larger
-  than the whole booked ordering edge.
+  9.12 basis points a year at a 30% trend weight and 6.00 at 25%, against the same plan wholly
+  rolled over. The project's figure for the eight-fund original is 9.09, which this reproduces.
+  Larger than the whole booked ordering edge.

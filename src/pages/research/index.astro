@@ -1,67 +1,166 @@
 ---
 /**
- * The research corpus, listed.
+ * The research corpus, grouped by the question each page answers.
  *
- * None of the files under `docs/research/` carries frontmatter, so the reading title and
- * the blurb are read out of each document at query time by `researchTitle` and
- * `researchLead`. Adding frontmatter to make a template tidier would edit evidence, and
- * this listing is the thing that has to bend instead.
+ * Alphabetical order is what a directory listing gives you and it tells a reader
+ * nothing: `adversarial-review` and `alternative-sleeves-audit` sit next to each other
+ * and answer unrelated questions. The grouping in `src/lib/research.ts` is written by
+ * hand for that reason, and the content config fails the build if a file appears under
+ * `docs/research/` without a place in it.
  *
- * Each row links to the file on GitHub rather than to an on-site render. Rendering the
- * corpus is a separate job with its own decisions about anchors and figure ids; a link
- * that resolves today is better than a route that does not exist yet.
+ * Every row links to a page on this site. None of these pages was rewritten for a
+ * general reader, which is what the note beside the heading says and what each page
+ * repeats above its own text.
  */
 import { getCollection } from "astro:content";
 import MarginNote from "~/components/MarginNote.astro";
 import Rail from "~/components/Rail.astro";
+import { StatusChip } from "~/components/StatusChip";
 import Base from "~/layouts/Base.astro";
-import { citationHref } from "~/lib/citation";
-import { researchLead, researchTitle } from "~/lib/research";
+import { decisionHref, researchHref, researchLead, RESEARCH_GROUPS, researchTitle } from "~/lib/research";
 
-const entries = (await getCollection("research"))
-  .filter((entry) => entry.data.draft !== true)
+const syntheses = await getCollection("research", (entry) => entry.data.draft !== true);
+const byId = new Map(
+  syntheses.map((entry) => [
+    entry.id,
+    { title: researchTitle(entry), lead: researchLead(entry), updated: entry.data.updated },
+  ])
+);
+
+const groups = RESEARCH_GROUPS.map((group) => ({
+  ...group,
+  rows: group.entries.map((meta) => ({
+    ...meta,
+    href: researchHref(meta.id),
+    ...(byId.get(meta.id) ?? { title: meta.id, lead: undefined, updated: undefined }),
+  })),
+}));
+
+const leading = groups.flatMap((group) => group.rows.filter((row) => row.loadBearing === true));
+
+const decisions = (await getCollection("decisions", (entry) => entry.data.draft !== true))
   .map((entry) => ({
     id: entry.id,
-    title: researchTitle(entry),
-    lead: researchLead(entry),
-    href: citationHref({ docPath: `docs/research/${entry.id}.md` }),
+    title: researchTitle(entry).replace(/^\d+\s*[—-]\s*/, ""),
+    number: entry.id.split("-")[0] ?? entry.id,
+    href: decisionHref(entry.id),
+    updated: entry.data.updated,
   }))
-  .sort((a, b) => a.title.localeCompare(b.title));
+  .sort((a, b) => a.number.localeCompare(b.number));
+
+const total = syntheses.length + decisions.length;
 ---
 
 <Base
   title="The research"
-  description="Every synthesis behind this site, one page per question. Several of them conclude that we could not tell."
+  description="Every synthesis behind this site, grouped by the question it answers. Several of them conclude that we could not tell."
 >
   <div class="prose">
     <Rail>The corpus</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The research</h1>
 
-    <MarginNote label="Why these link out">
+    <MarginNote label="Register">
       <p>
-        Each file lives in the repository and is linked there rather than re-rendered here. The figures on this
-        site name these documents by path, and the build fails if a path or a heading anchor stops resolving.
+        These pages were written for a technical reader and are printed here as written. Nothing has been
+        simplified, and every one of them names its data, its window and the yardstick it was measured against.
       </p>
     </MarginNote>
 
     <p>
-      One synthesis per question, <span data-numeric>{entries.length}</span> of them. Several conclude that the
-      instrument could not see the effect, which is a result and is written as one. Nothing has been removed
-      because it was disappointing.
+      <span data-numeric>{syntheses.length}</span> syntheses and <span data-numeric>{decisions.length}</span> decision
+      records, <span data-numeric>{total}</span> pages in all, sorted by the question each one answers rather than
+      by filename. Several conclude that the instrument could not see the effect, which is a result and is written
+      as one. Nothing has been removed because it was disappointing.
+    </p>
+
+    <p>
+      If you want the short version instead, the six pages in the masthead cover the same ground in plain English,
+      and each page below names the one that covers it.
     </p>
   </div>
 
-  <ul class="mt-10 flex flex-col gap-0 border-t border-rule">
+  <div class="prose mt-12">
+    <Rail>Start here</Rail>
+    <h2>The four that carry the argument</h2>
+    <p>
+      The rest of the corpus is evidence for these, or a test that one of these rests on.
+    </p>
+  </div>
+
+  <ul class="mt-5 grid gap-px border border-rule bg-rule sm:grid-cols-2">
     {
-      entries.map((entry) => (
-        <li class="border-b border-rule py-4">
-          <a href={entry.href} rel="noopener noreferrer" class="link font-medium">
-            {entry.title}
+      leading.map((row) => (
+        <li class="bg-paper p-4">
+          <a href={row.href} class="link font-medium">
+            {row.title}
           </a>
-          {entry.lead && <p class="mt-1.5 max-w-measure text-sm text-ink-muted">{entry.lead}</p>}
-          <p data-numeric class="mt-1 font-mono text-xs text-ink-faint">docs/research/{entry.id}.md</p>
+          {row.lead && <p class="mt-1.5 text-sm text-ink-muted">{row.lead.slice(0, 150)}…</p>}
         </li>
       ))
     }
   </ul>
+
+  {
+    groups.map((group) => (
+      <section class="mt-14">
+        <div class="prose">
+          <Rail>{group.question}</Rail>
+          <h2>{group.question}</h2>
+          <p class="text-base text-ink-muted">{group.blurb}</p>
+        </div>
+
+        <ul class="mt-5 flex flex-col border-t border-rule">
+          {group.rows.map((row) => (
+            <li class="border-b border-rule py-4">
+              <div class="flex flex-wrap items-baseline gap-x-3 gap-y-1">
+                <a href={row.href} class="link font-medium">
+                  {row.title}
+                </a>
+                {row.loadBearing === true && <span class="eyebrow">Load-bearing</span>}
+              </div>
+              {row.lead && <p class="mt-1.5 max-w-measure text-sm text-ink-muted">{row.lead}</p>}
+              <p class="mt-2 flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs text-ink-faint">
+                <StatusChip status={row.status} />
+                {row.updated && <span data-numeric>Last changed {row.updated}</span>}
+                <span data-numeric class="font-mono">
+                  docs/research/{row.id}.md
+                </span>
+              </p>
+            </li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  <section class="mt-14">
+    <div class="prose">
+      <Rail>Decisions</Rail>
+      <h2>The decision records</h2>
+      <p class="text-base text-ink-muted">
+        Why a durable choice was made, what it rests on, and what would reopen it. The syntheses above cite these
+        about fifty times, so they are rendered here rather than left on GitHub.
+      </p>
+    </div>
+
+    <ul class="mt-5 flex flex-col border-t border-rule">
+      {
+        decisions.map((record) => (
+          <li class="flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-rule py-3">
+            <span data-numeric class="font-mono text-xs text-ink-faint">
+              {record.number}
+            </span>
+            <a href={record.href} class="link">
+              {record.title}
+            </a>
+            {record.updated && (
+              <span data-numeric class="text-xs text-ink-faint">
+                {record.updated}
+              </span>
+            )}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </Base>

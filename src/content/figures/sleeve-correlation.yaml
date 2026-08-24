@@ -8,6 +8,6 @@ source:
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: correlation-measured
 note: >-
-  Measured on four modelled long-only tilts plus AQR's TSMOM standing in for the trend leg. It
+  Measured on four modelled leaning stock funds plus AQR's trend index standing in for trend. It
   is this portfolio's number, not a constant of nature. A genuinely wider stack would sit lower
   and have a higher ceiling.

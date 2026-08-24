@@ -1,6 +1,6 @@
 label: Time to confirm the fee, tax and placement savings from your own account
 value: about 4 months
-unit: to 90% confidence, at 89 bp of edge against 41 bp of tracking error
+unit: to 90% confidence, at 0.89% of edge against 0.41% of drift
 status: source-reproduced
 asOf: '2026-08-17'
 source:
@@ -10,5 +10,5 @@ source:
 note: >-
   The own-counterfactual row: a reference investor with an expensive active-fund alternative, a
   taxable account, more than one account type and continuing contributions, against an assumed
-  tracking error. Change any of those and the row moves towards the index row, where 90%
+  drift. Change any of those and the row moves towards the index row, where 90%
   confidence lies beyond any useful horizon.

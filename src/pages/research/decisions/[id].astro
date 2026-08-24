@@ -1,0 +1,43 @@
+---
+/**
+ * One decision record from `docs/decisions/`, rendered on this site.
+ *
+ * These are rendered rather than linked out because the syntheses cite them about fifty
+ * times — decision 0004 alone twenty-one times — and a reader sent to GitHub for the
+ * rationale behind a bar is a reader who has left. They sit under `/research/` rather
+ * than at a top-level route: a decision record is part of the corpus, and the masthead
+ * has one entry for the corpus.
+ */
+import { getCollection, render } from "astro:content";
+import { decisionNumber, researchLead, researchTitle } from "~/lib/research";
+import Document from "../_Document.astro";
+
+export async function getStaticPaths() {
+  const entries = await getCollection("decisions", (entry) => entry.data.draft !== true);
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const title = researchTitle(entry);
+const lead = researchLead(entry);
+const description = lead ? `${lead.slice(0, 180).trim()}${lead.length > 180 ? "…" : ""}` : title;
+---
+
+<Document
+  title={title}
+  description={description}
+  rail={`Decision ${decisionNumber(entry.id)}`}
+  docPath={`docs/decisions/${entry.id}.md`}
+  updated={entry.data.updated}
+  status={entry.data.status}
+  headings={headings}
+  crumbs={[
+    { name: "Kelly Portfolios", href: "/" },
+    { name: "Research", href: "/research/" },
+    { name: title, href: `/research/decisions/${entry.id}/` },
+  ]}
+>
+  <Content />
+</Document>

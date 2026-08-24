@@ -1,4 +1,4 @@
-label: Holding 30% of the wrapper against holding 25%, same seven funds
+label: Holding 30% of the trend fund against holding 25%, same seven funds
 value: 0.50 points, plausibly 0.23 to 0.77
 unit: percentage points per year
 interval: '[0.23, 0.77]'
@@ -9,7 +9,8 @@ source:
   docPath: docs/research/final-construction-test.md
   anchor: 1-the-tournament-on-the-portfolio-actually-recommended
 note: >-
-  The only whole-portfolio comparison in either tournament that clears its own detection floor.
-  Negative for the 25% arm in all seven declared sub-periods, −0.19 to −0.94. It is a statement
-  about borrowing rather than construction: the two portfolios differ by 5.4 points of gross
-  exposure, and at the panel's realised 9.83% US equity premium more exposure wins.
+  The only whole-portfolio comparison in either tournament that clears the smallest gap its own
+  test could see. Negative for the 25% arm in all seven declared sub-periods, −0.19 to −0.94. It
+  is a statement about borrowing rather than about how the thing is built: the two portfolios
+  differ by 5.4 points of exposure, and over a stretch where US stocks paid 9.83% a year above
+  cash, more exposure wins.

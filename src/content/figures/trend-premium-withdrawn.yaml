@@ -1,6 +1,6 @@
 label: The trend premium this site quoted and withdrew
 value: '1.80'
-unit: pp/yr, withdrawn
+unit: percentage points a year, withdrawn
 status: rejected
 asOf: '2026-08-23'
 source:

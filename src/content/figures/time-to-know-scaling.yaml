@@ -1,5 +1,5 @@
-label: Years to confirm the same 0.50 pp/yr edge, at two noise levels
-value: 24 days at 10 bp of tracking error, 105 years at 400 bp
+label: Years to confirm the same 0.50-point-a-year edge, at two levels of drift
+value: 24 days at 0.10% of drift, 105 years at 4.00%
 unit: to 90% confidence
 status: source-reproduced
 asOf: '2026-08-17'

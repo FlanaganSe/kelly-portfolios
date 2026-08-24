@@ -1,14 +1,14 @@
 label: Trend exposure the stacked fund actually delivered, measured from its own filings
 value: '+0.681'
-unit: loading, with 95% range +0.406 to +0.955
+unit: of trend delivered, with a 95% range of +0.406 to +0.955
 status: exploratory
 asOf: '2026-08-23'
 period: 31 months, 2023-10 to 2026-04
 source:
-  label: Loading comparability and wrapper exposure, the wrapper's trend loading
+  label: What a delivered exposure can be compared with, and the fund's trend exposure
   docPath: docs/research/loading-comparability-and-wrapper-exposure.md
   anchor: 2-the-wrappers-trend-loading
 note: >-
   Regressed on AQR's TSMOM from the fund's own filed monthly returns, with a sister fund holding
-  no trend at all reading −0.10 as a control. A loading is exposure delivered, never return
+  no trend at all reading −0.10 as a control. That figure is exposure delivered, never return
   earned. Nothing here signs a premium.

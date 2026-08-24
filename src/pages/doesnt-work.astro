@@ -75,12 +75,12 @@ import Base from "~/layouts/Base.astro";
   <div class="prose mt-14">
     <Rail>Timing</Rail>
 
-    <h2>The 200-day moving average</h2>
+    <h2>Selling when the market drops below its own long-run average</h2>
 
     <MarginNote label="Source">
       <p>
         <a href="https://github.com/FlanaganSe/kelly-portfolios/blob/main/docs/research/timing-rules-on-the-equity-sleeve.md"
-          >Timing rules on the equity sleeve</a
+          >Timing rules on the stock holdings</a
         >: 1,190 months of US data, 46 variants, as of <span data-numeric>2026-08-23</span>. The effective sample
         is 73 round trips, which is why a century resolves so little.
       </p>
@@ -100,8 +100,8 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="Tax, by account third">
       <p>
-        In a Roth the rule trails buy-and-hold by 1.04 pp/yr; in a top-bracket taxable account with a basis
-        step-up, by 2.96. The difference is the tax the rule itself creates.
+        In a Roth the rule trails simply holding by 1.04 percentage points a year. In a top-bracket taxable
+        account held until death, by 2.96. The difference is the tax the rule itself creates.
       </p>
     </MarginNote>
 
@@ -117,28 +117,30 @@ import Base from "~/layouts/Base.astro";
     wealth relative to simply holding peaked in June 1932 and has sat under that peak for all 1,128 months
     since.</p>
 
-    <p>One part of it is real and we want to say so plainly. The drawdown reduction is large, mechanical, and
-    repeats in developed markets, in emerging markets and in the 1871 to 1926 sample:
-    <Figure id="timing-rule-drawdown" inline />. Truncating the left tail truncates the left tail. That is
-    arithmetic rather than a premium, which is exactly why it survives when the average return does not.</p>
+    <p>One part of it is real and we want to say so plainly. It cuts the worst fall a long way, it does so
+    mechanically, and it repeats in developed markets, in emerging markets and in the 1871 to 1926 sample:
+    <Figure id="timing-rule-drawdown" inline />. Cutting off the worst outcomes cuts off the worst outcomes. That
+    is arithmetic rather than a reward for taking risk, which is exactly why it survives when the average return
+    does not.</p>
 
     <p>The trouble is that three cheaper things buy the same protection. Holding less stock buys it free, with no
-    tax and no discipline required. A trend fund buys the same signal across roughly fifty markets, long and
-    short, financed instead of funded by selling, and the timing rule's own active return loads +0.232 on that
-    index with a negative alpha over it. Rebalancing, the fourth candidate, buys no drawdown reduction at any
-    price: every policy we tested had an equal or worse worst loss than leaving the portfolio alone.</p>
+    tax and no discipline required. A trend fund buys the same signal across roughly fifty markets, betting both
+    ways, paid for by borrowing rather than by selling your stocks; and the timing rule's own returns turn out to
+    be 0.232 of that same signal, with less than nothing left over. Rebalancing, the fourth candidate, buys no
+    reduction in the worst fall at any price: every policy we tested had an equal or worse worst loss than leaving
+    the portfolio alone.</p>
 
     <MarginNote label="The one part that survives">
       <p>
-        The drawdown reduction is the single claim on that page that clears its own floor, because truncating the
-        left tail is arithmetic rather than a premium. It repeats in developed ex-US, in emerging markets and in
-        1871 to 1926.
+        Cutting the worst fall is the single claim on that page that clears its own floor, because cutting off the
+        worst outcomes is arithmetic rather than a reward for taking risk. It repeats in developed markets outside
+        the US, in emerging markets and in 1871 to 1926.
       </p>
     </MarginNote>
 
-    <p>What would reopen it. An investor who holds no trend fund, has no taxable account, and has a drawdown limit
-    that a lower stock allocation cannot reach. That person exists. If it is you, the rule is defensible and the
-    tax figure above is not your tax figure.</p>
+    <p>What would reopen it. An investor who holds no trend fund, has no taxable account, and cannot get the fall
+    he can live with down far enough by simply holding less stock. That person exists. If it is you, the rule is
+    defensible and the tax figure above is not your tax figure.</p>
 
   </div>
 
@@ -149,19 +151,19 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="Updated">
       <p>
-        The worst-decile count was recomputed on <span data-numeric>2026-08-23</span> and moved in bitcoin's
-        favour, from 1 of 13 to 2 of 12. Mean bitcoin return in those months is −5.0%, not −7.51%.
+        The count over the market's worst months was recomputed on <span data-numeric>2026-08-23</span> and
+        moved in bitcoin's favour, from 1 of 13 to 2 of 12. Bitcoin's average return in those months is −5.0%, not
+        −7.51%.
       </p>
     </MarginNote>
 
     <p>Give this one a fair hearing, because parts of the case have genuinely improved. The spot ETFs hold real
-    money, with IBIT alone holding $58.78bn. Thirty-day realised volatility has fallen to about 42% a year, the
-    narrowest gap to the S&amp;P 500 on record. Regulation opened up in September 2025. A financed vehicle now
-    exists.</p>
+    money, with IBIT alone holding $58.78bn. It now bounces around by about 42% a year, the narrowest gap to the
+    S&amp;P 500 on record. Regulation opened up in September 2025. A fund that borrows to hold it now exists.</p>
 
     <p>None of that is the diversification claim, and the diversification claim is what we tested.</p>
 
-    <p>Measured against US equity month by month, bitcoin runs
+    <p>For every move in US stocks, bitcoin moves
     <Figure id="crypto-up-down-beta" inline showUnit={false} />. The relationship is not weak.
     It is strong and steep in both directions, which is backwards for something bought as ballast. Across the
     worst 10% of months for the S&amp;P 500 over the last decade, bitcoin was positive in
@@ -173,7 +175,7 @@ import Base from "~/layouts/Base.astro";
     an equity dip. When a diversifier's best showing is a coincidence of calendars, you own two bets rather than a
     hedge.</p>
 
-    <p>It was also the only sleeve we tested that made the whole portfolio's worst loss deeper at every weight we
+    <p>It was also the only thing we tested that made the whole portfolio's worst loss deeper at every weight we
     tried.</p>
 
     <MarginNote label="Read on a date">
@@ -203,24 +205,25 @@ import Base from "~/layouts/Base.astro";
   <div class="prose mt-14">
     <Rail>Tail hedges</Rail>
 
-    <h2>Crash insurance</h2>
+    <h2>Funds that promise to pay off in a crash</h2>
 
     <MarginNote label="Method">
       <p>
-        Each engine's return fitted to equity plus a separate term for equity's down months, with Newey-West
-        errors, over 137 to 1,194 months. The largest absolute t on the kink among the seven non-BAB engines is
-        1.37.
+        Each engine's return fitted to the stock market plus a separate term for the market's down months only,
+        over 137 to 1,194 months, with error bars that allow for calm clustering with calm and panic with panic.
+        Across the seven engines other than betting-against-beta, the strongest bend is 1.37 times the noise
+        around it.
       </p>
     </MarginNote>
 
     <p>The pitch is a fund that pays enormously when the market falls apart, so you can hold more stock the rest
     of the time. What would make one worth buying is a payoff that bends: modest help in an ordinary fall, huge
-    help in a real crash. In finance that bend is called convexity, and the bend is the entire product.</p>
+    help in a real crash. The bend is the entire product.</p>
 
-    <p>We went looking for it across eight candidate engines, fitting each one's return to the equity return plus
-    a separate term for equity's down months only, with error bars that allow for markets clustering calm with
-    calm and panic with panic. <Figure id="tail-hedge-convexity" inline />. The only bend we could resolve belongs
-    to betting-against-beta, and it points the wrong way: it gets worse as stocks get worse.</p>
+    <p>We went looking for it across eight candidate engines, fitting each one's return to the market's return
+    plus a separate term for the market's down months only, with error bars that allow for markets clustering calm
+    with calm and panic with panic. <Figure id="tail-hedge-convexity" inline />. The only bend we could measure at
+    all belongs to betting-against-beta, and it points the wrong way: it gets worse as stocks get worse.</p>
 
     <p>The products bear it out. Cambria's TAIL has compounded at <Figure id="tail-fund-bleed" inline /> since
     April 2017. In 2020, when stocks fell about a third inside five weeks, it made 7.0%. In 2022, when stocks fell
@@ -254,7 +257,7 @@ import Base from "~/layouts/Base.astro";
   <div class="prose mt-14">
     <Rail>Direct indexing</Rail>
 
-    <h2>Direct indexing</h2>
+    <h2>Owning the shares yourself so a computer can bank the tax losses</h2>
 
     <MarginNote label="The binding rule">
       <p>
@@ -275,8 +278,8 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="Modelled">
       <p>
-        The lock-in figure rests on a 35% idiosyncratic-volatility assumption, which is itself below the measured
-        45.9%, so it understates rather than overstates the cage.
+        The lock-in figure assumes each individual stock bounces around by 35% a year on its own, below the 45.9%
+        actually measured, so it understates rather than overstates the cage.
       </p>
     </MarginNote>
 
@@ -335,53 +338,55 @@ import Base from "~/layouts/Base.astro";
 
     <MarginNote label="A digression worth the space">
       <p>
-        About 40% of gold's full half-century Sharpe ratio comes from the forty months to December 1974.
-        Private US gold ownership was illegal throughout that stretch.
+        About 40% of gold's full half-century score comes from the forty months to December 1974. Private US gold
+        ownership was illegal throughout that stretch.
       </p>
     </MarginNote>
 
-    <p>Gold pays 12 basis points a month over Treasury bills, at 16.24% volatility, with a worst-ever fall of
-    91.2%. Its Sharpe ratio over half a century is <Figure id="gold-sharpe" inline />. Its correlation to stocks
-    is zero rather than negative, both overall and inside equity drawdowns.</p>
+    <p>Gold pays 0.12% a month over Treasury bills, bounces around by 16.24% a year, and has fallen 91.2% from a
+    peak. Measured as return per unit of that bumpiness, over half a century it scores
+    <Figure id="gold-sharpe" inline />. It moves with stocks at zero rather than against them, both overall and
+    inside the falls where you would want it.</p>
 
     <p>Gold does diversify. Cash diversifies nearly as well and costs nothing.</p>
 
-    <p>Funding decides the sign, as it does everywhere on this site. At a 10% weight funded by selling stocks,
-    gold subtracts 0.404 percentage points a year against the same portfolio without it; financed, it adds 0.18 to
-    0.22 against that same comparison. Both readings sit inside the design's own detection floor of 0.63 to 1.04,
-    so neither is resolved.</p>
+    <p>How you pay for it decides the sign, as it does everywhere on this site. At a 10% weight paid for by
+    selling stocks, gold subtracts 0.404 percentage points a year against the same portfolio without it. Bought
+    with borrowed money on top, it adds 0.18 to 0.22 against that same comparison. The smallest gap this design
+    could reliably see is 0.63 to 1.04, and both readings sit inside it, so neither is resolved.</p>
 
-    <p>Now the digression, because it is too good to leave out. About 40% of gold's entire half-century Sharpe
-    ratio comes from the forty months between September 1971 and December 1974. Private US gold ownership was
-    illegal for the whole of that stretch. The strongest evidence for gold in an American portfolio is a period in
-    which an American could not lawfully hold it.</p>
+    <p>Now the digression, because it is too good to leave out. About 40% of that half-century score comes from
+    the forty months between September 1971 and December 1974. Private US gold ownership was illegal for the whole
+    of that stretch. The strongest evidence for gold in an American portfolio is a period in which an American
+    could not lawfully hold it.</p>
 
   </div>
 
   <div class="prose mt-14">
     <Rail>Anti-beta</Rail>
 
-    <h2>Low-volatility and anti-beta funds</h2>
+    <h2>Funds that own the boring stocks and bet against the exciting ones</h2>
 
-    <MarginNote label="The only resolvable bend">
+    <MarginNote label="The one bend we can measure">
       <p>
-        Beta runs −0.264 in up months against +0.118 in down months, t = 3.49. It is the one convexity on the
-        whole panel we can resolve, and its sign is concave.
+        How much it moves with the market runs −0.264 in up months against +0.118 in down months, and the
+        difference is about three and a half times the noise around it. It is the one bend on the whole panel we
+        can measure, and it bends the wrong way.
       </p>
     </MarginNote>
 
-    <p>Sold as the defensive tilt: own the boring stocks, short the exciting ones, sleep at night. The mechanism
-    is selling borrowing capacity to investors who cannot borrow, and it is measurably concave, which is the only
-    resolvable bend on our whole panel and its sign is wrong. Beta to the market runs −0.264 in up months against
-    +0.118 in down months, and that difference has a t-statistic of 3.49, meaning the signal is about three and a
-    half times the size of the noise around it. The strategy fell 31.6% through the global financial crisis and
-    30.6% through 1929 to 1932, because a crisis is precisely when borrowing gets withdrawn.</p>
+    <p>Sold as the defensive move: own the boring stocks, bet against the exciting ones, sleep at night. The
+    mechanism is selling borrowing capacity to investors who cannot borrow, and it measurably bends the wrong way,
+    which makes it the only bend on our whole panel we can see at all. How much it moves with the market runs
+    −0.264 in up months against +0.118 in down months, and that difference is about three and a half times the
+    size of the noise around it. The strategy fell 31.6% through the global financial crisis and 30.6% through
+    1929 to 1932, because a crisis is precisely when borrowing gets withdrawn.</p>
 
-    <p>The retail vehicle makes it worse. BTAL charges 1.65% gross and 1.40% net, and the advertised 0.45%
-    excludes the dividend and brokerage expense on the short book, which is where the cost lives. Since inception
-    it has returned <Figure id="btal-return" inline />.</p>
+    <p>The fund you can buy makes it worse. BTAL charges 1.65% before waivers and 1.40% after, and the advertised
+    0.45% leaves out the dividend and brokerage expense on the shares it sells short, which is where the cost
+    lives. Since it launched it has returned <Figure id="btal-return" inline />.</p>
 
-    <p>Its full-sample correlation to stocks is −0.139, which reads as a diversifier and is a trap. A low average
+    <p>Over its whole history it moves with stocks at −0.139, which reads as ballast and is a trap. A low average
     correlation is a reason to look. It is never on its own a reason to buy.</p>
 
   </div>
@@ -407,10 +412,11 @@ import Base from "~/layouts/Base.astro";
 
     <p>SPMO is the same idea built better: 13 basis points against MTUM's 15, 44% turnover against 116%, and a
     distribution tax drag below the total-market fund's own. At a 5% weight it is worth
-    <Figure id="spmo-sleeve-line" inline />. Two things sink it. The US momentum premium since publication is
-    +4.19 percentage points a year against a detection floor of 7.27, so we cannot sign it at all; and SPMO's
-    active position is +0.626 correlated with the international momentum fund already held, a tighter overlap than
-    MTUM's. SPMO replaces MTUM as the reference product on our shelf and is not bought.</p>
+    <Figure id="spmo-sleeve-line" inline />. Two things sink it. Since the idea was published, US momentum has
+    paid +4.19 percentage points a year, and the smallest gap that test could reliably see is 7.27, so we cannot
+    even tell you the direction. And SPMO's active position moves with the international momentum fund we already
+    hold at +0.626, a tighter overlap than MTUM's. SPMO replaces MTUM as the reference product on our shelf and is
+    not bought.</p>
 
     <p>RPV holds the deepest value exposure available, +0.369 over a plain value fund. It pays for that by selling
     profitability and momentum, at −0.204 and −0.173, on 42% annual turnover against the plain fund's 8%. Its
