@@ -58,16 +58,18 @@ const BOTTOM_RULE_Y = OG_HEIGHT - 118;
 const OPTICAL_LIFT = Math.round((BOTTOM_RULE_Y - TOP_RULE_Y) * 0.02);
 
 /**
- * Source Serif 4's cap height and descender, as fractions of the em.
+ * How far Source Serif 4's ascenders reach above the baseline, as a fraction of the
+ * em. Measured off a rendered card rather than read out of the font: 76px of ink above
+ * the baseline at a 104px size.
  *
- * Centring a paragraph on its *line boxes* puts a title visibly high in the band: the
- * ascender space above the capitals is empty and the descender space below is empty
- * too unless the title happens to contain a `g`. Centring on the ink instead — cap
- * height down to a half descender, whether or not this particular title reaches
- * either — puts every card in the same place and puts it where the eye expects.
+ * Centring a paragraph on its *line boxes* puts a title visibly high in the band,
+ * because the leading above the ascenders and the descender space below are both
+ * empty. Centring the ink instead — ascender height down to the last baseline, whether
+ * or not this particular title happens to have a descender — puts every card in the
+ * same place. A title that does descend then sits a few pixels high, which is the
+ * direction the eye forgives.
  */
-const CAP_HEIGHT = 0.67;
-const DESCENDER = 0.28;
+const ASCENDER = 0.73;
 
 /**
  * The title is set as large as it can be without running past three lines or out of
@@ -77,8 +79,11 @@ const DESCENDER = 0.28;
 const TITLE_MAX = 104;
 const TITLE_MIN = 46;
 const TITLE_STEP = 2;
-const TITLE_MAX_LINES = 3;
+const TITLE_MAX_LINES = 4;
 const TITLE_LINE_HEIGHT = 1.14;
+
+/** Clear air the title keeps above and below itself, so it never crowds a rule. */
+const TITLE_INSET = 44;
 
 const FONT_DIR = "src/assets/fonts";
 const FONT_FILES = ["SourceSerif4-Semibold-latin.ttf", "Inter-Semibold-latin.ttf"] as const;
@@ -207,7 +212,7 @@ interface FittedTitle {
  * Returns the built paragraph so the caller does not lay it out a second time.
  */
 function fitTitle(kit: CanvasKit, fonts: FontMgr, title: string): FittedTitle {
-  const band = BOTTOM_RULE_Y - TOP_RULE_Y - 48;
+  const band = BOTTOM_RULE_Y - TOP_RULE_Y - TITLE_INSET * 2;
   let fallback: FittedTitle | undefined;
   for (let size = TITLE_MAX; size >= TITLE_MIN; size -= TITLE_STEP) {
     const paragraph = buildTitle(kit, fonts, title, size);
@@ -231,8 +236,8 @@ function titleTop({ paragraph, size }: FittedTitle): number {
   const last = lines[lines.length - 1];
   if (!first || !last) return TOP_RULE_Y;
 
-  const inkTop = first.baseline - CAP_HEIGHT * size;
-  const inkBottom = last.baseline + (DESCENDER * size) / 2;
+  const inkTop = first.baseline - ASCENDER * size;
+  const inkBottom = last.baseline;
   const band = BOTTOM_RULE_Y - TOP_RULE_Y;
   return TOP_RULE_Y + band / 2 - OPTICAL_LIFT - (inkTop + inkBottom) / 2;
 }
