@@ -51,6 +51,7 @@ pnpm biome check
 pnpm typecheck
 pnpm test
 pnpm lint:prose
+pnpm lint:figures
 pnpm build
 ```
 

@@ -30,6 +30,12 @@ jobs:
       - name: House voice
         run: pnpm lint:prose
 
+      # 126 figure records, and until now nothing in CI read them. The build's collection
+      # schema only reaches the ones a page renders; this walks every file, so a record
+      # nothing links to yet still has to carry a real status, source and date.
+      - name: Figure records
+        run: pnpm lint:figures
+
       - name: Types
         run: pnpm typecheck
 

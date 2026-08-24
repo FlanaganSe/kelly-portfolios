@@ -53,7 +53,8 @@ Client: Node 22 and pnpm 10.
 pnpm biome check
 pnpm typecheck
 pnpm test
-pnpm lint:prose   # the house voice, on reader-facing pages
+pnpm lint:prose   # the house voice, on pages and on the prose inside src/content/
+pnpm lint:figures # every figure record's id, status, source and date
 pnpm build
 ```
 

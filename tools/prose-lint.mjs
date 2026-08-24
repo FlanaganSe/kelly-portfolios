@@ -10,14 +10,52 @@
 //
 // A pattern hit is an error. A density warning is a warning: these measure habits,
 // and a single page may legitimately sit outside a band.
+//
+// Prose reaches a reader through `src/content/` as well as through a page: a figure's
+// note is printed under its number and a data module's `reason` or `gloss` is printed
+// verbatim. So this reads `.yaml` records and `.ts` modules too, and in both it reads
+// the prose fields rather than the whole file. What it deliberately does not read: a
+// test file, which quotes the copy it asserts on; an address, meaning `docPath`,
+// `anchor`, `id`, `ticker` and their kind; and a measurement, meaning `value`, `unit`,
+// `interval` and `period`, which are the fact as its source printed it.
 
 import { readFileSync, readdirSync, statSync } from 'node:fs'
-import { join, extname } from 'node:path'
+import { join, extname, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { dirname } from 'node:path'
+import * as yaml from 'js-yaml'
 
 const here = dirname(fileURLToPath(import.meta.url))
-const TEXT_EXT = new Set(['.md', '.mdx', '.ts', '.tsx', '.astro', '.html'])
+const TEXT_EXT = new Set(['.md', '.mdx', '.ts', '.tsx', '.astro', '.html', '.yaml', '.yml'])
+
+/**
+ * The keys of a YAML record whose value is reader-facing prose.
+ *
+ * A figure record is mostly data. `value`, `unit`, `interval`, `period`, `status` and
+ * `asOf` are the fact as its source printed it and are not the linter's business — a
+ * unit reading "percent of simulated thirty-year paths" is a measurement, not writing.
+ * What a reader meets as sentences is the caption above the number, the note beneath it
+ * and the citation's link text, so those are what this checks. Everything else in the
+ * record, `source.docPath` and `source.anchor` included, is a path or a slug and would
+ * report a heading called `3-what-makes-a-sleeve-worth-adding` as writing.
+ */
+const YAML_PROSE_KEYS = new Set(['label', 'note', 'caption', 'summary', 'why', 'gloss', 'caution', 'blurb'])
+
+/** Every prose-bearing string in a parsed YAML document, in document order. */
+function yamlProse(node, key = null, out = []) {
+  if (typeof node === 'string') {
+    if (key !== null && YAML_PROSE_KEYS.has(key)) out.push(node)
+    return out
+  }
+  if (Array.isArray(node)) {
+    for (const item of node) yamlProse(item, key, out)
+    return out
+  }
+  if (node && typeof node === 'object') {
+    for (const [k, v] of Object.entries(node)) yamlProse(v, k, out)
+  }
+  return out
+}
 
 /** PCRE `\x{...}` is not JS. Rewrite to `\u{...}` and flag the pattern as unicode. */
 function compile(source) {
@@ -63,6 +101,19 @@ function loadRules() {
  */
 function proseOf(text, ext) {
   let s = text
+  // A YAML record is data with prose in a few named fields. Pull those out first and let
+  // the generic strips below run over them, so a note quoting `AVUV` in backticks is
+  // treated the same way it would be in Markdown.
+  if (ext === '.yaml' || ext === '.yml') {
+    let doc
+    try {
+      doc = yaml.load(s)
+    } catch (err) {
+      console.error(`skipping unparseable YAML: ${err.message}`)
+      return ''
+    }
+    s = yamlProse(doc).join('\n\n')
+  }
   // An .astro file opens with a `---` fenced script, and .md/.mdx open with YAML
   // frontmatter. Both fences are syntax rather than the Markdown horizontal rule the
   // typography rule hunts, and neither body is reader-facing prose.
@@ -72,11 +123,32 @@ function proseOf(text, ext) {
   s = s.replace(/`[^`\n]*`/g, '')
   s = s.replace(/^\s*(import|export)\s.*$/gm, '')
   s = s.replace(/\]\([^)]*\)/g, ']')
-  s = s.replace(/https?:\/\/\S+/g, '')
+  // `\S+` would swallow the quote and comma that close `href: "https://…htm",`, and the
+  // literal scan below pairs quotes naively: one unbalanced quote inverts the pairing for
+  // the rest of the file, so raw source lints as prose and real prose goes unread. Stop at
+  // the delimiter instead.
+  s = s.replace(/https?:\/\/[^\s"'`]+/g, '')
   if (ext === '.ts' || ext === '.tsx' || ext === '.astro') {
     s = s.replace(/^\s*\/\/.*$/gm, '')
     s = s.replace(/\/\*[\s\S]*?\*\//g, '')
     s = s.replace(/\b(class|className|href|src|id|key|slug|path|docPath)=(["'])[^"']*\2/g, '')
+    // The same fields again in their object-literal spelling. A data module addresses a
+    // research file by path and a heading by slug, so `docPath: "docs/research/
+    // marginal-sleeve-value.md"` and `anchor: "3-what-makes-a-sleeve-worth-adding"` are
+    // addresses. Reporting them as jargon would push the fix onto the corpus's filenames
+    // rather than onto the writing, which is the wrong file to edit.
+    s = s.replace(/\b(?:href|src|id|key|slug|path|docPath|anchor|ticker|factor|route|file|category)\s*:\s*(["'])[^"'\n]*\1/g, '')
+    // And the measurement fields, for the reason {@link YAML_PROSE_KEYS} gives: a value
+    // reading "8,563 → 2,105 → 44" is a count at three stages of a screen, not an arrow
+    // used as punctuation.
+    s = s.replace(/\b(?:value|unit|interval|period)\s*:\s*(["'])[^"'\n]*\1/g, '')
+    // A string union is an identifier that happens to be spelled with quotes. `type
+    // ShelfCategory = … | "capital-efficient"` is the same kind of address as an `id`,
+    // and the words a reader actually sees for it live in the page's own label map.
+    s = s.replace(/\btype\s+\w+(?:<[^>]*>)?\s*=[\s\S]*?;/g, '')
+    // The `export type X =` line is already gone by here, so a union broken over several
+    // lines survives as bare `| "member"` continuations. Those are members too.
+    s = s.replace(/^\s*\|\s*(["'])[^"'\n]*\1\s*;?\s*$/gm, '')
   }
 
   // A `.ts` data module is mostly identifiers. Its reader-facing copy is always inside a
@@ -144,10 +216,13 @@ function density(prose) {
   return out
 }
 
+/** A test file quotes the copy it asserts on. Linting it would report the same sentence twice. */
+const isTest = (file) => /\.(test|spec)\.[jt]sx?$/.test(basename(file))
+
 function walk(target, acc = []) {
   const st = statSync(target)
   if (st.isFile()) {
-    if (TEXT_EXT.has(extname(target))) acc.push(target)
+    if (TEXT_EXT.has(extname(target)) && !isTest(target)) acc.push(target)
     return acc
   }
   for (const entry of readdirSync(target)) {
