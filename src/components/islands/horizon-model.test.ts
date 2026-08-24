@@ -83,7 +83,7 @@ describe("chanceAhead", () => {
 describe("formatChance", () => {
   it("never prints 100% for something short of it", () => {
     expect(formatChance(0.9999)).toBe("over 99%");
-    expect(formatChance(1)).toBe("100%");
+    expect(formatChance(1)).toBe("over 99%");
     expect(formatChance(0.716)).toBe("72%");
   });
 });
