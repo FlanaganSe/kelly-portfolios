@@ -191,11 +191,11 @@ function density(prose) {
   const bold = (prose.match(/\*\*[^*]+\*\*/g) ?? []).length
   if (per(bold, 100) > 1) warn(`bold runs ${per(bold, 100).toFixed(1)}/100 words (want <= 1)`)
 
-  const digits = (prose.match(/\d/g) ?? []).length
-  if (per(digits, 500) < 3) warn(`only ${per(digits, 500).toFixed(1)} digits/500 words — too few concrete numbers`)
-
-  const proper = new Set(prose.match(/(?<![.!?]\s)(?<!^)\b[A-Z][a-z]{2,}\b/g) ?? [])
-  if (per(proper.size, 500) < 2) warn(`only ${per(proper.size, 500).toFixed(1)} distinct proper nouns/500 words — too abstract`)
+  // Two rules lived here once: a minimum digit count and a minimum count of distinct
+  // proper nouns, both per 500 words. They were meant to stop the prose going abstract.
+  // What they actually did was reward stuffing a number and a fund name into every
+  // paragraph, which is most of why the old pages read the way they did. A paragraph
+  // that needs no number should be allowed to have none.
 
   const bland = (prose.match(/\b(is|are|was|were)\b/gi) ?? []).length
   const puffed = (prose.match(/\b(serves as|stands as|represents|features)\b/gi) ?? []).length
