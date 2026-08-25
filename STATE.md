@@ -10,9 +10,8 @@ never a guarantee, and never a claim that any portfolio beats an index.
 
 ## What the site is now
 
-Astro 7.2.4, static HTML per route, **17.5 kB of JavaScript for the whole site**. Solid is
-installed for islands but no island has landed yet. The previous client-routed app is
-still in the tree behind `pnpm dev:legacy` and is deployed nowhere.
+Astro 7.2.4, static HTML per route, **17.5 kB of JavaScript for the whole site**. Two Solid islands
+are hydrated: the account-placement tool and the how-long-until-you-know tool.
 
 The editorial spine every page follows: say what to do, then why, then how sure we are,
 then what would change our mind, then the evidence. The old site did the last three well

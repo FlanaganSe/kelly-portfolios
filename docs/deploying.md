@@ -176,5 +176,4 @@ pnpm build      # astro build, then pagefind indexes dist/
 pnpm preview    # serves dist/ on http://localhost:4321
 ```
 
-`pnpm build:legacy` still builds the old client-routed application into `dist-legacy/`.
 It is kept as a reference while pages are ported and is deployed nowhere.

@@ -46,6 +46,3 @@ jobs:
       # catches a figure whose citation points at a file or heading that has moved.
       - name: Build
         run: pnpm build
-
-      - name: The legacy client still builds
-        run: pnpm build:legacy

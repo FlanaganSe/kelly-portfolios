@@ -18,10 +18,9 @@ or publication gates must state their scope and what evidence would change the d
 
 ## Non-obvious traps
 
-- Two applications share this tree. Astro owns `src/pages/`, `src/layouts/`, `src/content.config.ts`
-  and `src/content/figures/`, and is what deploys. The client-routed application under
-  `src/routes/` and `src/App.tsx` is the reference being ported from; `pnpm build:legacy`
-  builds it into `dist-legacy/` and nothing publishes it.
+- Astro owns `src/pages/`, `src/layouts/`, `src/content.config.ts` and `src/content/figures/`,
+  and is what deploys. `vite.config.ts` exists only to configure Vitest; it does not build
+  the site.
 - Content-collection schemas run only during `astro build`. `astro check` does not evaluate
   them, so `pnpm build` is the gate that catches a figure citing a heading that has moved.
 - Internal links carry a trailing slash. The build emits `<route>/index.html` under
