@@ -1,12 +1,42 @@
 @import "tailwindcss";
 
 /* ---------------------------------------------------------------------------
+   Faces.
+
+   Self-hosted, latin subset, committed under `src/assets/fonts/`. The serif is
+   the display face and every use of it is semibold, so the one weight that ships
+   covers h1, h2, card titles and the wordmark with nothing left to synthesise.
+
+   Body text is the system sans stack on purpose. `Inter-Semibold-latin.ttf` is
+   still committed because `src/lib/og-card.ts` rasterises the social cards with
+   it, but it is deliberately absent from `--font-sans`: CSS font matching picks
+   the family first and the weight second, so a family carrying only a 600 face
+   would set every 400-weight paragraph on the site in semibold.
+   --------------------------------------------------------------------------- */
+
+@font-face {
+  font-family: "Source Serif 4";
+  src: url("./assets/fonts/SourceSerif4-Semibold-latin.ttf") format("truetype");
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074,
+    U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------------------------------------------------------------------------
    Palette.
 
    The complete light palette is defined on bare `:root`. The dark blocks below
    redefine only the tokens that change. No colour's sole definition lives
    inside a media query, so a browser that ignores `prefers-color-scheme` still
    gets a working page.
+
+   Contrast ratios in the comments are measured, not guessed. Three ink steps and
+   three rule weights, because the old two-step rule set had `--rule-strong` at
+   1.64:1 doing structural work a reader could not see, and the old faint ink at
+   4.42:1 on a raised surface in dark mode failed AA at 11px on every mobile fund
+   card.
    --------------------------------------------------------------------------- */
 
 :root {
@@ -14,30 +44,31 @@
 
   /* Surfaces: warm off-white paper. */
   --paper: #faf9f6;
-  --paper-raised: #ffffff;
-  --paper-sunken: #f1efe9;
+  --surface: #ffffff;
+  --sunken: #f1efe9;
 
-  /* Ink. */
-  --ink: #1a1917;
-  --ink-muted: #57544d;
-  --ink-faint: #6e6b62;
+  /* Ink, in three steps. */
+  --ink: #171614; /* 17.2 : paper */
+  --ink-2: #4c4941; /*  8.5 : paper */
+  --ink-3: #5f5c54; /*  6.3 : paper, 5.8 : sunken */
 
-  /* Hairlines. */
-  --rule: #e2dfd6;
-  --rule-strong: #c9c5b9;
+  /* Hairlines, in three weights. */
+  --rule: #e4e1d8; /* decorative */
+  --rule-strong: #b9b4a6; /* 2.0 : paper, structural but never load-bearing */
+  --rule-bold: #959186; /* 3.0 : paper — the one rule that must be seen */
 
   /* The one accent. Links, focus, interactive affordances. Nothing else. */
-  --accent: #12507f;
-  --accent-hover: #0c3a5c;
-  --accent-soft: #e7eff6;
+  --accent: #12507f; /*  8.0 : paper */
+  --accent-hi: #0c3a5c; /* 11.2 : paper */
+  --accent-wash: #eaf1f7;
 
   /* Tones. Never the only carrier of meaning — always paired with a mark. */
-  --tone-positive: #1e6b41;
-  --tone-caution: #8a5a08;
-  --tone-negative: #9b2c2c;
-  --tone-neutral: #57544d;
+  --pos: #186b3f; /* 6.2 : paper */
+  --cau: #7d5206; /* 6.5 : paper */
+  --neg: #992222; /* 7.7 : paper */
 
   --selection: #d8e6f2;
+  --shadow: 0 1px 2px rgb(23 22 20 / 5%), 0 1px 1px rgb(23 22 20 / 3%);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -45,26 +76,27 @@
     color-scheme: dark;
 
     --paper: #141311;
-    --paper-raised: #1d1b18;
-    --paper-sunken: #0f0e0c;
+    --surface: #1e1c19;
+    --sunken: #0e0d0b;
 
-    --ink: #edeae3;
-    --ink-muted: #aaa69c;
-    --ink-faint: #858177;
+    --ink: #f0ede6; /* 15.9 : paper, 14.5 : surface */
+    --ink-2: #b3aea3; /*  8.4 : paper,  7.7 : surface */
+    --ink-3: #948f84; /*  5.8 : paper,  5.3 : surface */
 
-    --rule: #2e2c27;
-    --rule-strong: #46433c;
+    --rule: #302e29;
+    --rule-strong: #4f4c44;
+    --rule-bold: #6b675e; /* 3.3 : paper, 3.0 : surface */
 
-    --accent: #8fbce4;
-    --accent-hover: #b4d4f0;
-    --accent-soft: #1b2a38;
+    --accent: #8fbce4; /*  9.3 : paper */
+    --accent-hi: #b9d8f2; /* 12.5 : paper */
+    --accent-wash: #1b2a38;
 
-    --tone-positive: #74c08e;
-    --tone-caution: #d9ac5e;
-    --tone-negative: #e88e8e;
-    --tone-neutral: #aaa69c;
+    --pos: #7cc596;
+    --cau: #dcb066;
+    --neg: #eb9494;
 
     --selection: #2a3d4d;
+    --shadow: 0 1px 2px rgb(0 0 0 / 40%);
   }
 }
 
@@ -72,26 +104,44 @@
   color-scheme: dark;
 
   --paper: #141311;
-  --paper-raised: #1d1b18;
-  --paper-sunken: #0f0e0c;
+  --surface: #1e1c19;
+  --sunken: #0e0d0b;
 
-  --ink: #edeae3;
-  --ink-muted: #aaa69c;
-  --ink-faint: #858177;
+  --ink: #f0ede6;
+  --ink-2: #b3aea3;
+  --ink-3: #948f84;
 
-  --rule: #2e2c27;
-  --rule-strong: #46433c;
+  --rule: #302e29;
+  --rule-strong: #4f4c44;
+  --rule-bold: #6b675e;
 
   --accent: #8fbce4;
-  --accent-hover: #b4d4f0;
-  --accent-soft: #1b2a38;
+  --accent-hi: #b9d8f2;
+  --accent-wash: #1b2a38;
 
-  --tone-positive: #74c08e;
-  --tone-caution: #d9ac5e;
-  --tone-negative: #e88e8e;
-  --tone-neutral: #aaa69c;
+  --pos: #7cc596;
+  --cau: #dcb066;
+  --neg: #eb9494;
 
   --selection: #2a3d4d;
+  --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+}
+
+/* The names the components were written against, kept as aliases so a rename in
+   the palette above stays a one-line change here rather than a sweep through
+   every template. They are defined once, on bare `:root`, and resolve through to
+   whichever palette is live. */
+:root {
+  --paper-raised: var(--surface);
+  --paper-sunken: var(--sunken);
+  --ink-muted: var(--ink-2);
+  --ink-faint: var(--ink-3);
+  --accent-hover: var(--accent-hi);
+  --accent-soft: var(--accent-wash);
+  --tone-positive: var(--pos);
+  --tone-caution: var(--cau);
+  --tone-negative: var(--neg);
+  --tone-neutral: var(--ink-2);
 }
 
 /* ---------------------------------------------------------------------------
@@ -101,58 +151,83 @@
 
 @theme inline {
   --color-paper: var(--paper);
-  --color-raised: var(--paper-raised);
-  --color-sunken: var(--paper-sunken);
+  --color-raised: var(--surface);
+  --color-sunken: var(--sunken);
 
   --color-ink: var(--ink);
-  --color-ink-muted: var(--ink-muted);
-  --color-ink-faint: var(--ink-faint);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-ink-muted: var(--ink-2);
+  --color-ink-faint: var(--ink-3);
 
   --color-rule: var(--rule);
   --color-rule-strong: var(--rule-strong);
+  --color-rule-bold: var(--rule-bold);
 
   --color-accent: var(--accent);
-  --color-accent-hover: var(--accent-hover);
-  --color-accent-soft: var(--accent-soft);
+  --color-accent-hi: var(--accent-hi);
+  --color-accent-hover: var(--accent-hi);
+  --color-accent-soft: var(--accent-wash);
 
-  --color-positive: var(--tone-positive);
-  --color-caution: var(--tone-caution);
-  --color-negative: var(--tone-negative);
-  --color-neutral: var(--tone-neutral);
+  --color-positive: var(--pos);
+  --color-caution: var(--cau);
+  --color-negative: var(--neg);
+  --color-neutral: var(--ink-2);
+
+  --container-page: var(--canvas);
+  --container-measure: var(--content);
 }
 
 @theme {
+  /* Display serif for the wordmark, h1, h2 and card titles, and nothing else.
+     Every page here alternates paragraph, table, paragraph; switching face at
+     each of those boundaries was the largest single source of incoherence. */
+  --font-serif: "Source Serif 4", ui-serif, "Iowan Old Style", Charter, Georgia, "Times New Roman", serif;
   --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-  --font-serif: ui-serif, "Iowan Old Style", Georgia, "Times New Roman", serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
 
-  /* Type scale. Tight leading climbs with size. */
-  --text-2xs: 0.6875rem;
-  --text-2xs--line-height: 1.45;
-  --text-2xs--letter-spacing: 0.07em;
-  --text-xs: 0.75rem;
+  /* Type scale. 17px body, and every table cell is body size too. */
+  --text-2xs: 0.6875rem; /* 11 — uppercase labels only */
+  --text-2xs--line-height: 1.4;
+  --text-2xs--letter-spacing: 0.075em;
+  --text-xs: 0.8125rem; /* 13 — source lines, footnotes */
   --text-xs--line-height: 1.5;
-  --text-sm: 0.875rem;
-  --text-sm--line-height: 1.55;
-  --text-base: 1rem;
-  --text-base--line-height: 1.65;
-  --text-lg: 1.125rem;
-  --text-lg--line-height: 1.7;
-  --text-xl: 1.3125rem;
-  --text-xl--line-height: 1.5;
-  --text-2xl: 1.625rem;
-  --text-2xl--line-height: 1.32;
-  --text-3xl: 2.0625rem;
-  --text-3xl--line-height: 1.2;
-  --text-4xl: 2.625rem;
-  --text-4xl--line-height: 1.12;
-
-  /* Measure for long-form prose, and the outer page rail. */
-  --container-measure: 70ch;
-  --container-page: 78rem;
+  --text-sm: 0.9375rem; /* 15 — table sub-lines, captions */
+  --text-sm--line-height: 1.5;
+  --text-base: 1.0625rem; /* 17 — body and every table cell */
+  --text-base--line-height: 1.62;
+  --text-lg: 1.1875rem; /* 19 — standfirst */
+  --text-lg--line-height: 1.55;
+  --text-xl: 1.375rem; /* 22 — h3 */
+  --text-xl--line-height: 1.3;
+  --text-2xl: 1.6875rem; /* 27 — h2 */
+  --text-2xl--line-height: 1.2;
+  --text-3xl: 2.125rem; /* 34 — h1 on a phone */
+  --text-3xl--line-height: 1.15;
+  --text-4xl: 2.75rem; /* 44 — h1 */
+  --text-4xl--line-height: 1.1;
+  --text-stat: 2.375rem; /* 38 — a hero number */
+  --text-stat--line-height: 1;
 
   /* Interaction only. No entrance animation anywhere. */
   --default-transition-duration: 150ms;
+}
+
+/* Spacing, on a 4px base with roughly 1.5x steps. Plain properties rather than a
+   `--spacing-*` namespace: the hand-written CSS below is what reads them, and the
+   whole site is already written against Tailwind's own numeric scale. */
+:root {
+  --s-1: 0.25rem;
+  --s-2: 0.5rem;
+  --s-3: 0.75rem;
+  --s-4: 1rem;
+  --s-5: 1.5rem;
+  --s-6: 2rem;
+  --s-7: 2.75rem;
+  --s-8: 4rem;
+  --s-9: 5.5rem;
+  --s-10: 7rem;
+  --radius: 4px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -178,6 +253,7 @@ body {
   font-family: var(--font-sans);
   font-size: var(--text-base);
   line-height: var(--text-base--line-height);
+  font-feature-settings: "kern";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
@@ -186,7 +262,7 @@ body {
   background-color: var(--selection);
 }
 
-/* Every number in a column lines up. */
+/* Every number in a column lines up, everywhere, without opt-in. */
 table,
 [data-numeric] {
   font-variant-numeric: tabular-nums lining-nums;
@@ -204,8 +280,15 @@ table,
    reset unlayered silently killed `.prose > * + *` site-wide and set every paragraph
    flush against the last. Specificity was never the problem; layer order was. */
 @layer base {
-  :where(h1, h2, h3, h4, p, ul, ol, figure, blockquote) {
+  :where(h1, h2, h3, h4, p, ul, ol, figure, table, blockquote) {
     margin: 0;
+  }
+
+  /* The default rhythm between blocks on the page canvas. Written with a bare
+     `:where()` so it carries no specificity at all and any `mt-*` a page sets on
+     one of its own blocks wins outright. */
+  :where(.canvas) > * + * {
+    margin-top: var(--s-5);
   }
 }
 
@@ -223,7 +306,7 @@ table,
 }
 
 /* ---------------------------------------------------------------------------
-   The four component classes. Everything else is a utility in markup.
+   The component classes. Everything else is a utility in markup.
    --------------------------------------------------------------------------- */
 
 /* Inline link. Underline offset far enough to clear descenders. */
@@ -236,12 +319,12 @@ table,
   transition: color 150ms ease, text-decoration-color 150ms ease;
 
   &:hover {
-    color: var(--accent-hover);
+    color: var(--accent-hi);
     text-decoration-color: currentcolor;
   }
 }
 
-/* Small uppercase label. Used by PageHeader, Callout, Figure, StatusChip. */
+/* Small uppercase label. Used by Callout, Figure, MarginNote, table headings. */
 @utility eyebrow {
   font-family: var(--font-sans);
   font-size: var(--text-2xs);
@@ -249,12 +332,12 @@ table,
   letter-spacing: var(--text-2xs--letter-spacing);
   text-transform: uppercase;
   font-weight: 600;
-  color: var(--ink-faint);
+  color: var(--ink-3);
 }
 
 /* Shared shell for text inputs and number fields. */
 @utility control {
-  background-color: var(--paper-raised);
+  background-color: var(--surface);
   color: var(--ink);
   border: 1px solid var(--rule-strong);
   border-radius: 3px;
@@ -264,44 +347,50 @@ table,
   transition: border-color 150ms ease;
 
   &:hover:not(:disabled) {
-    border-color: var(--ink-faint);
+    border-color: var(--ink-3);
   }
 
   &:disabled {
-    color: var(--ink-faint);
-    background-color: var(--paper-sunken);
+    color: var(--ink-3);
+    background-color: var(--sunken);
     cursor: not-allowed;
   }
 }
 
-/* Long-form text. Applied by <Prose>; content agents write plain HTML inside. */
+/* Long-form text. Applied by every content page; agents write plain HTML inside. */
 @utility prose {
-  max-width: var(--container-measure);
-  font-family: var(--font-serif);
-  font-size: var(--text-lg);
-  line-height: 1.72;
+  max-width: var(--content);
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  line-height: var(--text-base--line-height);
   color: var(--ink);
+  text-wrap: pretty;
 
   & > * + * {
-    margin-top: 1.1em;
+    margin-top: var(--s-4);
   }
 
+  /* The one rule on the page a reader is meant to see. It sits under a section
+     heading and marks where one argument ends and the next begins. */
   & h2 {
-    font-family: var(--font-sans);
-    font-size: var(--text-xl);
-    line-height: var(--text-xl--line-height);
+    font-family: var(--font-serif);
+    font-size: var(--text-2xl);
+    line-height: var(--text-2xl--line-height);
     font-weight: 600;
-    letter-spacing: -0.01em;
-    margin-top: 2.2em;
-    margin-bottom: -0.4em;
+    letter-spacing: -0.012em;
+    text-wrap: balance;
+    margin-top: var(--s-7);
+    padding-bottom: var(--s-3);
+    border-bottom: 1px solid var(--rule);
   }
 
   & h3 {
     font-family: var(--font-sans);
-    font-size: var(--text-base);
+    font-size: var(--text-xl);
+    line-height: var(--text-xl--line-height);
     font-weight: 600;
-    margin-top: 1.9em;
-    margin-bottom: -0.5em;
+    letter-spacing: -0.008em;
+    margin-top: var(--s-6);
   }
 
   & a {
@@ -314,7 +403,7 @@ table,
   }
 
   & a:hover {
-    color: var(--accent-hover);
+    color: var(--accent-hi);
     text-decoration-color: currentcolor;
   }
 
@@ -340,7 +429,7 @@ table,
   }
 
   & li::marker {
-    color: var(--ink-faint);
+    color: var(--ink-3);
   }
 
   & li + li {
@@ -350,7 +439,7 @@ table,
   & code {
     font-family: var(--font-mono);
     font-size: 0.85em;
-    background-color: var(--paper-sunken);
+    background-color: var(--sunken);
     border: 1px solid var(--rule);
     border-radius: 3px;
     padding: 0.1em 0.32em;
@@ -359,7 +448,7 @@ table,
   & blockquote {
     border-left: 2px solid var(--rule-strong);
     padding-left: 1.1em;
-    color: var(--ink-muted);
+    color: var(--ink-2);
   }
 
   & hr {
@@ -374,65 +463,68 @@ table,
   }
 }
 
+/* The standfirst under an h1. */
+@utility lead {
+  font-size: var(--text-lg);
+  line-height: var(--text-lg--line-height);
+  color: var(--ink-2);
+  max-width: 38rem;
+  text-wrap: pretty;
+}
+
 /* ---------------------------------------------------------------------------
    The page grid.
 
-   Three tracks: a narrow left rail for section labels, the reading column, and a
-   right margin for the source, the date, the rung and the caveat that this site
-   attaches to almost every claim. Those belong beside the line rather than inside
-   it, and putting them there is also what stops a 1440px screen from being a 70ch
-   column with a third of the window empty beside it.
+   Two tracks, centred: the reading measure, and a right-hand column that carries
+   the source, the as-of date and the confidence this site attaches to nearly
+   every claim. There is no left rail. The rail held a decorative eyebrow that
+   restated the heading beside it, and paying a whole track for that pushed the
+   reading column off centre and left a quarter of a 1440px window empty.
 
-   The track widths live on `:root` so the masthead and the footer can size
-   themselves to the same composition without knowing how it is built. `--canvas`
-   is a `calc` over custom properties, which are substituted where they are used,
-   so it picks up each breakpoint's override on its own.
+   `--content` is a length but the content **track** is `minmax(0, 1fr)`. A grid
+   track whose growth limit is a length does not shrink below it, so a fixed max
+   on the track overflows a phone by the difference. The measure is enforced by
+   the wrapper's `max-width` instead, which shrinks.
    --------------------------------------------------------------------------- */
 
 :root {
   --edge: 1.25rem;
-  --rail: 0rem;
-  --rail-gap: 0rem;
-  --note: 0rem;
-  --note-gap: 0rem;
-  --measure-track: 44rem;
-  --canvas: calc(
-    var(--edge) * 2 + var(--rail) + var(--rail-gap) + var(--measure-track) + var(--note-gap) + var(--note)
-  );
+  --content: 42rem; /* 672px — the reading measure, about 72 characters at 17px */
+  --aside: 0rem;
+  --gutter: 0rem;
+  --canvas: calc(var(--content) + var(--gutter) + var(--aside) + var(--edge) * 2);
+
+  /* The names `research/_Document.astro` was written against. */
+  --note: var(--aside);
+  --note-gap: var(--gutter);
+  --measure-track: var(--content);
+  --container-measure: var(--content);
 }
 
 @media (min-width: 40rem) {
   :root {
-    --edge: 2rem;
+    --edge: 2.5rem;
   }
 }
 
-/* The margin opens first. It is the track that carries meaning. */
-@media (min-width: 62rem) {
+/* The aside opens here and not before. Below this width it is zero wide and
+   everything on the page is one column. */
+@media (min-width: 74rem) {
   :root {
-    --note: 13rem;
-    --note-gap: 1.75rem;
+    --aside: 16rem;
+    --gutter: 3rem;
   }
 }
 
-/* The rail opens second, once the margin no longer has to be cramped for it. */
-@media (min-width: 78rem) {
+@media (min-width: 90rem) {
   :root {
-    --rail: 7.5rem;
-    --rail-gap: 2rem;
-    --note: 15rem;
-    --note-gap: 2.25rem;
+    --aside: 17.5rem;
+    --gutter: 3.5rem;
+    --edge: 3rem;
   }
 }
 
-@media (min-width: 96rem) {
-  :root {
-    --rail: 9rem;
-    --note: 17rem;
-  }
-}
-
-/* The outer rail every band of the page aligns to. */
+/* The outer rail every band of the page aligns to: masthead, canvas, footer. */
 @utility page-rail {
   width: 100%;
   max-width: var(--canvas);
@@ -441,65 +533,61 @@ table,
 }
 
 @utility canvas {
+  width: 100%;
+  max-width: var(--canvas);
+  margin-inline: auto;
+  padding-inline: var(--edge);
+
   display: grid;
   /* `main` is a flex child with `flex-1`, so on a short page the grid box is taller
      than its rows. Without this the default stretch spreads every row down the
      viewport and a two-paragraph page reads as though it were double-spaced. */
   align-content: start;
-  width: 100%;
-  max-width: var(--canvas);
-  margin-inline: auto;
   grid-template-columns:
-    [full-start] minmax(var(--edge), 1fr)
-    [rail-start] var(--rail)
-    [rail-end] var(--rail-gap)
-    [body-start] minmax(0, var(--measure-track))
-    [body-end] var(--note-gap)
-    [note-start] var(--note)
-    [note-end] minmax(var(--edge), 1fr)
-    [full-end];
+    [c-start] minmax(0, 1fr)
+    [c-end] var(--gutter)
+    [a-start] var(--aside)
+    [a-end];
 
   /* Everything lands in the reading column unless it says otherwise. `min-width: 0`
      stops a wide table from blowing the track out past its own grid line. */
   & > * {
-    grid-column: body;
+    grid-column: c-start / c-end;
     min-width: 0;
   }
 
-  /* A table, a chart or a figure row, allowed the whole three-track width. Below the
-     first breakpoint the rail and the margin are zero wide, so this is the reading
-     column again and nothing overflows. */
-  & > .breakout {
-    grid-column: rail-start / note-end;
-  }
-
+  /* A table, a chart or a row of figures, allowed both tracks. Below 74rem the
+     aside track is zero wide, so this is the reading column again and nothing
+     overflows. */
+  & > .breakout,
   & > .bleed {
-    grid-column: full-start / full-end;
+    grid-column: c-start / a-end;
   }
 }
 
 /* ---------------------------------------------------------------------------
    Margin notes.
 
-   A float rather than a grid child. Grid auto-placement gives a note its own row,
-   which leaves a hole in the reading column beside it; a float pulled out by its
-   own width sits level with the paragraph that follows it in source order and
-   costs the measure nothing. `clear` keeps two consecutive notes from stacking on
-   top of each other.
+   A float rather than a grid child, because a note is written **inside** the
+   `.prose` block it belongs to and so is never a direct child of the canvas.
+   Floating it out by its own width sits it level with the paragraph that follows
+   it in source order and costs the measure nothing; `clear` keeps two
+   consecutive notes from stacking on top of each other.
 
-   Below 62rem the float is dropped and the note becomes an indented block in the
-   flow, which is the only honest way to render it on a phone.
+   Below 74rem the aside track is zero wide, the float is dropped, and the note
+   becomes an indented block in the flow — the only honest way to render it on a
+   phone.
    --------------------------------------------------------------------------- */
 
 @utility margin-note {
   display: block;
   margin-block: 1.25rem;
   border-left: 2px solid var(--rule-strong);
-  padding-left: 0.9rem;
+  padding-left: var(--s-4);
   font-family: var(--font-sans);
   font-size: var(--text-sm);
   line-height: 1.5;
-  color: var(--ink-muted);
+  color: var(--ink-2);
 
   & > * + * {
     margin-top: 0.4rem;
@@ -514,67 +602,113 @@ table,
   }
 }
 
-@media (min-width: 62rem) {
+@media (min-width: 74rem) {
   .margin-note {
     float: right;
     clear: right;
-    width: var(--note);
-    margin-right: calc(-1 * (var(--note) + var(--note-gap)));
+    width: var(--aside);
+    margin-right: calc(-1 * (var(--aside) + var(--gutter)));
     margin-top: 0.3rem;
     margin-bottom: 1.5rem;
     border-left: 0;
     padding-left: 0;
     font-size: var(--text-xs);
     line-height: 1.55;
-    color: var(--ink-faint);
+    color: var(--ink-3);
   }
 
-  /* The hairline sits above the note in the margin, echoing the rule under a
-     section heading rather than fencing the note off in a box. */
+  /* The hairline sits above the note, echoing the rule under a section heading
+     rather than fencing the note off in a box. */
   .margin-note::before {
     content: "";
     display: block;
     width: 1.75rem;
-    border-top: 1px solid var(--rule-strong);
+    border-top: 1px solid var(--rule-bold);
     margin-bottom: 0.5rem;
   }
 }
 
-/* A section label in the left rail. Same mechanism, mirrored. */
-@utility rail-label {
-  display: block;
-  margin-bottom: 0.35rem;
-  font-family: var(--font-sans);
+/* ---------------------------------------------------------------------------
+   Confidence.
+
+   One word and a rule whose ink weight steps down as the evidence thins. No
+   glyph, because a mark a reader has to learn from another page is not a
+   reading; and never a hue, because that would smuggle in a good/bad judgement
+   the evidence does not make.
+   --------------------------------------------------------------------------- */
+
+@utility confidence {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--s-1) var(--s-3);
+  padding-left: var(--s-4);
+  border-left: 3px solid var(--rule-bold);
+}
+
+@utility confidence-word {
   font-size: var(--text-2xs);
   line-height: var(--text-2xs--line-height);
   letter-spacing: var(--text-2xs--letter-spacing);
   text-transform: uppercase;
-  font-weight: 600;
-  color: var(--ink-faint);
+  font-weight: 700;
+  color: var(--ink);
 }
 
-@media (min-width: 78rem) {
-  .rail-label {
-    float: left;
-    clear: left;
-    width: var(--rail);
-    margin-left: calc(-1 * (var(--rail) + var(--rail-gap)));
-    margin-top: 0.55rem;
-    margin-bottom: 0;
-    text-align: right;
-  }
+@utility confidence-gloss {
+  font-size: var(--text-sm);
+  line-height: 1.45;
+  color: var(--ink-2);
 }
 
-/* A horizontal scroller for content that genuinely cannot shrink: a table with six
-   numeric columns, a wide chart. `position: relative` is not decoration — without a
-   positioned ancestor, an absolutely positioned descendant such as a `.sr-only` label
-   resolves against the initial containing block, escapes the scroller's clipping and
-   pushes the *page* sideways by however far the unclipped content reaches. That is
-   exactly the horizontal scroll this layout must never produce, and it is invisible
-   until you measure `document.documentElement.scrollWidth`. */
+.confidence[data-level="settled"] {
+  border-left-color: var(--ink);
+}
+
+.confidence[data-level="probably"] {
+  border-left-color: var(--rule-bold);
+}
+
+.confidence[data-level="might"] {
+  border-left-color: var(--rule-strong);
+}
+
+.confidence[data-level="cant-tell"] {
+  border-left-color: var(--rule);
+}
+
+/* ---------------------------------------------------------------------------
+   Wide blocks and their scrollers.
+
+   A horizontal scroller for content that genuinely cannot shrink: a table with
+   six numeric columns, a wide chart. Every one of these carries `tabindex="0"`,
+   `role="region"` and a label in the markup, because a scroll container a
+   keyboard cannot reach is a piece of the page a keyboard reader cannot read.
+
+   `position: relative` is not decoration — without a positioned ancestor, an
+   absolutely positioned descendant such as a `.sr-only` label resolves against
+   the initial containing block, escapes the scroller's clipping and pushes the
+   *page* sideways by however far the unclipped content reaches. That is exactly
+   the horizontal scroll this layout must never produce, and it is invisible
+   until you measure `document.documentElement.scrollWidth`.
+   --------------------------------------------------------------------------- */
+
 @utility scroller {
   position: relative;
   overflow-x: auto;
+}
+
+.scroller:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* A table is as wide as its content needs and no wider. Without the cap a
+   three-column holdings table stretched the full breakout width and put a fund
+   name and its weight most of a metre apart. `--tw` is set per block by
+   `<Breakout maxWidth="…">`; unset, it changes nothing. */
+.breakout table {
+  max-width: var(--tw, none);
 }
 
 /* ---------------------------------------------------------------------------
@@ -616,14 +750,14 @@ table,
     font-family: var(--font-sans);
     font-size: 11px;
     font-variant-numeric: tabular-nums lining-nums;
-    fill: var(--ink-faint);
+    fill: var(--ink-3);
   }
 
   & .plot-label {
     font-family: var(--font-sans);
-    font-size: 12px;
+    font-size: 12.5px;
     font-variant-numeric: tabular-nums lining-nums;
-    fill: var(--ink-muted);
+    fill: var(--ink-2);
   }
 
   & .plot-label-lead {
@@ -634,7 +768,7 @@ table,
   & .plot-note {
     font-family: var(--font-sans);
     font-size: 11.5px;
-    fill: var(--ink-muted);
+    fill: var(--ink-2);
   }
 
   & .plot-line {
@@ -651,14 +785,18 @@ table,
 }
 
 /* ---------------------------------------------------------------------------
-   Comparison tables on a narrow screen.
+   Wide comparison tables on a narrow screen.
 
-   A four-column table with a confidence mark is 32rem across at its narrowest and
-   a phone is 24rem, so the scroller does its job and the reading is still poor:
+   A six-column table with a status word is 46rem across at its narrowest and a
+   phone is 24rem, so the scroller does its job and the reading is still poor:
    you cannot compare two rows you have to scroll between, and a heading you have
    scrolled away from stops labelling anything. Below the first breakpoint a
    `.stack-table` becomes one card per row — the row header as the card's title,
    every other cell as a labelled line.
+
+   **Only wide tables get this.** A ticker/fund/weight table fits inside a phone
+   as a table; stacking it turned seven holdings into fourteen hundred pixels of
+   cards, which is worse in every way than the table it replaced.
 
    **One piece of markup, not two.** The visible label comes from `data-label`,
    which each page fills from the same array it fills `<thead>` from, so the header
@@ -692,8 +830,8 @@ table,
     display: flex;
     flex-direction: column;
     border: 1px solid var(--rule);
-    border-radius: 4px;
-    background-color: var(--paper-raised);
+    border-radius: var(--radius);
+    background-color: var(--surface);
     padding: 0.7rem 0.85rem 0.75rem;
   }
 
@@ -741,7 +879,7 @@ table,
     letter-spacing: var(--text-2xs--letter-spacing);
     text-transform: uppercase;
     font-weight: 600;
-    color: var(--ink-faint);
+    color: var(--ink-3);
     text-wrap: balance;
   }
 }
