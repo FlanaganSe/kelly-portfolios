@@ -1,5 +1,4 @@
 import { describe, expect, it } from "vitest";
-import { funds } from "~/content/portfolio";
 import { fundByTicker, type ShelfFund, shelf } from "~/content/shelf";
 import {
   commonWindow,
@@ -182,52 +181,6 @@ describe("an alpha never prints without its pedestal", () => {
       if (fund.pedestalPpYr === null) continue;
       expect(published.has(fund.pedestalPpYr), `${fund.ticker} invents a pedestal`).toBe(true);
     }
-  });
-});
-
-describe("the two fund records may not drift apart", () => {
-  /** `portfolio.ts` stores lending as prose where the filing is not a bare number. */
-  function bareNumber(value: string | null): number | null {
-    if (value === null || !/^\d+(\.\d+)?$/.test(value)) return null;
-    return Number(value);
-  }
-
-  const shared = funds.filter((fund) => shelf.some((one) => one.ticker === fund.ticker));
-
-  it("covers the eight funds the reference portfolio prices", () => {
-    expect(shared.map((fund) => fund.ticker).sort()).toEqual(["BND", "DBMF", "VB", "VBR", "VEA", "VTI", "VWO", "VXUS"]);
-  });
-
-  it.each(shared.map((fund) => fund.ticker))("agrees with the reference portfolio on %s", (ticker) => {
-    const inPortfolio = funds.find((fund) => fund.ticker === ticker);
-    const onShelf = fundByTicker(ticker);
-    if (inPortfolio === undefined) throw new Error(`portfolio.ts lost ${ticker}`);
-
-    expect(onShelf.expenseRatioBp).toBe(inPortfolio.expenseRatioBp);
-    expect(onShelf.netCostBp).toBe(inPortfolio.netCostBp);
-
-    const lending = bareNumber(inPortfolio.securitiesLendingBp);
-    if (lending !== null) expect(onShelf.securitiesLendingBp).toBe(lending);
-
-    // Both files now read the Rule 6c-11 spread, and a spread read twice is one spread.
-    // Absent on either side means nobody read it there, which is not a disagreement.
-    if (inPortfolio.spreadBp !== null && onShelf.spread !== undefined) {
-      expect(onShelf.spread.bp, `${ticker} spread`).toBe(inPortfolio.spreadBp);
-    }
-  });
-
-  /**
-   * The clause above is vacuous unless both files actually carry a spread for the same
-   * fund, so the six that do are pinned. VBR and DBMF have none on either side. Dropping
-   * a spread from `portfolio.ts` or from the shelf would otherwise silently retire the
-   * invariant rather than fail it.
-   */
-  it("compares a spread for the six shared funds that carry one on both sides", () => {
-    const compared = shared
-      .filter((fund) => fund.spreadBp !== null && fundByTicker(fund.ticker).spread !== undefined)
-      .map((fund) => fund.ticker)
-      .sort();
-    expect(compared).toEqual(["BND", "VB", "VEA", "VTI", "VWO", "VXUS"]);
   });
 });
 

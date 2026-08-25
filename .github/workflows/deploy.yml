@@ -190,14 +190,29 @@ jobs:
           fail=0
           # One path from each family that has its own route generator, so a broken
           # collection shows up here rather than in a search console six weeks later.
-          for path in / /start/ /stacking/ /portfolio/ /doesnt-work/ /how-sure/ \
-                      /funds/ /tools/ /tools/placement/ /tools/how-long/ \
-                      /research/ /research/long-only-capture/ \
-                      /research/decisions/0004-no-sleeve-promoted/ \
-                      /about/ /methodology/ /corrections/ /disclosures/ /disclaimer/; do
+          for path in / /portfolios/ /portfolios/whole-market/ /portfolios/with-trend/ \
+                      /evidence/ /evidence/how-many-bets/ /evidence/trend-following/ \
+                      /funds/ /tools/placement/ /search/ \
+                      /about/ /corrections/ /disclosures/ /disclaimer/; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}${path}")
-            printf '%-16s %s\n' "$path" "$code"
+            printf '%-32s %s\n' "$path" "$code"
             [ "$code" = "200" ] || fail=1
+          done
+
+          # The retired routes are meta-refresh pages, not 404s. An old bookmark, an old
+          # search result and an old inbound link all have to keep working, so this
+          # checks the document actually carries the refresh rather than merely
+          # answering 200 — a 200 alone would also be true of a stale copy of the page.
+          for path in /start/ /portfolio/ /stacking/ /how-sure/ /methodology/ \
+                      /doesnt-work/ /research/ /research/long-only-capture/ \
+                      /research/decisions/0004-no-sleeve-promoted/ /tools/; do
+            body=$(curl -s "https://${SITE_DOMAIN}${path}")
+            if printf '%s' "$body" | grep -qi 'http-equiv="refresh"'; then
+              printf '%-48s redirect\n' "$path"
+            else
+              printf '%-48s NOT A REDIRECT\n' "$path"
+              fail=1
+            fi
           done
 
           # A missing page must 404. If it returns 200 the SPA error mapping is still

@@ -34,6 +34,9 @@ or publication gates must state their scope and what evidence would change the d
 - `scripts/seed-database.ts` emits an unseeded synthetic random walk, not market data.
 - A client research figure belongs in `src/content/` and carries status, date or period,
   interval where applicable, and source ([decision 0007](docs/decisions/0007-application-may-render-research.md)).
+  Its `docPath` is provenance the build checks and never renders; what a reader sees is
+  `href` or `page` ([decision 0011](docs/decisions/0011-the-site-publishes-answers-not-notes.md)).
+  A record no page renders fails `pnpm lint:figures`.
 - A factor loading and a long-only capture fraction measure the same exposure. Do not
   multiply them. The factor line is `weight × (fund loading − incumbent loading) × premium
   − cost`; code raises on a capture argument.
