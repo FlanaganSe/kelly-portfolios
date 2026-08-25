@@ -1,0 +1,238 @@
+---
+/**
+ * Portfolio four: the six holdings of portfolio three plus one fund that borrows inside
+ * itself to hold managed futures on top of stocks.
+ *
+ * The six warnings come before the case rather than after it, because every headline
+ * number on this page belongs to a 25% arm and the published weight is 30%. Nothing
+ * here is a promotion: the measured gap sits under the resolution of the test that
+ * produced it, and the financing cost that would settle the question is not disclosed.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+
+const HOLDING_COLUMNS = ["Ticker", "Fund", "Weight", "Fee", "Cost after lending income"] as const;
+
+const HOLDINGS = [
+  {
+    ticker: "RSST",
+    name: "Return Stacked U.S. Stocks & Managed Futures ETF",
+    weight: "30%",
+    fee: "0.99%",
+    net: "not audited",
+  },
+  {
+    ticker: "VTI",
+    name: "Vanguard Morningstar Total Stock Market ETF",
+    weight: "19%",
+    fee: "0.03%",
+    net: "0.012%",
+  },
+  { ticker: "VXUS", name: "Vanguard Total International Stock ETF", weight: "16%", fee: "0.05%", net: "0.014%" },
+  { ticker: "VTV", name: "Vanguard Value ETF", weight: "15%", fee: "0.03%", net: "0.027%" },
+  { ticker: "AVDV", name: "Avantis International Small Cap Value ETF", weight: "10%", fee: "0.36%", net: "0.300%" },
+  {
+    ticker: "IDMO",
+    name: "Invesco S&P International Developed Momentum ETF",
+    weight: "5%",
+    fee: "0.25%",
+    net: "0.226%",
+  },
+  { ticker: "AVES", name: "Avantis Emerging Markets Value ETF", weight: "5%", fee: "0.36%", net: "0.292%" },
+] as const;
+---
+
+<Base
+  title="The same, plus a holding that does not move with stocks"
+  description="Seven funds, one of which borrows inside itself to hold managed futures on top of stocks. The largest bet on this site and the least settled."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">
+      Four. The same, plus a holding that does not move with stocks
+    </h1>
+
+    <p class="lead">What this adds to <a href="/portfolios/value-lean/">portfolio three</a>, what it costs, and
+    six things to know before holding it. This is the least settled page on the site.</p>
+
+    <h2>What it holds</h2>
+  </div>
+
+  <Breakout scroll class="my-8" label="The seven holdings, their fees and their costs" maxWidth="50rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[46rem]">
+      <caption class="sr-only">
+        The seven funds this portfolio holds, each with its weight, its fee and what it costs after lending income
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            HOLDING_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i >= 2 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          HOLDINGS.map((holding) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {holding.ticker}
+              </th>
+              <td role="cell" data-label={HOLDING_COLUMNS[1]} class="py-2 pr-4">
+                {holding.name}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {holding.weight}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
+                {holding.fee}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
+                {holding.net}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose">
+    <p>Weighted, about 0.38% a year in fees and about 0.36% after lending income, or roughly $38 and $36 on
+    $10,000 as an illustration. RSST&rsquo;s 0.99% has no waiver, so that is both its gross and its net figure.
+    Fund facts were read from filings on 17 August 2026.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Six things to know before you read any further</h2>
+
+    <p>No experiment has ever run these exact seven funds at a 30% weight in RSST. Every headline number below
+    belongs to a version holding 25%, with the other five points in VTI. The gap between the two has never been
+    measured.</p>
+
+    <p><Figure id="active-variance-concentration" inline showUnit={false} /> of this portfolio&rsquo;s active
+    risk sits in RSST alone. Not 98% of the money, which is 30%. Almost everything that makes this portfolio
+    different from an index fund is one fund from a small firm.</p>
+
+    <p>Of the <a href="/evidence/trend-following/">managed-futures exchange-traded funds</a> filing in July 2019,
+    <Figure id="managed-futures-attrition" inline showUnit={false} /> had stopped filing by the end of 2025.
+    Thirteen of twenty-five, and a lower bound, because a fund that never filed at all cannot appear in the
+    count.</p>
+
+    <p>RSST&rsquo;s measured exposure rests on 31 months of filings, roughly one kind of market weather. The fund
+    is under three years old.</p>
+
+    <p>It holds no bonds. That is a choice made here rather than an oversight, and how much you keep in
+    <a href="/evidence/what-actually-diversifies/">bonds or cash</a> outside it remains yours to decide.</p>
+
+    <p>The fund does not disclose what its borrowing costs and files 0.00% of interest expense, as does every
+    fund in its family. That cost decides whether the whole idea is worth anything, and nobody has measured
+    it.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Why each piece is there</h2>
+
+    <p>The six holdings from <a href="/portfolios/value-lean/">portfolio three</a> do the same jobs they did
+    there. One caveat carries over: IDMO is the weakest of them and the first to drop if you want a simpler
+    portfolio. <a href="/evidence/value-and-factors/">Momentum</a> has the widest gap on this site between what
+    an idea pays on paper and what anyone has collected, 9.48% a year against 1.86% delivered by real funds
+    before fees, and it turns over 105% of itself a year against 4% for the value fund beside it.</p>
+
+    <p>RSST is the addition. It holds about a dollar of US stocks and about a dollar of managed futures for every
+    dollar you put in, borrowing inside the fund to do it.
+    <a href="/evidence/trend-following/">Managed futures follow price trends up and down</a> across stock
+    indexes, bonds, currencies and commodities. Because of the borrowing you never sell stocks to buy them, so
+    the question becomes whether they add anything on top.</p>
+
+    <p>The record of funds that borrow inside themselves is worth knowing before you buy one. The two best-known
+    funds that use borrowing to hold stocks and bonds together both did worse than a plain 60/40 mix in 2022,
+    which was the one year the idea was supposed to prove itself: one lost 25.72% and the other 43.17%. The
+    second of those advertises a 0.59% fee. Its real all-in cost is 2.94%, and its five-year return after tax was
+    −0.57% a year.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it is compared against, and what the comparison showed</h2>
+
+    <p>The comparison is a cheap global index fund borrowed to the same total exposure and charged the same
+    interest, over 427 months to May 2026. Setting this portfolio against an index fund that borrows nothing
+    would credit the borrowing as if it were skill.</p>
+
+    <p>Against that borrowed index fund, the 25% version came to 2.20 points a year ahead, plausibly anywhere
+    from 0.05 to 4.57. The smallest gap the test could see was 2.83 points, so the result sits below the
+    resolution of the test that produced it. Separating the two would take about 59 years, and the specification
+    said so before the test ran.</p>
+
+    <p>What is established is narrower. The exposure is real: the fund delivered about 0.68 of a dollar of trend
+    per dollar of capital, in a range of 0.41 to 0.96, measured from its own filed returns.</p>
+
+    <p>Its <a href="/evidence/what-actually-diversifies/">relationship with stocks</a> is thinner evidence than
+    it looks, and this is the property you would be buying the fund for. Across the full period that relationship
+    measures slightly negative in three separate sources built from different data. Inside crisis months one
+    measurement puts it much more strongly negative, but those months are four episodes rather than four
+    independent years, and a longer run of data reaching back to 1934, built differently, finds no relationship
+    at all. Nobody has reconciled the two.</p>
+
+    <p>What is not established is the average return, anywhere, by anyone.</p>
+
+    <p>One thing this kind of holding has clearly done: through the ten years to February 2009, when US stocks
+    lost 2.55% a year, a 30% trend holding added about 9.5 points a year above the stocks it displaced, turning
+    that decade into roughly +0.05% a year. In ordinary decades it added 0.21 points. One decade, in one set of
+    data, and that is the whole case.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>How sure we are</h2>
+
+    <p>We can&rsquo;t tell. The measured gap is smaller than what the test could see, the fund is under three
+    years old, and the one number that would decide it, what the borrowing costs, is not disclosed.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it feels like when it is losing</h2>
+
+    <p>The tested version fell 50.3% at its worst, against 64.6% for a control that borrows as much and 52.7% for
+    a cheap control that borrows nothing. It spent 42 months under water: three and a half years of opening a
+    statement and seeing less than you had at the peak.</p>
+
+    <p>The way this holding hurts in particular is worse. A borrowed trend holding has run
+    <Figure id="trend-drawdown" inline showUnit={false} /> the stocks it displaced over 11.2 years, and did not
+    recover inside the window. Eleven years of paying 0.99% a year for a fund that did nothing but cost you
+    money, while stocks rose and everyone who owned nothing clever did better than you did.</p>
+
+    <p>If trend keeps paying what we guess it pays, about
+    <Figure id="abandonment-30" inline showUnit={false} /> of simulated thirty-year paths end with the holder
+    selling. If it has stopped paying entirely,
+    <Figure id="abandonment-30-dead" inline showUnit={false} /> do. Those risks do not cancel: whether you can
+    hold it and whether it pays are a bet on the same unknown.</p>
+
+    <p>Since it launched in September 2023 RSST has returned 17.17% a year against 21.50% for the S&amp;P 500.
+    Thirty-five months settles nothing about a holding whose whole purpose is the years stocks lose. It is what
+    the statement says, and evidence in neither direction.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What would make us drop it</h2>
+
+    <p>The fund closing or merging, which happened to
+    <Figure id="managed-futures-attrition" inline showUnit={false} /> of its category in six and a half years.
+    Delivered exposure falling below what the filings claim. The financing cost being disclosed and turning out
+    to be large. And the matched test nobody has run: these seven funds at 30% against the same seven at 25%, the
+    only thing that would show whether the published weight is right.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>The decision that matters more than this page</h2>
+
+    <p>How much of your money is in stocks at all outweighs everything above. Moving a portfolio from 60% stocks
+    to 90% was worth 1.27 points a year, against 4.85 points of variation from one year to the next. That is more
+    than every lean on this site combined. Choosing 60/40 is itself a forecast: it says stocks will do better
+    than bonds by only about 1.2 points a year. One country, 1963 to 2025, with a modelled ten-year government
+    bond, and about <Figure id="equity-step-horizon" inline /> of your own results before you could be 90%
+    confident about the step.</p>
+  </div>
+</Base>

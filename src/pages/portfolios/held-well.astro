@@ -1,0 +1,190 @@
+---
+/**
+ * Portfolio two: the same fund as portfolio one, and the four changes to how it is held.
+ *
+ * This is the only page on the site whose comparison depends on the reader, because the
+ * yardstick is whatever they already own. That is why the range is quoted before the
+ * central figure and why the central figure carries its conditions in the same
+ * paragraph: several of its lines cannot be true for the same person at once.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+
+const HOLDING_COLUMNS = ["Ticker", "Fund", "Weight", "Fee", "Cost after lending income"] as const;
+
+const HOLDINGS = [
+  {
+    ticker: "VT",
+    name: "Vanguard Total World Stock ETF",
+    weight: "100%",
+    fee: "0.06%",
+    net: "not audited",
+  },
+] as const;
+---
+
+<Base
+  title="The same funds, held well"
+  description="The same holdings as portfolio one, with four changes that are arithmetic rather than forecast. This is the recommendation."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Two. The same funds, held well</h1>
+
+    <p class="lead">The same portfolio as before, with four changes whose value can be worked out in advance
+    rather than guessed at. This is the recommendation.</p>
+
+    <h2>What it holds</h2>
+  </div>
+
+  <Breakout scroll class="my-8" label="The single holding, its fee and its cost" maxWidth="46rem">
+    <table role="table" class="w-full border-collapse text-base sm:min-w-[42rem]">
+      <caption class="sr-only">
+        The one fund this portfolio holds, its weight, its fee and what it costs after lending income
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            HOLDING_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i >= 2 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          HOLDINGS.map((holding) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {holding.ticker}
+              </th>
+              <td role="cell" data-label={HOLDING_COLUMNS[1]} class="py-2 pr-4">
+                {holding.name}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {holding.weight}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
+                {holding.fee}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[4]} class="py-2 pr-4 text-right">
+                {holding.net}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose">
+    <p>Or VTI plus VXUS in a split you set yourself,
+    <a href="/portfolios/whole-market/">as on the previous page</a>. Identical holdings to
+    <a href="/portfolios/whole-market/">portfolio one</a>, and nothing here is bought or sold on a view about the
+    future. Fund facts were read from filings on 17 August 2026.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Why each piece is there</h2>
+
+    <p>The holdings do the same job they did on the previous page. Four things change about how they are
+    held.</p>
+
+    <p>Hold the cheapest version of each fund, where cheapest means
+    <a href="/evidence/fees-and-accounts/">the fee minus what the fund earns lending its shares out</a>. That
+    reordering is real. IEMG charges 0.09% and costs −0.009% once lending is counted; VWO charges 0.06% and costs
+    0.017%. The dearer fund is the cheaper one to own. SPY costs
+    <Figure id="spy-net-cost" inline /> a year against 0.018% to 0.029% for every other S&amp;P 500 fund audited,
+    because its 1993 trust bars it from lending anything and parks dividends in an account paying no
+    interest.</p>
+
+    <p>Put each fund in <a href="/tools/placement/">the account where it is taxed least</a>, if you have more
+    than one. With a single account, skip this step and lose nothing.</p>
+
+    <p>Prefer an exchange-traded fund to an old-style mutual fund. In 2025, 7% of exchange-traded funds paid out
+    a capital gain against 52% of mutual funds. VOO, VFIAX, VTI and VTSAX distributed none at all across 44
+    fund-years; two long-standing active funds, AGTHX and FCNTX, distributed 6.62% and 7.01% of assets.</p>
+
+    <p>Do not trade. <a href="/evidence/rebalancing/">Rebalance about once a year</a>, to a band rather than an
+    exact target, inside a sheltered account where a trade costs no tax. Rebalancing keeps your mix from
+    drifting. It is not a way of making money, and whether it costs or earns you a little depends on the period
+    you measure.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it is compared against, and what the comparison showed</h2>
+
+    <p>The comparison here is against whatever you would otherwise have held, which makes it the only one on this
+    site that depends on you. Assembled from fund filings and tax law rather than from a backtest, the whole
+    package runs from about 0.04% to about 2.70% a year. Two things decide where you land inside that: how
+    expensive the funds you own now are, and whether you have more than one kind of account.</p>
+
+    <p>The part that is certain and applies to everyone is the fee. Cutting a fund fee is contractual, it is the
+    largest single line, and it arrives in months. Moving out of the fund you would otherwise have held saves
+    about <Figure id="fee-gap" inline />, plausibly 0.40% to 0.59%. Against an index fund it saves nothing.</p>
+
+    <p>There is a central figure, and it comes with conditions. About <Figure id="structural-budget" inline /> is
+    what the package was worth to a modelled investor leaving an expensive active mutual fund, with a taxable
+    account, more than one kind of account, and contributions continuing. It is a sum of separate lines, and
+    several cannot be true for the same person at once. Roughly 0.23 points is for holding an exchange-traded
+    fund rather than an active mutual fund, worth nothing to someone already in index funds. Roughly 0.30 points
+    is for selling losers to offset gains, worth close to nothing to someone who takes the advice above and does
+    not sell. About 0.05 points is for telling your broker which shares to sell first, a judgement rather than a
+    measurement, and one that cannot hold alongside never selling.</p>
+
+    <p>Two smaller lines, honestly sized. Account ordering is worth about 0.02% to 0.07% a year against a plan
+    you could actually execute, and turns negative if your only option is a captive employer plan. Never selling
+    in a taxable account is worth about 0.14%.</p>
+
+    <p>Outside evidence points the same way. Sialm and Zhang found that US stock funds cost their taxable holders
+    1.12% a year in tax on average over 1990 to 2012, roughly the same as the fee, and that tax varies about
+    three times as much between funds as fees do. The gap between the most and least tax-efficient fifth ran to
+    2.10 points a year, with nothing given up before tax.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>How sure we are</h2>
+
+    <p>Settled, in direction. Fees are set by contract, account treatment by statute, and the exchange-traded
+    structure&rsquo;s tax behaviour by a rule that has held for decades, so none of it needs a return forecast to
+    be right. The size is a different question, and it depends entirely on what you hold now.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it feels like when it is losing</h2>
+
+    <p>It falls exactly as far as <a href="/portfolios/whole-market/">portfolio one</a>, because it holds the
+    same things. US stocks have fallen 83.7% from a peak. A cheap global index that borrows nothing fell 52.7% at
+    its worst over the 427 months we tested, and in the ten years to February 2009 US stocks lost 2.55% a
+    year.</p>
+
+    <p>The discomfort particular to this page is quieter. If you already hold cheap index funds in sensible
+    accounts and rarely trade, this portfolio is worth nothing to you, and reading a page of savings while
+    collecting none of them is its own kind of losing. If you hold something expensive in a taxable account with
+    a large gain, moving may cost more in tax today than the fee saves for years. Expect, too, to watch a cheaper
+    fund appear and do nothing, because chasing a 0.01% difference across a taxable account turns a certain
+    saving into a certain tax bill.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What would make us drop it</h2>
+
+    <p>The fee gap closing, which would happen if the funds people actually hold got cheap. A change to the rule
+    that lets an exchange-traded fund hand back shares without realising a gain, which would remove the largest
+    line in the tax comparison. Lending income shifting enough to reorder which fund is cheapest, which is why
+    every figure here carries a read date.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>The decision that matters more than this page</h2>
+
+    <p>How much of your money is in stocks at all outweighs everything above. Moving a portfolio from 60% stocks
+    to 90% was worth 1.27 points a year, against 4.85 points of variation from one year to the next. That is more
+    than every lean on this site combined. Choosing 60/40 is itself a forecast: it says stocks will do better
+    than bonds by only about 1.2 points a year. One country, 1963 to 2025, with a modelled ten-year government
+    bond, and about <Figure id="equity-step-horizon" inline /> of your own results before you could be 90%
+    confident about the step.</p>
+  </div>
+</Base>

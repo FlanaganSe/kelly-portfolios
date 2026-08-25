@@ -1,144 +1,185 @@
 ---
 /**
- * The front door: what to do, what it is worth, and what the rest of the site is for.
+ * The front door: four portfolios, what each costs, and what is certain about each.
  *
- * Three jobs, in this order. Tell the reader what to do and roughly what it pays before
- * they have scrolled. Give them the rule that stops every number here being misread,
- * which is that a saving against your own old portfolio and an edge against an index
- * fund answer different questions and may never be added. Then hand them onward.
+ * The page is an index of the four constructions rather than an argument for one. It
+ * states the fee, which is contractual, before it states anything that depends on a
+ * measurement, and it names the one number the site cannot sign.
  *
- * Provenance lives in one block at the foot rather than in a note beside every
- * paragraph, and every `<Figure>` already carries its own source, interval and date.
+ * Fees are each fund's published expense ratio, so they are plain text. Every number
+ * this project measured itself carries a `<Figure>` record where one exists.
  */
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
-import MarginNote from "~/components/MarginNote.astro";
 import Base from "~/layouts/Base.astro";
+
+/**
+ * The four rows, as data. Each column heading is written once and read twice: into
+ * `<thead>` and into the `data-label` a cell carries. The first heading names the
+ * number column for a screen reader and is not drawn, because the numbers label
+ * themselves.
+ */
+const SUMMARY_COLUMNS = ["Number", "Portfolio", "Holdings", "Fees a year"] as const;
+
+const SUMMARY = [
+  {
+    number: "1",
+    name: "The whole market",
+    href: "/portfolios/whole-market/",
+    holdings: "VT 100%",
+    fee: "0.06%",
+  },
+  {
+    number: "2",
+    name: "The same fund, held in the cheapest form, in the account where it is taxed least, and never traded",
+    href: "/portfolios/held-well/",
+    holdings: "VT 100%",
+    fee: "0.06%",
+  },
+  {
+    number: "3",
+    name: "A lean toward cheaper, smaller, more profitable companies",
+    href: "/portfolios/value-lean/",
+    holdings: "VTI 49%, VXUS 16%, VTV 15%, AVDV 10%, IDMO 5%, AVES 5%",
+    fee: "0.09%",
+  },
+  {
+    number: "4",
+    name: "The same, plus a holding that does not move with stocks",
+    href: "/portfolios/with-trend/",
+    holdings: "RSST 30%, VTI 19%, VXUS 16%, VTV 15%, AVDV 10%, IDMO 5%, AVES 5%",
+    fee: "0.38%",
+  },
+] as const;
 ---
 
 <Base
-  title="Do the certain things first"
+  title="Kelly Portfolios"
   bareTitle
-  description="Cut your fees, use whatever tax-advantaged accounts you have, and hold each fund where it is taxed least. Worth about 1.09% a year against the portfolio you already own, and you would know inside four months."
+  description="Four portfolios you could hold, what each piece is for, and how much of the clever stuff is worth the trouble."
 >
   <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Do the certain things first</h1>
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">What to hold</h1>
 
-    <p>Cut your fees. Use whatever tax-advantaged accounts you actually have. Hold each fund in the account that
-    taxes it least.</p>
-
-    <p>Against the portfolio a normal person would otherwise be holding, those three moves are worth about
-    <Figure id="structural-budget" inline />. On a hundred thousand dollars that is roughly a thousand dollars a
-    year, for an afternoon of paperwork. They come out of fund contracts and tax statute rather than out of a
-    forecast, so nobody has to be right about markets for them to pay. And you would know inside about
-    <Figure id="structural-budget-horizon" inline /> whether you got them right.</p>
-
-    <p>Everything else on this site is a bet of some size. This part is arithmetic.</p>
-
-    <p>If you already own one cheap index fund in one account and never touch it, your number is close to zero and
-    we have nothing to sell you. Most people sit between the two, which is why the honest outer bound on the
-    package runs <Figure id="structural-budget-range" inline />.</p>
+    <p class="lead">Four portfolios you could actually hold, what each piece is for, and how much of the clever
+    stuff holds up against a cheap index fund.</p>
   </div>
 
-  <Breakout heading="Three yardsticks, never added" class="mt-10">
-    <div class="grid gap-8 sm:grid-cols-3">
-      <Figure id="structural-budget" />
-      <Figure id="edge-vs-cheap-index" />
-      <Figure id="behaviour-gap" />
-    </div>
+  <Breakout scroll class="my-8" label="The four portfolios, their holdings and their fees" maxWidth="48rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[44rem]">
+      <caption class="sr-only">The four portfolios, what each one holds and what it charges each year</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">
+            <span class="sr-only">{SUMMARY_COLUMNS[0]}</span>
+          </th>
+          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{SUMMARY_COLUMNS[1]}</th>
+          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{SUMMARY_COLUMNS[2]}</th>
+          <th role="columnheader" scope="col" class="eyebrow py-2 text-right">{SUMMARY_COLUMNS[3]}</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          SUMMARY.map((row) => (
+            <tr role="row" class="border-b border-rule align-top last:border-0">
+              <th role="rowheader" scope="row" data-numeric class="py-2 pr-4 text-left font-medium text-ink">
+                {row.number}
+              </th>
+              <td role="cell" data-label={SUMMARY_COLUMNS[1]} class="py-2 pr-4">
+                <a href={row.href} class="link">{row.name}</a>
+              </td>
+              <td role="cell" data-label={SUMMARY_COLUMNS[2]} data-numeric class="py-2 pr-4">
+                {row.holdings}
+              </td>
+              <td role="cell" data-label={SUMMARY_COLUMNS[3]} data-numeric class="py-2 text-right">
+                {row.fee}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
   </Breakout>
 
+  <div class="prose">
+    <p>Rows one and two hold the same fund. What separates them is how it is held, and how much that is worth
+    depends entirely on what you hold now.</p>
+
+    <p>Fees are each fund&rsquo;s published expense ratio, read from filings on 17 August 2026, weighted by the
+    holdings above. On $10,000 that is $6 a year at the top and $38 at the bottom.</p>
+  </div>
+
   <Callout kind="do-this">
-    <p>
-      Open your plan statement and find one number: what the fund holding most of your money charges each year.
-      Weighted by the money in them, index funds and active funds charge
-      <Figure id="index-vs-active-fee" inline />. If yours sits near the top of that pair, you have just found the
-      largest reliable gain available to you today.
-    </p>
+    <p>If you want one answer, it is <a href="/portfolios/held-well/" class="link">number two</a>.</p>
   </Callout>
 
-  <div class="prose mt-14">
-
-    <h2>Better than what, exactly</h2>
-
-    <p>Any claim about a portfolio has to finish the sentence "better than what". Three endings make sense, and
-    they are three separate questions with three unrelated answers.</p>
-
-    <p>Against the portfolio you already hold, the answer is the number above, and it settles fast because only
-    <Figure id="own-portfolio-tracking-error" inline /> of wander sits around it. Against a cheap total-market
-    index fund, it is <Figure id="edge-vs-cheap-index" inline />, which is about five dollars a year on ten
-    thousand and too small for us to tell from zero. Against what a typical fund investor earns after buying late
-    and selling into falls, Morningstar's ten-year gap is <Figure id="behaviour-gap" inline />.</p>
-
-    <p>Those three never add. Adding them is the most common way a result here has turned out wrong, and we know
-    because we did it to ourselves. An old headline of ours for the account-placement decision summed lines
-    measured against three different yardsticks and booked an avoided cost as though it were a saving. The
-    defensible figure, against something a real investor could build, is <Figure id="placement-value" inline />.
-    The research code now raises an error rather than adding across yardsticks.</p>
+  <div class="prose">
+    <p>Whatever share of your money you keep in bonds or cash sits outside all four. That choice is yours, and it
+    matters more than the difference between any two rows above.</p>
   </div>
 
   <div class="prose mt-14">
+    <h2>What is certain</h2>
 
-    <h2>What counts as a bet, and how big</h2>
+    <p><a href="/evidence/fees-and-accounts/">Fees are contractual</a>. Which account a fund sits in is statute.
+    Whether a fund is exchange-traded or an old-style mutual fund largely decides whether it hands you a tax bill
+    you did not ask for: in 2025, 7% of exchange-traded funds paid out a capital gain against 52% of mutual
+    funds. None of it is a forecast, and all of it shows up within months.</p>
 
-    <p>Here is the part that costs us something to write.</p>
+    <p>As a package, <a href="/portfolios/held-well/">holding well</a> runs from about 0.04% to about 2.70% a
+    year. Two things decide where you land inside that: how expensive the funds you own now are, and whether you
+    have more than one kind of account. One account already full of cheap index funds puts you at the bottom of
+    the range.</p>
 
-    <p>Add up everything this project has measured that might beat a plain cheap index fund, keep only what
-    survives its own error bars, and what is left is <Figure id="edge-vs-cheap-index" inline />. The wander around
-    it is <Figure id="index-tracking-error" inline />. In a normal year you would land within about three
-    percentage points either side of the index, for no reason except that you own different things. Call it sixty
-    times as much noise as signal. Over thirty years your chance of finishing ahead of the index is
-    <Figure id="odds-ahead-of-cheap-index" inline />.</p>
-
-    <p>So it is a coin flip. We can't tell you this beats a cheap index fund.</p>
-
-    <p>That does not mean a cheap index fund cannot be beaten. It means we cannot show you that we can beat one,
-    on the data anyone has. A site telling you otherwise is either measuring against something easier or has not
-    checked how long its own claim would take to prove.</p>
-
-    <p>Four months against thirty-one years, on the same rule applied twice. That gap is the whole reason to take
-    the fees and the tax before you take a view on anything.</p>
-  </div>
-
-  <Callout kind="caveat" label="What would change our mind">
-    <p>
-      A fund shelf that cut its published edge below a fifth of a percent a year, or a decade in which the funds
-      leaning toward cheap and profitable companies trailed the index by more than their stated wander, would turn
-      that coin flip into a rejection.
-    </p>
-  </Callout>
-
-  <div class="prose mt-14">
-
-    <h2>Where to go from here</h2>
-
-    <p><a href="/start/">The checklist</a> puts the whole thing in order, and every step says up front who it is
-    for. <a href="/tools/placement/">The placement tool</a> runs the account-ordering arithmetic at your own tax
-    rates and your own account sizes, which is the only form of that answer worth acting on.</p>
-
-    <p><a href="/portfolio/">The portfolio</a> is one concrete construction, with the parts that are bets named as
-    bets. <a href="/stacking/">Stacking</a> covers why owning more good ideas stops helping sooner than you would
-    think, and why how you pay for an addition matters more than what you add.
-    <a href="/doesnt-work/">What doesn't work</a> covers market timing, crypto as ballast, crash insurance and
-    direct indexing, each turned down on a measurement and each with the number that would reopen it.</p>
+    <p>The fee is the part that is certain and applies to everyone. Cutting it is contractual, it is the largest
+    single line, and it arrives in months. Someone leaving a typical active fund saves about
+    <Figure id="fee-gap" inline />, plausibly 0.40% to 0.59%. Someone already in cheap index funds saves
+    nothing.</p>
   </div>
 
   <div class="prose mt-14">
+    <h2>What is a bet, and how big</h2>
 
-    <h2>Where this comes from</h2>
+    <p><a href="/portfolios/value-lean/">Portfolio three</a> leans the stock holdings toward
+    <a href="/evidence/value-and-factors/">companies that are cheap relative to what they own and earn</a>.
+    Against a cheap global index fund that lean came to <Figure id="tilt-gap" inline />, plausibly 0.30% to
+    1.32%. Telling the gap from zero would take about thirty years of data, and cheap US stocks have spent 17.7
+    years trailing the US market by 54.3% without catching up.</p>
 
-    <MarginNote label="Standing caveats">
-      <p>
-        The author holds no licence, works for no firm and belongs to no professional body. AI was used heavily
-        throughout. Backtests are hindsight with a chart attached.
-      </p>
-    </MarginNote>
+    <p><a href="/portfolios/with-trend/">Portfolio four</a> adds a fund that borrows inside itself to hold
+    <a href="/evidence/trend-following/">managed futures</a> on top of stocks. It is the largest bet here and the
+    least settled. Read its page before you touch it.</p>
+  </div>
 
-    <p>Fee, tax and account figures are read from fund filings and tax statute rather than from a backtest,
-    checked on <span data-numeric>2026-08-23</span>. The comparison against a cheap index fund comes from
-    <a href="/research/expected-edge-decomposition/">where outperformance can come from</a>, and the wander in it
-    is assumed rather than measured, so every probability here is a best case.
-    <a href="/how-sure/">How sure we are</a> lists every error this project has caught in itself.</p>
+  <div class="prose mt-14">
+    <h2>What we could not tell</h2>
+
+    <p>Against a cheap index fund, everything clever here nets out to somewhere around zero. The central figure is
+    <Figure id="edge-vs-cheap-index" inline />, with a range from −0.92% to +0.83%, and it crosses zero, so
+    we cannot pin down even the sign.</p>
+
+    <p>That is smaller than the lean above it, and the reason is worth knowing rather than hiding. The 0.79% is
+    the lean on its own. The near-zero total is what remains after netting it against everything else we
+    measured, and those other lines are small, point both ways, and change sign depending on how far back you
+    look. Read the total as around zero rather than as a precise number.</p>
+
+    <p>Some things failed outright, and we say so: <a href="/evidence/bitcoin/">bitcoin as ballast</a>, funds that
+    promise to rise when stocks fall, and <a href="/evidence/crash-insurance/">crash insurance</a>.
+    <a href="/evidence/rebalancing/">Rebalancing</a> is its own case. It keeps your mix from drifting, which is
+    the reason to do it, and whether it costs or earns you a little depends on the period you measure. Other
+    things we could not measure at all. <a href="/evidence/market-timing/">A 200-day timing rule</a> on US stock
+    data came out 0.74% a year ahead of a fixed blend holding the same average amount in shares, against a test
+    that could only have seen a gap of 3.03% or wider. Measured against simply holding, the same rule lost 0.73% a
+    year. Those are two different questions and the answers point opposite ways.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Where to go next</h2>
+
+    <p><a href="/portfolios/">The portfolios page</a> puts all four side by side with questions to help you pick.
+    <a href="/funds/">The funds page</a> lists every fund we priced and what each costs after the income it earns
+    lending its shares out. <a href="/evidence/">The evidence page</a> has every idea we tested and how it
+    went.</p>
   </div>
 </Base>

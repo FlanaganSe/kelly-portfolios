@@ -1,0 +1,222 @@
+---
+/**
+ * Portfolio one: one fund that owns every listed company, and the count of real funds
+ * that failed to beat it.
+ *
+ * The comparison on this page is against active managers rather than against an index,
+ * which is a different question from the one the other three pages answer. Every count
+ * quoted comes from S&P's own scorecard or from a published paper, so it is plain text
+ * rather than a `<Figure>` record; the drawdowns this project measured itself carry
+ * their records.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+
+const HOLDING_COLUMNS = ["Ticker", "Fund", "Weight", "Cost a year"] as const;
+
+const HOLDINGS = [
+  { ticker: "VT", name: "Vanguard Total World Stock ETF", weight: "100%", cost: "0.06%" },
+] as const;
+
+const SPLIT_COLUMNS = ["Ticker", "Fund", "Weight", "Fee", "Cost after lending income"] as const;
+
+const SPLIT = [
+  {
+    ticker: "VTI",
+    name: "Vanguard Morningstar Total Stock Market ETF",
+    weight: "your US share",
+    fee: "0.03%",
+    net: "0.012%",
+  },
+  {
+    ticker: "VXUS",
+    name: "Vanguard Total International Stock ETF",
+    weight: "the rest",
+    fee: "0.05%",
+    net: "0.014%",
+  },
+] as const;
+---
+
+<Base
+  title="The whole market"
+  description="One fund that owns every listed company in the world, and why 90% of professionals could not beat it."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">One. The whole market</h1>
+
+    <p class="lead">What one fund that owns everything costs, what it was compared against, and how far it can
+    fall. Read this first, <a href="/portfolios/">whichever portfolio you end up holding</a>.</p>
+
+    <h2>What it holds</h2>
+  </div>
+
+  <Breakout scroll class="my-8" label="The single holding, its weight and its cost" maxWidth="42rem">
+    <table role="table" class="w-full border-collapse text-base sm:min-w-[38rem]">
+      <caption class="sr-only">The one fund this portfolio holds, its weight and what it costs each year</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            HOLDING_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i >= 2 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          HOLDINGS.map((holding) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {holding.ticker}
+              </th>
+              <td role="cell" data-label={HOLDING_COLUMNS[1]} class="py-2 pr-4">
+                {holding.name}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
+                {holding.weight}
+              </td>
+              <td role="cell" data-label={HOLDING_COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
+                {holding.cost}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose">
+    <p>That is the whole portfolio. On $10,000, as an illustration, the fee comes to $6 a year.</p>
+
+    <p>If you would rather set the US and non-US split yourself, two funds do the same job:</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="The two-fund alternative, its fees and its costs" maxWidth="46rem">
+    <table role="table" class="w-full border-collapse text-base sm:min-w-[42rem]">
+      <caption class="sr-only">
+        The two funds that split the same holding, with the fee each charges and what each costs after lending
+        income
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            SPLIT_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i >= 3 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          SPLIT.map((fund) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
+                {fund.ticker}
+              </th>
+              <td role="cell" data-label={SPLIT_COLUMNS[1]} class="py-2 pr-4">
+                {fund.name}
+              </td>
+              <td role="cell" data-label={SPLIT_COLUMNS[2]} class="py-2 pr-4">
+                {fund.weight}
+              </td>
+              <td role="cell" data-label={SPLIT_COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
+                {fund.fee}
+              </td>
+              <td role="cell" data-label={SPLIT_COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
+                {fund.net}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose">
+    <p>The second column is the fee. The third is what the fund actually costs you once
+    <a href="/evidence/fees-and-accounts/">the income it earns lending its shares to short sellers</a> is
+    subtracted. Both were read from filings on 17 August 2026. We have not run the lending audit on VT, so its
+    0.06% is a fee rather than a true cost, and the true cost will be a little lower.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Why each piece is there</h2>
+
+    <p>VT holds every listed company in every market its index covers, in proportion to what each is worth, so
+    you never have to decide which country or which company deserves more.</p>
+
+    <p>VTI and VXUS split the same thing in two, which lets you set your own US and non-US weights and costs
+    marginally less. They also mean two funds to maintain instead of one.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it is compared against, and what the comparison showed</h2>
+
+    <p>The comparison is against professional fund managers trying to beat the same index. S&amp;P&rsquo;s
+    mid-2025 scorecard found that 90.3% of US stock funds lost to their benchmark over ten years, and 93.8% over
+    twenty. Judged on return per unit of risk it is worse: 94.4% at ten years and 96.2% at twenty. Large-company
+    funds lost 86.0% of the time over ten years, global funds 91.7%, and funds investing in emerging markets
+    85.9%.</p>
+
+    <p>Survivorship makes it starker. Of 2,373 US stock funds alive in 2005, only 37.3% still existed in 2025.
+    Nearly two in three of the funds you could have chosen are gone.</p>
+
+    <p>There is one more piece of outside evidence worth carrying. Patton and Weller took every US mutual fund and
+    asked what funds actually earned per unit of exposure against what
+    <a href="/evidence/value-and-factors/">the strategy earned on paper</a>. Plain market exposure came through
+    at 6.93% a year against 6.72% on paper. Value came through at 2.84% against 7.76%, and momentum at 1.86%
+    against 9.48%, both before the fund&rsquo;s own fee. Plain market exposure is the one thing that survives the
+    trip out of a paper and into a real account. Holding it costs almost nothing, so there is almost nothing to
+    lose on the way.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>How sure we are</h2>
+
+    <p>Settled. The comparison is a count of what happened to thousands of real funds over twenty years, not a
+    model, and it points the same way in every category S&amp;P measures.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it feels like when it is losing</h2>
+
+    <p>US stocks have fallen 83.7% from a peak to a trough. That happened once, from 1929, and any test run over
+    the full record has to live with it. Over the 427 months we tested, to May 2026, a cheap global index that
+    borrows nothing fell 52.7% at its worst.</p>
+
+    <p>Falls are not the hard part. The hard part is the flat stretch afterwards. In the ten years to February
+    2009, US stocks lost 2.55% a year. As an illustration, $10,000 put in at the start of that decade was worth
+    about $7,700 at the end. Nobody had done anything wrong.</p>
+
+    <p>Owning the world does not spare you either. International stocks have run
+    <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over 18.2 years, and had not recovered when
+    we measured them. Through that stretch, owning the world rather than just America looked like a mistake every
+    single year, and there was no way to know it was not one.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What would make us drop it</h2>
+
+    <p>A fee that stops being close to zero. A fund that quietly changes what it holds, which is why the filings
+    get re-read rather than re-quoted. And the only finding that would really overturn this: a long stretch in
+    which most active funds beat their benchmarks, which would mean the arithmetic that makes indexing work had
+    changed.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>The decision that matters more than this page</h2>
+
+    <p>How much of your money is in stocks at all outweighs everything above. Moving a portfolio from 60% stocks
+    to 90% was worth 1.27 points a year, against 4.85 points of variation from one year to the next. That is more
+    than every lean on this site combined. Choosing 60/40 is itself a forecast: it says stocks will do better
+    than bonds by only about 1.2 points a year. One country, 1963 to 2025, with a modelled ten-year government
+    bond, and about <Figure id="equity-step-horizon" inline /> of your own results before you could be 90%
+    confident about the step.</p>
+  </div>
+</Base>
