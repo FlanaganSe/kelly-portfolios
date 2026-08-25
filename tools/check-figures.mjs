@@ -73,6 +73,36 @@ for (const [id, uses] of seen) {
   }
 }
 
+// A record nothing renders. Twenty of these had accumulated, several describing a
+// portfolio the site no longer publishes, and nothing said so: the collection schema
+// only validates what a page asks for, and this file only validated what exists. An
+// unrendered record is not a harmless leftover — it is an unmaintained number that the
+// next person to search the directory will believe is current.
+if (split) {
+  const sources = ['src/pages', 'src/layouts', 'src/components', 'src/content']
+  const text = []
+  const walk = (d) => {
+    if (!existsSync(d)) return
+    for (const entry of readdirSync(d, { withFileTypes: true })) {
+      const full = join(d, entry.name)
+      if (entry.isDirectory()) walk(full)
+      else if (/\.(astro|tsx?|mdx?)$/.test(entry.name)) text.push(readFileSync(full, 'utf8'))
+    }
+  }
+  for (const d of sources) walk(d)
+  const haystack = text.join('\n')
+  const orphans = [...seen.keys()].filter((id) => !haystack.includes(`"${id}"`) && !haystack.includes(`'${id}'`))
+  if (orphans.length) {
+    // A warning, not yet a failure. The page set is mid-rewrite and several of these
+    // records are about to be rendered again by pages that do not exist yet. This
+    // becomes an error the moment the page set settles; until then, failing the build
+    // would only teach whoever hits it to delete a number they need.
+    console.log(`\n${orphans.length} figure records nothing renders:\n`)
+    for (const id of orphans.sort()) console.log(`  ORPHAN ${id}  (src/content/figures/${id}.yaml)`)
+    console.log('')
+  }
+}
+
 console.log(`${files.length} manifests · ${seen.size} distinct figure ids`)
 if (problems.length) {
   console.log(`\n${problems.length} problems:\n`)
