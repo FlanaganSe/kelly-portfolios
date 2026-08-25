@@ -8,7 +8,7 @@
  * `T = (z·s/e)²` has three cases a control can reach and a reader deserves a sentence
  * for. An edge of zero or less never becomes an advantage at any horizon, so there is no
  * year to name. A tracking error of zero is the contractual case rather than a
- * degenerate one: a lower fee on the same index fund cannot wander, so it lands the day
+ * degenerate one: a lower fee on the same index fund cannot drift, so it lands the day
  * it starts. Everything in between is the square law, and the square law is the finding.
  */
 
@@ -33,7 +33,7 @@ export function percentFromBp(bp: number): number {
 export type HorizonOutcome =
   /** `T` exists and is finite. */
   | { readonly kind: "years"; readonly years: number }
-  /** No wandering, so a positive edge lands at once. */
+  /** No drift, so a positive edge lands at once. */
   | { readonly kind: "immediate" }
   /** The edge is zero or negative, so no horizon reaches the confidence asked for. */
   | { readonly kind: "never" };
@@ -98,7 +98,7 @@ export function againstAWorkingLife(outcome: HorizonOutcome): string {
     return "No horizon reaches it, because the edge is not positive.";
   }
   if (outcome.kind === "immediate") {
-    return "There is nothing to wander, so the saving lands the day you make the switch.";
+    return "There is no drift, so the saving lands the day you make the switch.";
   }
   const { years } = outcome;
   if (years < 1) return `Inside a year, and well inside the ${WORKING_LIFE_YEARS} years of a working life.`;

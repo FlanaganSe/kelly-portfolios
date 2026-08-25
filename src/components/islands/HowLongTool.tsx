@@ -148,14 +148,14 @@ export const HowLongTool: Component = () => {
         />
 
         <NumberField
-          label="How far it can wander from that comparison in a year"
+          label="How far it can drift from that comparison in a year"
           value={driftPercent()}
           onInput={editDrift}
           min={0}
           max={30}
           step={0.01}
           unit="%"
-          hint="A cheaper share class of the same index fund wanders by almost nothing. A portfolio built differently from the index wanders by several points."
+          hint="A cheaper share class of the same index fund drifts by almost nothing. A portfolio built differently from the index drifts by several points."
         />
       </div>
 

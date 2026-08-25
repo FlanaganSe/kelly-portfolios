@@ -4,13 +4,13 @@ unit: a year
 status: unresolved
 asOf: '2026-08-23'
 source:
-  label: Stacking and effective breadth, is p even 55%
+  label: Stacking and how many separate bets you hold, is p even 55%
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: 2-is-p-even-55
 note: >-
-  One basis point under what thirty years of holding could detect, so it cannot be told from
+  0.01% under what thirty years of holding could detect, so it cannot be told from
   zero. The chance of beating that index fund over thirty years is 0.72 on the primary reading
   and runs 0.41 to 0.91 across four assumptions about the rewards and three about the funds' own
   shortfalls. Quote the range, never the point. Measured against a cheap index instead of this
-  same-split benchmark the honest budget is 5.4 basis points against 313 of wander, and the
+  same-split benchmark the honest budget is 0.054% against 3.13% of drift, and the
   three benchmarks on this site are never added together.

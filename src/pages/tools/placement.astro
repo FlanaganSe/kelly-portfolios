@@ -12,7 +12,7 @@
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import PlacementTool from "~/components/islands/PlacementTool";
-import { bp, fill, forfeitedCreditBp, queue, ratePercent, shelf } from "~/components/islands/placement-model";
+import { fill, forfeitedCreditBp, percentOfBp, queue, ratePercent, shelf } from "~/components/islands/placement-model";
 import MarginNote from "~/components/MarginNote.astro";
 import Base from "~/layouts/Base.astro";
 import {
@@ -52,7 +52,7 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
 
 <Base
   title="Where to hold each fund"
-  description="Enter your tax bracket and roughly how your money splits across a Roth, a 401(k) and a taxable account. It ranks every fund on the shelf by what a sheltered dollar of it actually saves, and the answer is not the one you have read elsewhere."
+  description="Enter your tax bracket and roughly how your money splits across a Roth, a 401(k) and a taxable account. It ranks every fund we priced by what a sheltered dollar of it actually saves, and the answer is not the one you have read elsewhere."
 >
   <div class="prose">
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Where to hold each fund</h1>
@@ -97,19 +97,19 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
     </MarginNote>
 
     <p>You have probably read the opposite: hold international in the taxable account so you can claim the
-    foreign tax credit back. Sheltering all of them here does destroy <span data-numeric>{bp(forfeited)}</span>
-    basis points a year of credit, permanently. It buys back several times that, because foreign funds yield
+    foreign tax credit back. Sheltering all of them here does destroy <span data-numeric>{percentOfBp(forfeited)}</span>
+    a year of credit, permanently. It buys back several times that, because foreign funds yield
     more and a bigger dividend in a taxable account is a bigger tax bill.</p>
 
     <p>At <span data-numeric>{ratePercent(rates.qualifiedDividend)}%</span> on qualified dividends, the weakest
-    foreign line on the shelf is {weakestForeign?.ticker} at <span data-numeric>{bp(weakestForeign?.priorityBp ?? 0)}</span>
-    basis points saved per sheltered dollar, against {strongestDomestic?.ticker} at
-    <span data-numeric>{bp(strongestDomestic?.priorityBp ?? 0)}</span> for the strongest US line. The gap holds
-    at every one of the {brackets} brackets the tool offers except the 0% one, where there is no credit to lose
-    and nothing much to save either.</p>
+    foreign line on the fund list is {weakestForeign?.ticker} at
+    <span data-numeric>{percentOfBp(weakestForeign?.priorityBp ?? 0)}</span> saved per sheltered dollar, against
+    {strongestDomestic?.ticker} at <span data-numeric>{percentOfBp(strongestDomestic?.priorityBp ?? 0)}</span> for
+    the strongest US line. The gap holds at every one of the {brackets} brackets the tool offers except the 0%
+    one, where there is no credit to lose and nothing much to save either.</p>
 
-    <p>And {last?.ticker} comes last, at <span data-numeric>{bp(last?.priorityBp ?? 0)}</span> basis points. It is
-    the cheapest, broadest, calmest fund on the shelf, which is exactly why it belongs in the account with no
+    <p>And {last?.ticker} comes last, at <span data-numeric>{percentOfBp(last?.priorityBp ?? 0)}</span>. It is
+    the cheapest, broadest, calmest fund we priced, which is exactly why it belongs in the account with no
     protection. Its dividend is the smallest tax bill you can put on a scarce sheltered dollar.</p>
   </div>
 
@@ -120,10 +120,10 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
     the top marginal rates. Rendered here whether or not the tool above loaded.</p>
   </div>
 
-  <Breakout scroll class="mt-6" label="The shelf, ranked by what a sheltered dollar saves" maxWidth="42rem">
+  <Breakout scroll class="mt-6" label="The fund list, ranked by what a sheltered dollar saves" maxWidth="42rem">
     <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[36rem]">
       <caption class="sr-only">
-        The shelf ranked by what a sheltered dollar of each fund saves a year, at the top marginal rates, with
+        The fund list ranked by what a sheltered dollar of each fund saves a year, at the top marginal rates, with
         two thirds of the portfolio sheltered
       </caption>
       <thead role="rowgroup">
@@ -155,7 +155,7 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
                 {ratePercent(row.weight, 1)}%
               </td>
               <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right font-semibold text-ink">
-                {bp(row.priorityBp)} bp
+                {percentOfBp(row.priorityBp)}
               </td>
               <td role="cell" data-label={COLUMNS[4]} class="py-2 pr-4">
                 {WHERE[row.where]}

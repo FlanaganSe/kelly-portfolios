@@ -10,4 +10,4 @@ source:
 note: >-
   Return per unit of risk over the same window: the trend route rose from 0.538 to 0.641 while
   the borrowed-stocks route fell to 0.530. A total-exposure figure cannot tell the two apart,
-  which is why an index that borrows nothing is not a fair yardstick for a portfolio that does.
+  which is why an index that borrows nothing is not a fair comparison for a portfolio that does.

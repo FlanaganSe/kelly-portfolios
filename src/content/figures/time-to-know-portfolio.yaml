@@ -4,11 +4,11 @@ unit: to 90% confidence, at 0.92% of edge against 4.00% of drift
 status: unresolved
 asOf: '2026-08-23'
 source:
-  label: Stacking and effective breadth, is p even 55%
+  label: Stacking and how many separate bets you hold, is p even 55%
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: 2-is-p-even-55
 note: >-
-  Against a cheap index fund holding the same mix, of which 372 of the 400 basis points of drift
+  Against a cheap index fund holding the same mix, of which 3.72% of the 4.00% of drift
   is the trend fund alone. The same rule applied to the fee, tax and placement package returns about four
   months, and that contrast is the argument for doing the certain things first. Read it as a
   best case: the arithmetic treats the edge as known.

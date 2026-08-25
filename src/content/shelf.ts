@@ -364,7 +364,8 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "VTV",
     name: "Vanguard Value ETF",
     category: "us-value",
-    mandate: "Big cheap US companies, weighted by size, for 0.03% a year. Part of what results are measured against, rather than a bet.",
+    mandate:
+      "Big cheap US companies, weighted by size, for 0.03% a year. Part of what results are measured against, rather than a bet.",
     expenseRatioBp: 3,
     securitiesLendingBp: 0.3,
     netCostBp: 2.7,
@@ -485,7 +486,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The largest HML exposure on the US large-value shelf, and on that alone a 20% weight prices at +53.8 bp for 163 bp of drift — the best ratio in the table.",
+      "The largest HML exposure among the US large-value funds, and on that alone a 20% weight prices at +53.8 bp for 163 bp of drift — the best ratio in the table.",
     caution:
       "Disqualifying: its raw alpha of −6.06 pp/yr is larger than the 5.69 pp/yr its own window could have resolved, one of sixteen such funds on a 109-fund shelf and all sixteen negative. Charging it takes the lean to about −67 bp, or −54 bp against its own 36-month pedestal of −0.65 pp/yr.",
     source: recommendation,
@@ -784,7 +785,8 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "VB",
     name: "Vanguard Morningstar Small-Cap ETF",
     category: "us-small",
-    mandate: "Plain small US companies for 0.03% a year. Part of what results are measured against, rather than a holding.",
+    mandate:
+      "Plain small US companies for 0.03% a year. Part of what results are measured against, rather than a holding.",
     expenseRatioBp: 3,
     securitiesLendingBp: null,
     netCostBp: null,

@@ -4,9 +4,9 @@ unit: a year
 status: exploratory
 asOf: '2026-08-23'
 source:
-  label: Stacking and effective breadth, is p even 55%
+  label: Stacking and how many separate bets you hold, is p even 55%
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: 2-is-p-even-55
 note: >-
-  Against a cheap index fund holding the same mix. 372 of the 400 basis points is the trend fund
+  Against a cheap index fund holding the same mix. 3.72% of the 4.00% is the trend fund
   alone.

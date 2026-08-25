@@ -6,7 +6,7 @@ unit: probability
 status: exploratory
 asOf: '2026-08-23'
 source:
-  label: Stacking and effective breadth, the arithmetic of stacking
+  label: Stacking and how many separate bets you hold, the arithmetic of stacking
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: 1-the-arithmetic-of-stacking
 note: >-

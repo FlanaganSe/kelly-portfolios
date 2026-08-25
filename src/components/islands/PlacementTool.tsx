@@ -11,10 +11,10 @@ import {
 } from "~/components/islands/placement-config";
 import {
   type Basis,
-  bp,
   fill,
   forfeitedCreditBp,
   type PlacedRow,
+  percentOfBp,
   queue,
   ratePercent,
   shelf,
@@ -105,12 +105,12 @@ export const PlacementTool: Component = () => {
     const high = found.highestDomestic;
     const last = found.last;
     if (found.everyInternationalAhead && low !== null && high !== null && last !== null) {
-      return `Every fund with foreign tax withheld outranks every fund without it. The weakest of them, ${low.ticker}, saves ${bp(low.priorityBp)} basis points a year per sheltered dollar against the strongest US line, ${high.ticker}, at ${bp(high.priorityBp)}. ${last.ticker} comes last at ${bp(last.priorityBp)}.`;
+      return `Every fund with foreign tax withheld outranks every fund without it. The weakest of them, ${low.ticker}, saves ${percentOfBp(low.priorityBp)} a year per sheltered dollar against the strongest US line, ${high.ticker}, at ${percentOfBp(high.priorityBp)}. ${last.ticker} comes last at ${percentOfBp(last.priorityBp)}.`;
     }
     if (low !== null && high !== null && last !== null) {
-      return `${high.ticker} breaks the pattern: it saves ${bp(high.priorityBp)} basis points a year per sheltered dollar against ${bp(low.priorityBp)} for ${low.ticker}, the weakest foreign line. ${last.ticker} still comes last at ${bp(last.priorityBp)}.`;
+      return `${high.ticker} breaks the pattern: it saves ${percentOfBp(high.priorityBp)} a year per sheltered dollar against ${percentOfBp(low.priorityBp)} for ${low.ticker}, the weakest foreign line. ${last.ticker} still comes last at ${percentOfBp(last.priorityBp)}.`;
     }
-    return "There is nothing on the shelf to rank.";
+    return "There is nothing on the fund list to rank.";
   });
 
   const [shareHref, setShareHref] = createSignal("");
@@ -253,10 +253,10 @@ export const PlacementTool: Component = () => {
                       {ratePercent(row.weight, 1)}%
                     </td>
                     <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
-                      {bp(row.taxableBp)} bp
+                      {percentOfBp(row.taxableBp)}
                     </td>
                     <td role="cell" data-label={COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
-                      {bp(row.shelteredBp)} bp
+                      {percentOfBp(row.shelteredBp)}
                     </td>
                     <td
                       role="cell"
@@ -264,7 +264,7 @@ export const PlacementTool: Component = () => {
                       data-numeric
                       class="py-2 pr-4 text-right font-semibold text-ink"
                     >
-                      {bp(row.priorityBp)} bp
+                      {percentOfBp(row.priorityBp)}
                     </td>
                     <td role="cell" data-label={COLUMNS[6]} class="py-2 pr-4">
                       {WHERE_TEXT[row.where]}
@@ -283,8 +283,8 @@ export const PlacementTool: Component = () => {
 
         <p data-numeric class="mt-4 max-w-measure text-sm text-ink-muted">
           Computed at {bracketNote()}, on yields and withheld rates as of {placementAsOf}. Sheltering the foreign funds
-          destroys {bp(forfeited())} basis points a year of foreign tax credit, permanently and in a Roth and a
-          traditional account alike. The last column has already subtracted it.
+          destroys {percentOfBp(forfeited())} a year of foreign tax credit, permanently and in a Roth and a traditional
+          account alike. The last column has already subtracted it.
         </p>
       </div>
 

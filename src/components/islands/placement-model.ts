@@ -206,9 +206,12 @@ export function verdict(rows: readonly ShelfRow[]): Verdict {
   };
 }
 
-/** Basis points a year, to one decimal. Everything on the page is quoted this way. */
-export function bp(value: number): string {
-  return value.toFixed(1);
+/**
+ * A hundredth-of-a-percent figure as the percentage a reader reads: 43.1 becomes "0.431%".
+ * Everything on the page is quoted this way, so nothing has to be converted in the head.
+ */
+export function percentOfBp(value: number): string {
+  return `${(value / 100).toFixed(3)}%`;
 }
 
 /** A rate as a percentage with its trailing zeros trimmed: 0.238 becomes "23.8". */
