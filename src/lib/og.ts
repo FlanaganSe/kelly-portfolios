@@ -83,6 +83,14 @@ export const OG_PAGES = {
     title: "The shelf",
     alt: `${SITE_NAME}: the audited fund shelf, on cost rather than on fee.`,
   },
+  "/evidence/": {
+    title: "What the evidence will carry",
+    alt: `${SITE_NAME}: every claim on the site with the word for how sure we are and the test that produced it.`,
+  },
+  "/evidence/fees-and-accounts/": {
+    title: "The part that isn’t a guess",
+    alt: `${SITE_NAME}: what a fund really costs after lending income, and which account each one belongs in.`,
+  },
   "/research/": {
     title: "The research",
     alt: `${SITE_NAME}: the research corpus, one synthesis per question.`,

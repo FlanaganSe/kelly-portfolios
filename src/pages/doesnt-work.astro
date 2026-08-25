@@ -10,8 +10,7 @@
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
-import Rung from "~/components/Rung.astro";
+import { rungMeta } from "~/lib/rungs";
 import Base from "~/layouts/Base.astro";
 ---
 
@@ -20,7 +19,6 @@ import Base from "~/layouts/Base.astro";
   description="Market timing, bitcoin, crash insurance, direct indexing and more, each carrying the window its verdict is scoped to and the thing that would reopen it. Several are us saying we could not tell, which is a different answer from no."
 >
   <div class="prose">
-    <Rail>The other file</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Things we tested that did not earn a place</h1>
 
     <MarginNote label="The question">
@@ -36,7 +34,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>How to read these</Rail>
 
     <h2>A rejection is only as good as the series that produced it</h2>
 
@@ -65,13 +62,18 @@ import Base from "~/layouts/Base.astro";
   <div class="mt-6">
     <p class="eyebrow mb-2">The two verdicts on this page</p>
     <div class="flex flex-col gap-2">
-      <Rung level="cant-tell" showGloss />
-      <Rung level="settled" showGloss />
+      <p class="confidence" data-level="cant-tell">
+        <span class="confidence-word">{rungMeta["cant-tell"].label}</span>
+        <span class="confidence-gloss">{rungMeta["cant-tell"].gloss}</span>
+      </p>
+      <p class="confidence" data-level="settled">
+        <span class="confidence-word">{rungMeta.settled.label}</span>
+        <span class="confidence-gloss">{rungMeta.settled.gloss}</span>
+      </p>
     </div>
   </div>
 
   <div class="prose mt-14">
-    <Rail>Timing</Rail>
 
     <h2>Selling when the market drops below its own long-run average</h2>
 
@@ -97,7 +99,7 @@ import Base from "~/layouts/Base.astro";
     <p>One part survives. Cutting off the worst outcomes is arithmetic rather than a reward for risk, so the rule
     does cut the worst fall a long way: <Figure id="timing-rule-drawdown" inline />.</p>
 
-    <Callout kind="change-your-mind">
+    <Callout kind="caveat" label="What would change our mind">
       <p>
         Unresolved, not rejected. Someone with no trend fund, no taxable account, and no other way to get the
         worst fall down has a defensible case for it.
@@ -106,7 +108,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Crypto</Rail>
 
     <h2>Bitcoin as the thing that zigs when stocks zag</h2>
 
@@ -132,7 +133,7 @@ import Base from "~/layouts/Base.astro";
     <p>Hold it if you want to. One or two per cent, labelled a speculation, is defensible, and so is zero. Past
     about five per cent it is a borrowed-money bet on stocks bought at a bad price.</p>
 
-    <Callout kind="change-your-mind">
+    <Callout kind="caveat" label="What would change our mind">
       <p>
         A correlation to stocks below +0.2 on a window containing a recession, or a bear market in which bitcoin
         does not fall harder than equity. 2020 and 2022 both went the other way.
@@ -141,7 +142,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Crash insurance</Rail>
 
     <h2>Funds that promise to pay off in a crash</h2>
 
@@ -163,7 +163,7 @@ import Base from "~/layouts/Base.astro";
     it outright, adding back more in the average bad month than anything on the option shelf manages after its
     own costs.</p>
 
-    <Callout kind="change-your-mind">
+    <Callout kind="caveat" label="What would change our mind">
       <p>
         A change in the sign of what option sellers get paid, or an engine not on this shelf. The verdict covers
         the products you can buy today.
@@ -172,7 +172,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Tax machinery</Rail>
 
     <h2>Direct indexing, and harvesting inside a plan that never sells</h2>
 
@@ -198,7 +197,7 @@ import Base from "~/layouts/Base.astro";
     <p>The plain version survives, and you should still do it. Sell one total-market fund at a loss, buy a
     different sponsor's. No fee, reversible, and it wins below that break-even.</p>
 
-    <Callout kind="change-your-mind">
+    <Callout kind="caveat" label="What would change our mind">
       <p>
         Realised gains from elsewhere worth more than about 2.5% of the taxable account a year: restricted stock
         vesting, a concentrated position unwound, a business sale.
@@ -207,7 +206,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Three more</Rail>
 
     <h2>Gold, anti-beta funds, and three well-built factor products</h2>
 
@@ -234,7 +232,7 @@ import Base from "~/layouts/Base.astro";
     momentum fund we hold. RPV gets the deepest value exposure available by giving up momentum, inside a
     portfolio that holds momentum on purpose.</p>
 
-    <Callout kind="change-your-mind">
+    <Callout kind="caveat" label="What would change our mind">
       <p>
         The three product verdicts are narrow: rejected against this portfolio at this moment, not as funds. A
         different set of holdings changes the overlap that decides them.
@@ -243,7 +241,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Rebalancing</Rail>
 
     <h2>Rebalancing as a source of return</h2>
 
@@ -264,7 +261,7 @@ import Base from "~/layouts/Base.astro";
     annual review with a band around each target keeps the portfolio within
     <Figure id="rebalance-drift" inline /> of target, against roughly six times that if you leave it alone.</p>
 
-    <Callout kind="change-your-mind">
+    <Callout kind="caveat" label="What would change our mind">
       <p>
         Holdings that drift apart at similar long-run rates would flip the sign. On the pair that decided this,
         the gap was about thirty-five times too large.
@@ -273,7 +270,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>The pattern</Rail>
 
     <h2>What these have in common</h2>
 

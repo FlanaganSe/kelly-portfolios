@@ -77,26 +77,30 @@ const structuredData = {
   },
 };
 
-const navLink = "inline-block border-b-2 -mb-px py-2 text-sm transition-colors";
+const navLink = "inline-block border-b-2 py-2 text-sm transition-colors";
 
 /**
  * The footer's own links: the reference shelf, then the pages about the site itself.
  *
  * They live here rather than beside `NAV_ITEMS` on purpose. The masthead order is the
  * argument the site is making, and none of these belongs inside it — a reader reaches
- * them on a different errand. The glossary and the short course are the two a reader
- * arrives at sideways, from a link in a sentence rather than from the masthead, and
- * both need to be reachable from every page without lengthening a navigation that is
- * already eight items long.
+ * them on a different errand. The masthead is five items and stays five, so everything
+ * a reader arrives at sideways, from a link in a sentence rather than from the
+ * navigation, has to be reachable here.
+ *
+ * The disclaimer is not in this list. It has its own sentence above, because a reader
+ * who needs it is not scanning a row of link text for it.
  */
 const FOOTER_ITEMS = [
+  { href: "/start/", label: "Start here" },
+  { href: "/portfolio/", label: "The portfolio" },
+  { href: "/doesnt-work/", label: "What doesn’t work" },
   { href: "/lessons/", label: "What we’ve learned" },
   { href: "/glossary/", label: "Glossary" },
-  { href: "/about/", label: "About" },
+  { href: "/research/", label: "Research" },
   { href: "/methodology/", label: "Methodology" },
   { href: "/corrections/", label: "Corrections" },
   { href: "/disclosures/", label: "Disclosures" },
-  { href: "/disclaimer/", label: "Disclaimer" },
 ] as const satisfies readonly NavItem[];
 ---
 
@@ -159,21 +163,26 @@ const FOOTER_ITEMS = [
         Skip to content
       </a>
 
+      {/* Five items, and the masthead is the whole of the site's first-level structure.
+          The wordmark is the sixth destination and goes home. */}
       <header class="border-b border-rule">
         <div class="page-rail">
-          <div class="flex items-center justify-between gap-4 py-4">
-            <a href="/" class="font-serif text-xl tracking-[-0.01em] text-ink transition-colors hover:text-accent">
+          <div class="flex items-center justify-between gap-4 pt-4 pb-3">
+            <a
+              href="/"
+              class="font-serif text-[1.3125rem] font-semibold tracking-[-0.015em] text-ink transition-colors hover:text-accent"
+            >
               {SITE_NAME}
             </a>
-            <div class="flex items-center gap-4">
-              <span data-numeric class="hidden text-xs text-ink-faint sm:inline">as of {CORPUS_AS_OF}</span>
-              <a href="/search/" class="text-sm text-ink-muted transition-colors hover:text-ink">Search</a>
+            <div class="flex items-center gap-4 text-xs text-ink-3">
+              <span data-numeric class="hidden sm:inline">Research as of {CORPUS_AS_OF}</span>
+              <a href="/search/" class="text-ink-2 transition-colors hover:text-ink">Search</a>
               <ThemeToggle />
             </div>
           </div>
 
           <nav aria-label="Sections">
-            <ul class="flex flex-wrap gap-x-6 border-t border-rule pb-2 lg:border-t-0 lg:pb-0">
+            <ul class="flex flex-wrap gap-x-6">
               {
                 NAV_ITEMS.map((item) => {
                   const current = isCurrent(item.href, pathname);
@@ -185,8 +194,8 @@ const FOOTER_ITEMS = [
                         class:list={[
                           navLink,
                           current
-                            ? "border-accent font-medium text-ink"
-                            : "border-transparent text-ink-muted hover:border-rule-strong hover:text-ink",
+                            ? "border-accent font-semibold text-ink"
+                            : "border-transparent text-ink-2 hover:border-rule-strong hover:text-ink",
                         ]}
                       >
                         {item.label}
@@ -203,9 +212,9 @@ const FOOTER_ITEMS = [
       {/* `data-pagefind-body` scopes the search index to the page's own words. Without
           it Pagefind indexes the masthead and footer on every page and every query
           matches everything. */}
-      {/* The three-track canvas: a rail for section labels, the reading column, and a
-          margin for sources, dates and caveats. Both outer tracks collapse to zero width
-          below 62rem, at which point every child is a single clean column. */}
+      {/* The two-track canvas, centred: the reading measure, and a right-hand column for
+          sources, dates and caveats. The aside collapses to zero width below 74rem, at
+          which point every child is a single clean column. */}
       <main id="main" data-pagefind-body={indexable ? true : undefined} class="canvas flex-1 py-12 sm:py-16">
         <slot />
       </main>
@@ -214,34 +223,35 @@ const FOOTER_ITEMS = [
           condition of the whole site, not of one essay. `/disclaimer/` carries the full
           text and the reasoning; these two sentences are the part a reader has to see
           without clicking. */}
-      <footer class="mt-16 border-t border-rule">
-        <div class="page-rail flex flex-col gap-6 py-8 text-sm text-ink-muted">
+      <footer class="mt-24 border-t border-rule bg-sunken">
+        <div class="page-rail flex flex-col gap-5 pt-8 pb-11 text-sm text-ink-2">
           <p class="max-w-measure">
             General information about investing, and no part of it is personalised advice. This site does not
             answer questions about an individual reader&rsquo;s portfolio.{" "}
-            <a href="/disclaimer/" class="link">Read the full disclaimer</a>.
+            <a href="/disclaimer/" class="link font-semibold">Read the full disclaimer</a>.
           </p>
 
-          <div class="flex flex-col gap-3 sm:flex-row sm:items-baseline sm:justify-between">
-            <nav aria-label="About this site">
-              <ul class="flex flex-wrap gap-x-5 gap-y-2">
-                {
-                  FOOTER_ITEMS.map((item) => (
-                    <li>
-                      <a href={item.href} class="link">
-                        {item.label}
-                      </a>
-                    </li>
-                  ))
-                }
-              </ul>
-            </nav>
+          <nav aria-label="About this site">
+            <ul class="flex flex-wrap gap-x-5 gap-y-2">
+              {
+                FOOTER_ITEMS.map((item) => (
+                  <li>
+                    <a href={item.href} class="link">
+                      {item.label}
+                    </a>
+                  </li>
+                ))
+              }
+            </ul>
+          </nav>
 
-            <p class="flex items-baseline gap-4 whitespace-nowrap">
-              <a href={REPO_URL} rel="noopener noreferrer" class="link">GitHub</a>
-              <span data-numeric class="text-ink-faint">Research as of {CORPUS_AS_OF}</span>
-            </p>
-          </div>
+          {/* The repository is the last thing on the page on purpose. It is where a
+              reader goes to audit the work, which is an errand almost nobody is on,
+              and it used to sit ahead of the disclaimer. */}
+          <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs text-ink-3">
+            <span data-numeric>Research as of {CORPUS_AS_OF}</span>
+            <a href={REPO_URL} rel="noopener noreferrer" class="link">Source on GitHub</a>
+          </p>
         </div>
       </footer>
     </div>

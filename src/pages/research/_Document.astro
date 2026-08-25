@@ -13,7 +13,6 @@
  * Markdown under `docs/` stays research notes rather than becoming web pages.
  */
 import type { MarkdownHeading } from "astro";
-import Rail from "~/components/Rail.astro";
 import { StatusChip } from "~/components/StatusChip";
 import type { EvidenceStatus } from "~/content/types";
 import Base from "~/layouts/Base.astro";
@@ -87,7 +86,6 @@ const breadcrumbs = {
 
 <Base title={title} description={description}>
   <div class="prose">
-    <Rail>{rail}</Rail>
 
     <nav aria-label="Breadcrumb" class="mb-4 font-sans text-sm text-ink-faint">
       <ol class="flex flex-wrap items-baseline gap-x-2">
@@ -184,11 +182,11 @@ const breadcrumbs = {
     border-bottom: 1px solid var(--rule-strong);
   }
 
-  /* On a wide screen the reading measure is narrower than the body track, and the
-     margin track beside it is empty on these pages. A nine-column table is allowed
-     both, which is the difference between reading it and scrolling it. Below 62rem
-     the margin track is zero wide and this is the reading column again. */
-  @media (min-width: 62rem) {
+  /* On a wide screen the margin track beside the measure is empty on these pages. A
+     nine-column table is allowed both tracks, which is the difference between reading
+     it and scrolling it. Below 74rem the aside is zero wide and this is the reading
+     column again. */
+  @media (min-width: 74rem) {
     .research-body .research-table {
       width: calc(100% + var(--note-gap) + var(--note));
     }
@@ -201,7 +199,7 @@ const breadcrumbs = {
     min-width: 100%;
     border-collapse: collapse;
     font-family: var(--font-sans);
-    font-size: var(--text-sm);
+    font-size: var(--text-base);
     line-height: 1.5;
   }
 

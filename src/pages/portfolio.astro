@@ -11,8 +11,7 @@ import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
-import Rung from "~/components/Rung.astro";
+import { rungMeta } from "~/lib/rungs";
 import Base from "~/layouts/Base.astro";
 
 /**
@@ -70,7 +69,6 @@ const DRAWDOWNS = [
   description="Seven funds, the account each one goes in, the single choice you have to make yourself, and an honest account of how bad it will feel when it is losing."
 >
   <div class="prose">
-    <Rail>The holdings</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The portfolio</h1>
 
     <MarginNote label="The question">
@@ -85,8 +83,8 @@ const DRAWDOWNS = [
 
   </div>
 
-  <Breakout scroll class="my-8">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+  <Breakout scroll class="my-8" label="The seven holdings and their weights" maxWidth="38rem">
+    <table role="table" class="w-full border-collapse text-base sm:min-w-[34rem]">
       <caption class="sr-only">The seven holdings and the share of the portfolio each one takes</caption>
       <thead role="rowgroup">
         <tr role="row" class="border-b border-rule-strong text-left">
@@ -151,11 +149,13 @@ const DRAWDOWNS = [
   </div>
 
   <div class="mt-6 flex flex-wrap items-baseline gap-x-6 gap-y-2">
-    <Rung level="might" showGloss />
+    <p class="confidence" data-level="might">
+      <span class="confidence-word">{rungMeta.might.label}</span>
+      <span class="confidence-gloss">{rungMeta.might.gloss}</span>
+    </p>
   </div>
 
   <div class="prose mt-14">
-    <Rail>The lines</Rail>
 
     <h2>What each piece is for</h2>
 
@@ -208,7 +208,6 @@ const DRAWDOWNS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>Placement</Rail>
 
     <h2>Which account each piece goes in</h2>
 
@@ -225,8 +224,8 @@ const DRAWDOWNS = [
 
   </div>
 
-  <Breakout scroll class="my-8">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+  <Breakout scroll class="my-8" label="Which account each holding goes in" maxWidth="42rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[34rem]">
       <caption class="sr-only">
         Which account each holding goes in, the share of the portfolio it takes there, and why
       </caption>
@@ -356,7 +355,6 @@ const DRAWDOWNS = [
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>The one choice</Rail>
 
     <h2>The one choice you have to make</h2>
 
@@ -424,7 +422,6 @@ const DRAWDOWNS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>Cost</Rail>
 
     <h2>What it costs</h2>
 
@@ -478,7 +475,6 @@ const DRAWDOWNS = [
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Operating it</Rail>
 
     <h2>How to actually run it</h2>
 
@@ -529,7 +525,6 @@ const DRAWDOWNS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>The bad decade</Rail>
 
     <h2>What it will feel like when it is losing</h2>
 
@@ -546,8 +541,8 @@ const DRAWDOWNS = [
 
   </div>
 
-  <Breakout scroll class="my-8">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+  <Breakout scroll class="my-8" label="The worst run each engine has had" maxWidth="42rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[34rem]">
       <caption class="sr-only">
         The worst run each engine has had behind what it is measured against, how long it lasted, and whether it
         has been recovered
@@ -625,7 +620,6 @@ const DRAWDOWNS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>What would change it</Rail>
 
     <h2>What would change this</h2>
 

@@ -14,7 +14,6 @@
  */
 import { getCollection } from "astro:content";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import { StatusChip } from "~/components/StatusChip";
 import Base from "~/layouts/Base.astro";
 import { clamp, decisionHref, researchHref, researchLead, RESEARCH_GROUPS, researchTitle } from "~/lib/research";
@@ -56,7 +55,6 @@ const total = syntheses.length + decisions.length;
   description="Every synthesis behind this site, grouped by the question it answers. Several of them conclude that we could not tell."
 >
   <div class="prose">
-    <Rail>The corpus</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The research</h1>
 
     <MarginNote label="Register">
@@ -80,7 +78,6 @@ const total = syntheses.length + decisions.length;
   </div>
 
   <div class="prose mt-12">
-    <Rail>Start here</Rail>
     <h2>The four that carry the argument</h2>
     <p>
       The rest of the corpus is evidence for these, or a test that one of these rests on.
@@ -104,7 +101,6 @@ const total = syntheses.length + decisions.length;
     groups.map((group) => (
       <section class="mt-14">
         <div class="prose">
-          <Rail>{group.rail}</Rail>
           <h2>{group.question}</h2>
           <p class="text-base text-ink-muted">{group.blurb}</p>
         </div>
@@ -135,7 +131,6 @@ const total = syntheses.length + decisions.length;
 
   <section class="mt-14">
     <div class="prose">
-      <Rail>Decisions</Rail>
       <h2>The decision records</h2>
       <p class="text-base text-ink-muted">
         Why a durable choice was made, what it rests on, and what would reopen it. The syntheses above cite these

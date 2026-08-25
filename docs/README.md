@@ -165,5 +165,6 @@ Decision records: [0001](decisions/0001-contained-python-research-workspace.md),
 [0006](decisions/0006-reference-portfolio-without-promotion.md),
 [0007](decisions/0007-application-may-render-research.md),
 [0008](decisions/0008-growth-decides-crra-reports.md),
-[0009](decisions/0009-blocks-lifted-and-closures-rescoped.md), and
-[0010](decisions/0010-bars-carry-a-reopening-condition.md).
+[0009](decisions/0009-blocks-lifted-and-closures-rescoped.md),
+[0010](decisions/0010-bars-carry-a-reopening-condition.md), and
+[0011](decisions/0011-the-site-publishes-answers-not-notes.md).

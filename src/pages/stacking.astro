@@ -16,7 +16,6 @@ import Callout from "~/components/Callout.astro";
 import StackingCeiling from "~/components/charts/StackingCeiling.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 
 /**
@@ -38,7 +37,6 @@ const FUNDING_ROUTES = [
   description="A hundred unrelated bets that each win 55 times in a hundred finish ahead about ninety times in a hundred. That part is a theorem. Finding bets that are genuinely unrelated is the hard part, and how you pay for one matters more than what you add."
 >
   <div class="prose">
-    <Rail>The question</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Your stacking instinct is right</h1>
 
     <MarginNote label="The question this answers">
@@ -63,7 +61,6 @@ const FUNDING_ROUTES = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>The catch</Rail>
 
     <h2>Most strategies are one bet in several costumes</h2>
 
@@ -95,7 +92,6 @@ const FUNDING_ROUTES = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>Where breadth is</Rail>
 
     <h2>Geography is nearly free. Style is the real thing.</h2>
 
@@ -124,7 +120,6 @@ const FUNDING_ROUTES = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>How you pay</Rail>
 
     <h2>How you pay for an addition matters more than what you add</h2>
 
@@ -145,8 +140,8 @@ const FUNDING_ROUTES = [
     most generous assumption about what the leaning earns:</p>
   </div>
 
-  <Breakout scroll class="my-8">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+  <Breakout scroll class="my-8" label="How an addition is paid for" maxWidth="38rem">
+    <table role="table" class="w-full border-collapse text-base sm:min-w-[34rem]">
       <caption class="sr-only">Portfolio edge under three ways of paying for the same four funds</caption>
       <thead role="rowgroup">
         <tr role="row" class="border-b border-rule-strong text-left">
@@ -216,7 +211,6 @@ const FUNDING_ROUTES = [
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>What to do</Rail>
 
     <h2>Lower the correlation rather than raise the count</h2>
 
@@ -237,7 +231,7 @@ const FUNDING_ROUTES = [
     <a href="/how-many-bets/">how many different bets you can buy</a>.</p>
   </div>
 
-  <Callout kind="change-your-mind">
+  <Callout kind="caveat" label="What would change our mind">
     <p>
       A correlation between holdings measured under 0.2 on a genuinely wider stack, or a fund you can actually buy
       that borrows to add a different engine at a cost the fee table can see, would raise the ceiling on this page.
@@ -246,7 +240,6 @@ const FUNDING_ROUTES = [
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Sources</Rail>
 
     <h2>Where this comes from</h2>
 

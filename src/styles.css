@@ -463,6 +463,47 @@ table,
   }
 }
 
+/* The three headings, for the places outside a `.prose` block that need one: a table's
+   own heading, a chart's, a card's. Inside `.prose` the element selectors above do the
+   same job without a class. */
+@utility h1 {
+  font-family: var(--font-serif);
+  font-size: var(--text-3xl);
+  line-height: var(--text-3xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.018em;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+@media (min-width: 48rem) {
+  .h1 {
+    font-size: var(--text-4xl);
+    line-height: var(--text-4xl--line-height);
+  }
+}
+
+@utility h2 {
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: var(--text-2xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.012em;
+  text-wrap: balance;
+  color: var(--ink);
+  padding-bottom: var(--s-3);
+  border-bottom: 1px solid var(--rule);
+}
+
+@utility h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-xl);
+  line-height: var(--text-xl--line-height);
+  font-weight: 600;
+  letter-spacing: -0.008em;
+  color: var(--ink);
+}
+
 /* The standfirst under an h1. */
 @utility lead {
   font-size: var(--text-lg);

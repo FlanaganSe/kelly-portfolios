@@ -1,19 +1,16 @@
 /**
  * Site-wide constants and the primary navigation, in reading order.
  *
- * The order is the argument, and it runs concrete before abstract: what to do, then
- * what to choose between, then why holding more good things stops helping, then what
- * failed, then how sure any of it is.
+ * Five items, and the order is the argument: what to hold, what it can be built from,
+ * what the evidence behind it says, the calculators that run it at a reader's own
+ * numbers, and who is saying all this. It ran to eight, which meant a reader had to
+ * choose between eight destinations before reading a sentence; the pages that lost
+ * their slot are reachable from the body of the page that needs them and from the
+ * footer, which is where an errand belongs.
  *
- * Stacking used to sit second. It is the most abstract page here, and a reader working
- * left to right met it before they had seen a single holding.
- *
- * `/portfolios/` holds the second slot rather than `/portfolio/`, which used to. The
- * singular page prescribes one construction, and a reader arriving from `/start/` has
- * not yet been given a choice to make. The plural page lays the options out in order of
- * how much of each case is arithmetic and hands off to the singular one for the detail,
- * so `/portfolio/` is still reachable in one click and is no longer the only answer on
- * offer. The bar stays at eight items: a ninth would not survive the narrow breakpoint.
+ * `/portfolios/` leads rather than `/portfolio/`. The singular page prescribes one
+ * construction and the plural one lays the options out, so the plural is the honest
+ * front door and the singular is one click inside it.
  *
  * The site's own origin is not here. It is `site` in `astro.config.mjs`, which the
  * sitemap also reads, and a page reaches it through `Astro.site`.
@@ -38,19 +35,16 @@ export interface NavItem {
  * Every href carries its trailing slash, because the build emits only that form
  * (`trailingSlash: "always"`). A link without one costs the reader a redirect.
  *
- * Every item resolves to a page that exists. `/tools/` sits next to the funds it ranks
- * and before the research it runs on, because a reader who has read the argument and
- * wants their own numbers is at that point in the page order.
+ * Tools points at `/tools/placement/` rather than at the index above it. Placement is
+ * the calculator a reader is actually looking for, and an index page whose whole
+ * content is two links is a stop on the way rather than a destination.
  */
 export const NAV_ITEMS = [
-  { href: "/start/", label: "Start" },
   { href: "/portfolios/", label: "Portfolios" },
-  { href: "/stacking/", label: "Stacking" },
-  { href: "/doesnt-work/", label: "What doesn't work" },
-  { href: "/how-sure/", label: "How sure" },
   { href: "/funds/", label: "Funds" },
-  { href: "/tools/", label: "Tools" },
-  { href: "/research/", label: "Research" },
+  { href: "/evidence/", label: "Evidence" },
+  { href: "/tools/placement/", label: "Tools" },
+  { href: "/about/", label: "About" },
 ] as const satisfies readonly NavItem[];
 
 /** Drops any trailing slash, so the two URL forms compare equal. */

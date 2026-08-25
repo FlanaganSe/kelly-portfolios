@@ -15,8 +15,7 @@
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
-import Rung from "~/components/Rung.astro";
+import { rungMeta } from "~/lib/rungs";
 import Base from "~/layouts/Base.astro";
 ---
 
@@ -25,7 +24,6 @@ import Base from "~/layouts/Base.astro";
   description="Eight steps in order, each one conditional on what you actually own. Fees and expensive debt first, because you would know within months. The clever parts last, because you would know in about thirty-one years."
 >
   <div class="prose">
-    <Rail>The order</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Start here</h1>
 
     <p>Eight steps, in this order. The order comes from how certain each one is and how fast you would know it
@@ -36,7 +34,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 1</Rail>
 
     <h2>1. Find out what you are paying</h2>
 
@@ -57,7 +54,9 @@ import Base from "~/layouts/Base.astro";
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
-      <Rung level="settled" class="mt-1.5" />
+      <p class="confidence mt-1.5" data-level="settled">
+        <span class="confidence-word">{rungMeta.settled.label}</span>
+      </p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
@@ -66,7 +65,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 2</Rail>
 
     <h2>2. Pay off debt that costs more than Treasuries pay</h2>
 
@@ -85,7 +83,9 @@ import Base from "~/layouts/Base.astro";
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
-      <Rung level="settled" class="mt-1.5" />
+      <p class="confidence mt-1.5" data-level="settled">
+        <span class="confidence-word">{rungMeta.settled.label}</span>
+      </p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
@@ -94,7 +94,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 3</Rail>
 
     <h2>3. Take the match, then fill whatever sheltered space you have</h2>
 
@@ -124,7 +123,9 @@ import Base from "~/layouts/Base.astro";
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
-      <Rung level="settled" class="mt-1.5" />
+      <p class="confidence mt-1.5" data-level="settled">
+        <span class="confidence-word">{rungMeta.settled.label}</span>
+      </p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
@@ -133,7 +134,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 4</Rail>
 
     <h2>4. Save more</h2>
 
@@ -151,7 +151,9 @@ import Base from "~/layouts/Base.astro";
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
-      <Rung level="settled" class="mt-1.5" />
+      <p class="confidence mt-1.5" data-level="settled">
+        <span class="confidence-word">{rungMeta.settled.label}</span>
+      </p>
     </div>
     <div>
       <p class="eyebrow">How long before you would know</p>
@@ -160,7 +162,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 5</Rail>
 
     <h2>5. Set your stock-versus-safe split from your life</h2>
 
@@ -185,8 +186,12 @@ import Base from "~/layouts/Base.astro";
     <div>
       <p class="eyebrow">How certain</p>
       <div class="mt-1.5 flex flex-col gap-1.5">
-        <Rung level="settled" />
-        <Rung level="cant-tell" />
+        <p class="confidence" data-level="settled">
+          <span class="confidence-word">{rungMeta.settled.label}</span>
+        </p>
+        <p class="confidence" data-level="cant-tell">
+          <span class="confidence-word">{rungMeta["cant-tell"].label}</span>
+        </p>
       </div>
       <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Settled that it is the big one. Can't tell which side
       pays.</p>
@@ -198,7 +203,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 6</Rail>
 
     <h2>6. If you hold more than one kind of account, place each fund where it is taxed least</h2>
 
@@ -234,7 +238,9 @@ import Base from "~/layouts/Base.astro";
   <div class="mt-6 grid gap-5 border-t border-rule pt-4 sm:grid-cols-2">
     <div>
       <p class="eyebrow">How certain</p>
-      <Rung level="settled" class="mt-1.5" />
+      <p class="confidence mt-1.5" data-level="settled">
+        <span class="confidence-word">{rungMeta.settled.label}</span>
+      </p>
       <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">The arithmetic is settled. Whether it applies to you
       moves with your brackets, so this is the one step you cannot copy.</p>
     </div>
@@ -245,7 +251,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 7</Rail>
 
     <h2>7. Leave it alone, and rebalance with new money</h2>
 
@@ -274,8 +279,12 @@ import Base from "~/layouts/Base.astro";
     <div>
       <p class="eyebrow">How certain</p>
       <div class="mt-1.5 flex flex-col gap-1.5">
-        <Rung level="settled" />
-        <Rung level="cant-tell" />
+        <p class="confidence" data-level="settled">
+          <span class="confidence-word">{rungMeta.settled.label}</span>
+        </p>
+        <p class="confidence" data-level="cant-tell">
+          <span class="confidence-word">{rungMeta["cant-tell"].label}</span>
+        </p>
       </div>
       <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Settled on risk control. Can't tell on return.</p>
     </div>
@@ -287,7 +296,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Step 8</Rail>
 
     <h2>8. Only now, the optional extras</h2>
 
@@ -318,8 +326,12 @@ import Base from "~/layouts/Base.astro";
     <div>
       <p class="eyebrow">How certain</p>
       <div class="mt-1.5 flex flex-col gap-1.5">
-        <Rung level="probably" />
-        <Rung level="cant-tell" />
+        <p class="confidence" data-level="probably">
+          <span class="confidence-word">{rungMeta.probably.label}</span>
+        </p>
+        <p class="confidence" data-level="cant-tell">
+          <span class="confidence-word">{rungMeta["cant-tell"].label}</span>
+        </p>
       </div>
       <p class="mt-2 max-w-[42ch] text-sm text-ink-muted">Probably on the lean toward cheap and profitable
       companies. Can't tell on the portfolio.</p>
@@ -339,7 +351,6 @@ import Base from "~/layouts/Base.astro";
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Sources</Rail>
 
     <h2>Where this comes from</h2>
 

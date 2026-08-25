@@ -6,13 +6,13 @@ gets glossed differently in two places.
 
 ## Astro components, which are what new pages use
 
-Three `.astro` components ship no JavaScript and are the ones a page should reach for.
+These `.astro` components ship no JavaScript and are the ones a page should reach for.
 The Solid components documented further down belong to the client-routed application
 being ported from, and a new page should not import them.
 
 ### `Figure`
 
-`{ id, size?: "sm" | "md" | "lg", showStatus?, class? }`. Looks the figure up by id in
+`{ id, size?: "sm" | "md" | "lg", inline?, showUnit?, class? }`. Looks the figure up by id in
 the `figures` collection and throws at build time if no record exists, listing the ids
 that do. Records live in `src/content/figures/<id>.yaml`; the id is the filename stem.
 
@@ -21,24 +21,48 @@ import Figure from "~/components/Figure.astro";
 <Figure id="edge-vs-cheap-index" />
 ```
 
-A record carries `label`, `value` (always a string), `status`, `asOf` and a `source`
-with `label` and `docPath`, and may carry `unit`, `interval`, `certainty`, `period`,
-`anchor` and `note`. The schema checks that `docPath` names a real file and that
+The block prints five things and no more: the label, the value with its unit, the
+interval, the note and one source line. A record carries `label`, `value` (always a
+string), `status`, `asOf` and a `source` with `label` and `docPath`, and may carry
+`unit`, `interval`, `certainty`, `period`, `anchor` and `note`. The schema checks that `docPath` names a real file and that
 `anchor` is a real heading inside it, so a renamed section fails `pnpm build`.
 
-### `Rung`
+### Confidence
 
-`{ level: "settled" | "probably" | "might" | "cant-tell", showGloss?, class? }`. Prints
-the word and a monochrome mark: solid, solid with a range whisker, a hatched half, an
-empty outline. Never coloured, and never red or green. Labels and glosses are in
-[`src/lib/rungs.ts`](../lib/rungs.ts).
+There is no component. A confidence reading is a word and a rule:
+
+```astro
+import { rungMeta } from "~/lib/rungs";
+
+<p class="confidence" data-level="settled">
+  <span class="confidence-word">{rungMeta.settled.label}</span>
+  <span class="confidence-gloss">{rungMeta.settled.gloss}</span>
+</p>
+```
+
+`data-level` is one of `settled`, `probably`, `might`, `cant-tell`, and it picks the ink
+weight of the left rule. The gloss is optional. Labels and glosses live in
+[`src/lib/rungs.ts`](../lib/rungs.ts); the four-state hand-drawn SVG mark that used to
+sit beside the word is gone, because a mark a reader has to learn from another page is
+not a reading.
 
 ### `Callout`
 
-`{ kind, label?, class? }` where kind is one of `do-this`, `mechanism`, `caveat`,
-`change-your-mind`, `open-question`. A left rule and a label, with the body in a slot.
+`{ kind, label?, class? }` where kind is `do-this` or `caveat`. A left rule and a label,
+with the body in a slot. Two kinds and no more: a falsifier and an open question are
+both caveats, and `label` is how one says which. Anything that explains why an effect
+should exist is prose, not an aside.
 
-### Two house rules these three follow
+### `Breakout`
+
+`{ scroll?, heading?, level?, label?, maxWidth?, class? }` — a block allowed both tracks
+of the canvas. Must be a direct child of the page canvas. `heading` prints a real `h2`
+(or `h3` with `level={3}`) so the tables on a page are in its outline. `maxWidth` caps
+any table inside through `--tw`: roughly 34rem for three columns, 44rem for a
+comparison, 54rem for the shelf. `scroll` wraps the content in a keyboard-reachable
+scroll region and then needs a `heading` or a `label` to name it.
+
+### Two house rules these all follow
 
 An internal `href` ends in a slash. The build emits one URL form, and a link missing the
 slash is a redirect the reader pays for.
@@ -78,27 +102,7 @@ plain HTML inside it. Anything that has to break the measure goes outside it.
 <Prose as="article"><p>The long-only capture fraction is about 0.520.</p></Prose>
 ```
 
-### `Callout`
-
-`{ variant: "caveat" | "mechanism" | "open-question", label?, class? }` — a rule and
-a label. `caveat` is what would break the claim, `mechanism` is why the effect
-should exist, `open-question` is what the work has not settled.
-
-```tsx
-<Callout variant="caveat"><p>Gross, long-short, and not investable.</p></Callout>
-```
-
 ## Numbers and evidence
-
-### `Figure`
-
-`{ label, value, unit?, interval?, note?, source?, asOf?, intervalLabel?, size?, align?, tone?, class? }`
-— a number with everything that qualifies it. Extends `KeyNumber`, so a content
-record spreads straight in.
-
-```tsx
-<Figure {...edge.headline} source={edge.source} asOf={edge.asOf} size="lg" />
-```
 
 ### `DataTable`
 
@@ -173,12 +177,14 @@ route with `<Title>` from `@solidjs/meta`.
 ## Styling
 
 Tokens live in [`src/styles.css`](../styles.css) under `@theme`, so Tailwind
-utilities carry them: `bg-paper`, `bg-raised`, `bg-sunken`, `text-ink`,
-`text-ink-muted`, `text-ink-faint`, `border-rule`, `border-rule-strong`,
-`text-accent`, `max-w-measure`, `max-w-page`.
+utilities carry them: `bg-paper`, `bg-raised`, `bg-sunken`, `text-ink`, `text-ink-2`,
+`text-ink-3`, `border-rule`, `border-rule-strong`, `border-rule-bold`, `text-accent`,
+`max-w-measure`, `max-w-page`. Body text and every table cell are 17px; the display
+serif is for the wordmark, `h1`, `h2` and a card title, and nothing else.
 
-Four component classes exist and no more: `prose`, `link`, `eyebrow`, `control`.
-Prefer utilities in markup; extract a class only when it repeats.
+The component classes are `prose`, `link`, `eyebrow`, `control`, `lead`, `h1`, `h2`,
+`h3`, `confidence`, `margin-note`, `breakout`, `scroller` and `plot`. Prefer utilities
+in markup; extract a class only when it repeats.
 
 Light and dark are one palette swapped on `:root`, so components do not need
 `dark:` variants. Put `data-numeric` on any element holding a number outside a

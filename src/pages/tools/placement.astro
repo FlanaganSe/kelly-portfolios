@@ -14,7 +14,6 @@ import Callout from "~/components/Callout.astro";
 import PlacementTool from "~/components/islands/PlacementTool";
 import { bp, fill, forfeitedCreditBp, queue, ratePercent, shelf } from "~/components/islands/placement-model";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 import {
   defaultTaxRegime,
@@ -56,7 +55,6 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
   description="Enter your tax bracket and roughly how your money splits across a Roth, a 401(k) and a taxable account. It ranks every fund on the shelf by what a sheltered dollar of it actually saves, and the answer is not the one you have read elsewhere."
 >
   <div class="prose">
-    <Rail>The tool</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Where to hold each fund</h1>
 
     <MarginNote label="The question">
@@ -77,7 +75,6 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
   </div>
 
   <div class="prose mt-10">
-    <Rail>Your accounts</Rail>
     <h2>Run it at your own rates</h2>
 
     <p>Nothing you type goes anywhere. The page does the arithmetic in your browser and forgets it when you
@@ -90,7 +87,6 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
   </Breakout>
 
   <div class="prose mt-12">
-    <Rail>The finding</Rail>
     <h2>Every foreign fund outranks every US fund</h2>
 
     <MarginNote label="Section 901">
@@ -118,15 +114,14 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
   </div>
 
   <div class="prose mt-10">
-    <Rail>Worked, server-side</Rail>
     <h2>The queue at equal thirds</h2>
 
     <p>One investor, equal nominal thirds in a Roth, a traditional account and a taxable brokerage account, at
     the top marginal rates. Rendered here whether or not the tool above loaded.</p>
   </div>
 
-  <Breakout scroll class="mt-6">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[36rem]">
+  <Breakout scroll class="mt-6" label="The shelf, ranked by what a sheltered dollar saves" maxWidth="42rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[36rem]">
       <caption class="sr-only">
         The shelf ranked by what a sheltered dollar of each fund saves a year, at the top marginal rates, with
         two thirds of the portfolio sheltered
@@ -173,7 +168,6 @@ const COLUMNS = ["#", "Fund", "Weight", "Saved per sheltered dollar", "Goes in"]
   </Breakout>
 
   <div class="prose mt-12">
-    <Rail>What would break it</Rail>
     <h2>Three things this rests on</h2>
 
     <p><strong>The share of each dividend that gets the low rate.</strong> Part of what a fund pays out is taxed

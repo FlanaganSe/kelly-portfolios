@@ -2,16 +2,19 @@
 /**
  * A rule and a label. Not a coloured box, and never an emoji.
  *
- * Each kind answers one step of the page spine: `do-this` is the action, `mechanism`
- * is why the effect should exist at all, `caveat` is what would break the claim,
- * `change-your-mind` is the falsifier, `open-question` is what the work has not settled.
+ * Two kinds, because five were four more than a reader could hold apart. `do-this` is
+ * the action. `caveat` is the thing that would break the claim, which is also where the
+ * falsifier and the open question belong: all three are the same move — here is what
+ * this does not carry — and giving each its own label made a page look like it was
+ * arguing with itself. Anything that was a mechanism is prose; explaining why an effect
+ * should exist is the body of the argument, not an aside beside it.
+ *
+ * `label` overrides the default, which is how a caveat says what specifically it is
+ * qualifying rather than repeating the word on every one.
  */
 const KINDS = {
   "do-this": { label: "Do this", rule: "var(--accent)" },
-  mechanism: { label: "Why it works", rule: "var(--rule-strong)" },
-  caveat: { label: "Caveat", rule: "var(--tone-caution)" },
-  "change-your-mind": { label: "What would change our mind", rule: "var(--rule-strong)" },
-  "open-question": { label: "Open question", rule: "var(--accent)" },
+  caveat: { label: "Caveat", rule: "var(--cau)" },
 } as const;
 
 export type CalloutKind = keyof typeof KINDS;
@@ -31,7 +34,10 @@ if (!meta) {
 }
 ---
 
-<aside class:list={["my-6 max-w-measure border-l-2 pl-4", className]} style={`border-color: ${meta.rule}`}>
-  <p class="eyebrow mb-1.5">{label ?? meta.label}</p>
-  <div class="text-base text-ink-muted [&>*+*]:mt-3"><slot /></div>
+<aside
+  class:list={["my-6 max-w-measure border-l-[3px] pl-4", className]}
+  style={`border-color: ${meta.rule}`}
+>
+  <p class="eyebrow mb-2">{label ?? meta.label}</p>
+  <div class="text-base text-ink-2 [&>*+*]:mt-3"><slot /></div>
 </aside>

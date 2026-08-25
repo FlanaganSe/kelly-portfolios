@@ -14,7 +14,6 @@ import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 ---
 
@@ -24,7 +23,6 @@ import Base from "~/layouts/Base.astro";
   description="Cut your fees, use whatever tax-advantaged accounts you have, and hold each fund where it is taxed least. Worth about 1.09% a year against the portfolio you already own, and you would know inside four months."
 >
   <div class="prose">
-    <Rail>The answer</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Do the certain things first</h1>
 
     <p>Cut your fees. Use whatever tax-advantaged accounts you actually have. Hold each fund in the account that
@@ -43,7 +41,7 @@ import Base from "~/layouts/Base.astro";
     package runs <Figure id="structural-budget-range" inline />.</p>
   </div>
 
-  <Breakout label="Three yardsticks, never added" class="mt-10">
+  <Breakout heading="Three yardsticks, never added" class="mt-10">
     <div class="grid gap-8 sm:grid-cols-3">
       <Figure id="structural-budget" />
       <Figure id="edge-vs-cheap-index" />
@@ -61,7 +59,6 @@ import Base from "~/layouts/Base.astro";
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Better than what</Rail>
 
     <h2>Better than what, exactly</h2>
 
@@ -82,7 +79,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>The bet</Rail>
 
     <h2>What counts as a bet, and how big</h2>
 
@@ -105,7 +101,7 @@ import Base from "~/layouts/Base.astro";
     the fees and the tax before you take a view on anything.</p>
   </div>
 
-  <Callout kind="change-your-mind">
+  <Callout kind="caveat" label="What would change our mind">
     <p>
       A fund shelf that cut its published edge below a fifth of a percent a year, or a decade in which the funds
       leaning toward cheap and profitable companies trailed the index by more than their stated wander, would turn
@@ -114,7 +110,6 @@ import Base from "~/layouts/Base.astro";
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Next</Rail>
 
     <h2>Where to go from here</h2>
 
@@ -130,7 +125,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Sources</Rail>
 
     <h2>Where this comes from</h2>
 

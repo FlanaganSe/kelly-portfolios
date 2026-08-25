@@ -14,7 +14,6 @@
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 
 /** The one-year odds of finishing ahead, by how many genuinely unrelated bets you hold. */
@@ -33,7 +32,6 @@ const ODDS_ROWS = [
   description="About four or five genuinely different sources of return exist for a normal investor, not twenty, and doing the whole thing well is worth roughly 1.5 to 2 percentage points a year."
 >
   <div class="prose">
-    <Rail>The answer</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How many different bets you can buy</h1>
 
     <MarginNote label="The question this answers">
@@ -52,7 +50,6 @@ const ODDS_ROWS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>The odds</Rail>
 
     <h2>A 55% strategy is a weaker thing than it sounds</h2>
 
@@ -60,8 +57,8 @@ const ODDS_ROWS = [
     of them, all genuinely unrelated, and charge yourself nothing in fees.</p>
   </div>
 
-  <Breakout scroll class="my-8" label="Frictionless best case, one year">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[30rem]">
+  <Breakout scroll class="my-8" heading="Frictionless best case, one year" maxWidth="34rem">
+    <table role="table" class="w-full border-collapse text-base sm:min-w-[30rem]">
       <caption class="sr-only">
         The chance of finishing ahead of the index over one year, by the number of genuinely unrelated bets held
       </caption>
@@ -105,7 +102,6 @@ const ODDS_ROWS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>The live version</Rail>
 
     <h2>The best-built version of this idea delivered a quarter of the theory</h2>
 
@@ -136,7 +132,6 @@ const ODDS_ROWS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>What is different</Rail>
 
     <h2>Four or five genuinely different sources exist, not twenty</h2>
 
@@ -153,7 +148,6 @@ const ODDS_ROWS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>The prize</Rail>
 
     <h2>Doing all of it well is worth about two points a year</h2>
 
@@ -169,7 +163,6 @@ const ODDS_ROWS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>The free one</Rail>
 
     <h2>The gain nobody sells you is worth about as much as all the rest</h2>
 
@@ -193,7 +186,6 @@ const ODDS_ROWS = [
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>The warning</Rail>
 
     <h2>Every one of these premiums shrinks when the money arrives</h2>
 
@@ -209,7 +201,6 @@ const ODDS_ROWS = [
   </div>
 
   <div class="prose mt-14">
-    <Rail>Why we believe it</Rail>
 
     <h2>Two separate routes, one answer</h2>
 
@@ -238,7 +229,7 @@ const ODDS_ROWS = [
     </p>
   </Callout>
 
-  <Callout kind="change-your-mind">
+  <Callout kind="caveat" label="What would change our mind">
     <p>
       A market-neutral fund holding many premiums that reaches a ten-year return per unit of risk above 1 would
       move the shortfall above from four-to-one to something the theory can carry. So would a genuinely new
@@ -248,7 +239,6 @@ const ODDS_ROWS = [
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Sources</Rail>
 
     <h2>Where this comes from</h2>
 

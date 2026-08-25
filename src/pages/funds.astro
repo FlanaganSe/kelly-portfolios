@@ -28,7 +28,6 @@ import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 import { funds as portfolioFunds } from "~/content/portfolio";
 import { fundByTicker, shelf, shelfAsOf, shelfAudit } from "~/content/shelf";
@@ -161,7 +160,6 @@ const NUMERIC = new Set([2, 3, 4]);
   description="Every fund this project has priced or measured: what it charges, what it really costs once lending income is counted, what you pay to get in, and the verdict attached to it."
 >
   <div class="prose">
-    <Rail>The shelf</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">The shelf</h1>
 
     <MarginNote label="What is here">
@@ -285,8 +283,8 @@ const NUMERIC = new Set([2, 3, 4]);
 
   {
     groups.map((group) => (
-      <Breakout scroll class="mt-10" label={group.label}>
-        <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[46rem]">
+      <Breakout scroll class="mt-10" heading={group.label} maxWidth="54rem">
+        <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[46rem]">
           <caption class="sr-only">
             {group.label}: fee, cost after lending income, spread paid on the way in, and verdict
           </caption>
@@ -321,7 +319,7 @@ const NUMERIC = new Set([2, 3, 4]);
                 <td role="cell" data-label={COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
                   {bp(fund.spread ? fund.spread.bp : null)}
                 </td>
-                <td role="cell" data-label={COLUMNS[5]} class="py-2 text-xs">
+                <td role="cell" data-label={COLUMNS[5]} class="py-2 text-xs sm:whitespace-nowrap">
                   {fund.status
                     ? statusMeta[fund.status].label
                     : nothingMeasured(fund)

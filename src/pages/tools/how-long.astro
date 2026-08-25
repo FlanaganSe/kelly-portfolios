@@ -18,7 +18,6 @@ import HowLongTool from "~/components/islands/HowLongTool";
 import { timeToKnow } from "~/components/islands/horizon-model";
 import { horizonPresets } from "~/components/islands/horizon-presets";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 import { confidenceAsOf, formulas, upperBoundWarning } from "~/content/confidence";
 import { citationHref } from "~/lib/citation";
@@ -56,7 +55,6 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
   description="Type in how much better you expect to do and how far your portfolio can wander from the index, and see how many years pass before your own account could tell you it worked. Fees settle in about four months. The whole portfolio takes about thirty-one years."
 >
   <div class="prose">
-    <Rail>The tool</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How long before you would know</h1>
 
     <MarginNote label="The question">
@@ -75,7 +73,6 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
   </div>
 
   <div class="prose mt-10">
-    <Rail>Two claims, worth about the same</Rail>
     <h2>{fees.edgePercent}% a year settles in {fees.wait}. {whole.edgePercent}% a year takes {whole.wait}.</h2>
 
     <p>Both of those are a bit under a percentage point a year. On paper they look like the same size of prize.
@@ -88,7 +85,6 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
   </div>
 
   <div class="prose mt-10">
-    <Rail>Play with it</Rail>
     <h2>Your own numbers</h2>
 
     <MarginNote label="Read it as a best case">
@@ -104,7 +100,6 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
   </Breakout>
 
   <div class="prose mt-12">
-    <Rail>The four claims, worked</Rail>
     <h2>Every pair this site publishes</h2>
 
     <p>Rendered on the server, so this table is here whether or not the tool above loaded. Each row is the wait
@@ -116,8 +111,8 @@ const COLUMNS = ["Claim", "Expected advantage", "Drift in a year", "Wait"] as co
     <TimeToKnow />
   </Breakout>
 
-  <Breakout scroll class="mt-6">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[34rem]">
+  <Breakout scroll class="mt-6" label="Four claims, and the wait each one needs" maxWidth="40rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[34rem]">
       <caption class="sr-only">
         Every published pair of expected advantage and drift, with the wait each implies
       </caption>

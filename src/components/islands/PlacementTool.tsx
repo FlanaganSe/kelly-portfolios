@@ -206,8 +206,13 @@ export const PlacementTool: Component = () => {
       <div aria-live="polite">
         <p class="mt-8 max-w-measure text-lg text-ink">{headline()}</p>
 
-        <div class="scroller mt-6">
-          <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[42rem]">
+        <div
+          class="scroller mt-6"
+          tabindex="0"
+          role="region"
+          aria-label="The shelf, ranked by what a sheltered dollar saves"
+        >
+          <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[42rem]">
             <caption class="sr-only">
               What a sheltered dollar of each fund saves a year, at {bracketNote()}, and where the fund lands once your
               shelter runs out

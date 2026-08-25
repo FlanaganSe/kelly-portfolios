@@ -4,31 +4,65 @@
  * of figures.
  *
  * The measure is a constraint on **prose**, not on the page. A comparison table squeezed
- * into 70ch wraps its own column headings, and a chart squeezed into 70ch throws away
- * the width that makes its shape readable. This spans all three tracks — rail, reading
- * column, margin — and collapses to the reading column on its own once the outer tracks
- * close, so nothing overflows on a phone.
+ * into 42rem wraps its own column headings, and a chart squeezed into 42rem throws away
+ * the width that makes its shape readable. This spans both tracks — reading column and
+ * aside — and collapses to the reading column on its own once the aside closes, so
+ * nothing overflows on a phone.
  *
- * It has to be a **direct child of the page canvas** to reach the outer grid lines. Set
- * `scroll` for content that genuinely cannot shrink, such as a table with six numeric
- * columns; the scroller is on the wrapper so the page body never scrolls sideways.
+ * It has to be a **direct child of the page canvas** to reach the outer grid line.
+ *
+ * `heading` prints a real heading above the block. It replaces a prop that printed a
+ * small uppercase label instead, which is how the fund shelf came to carry fifteen
+ * tables and no headings at all: a label is not in the document outline, so nothing in
+ * the page structure said where one table ended and the next began.
+ *
+ * `maxWidth` is the other thing a caller almost always wants. A table is as wide as its
+ * content needs and no wider: left to fill the whole breakout, a three-column holdings
+ * table put a fund's name and its weight most of a metre apart with nothing in between.
+ * Roughly 34rem for three columns, 44rem for a comparison, 54rem for the shelf.
+ *
+ * Set `scroll` for content that genuinely cannot shrink, such as a table with six
+ * numeric columns. The scroller is on the wrapper so the page body never scrolls
+ * sideways, and it carries `tabindex="0"` with a region label, because a scroll
+ * container a keyboard cannot reach holds content a keyboard reader cannot see. That is
+ * why a scrolling block needs either a `heading` or a `label`.
  */
 interface Props {
   /** Let the content scroll sideways inside its own box rather than squashing. */
   scroll?: boolean;
-  /** A visible label above the block, in the left rail on a wide screen. */
+  /** A real heading above the block, in the page's own outline. */
+  heading?: string;
+  /** Its level. 3 inside a section that already has an h2 of its own. */
+  level?: 2 | 3;
+  /**
+   * Names the scrollable region for a keyboard and screen-reader user. Defaults to the
+   * heading. One of the two is required with `scroll`.
+   */
   label?: string;
+  /** Caps the width of any table inside, through `--tw`. A CSS length. */
+  maxWidth?: string;
   class?: string;
 }
 
-const { scroll = false, label, class: className } = Astro.props;
+const { scroll = false, heading, level = 2, label, maxWidth, class: className } = Astro.props;
+
+const regionLabel = label ?? heading;
+if (scroll && (regionLabel === undefined || regionLabel.trim() === "")) {
+  throw new Error("<Breakout scroll> needs a `heading` or a `label`: an unlabelled scroll region is unreachable.");
+}
+
+const Heading = level === 3 ? "h3" : "h2";
 ---
 
-<div class:list={["breakout", className]}>
-  {/* A breakout already starts at the rail's own grid line, so its label sits in the
-      rail without floating there. */}
-  {label && <p class="eyebrow mb-2">{label}</p>}
-  <div class:list={[scroll && "scroller"]}>
-    <slot />
-  </div>
+<div class:list={["breakout", className]} style={maxWidth ? `--tw: ${maxWidth}` : undefined}>
+  {heading && <Heading class:list={[level === 3 ? "h3" : "h2", "mb-5"]}>{heading}</Heading>}
+  {
+    scroll ? (
+      <div class="scroller" tabindex="0" role="region" aria-label={regionLabel}>
+        <slot />
+      </div>
+    ) : (
+      <slot />
+    )
+  }
 </div>

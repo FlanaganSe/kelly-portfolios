@@ -15,7 +15,6 @@
  * shipping a link into nowhere.
  */
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 import { getCollection } from "astro:content";
 import { lessons } from "~/content/lessons";
@@ -72,7 +71,6 @@ const course = lessons.map((lesson) => {
   description="Seventeen things worth having straight before the rest of this site is any use, each one a claim rather than a topic, and each one linked to the page that carries the evidence."
 >
   <div class="prose">
-    <Rail>The short course</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">What we&rsquo;ve learned</h1>
 
     <MarginNote label="Read in order">
@@ -107,7 +105,6 @@ const course = lessons.map((lesson) => {
   {
     course.map((lesson, index) => (
       <section id={lesson.id} class="prose mt-14 scroll-mt-8">
-        <Rail>{`Lesson ${index + 1}`}</Rail>
         <h2>{lesson.title}</h2>
 
         <p>{lesson.body}</p>

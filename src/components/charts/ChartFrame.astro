@@ -48,7 +48,7 @@ const { title, subtitle, open = false, tableSummary = "The same numbers as a tab
     Astro.slots.has("table") && (
       <details open={open} class="mt-4 border-t border-rule pt-3">
         <summary class="eyebrow cursor-pointer select-none marker:text-ink-faint">{tableSummary}</summary>
-        <div class="scroller mt-3">
+        <div class="scroller mt-3" tabindex="0" role="region" aria-label={`${title}: the numbers as a table`}>
           <slot name="table" />
         </div>
       </details>

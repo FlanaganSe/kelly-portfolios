@@ -24,8 +24,6 @@ import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
-import Rung from "~/components/Rung.astro";
 import Base from "~/layouts/Base.astro";
 import type { Complexity, PortfolioCandidate } from "~/content/portfolios";
 import { portfolios, portfoliosAsOf } from "~/content/portfolios";
@@ -33,7 +31,7 @@ import { fundByTicker } from "~/content/shelf";
 import type { Citation } from "~/content/types";
 import { certaintyMeta, statusMeta } from "~/content/types";
 import { citationHref } from "~/lib/citation";
-import type { RungLevel } from "~/lib/rungs";
+import { type RungLevel, rungMeta } from "~/lib/rungs";
 
 /** The editorial half of each record: a plain heading, and how sure we are. */
 interface Card {
@@ -205,7 +203,6 @@ for (const portfolio of portfolios) {
   description="Four portfolios, ordered by how much of each case is arithmetic and how much is a guess about markets. The first is a cheap global index fund, and plenty of readers should stop there."
 >
   <div class="prose">
-    <Rail>The options</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Four ways to hold it</h1>
 
     <MarginNote label="What this is">
@@ -240,7 +237,7 @@ for (const portfolio of portfolios) {
     </p>
   </Callout>
 
-  <Breakout label="Three numbers that frame the choice" class="mt-10">
+  <Breakout heading="Three numbers that frame the choice" class="mt-10">
     <div class="grid gap-8 sm:grid-cols-3">
       <Figure id="structural-budget" />
       <Figure id="edge-vs-cheap-index" />
@@ -248,8 +245,8 @@ for (const portfolio of portfolios) {
     </div>
   </Breakout>
 
-  <Breakout scroll class="mt-10" label="The four, side by side">
-    <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[44rem]">
+  <Breakout scroll class="mt-10" heading="The four, side by side" maxWidth="46rem">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[44rem]">
       <caption class="sr-only">
         The four portfolios, with the fee each one charges and the share of capital riding on a risk premium
       </caption>
@@ -304,9 +301,11 @@ for (const portfolio of portfolios) {
       return (
         <>
           <div class="prose mt-14">
-            <Rail>{card?.ordinal ?? portfolio.id}</Rail>
             <h2>{card?.heading ?? portfolio.name}</h2>
-            <p class="not-prose"><Rung level={card?.rung ?? "cant-tell"} showGloss /></p>
+            <p class="confidence not-prose" data-level={card?.rung ?? "cant-tell"}>
+              <span class="confidence-word">{rungMeta[card?.rung ?? "cant-tell"].label}</span>
+              <span class="confidence-gloss">{rungMeta[card?.rung ?? "cant-tell"].gloss}</span>
+            </p>
 
             <MarginNote label="Measured against">
               <p>{bench.label}. {bench.why}</p>
@@ -442,8 +441,8 @@ for (const portfolio of portfolios) {
             )}
           </div>
 
-          <Breakout scroll class="mt-8" label="What it holds">
-            <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[40rem]">
+          <Breakout scroll class="mt-8" heading="What it holds" level={3} maxWidth="42rem">
+            <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[40rem]">
               <caption class="sr-only">{card?.heading ?? portfolio.name}: the holdings and their weights</caption>
               <thead role="rowgroup">
                 <tr role="row" class="border-b border-rule-strong text-left">
@@ -483,8 +482,8 @@ for (const portfolio of portfolios) {
           </Breakout>
 
           {portfolio.priced.length > 0 && (
-            <Breakout scroll class="mt-6" label="What each piece is worth, and what it wanders">
-              <table role="table" class="stack-table w-full border-collapse text-sm sm:min-w-[44rem]">
+            <Breakout scroll class="mt-6" heading="What each piece is worth, and what it wanders" level={3} maxWidth="46rem">
+              <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[44rem]">
                 <caption class="sr-only">
                   {card?.heading ?? portfolio.name}: each priced line, its size, its wander and its kind
                 </caption>
@@ -533,7 +532,6 @@ for (const portfolio of portfolios) {
   }
 
   <div class="prose mt-14">
-    <Rail>The detail</Rail>
 
     <h2>The full detail of the last one</h2>
 
@@ -544,7 +542,6 @@ for (const portfolio of portfolios) {
   </div>
 
   <div class="prose mt-14">
-    <Rail>Choosing</Rail>
 
     <h2>How to choose</h2>
 
@@ -573,7 +570,7 @@ for (const portfolio of portfolios) {
     </p>
   </Callout>
 
-  <Callout kind="change-your-mind">
+  <Callout kind="caveat" label="What would change our mind">
     <p>
       A decade in which the funds holding the cheaper half of a market trailed that market by more than their
       stated wander would take the third portfolio off this page. For the fourth, a run in which the borrowed
@@ -583,7 +580,6 @@ for (const portfolio of portfolios) {
   </Callout>
 
   <div class="prose mt-14">
-    <Rail>Sources</Rail>
 
     <h2>Where this comes from</h2>
 

@@ -13,7 +13,6 @@
  */
 import Callout from "~/components/Callout.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
 import Base from "~/layouts/Base.astro";
 import { glossary } from "~/content/glossary";
 import { slugifyHeading } from "~/lib/anchors";
@@ -34,7 +33,6 @@ if (duplicate) {
   description="Every term this site leans on, defined in plain English: what it means, the paragraph behind it, and why it changes what you would do."
 >
   <div class="prose">
-    <Rail>Glossary</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Glossary</h1>
 
     <MarginNote label="Every entry has an address">
@@ -85,7 +83,7 @@ if (duplicate) {
 
         <p>{entry.long}</p>
 
-        <Callout kind="mechanism" label="Why you care">
+        <Callout kind="caveat" label="Why you care">
           <p>{entry.whyYouCare}</p>
         </Callout>
 

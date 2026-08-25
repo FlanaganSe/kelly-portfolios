@@ -20,8 +20,7 @@
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import MarginNote from "~/components/MarginNote.astro";
-import Rail from "~/components/Rail.astro";
-import Rung from "~/components/Rung.astro";
+import { rungMeta } from "~/lib/rungs";
 import Base from "~/layouts/Base.astro";
 ---
 
@@ -30,7 +29,6 @@ import Base from "~/layouts/Base.astro";
   description="The four words attached to every claim on this site, why the mark beside them is never a colour, how long you would have to hold something before your own account could tell you it worked, and the three different things a silence here can mean."
 >
   <div class="prose">
-    <Rail>Reading this site</Rail>
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">How sure we are</h1>
 
     <MarginNote label="The question">
@@ -45,7 +43,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>The vocabulary</Rail>
 
     <h2>The four words</h2>
 
@@ -54,10 +51,10 @@ import Base from "~/layouts/Base.astro";
     what is the chance this choice leaves you better off than the named alternative, over thirty years, after
     costs and taxes.</p>
 
-    <MarginNote label="Why the mark is grey">
+    <MarginNote label="Why the rule is grey">
       <p>
-        Four intensities of one ink, so the mark survives a printout and a colour-blind reader. Nothing here is
-        ever green.
+        The word does the work, and the rule beside it is four weights of one ink, so it survives a printout and
+        a colour-blind reader. Nothing here is ever green.
       </p>
     </MarginNote>
 
@@ -68,7 +65,10 @@ import Base from "~/layouts/Base.astro";
 
     <h3>Settled</h3>
 
-    <p><Rung level="settled" /></p>
+    <p class="confidence" data-level="settled">
+      <span class="confidence-word">{rungMeta.settled.label}</span>
+      <span class="confidence-gloss">{rungMeta.settled.gloss}</span>
+    </p>
 
     <p>No hedge, flat declarative. It follows from a contract, a tax rule, or arithmetic, and the only uncertainty
     left is whether you actually do it. Moving your money into cheaper share classes and the right accounts saves
@@ -88,7 +88,10 @@ import Base from "~/layouts/Base.astro";
 
     <h3>Probably</h3>
 
-    <p><Rung level="probably" /></p>
+    <p class="confidence" data-level="probably">
+      <span class="confidence-word">{rungMeta.probably.label}</span>
+      <span class="confidence-gloss">{rungMeta.probably.gloss}</span>
+    </p>
 
     <p>Roughly a 70% to 90% chance, and the sentence always carries the size and the range. The effect is larger
     than the smallest thing the test could have seen, the range stays on one side of zero, and it survives being
@@ -99,9 +102,12 @@ import Base from "~/layouts/Base.astro";
     of it is measured on data starting in November 1990, and nobody has ever run it on years the idea had not
     already seen.</p>
 
-    <h3>Might</h3>
+    <h3>Might work</h3>
 
-    <p><Rung level="might" /></p>
+    <p class="confidence" data-level="might">
+      <span class="confidence-word">{rungMeta.might.label}</span>
+      <span class="confidence-gloss">{rungMeta.might.gloss}</span>
+    </p>
 
     <p>Roughly 50% to 75%. The evidence points one way and keeps pointing that way, and at least one thing is
     wrong with the design. The window is short, or the effect is smaller than the smallest difference the test
@@ -111,7 +117,10 @@ import Base from "~/layouts/Base.astro";
 
     <h3>We can't tell</h3>
 
-    <p><Rung level="cant-tell" /></p>
+    <p class="confidence" data-level="cant-tell">
+      <span class="confidence-word">{rungMeta["cant-tell"].label}</span>
+      <span class="confidence-gloss">{rungMeta["cant-tell"].gloss}</span>
+    </p>
 
     <p>The range covers real help and real harm. We print the range and refuse to print a probability, because
     inventing one is the failure this whole scheme exists to prevent. This is the most common verdict on the
@@ -124,7 +133,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Your own account</Rail>
 
     <h2>How long before you would know</h2>
 
@@ -158,7 +166,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Silence</Rail>
 
     <h2>The three kinds of nothing</h2>
 
@@ -205,7 +212,6 @@ import Base from "~/layouts/Base.astro";
   </div>
 
   <div class="prose mt-14">
-    <Rail>Corrections</Rail>
 
     <h2>Where we have been wrong</h2>
 
