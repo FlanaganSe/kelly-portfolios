@@ -155,22 +155,6 @@ export const OG_PAGES = {
 /** Indexable by an arbitrary path, without losing the literal keys above. */
 const PAGES: Readonly<Record<string, OgPage | undefined>> = OG_PAGES;
 
-/**
- * Cuts a title to length on a word boundary, with an ellipsis when it was cut.
- *
- * Lived in `src/lib/research.ts` until the corpus was unpublished and that module had
- * one consumer left. A card is a way in, not a summary.
- */
-function clamp(text: string, limit: number): string {
-  if (text.length <= limit) return text;
-  const cut = text.slice(0, limit);
-  const boundary = cut.lastIndexOf(" ");
-  return `${cut.slice(0, boundary > 0 ? boundary : cut.length).replace(/[,;:.\u2014-]$/, "")}…`;
-}
-
-/** The point past which a title is cut on a word boundary for a card. */
-const TITLE_LIMIT = 96;
-
 /** The route parameter `src/pages/og/[...route].ts` emits a card at. */
 export function ogRouteParam(path: string): string {
   return path === "/" ? "index.png" : `${path.replace(/^\/|\/$/g, "")}.png`;
