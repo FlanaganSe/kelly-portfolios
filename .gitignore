@@ -55,3 +55,6 @@ docs/*-plan.md
 
 # Scratch space for one-off inspection scripts.
 scripts/.tmp/
+
+# Design proof of concept, not part of the build.
+.design-poc/

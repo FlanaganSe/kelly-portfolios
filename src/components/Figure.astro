@@ -51,7 +51,7 @@ if (!entry) {
 const figure = entry.data;
 const valueSize = { sm: "text-xl", md: "text-2xl", lg: "text-3xl" }[size];
 const status = statusMeta[figure.status];
-const href = citationHref({ docPath: figure.source.docPath, anchor: figure.source.anchor });
+const href = citationHref(figure.source);
 
 // The whole record, for a reader who hovers. The block rendering shows all of this on
 // the page; inline it would swallow the sentence, so the margin note beside the
@@ -96,7 +96,15 @@ const inlineText = showUnit && figure.unit ? `${figure.value} ${figure.unit}` : 
     {showStatus && <span title={status.gloss}>{status.label}</span>}
     {figure.period && <span data-numeric>{figure.period}</span>}
     <span data-numeric>as of {figure.asOf}</span>
-    <a href={href} class="link" rel="noopener noreferrer">{figure.source.label}</a>
+    {
+      href ? (
+        <a href={href} class="link" rel="noopener noreferrer">
+          {figure.source.label}
+        </a>
+      ) : (
+        <span>{figure.source.label}</span>
+      )
+    }
   </div>
 </figure>
   )

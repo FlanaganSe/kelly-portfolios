@@ -1,5 +1,4 @@
 import type { Citation } from "~/content/types";
-import { onSiteRoute } from "~/lib/research";
 import { REPO_URL } from "~/lib/site";
 
 /**
@@ -14,17 +13,14 @@ export const REPO_BLOB_BASE = `${REPO_URL}/blob/main`;
 /**
  * The URL a citation points at, in falling order of preference.
  *
- * 1. An external primary source, when the owning page gives one.
- * 2. The page on this site, now that the whole corpus renders here. Sending a reader to
- *    GitHub to read our own argument was a habit from when it was the only copy.
- * 3. The file on GitHub, for the evidence that stays where it is maintained: study
- *    modules, frozen specifications and run artifacts.
+ * 1. An external primary source: a filing, a statute, a paper, a fund's own page.
+ * 2. A page on this site that explains the number in words a reader has.
+ * 3. Nothing. `docPath` is provenance, not a destination — it names the internal note
+ *    a number came from, the build checks that the note and its heading exist, and a
+ *    reader is never shown the path or sent to it. Sending someone who asked what to
+ *    hold to a two-hundred-thousand-word directory of working notes was the largest
+ *    single reason this site was hard to read.
  */
-export function citationHref(citation: Pick<Citation, "docPath" | "anchor" | "href">): string {
-  if (citation.href) return citation.href;
-  const path = citation.docPath.replace(/^\/+/, "");
-  const anchor = citation.anchor ? `#${citation.anchor.replace(/^#/, "")}` : "";
-
-  const route = onSiteRoute(path);
-  return route ? `${route}${anchor}` : `${REPO_BLOB_BASE}/${path}${anchor}`;
+export function citationHref(citation: Pick<Citation, "href" | "page">): string | undefined {
+  return citation.href ?? citation.page;
 }

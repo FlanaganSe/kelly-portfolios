@@ -262,11 +262,26 @@ const isoDate = z
   .refine((value) => !Number.isNaN(Date.parse(value)), "asOf is not a real date");
 
 const citation = z.object({
+  /** What a reader sees. Never a filename. */
   label: z.string().min(1),
-  /** Repository-relative, e.g. `docs/research/stacking-and-effective-breadth.md`. */
+  /**
+   * Repository-relative, e.g. `docs/research/stacking-and-effective-breadth.md`.
+   *
+   * Provenance, checked at build time and never rendered. The research notes stay in
+   * the repository as the record of where a number came from; publishing them as
+   * pages put two hundred thousand words of internal writing in front of readers who
+   * came here to find out what to hold. What a reader is shown is `href` or `page`.
+   */
   docPath: z.string().min(1),
   /** A heading anchor within that file, with or without the leading `#`. */
   anchor: z.string().min(1).optional(),
+  /** A primary source on the open web: a filing, a statute, a paper, a fund page. */
+  href: z.string().url().optional(),
+  /** A page on this site that explains the number, e.g. `/evidence/trend/`. */
+  page: z
+    .string()
+    .regex(/^\/[a-z0-9\-/]*\/(#[a-z0-9-]+)?$/, "page must be a rooted, slash-terminated site path")
+    .optional(),
 });
 
 /**

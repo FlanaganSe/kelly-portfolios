@@ -131,11 +131,15 @@ export const certaintyMeta = {
 
 /** A link back to the page that owns the fact. `docPath` is repo-relative. */
 export interface Citation {
+  /** What a reader sees. Never a filename. */
   readonly label: string;
+  /** Repository-relative provenance. Checked at build time, never rendered. */
   readonly docPath: string;
   readonly anchor?: string;
-  /** An external primary source, where the owning page gives one. */
+  /** A primary source on the open web: a filing, a statute, a paper, a fund page. */
   readonly href?: string;
+  /** A page on this site that explains the number, e.g. `/evidence/trend/`. */
+  readonly page?: string;
 }
 
 declare const isoDate: unique symbol;
