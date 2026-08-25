@@ -22,12 +22,12 @@ const decomposition: Citation = {
 };
 
 export const formulas = {
-  probability: "how likely you are to be ahead, given the gain, the wander and the years",
-  horizon: "the wait, in years, given how much a thing gains and how far it wanders",
+  probability: "how likely you are to be ahead, given the gain, the drift and the years",
+  horizon: "the wait, in years, given how much a thing gains and how far it drifts",
   variables:
-    "The gain is what you expect to earn above the thing you are measured against, each year. The wander is how far your result strays from it in a normal year. Both are yearly figures.",
+    "The gain is what you expect to earn above the thing you are measured against, each year. The drift is how far your result strays from it in a normal year. Both are yearly figures.",
   theLesson:
-    "The wait grows with the square of the wander divided by the gain, so it is the wander that decides whether a lifetime is long enough. The same 50 bp gain is 90% certain in 24 days if it wanders 10 bp, and takes 105 years if it wanders 400.",
+    "The wait grows with the square of the drift divided by the gain, so it is the drift that decides whether a lifetime is long enough. The same 50 bp gain is 90% certain in 24 days if it drifts 10 bp, and takes 105 years if it drifts 400.",
   source: decomposition,
 } as const;
 
@@ -227,9 +227,9 @@ export const smallValueCorners: readonly {
 export const smallValueReading = {
   headline: "The premium decides the sign, and the variance decides how much survives.",
   detail:
-    "The probability of being ahead does not move with the weight, because edge and tracking error are both linear in it: weight sets the size of the bet, never its demonstrability. On the pooled premium a 20% lean into small value adds 43 bp of arithmetic edge against VTI, and 21 bp of geometric growth. The difference is the portfolio variance the swap adds, which no chain of the form premium × exposure − cost can see. On the US-only post-publication premium the growth contribution is negative at every weight.",
+    "The probability of being ahead does not move with the weight, because edge and drift are both linear in it: weight sets the size of the bet, never its demonstrability. On the pooled premium a 20% lean into small value adds 43 bp of arithmetic edge against VTI, and 21 bp of geometric growth. The difference is the portfolio variance the swap adds, which no chain of the form premium × exposure − cost can see. On the US-only post-publication premium the growth contribution is negative at every weight.",
   assumption:
-    "Tracking error is now measured rather than assumed: AVUV against VTI over 2020-01…2025-12 reads 15.59 pp/yr, against the 7 pp/yr this page previously assumed. French's small-value research portfolio reads 16.47 pp/yr over the same months and 11.13 over 1963–2025, so the fund's window is high but not aberrant. On the 62-year moments the same 20% lean gives 223 bp of tracking error and 36.9 bp of growth.",
+    "Drift is now measured rather than assumed: AVUV against VTI over 2020-01…2025-12 reads 15.59 pp/yr, against the 7 pp/yr this page previously assumed. French's small-value research portfolio reads 16.47 pp/yr over the same months and 11.13 over 1963–2025, so the fund's window is high but not aberrant. On the 62-year moments the same 20% lean gives 223 bp of drift and 36.9 bp of growth.",
   costAssumption:
     "Fee and turnover are read from each fund's own SEC filing and charged incrementally over VTI: AVUV 0.25% and 6%/yr against VTI's 0.03% and 3%/yr, giving 0.271 pp/yr. Experiment 007 assumed 20–40%/yr of sort turnover, which is four to eight times what the systematic funds actually file.",
   correction:
@@ -280,7 +280,7 @@ export const managedFuturesReading = {
     "Moving DBMF into a shelter is worth 21.6 bp/yr of portfolio return once you subtract the distribution tax the equity it displaced was paying anyway. This row previously charged the full 2.09 pp/yr and said the account decides whether the trend holding helps or hurts. That is a fact about DBMF rather than about the exposure. The same trend exposure through the return-stacked fund RSST carries 0.32 pp/yr gross and 4.5 bp incremental, so its account decides almost nothing, while the funding rule that fund structure sets moves the hurdle the holding has to clear by 2.44 pp/yr. Set that against the rest of the record: the index's standalone Sharpe fell 1.34 to 0.18 and its geometric return 19.4% to 3.1% after publication, the vendor states no cost basis anywhere in the archived workbook, comparable CTA survivorship and backfill distortion is 7.7 pp/yr, larger than the strategy's entire gross premium, and seven products' exposures have been measured on a shelf of fifteen, on seven different windows, which is why they are not rankable as published.",
   assumptions: [
     "That a trend holding's marginal certainty equivalent scales linearly in the product's exposure to the index. 0.671 × 1.011 is an approximation; the experiment measured the index at a 15% weight, not DBMF at any weight. The product audit's own marginal-contribution arm is labelled invalid for every fund on warm-up grounds, so no direct measurement exists.",
-    "A derived 2.52 pp/yr tracking error, computed from the published volatilities and correlation against the fully invested passive benchmark rather than the risk-matched comparator the experiment used as primary: sqrt(7.65² + 9.12² − 2 × 0.97 × 7.65 × 9.12).",
+    "A derived 2.52 pp/yr of drift, computed from the published volatilities and correlation against the fully invested passive benchmark rather than the risk-matched comparator the experiment used as primary: sqrt(7.65² + 9.12² − 2 × 0.97 × 7.65 × 9.12).",
   ],
   source: recommendation,
 } as const;
@@ -321,7 +321,7 @@ export const decidingComparison: readonly {
 ];
 
 export const decidingComparisonReading =
-  "A certain 109 bp is worth more than the gross premium of any lean, and it is available first. That is what the pairing of edge and tracking error produces, not a matter of taste.";
+  "A certain 109 bp is worth more than the gross premium of any lean, and it is available first. That is what the pairing of edge and drift produces, not a matter of taste.";
 
 /** What thirty and fifty years can demonstrate at all, against 400 bp of tracking error. */
 export const demonstrability = {

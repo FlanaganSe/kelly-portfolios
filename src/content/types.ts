@@ -45,7 +45,7 @@ export interface StatusMeta {
 export const statusMeta = {
   exploratory: {
     label: "Exploratory",
-    gloss: "The lowest rung. It may stand in for a real product in a later experiment, and nothing else.",
+    gloss: "The lowest level. It may stand in for a real product in a later experiment, and nothing else.",
     tone: "caution",
   },
   "source-reproduced": {
@@ -124,7 +124,7 @@ export const certaintyMeta = {
   "different-benchmark": {
     label: "A different benchmark",
     gloss:
-      "Real pay for a real risk, measured against a different yardstick. Booking it as an edge over an equity index swaps the benchmark rather than adding return.",
+      "Real pay for a real risk, measured against something else entirely. Booking it as an edge over an equity index swaps the benchmark rather than adding return.",
     tone: "neutral",
   },
 } as const satisfies Readonly<Record<CertaintyClass, CertaintyMeta>>;

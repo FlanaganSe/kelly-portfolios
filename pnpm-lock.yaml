@@ -20,12 +20,6 @@ importers:
       '@astrojs/solid-js':
         specifier: 7.0.2
         version: 7.0.2(@testing-library/jest-dom@6.9.1)(@types/node@22.17.0)(esbuild@0.28.2)(jiti@2.6.1)(solid-js@1.9.15)(tsx@4.21.0)
-      '@solidjs/meta':
-        specifier: ^0.29.4
-        version: 0.29.4(solid-js@1.9.15)
-      '@solidjs/router':
-        specifier: ^0.15.4
-        version: 0.15.4(solid-js@1.9.15)
       astro:
         specifier: 7.2.4
         version: 7.2.4(@astrojs/markdown-remark@7.2.4)(@emnapi/core@1.11.1)(@emnapi/runtime@1.11.3)(@types/node@22.17.0)(jiti@2.6.1)(tsx@4.21.0)
@@ -45,9 +39,6 @@ importers:
       '@biomejs/biome':
         specifier: 2.3.13
         version: 2.3.13
-      '@playwright/test':
-        specifier: ^1.62.1
-        version: 1.62.1
       '@pulumi/aws':
         specifier: ^7.16.0
         version: 7.16.0(typescript@5.9.3)
@@ -1206,11 +1197,6 @@ packages:
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
 
-  '@playwright/test@1.62.1':
-    resolution: {integrity: sha512-DTcUc8qii+cpHvtOwggMtBRMjKZHXYWdw8syRYu2vtzuq4Wxphqq4NfCs5Zt44L6mA8rfDfj+PHnxFc/FeK6mQ==}
-    engines: {node: '>=20'}
-    hasBin: true
-
   '@polka/url@1.0.0-next.29':
     resolution: {integrity: sha512-wwQAWhWSuHaag8c4q/KN/vCoeOJYshAIvMQwD4GpSb3OiZklFfvAgmj0VCBBImRpuF/aFgIRzllXlVX93Jevww==}
 
@@ -1527,11 +1513,6 @@ packages:
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
-
-  '@solidjs/meta@0.29.4':
-    resolution: {integrity: sha512-zdIWBGpR9zGx1p1bzIPqF5Gs+Ks/BH8R6fWhmUa/dcK1L2rUC8BAcZJzNRYBQv74kScf1TSOs0EY//Vd/I0V8g==}
-    peerDependencies:
-      solid-js: '>=1.8.4'
 
   '@solidjs/router@0.15.4':
     resolution: {integrity: sha512-WOpgg9a9T638cR+5FGbFi/IV4l2FpmBs1GpIMSPa0Ce9vyJN7Wts+X2PqMf9IYn0zUj2MlSJtm1gp7/HI/n5TQ==}
@@ -5710,10 +5691,6 @@ snapshots:
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
-  '@playwright/test@1.62.1':
-    dependencies:
-      playwright: 1.62.1
-
   '@polka/url@1.0.0-next.29': {}
 
   '@protobufjs/aspromise@1.1.2': {}
@@ -5966,13 +5943,10 @@ snapshots:
 
   '@sindresorhus/is@4.6.0': {}
 
-  '@solidjs/meta@0.29.4(solid-js@1.9.15)':
-    dependencies:
-      solid-js: 1.9.15
-
   '@solidjs/router@0.15.4(solid-js@1.9.15)':
     dependencies:
       solid-js: 1.9.15
+    optional: true
 
   '@solidjs/testing-library@0.8.10(@solidjs/router@0.15.4(solid-js@1.9.15))(solid-js@1.9.15)':
     dependencies:

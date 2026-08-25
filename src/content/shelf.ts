@@ -220,7 +220,7 @@ const alternatives: Citation = {
   docPath: "docs/research/alternative-sleeves-audit.md",
 };
 const capital: Citation = {
-  label: "Capital efficiency and breadth",
+  label: "Capital efficiency and how many different bets you hold",
   docPath: "docs/research/capital-efficiency-and-breadth.md",
 };
 const trend: Citation = { label: "The marginal value of trend", docPath: "docs/research/trend-marginal-value.md" };
@@ -262,7 +262,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "VTI",
     name: "Vanguard Morningstar Total Stock Market ETF",
     category: "us-core",
-    mandate: "The whole US market at capitalisation weight. The yardstick every US result here is measured against.",
+    mandate: "The whole US market at capitalisation weight. What every US result here is measured against.",
     expenseRatioBp: 3,
     securitiesLendingBp: 1.84,
     netCostBp: 1.16,
@@ -364,7 +364,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "VTV",
     name: "Vanguard Value ETF",
     category: "us-value",
-    mandate: "Big cheap US companies, weighted by size, for 0.03% a year. Part of the yardstick rather than a bet.",
+    mandate: "Big cheap US companies, weighted by size, for 0.03% a year. Part of what results are measured against, rather than a bet.",
     expenseRatioBp: 3,
     securitiesLendingBp: 0.3,
     netCostBp: 2.7,
@@ -413,9 +413,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The largest implementation shortfall on the shelf, −4.92 pp/yr on the frozen basis and −4.23 on a cheap style grid that can express small value: the best in-sample combination of VTI, VUG, VTV and VB could not get within four points a year of it.",
+      "The largest implementation shortfall on the fund list, −4.92 pp/yr on the frozen basis and −4.23 on a cheap style grid that can express small value: the best in-sample combination of VTI, VUG, VTV and VB could not get within four points a year of it.",
     caution:
-      "Its SMB leg of +0.88 is the largest of any US value product here and the size premium is not signable on any panel (+0.33 against a 2.47 pp/yr floor). At a 20% weight it buys +43.1 bp for 312 bp of tracking error and reaches 90% confidence in 86 years. Against a portfolio that already holds a US value line it adds nothing: its active leg over VTI is +0.455 correlated with the recommended portfolio's own, and 87% of what it delivers beyond VTV is size.",
+      "Its SMB leg of +0.88 is the largest of any US value product here and the size premium is not signable on any panel (+0.33 against a 2.47 pp/yr floor). At a 20% weight it buys +43.1 bp for 312 bp of drift and reaches 90% confidence in 86 years. Against a portfolio that already holds a US value line it adds nothing: its active leg over VTI is +0.455 correlated with the recommended portfolio's own, and 87% of what it delivers beyond VTV is size.",
     issuer: {
       notes: [
         "0.25% total annual fund operating expenses and 6% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-12-31.",
@@ -456,7 +456,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "Buys HML +0.515 with an SMB leg of +0.12, so a 20% weight costs 160 bp of tracking error against AVUV's 312 for a comparable exposure. Its +0.11 shortfall is the only positive one among the nine systematic products.",
+      "Buys HML +0.515 with an SMB leg of +0.12, so a 20% weight costs 160 bp of drift against AVUV's 312 for a comparable exposure. Its +0.11 shortfall is the only positive one among the nine systematic products.",
     caution: "43 months, and its −2.06 alpha sits inside a 5.21 pp/yr floor — unmeasurable rather than absent.",
     source: recommendation,
     asOf: READ,
@@ -485,7 +485,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The largest HML exposure on the US large-value shelf, and on that alone a 20% weight prices at +53.8 bp for 163 bp of tracking error — the best ratio in the table.",
+      "The largest HML exposure on the US large-value shelf, and on that alone a 20% weight prices at +53.8 bp for 163 bp of drift — the best ratio in the table.",
     caution:
       "Disqualifying: its raw alpha of −6.06 pp/yr is larger than the 5.69 pp/yr its own window could have resolved, one of sixteen such funds on a 109-fund shelf and all sixteen negative. Charging it takes the lean to about −67 bp, or −54 bp against its own 36-month pedestal of −0.65 pp/yr.",
     source: recommendation,
@@ -516,7 +516,7 @@ export const shelf: readonly ShelfFund[] = [
     status: "exploratory",
     verdict: "Delivers its exposure and beats its cheap replication by 1.83 pp/yr on the frozen basis.",
     caution:
-      "The same unpriced SMB leg as every small-value fund: +0.85, on a premium that cannot be signed. 262 bp of tracking error at a 20% weight, and 109 years to 90% confidence.",
+      "The same unpriced SMB leg as every small-value fund: +0.85, on a premium that cannot be signed. 262 bp of drift at a 20% weight, and 109 years to 90% confidence.",
     source: recommendation,
     asOf: READ,
   },
@@ -545,7 +545,7 @@ export const shelf: readonly ShelfFund[] = [
     status: "exploratory",
     verdict:
       "Shortfall −3.44 pp/yr frozen and −1.82 on the full cheap style grid: the largest basis attribution of the nine, at +1.62 pp/yr, and it keeps its status anyway.",
-    caution: "SMB +0.83 on an unsignable premium; 239 bp of tracking error at 20%.",
+    caution: "SMB +0.83 on an unsignable premium; 239 bp of drift at 20%.",
     source: recommendation,
     asOf: READ,
   },
@@ -573,7 +573,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "rejected",
     verdict:
-      "The deepest US value exposure on the shelf and still a subtraction. Over VTV on 78 months (2019-10\u20262026-03) it delivers HML +0.369 [+0.249, +0.490] and SMB +0.199, but also RMW \u22120.204 [\u22120.361, \u22120.047] and UMD \u22120.173 [\u22120.337, \u22120.008]: the value it buys is partly paid for by selling momentum. Net of a 33.87 bp cost and 42%/yr of turnover against VTV\u2019s 8%, replacing VTV with it at 15% changes portfolio return by about \u22120.10% a year, and it is negative under all four of this repository\u2019s premium scenarios.",
+      "The deepest US value exposure on the fund list and still a subtraction. Over VTV on 78 months (2019-10\u20262026-03) it delivers HML +0.369 [+0.249, +0.490] and SMB +0.199, but also RMW \u22120.204 [\u22120.361, \u22120.047] and UMD \u22120.173 [\u22120.337, \u22120.008]: the value it buys is partly paid for by selling momentum. Net of a 33.87 bp cost and 42%/yr of turnover against VTV\u2019s 8%, replacing VTV with it at 15% changes portfolio return by about \u22120.10% a year, and it is negative under all four of this repository\u2019s premium scenarios.",
     caution:
       "42%/yr of turnover, the highest of any US value product audited and five times the incumbent\u2019s — its sort is an index reconstitution, which is exactly the case Experiment 007\u2019s 20\u201340% assumption was right about. The tax objection, however, is false: its distribution drag is 0.62 pp/yr against VTV\u2019s 0.67 over the same five years. Its 106 constituents are weighted by value score rather than by capitalisation, so it is a concentrated active position wearing an index label.",
     issuer: {
@@ -661,7 +661,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: US_PEDESTAL,
     status: "exploratory",
     verdict:
-      "Delivers its exposure and keeps its status under every comparator basis tested. It buys comparable HML to a small-value fund at roughly half the tracking error.",
+      "Delivers its exposure and keeps its status under every comparator basis tested. It buys comparable HML to a small-value fund at roughly half the drift.",
     caution:
       "The US value premium on its own panel is +1.57 pp/yr against a 5.03 pp/yr floor and is not signable. Only the pooled three-region premium makes this lean's growth contribution positive.",
     source: products,
@@ -706,7 +706,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "A genuinely deep value lean destroyed by its own trading. It files 332%/yr of portfolio turnover against VTI's 3%, which costs 3.54 to 5.86 pp/yr at the repository's 1.0-to-1.7 coefficient against a gross factor gain of about 1.1 pp/yr. At a 5% weight it is the only candidate whose portfolio effect this data can resolve, and it resolves to about -0.30% a year.",
     caution:
-      "Its exposures are stated over its own filings and its incumbent's, not over the shelf's other value products: EDGAR lists no Form N-PORT for the quarter ending 2021-09-30, so its history has a three-month hole and only the 54 gapless months after it are usable. Its active leg is +0.754 correlated with AVUV's, so it duplicates a position rather than adding one.",
+      "Its exposures are stated over its own filings and its incumbent's, not over the other value products on the fund list: EDGAR lists no Form N-PORT for the quarter ending 2021-09-30, so its history has a three-month hole and only the 54 gapless months after it are usable. Its active leg is +0.754 correlated with AVUV's, so it duplicates a position rather than adding one.",
     issuer: {
       notes: [
         "0.28% total annual fund operating expenses, management fee restated to the current rate, with no 12b-1 fee and no other expenses, per its summary prospectus dated 2026-02-01.",
@@ -748,7 +748,7 @@ export const shelf: readonly ShelfFund[] = [
     status: "exploratory",
     verdict: "SMB +1.058 on a tight interval, and a −0.72 pp/yr shortfall: it delivers exactly what it sells.",
     caution:
-      "What it sells cannot be priced. At a 20% weight the exposure is worth +15.7 bp against 252 bp of tracking error, +6.1 bp of growth, and 425 years to 90% confidence.",
+      "What it sells cannot be priced. At a 20% weight the exposure is worth +15.7 bp against 252 bp of drift, +6.1 bp of growth, and 425 years to 90% confidence.",
     source: recommendation,
     asOf: READ,
   },
@@ -784,7 +784,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "VB",
     name: "Vanguard Morningstar Small-Cap ETF",
     category: "us-small",
-    mandate: "Plain small US companies for 0.03% a year. Part of the yardstick rather than a holding.",
+    mandate: "Plain small US companies for 0.03% a year. Part of what results are measured against, rather than a holding.",
     expenseRatioBp: 3,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -930,7 +930,7 @@ export const shelf: readonly ShelfFund[] = [
     status: "rejected",
     verdict: "Rejected on clause (c) at a +1.14 pp/yr shortfall, on an RMW exposure of +0.186.",
     caution:
-      "The exposure is not purchasable at this threshold anywhere on the shelf — nine quality products and the largest RMW exposure is +0.228 — and the premium behind it is rejected and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
+      "The exposure is not purchasable at this threshold anywhere on the fund list — nine quality products and the largest RMW exposure is +0.228 — and the premium behind it is rejected and closed on public data (decision 0005). A product's own quality is irrelevant when the premium cannot be signed.",
     spread: { bp: 3, asOf: SPREADS_READ },
     source: products,
     asOf: READ,
@@ -1206,7 +1206,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "Second on growth per unit of tracking error at 0.576, and the lowest tracking error of the five at 31.3 bp for an 8% substitution. Shortfall −0.51 frozen, −0.16 expressive.",
+      "Second on growth per unit of drift at 0.576, and the lowest drift of the five at 31.3 bp for an 8% substitution. Shortfall −0.51 frozen, −0.16 expressive.",
     caution:
       "Its −3.13 pp/yr alpha against a 1.81 floor is the most clearly measurable negative on the ex-US shelf; charging it takes an 8% lean from +18.0 bp to −9.5 bp.",
     source: recommendation,
@@ -1263,7 +1263,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: DEVELOPED_PEDESTAL,
     status: "exploratory",
     verdict:
-      "The only large-value fund of the four whose alpha the window cannot measure: −2.53 sits inside a 2.63 floor, so on the alpha-charged reading this repository's answer is IVLU rather than DFIV, at 0.552 growth per unit of tracking error.",
+      "The only large-value fund of the four whose alpha the window cannot measure: −2.53 sits inside a 2.63 floor, so on the alpha-charged reading this repository's answer is IVLU rather than DFIV, at 0.552 growth per unit of drift.",
     caution:
       "Its edge is smaller than DFIV's (+19.4 bp against +27.1 at an 8% substitution) and its shortfall of −1.19 does not move under any of the seven bases. Its 31 bp is the fee table's total, not its management fee: an aggregator reading of 0.30% is the 0.30% management line with the 0.01% of other expenses left off, and quoting it would understate what a holder pays.",
     issuer: {
@@ -1285,7 +1285,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "EFV",
     name: "iShares MSCI EAFE Value ETF",
     category: "intl-value",
-    mandate: "Big cheap companies outside the US, tracking an index, and part of the yardstick.",
+    mandate: "Big cheap companies outside the US, tracking an index, and part of what results are measured against.",
     expenseRatioBp: 31,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -1402,7 +1402,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Keeps a −4.58 pp/yr shortfall under all seven bases, including the ones containing itself, because no other column can express developed-ex-US small value. It files 4%/yr of turnover, the lowest of any factor product in either audit.",
     caution:
-      "The only value fund on the shelf carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 [−1.44, +2.44], and RMW +0.386 on a rejected factor. It is fourth or fifth of five on growth per unit of tracking error in every window. Its alpha is a window artefact: +2.47 on 45 months, +0.55 on 75 and +1.84 on 55, against floors of 3.96 to 4.64. None of the three is evidence and no verdict may rest on one.",
+      "The only value fund we priced carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 [−1.44, +2.44], and RMW +0.386 on a rejected factor. It is fourth or fifth of five on growth per unit of drift in every window. Its alpha is a window artefact: +2.47 on 45 months, +0.55 on 75 and +1.84 on 55, against floors of 3.96 to 4.64. None of the three is evidence and no verdict may rest on one.",
     issuer: {
       notes: [
         "0.36% total annual fund operating expenses and 4% portfolio turnover in the most recent fiscal year — the lowest turnover of any factor product on this shelf — per its summary prospectus dated 2025-12-31.",
@@ -1472,7 +1472,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The largest basis effect on the ex-US shelf: its shortfall goes from −2.89 to +0.05 once a small-value column exists, on a replication that puts 69% of its weight on AVDV. It keeps exploratory only because +0.05 sits under the 0.50 threshold.",
     caution:
-      "Worst of five on tracking error per unit of HML at 11.6, and its SMB leg of +0.431 is on a premium that cannot be signed.",
+      "Worst of five on drift per unit of HML at 11.6, and its SMB leg of +0.431 is on a premium that cannot be signed.",
     source: recommendation,
     asOf: READ,
   },
@@ -1637,7 +1637,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "IMTM",
     name: "iShares MSCI Intl Momentum Factor ETF",
     category: "intl-momentum",
-    mandate: "Foreign developed shares that have been going up, and the dearer of the two on the shelf.",
+    mandate: "Foreign developed shares that have been going up, and the dearer of the two on the fund list.",
     expenseRatioBp: 30,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -1699,7 +1699,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "VWO",
     name: "Vanguard FTSE Emerging Markets ETF",
     category: "emerging-core",
-    mandate: "Emerging markets weighted by size, and the yardstick every emerging-market fund here is read against.",
+    mandate: "Emerging markets weighted by size, and what every emerging-market fund here is read against.",
     expenseRatioBp: 6,
     securitiesLendingBp: 4.33,
     netCostBp: 1.67,
@@ -1732,7 +1732,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "A 50% higher fee than VWO and the cheaper fund to own: lending covers the whole 9 bp and 0.87 bp besides. Its fee is capped at 0.09% to 2030-12-31 with no recoupment — the most durable fee commitment on the shelf.",
+      "A 50% higher fee than VWO and the cheaper fund to own: lending covers the whole 9 bp and 0.87 bp besides. Its fee is capped at 0.09% to 2030-12-31 with no recoupment — the most durable fee commitment on the fund list.",
     caution:
       "No factor exposure, no alpha and no usable tracking difference were read for it. A high lending yield is partly compensation for holding what short sellers want.",
     spread: { bp: 1, asOf: SPREADS_READ },
@@ -1795,7 +1795,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The larger of the two emerging value exposures and the shorter window: 44 months, interval across the bar, shortfall −2.19 frozen and −2.03 expressive. unresolved, basis-invariant.",
     caution:
-      "Reads −0.092 on the US panel. With AVES it is why the region with the largest measured HML premium — +7.58 [+4.34, +11.01] — has nothing investable audited here. The 43 bp is a net figure that depends on a waiver running only to 2027-02-28; the fee table's gross is 46 bp, and 43 is what the shelf carries because it is what a buyer pays today. Only its shrunk alpha, −1.19 against a 3.23 floor, was published.",
+      "Reads −0.092 on the US panel. With AVES it is why the region with the largest measured HML premium — +7.58 [+4.34, +11.01] — has nothing investable audited here. The 43 bp is a net figure that depends on a waiver running only to 2027-02-28; the fee table's gross is 46 bp, and 43 is what the fund list carries because it is what a buyer pays today. Only its shrunk alpha, −1.19 against a 3.23 floor, was published.",
     issuer: {
       notes: [
         "0.38% management fee plus 0.08% other expenses is 0.46% gross, less a 0.03% fee waiver, for 0.43% net, per its summary prospectus dated 2026-02-28. The waiver agreement runs through 2027-02-28.",
@@ -1854,7 +1854,7 @@ export const shelf: readonly ShelfFund[] = [
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: null,
     status: null,
-    verdict: "2.09 bp net, and the bond leg of the cheapest combination on the shelf at 0.76 bp/yr.",
+    verdict: "2.09 bp net, and the bond leg of the cheapest combination on the fund list at 0.76 bp/yr.",
     caution: null,
     source: structural,
     asOf: READ,
@@ -2053,7 +2053,7 @@ export const shelf: readonly ShelfFund[] = [
     name: "WisdomTree Managed Futures Strategy Fund",
     category: "managed-futures",
     mandate:
-      "A rules-based managed-futures fund, audited against the same 0.50 delivered-exposure bar as the rest of the shelf.",
+      "A rules-based managed-futures fund, audited against the same 0.50 delivered-exposure bar as the rest of the fund list.",
     expenseRatioBp: 66,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -2230,7 +2230,7 @@ export const shelf: readonly ShelfFund[] = [
     ],
     reviewTrigger: {
       on: asOf("2026-12-04"),
-      what: "Two dates, and the near one is a filing. Its next Form N-PORT, for the quarter ending 2026-06-30, is due 2026-08-29: reread the base leg and the swap exposure and recompute delta. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified stacked fund on the shelf and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
+      what: "Two dates, and the near one is a filing. Its next Form N-PORT, for the quarter ending 2026-06-30, is due 2026-08-29: reread the base leg and the swap exposure and recompute delta. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified stacked fund on the fund list and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
     },
     issuer: {
       notes: [
@@ -2493,7 +2493,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: -0.55,
     status: "rejected",
     verdict:
-      "Dominated. Sharpe 0.643 at a correlation of +0.820 to the equity core, against 6 bp of fee and 0.51 pp/yr of distribution tax. It is the equity holding with a screen and a tax bill, not a second engine.",
+      "Dominated. Sharpe 0.643 at a correlation of +0.820 to the equity core, against 6 bp of fee and 0.51 pp/yr of distribution tax. It is the equity holding with a screen and a tax bill, not a second way of making money.",
     caution:
       "The smallest alpha this test could have found is 10.93 pp/yr, so the rejection rests on dominance and correlation rather than on a measured alpha. rejected means a falsifier fired, never that the effect is zero.",
     source: alternatives,
@@ -2524,7 +2524,7 @@ export const shelf: readonly ShelfFund[] = [
     ticker: "TIP",
     name: "iShares TIPS Bond ETF",
     category: "alternative",
-    mandate: "Inflation-linked Treasuries, audited as a candidate second fixed-income engine.",
+    mandate: "Inflation-linked Treasuries, audited as a candidate second way of making money in bonds.",
     expenseRatioBp: 18,
     securitiesLendingBp: null,
     netCostBp: 17.92,
@@ -2535,7 +2535,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "rejected",
     verdict:
-      "Not a second engine. Its correlation to the nominal bond funds beside it runs +0.76 to +0.85, and its correlation to equity is +0.131 against nominal bonds' \u22120.076. It is the worse diversifier of the two, which is the opposite of the usual claim.",
+      "Not a second way of making money. Its correlation to the nominal bond funds beside it runs +0.76 to +0.85, and its correlation to equity is +0.131 against nominal bonds' \u22120.076. It is the worse diversifier of the two, which is the opposite of the usual claim.",
     caution:
       "Its net cost of 17.92 bp against SCHP's 2.99 bp is the sharper point: the two correlate +0.9997, so the fee difference is the entire decision. Read the two cost fields together and they do not close: an 18 bp fee against a 17.92 bp net cost implies 0.08 bp of securities lending, and no Form N-CEN lending figure was read for this fund, so `securitiesLendingBp` stays null rather than carrying a number derived by subtraction. The 0.08 bp gap is the size of the unread term, not a measurement of it.",
     issuer: {
@@ -2646,7 +2646,7 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "On the shelf for completeness rather than as a candidate. It listed 2024-05-28 and holds $94.46m, and its second leg is a carry strategy no experiment in this repository has priced or regressed. Since inception it has returned +11.68% a year against the S&P 500 total return's +18.66%, both to 2026-07-31 from the issuer's own standardised table — the second-largest shortfall in the family.",
+      "On the fund list for completeness rather than as a candidate. It listed 2024-05-28 and holds $94.46m, and its second leg is a carry strategy no experiment in this repository has priced or regressed. Since inception it has returned +11.68% a year against the S&P 500 total return's +18.66%, both to 2026-07-31 from the issuer's own standardised table — the second-largest shortfall in the family.",
     caution:
       "No exposure, no alpha, no filed delta and no spread on file. A shortfall against an equity index is what a stacked fund is supposed to produce in a rising equity market, so it falsifies nothing on its own; it is recorded because the whole family's record is, and because a reader comparing the eight funds should not have to reconstruct which six are missing.",
     source: liveStacked,

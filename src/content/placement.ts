@@ -280,7 +280,7 @@ export const accountOrder: readonly AccountPlacement[] = [
     why: "The only US account untaxed at all three points, and payroll contributions escape FICA on top. That needs no rate forecast. The structure wins at every rate.",
     conditions: [
       "It requires a high-deductible health plan.",
-      "Its value is a dollar limit rather than a rate, so it cannot be expressed as basis points on a portfolio of arbitrary size.",
+      "Its value is a dollar limit rather than a rate, so it cannot be expressed as a percentage of a portfolio of arbitrary size.",
       "California breaks all three legs: no deduction, interest and earnings taxable in the year earned, and internal sales are realisation events. For a Californian an HSA is federally dominant and worse than a taxable brokerage account on one axis.",
       "New Jersey is widely reported to do the same and no primary source addressing HSAs was found at all. Treat that as inference from omission.",
     ],

@@ -533,7 +533,16 @@ table,
   --content: 42rem; /* 672px — the reading measure, about 72 characters at 17px */
   --aside: 0rem;
   --gutter: 0rem;
-  --canvas: calc(var(--content) + var(--gutter) + var(--aside) + var(--edge) * 2);
+  /* The canvas is the reading column and its edges, and nothing else.
+     
+     It used to include the aside track, which centred content-plus-aside and left
+     the reading column sitting left of centre with an empty band beside it. Three
+     of twenty-six pages carry a margin note; the other twenty-three were reserving
+     280px of nothing and paying for it with an off-centre composition. That was the
+     single worst thing about the layout this replaced, and reserving the track by
+     default rebuilt it. The note is a float with a negative right margin, so it
+     still hangs into the page margin on the pages that have one. */
+  --canvas: calc(var(--content) + var(--edge) * 2);
 
   /* The names `research/_Document.astro` was written against. */
   --note: var(--aside);
@@ -586,9 +595,7 @@ table,
   align-content: start;
   grid-template-columns:
     [c-start] minmax(0, 1fr)
-    [c-end] var(--gutter)
-    [a-start] var(--aside)
-    [a-end];
+    [c-end];
 
   /* Everything lands in the reading column unless it says otherwise. `min-width: 0`
      stops a wide table from blowing the track out past its own grid line. */
@@ -597,12 +604,20 @@ table,
     min-width: 0;
   }
 
-  /* A table, a chart or a row of figures, allowed both tracks. Below 74rem the
-     aside track is zero wide, so this is the reading column again and nothing
-     overflows. */
+  /* A table, a chart or a row of figures, allowed past the measure on a wide
+     screen and capped by its own `--tw`. On a phone the margin is all it gets. */
   & > .breakout,
   & > .bleed {
-    grid-column: c-start / a-end;
+    grid-column: c-start / c-end;
+    width: 100%;
+    max-width: var(--tw, none);
+  }
+
+  @media (min-width: 74rem) {
+    & > .breakout,
+    & > .bleed {
+      width: calc(100% + var(--gutter) + var(--aside));
+    }
   }
 }
 
