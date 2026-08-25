@@ -1,0 +1,102 @@
+---
+/**
+ * Rebalancing: a way of keeping a mix from drifting, and not a source of return in
+ * either direction.
+ *
+ * The sign of the effect depends on the stretch of history measured, which is the whole
+ * finding. The page says so rather than quoting the 35-year number as a result.
+ */
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Does rebalancing make you money?"
+  description="No, and it does not reliably cost you either: rebalancing is a way of keeping your mix from drifting, and nothing more than that."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Does rebalancing make you money?</h1>
+
+    <p class="lead">No, and it does not reliably cost you either: rebalancing is a way of keeping your mix from
+    drifting, and nothing more than that.</p>
+
+    <p>Over the 35 years we measured, it cost money compared with never touching the portfolio, and over longer
+    runs of history the sign flips the other way. Neither result is big enough to plan around.</p>
+
+    <p>The pitch is appealing. You decide on a mix, say 60% US shares, 30% other developed markets, 10% emerging
+    markets. One part runs ahead. You sell some of it and buy the laggard. You have sold high and bought low
+    without predicting anything, and lots of people will tell you that is a source of extra return.</p>
+
+    <p>We tested it on those three regional stock indexes at that mix, every month from 1991 to the end of 2025.
+    Every rebalancing rule we tried finished behind simply leaving the money alone. Rebalancing every month
+    returned 9.88% a year against 10.32% for never trading at all, a gap of 0.44 points, and the gentler rules
+    gave up between 0.24 and 0.27 points against that same comparison. Over 35 years those are not rounding
+    errors.</p>
+
+    <p>Now the scope, because it decides how much that number is worth. One mix, three regions, 1991 to 2025. Run
+    the same question over longer stretches and the sign reverses. Measured from 1871, and again from 1963, the
+    rebalanced portfolio comes out slightly ahead of the untouched one rather than slightly behind. So the honest
+    reading is that rebalancing is not a way of making money in either direction. It is a way of keeping your mix
+    from drifting, and whether it costs or earns a little depends on the stretch of history you happen to look
+    at.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Why it lost over this window</h2>
+
+    <p>Rebalancing pays off when a region that has run ahead then falls back, so that the shares you bought cheap
+    recover. Relative performance has to reverse.</p>
+
+    <p>In this data it did the opposite. A region that had beaten another tended to keep beating it, at every time
+    span we looked at, in all three pairs of regions. The one thing that would make rebalancing profitable is
+    missing from this sample, and its opposite is present. That is a structural reason rather than one unlucky
+    run.</p>
+
+    <p>It does not protect you in a crash either. Every rebalancing rule we tested had a worst fall equal to or
+    slightly worse than leaving the money alone, around 53% in each case. In a crisis every region falls together,
+    so buying the one that has fallen most means buying more of something still falling.</p>
+
+    <h2>What it does buy</h2>
+
+    <p>Keeping the promise you made. Left completely alone, the 60/30/10 mix drifted an average of 14.8 percentage
+    points away from where it started, and 26.4 points at its worst. For much of the period it was closer to
+    75/17/8. That is a different portfolio from the one anyone chose, arrived at by accident. Rebalancing held the
+    drift to somewhere between 0.6 and 3.1 points, and which end of that range you get depends on the rule.</p>
+
+    <p>It is cheap to do. Reviewing once a year and acting only when a holding is a quarter away from its target
+    comes to about 0.4 rebalances and 2.9 trades a year.</p>
+
+    <h2>The trap that makes it look like it works</h2>
+
+    <p>Under ordinary assumptions, rebalancing wins against leaving things alone about 68% of the time even when
+    its average return is identical. The wins are frequent and small, the losses rare and large, and they cancel.
+    So a study showing rebalancing won 70% of the time has shown you the result you would get from a rule that does
+    nothing. A win rate cannot settle this question.</p>
+
+    <p>In our own data even 68% turned out to be generous. Nine of the twelve windows we measured came in below
+    it.</p>
+
+    <h2>Tax</h2>
+
+    <p>The simulation charged no tax, because it held no purchase records and could not know what gain a sale would
+    trigger. In a taxable account every rebalance realises gains. Adding that would move the answer further against
+    rebalancing.</p>
+
+    <p>So rebalance to stay in the portfolio you chose, and do the trades in a retirement account if you have one.
+    Do not do it expecting to be paid.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>Evidence that relative performance between regions reverses rather than continues, measured on data we have
+    not already looked at. That is the mechanism the whole question turns on, and it is the one thing that would
+    move the answer out of the range where the window decides the sign.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>Monthly total returns for three regional stock indexes, January 1991 to December 2025, 420 months, run
+      through our own simulation of calendar, band and cash-flow rebalancing rules.</li>
+      <li>The standard mathematical result on how often rebalancing wins under lognormal returns with equal
+      expected growth, which is where the 68% comes from.</li>
+    </ul>
+  </div>
+</Base>

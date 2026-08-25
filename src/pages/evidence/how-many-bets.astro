@@ -1,0 +1,203 @@
+---
+/**
+ * How many genuinely unrelated bets it would take to make a portfolio near-certain,
+ * and how few of them exist.
+ *
+ * The two tables are the argument. The first is arithmetic a reader can check in a
+ * spreadsheet; the second is the same arithmetic once the bets are allowed to move
+ * together, which is what real holdings do.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+
+const ODDS_COLUMNS = ["To be this likely to finish ahead", "Unrelated 55% bets required"] as const;
+
+const ODDS = [
+  { odds: "60%", bets: "5" },
+  { odds: "70%", bets: "18" },
+  { odds: "80%", bets: "45" },
+  { odds: "90%", bets: "105" },
+  { odds: "95%", bets: "172" },
+  { odds: "99%", bets: "343" },
+] as const;
+
+const RELATED_COLUMNS = ["Number of bets", "Unrelated", "0.1", "0.2", "0.3", "0.5"] as const;
+
+const RELATED = [
+  { bets: "5", values: ["61.1%", "59.4%", "58.3%", "57.5%", "56.4%"] },
+  { bets: "20", values: ["71.3%", "62.9%", "60.1%", "58.6%", "56.9%"] },
+  { bets: "No limit", values: ["100%", "65.4%", "61.1%", "59.1%", "57.1%"] },
+] as const;
+---
+
+<Base
+  title="Why stacking good ideas stops working"
+  description="Enough small advantages really do add up to a near-certainty. This page is about how many you would need, how few exist, and why the way you pay for them decides the whole answer."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Why stacking good ideas stops working</h1>
+
+    <p class="lead">Your instinct that enough small advantages add up to a near-certainty is arithmetically
+    correct; this page is about how many you would need and how few exist.</p>
+
+    <p>Start with the instinct, because it is sound. Suppose you own something that finishes ahead of a plain index
+    fund 55% of the time. On its own that is barely better than a coin flip. Own several such things that have
+    nothing to do with each other, and the odds that the collection finishes ahead climb, because their bad years
+    do not land together.</p>
+
+    <p>So how many would you need?</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="Unrelated 55% bets needed for each level of confidence" maxWidth="34rem">
+    <table class="stack-table w-full border-collapse text-sm sm:min-w-[28rem]">
+      <caption class="sr-only">
+        How many unrelated bets, each 55% likely to finish ahead, it takes to reach each level of confidence
+      </caption>
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          {
+            ODDS_COLUMNS.map((heading, i) => (
+              <th scope="col" class:list={["eyebrow py-2 pr-4", i === 1 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        {
+          ODDS.map((row) => (
+            <tr class="border-b border-rule last:border-0">
+              <th scope="row" data-numeric class="py-2 pr-4 text-left font-normal">
+                {row.odds}
+              </th>
+              <td data-label={ODDS_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.bets}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <p>That is the case for stacking and it is also the case against it. A hundred and seventy genuinely unrelated
+    bets describes a market-making desk, not a portfolio of a few funds. Even about a hundred of them leaves you a
+    shade under 90% likely to be ahead of the index, not certain.</p>
+
+    <h2>Nothing you can buy is unrelated</h2>
+
+    <p>The table above assumes your bets have nothing in common. Real holdings always do. Here is the same question
+    when they move together, on a scale where zero means completely unrelated and one means identical.</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="The odds of finishing ahead once the bets move together" maxWidth="44rem">
+    <table class="stack-table w-full border-collapse text-sm sm:min-w-[36rem]">
+      <caption class="sr-only">
+        The odds of finishing ahead of the index, by number of bets and by how closely those bets move together
+      </caption>
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          {
+            RELATED_COLUMNS.map((heading, i) => (
+              <th scope="col" class:list={["eyebrow py-2 pr-4", i > 0 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        {
+          RELATED.map((row) => (
+            <tr class="border-b border-rule last:border-0">
+              <th scope="row" data-numeric class="py-2 pr-4 text-left font-normal">
+                {row.bets}
+              </th>
+              {row.values.map((value, i) => (
+                <td data-label={RELATED_COLUMNS[i + 1]} data-numeric class="py-2 pr-4 text-right">
+                  {value}
+                </td>
+              ))}
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <p>The bottom row is what unlimited money, unlimited ideas and infinite patience buy you. At 0.3 an unlimited
+    number of ideas is worth 3.3 unrelated ones, and gets you to 59%. The three funds in this portfolio that all
+    buy cheap shares move together at <Figure id="sleeve-correlation" inline />, and at that reading an unlimited
+    number of ideas tops out at <Figure id="stacking-ceiling" inline showUnit={false} />. Wherever the
+    ceiling sits, five bets already takes you about two thirds of the way to it, ten takes you four fifths, and
+    everything after that is decoration.</p>
+
+    <h2>What we counted</h2>
+
+    <p>Four funds that lean a particular way, plus one trend-following fund, measured over 422 months to the end of
+    2025: <Figure id="effective-bets" inline /> out of five. Three of the four buy cheap shares, in the US, in
+    other rich countries and in emerging markets. Those three are cousins, sitting at
+    <Figure id="sleeve-correlation" inline /> against each other on that same scale, which is where the pessimistic
+    <Figure id="stacking-ceiling" inline showUnit={false} /> ceiling above comes from. Across all five positions
+    the average is nearer a tenth, because the momentum fund and the trend fund often lean against the other
+    three.</p>
+
+    <h2>A second country is not a second idea</h2>
+
+    <p>Take one idea, buying cheap shares, and spread it across three regions. Three holdings, about 1.55
+    independent bets. Do it with momentum instead and you get 1.35. Geography buys roughly half an extra bet.</p>
+
+    <p>Now take five different ideas inside one country: cheap shares, small companies, profitable companies,
+    companies not expanding fast, and shares that have been rising. Those five come to
+    <Figure id="style-breadth" inline />, more than five, because some of them lean against each other. Going
+    abroad may be right for other reasons. As diversification it is nearly empty.</p>
+
+    <h2>How you pay for it decides everything</h2>
+
+    <p>If you sell stocks to buy the diversifier, your holdings still total 100%. Every dollar in the new idea came
+    out of something you already owned, so your result is a weighted average of your ideas, and an average can
+    never beat its best member. The most this route could deliver was 1.173% a year more than the same money in
+    plain index funds, and only by putting everything into the single best idea. Spread across all four as actually
+    held, it was 0.624% a year against that same comparison. Adding ideas raised the odds and shrank the prize at
+    the same time.</p>
+
+    <p>Finance the diversifier on top instead. You keep the stocks, hold the new exposure with borrowed money, and
+    nothing has to total 100%. The results add rather than average: 2.974% a year more than plain index funds. That
+    is the one case where "stack more strategies" is literally correct. Borrowing has a price, and a fund that does
+    it for you charges for it.</p>
+
+    <p>The portfolio published here is about 93% the first kind. Only one of its seven holdings is financed.
+    Everything else was bought by selling something.</p>
+
+    <p>One more number, because it applies to everything above. Over the ten years to 2025 the average dollar
+    invested earned 8.7% a year while the funds that dollar sat in earned 9.9%. That 1.2-point gap describes a
+    population rather than a person: it compares the dated arrivals and departures of every dollar with the fund's
+    own published return, and Morningstar disclaims the individual reading, because for every buyer there is a
+    seller. Morningstar's own reading is that what drives it is neither cost nor management style but how jumpy
+    the fund is: it runs from 0.4 points a year in the calmest fifth of funds to 2.1 in the jumpiest, which is
+    exactly the sort of product this page is about.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>A holding whose good and bad years genuinely have nothing to do with the others, bought at a fee that leaves
+    the advantage intact. Or an honest, cheap way for an ordinary investor to hold the diversifier on top rather
+    than instead. The arithmetic is not in dispute; the inputs are.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>The probability tables are computed directly from the assumption that each bet is 55% likely to finish
+      ahead of the index, and are checkable with a spreadsheet.</li>
+      <li>Monthly returns for regional stock market factors from the Kenneth French data library and AQR&rsquo;s
+      published trend series, 422 months, November 1990 through December 2025, used to count how independent the
+      holdings really are.</li>
+      <li>Fund filings for the exposures each fund actually delivers.</li>
+      <li>Morningstar&rsquo;s "Mind the Gap" study, ten years to 2025, for the population-average difference
+      between what funds earned and what their investors earned.</li>
+    </ul>
+  </div>
+</Base>

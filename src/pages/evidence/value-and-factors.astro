@@ -1,0 +1,165 @@
+---
+/**
+ * Value, size and profitability: which of the three can be signed, and how much of
+ * each one survives the trip from a paper portfolio into a real account.
+ *
+ * The table is the clearest evidence on the page and it is not ours, so it stays as
+ * published numbers in the prose. Our own measurement of the four funds is quoted with
+ * its range beside it in the same sentence.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Base from "~/layouts/Base.astro";
+
+const DELIVERY_COLUMNS = ["On paper", "What funds delivered"] as const;
+
+const DELIVERY = [
+  { idea: "The market itself", paper: "6.72% a year", delivered: "6.93% a year" },
+  { idea: "Buying cheap companies", paper: "7.76% a year", delivered: "2.84% a year" },
+  { idea: "Buying recent winners", paper: "9.48% a year", delivered: "1.86% a year" },
+] as const;
+---
+
+<Base
+  title="Do cheaper, smaller, more profitable companies pay more?"
+  description="Cheap companies have paid more, small companies have not, and on profitable companies the test could not tell; all three are worth far less to a fund holder than to a paper portfolio."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">
+      Do cheaper, smaller, more profitable companies pay more?
+    </h1>
+
+    <p class="lead">Cheap companies have paid more, small companies have not, and on profitable companies the test
+    could not tell; all three are worth far less to a fund holder than to a paper portfolio.</p>
+
+    <p>The reason for that last part is trading, and the clearest evidence for it is not ours.</p>
+
+    <p>A 2020 paper in the Journal of Financial Economics took US mutual funds and asked a direct question. For
+    each unit of exposure a fund really delivered, how much did its holders get, compared with what that strategy
+    earned on paper?</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="What each idea earned on paper against what funds delivered" maxWidth="40rem">
+    <table class="stack-table w-full border-collapse text-sm sm:min-w-[32rem]">
+      <caption class="sr-only">
+        What each idea earned in a paper portfolio, against what real mutual funds delivered per unit of exposure
+      </caption>
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <td></td>
+          {
+            DELIVERY_COLUMNS.map((heading) => (
+              <th scope="col" class="eyebrow py-2 pr-4 text-right">
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        {
+          DELIVERY.map((row) => (
+            <tr class="border-b border-rule last:border-0">
+              <th scope="row" class="py-2 pr-4 text-left font-normal">
+                {row.idea}
+              </th>
+              <td data-label={DELIVERY_COLUMNS[0]} data-numeric class="py-2 pr-4 text-right">
+                {row.paper}
+              </td>
+              <td data-label={DELIVERY_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.delivered}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <p>Cheapness lost 63% of itself on the way to a real account. Momentum lost 80%. The market lost nothing. And
+    the fund column is before the fund&rsquo;s own fee.</p>
+
+    <p>There is no mystery in that pattern. Holding the whole market requires no trading at all. Buying the cheap
+    companies and avoiding the dear ones requires constant trading, and buying recent winners requires it every
+    month. The trading eats the idea. Two further findings point the same way: across 215 strategies that banks
+    built and then sold to clients, the typical one lost 73% of its apparent quality once real money ran through
+    it; and the 2.43-point advantage momentum showed over the market before tax comes to 0.60 points after tax at
+    current rates, and slightly negative at historical ones.</p>
+
+    <h2>What the raw ideas are, and what they measure</h2>
+
+    <p>The academic versions are paper portfolios that buy one end of a ranking and sell the other short. Value
+    ranks companies by their accounting net worth divided by their stock market price, and buys the cheap-looking
+    end. Size ranks by how big the company is, and buys small. Profitability ranks by operating profit against net
+    worth, and buys the consistently profitable. Nobody can buy these directly. They are gross of trading costs,
+    borrowing costs, fees and tax.</p>
+
+    <p>Pooled across the US, other rich countries and emerging markets, and measured against zero:</p>
+
+    <ul>
+      <li>Cheap companies: 4.74 points a year, 1994 to 2025, against a smallest detectable effect of 3.35 points.
+      It clears, narrowly.</li>
+      <li>Profitable companies: 2.53 points a year, against a floor of 2.62 on its much shorter twelve-year window.
+      Below what the test could see. We could not tell.</li>
+      <li>Small companies: 0.33 points a year against a floor of 2.47. Nothing there.</li>
+    </ul>
+
+    <p>The general result matters more than any of the three. On the public data that everyone uses, no advantage
+    below about 2.6 points a year can be signed at all. Adding more countries does not rescue it, because countries
+    move together: three regions of the value idea are worth about one and a half independent looks, not three.</p>
+
+    <p>And here is what noise looks like on this data. We ran a purely random series with the same length and the
+    same jumpiness through the identical machinery. It produced an apparent advantage of 1.98 points a year, a
+    53.2% fall from its peak, and 247 months under water. Anyone hunting a two-point effect on a series this short
+    will find one whether or not it exists.</p>
+
+    <h2>Our own leaning funds, with the caveats attached</h2>
+
+    <p>The four funds we lean with came to 0.79 points a year against a cheap index fund over 427 months, range
+    0.30 to 1.32. That clears its floor. It clears it by about 10%, and on a like-for-like comparison you would
+    need thirty years of holding to establish it, not the thirteen we once printed.</p>
+
+    <p>Two things belong beside that number. First, 86% of it comes from series that begin in 1990 and sit outside
+    the US, which is the shortest data we hold and none of it was kept back for a fresh test. Second, charging each
+    fund the shortfall we actually measured on it drops the 0.79 to 0.30, below its own floor. The real
+    developed-market value funds you can buy have run 2.3 to 2.9 points a year behind their own benchmarks over the
+    55 months they have existed.</p>
+
+    <h2>The one to drop first</h2>
+
+    <p>One of the four funds we lean with is a momentum fund, and momentum is the weakest thing on this site. It
+    has the largest gap of anything measured between what it promises on paper and what anyone has actually
+    collected: 9.48% a year on paper against 1.86% that real mutual funds delivered per unit of exposure, before
+    their own fees.</p>
+
+    <p>Tax takes much of what is left. Momentum&rsquo;s 2.43-point advantage over the market before tax comes to
+    0.60 points after tax at current rates, and turns slightly negative at historical ones.</p>
+
+    <p>The reason for both is trading. The momentum fund replaces 105% of its holdings in a year, against 4% for
+    the international value fund sitting beside it. Every one of those trades pays a spread and, in a taxable
+    account, creates a tax bill. A reader who wanted to hold one fewer leaning fund should drop the momentum one
+    first.</p>
+
+    <p>So the honest summary is that the cheap-companies idea is the only one of the three we can sign, that it is
+    worth much less to a fund holder than to a paper portfolio, and that the market itself is the thing that
+    arrives intact.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>Twenty more years of data outside the US, held back rather than mined. Or fund records long enough to
+    measure what real value funds deliver over a full cycle, instead of the 55 months we have.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>Kenneth French&rsquo;s public data library of monthly returns for US, developed ex-US and emerging market
+      stock factors, through December 2025.</li>
+      <li>Patton and Weller, "What You See Is Not What You Get: The Costs of Trading Market Anomalies", Journal of
+      Financial Economics, 2020.</li>
+      <li>Suhonen, Lennkh and Perez, on 215 bank-sponsored strategies before and after they went live.</li>
+      <li>Israel and Moskowitz, on what momentum costs a taxable investor.</li>
+      <li>Our own measurement of the exposures four real funds deliver, from their filings, run over 427 months to
+      May 2026.</li>
+    </ul>
+  </div>
+</Base>

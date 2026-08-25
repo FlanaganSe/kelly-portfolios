@@ -1,0 +1,107 @@
+---
+/**
+ * Direct indexing: why it costs a long-term investor money at any fee, including zero,
+ * and why it locks the account up rather than freeing it.
+ *
+ * The fee is not the problem, so the zero-fee run is the number the page turns on. The
+ * $3,000 cap and the wash-sale rule are statute and stay in the prose.
+ */
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Is direct indexing worth it?"
+  description="It costs a long-term investor money at any fee, including a fee of zero, because the tax losses it harvests have almost nowhere to go."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Is direct indexing worth it?</h1>
+
+    <p class="lead">It costs a long-term investor money at any fee, including a fee of zero, because the tax losses
+    it harvests have almost nowhere to go.</p>
+
+    <p>It also more than doubles how locked into the account you end up, which is the reverse of what it
+    promises.</p>
+
+    <p>Direct indexing replaces your index fund with the several hundred shares inside it, held in your own name. A
+    manager watches them, sells the ones sitting at a loss, books the loss for tax, and buys something similar so
+    your exposure barely changes. The pitch is that you keep the index and get a stream of tax deductions for
+    free.</p>
+
+    <p>We simulated it over thirty years against the honest alternative: the same account holding one total-market
+    fund and never selling. At a 0.09% fee it cost 0.092% a year, on the median of 400 simulated paths, and it was
+    negative on every single one of them. At a fee of zero it still cost 0.002% a year.</p>
+
+    <p>That second number is the one that matters. Strip the fee out entirely and the strategy still earns this
+    investor nothing. No cheaper provider fixes it, because the fee was never the problem.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Why the losses have nowhere to go</h2>
+
+    <p>A capital loss has exactly two places it can be used. It can offset capital gains you realised somewhere
+    else, with no limit. Or it can be deducted against ordinary income, capped at $3,000 a year.</p>
+
+    <p>That $3,000 has not moved since the 1976 and 1977 amendments that set it, and it was never linked to
+    inflation. Had it kept pace it would be several times larger today.</p>
+
+    <p>Now put those two facts against the strategy. The plan is to hold the account and never sell, so there are
+    no realised gains to offset. The only outlet is $3,000 a year. Meanwhile a $1m account harvesting at a steady
+    4% a year generates about $40,000 of losses annually. Over thirty years,
+    <Figure id="harvest-losses-used" inline showUnit={false} /> of every dollar of loss harvested ever produces a
+    tax saving. The other 99.8% sits in a queue that grows forever.</p>
+
+    <p>And the queue does not survive you. If the account passes to your heirs, the unrealised gain is wiped clean,
+    which is the event that makes the early savings permanent. That same event destroys the unused losses. Harvest
+    into a queue you never use and it is worth nothing, twice over.</p>
+
+    <p>There is also a decay nobody advertises. In the first year a contributing account harvests about 18.8% of
+    its value in losses. By year ten it is 4.8%, and by year thirty 4.0%. Without contributions it falls from 18.6%
+    to 0.9%. Every headline you have read is a year-one number.</p>
+
+    <h2>It also locks you in</h2>
+
+    <p>After thirty years the median harvested account has 55.7% of its value sitting as untaxed gain, against
+    26.7% for the same account holding a fund and never selling. Harvesting more than doubles the lock-in it exists
+    to exploit, because every harvest deliberately drives the cost base down while the account keeps growing.</p>
+
+    <p>That is the price of ever changing your mind. A fund holder can leave by selling one line. A direct-index
+    holder owns several hundred separately tracked purchases that cannot be moved to another manager&rsquo;s model
+    or turned back into a fund without realising the gains. Walking away with ten years to go costs about 1.42% a
+    year at the top rate, compared with seeing it through.</p>
+
+    <h2>When it does pay</h2>
+
+    <p>The honest condition is a stream of realised capital gains from somewhere else in your life: restricted
+    stock vesting, a business sale, a concentrated holding being unwound. Break-even sits at outside realised
+    profits of about 3.0% of the account each year if you will eventually liquidate, or 1.2% if you will hold to
+    the end. At 5% a year of outside gains it produced 0.242% a year more than the never-selling comparison, and
+    then it is simply the right answer.</p>
+
+    <p>Even then, the rival is not nothing. Selling your total-market fund at a loss and buying a different
+    sponsor&rsquo;s total-market fund does the same job for no fee and two decisions a year. Direct indexing only
+    overtakes that route once outside realised profits exceed about 2.48% of the account annually.</p>
+
+    <p>One trap worth knowing whichever route you take. If you sell at a loss and something substantially identical
+    is bought within thirty days either side, the loss is disallowed. Normally it is added to the
+    replacement&rsquo;s cost base, so you get it back later. If the replacement was bought inside your own
+    retirement account, you lose the deduction and get nothing back. Automatic payroll purchases inside a workplace
+    plan are the common way people trip this, and the check has to cover every account in the household.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>Indexing the $3,000 limit to inflation, or raising it, would change the arithmetic immediately. So would a
+    realistic account of how much a direct-indexed portfolio drifts from its index, which no provider we approached
+    would supply.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>Our own thirty-year simulation of 400 market paths, using industry-standard dispersion between individual
+      shares measured from Kenneth French&rsquo;s industry data, 1996 to 2026.</li>
+      <li>The Internal Revenue Code sections governing capital loss deduction and carryforward, wash sales, and the
+      treatment of assets at death, read August 2026.</li>
+      <li>Published fee schedules for direct-indexing providers, read August 2026.</li>
+    </ul>
+  </div>
+</Base>

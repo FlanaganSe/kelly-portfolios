@@ -1,4 +1,4 @@
-label: Gap between what funds returned and what investors in those funds actually earned
+label: What avoiding the average investor's timing is worth to this portfolio
 value: 0.15%
 unit: a year
 interval: 0.05% to 0.60%
@@ -9,5 +9,12 @@ source:
   docPath: docs/research/expected-edge-decomposition.md
   anchor: 2-the-behaviour-gap-is-a-different-benchmark-not-a-missing-line
 note: >-
-  Morningstar, ten years to 2024. A third yardstick, and the answer to a third question. It may
-  be shown beside the other two and never added to them.
+  The edge budget's timing line, booked against the average investor, shown beside the other
+  two benchmarks and never added to them. It measures a different thing from Morningstar's
+  published gap, which describes a population: over the ten years to 2025 the average dollar
+  earned 8.7% a year against 9.9% for the funds it sat in, about 1.2 points. Morningstar
+  disclaims the individual reading, because for every buyer there is a seller. What one
+  investor can bank is smaller and swamped by its own 150 basis points of wander: for a lump
+  sum held throughout, the gap is zero by construction, and across 20,000 simulated ten-year
+  paths with level monthly contributions it has a mean of 0.15 points and a standard deviation
+  of 2.60.

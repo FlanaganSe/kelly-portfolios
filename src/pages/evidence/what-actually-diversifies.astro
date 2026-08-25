@@ -1,0 +1,173 @@
+---
+/**
+ * What holds up when stocks fall, and why the number every fact sheet leads with
+ * cannot tell you.
+ *
+ * The organising idea is that a crisis is not one thing. Each protection is filed
+ * against the kind of trouble it works in, because the three big episodes of this
+ * century were three different kinds and nothing covered all three.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Base from "~/layouts/Base.astro";
+
+const BAD_MONTHS = [
+  { thing: "Trend following", share: "64%" },
+  { thing: "Gold", share: "59%" },
+  { thing: "Medium-term Treasuries", share: "58%" },
+  { thing: "Long Treasuries", share: "55%" },
+  { thing: "Commodities", share: "28%" },
+  { thing: "Bitcoin", share: "19%" },
+  { thing: "International stocks", share: "6%" },
+  { thing: "Property funds", share: "3%" },
+  { thing: "High-yield bonds", share: "3%" },
+] as const;
+
+const BAD_MONTHS_COLUMN = "Positive in bad months";
+---
+
+<Base
+  title="What actually protects you when stocks fall"
+  description="Government bonds and trend following are the only two things here with a record worth having, and each works against one kind of crisis rather than against all of them."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">What actually protects you when stocks fall</h1>
+
+    <p class="lead">Government bonds and trend following are the only two things here with a record worth having,
+    and each works against one kind of crisis rather than against all of them.</p>
+
+    <p>The number every fund leads with, how closely it moves with the stock market on average, will not tell you
+    which is which.</p>
+
+    <p>Low number, good diversifier, or so the fact sheet implies. That number is close to useless, and one example
+    shows why.</p>
+
+    <p>A broad commodity fund moves with US stocks at 0.44 over its whole history, on a scale where zero means the
+    two move independently and one means they move in lockstep. Respectably low. Now split the record in two. In
+    the months when stocks fell, the fund fell 139% as far as they did. In the months when stocks rose, it rose 20%
+    as far. Seven to one, in the wrong direction. The average conceals it completely, because averaging the two
+    halves together is exactly what destroys the information.</p>
+
+    <p>The academic version is older and starker. Comparing US and international stocks from 1979: in months when
+    both were up by more than one standard deviation, the relationship between them was minus 17%. In months when
+    both were down by more than two standard deviations, it was plus 93%. An ordinary statistical model fed the
+    same data says the second number should have been 14%. Diversification thins out at precisely the moment you
+    were holding it for. Chua, Kritzman and Page published that result; a 2018 paper in the Financial Analysts
+    Journal by Page and Panariello found the same shape in nearly every risky asset they examined, including hedge
+    funds that describe themselves as market neutral.</p>
+
+    <h2>A crisis is not one thing</h2>
+
+    <p>This is the part almost nobody says out loud. Protections are specific to the kind of trouble, and the three
+    big episodes of this century were three different kinds.</p>
+
+    <p>2008 was a credit and growth crisis. Treasury bonds worked, up 17.9%. Trend following worked, up 20.9%. Gold
+    fell 29.5% from its peak, including 21% in eleven days that October.</p>
+
+    <p>2020 was a liquidity crisis. Treasuries worked. Funds that own volatility worked spectacularly. Trend
+    following barely moved, up 6.3% for the year, because the fall was far too fast for a rule that looks back
+    twelve months. Gold fell 12.4% in nine days.</p>
+
+    <p>2022 was an inflation crisis. Trend following worked, up 27.4%. Commodities worked, up 19.3%. Treasuries
+    lost between 15% and 31%. And crash insurance lost 13.1% in the very year a balanced portfolio fell 16%,
+    because fear never spiked: the main volatility index did not reach 36 at any point all year.</p>
+
+    <p>Anything sold to you as protection in all weather is being oversold.</p>
+
+    <h2>The record, plainly</h2>
+
+    <p>Take the worst months for US stocks since 2000 and count the share of them in which each thing went up.
+    Read the denominator carefully, because it is not the same down the column. Each row is counted over the bad
+    months that fall inside its own history, which runs to 40 months for the holdings reaching back to 2000 and to
+    fewer for the ones that started later, bitcoin most of all. A 3% share is one month out of that row&rsquo;s own
+    count rather than one month out of forty.</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="The share of the worst months for stocks in which each thing rose" maxWidth="32rem">
+    <table class="stack-table w-full border-collapse text-sm sm:min-w-[26rem]">
+      <caption class="sr-only">
+        The share of the worst months for US stocks since 2000, counted over each holding's own history, in
+        which that holding rose
+      </caption>
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <td></td>
+          <th scope="col" class="eyebrow py-2 pr-4 text-right">{BAD_MONTHS_COLUMN}</th>
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        {
+          BAD_MONTHS.map((row) => (
+            <tr class="border-b border-rule last:border-0">
+              <th scope="row" class="py-2 pr-4 text-left font-normal">
+                {row.thing}
+              </th>
+              <td data-label={BAD_MONTHS_COLUMN} data-numeric class="py-2 pr-4 text-right">
+                {row.share}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <p>On the 20 worst single days, property funds, commodities and high-yield bonds were positive zero times out
+    of twenty.</p>
+
+    <p>Read the top of that table carefully, because it is not the good news it looks like. Government bonds are
+    the best single protection an ordinary investor can buy, and they are still close to a coin flip on any given
+    bad month.</p>
+
+    <h2>What each one is actually good for</h2>
+
+    <p>Government bonds work when the trouble is growth. They do not work when the trouble is inflation, and 2022
+    is the whole lesson in one year.</p>
+
+    <p>Worse, the relationship has flipped. Stocks and bonds moved against each other, at around minus 0.4, through
+    the 2010s. Since 2022 they have moved together, and the relationship right now is the most positive in the
+    sample. A balanced portfolio is not protected the way it was for the past generation, and anyone whose plan
+    rests on the 2010s should know that.</p>
+
+    <p>Gold across a whole crisis often does work. It gained 25.5% over the 2007 to 2009 bear market. Inside the
+    worst individual weeks it falls, because it is easy to sell and frightened people sell whatever they can.
+    Through the 2020s its average return in bad months for stocks has been negative.</p>
+
+    <p>Trend following is the only thing here that becomes more negatively related to stocks when stocks fall,
+    rather than less. That is the property you actually want, and it is rare. It is also the thing that lost 18.6%
+    over the twelve months to April 2025, the worst run in its record.</p>
+
+    <p>Bitcoin moved with stocks at about zero before 2020 and about 0.4 since. In the March 2020 crash it was 0.6.
+    It behaves like a stock position with roughly three times the jumpiness, rising and falling further than shares
+    do in both directions.</p>
+
+    <p>Property funds are not diversification. They are stocks with more borrowing attached. They fell 41.5% in the
+    2020 crash, worse than the stock market did.</p>
+
+    <h2>One thing about the sources</h2>
+
+    <p>Nearly every good crisis story is published by a firm that sells the product the story makes look good. Read
+    all of it that way, this site included. It is worth noting that some of the most useful warnings came from
+    those same firms. The 18.6% loss above was published by a manager who sells trend-following funds, and the gold
+    industry&rsquo;s own trade body conceded that the 2026 rise in the gold price was mostly people chasing the
+    move rather than people seeking safety.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>A protection that holds up across a growth crisis, a liquidity crisis and an inflation crisis, measured in
+    all three rather than chosen after the fact. Or evidence that stocks and bonds have gone back to moving against
+    each other for reasons other than the last two years of data.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>Daily and monthly index and fund prices for each asset class, from 2000 or from that series&rsquo; own
+      start, whichever is later, for the count of bad months and bad days.</li>
+      <li>Chua, Kritzman and Page, "The Myth of Diversification", Journal of Portfolio Management, 2009.</li>
+      <li>Page and Panariello, "When Diversification Fails", Financial Analysts Journal, 2018.</li>
+      <li>Published calendar-year returns for Treasury, commodity, trend-following and protection funds, read
+      August 2026.</li>
+      <li>The World Gold Council&rsquo;s own commentary on the 2026 gold price move.</li>
+    </ul>
+  </div>
+</Base>

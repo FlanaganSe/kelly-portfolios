@@ -1,0 +1,134 @@
+---
+/**
+ * Every idea this project tested, the verdict, and how sure we are.
+ *
+ * The four verdicts are the whole point of the page, and two of them mean different
+ * things: `No` is a measurement that went the wrong way, `We can't tell` is a test that
+ * could not have seen the effect. The table carries them side by side so a reader
+ * cannot read the second as the first.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+
+const VERDICT_COLUMNS = ["Idea", "Verdict", "Why"] as const;
+---
+
+<Base
+  title="What we found"
+  description="Every idea this project tested, what we concluded, and how sure we are. Four verdicts, and two of them mean different things."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">What we found</h1>
+
+    <p class="lead">Every idea tested here, the verdict, and how sure we are. If you read one page on this site,
+    this is a reasonable one.</p>
+
+    <p>Two of the four verdicts below look similar and are not. <strong>No</strong> means we measured it and it
+    went the wrong way. <strong>We can&rsquo;t tell</strong> means the test could not have seen the effect even if
+    it were there, so the honest answer is that we do not know. Treating the second as if it were the first is the
+    most common way to misread evidence, and it is a mistake this project has made and corrected.</p>
+  </div>
+
+  <Breakout scroll class="my-8" label="Every idea tested, its verdict and the reason" maxWidth="46rem">
+    <table class="stack-table w-full border-collapse text-sm sm:min-w-[42rem]">
+      <caption class="sr-only">Every idea tested on this site, the verdict attached to it, and the reason</caption>
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          {VERDICT_COLUMNS.map((heading) => <th scope="col" class="eyebrow py-2 pr-4">{heading}</th>)}
+        </tr>
+      </thead>
+      <tbody class="text-ink-muted">
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Paying less for the funds you hold</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">Settled</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">It comes out of a fund contract, not a forecast.
+          The largest single line available to most people.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Holding each fund where it is taxed least</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">Settled, in direction</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">Statute, not opinion. The size depends entirely on
+          which accounts you have, and it is zero if you have one.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Holding a fund rather than an old-style mutual
+          fund</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">Settled, in direction</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">In 2025, 7% of exchange-traded funds paid out a
+          capital gain against 52% of mutual funds.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Not trading</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">Settled, in direction</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">The average dollar earned 8.7% a year over ten
+          years while the funds it sat in earned 9.9%. That gap describes a population of investors rather than
+          what any one of them can bank.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Leaning toward cheaper, smaller, more profitable
+          companies</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">Might</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">It measured <Figure id="tilt-gap" inline /> ahead
+          of a cheap global index fund, and it would take about thirty years of data to tell that from zero.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Adding a managed-futures holding</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">We can&rsquo;t tell</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">Its behaviour in a crisis is real. Its average
+          return does not resolve anywhere, and a version of it would need 244 years to prove.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">A 200-day moving-average timing rule</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">We can&rsquo;t tell</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">On US data the effect is smaller than the test
+          could see. On a century of data across sixteen countries it is real. In a taxable account it is undone by
+          tax, and since it became famous it has cost 6.5 points a year.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Holding gold</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">We can&rsquo;t tell</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">Its worth flips sign depending on whether you sell
+          stocks to buy it or borrow to hold it on top, and neither answer is large enough to be sure of.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Bitcoin as protection against a crash</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">No</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">It falls harder than it rises, it was positive in
+          2 of the 12 worst months for stocks, and it made the worst case worse at every weight tested.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Crash insurance</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">No</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">One such fund lost 8.35% a year since 2017 while
+          the market gained 14.52%. Of 102 funds sold as giving you the market with a floor under it, 86% did worse
+          than simply holding less.</td>
+        </tr>
+        <tr class="border-b border-rule">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Direct indexing</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">No</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">It costs about 0.09% a year net at a 0.09% fee,
+          and still slightly negative at a zero fee, so no cheaper provider fixes it.</td>
+        </tr>
+        <tr class="border-b border-rule last:border-0">
+          <th scope="row" class="py-2 pr-4 text-left font-normal">Rebalancing as a way of making money</th>
+          <td data-label={VERDICT_COLUMNS[1]} class="py-2 pr-4">No</td>
+          <td data-label={VERDICT_COLUMNS[2]} class="py-2 pr-4">It is a way of stopping your mix drifting. Whether
+          it earns or costs a little depends on the stretch you measure.</td>
+        </tr>
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <h2>What this adds up to</h2>
+
+    <p>The things whose sign is known before the fact are all boring, all administrative, and worth more than
+    every clever idea on this site combined. The clever ideas are not worthless. They are unproven, and the honest
+    size of the best of them is smaller than most people expect.</p>
+
+    <p>Against a cheap index fund, everything measured here nets out to somewhere around zero, with a range wide
+    enough to cross it. We cannot tell you this beats an index fund. Anyone who tells you their portfolio does is
+    either measuring against something easier or has not checked how long their own claim would take to prove.</p>
+  </div>
+</Base>

@@ -9,6 +9,6 @@ source:
   anchor: funding-algebra
 note: >-
   Closed-form algebra for a 100%-equity starting portfolio at 5.0% arithmetic excess return and
-  16% volatility; 2.08 points for a 60/40 starting portfolio. The expression contains no
-  property of the add-on at all. It is larger than any premium this programme has attempted to
-  measure.
+  16% volatility; 2.08 points for a 60/40 starting portfolio. The expression is the base
+  portfolio's arithmetic return less its variance, and it contains no property of the add-on at
+  all. It is larger than any premium this programme has attempted to measure.

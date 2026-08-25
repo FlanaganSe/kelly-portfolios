@@ -1,6 +1,6 @@
-label: The asset-placement line, restated
+label: Withdrawn and restated, the asset-placement line published at +38 to +55 basis points
 value: +2 to +7 basis points a year
-unit: against a feasible control; the published figure was +38 to +55
+unit: against a control the investor could actually build
 status: source-reproduced
 asOf: '2026-08-23'
 source:
@@ -8,8 +8,11 @@ source:
   docPath: docs/research/adversarial-review.md
   anchor: 4-the-placement-line-is-3-to-38-bpyr-not-38-to-55-and-is-not-contractual
 note: >-
-  Four defects at once: a truncated range dropping the distributed reading (−18 basis points), a
-  rebalancing hurdle avoided booked as a saving (−14 basis points), lot selection and never selling both
-  booked when they are mutually exclusive (−2.8 basis points), and 94.7% of the top figure resting on one
-  holding's undistributed CFC accrual. The conditional +19 to +49 is reported and never added.
-  aggregate() now raises on a cross-benchmark sum.
+  A correction record rather than a second measurement: it exists so the corrections page can
+  show the withdrawn figure beside the one that replaced it, and placement-value is the
+  standing fact a page should cite. Four defects at once: a truncated range dropping the
+  distributed reading (−18 basis points), a rebalancing hurdle avoided booked as a saving (−14
+  basis points), lot selection and never selling both booked when they are mutually exclusive
+  (−2.8 basis points), and 94.7% of the top figure resting on one holding's undistributed CFC
+  accrual. The conditional +19 to +49 is reported and never added. aggregate() now raises on a
+  cross-benchmark sum.

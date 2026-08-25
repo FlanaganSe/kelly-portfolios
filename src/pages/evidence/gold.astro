@@ -1,0 +1,105 @@
+---
+/**
+ * Gold: fifty years of usable price history, and what they can and cannot settle.
+ *
+ * The one firm finding is that the sign flips on how the position is paid for, which is
+ * a statement about the funding rule rather than about the metal. Both measurements sit
+ * inside their own floors, so the page says so rather than quoting either as a result.
+ */
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Is gold worth holding?"
+  description="Optional, small, and in place of cash rather than in place of shares: fifty years of usable price history are not enough to show that gold earns its keep alongside shares."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Is gold worth holding?</h1>
+
+    <p class="lead">Optional, small, and in place of cash rather than in place of shares: fifty years of usable
+    price history are not enough to show that gold earns its keep alongside shares.</p>
+
+    <p>The one firm finding is that gold&rsquo;s sign flips on how you pay for it, and that neither version is
+    large enough for us to be sure of.</p>
+
+    <p>Gold pays no dividend, no interest and no rent. Everything it returns comes from the price someone else will
+    pay. That does not make it useless, but it does mean the case for it has to be made entirely on how it behaves
+    alongside everything else you own.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>The return for the bumpiness</h2>
+
+    <p>Between 1975 and the middle of 2026 gold returned 1.75% a year above cash, with a jumpiness of 16.24% a
+    year. Dividing one by the other gives <Figure id="gold-sharpe" inline showUnit={false} />, on a scale where the
+    US stock market&rsquo;s own long record sits near 0.45 and anything above 1 is exceptional. So gold delivered
+    roughly two fifths as much per unit of turbulence as owning companies did, over a period in which its worst
+    fall against cash was 91.2%.</p>
+
+    <h2>Most of the record you have seen is unusable</h2>
+
+    <p>Gold had no market price at all before 15 August 1971, because the dollar price was set by governments
+    rather than by trading. And from that date until 31 December 1974 it was illegal for Americans to own it. That
+    is around 40 months of freely floating price during which the investor this site is written for could not have
+    participated at all, and it sits at the very start of the series, where compounding gives it the most
+    weight.</p>
+
+    <p>Every gold number on this site therefore begins in 1975. Any chart that runs gold back to the 1930s is
+    showing you an administered price, not a market.</p>
+
+    <p>One more thing about the price itself. The widely used monthly gold series is an average of daily prices
+    rather than the price on the last day of the month. Averaging smooths a series and makes any measure of
+    return-for-risk look better than it is. So even 0.18 is generous.</p>
+
+    <h2>The finding that actually matters: how you pay for it</h2>
+
+    <p>This is the part almost nobody mentions.</p>
+
+    <p>If you sell some of your shares to buy gold, gold cost 0.404 points a year of portfolio growth over 617
+    months, compared with not holding it. If instead you hold gold on top of your shares, financed rather than
+    funded by selling, it added 0.18 to 0.22 points a year against the same comparison. The sign flips on the
+    funding decision alone, with the same metal at the same weight.</p>
+
+    <p>Now the honesty. Neither of those numbers is big enough for us to be sure of it. The smallest effect this
+    design could reliably detect is 0.94 to 1.04 points a year for the first question and 0.63 to 0.73 for the
+    second. Both measurements sit well inside their own floors. So what we have established is that the funding
+    rule matters more than the asset does, and that we cannot sign either result. A cheaper way of holding
+    something is only that, and not a higher expected return.</p>
+
+    <h2>What it does in a bad month</h2>
+
+    <p>Split every month since 1926 by how badly shares did, take the worst tenth, and ask what swapping 10% of
+    your shares into something else would have added back. Gold puts 0.92% back in the average such month, compared
+    with leaving the money in shares. Cash in the bank puts back the same 0.92%, at no fee, no jumpiness and no
+    risk of a decade-long fall. That is the comparison that decides it. Gold has to beat a savings account at being
+    calm, and on this measure it does not.</p>
+
+    <p>Across a whole crisis, gold often does better than that suggests. It is inside the worst individual weeks
+    that it disappoints, because it is easy to sell and frightened people sell what they can.</p>
+
+    <h2>Where that leaves it</h2>
+
+    <p>Optional, small, and only in place of cash rather than in place of shares. If you hold it because you expect
+    a currency crisis or because it helps you sleep, that is a reason we cannot measure and will not argue with.
+    What we can say is that fifty years of price history are not enough to show it earns its keep in a portfolio of
+    shares.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>A materially longer record of a freely traded price, which is not obtainable. Or a cheap,
+    taxable-account-friendly way of holding gold on top of shares rather than instead of them, at which point the
+    second measurement becomes the relevant one and is worth remeasuring.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>The World Bank&rsquo;s monthly commodity price series for gold, 1975 to mid-2026, less a short-term cash
+      rate and an assumed 0.25% a year of storage.</li>
+      <li>Kenneth French&rsquo;s US stock market series, 1926 to 2026, for the comparison.</li>
+      <li>Public Law 93-373, which restored the right of Americans to own gold with effect from 31 December
+      1974.</li>
+      <li>Our own simulation of adding gold to a share portfolio at weights from 1% to 10%, funded both ways.</li>
+    </ul>
+  </div>
+</Base>

@@ -1,0 +1,130 @@
+---
+/**
+ * The 200-day moving-average rule: what it has done since it became famous, what its
+ * own author claimed for it, and why tax ends the argument for a taxable account.
+ *
+ * Three numbers here are our own replication and carry figure records: the smallest gap
+ * the design could see, what the exits cost in tax, and how many round trips lost
+ * money. The published studies stay in the prose and are named at the foot.
+ */
+import Figure from "~/components/Figure.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Should you sell when the market falls below its 200-day average?"
+  description="Probably not: the rule has cost money since it became famous, it fails a taxable investor on the tax bill alone, and what it genuinely buys is a shallower worst fall rather than a higher return."
+>
+  <div class="prose">
+    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">
+      Should you sell when the market falls below its 200-day average?
+    </h1>
+
+    <p class="lead">Probably not: the rule has cost money since it became famous, it fails a taxable investor on
+    the tax bill alone, and what it genuinely buys is a shallower worst fall rather than a higher return.</p>
+
+    <p>There may well be a real effect underneath it, and we could not rule one out, but nothing anybody can
+    measure survives what it costs in tax.</p>
+
+    <p>The rule is easy to state. Once a month, check whether the index sits above its average price over the
+    previous 200 days, which on monthly data is the average of the last ten months. If it does, stay invested. If
+    it does not, sell and hold cash until it does again.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it has done since it got popular</h2>
+
+    <p>We ran it on dividend-adjusted SPY prices from 2017. The rule returned 8.54% a year. Holding the index
+    returned 15.01%. The rule gave up around six and a half points a year against doing nothing.</p>
+
+    <p>What it bought in exchange was slight: a worst fall of 21.9% against 23.9% for holding.</p>
+
+    <p>There were ten complete round trips out and back. Nine bought back in at a higher price than they had sold
+    at. The tenth was 2022, seven months in cash, and it finished flat, down 0.2%.</p>
+
+    <p>2022 was the only genuine bear market in the sample. The rule lost more than holding did: down 20.1% against
+    the index&rsquo;s 18.2%. It was invested for the falls of January, February, April and December, and sitting in
+    cash for the rises of March, July, October and November.</p>
+
+    <p>2020 is the year people remember it for. The rule sold at the end of February, missed March&rsquo;s 12.5%
+    fall, then also missed April&rsquo;s 12.7% and May&rsquo;s 4.8% rises, and bought back 3.3% above where it had
+    sold. It dodged the crash and paid for the privilege. The daily version crossed the line five times in eight
+    days that March.</p>
+
+    <h2>What the rule&rsquo;s author actually claimed</h2>
+
+    <p>His own table, 1972 to 2005 across five asset classes, reports returns approximately the same as buying and
+    holding, with lower risk. Not higher returns. Ten years on he noted the rule "went on to underperform stocks
+    six of the next eight years", and wrote that had it done badly, "likely no one would be reading this article".
+    On tax he gives no figure, and tells individuals to run it inside a retirement account.</p>
+
+    <h2>Is there a real effect underneath?</h2>
+
+    <p>Possibly, and here the comparison you pick decides the answer. Because the rule sits in cash about a quarter
+    of the time, it holds less in shares on average than someone who never sells. Over the century of US data it
+    lost 0.73 points a year against simply holding, and gained 0.74 points a year against a fixed blend that holds
+    the same average amount in shares. Both are true. Only the second is a claim about the rule rather than about
+    owning shares.</p>
+
+    <p>Even that second number settles nothing. The smallest gap the test could reliably have seen was
+    <Figure id="timing-rule-floor" inline showUnit={false} /> points a year, because a century of monthly data
+    contains only 73 actual decisions. We could not tell, which is different from finding nothing there.</p>
+
+    <p>The one study with enough history to settle it pools 16 countries across 148 years, and it does find
+    something: 0.97 points a year better than staying invested, and it holds up. Three caveats travel with it.
+    Annual data cannot carry a ten-month average, so the rule tested there is a simpler one-year version. The
+    underlying data has no fees, spreads or taxes in it and some of it was reconstructed from newspapers. And at
+    annual spacing the rule had a deeper worst fall than its comparison in 9 of the 16 countries.</p>
+
+    <p>Pushing the other way: when a researcher rebuilt a well-known favourable study with a look-ahead mistake
+    removed, the advantage disappeared and the extra return turned negative. A separate search over 7,846 trading
+    rules on a century of daily prices found its winner had about a 90% chance of being luck once you count how
+    many rules were tried. Its best rules used windows of two to five days. The 200-day average is folklore that
+    became everyone&rsquo;s starting point, not a length any search selected.</p>
+
+    <h2>Why it still fails a taxable investor</h2>
+
+    <p>Every exit in a taxable account realises gains you would not otherwise have owed tax on. We put that cost at
+    <Figure id="timing-rule-tax-cost" inline showUnit={false} /> points a year, twice the size of the 0.97-point
+    effect the best-powered study found. Over the long record,
+    <Figure id="timing-rule-losing-exits" inline showUnit={false} /> exits lost money.</p>
+
+    <h2>What it genuinely buys</h2>
+
+    <p>Across the long US history the rule&rsquo;s worst fall was 43.1%. The fixed blend holding the same average
+    amount in shares fell 71.6%, and holding throughout fell 83.7%. That is mechanical rather than a matter of
+    prediction, which is why it holds up when the return does not, and it repeats in every market tested at monthly
+    spacing.</p>
+
+    <p>There is a cheaper way to buy most of that. Simply holding a smaller fixed share of stocks, with no rule, no
+    signal and no trading, took the worst fall to 39.1% over the four decades to 2026. The timing rule went fifteen
+    points deeper still, and charged 1.2 to 1.9 points a year in tax for the difference.</p>
+
+    <p>A related rule, dual momentum, has returned 9.17% a year since publication, against 14.87% for the index and
+    9.65% for a plain 60/40 mix, at about the same worst fall as the 60/40.</p>
+
+    <p>The strongest honest version of the case for timing is this: I will probably earn less than holding, I will
+    trade about once a year and be wrong most of those times, I should only do it where tax cannot reach me, and
+    what I am buying is a smoother ride and a rule that stops me panicking. Anything stronger is contradicted by
+    the authors&rsquo; own tables.</p>
+
+    <h2>What would change our mind</h2>
+
+    <p>A test with enough history to see an effect smaller than 3 points a year, run on data the rule was not
+    designed against, showing an advantage that survives tax. Or evidence that the long international result holds
+    up in the decades since it was published rather than only before.</p>
+
+    <h2>Where these numbers come from</h2>
+
+    <ul>
+      <li>Our own replication on dividend-adjusted SPY daily prices, 2017 to 2026, and on Kenneth French&rsquo;s US
+      market series back to 1926.</li>
+      <li>Meb Faber, "A Quantitative Approach to Tactical Asset Allocation" (2007) and his ten-year review of
+      it.</li>
+      <li>The Jorda, Schularick and Taylor macro-history database, 16 countries, 1870 to 2020.</li>
+      <li>The corrected replication of a widely cited favourable moving-average study.</li>
+      <li>The survey testing 7,846 technical trading rules on a century of daily US prices.</li>
+      <li>Gary Antonacci&rsquo;s published dual momentum rule, run forward from its publication date.</li>
+    </ul>
+  </div>
+</Base>

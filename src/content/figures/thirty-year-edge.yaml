@@ -1,13 +1,16 @@
 label: Central estimate of this portfolio's edge against a cheap index fund holding the same mix
 value: 92 basis points
-unit: basis points per year
+unit: basis points a year
 status: unresolved
 asOf: '2026-08-23'
 source:
-  label: Stacking and effective breadth
+  label: Stacking and effective breadth, is p even 55%
   docPath: docs/research/stacking-and-effective-breadth.md
+  anchor: 2-is-p-even-55
 note: >-
-  One basis point under what thirty years of holding could detect. The chance of beating that
-  index fund over thirty years is 0.72 on the primary reading and runs 0.41 to 0.91 across four
-  assumptions about the rewards and three about the funds' own shortfalls. Quote the range, never
-  the point.
+  One basis point under what thirty years of holding could detect, so it cannot be told from
+  zero. The chance of beating that index fund over thirty years is 0.72 on the primary reading
+  and runs 0.41 to 0.91 across four assumptions about the rewards and three about the funds' own
+  shortfalls. Quote the range, never the point. Measured against a cheap index instead of this
+  same-split benchmark the honest budget is 5.4 basis points against 313 of wander, and the
+  three benchmarks on this site are never added together.

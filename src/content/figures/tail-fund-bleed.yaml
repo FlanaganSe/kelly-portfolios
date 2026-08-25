@@ -1,12 +1,17 @@
 label: Cambria's TAIL since inception
-value: −7.15% a year
-unit: against SPY's +15.35% a year on the issuer's own factsheet
+value: −8.35% a year
+unit: against the S&P 500's +14.52% a year over the identical window
 status: source-reproduced
-asOf: '2026-06-30'
+asOf: '2024-12-31'
 source:
-  label: Our audit of the alternatives
+  label: TAIL's prospectus, average annual total returns
   docPath: docs/research/alternative-sleeves-audit.md
   anchor: 4-tail-hedging-the-bleed-is-measured-and-the-cheaper-substitutes-win
+  href: https://www.sec.gov/Archives/edgar/data/1529390/000121390025081803/ea0253992-01_485bpos.htm
 note: >-
-  −49.59% cumulative since 2017-04-06. Windows differ by 0.77 years. Do not use the figures
-  rendered on the fund's own web page; they do not reconcile with the issuer's PDF.
+  The fund's own prospectus, average annual total returns for the period ending 2024-12-31,
+  filed 2025-08-28. Quote this pair rather than the factsheet's, because a prospectus prints
+  the fund and its benchmark over one window; the issuer's factsheet at 2026-06-30 shows
+  −7.15% a year and −49.59% cumulative against a ten-year SPY figure measured over a window
+  0.77 years different. Do not use the figures rendered on the fund's own web page; they do not
+  reconcile with the issuer's PDF.
