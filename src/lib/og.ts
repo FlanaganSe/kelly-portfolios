@@ -124,7 +124,7 @@ export const OG_PAGES = {
   },
   "/tools/placement/": {
     title: "Where to hold each fund",
-    alt: `${SITE_NAME}: the account-placement calculator, ranking the shelf by what a sheltered dollar of it saves.`,
+    alt: `${SITE_NAME}: the account-placement calculator, ranking the fund list by what a sheltered dollar of it saves.`,
   },
   "/about/": {
     title: "About this site and the person who writes it",

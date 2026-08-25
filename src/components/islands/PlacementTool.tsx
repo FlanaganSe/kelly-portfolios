@@ -210,7 +210,7 @@ export const PlacementTool: Component = () => {
           class="scroller mt-6"
           tabindex="0"
           role="region"
-          aria-label="The shelf, ranked by what a sheltered dollar saves"
+          aria-label="The fund list, ranked by what a sheltered dollar saves"
         >
           <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[42rem]">
             <caption class="sr-only">
