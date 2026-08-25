@@ -22,7 +22,6 @@
  * build if one ever grows past the cap.
  */
 
-import { clamp } from "~/lib/research";
 import { canonicalPath, SITE_NAME } from "~/lib/site";
 
 export const OG_WIDTH = 1200;
@@ -51,18 +50,6 @@ export const OG_PAGES = {
     title: "What to hold",
     alt: `${SITE_NAME}: four portfolios you could actually hold, what each piece is for, and how much of the clever stuff holds up against a cheap index fund.`,
   },
-  "/start/": {
-    title: "Start here",
-    alt: `${SITE_NAME}: the ordered checklist, fees first and clever construction last.`,
-  },
-  "/stacking/": {
-    title: "Why more good bets stop helping",
-    alt: `${SITE_NAME}: the stacking ceiling, and why the funding rule decides everything.`,
-  },
-  "/how-many-bets/": {
-    title: "How many different bets you can buy",
-    alt: `${SITE_NAME}: four or five genuinely different sources of return exist, not twenty, and the whole exercise is worth 1.5 to 2 points a year.`,
-  },
   "/portfolios/": {
     title: "The four portfolios",
     alt: `${SITE_NAME}: all four side by side, with what each costs, what it was compared against, and the worst thing that has happened to it.`,
@@ -83,21 +70,9 @@ export const OG_PAGES = {
     title: "The same, plus a holding that does not move with stocks",
     alt: `${SITE_NAME}: seven funds, one of which borrows inside itself to hold managed futures on top of stocks — the largest bet on this site and the least settled.`,
   },
-  "/portfolio/": {
-    title: "The portfolio",
-    alt: `${SITE_NAME}: seven holdings and the account each one belongs in.`,
-  },
-  "/doesnt-work/": {
-    title: "Things we tested that did not earn a place",
-    alt: `${SITE_NAME}: the rejections, each scoped to the design that produced it.`,
-  },
-  "/how-sure/": {
-    title: "How sure we are",
-    alt: `${SITE_NAME}: the four levels of confidence, and how long before you would know.`,
-  },
   "/funds/": {
-    title: "The shelf",
-    alt: `${SITE_NAME}: the audited fund shelf, on cost rather than on fee.`,
+    title: "What every fund really costs",
+    alt: `${SITE_NAME}: every fund we priced, and what each one costs once the income it earns lending its shares out is taken off the fee.`,
   },
   "/evidence/": {
     title: "What we found",
@@ -147,37 +122,13 @@ export const OG_PAGES = {
     title: "What actually protects you when stocks fall",
     alt: `${SITE_NAME}: government bonds and trend following, each against one kind of crisis rather than all of them.`,
   },
-  "/research/": {
-    title: "The research",
-    alt: `${SITE_NAME}: the research corpus, one synthesis per question.`,
-  },
-  "/tools/": {
-    title: "Two calculators, and what each one answers",
-    alt: `${SITE_NAME}: the two calculators — which account each fund belongs in, and how long a choice takes to show.`,
-  },
   "/tools/placement/": {
     title: "Where to hold each fund",
     alt: `${SITE_NAME}: the account-placement calculator, ranking the shelf by what a sheltered dollar of it saves.`,
   },
-  "/tools/how-long/": {
-    title: "How long before you would know",
-    alt: `${SITE_NAME}: the waiting calculator — an expected edge and a drift, in; the years before your own account could tell, out.`,
-  },
-  "/lessons/": {
-    title: "What we’ve learned",
-    alt: `${SITE_NAME}: seventeen claims worth having straight before the rest of the site is any use.`,
-  },
-  "/glossary/": {
-    title: "Every word this site leans on",
-    alt: `${SITE_NAME}: the glossary — one line, then the paragraph behind it, then why it would change what you do.`,
-  },
   "/about/": {
     title: "About this site and the person who writes it",
     alt: `${SITE_NAME}: who writes this, and what stands in place of a credential nobody here holds.`,
-  },
-  "/methodology/": {
-    title: "How a result earns its status here",
-    alt: `${SITE_NAME}: frozen specifications, a ledger that records the failures, and costs inside the trading rule.`,
   },
   "/corrections/": {
     title: "What we published that turned out to be wrong",
@@ -204,40 +155,21 @@ export const OG_PAGES = {
 /** Indexable by an arbitrary path, without losing the literal keys above. */
 const PAGES: Readonly<Record<string, OgPage | undefined>> = OG_PAGES;
 
-/** `/research/:id/` and `/research/decisions/:id/`, the two rendered corpus routes. */
-const CORPUS_ROUTE = /^\/research\/(?<decision>decisions\/)?[^/]+\/$/;
-
 /**
- * Where a corpus title stops being a title and starts being a sentence.
+ * Cuts a title to length on a word boundary, with an ellipsis when it was cut.
  *
- * The renderer never clips: `fitTitle` shrinks the type until the words fit four
- * lines, so a long title is set small rather than cut. Small is still the wrong
- * answer on a card that will be seen at the size of a playing card, and half the
- * corpus writes its heading as a head and a subtitle — "Live managed futures: what
- * the funds actually paid, and what the vendor index overstated" — where the head
- * alone is the better card and loses nothing a reader needed.
+ * Lived in `src/lib/research.ts` until the corpus was unpublished and that module had
+ * one consumer left. A card is a way in, not a summary.
  */
-const TITLE_SPLIT = 72;
-
-/** The point past which even an unsubtitled title is cut on a word boundary. */
-const TITLE_LIMIT = 96;
-
-/** A head short enough to be a bare topic — "Trend" — is not a title. Keep the whole. */
-const MIN_HEAD = 16;
-
-/**
- * A corpus document's own heading, cut to something the card can set large.
- *
- * Applied by both halves of the pairing: `src/pages/og/[...route].ts` draws this and
- * {@link ogCard} describes it, so the alt text cannot describe a card that says
- * something else.
- */
-export function ogCorpusTitle(title: string): string {
-  if (title.length <= TITLE_SPLIT) return title;
-  const head = title.split(": ")[0];
-  if (head && head.length >= MIN_HEAD && head.length < title.length) return head;
-  return clamp(title, TITLE_LIMIT);
+function clamp(text: string, limit: number): string {
+  if (text.length <= limit) return text;
+  const cut = text.slice(0, limit);
+  const boundary = cut.lastIndexOf(" ");
+  return `${cut.slice(0, boundary > 0 ? boundary : cut.length).replace(/[,;:.\u2014-]$/, "")}…`;
 }
+
+/** The point past which a title is cut on a word boundary for a card. */
+const TITLE_LIMIT = 96;
 
 /** The route parameter `src/pages/og/[...route].ts` emits a card at. */
 export function ogRouteParam(path: string): string {
@@ -258,26 +190,16 @@ export interface OgCard {
 /**
  * The card for a page, or a thrown error naming the page that has none.
  *
- * `title` is the page's own title, which is all a corpus route needs: its card is
- * drawn from the same string. It is ignored for a page listed in {@link OG_PAGES},
- * whose card says whatever that record says.
+ * Every route is listed in {@link OG_PAGES} and says whatever its record says. There
+ * used to be a second branch deriving a card from a corpus document's own heading;
+ * it went with the corpus (decision 0011), and with it the reason this function took
+ * the page's title as an argument.
  */
-export function ogCard(pathname: string, title: string): OgCard {
+export function ogCard(pathname: string): OgCard {
   const path = canonicalPath(pathname);
 
   const page = PAGES[path];
   if (page) return { src: ogImagePath(path), alt: page.alt };
-
-  const corpus = CORPUS_ROUTE.exec(path);
-  if (corpus) {
-    const kind = corpus.groups?.decision ? "decision record" : "working note";
-    return {
-      src: ogImagePath(path),
-      // A full stop rather than a dash. Several corpus headings carry an em dash of
-      // their own, and two in one sentence read as one clause too many.
-      alt: `${SITE_NAME}: ${ogCorpusTitle(title)}. A ${kind} from the research corpus behind this site.`,
-    };
-  }
 
   throw new Error(
     `${path} has no social card. Add a record for it to OG_PAGES in src/lib/og.ts, ` +

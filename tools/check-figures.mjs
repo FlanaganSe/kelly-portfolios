@@ -92,14 +92,12 @@ if (split) {
   for (const d of sources) walk(d)
   const haystack = text.join('\n')
   const orphans = [...seen.keys()].filter((id) => !haystack.includes(`"${id}"`) && !haystack.includes(`'${id}'`))
-  if (orphans.length) {
-    // A warning, not yet a failure. The page set is mid-rewrite and several of these
-    // records are about to be rendered again by pages that do not exist yet. This
-    // becomes an error the moment the page set settles; until then, failing the build
-    // would only teach whoever hits it to delete a number they need.
-    console.log(`\n${orphans.length} figure records nothing renders:\n`)
-    for (const id of orphans.sort()) console.log(`  ORPHAN ${id}  (src/content/figures/${id}.yaml)`)
-    console.log('')
+  // A failure now that the page set has settled. It was a warning through the rewrite,
+  // because records were being unrendered and re-rendered as pages moved; 88 of them
+  // turned out to belong to pages that no longer exist, and were deleted rather than
+  // left to be found later and believed.
+  for (const id of orphans.sort()) {
+    problems.push(`ORPHAN ${id}: no page renders it. Delete src/content/figures/${id}.yaml, or render it.`)
   }
 }
 

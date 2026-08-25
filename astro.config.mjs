@@ -1,3 +1,4 @@
+import { readdirSync } from "node:fs";
 import path from "node:path";
 import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
@@ -15,6 +16,26 @@ import pagefind from "astro-pagefind";
 // smart punctuation and heading IDs. If a plugin ever becomes necessary, import
 // `unified` from `@astrojs/markdown-remark`, set it as `markdown.processor`, and MDX
 // inherits it — `@astrojs/mdx` reads `config.markdown.processor` on its own.
+/**
+ * Every route the rendered research corpus used to occupy, pointing at `/evidence/`.
+ *
+ * Read from the directories rather than written out, because the list was 45 long and a
+ * hand-typed copy would rot the first time a file was renamed. The files themselves stay
+ * in the repository as the provenance a figure's `docPath` names; they are simply not
+ * published any more.
+ */
+function retiredCorpusRoutes() {
+  const ids = (dir) =>
+    readdirSync(path.resolve(import.meta.dirname, dir))
+      .filter((name) => name.endsWith(".md") && name !== "README.md")
+      .map((name) => name.replace(/\.md$/, ""));
+
+  return Object.fromEntries([
+    ...ids("docs/research").map((id) => [`/research/${id}/`, "/evidence/"]),
+    ...ids("docs/decisions").map((id) => [`/research/decisions/${id}/`, "/evidence/"]),
+  ]);
+}
+
 export default defineConfig({
   // Canonical, Open Graph and sitemap URLs are all built from this. Without it they
   // emit relative, and `Astro.url` cannot stand in: its origin is localhost in dev.
@@ -38,6 +59,32 @@ export default defineConfig({
   // this is pinned to the old behaviour. Verified in a rendered screenshot, not in the
   // build log: the difference is invisible in the HTML unless you go looking for it.
   compressHTML: true,
+
+  // Every route the rewrite retired, pointed at whatever now answers the same question.
+  //
+  // On a static build Astro emits a small meta-refresh page per entry rather than a 301,
+  // which is what this host can serve: the CloudFront function in front of the bucket
+  // resolves directory indexes and does not read a redirect table. A meta refresh keeps
+  // an old bookmark, an old search result and an old inbound link working, and search
+  // engines follow it. The alternative was several hundred 404s on the day of the switch.
+  redirects: {
+    "/start/": "/portfolios/held-well/",
+    "/portfolio/": "/portfolios/with-trend/",
+    "/stacking/": "/evidence/how-many-bets/",
+    "/how-many-bets/": "/evidence/how-many-bets/",
+    "/doesnt-work/": "/evidence/",
+    "/how-sure/": "/about/",
+    "/methodology/": "/about/",
+    "/lessons/": "/evidence/",
+    "/glossary/": "/evidence/",
+    "/tools/": "/tools/placement/",
+    "/tools/how-long/": "/evidence/",
+    "/research/": "/evidence/",
+    // The 45 corpus routes, enumerated from the files they were built from. A dynamic
+    // redirect may not drop its parameter, and these all collapse to one destination,
+    // so they are listed rather than matched.
+    ...retiredCorpusRoutes(),
+  },
 
   // `hover` warms a page the reader has aimed at, and falls back to `tap` under
   // Save-Data or on a slow connection. Hand-written speculation rules cannot make that

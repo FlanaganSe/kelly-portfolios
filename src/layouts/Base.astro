@@ -58,7 +58,7 @@ const canonical = new URL(canonicalPath(pathname), origin).href;
 // through here, so adding a page without a card fails the build. It used to hand back
 // the home page's card instead, which is how the account-placement calculator came to
 // be shared under the headline "Do the certain things first".
-const card = ogCard(pathname, title);
+const card = ogCard(pathname);
 const ogImage = new URL(card.src, origin).href;
 const ogImageAlt = card.alt;
 

@@ -107,11 +107,11 @@ describe("the preset numbers against the figure records they came from", () => {
     yaml.load(readFileSync(`src/content/figures/${id}.yaml`, "utf8")) as { label: string; value: string };
 
   it("matches thirty-year-edge.yaml", () => {
-    expect(figure("thirty-year-edge").value).toBe(`${PORTFOLIO_EDGE_BP} basis points`);
+    expect(figure("thirty-year-edge").value).toBe(`${(PORTFOLIO_EDGE_BP / 100).toFixed(2)}%`);
   });
 
   it("matches tracking-error.yaml", () => {
-    expect(figure("tracking-error").value).toBe(`${PORTFOLIO_TRACKING_ERROR_BP} basis points`);
+    expect(figure("tracking-error").value).toBe(`${(PORTFOLIO_TRACKING_ERROR_BP / 100).toFixed(2)}%`);
   });
 
   it("matches the wait time-to-know-portfolio.yaml prints", () => {

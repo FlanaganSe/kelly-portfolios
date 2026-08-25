@@ -1,6 +1,6 @@
 label: How far the portfolio drifts from a comparable cheap index fund in a typical year
-value: 400 basis points
-unit: basis points a year
+value: 4.00%
+unit: a year
 status: exploratory
 asOf: '2026-08-23'
 source:

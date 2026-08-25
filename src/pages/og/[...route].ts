@@ -16,33 +16,17 @@
  * Bluesky's 1,000,000-byte cap, which binds long before anybody else's.
  */
 
-import { getCollection } from "astro:content";
 import type { APIRoute, GetStaticPaths } from "astro";
-import { OG_PAGES, ogCorpusTitle, ogRouteParam } from "~/lib/og";
+import { OG_PAGES, ogRouteParam } from "~/lib/og";
 import { renderCard } from "~/lib/og-card";
-import { decisionHref, researchHref, researchTitle } from "~/lib/research";
 
-export const getStaticPaths = (async () => {
-  // The same filter the two corpus routes apply. A draft has no page, so it gets no
-  // card; drawing one would put an image in `dist/` that nothing on the site points at.
-  const published = (entry: { data: { draft?: boolean } }) => entry.data.draft !== true;
-
-  const corpus = [
-    ...(await getCollection("research", published)).map((entry) => [researchHref(entry.id), entry] as const),
-    ...(await getCollection("decisions", published)).map((entry) => [decisionHref(entry.id), entry] as const),
-  ];
-
-  return [
-    ...Object.entries(OG_PAGES).map(([path, page]) => ({
-      params: { route: ogRouteParam(path) },
-      props: { title: page.title },
-    })),
-    ...corpus.map(([href, entry]) => ({
-      params: { route: ogRouteParam(href) },
-      props: { title: ogCorpusTitle(researchTitle(entry)) },
-    })),
-  ];
-}) satisfies GetStaticPaths;
+// One card per route in `OG_PAGES`, and nothing else. The corpus routes that used to
+// contribute forty-five more are gone with the corpus (decision 0011).
+export const getStaticPaths = (() =>
+  Object.entries(OG_PAGES).map(([path, page]) => ({
+    params: { route: ogRouteParam(path) },
+    props: { title: page.title },
+  }))) satisfies GetStaticPaths;
 
 export const GET: APIRoute<{ title: string }> = async ({ props, site }) => {
   // `site` is `https://kellyportfolios.com` from `astro.config.mjs`, the one place this
