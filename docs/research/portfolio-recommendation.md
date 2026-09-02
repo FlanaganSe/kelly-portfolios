@@ -350,7 +350,14 @@ What the repository's evidence licenses ([valuation](valuation-and-the-allocatio
    investor who wants the August 2026 valuation to move a point of the portfolio, and
    [part A](portfolio-for-one-investor.md) §7 takes it as the working default for the
    reference investor, who has stated that concern and no tolerance. The published
-   construction stays the 30% vector, which is the same book at a tolerance of −70% or looser. What the same evidence says about the 0th-percentile excess CAPE yield
+   construction stays the 30% vector, which is the same book at a tolerance of −70% or looser.
+   The default is scored as one object (Experiment 024, part A §7): against the published
+   vector it reads **−0.64 pp/yr [−0.87, −0.40] against a 0.33 floor on 96 years**, a leverage
+   result at the panel's realised premia, and the wrapper cut is the whole difference; at
+   the forward premia it costs 0 to 0.2 pp/yr of log growth and wins only if the equity
+   premium over bonds is about 1.5 pp or less, which is where four of six managers put it.
+   It buys 1.8 points of maximum drawdown and one point of volatility. That is the price of
+   the valuation bet, stated; an investor who does not hold that belief holds the 30% vector. What the same evidence says about the 0th-percentile excess CAPE yield
    is that an unlevered 10–15 point TIPS
    line in the traditional IRA is the cheapest drawdown protection has been in expectation:
    the substitution's historical cost of 0.55–0.77 pp/yr was earned on a 6–7 pp realised

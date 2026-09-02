@@ -26,6 +26,12 @@ retested; the current interpretation lives in the relevant synthesis.
   rule and contribution-directed rebalancing, never through a return forecast; the financed
   bond stack is not adopted, with numeric reopening triggers; external capital-market
   assumptions are inputs, never edges.
+- [0013](0013-the-working-default-is-decided-under-stated-assumptions.md): the reference
+  investor's working default is decided under a stated drawdown assumption (the 25% wrapper
+  plus five points of TIPS in the traditional third), the published 30% construction is the
+  same book at a looser tolerance, the international share stops at 60/40 unless a
+  tracking-error tolerance is stated, nothing from the September 2026 round is added, and a
+  supplied tolerance is a review trigger rather than an open question.
 
 ## Scoped findings and historical corrections
 

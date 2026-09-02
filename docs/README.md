@@ -24,6 +24,9 @@ For the major decisions:
   [Decision 0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md)
   records why the CAPE enters the construction as a wider drawdown assumption and a
   conditional TIPS rule rather than a forecast, and why no bond stack was added.
+  [Decision 0013](decisions/0013-the-working-default-is-decided-under-stated-assumptions.md)
+  records the working default decided for the reference investor under a stated tolerance
+  assumption, and what replaces it.
 - [Current regime and pricing](research/current-regime-and-pricing.md): which of the
   portfolio's engines are cheap and which are expensive *today*, each level beside its own
   historical percentile — and which conditioning variables have ever predicted anything.
@@ -209,5 +212,6 @@ Decision records: [0001](decisions/0001-contained-python-research-workspace.md),
 [0008](decisions/0008-growth-decides-crra-reports.md),
 [0009](decisions/0009-blocks-lifted-and-closures-rescoped.md),
 [0010](decisions/0010-bars-carry-a-reopening-condition.md),
-[0011](decisions/0011-the-site-publishes-answers-not-notes.md), and
-[0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md).
+[0011](decisions/0011-the-site-publishes-answers-not-notes.md),
+[0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md), and
+[0013](decisions/0013-the-working-default-is-decided-under-stated-assumptions.md).

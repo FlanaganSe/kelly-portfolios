@@ -773,6 +773,96 @@ vectors are within resolution of each other on every measurement this repository
 separates them is the drawdown the investor can hold, and this paragraph is the assumption
 made in the absence of that number. A stated tolerance replaces it the day it is supplied.
 
+### The working default, scored as one object
+
+`as of 2026-09-02`. **`exploratory`.**
+[Experiment 024](../../research/experiments/exp_024_working_default.yaml), spec
+`d1ef4950…`, run
+[`5f3c2db9…`](../../research/artifacts/5f3c2db962fe420881d3aaba3e44df55/summary.md), tables
+in [`tables.md`](../../research/artifacts/5f3c2db962fe420881d3aaba3e44df55/tables.md). The
+working default, a 25% RSST-like wrapper, 70 points of equity core and a 5-point unlevered
+ten-year line, against the published 30% wrapper and 70 points of core, as one object on
+[Experiment 018](defensive-engines-in-the-construction.md)'s 1929-01…2025-05 panel and
+machinery, and the same pair on 016f's 427-month fund-list panel with the line added. The
+TIPS line is a modelled nominal ten-year Treasury, because no TIPS series exists before 2003;
+reading it as TIPS is wrong in 1977…81 in the direction that overstates the line's loss
+there. Predicted `rejected` before the run at about −0.6 pp/yr against a floor near 0.35, a
+leverage result at realised premia; every prediction held, 018's trend scalar 1.9771 and
+016f's +0.5101 wrapper pair both reproduced exactly.
+
+**Conclusion.** At the panel's realised premia the working default costs **0.64 pp/yr of
+arithmetic mean and 0.44 of log growth** against the published vector, on every start date
+from 1929, 1934, 1946, 1970 and 1990-11 and on both panels; it buys **1.8 pp of maximum
+drawdown and one point of volatility**. The wrapper cut is the whole of it and the bond line
+sits at its own floor. At forward premia the cost is inside a third of a point and its sign
+depends on the equity premium over bonds. Nothing in the result argues against the working
+default for the reason it was chosen, which is the drawdown; the paragraph above stands, with
+a measured number in place of the interpolated 0.18.
+
+| Pair, primary metric arithmetic gap | Panel | Gap, pp/yr | 95% bootstrap; HAC | Floor | Log gap | Status |
+| --- | --- | ---: | :---: | ---: | ---: | --- |
+| **working default − published** | 1929-01…2025-05, 1,157 months | **−0.64** | [−0.86, −0.41]; [−0.87, −0.40] | 0.33 | −0.44 | `rejected` |
+| working default − published | 1990-11…2026-05, 427 months, 016f's funds | −0.87 | [−1.20, −0.52]; [−1.19, −0.54] | 0.46 | −0.74 | `rejected` |
+| wrapper cut alone: 25 wrapper + 5 cash − published | 1929– | −0.72 | [−0.94, −0.49]; [−0.95, −0.49] | 0.32 | −0.52 | `rejected` |
+| bond line alone: ten-year − cash, derived from the two arms above | 1929– | +0.08 | HAC [+0.01, +0.15] | 0.08 | +0.07 | check, not registered |
+| long Treasury in the line − published | 1929– | −0.61 | [−0.83, −0.38]; [−0.84, −0.37] | 0.33 | −0.41 | `rejected` |
+| 016f's pair on 96 years: 25 wrapper + 75 core − published | 1929– | −0.33 | [−0.45, −0.21]; [−0.46, −0.20] | 0.18 | −0.30 | `rejected` |
+
+The pair reads −0.61 to −0.71 on every declared sub-window with every interval excluding
+zero, −0.52 inside the 1981-10…2020-07 bond bull market and −0.70 outside it. The bond
+line's +0.08 is +0.24 inside the bull market, 0.00 before it and −0.33 on the 58 months
+since 2020-08, the same one-era shape 018 found for the stacked leg. Against the cheap 100%
+equity index the working default is +1.34 [+0.71, +1.99] against a 0.91 floor where the
+published vector is +1.98; against the 85/15 constant mix Experiment 022 uses, +2.27
+[+1.56, +2.98] against 1.05.
+
+**Drawdown and crises**, descriptive, one history. Maximum drawdown **−81.0% against
+−82.78%**; months under water 163 against 164 (the long-Treasury variant, 89); volatility
+17.97% against 18.99%; worst-decile-of-equity-months offset +0.44 pp/month at a 92% hit rate.
+Cumulative offset against the published vector: 1929 +1.8 pp, 1937 +2.2, dotcom +2.0, GFC
++1.8, covid +1.1, 1973 −0.1, **1977…81 −9.2**, of which −5.0 is the wrapper cut and −4.2 the
+nominal bond, 2022 +0.3. **Flat decade 1999-03…2009-02: −0.08 [−0.73, +0.56] against a 0.84
+floor**; against the cheap index +2.75 where the published vector reads +2.84. The default
+keeps the decade the wrapper exists for.
+
+**Regret at forward premia.** Arithmetic on the paired difference, no simulation: five
+points of wrapper forgo `1.072 × equity excess + trend − 1.195` and the line earns the bond's
+excess over cash less 5 bp, at the 0.8 pp term premium the
+[market scan](market-scan-2026.md) records; the log cell adds the realised variance-drag
+constant, +0.19 pp/yr. Cells are working default minus published, pp/yr, arithmetic / log;
+positive means the default wins.
+
+| Gross trend premium, pp/yr ([trend weight](trend-weight-under-uncertainty.md) §1) | Equity over bonds 0 | 1.5 | 3 | 5 |
+| --- | ---: | ---: | ---: | ---: |
+| 0.00, premium gone | +0.05 / +0.24 | −0.03 / +0.16 | −0.11 / +0.08 | −0.21 / −0.03 |
+| 1.74, vendor's last 78 months | −0.03 / +0.16 | −0.11 / +0.07 | −0.19 / −0.01 | −0.30 / −0.11 |
+| 3.90, vendor post-publication | −0.14 / +0.05 | −0.22 / −0.03 | −0.30 / −0.11 | −0.41 / −0.22 |
+| **4.07, the corrected central figure** | **−0.15 / +0.04** | **−0.23 / −0.04** | **−0.31 / −0.12** | **−0.42 / −0.23** |
+| 5.32, JST book | −0.21 / −0.02 | −0.29 / −0.10 | −0.37 / −0.18 | −0.48 / −0.29 |
+| 7.18, own 4-asset book | −0.30 / −0.12 | −0.39 / −0.20 | −0.47 / −0.28 | −0.57 / −0.38 |
+| 10.98, 1990…2026 realised | −0.49 / −0.31 | −0.57 / −0.39 | −0.66 / −0.47 | −0.76 / −0.57 |
+
+Break-even gross trend premium on log growth, below which the default wins: 4.86 at a zero
+equity premium over bonds, 3.25 at 1.5, 1.64 at 3, none at 5. Across the six managers'
+−2.2 to +1.5 pp over TIPS the central log cell runs +0.16 to −0.04: the two vectors are
+within a tenth of a point of each other on the growth objective, and the choice between
+them is the drawdown, as the paragraph above says. The 0.18 quoted there is the wrapper cut
+priced on 016f's panel without the line; this is the object itself.
+
+**Verified.** Every gap, interval, floor, sub-window, drawdown, episode and regret figure
+above, from run `5f3c2db9…` against a specification hashed before the run and carrying its
+predictions; the wrapper's fee charged on 25 rather than 30 points, which is 5.73 bp/yr of
+the gap; 018's scalar and 016f's pair reproduced. **Interpretation.** The −0.64 is what five
+points of a 7.75 pp/yr equity excess and a 7.22 trend excess cost when swapped for a 1.61
+bond excess, and it says nothing about forward premia; the regret table is arithmetic on
+assumed premia; the nominal ten-year stands in for TIPS; the bond line's +0.08 is the
+1981…2020 era; the variance-drag constant uses realised variances; the derived bond-line row
+was computed from two scored arms in a check and is not registered. **Open.** A TIPS series
+before 2003, 018's open question 2, without which 1977…81 cannot be read for the line as
+held; the default's placement cost, priced above and not inside the experiment; whether a
+daily trend programme lands nearer the no-lag or the lagged row of 018 §2's bracket, which
+moves both vectors together and the pair by about a tenth.
+
 ---
 
 ## Verified, derived, assumed

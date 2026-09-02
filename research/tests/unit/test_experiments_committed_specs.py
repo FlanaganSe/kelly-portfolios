@@ -57,6 +57,7 @@ SPEC_NAMES = (
     "exp_021_leveraged_etf_rules",
     "exp_022_ecy_rule",
     "exp_023_tilts_out_of_sample",
+    "exp_024_working_default",
     "phase1_ff_reproduction",
 )
 

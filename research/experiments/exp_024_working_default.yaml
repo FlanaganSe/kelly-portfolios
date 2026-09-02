@@ -1,0 +1,754 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    docs/research/portfolio-for-one-investor.md section 7 names a working
+#    default for the investor: RSST 25 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 /
+#    IDMO 5 / AVES 5 / ten-year TIPS 5. That is a 25% stocks-plus-trend wrapper,
+#    70 points of unlevered equity and a 5-point unlevered Treasury or TIPS line,
+#    against the published RSST 30 / 70 equity. The object has never been scored.
+#    Experiment 016f scored 25 against 30 with no defensive line, on 427 months;
+#    Experiment 018 scored 10-point substitutions beside a 30% wrapper, on 1157
+#    months. Every figure the page quotes for the default is an interpolation
+#    between those two. This file scores the default as ONE object, on 018's
+#    96-year panel and machinery, and the same pair on 016f's 1990-11 panel, so
+#    that the decision rests on a measurement of the thing decided.
+#
+# 2. THIS SCORES CONSTRUCTIONS ON PUBLIC SERIES, NOT FUNDS.
+#    On the primary panel every holding is a per-dollar exposure vector and a fee,
+#    exactly as in 018: the wrapper is 1.072 equity + 1.000 trend at 99 bp with
+#    financing on 0.331 of equity futures, the core is 3 bp of equity, the
+#    ten-year line is 1.000 of a modelled ten-year par bond at 5 bp. On the
+#    tournament panel every ticker is 016f's basis expression, copied by loading
+#    016f's frozen specification and checking its hash. A reader who quotes a
+#    growth figure here as a fund's expected return has misread the experiment.
+#
+# 3. TIPS DO NOT EXIST BEFORE 2003, SO THE DEFENSIVE LINE IS A NOMINAL TEN-YEAR
+#    TREASURY. The only real-yield series in the repository is FRED FII10 from
+#    2003-01, and no pre-2003 TIPS proxy has been built because a modelled one is
+#    realised inflation dressed as a bond (018, open question 2). The line scored
+#    here is a rolled ten-year PAR BOND modelled on FRED GS10 from 1953-04 and on
+#    Shiller's long-rate column before that. The two columns agree within one
+#    basis point on 879 of their 880 overlapping months; the Shiller cell for
+#    2019-07 differs from FRED by 43 bp, which is why FRED is read wherever it
+#    exists. That splice was decided on a setup check of the two yield columns
+#    before any return was simulated, and the artifact prints the largest
+#    difference. Reading the nominal ten-year as the TIPS
+#    line ASSUMES that the real bond's excess return, its volatility and its
+#    correlation with equity resemble the nominal bond's over the window. In
+#    1970-81 that assumption is false in the direction that flatters the nominal
+#    line's inflation-episode losses and understates what a TIPS line would have
+#    earned; in the deflationary episodes it is roughly right. The modelled bond
+#    has no on-the-run premium, no roll rule and no coupon reinvestment
+#    convention; it is the same construction 018 ran as its duration sensitivity.
+#    A 5-point unlevered line of it is the smallest defensive position this
+#    repository has ever scored.
+#
+# 4. THE TREND LEG IS THIS REPOSITORY'S OWN 4-ASSET BOOK, AS IN 018.
+#    Scaled to 12.38% volatility by one full-window constant computed on the same
+#    intersection 018 used, so the scalar must reproduce 018's 1.9771 and the
+#    artifact prints it. No trading cost is charged on the book. The tournament
+#    panel's trend leg is AQR's TSMOM, gross of the vendor's trading costs by
+#    omission, exactly as 016f used it.
+#
+# 5. WHAT THIS FILE PREDICTS BEFORE IT IS RUN.
+#    `parameters.minimum_detectable_effect` is arithmetic on the panel lengths
+#    and a grid of tracking errors and required no look at the data. The primary
+#    pair, working default against the published construction, moves five points
+#    of capital from the wrapper into the bond line and nothing else. Its paired
+#    difference is `0.05 x (tenyear - 1.072 x equity - trend)` plus a certain
+#    cost saving of `0.05 x (119.52 - 5) = 5.73 bp/yr`. On the primary panel its
+#    tracking error should be about 1.2 to 1.3 points and its floor about 0.35
+#    pp/yr. AT THE PANEL'S REALISED PREMIA the arithmetic is
+#    `-0.05 x (1.072 x 7.75 + 7.22 - 1.195) + 0.05 x (about 1.8 - 0.05)`,
+#    about -0.72 from the wrapper cut plus about +0.09 from the bond line, ABOUT
+#    -0.6 pp/yr: roughly twice the floor and negative. THE PREDICTION FOR THE
+#    PRIMARY PAIR IS THEREFORE `rejected` UNDER CLAUSE (a), WITH THE INTERVAL
+#    EXCLUDING ZERO, and not `unresolved`: the floors alone would say
+#    `unresolved` for anything under 0.35, but the realised premia put the gap
+#    outside that. Like 016f's +0.51, that is a leverage result at the panel's
+#    realised equity and trend premia and not a construction result, which is why
+#    `parameters.regret` prices the same pair at forward premia. On the
+#    tournament panel (427 months, floor about 0.6) the same pair is predicted
+#    near -0.9 pp/yr arithmetic and also `rejected`. The three companion arms are
+#    predicted to sit within about 0.1 pp/yr of each other on the mean (cash
+#    about -0.72, long Treasury about -0.61, ten-year about -0.63) with pairwise
+#    floors of about 0.1 to 0.2, so THE WRAPPER CUT AND NOT THE BOND LINE IS
+#    PREDICTED TO DRIVE THE DIFFERENCE, and the bond line's own contribution is
+#    predicted `unresolved`. The 016f analogue, five points from the wrapper into
+#    the equity core, is predicted about -0.33.
+#    DRAWDOWN ORDERING, predicted: the published construction draws down
+#    deepest; the cash variant next; the ten-year and long-Treasury variants
+#    shallowest and within a point of each other; the whole spread about 2 pp on
+#    the 1929 drawdown. The working default's months under water are predicted
+#    at or below the published construction's. FLAT DECADE 1999-03..2009-02: the
+#    wrapper carries the reference arm's flat-decade gain and the bond leg earned
+#    a positive excess in that decade; the sign of the pair's flat-decade gap is
+#    NOT predicted and its magnitude is predicted inside 0.3 pp/yr.
+#
+# 6. THE DECISION-RELEVANT DESCRIPTIVES CARRY NO SIGNIFICANCE CLAIM.
+#    Drawdown, months under water, worst-decile offsets, crisis episodes and
+#    contribution-weighted terminal wealth are one order statistic of one path
+#    each and are reported with no status, as in 018.
+#
+experiment_family: exp_024_working_default
+title: >
+  The working default scored as one object: does RSST-like 25 / equity core 70 /
+  ten-year Treasury 5 differ from the published RSST-like 30 / equity core 70 on
+  growth, drawdown and crisis behaviour, on 1157 months from 1929 and on 016f's
+  427-month fund-list panel, and is it the wrapper cut or the bond line?
+entry_point: exp_024_working_default
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260902
+
+hypothesis: >
+  The published construction is `published_trend30`: 70% of capital in a 3 bp
+  equity core and 30% in an RSST-like wrapper holding 1.072 equity and 1.000
+  trend per dollar, 1.0216 equity notional, 0.300 trend notional, 1.3216 gross.
+  The working default is `working_default`: the same core, 25% in the wrapper and
+  5% in an unlevered modelled ten-year Treasury at 5 bp, 0.968 equity, 0.250
+  trend, 0.050 bond, 1.268 gross. THE PRIMARY COMPARISON, DECLARED HERE, is the
+  working default against the published construction on the 1929-01..2025-05
+  primary panel, arithmetic mean monthly total-return gap after every cost
+  charged inside the rule. Two companion arms separate the wrapper cut from the
+  bond line: `trend25_cash5` holds the five points in T-bills and
+  `trend25_ltbond5` in an unlevered ~20-year Treasury fund; a third,
+  `trend25_core75`, puts the five points back into the equity core and is 016f's
+  wrapper-weight pair on 96 years. Every arm is also scored against the cheap
+  100%-equity control, the equity core levered to the arm's gross notional, the
+  core scaled to the arm's volatility, and the 85/15 constant mix Experiment 022
+  uses, each a separate family. THE PRIMARY PAIR IS PREDICTED `rejected` (freeze
+  note 5): a negative gap of about -0.6 pp/yr against a floor of about 0.35, a
+  leverage result at realised premia. The same pair is run on 016f's 1990-11
+  fund-list panel so the two panels can be read side by side, and priced at
+  forward premia in `parameters.regret`, which is where the reader sees when
+  each vector wins.
+
+mechanism: >
+  Three mechanisms, all inherited from `portfolio_edge.studies.overlay_growth`
+  and exactly those of 018. STACKING: five points of wrapper carry 0.0536 of
+  equity and 0.050 of trend notional per dollar of capital and cost 119.52 bp on
+  that capital; removing them forgoes `0.05 x (1.072 x equity_excess +
+  trend_excess) - 5.73 bp`, an expected value that is positive whenever the two
+  premia are positive and that the panel realised at about 14.3 pp/yr per unit
+  of capital. SUBSTITUTION: the five points buy an unlevered bond whose expected
+  excess over cash is the term premium, about 0.8 pp/yr today, and whose
+  diversification value against 0.968 of equity depends on the bond-equity
+  correlation, negative in 1998-2020 and positive before 1998 and since 2022.
+  VARIANCE: at a lower gross the working default carries less variance, so its
+  log-growth gap exceeds its arithmetic gap by half the variance difference,
+  which the artifact reports as one constant from the realised panel. COST: the
+  wrapper's fee and financing on 25 rather than 30 points of capital, the bond
+  line's 5 bp, and 0.55 bp of round-trip spread on monthly rebalancing turnover,
+  all inside the rule.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each arm, against
+  each named control separately, on the primary metric:
+  (a) `rejected` if the arithmetic mean gap point estimate is at or below zero;
+  (b) `unresolved` if the gap is positive but smaller than the minimum detectable
+  effect at 80% power computed from that comparison's own paired difference
+  series, reported in the same row;
+  (c) `unresolved` if the gap exceeds its MDE but its Benjamini-Hochberg adjusted
+  p-value within the declared family (one family per control per panel) exceeds
+  0.10;
+  (d) `unresolved` if the gap survives (b) and (c) but changes sign anywhere on
+  the declared equity-financing band;
+  (e) `exploratory` otherwise. Under no outcome may this specification produce a
+  status above `exploratory`.
+  For the PRIMARY PAIR a `rejected` under clause (a) means the working default's
+  mean is at or below the published construction's on this panel; whether that
+  is inside or outside the floor is read from the interval and the floor printed
+  beside it, and the regret table says what the sign is at forward premia. The
+  drawdown, months-under-water, worst-decile, crisis-episode and terminal-wealth
+  tables are descriptive and receive NO status. The whole-experiment status is
+  `exploratory` when any comparison on either scored panel reaches (e) and
+  `unresolved` otherwise.
+
+universe:
+  description: >
+    Four monthly excess-of-cash legs plus the cash rate on the primary panel,
+    US-only equity throughout because the question needs 1929-32, 1937, 1973-74
+    and 1977-81. Cash is the Ken French one-month bill, the same `RF` inside
+    `Mkt-RF`. On the tournament panel the sixteen basis series and the mapping
+    are 016f's, loaded from its frozen specification, plus the ten-year leg.
+  legs:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published, 1926-07 onward.
+    - id: treasury
+      source: Goyal-Welch `PredictorData2025.xlsx`, monthly, `ltr`, less French `RF`
+      basis: >
+        Long-term US government bond total return, roughly a 20-year bond, the
+        leg 018 scored. Used by the `trend25_ltbond5` secondary arm and inside
+        the trend book.
+    - id: tsy10
+      source: >
+        FRED `GS10` from 1953-04, Shiller `ie_data.xls`
+        `Long_Interest_Rate_GS10` (percent per year, divided by 100) before
+        that, priced as a rolled ten-year par bond by
+        `studies/fixed_income_shelf.par_bond_total_returns`, less French `RF`.
+        The largest yield difference between the two columns on their overlap
+        is printed; freeze note 3.
+      basis: >
+        MODELLED. The ten-year Treasury that stands in for the ten-year TIPS
+        line; freeze note 3.
+    - id: trend
+      source: >
+        This repository's own 4-asset time-series-momentum book (French Mkt-RF,
+        Goyal-Welch ltr and corpr less Rfree, AQR equal-weight commodity excess),
+        `studies/time_series_momentum` defaults, minimum three live instruments,
+        scaled to 12.38% volatility by one full-window constant.
+      basis: Excess of cash, no trading cost charged.
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `RF`
+  excluded:
+    - Any claim that a wrapper's or a ticker's simulated path is that fund's return.
+    - Any weight search. Every arm's weights are declared here and nothing optimises them.
+    - A TIPS series before 2003; freeze note 3.
+    - Gold, a financed Treasury stack, or any arm 018 already scored.
+
+sample_policy:
+  start: "1926-01"
+  end: "2026-05"
+  held_out: >
+    Nothing is held out. The primary panel is the intersection of what its
+    sources publish and neither boundary was chosen: it begins when the 4-asset
+    book has three live instruments (1929-01) and ends when the AQR commodity leg
+    ends (2025-05), expected 1157 months, identical to 018's. The tournament
+    panel is 016f's 427 months, 1990-11..2026-05, set by the developed ex-US
+    momentum file and the AQR TSMOM file. The data has been searched by
+    twenty-three earlier specifications and the working default was chosen by
+    people who read them; that look-ahead is recorded and no freezing removes it.
+  embargo: >
+    None. The constant-weight arms estimate nothing. The trend book uses only
+    data before each month; its volatility scalar is the one look-ahead and it is
+    a Sharpe-preserving constant.
+  eras:
+    - name: from_1934
+      start: "1934-01"
+      end: "2025-05"
+      rationale: Drops the 1929-33 crash and its recovery, the first of 018's red-team sub-windows.
+    - name: from_1946
+      start: "1946-01"
+      end: "2025-05"
+      rationale: Post-war; drops the Depression and the wartime rate peg.
+    - name: from_1970
+      start: "1970-01"
+      end: "2025-05"
+      rationale: From the first inflation decade; contains every episode a bond line is expected to lose in.
+    - name: from_1990_11
+      start: "1990-11"
+      end: "2025-05"
+      rationale: The tournament window on the primary panel's US-only legs, so the two panels can be read side by side.
+    - name: post_2009
+      start: "2009-01"
+      end: "2025-05"
+      rationale: The era in which the trend overlay's contribution decayed; declared so it cannot be omitted.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: The one flat-to-negative equity decade in the modern panel, with the boundaries 016e and 018 froze.
+    - name: bond_bull_market
+      start: "1981-10"
+      end: "2020-07"
+      rationale: Peak ten-year yield to trough, so the bond line's gap can be read beside the era that made it.
+    - name: before_bond_bull
+      start: "1929-01"
+      end: "1981-09"
+      rationale: The complement, first part; rising or flat yields.
+    - name: after_bond_bull
+      start: "2020-08"
+      end: "2025-05"
+      rationale: The complement, second part; 58 months of rising yields including 2022.
+
+benchmark:
+  primary:
+    id: reference
+    definition: The `published_trend30` arm itself, 70% core and 30% RSST-like wrapper.
+    rationale: >
+      The decision is whether to hold the working default instead of the
+      published construction, so the published construction is the comparator
+      that answers it. THIS IS THE PRIMARY COMPARISON.
+  secondary:
+    id: cheap
+    definition: 100% equity core at 3 bp, unlevered, rebalanced on the same clock.
+    rationale: Decision 0003, charter question 1.
+  tertiary:
+    id: leverage_matched
+    definition: >
+      The equity core levered to the arm's own gross notional, financed at cash
+      plus the equity-futures basis, debt accruing monthly as in exp_016.
+    rationale: Is it a construction effect or is it beta.
+  quaternary:
+    id: volatility_matched
+    definition: >
+      Equity core plus T-bills scaled so that full-window volatility matches the
+      arm's (ex post), and separately so that trailing 36-month volatility
+      matches (ex ante, from month 37). A scale above one is levered equity.
+    rationale: A defensive line changes the risk dimension; match on it.
+  quinary:
+    id: mix85
+    definition: 85% equity core and 15% of the ten-year line, monthly rebalanced.
+    rationale: >
+      The constant mix Experiment 022 uses as its third control, so the working
+      default can be read against the unlevered defensive allocation an
+      investor who takes the valuation reading literally would hold.
+  aggregation_rule: >
+    SIX CONTROLS ARE SIX FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED OR
+    PLACED IN ONE COLUMN. Every reported gap names its control and its panel.
+    Benjamini-Hochberg is applied within one control on one panel and never
+    across.
+
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` over monthly funded total returns net of
+    every cost charged inside the simulation, 018's metric so the two
+    experiments read on one basis. The annualised log-growth gap is reported
+    beside it as a secondary metric because the charter's objective is expected
+    log terminal wealth and the two vectors differ in gross notional; the two
+    are never mixed in one column.
+  units: percentage points per year
+  uncertainty: >
+    Two intervals beside every gap: a Newey-West HAC interval on the paired
+    monthly difference with the automatic bandwidth, and a stationary block
+    bootstrap over the joint monthly panel, whole rows, mean block 12 months,
+    10000 resamples, 95% percentile; plus the minimum detectable effect at 80%
+    power from each comparison's own paired series.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+  - name: annualised log-growth gap
+    units: percentage points per year
+  - name: tracking error against the control
+    units: percent per year
+  - name: maximum drawdown of the funded wealth path
+    units: percent
+  - name: longest run of months below the running peak
+    units: months
+  - name: worst-decile-of-equity-months mean offset against the reference arm
+    units: percentage points per month
+  - name: cumulative return in each predeclared crisis episode, and the offset against the reference
+    units: percent; percentage points
+  - name: sub-window gaps with HAC intervals and floors
+    units: percentage points per year
+    note: The declared eras and the panel's mechanical halves, for every comparison.
+  - name: contribution-weighted terminal wealth ratio
+    units: ratio
+  - name: bond-equity correlation and bond excess return by era
+    units: correlation; percentage points per year
+  - name: gross, equity, trend, bond and cash notional per arm
+    units: multiple of net asset value
+  - name: regret at forward premia
+    units: percentage points per year
+    note: "`parameters.regret`; arithmetic and log, one table."
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    (1) each holding's expense ratio on the capital allocated to it; (2)
+    financing on the notional a wrapper holds beyond its physical capital, at
+    the equity rate; (3) the equity-futures basis on the debt of any control
+    whose capital weights exceed one; (4) a 0.55 bp round-trip US equity spread,
+    half-crossed on one-sided monthly rebalancing turnover, on every line. The
+    wrapper's fee is charged on 25 points of capital in the working default and
+    on 30 in the published construction, which is the 5.73 bp/yr certain
+    difference. On the tournament panel 016f's cost model applies unchanged.
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    TSY10: 5
+    LTBOND: 5
+    CASH: 0
+  tsy10_fee_note: >
+    5 bp is an assumption between a 3 bp broad TIPS index fund and an 18 bp
+    one; at a 5-point weight the whole range is 0.75 bp/yr of the portfolio.
+  financing_basis_points_over_cash:
+    equity: 62
+    treasury: 15
+    gold: 30
+    tips: 15
+  financing_sources: >
+    Equity 62 bp: `docs/research/structural-and-tax-edges.md` section 3, the
+    figure 016 and 018 charge. Treasury, gold and TIPS rates are carried for
+    018's `FinancingRates` type and charged on nothing: no arm here finances a
+    bond.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  not_charged:
+    - The 4-asset trend book's own trading (262% one-way turnover; 20 bp one-way takes its Sharpe from 0.58 to 0.50).
+    - The vendor's trading costs inside AQR's TSMOM on the tournament panel, by omission.
+    - Any tax. No arm holds tax lots; the comparison is pre-tax throughout. The placement cost of the default is priced on the page.
+    - Bid/ask on the initial purchase; every arm starts from a common portfolio.
+
+rebalance_rule:
+  frequency: >
+    Primary panel: MONTHLY, back to the arm's capital weights, 018's clock,
+    because the leverage-matched and ex-ante volatility-matched controls are
+    defined month by month. Tournament panel: ANNUALLY, 016f's clock, so the
+    reproduction of 016f's wrapper-weight pair is exact.
+  drift: Weights drift within the period and the drifted weights earn the return.
+  overlay_legs: >
+    A wrapper's internal notional is a property of the wrapper and is never
+    rebalanced by the investor.
+  debt: >
+    Positions and debt are carried in absolute terms, exp_016's `_simulate`,
+    reused by import. Debt accrues at cash plus the equity-futures basis.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, 018's, not tuned on the data. A
+    Newey-West interval at the automatic bandwidth is printed beside every
+    bootstrap interval; where they disagree by more than 0.05 pp/yr the artifact
+    says so.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each control family on each panel,
+    never across. The family omits the sub-windows, the financing band, the
+    regret grid and the twenty-three earlier specifications that searched this
+    data; the adjusted p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval containing zero is reported as unresolved. The MDE is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per control, per panel, and
+  record which clause fired. The primary pair is predicted `rejected` under
+  clause (a); see freeze note 5. Under no outcome may this specification produce
+  a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    statement: >
+      Every holding is an assumed per-dollar exposure vector and a fee, or
+      016f's basis expression. No fund's returns were used. The experiment
+      scores CONSTRUCTIONS; a result transfers to a fund only to the extent the
+      fund delivers the mapped exposure at the mapped cost.
+    order_of_operations: >
+      This file was written and frozen before the experiment module produced
+      any statistic. The working default was chosen by people who had read 016f,
+      018 and 022; that look-ahead is recorded and no freezing removes it.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired monthly difference."
+    computed_before_freezing: >
+      Primary 1157 months: 0.285 pp/yr per point of tracking error. Tournament
+      427 months: 0.470. The primary pair moves five points between a wrapper
+      at about 24% volatility (1.072 equity plus 1.0 trend) and a bond at about
+      7%: paired tracking error about 1.2 to 1.3 points, floor about 0.35
+      (primary) and about 0.6 (tournament). The companion pairs, ten-year
+      against cash or long Treasury at five points, track at 0.35 to 0.5
+      points, floors 0.1 to 0.15 (primary). Against the cheap control every arm
+      tracks at about 3 to 4 points, floor about 1.0; against the leverage-
+      matched control about 6 to 7 points, floor about 1.9; against the 85/15
+      mix about 4 to 5 points, floor about 1.3.
+    floor_at_assumed_tracking_error_primary:
+      "0.5": 0.14
+      "1.0": 0.29
+      "1.25": 0.36
+      "2.0": 0.57
+      "4.0": 1.14
+      "6.0": 1.71
+    floor_at_assumed_tracking_error_tournament:
+      "1.0": 0.47
+      "1.25": 0.59
+      "2.0": 0.94
+      "4.0": 1.88
+      "6.0": 2.82
+    predicted_primary_pair: >
+      About -0.6 pp/yr arithmetic on the primary panel against a floor of about
+      0.35, interval excluding zero: `rejected` under clause (a). About -0.9 on
+      the tournament panel against a floor of about 0.6: `rejected`. Freeze note 5.
+
+  trend_book:
+    instruments: [equity, treasury, credit, commodity]
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.10
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    expected_scalar_from_exp_018: 1.9771
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of the book on the
+      primary intersection of book, equity, cash and ltr`, 018's construction;
+      printed in the artifact and checked against 018's figure to three places.
+
+  ten_year_leg:
+    yield_source: >
+      FRED GS10 (decimal) wherever it exists, from 1953-04; shiller_ie_data
+      `Long_Interest_Rate_GS10` (percent per year, divided by 100) before that.
+    maturity_years: 10.0
+    cross_check: >
+      Shiller against FRED on the overlap from 1953-04; largest absolute yield
+      difference printed in basis points. On the setup check it was 43 bp, in
+      2019-07 alone, with every other month within 1 bp.
+    caveat: >
+      Before 1953-04 the Shiller long rate is his long-term government yield
+      series and not a ten-year constant-maturity yield; the modelled bond is a
+      ten-year proxy before 1953 only to the extent that series is one. The
+      artifact reports every sub-window from 1946, 1970 and 1990-11 so the
+      reader can drop the pre-1953 months.
+
+  wrappers:
+    CORE:
+      exposures: {equity: 1.0}
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures: {equity: 1.072, trend: 1.0}
+      financed: {equity: 0.331}
+      note: >
+        RSST's N-PORT of 2026-04-30 as exp_016 and exp_018 map it: 74.09%
+        physical S&P 500 plus 33.1% E-mini futures and a trend book delivering
+        100% of risk exposure. Financing on the 0.331 of equity futures at the
+        equity rate; the long/short trend book is charged no signed basis.
+    TSY10:
+      exposures: {tsy10: 1.0}
+      financed: {}
+      note: An unlevered modelled ten-year Treasury at 5 bp; the TIPS line's proxy, freeze note 3.
+    LTBOND:
+      exposures: {treasury: 1.0}
+      financed: {}
+      note: An unlevered ~20-year Treasury index fund at 5 bp, 018's LTBOND.
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+
+  contestants:
+    published_trend30:
+      role: reference arm; the published construction
+      weights: {CORE: 0.70, RSST_LIKE: 0.30}
+      note: 1.0216 equity, 0.300 trend, 1.3216 gross. Identically 018's `base_trend30`.
+    working_default:
+      role: THE ARM THIS FILE EXISTS FOR; the working default
+      weights: {CORE: 0.70, RSST_LIKE: 0.25, TSY10: 0.05}
+      note: 0.968 equity, 0.250 trend, 0.050 bond, 1.268 gross. Five points of wrapper moved into the ten-year line and nothing else.
+    trend25_cash5:
+      role: companion; the wrapper cut alone
+      weights: {CORE: 0.70, RSST_LIKE: 0.25, CASH: 0.05}
+      note: 0.968 equity, 0.250 trend, 0.050 cash, 1.218 gross. Differs from the working default by the bond line alone.
+    trend25_ltbond5:
+      role: secondary; the long Treasury in the bond line
+      weights: {CORE: 0.70, RSST_LIKE: 0.25, LTBOND: 0.05}
+      note: 0.968 equity, 0.250 trend, 0.050 bond, 1.268 gross. Differs from the working default by the bond's duration alone.
+    trend25_core75:
+      role: secondary; 016f's wrapper-weight pair on 96 years
+      weights: {CORE: 0.75, RSST_LIKE: 0.25}
+      note: 1.018 equity, 0.250 trend, 1.268 gross. Five points of wrapper moved into the equity core.
+
+  reference_arm: published_trend30
+  controls: [cheap, leverage_matched, volatility_matched_expost, volatility_matched_exante, mix85, reference]
+  controls_in_estimates: [cheap, leverage_matched, volatility_matched_expost, mix85, reference]
+  mix85_weights: {CORE: 0.85, TSY10: 0.15}
+  volatility_match_window_months: 36
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.10
+  multiple_testing_q: 0.10
+  bootstrap_block_months: 12
+  hac_lags: automatic
+
+  crisis_episodes:
+    deflationary_or_growth:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: recession_1937, start: "1937-03", end: "1938-03"}
+      - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+      - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    inflation_or_rate:
+      - {name: oil_1973, start: "1973-01", end: "1974-09"}
+      - {name: inflation_1977, start: "1977-01", end: "1981-09"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+    note: 018's eight episodes, frozen there and copied here unchanged.
+
+  financing_sensitivity:
+    equity_basis_points: [62, 98, 130, 165, 200, 231]
+    reporting: >
+      Every arm's gap against the reference and the cheap control at every
+      point, and whether the arm ordering against the reference is the same at
+      every point. No arm finances a bond, so no Treasury band is run.
+
+  tournament_panel:
+    specification_path: experiments/exp_016f_matched_pairs.yaml
+    expected_specification_hash: 68323191bca66ea857826bf29869a00fbed16028af2b104878b84c40c4497888
+    abort_on_hash_change: true
+    what: >
+      016f's panel, basis mapping and cost model, loaded from its frozen file
+      and checked against the hash its run `36f14b39...` recorded, with the
+      ten-year leg (Shiller GS10 par bond less French `RF`) added as a basis
+      series and `TSY10` as a fund mapped 1.000 to it at 5 bp. Annual
+      rebalancing, 016f's clock.
+    reproduction:
+      pair: rec30 against rec25, log-growth gap
+      expected_pp_yr: 0.5101
+      tolerance_pp_yr: 0.005
+      note: 016f run `36f14b39...`; a shared pair that moves is a defect in this file.
+    arms:
+      published:
+        weights: {RSST: 0.30, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+        note: 016f's `rec30`. Gross 1.3216.
+      working_default:
+        weights: {RSST: 0.25, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05, TSY10: 0.05}
+        note: The page's vector with the nominal ten-year in the TIPS line. Gross 1.268.
+      trend25_cash5:
+        weights: {RSST: 0.25, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05, CASH: 0.05}
+        note: The wrapper cut alone. Gross 1.218.
+      rec25:
+        weights: {RSST: 0.25, VTI: 0.24, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+        note: 016f's `rec25`; the reproduction check and the equity-core companion. Gross 1.268.
+    reference_arm: published
+    controls:
+      cheap: {VTI: 0.65, VXUS: 0.35}
+      leverage_matched: the cheap control levered to each arm's gross notional at 016f's 62 bp basis
+    eras: [flat_equity_decade, post_2009]
+
+  regret:
+    what: >
+      The working default's expected gap against the published construction at
+      forward premia, arithmetic on the paired difference and no simulation:
+      `0.05 x (b - 1.072 x (E + b) - t) + 0.05 x (1.1952 - 0.05)` pp/yr, where
+      `t` is the gross trend premium per unit of notional at 12.38% volatility,
+      `E` the equity premium over bonds and `b` the bond's excess over cash. The
+      log-growth cell adds one constant, half the difference of the two arms'
+      realised variances on the primary panel, printed beside the table. A
+      positive cell means the working default wins.
+    trend_gross_premium_grid_pp_yr: [0.0, 1.74, 3.90, 4.07, 5.32, 7.18, 10.98]
+    trend_central_pp_yr: 4.07
+    trend_grid_source: >
+      docs/research/trend-weight-under-uncertainty.md section 1: premium gone
+      0.00; vendor most recent 78 months 1.74; vendor post-publication 3.90;
+      the corrected like-for-like forward figure 4.07 (central); JST 36-leg
+      book 5.32; own 4-asset book 7.18; full-window realisation 10.98.
+    equity_premium_over_bonds_grid_pp_yr: [0.0, 1.5, 3.0, 5.0]
+    bond_excess_over_cash_pp_yr: 0.8
+    bond_excess_source: >
+      Kim-Wright +0.84 and ACM about +0.80 in August 2026,
+      docs/research/market-scan-2026.md, as 018 section 3 uses them. The bond
+      term enters the pair only as `0.05 x (1 - 1.072) x b`, under 0.01 pp/yr
+      per point of term premium, so no sweep is needed.
+    wrapper_equity_per_dollar: 1.072
+    wrapper_cost_pp_yr: 1.1952
+    bond_line_fee_pp_yr: 0.05
+    points_moved: 0.05
+    reporting: >
+      One table, rows the trend grid, columns the equity grid, each cell the
+      arithmetic and the log gap; the break-even trend premium at each equity
+      premium beside it. The reader sees when each vector wins.
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic. Every file is read from
+      the local raw cache by its pinned digest; this experiment never downloads.
+    files:
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "corpr", "Rfree"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - id: aqr_commodities_long_run
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+      - id: shiller_ie_data
+        source: shiller
+        dataset_id: shiller_ie_data
+        table_id: monthly
+        columns: ["Long_Interest_Rate_GS10"]
+        expected_sha256_raw: 71c3636da5269b074489db41ecf0dcf0caef6275d1f3ecaf753ddaca2b81db2f
+        committed_manifest: data-manifests/shiller_ie_data_monthly.json
+      - id: fred_gs10
+        source: fred
+        dataset_id: GS10
+        table_id: monthly
+        columns: ["GS10"]
+        expected_sha256_raw: a875d88b7ed6a413f697ddb6332f13e61ac58ac7ae0ef52d66a62174995ec6f7
+        committed_manifest: data-manifests/fred_gs10.json
+        note: The ten-year yield from 1953-04; the cache index may point at a later vintage and the pinned blob is read by digest.
+
+data_sources:
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr less French RF as the long bond leg; ltr, corpr less Rfree inside the trend book
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end sets the primary panel's end
+  - id: shiller_ie_data
+    url: https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/e27e58c1-8ae0-488c-a976-a298708c7175/ie_data.xls?ver=1785857394436
+    manifest: data-manifests/shiller_ie_data_monthly.json
+    construction: Long_Interest_Rate_GS10 before 1953-04, a ten-year par bond modelled on it; both panels' ten-year leg
+  - id: fred_gs10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10
+    manifest: data-manifests/fred_gs10.json
+    construction: the ten-year yield from 1953-04, and the cross-check of the Shiller long rate on the overlap
+  - id: exp_016f_matched_pairs
+    url: experiments/exp_016f_matched_pairs.yaml
+    manifest: research/artifacts/36f14b395e53407f8fdfaee3b4e8e37a/manifest.json
+    construction: the tournament panel's six pinned files, mapping and costs, loaded through that specification and hash-checked
+
+hostile_tests:
+  - Charge financing to every levered control on the same terms as the arms.
+  - Sweep the equity-futures basis 62-231 bp and report whether the arm ordering against the reference survives.
+  - Report the primary pair on every declared sub-window with its own HAC interval and floor, so a full-window sign cannot be quoted without the windows that made it.
+  - Report the flat equity decade and both parts of the bond bull market's complement.
+  - Report every crisis episode of both types, including 1973-74, 1977-81 and 2022 where a bond line is expected to hurt, with partial coverage flagged.
+  - Report the ten-year leg's excess return and correlation to equity in every era beside the pair's gap, and the largest Shiller-FRED yield difference on the overlap.
+  - Reproduce 016f's rec30-against-rec25 log gap on the tournament panel to 0.005 pp/yr before adding the bond line; a shared pair that moves is a defect.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Report the ex-ante volatility-matched control beside the ex-post one.
+  - Price the pair at forward premia on one grid for both premia; a forward substitution applied to one leg and not the other is a thumb.
+
+reporting_requirements:
+  - The freeze note with every table, including that the TIPS line is a nominal ten-year proxy and what that assumes.
+  - The MDE and the control named beside every gap, in the same row; never a figure combining two controls.
+  - The HAC interval and the block-bootstrap interval beside every full-window gap.
+  - Gross, equity, trend, bond and cash notional beside every arm.
+  - Maximum drawdown, months under water, worst-decile offset, both episode-type means, the flat-decade gap and the contribution-weighted terminal-wealth ratio for every arm, labelled descriptive.
+  - The regret table with its variance-drag constant and the break-even trend premium per equity premium.
+  - The trend-book volatility scalar beside 018's, the 016f specification hash read, and the sha256 of every source file read.
+  - The wrapper-cut and bond-line decomposition, as the cash arm's gap and the ten-year-minus-cash pair, beside the primary pair.
+
+notes: >
+  Exploratory in the strongest sense: the working default was chosen after
+  016f, 018 and 022 were read, and the specification records that. It can rank
+  constructions on public series and cannot rank funds. Retain `unresolved`
+  wherever the instrument cannot separate an arm from its control, read the
+  drawdown and crisis tables as descriptions of one history, and read a
+  `rejected` on the primary pair as a sign at realised premia whose forward
+  value is the regret table. No sleeve, fund or portfolio is promoted by this
+  specification.
