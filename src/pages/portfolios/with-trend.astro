@@ -3,16 +3,39 @@
  * Portfolio four: the six holdings of portfolio three plus one fund that borrows inside
  * itself to hold managed futures on top of stocks.
  *
- * The six warnings come before the case rather than after it, because every headline
- * number on this page belongs to a 25% arm and the published weight is 30%. Nothing
- * here is a promotion: the measured gap sits under the resolution of the test that
- * produced it, and the financing cost that would settle the question is not disclosed.
+ * The six warnings come before the case rather than after it, because most headline
+ * numbers on this page belong to a 25% arm and the published weight is 30%. The one
+ * matched 30-against-25 test (Experiment 016f) clears its floor only at the trend return
+ * the 1990–2026 panel paid; at the forward figure it does not. Nothing here is a
+ * promotion: against its borrowed control the portfolio sits under the resolution of the
+ * test that produced it, and the financing cost that would settle the question is not
+ * disclosed.
+ *
+ * The drawdown ladder is a static table rather than a selector. Four rows read at a
+ * glance, and the site's islands exist only where a reader has to type something.
  */
 import Breakout from "~/components/Breakout.astro";
 import Figure from "~/components/Figure.astro";
 import Base from "~/layouts/Base.astro";
 
 const HOLDING_COLUMNS = ["Ticker", "Fund", "Weight", "Fee", "Cost after lending income"] as const;
+
+/**
+ * The drawdown ladder, as the research page prints it: the money in RSST that a stated
+ * worst loss supports once the loss assumed is widened for today's valuation. The rows
+ * are quoted, never computed here; the `drawdown-ladder` record beneath the table carries
+ * the provenance. The last row is where the research pages place the published weight,
+ * and it is an implied figure rather than a row the ladder was run at.
+ */
+const LADDER_COLUMNS = ["Worst loss you would sit through", "Money in RSST"] as const;
+
+const LADDER = [
+  { tolerance: "−30%", weight: "11.0%" },
+  { tolerance: "−40%", weight: "14.9%" },
+  { tolerance: "−50%", weight: "19.1%" },
+  { tolerance: "−60%", weight: "23.7%" },
+  { tolerance: "about −70%, implied", weight: "30%, as published" },
+] as const;
 
 const HOLDINGS = [
   {
@@ -109,9 +132,15 @@ const HOLDINGS = [
   <div class="prose mt-14">
     <h2>Six things to know before you read any further</h2>
 
-    <p>No experiment has ever run these exact seven funds at a 30% weight in RSST. Every headline number below
-    belongs to a version holding 25%, with the other five points in VTI. The gap between the two has never been
-    measured.</p>
+    <p>One test has run these seven funds at 30% in RSST against the same seven at 25%, with the five points
+    otherwise sitting in VTI. Over 427 months to May 2026 the gap between them was
+    <Figure id="matched-thirty-over-twenty-five" inline showUnit={false} /> a year in favour of 30%, and the smallest gap
+    that test could see was 0.31, so it is the one whole-portfolio comparison on this site that clears its own
+    resolution. It is a result about borrowing at what trend paid over those years, 10.98 points a year over cash.
+    At the 4.07 points we would guess going forward the same gap is about 0.18, under what the test could see,
+    and at 1.80 about 0.07. Every other headline number below belongs to the 25% version; the 30% one scored
+    2.50 points against its borrowed control, plausibly −0.15 to 5.26, against a smallest visible gap of 3.38,
+    which settles nothing either way.</p>
 
     <p><Figure id="active-variance-concentration" inline showUnit={false} /> of this portfolio&rsquo;s active
     risk sits in RSST alone. Not 98% of the money, which is 30%. Almost everything that makes this portfolio
@@ -221,8 +250,76 @@ const HOLDINGS = [
     <p>The fund closing or merging, which happened to
     <Figure id="managed-futures-attrition" inline showUnit={false} /> of its category in six and a half years.
     Delivered exposure falling below what the filings claim. The financing cost being disclosed and turning out
-    to be large. And the matched test nobody has run: these seven funds at 30% against the same seven at 25%, the
-    only thing that would show whether the published weight is right.</p>
+    to be large. And the matched test, now run once: these seven funds at 30% against the same seven at 25% came
+    out <Figure id="matched-thirty-over-twenty-five" inline showUnit={false} /> ahead at what trend paid over
+    the window, and about 0.18 at what we would guess it pays from here. The published 30% stands for someone
+    who keeps contributing through a long stretch of the fund doing nothing; for someone who would sell it in
+    that stretch, 25% wins against 30%, and a portfolio held beats a better one abandoned.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="worst-loss">How much to hold depends on the loss you could sit through</h2>
+
+    <p>Nobody has told us the worst loss they would sit through, and this site does not pick one for you. What it
+    does instead is show the ladder. US stocks bought at a cyclically adjusted price-earnings ratio above 30, which
+    is where the market has stood all year, have run a median real loss of 51.8% over the following fifteen years
+    against 36.7% from cheaper entries, with 59.7% of those months spent below the buyer&rsquo;s starting point.
+    That rests on fewer than one independent fifteen-year stretch, and it says nothing about what stocks will
+    return. What it changes is the loss the borrowing is sized against. Size it against that wider loss, holding
+    trend at its published share of the stock exposure, and the money the rule puts in RSST reads off the worst
+    loss you state.</p>
+  </div>
+
+  <Breakout class="my-8" label="The drawdown ladder" maxWidth="34rem">
+    <table role="table" class="stack-table w-full border-collapse text-base">
+      <caption class="sr-only">
+        The money in RSST that a stated worst loss supports, once the loss assumed is widened for today&rsquo;s
+        valuation
+      </caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {
+            LADDER_COLUMNS.map((heading, i) => (
+              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i >= 1 && "text-right"]}>
+                {heading}
+              </th>
+            ))
+          }
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {
+          LADDER.map((row) => (
+            <tr role="row" class="border-b border-rule last:border-0">
+              <th role="rowheader" scope="row" data-numeric class="py-2 pr-4 text-left font-normal">
+                {row.tolerance}
+              </th>
+              <td role="cell" data-label={LADDER_COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
+                {row.weight}
+              </td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose">
+    <p>The published 30% is the loosest row. It sits off the bottom of the ladder, and the research behind this
+    page puts the worst loss it implies near −70%. Under our own rule a stated tolerance of −60% or tighter moves
+    the money in RSST to that row&rsquo;s figure: 23.7% at −60%, 19.1% at −50%. At −50% or tighter the same rule
+    also puts ten points of long inflation-linked Treasury bonds, unborrowed, in the traditional retirement
+    account, paid for out of VTI and VXUS in proportion, because at today&rsquo;s real yields that is the cheapest
+    the protection has been in the record. At −60% or looser it holds none, and none is the default for someone
+    who keeps contributing and accepts the borrowing.</p>
+
+    <p>Three limits, each of which cuts both ways. The wider loss is a real figure and the ladder is a nominal
+    one, so only the ratio between the two is carried across, on the assumption that the conversion does not
+    itself depend on how expensive the market was. The valuation reading has no record of forecasting returns,
+    so what survives is what a buyer at these prices had to endure, and nothing about what they earned. And the
+    whole rule ends in a number nobody has supplied.</p>
+
+    <Figure id="drawdown-ladder" class="mt-8" />
   </div>
 
   <div class="prose mt-14">

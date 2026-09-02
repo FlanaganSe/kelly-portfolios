@@ -159,8 +159,10 @@ For *this* investor. Three reasons, in order of weight.
    measurement resolves only at the realised premium.
 2. **A contribution stream is what carries a position through a drought.** The abandonment
    model's trigger is a relative drawdown, and the mechanism that defeats it is new money
-   arriving at a low price. This investor contributes 5–15%/yr, which is 2.5 to 7.5 times
-   the largest rebalancing rotation the portfolio needs.
+   arriving at a low price. This investor contributes 5–15%/yr, and §3.8 shows how much of
+   it reaches a shelter, which is the only place new money can buy the wrapper without a
+   tax cost: all of it through an active employer plan and the Roth, by swap inside the
+   shelter, and a quarter of it when the tax-deferred third receives nothing new.
 3. **Zero is the worse extreme.** Over the panel's one flat-to-negative equity decade
    (1999-03…2009-02, equity −2.55%/yr) a 30% overlay contributed about **+9.5 pp/yr above
    its own complement** and turned that decade from −2.55%/yr to about +0.05%/yr, against
@@ -172,9 +174,12 @@ rise would end with you selling. If the answer is maybe, take 25% — every rout
 and the growth you give up is half a point a year against a 6.0% tracking error you would
 never be able to attribute anyway.
 
-**One caveat that cuts against 30%.** The resampled probability that the overlay is the
-deeper drawdown is 6.9% at 30% of notional and doubles from 10.8% to 18.9% between 58% and
-60%. That is a cliff, not a ramp, and it is why the weight cannot simply be raised further.
+**The resampled drawdown cliff is not a reason.** The probability that the overlay is the
+deeper drawdown is 6.9% at 30% of notional and steps from 10.8% to 18.8% between 0.58 and
+0.59 of notional. [The notional budget](leverage-and-the-notional-budget.md#3a-the-resampled-drawdown-cliff-located-and-explained)
+§3a shows the step vanishes without the 60 bp financing spread, is an episode switch between
+2007-09 and 1937-38 inside one panel, and lists it under what does not bind. What caps the
+weight is the holdability routes above, each of which lands below 30, not a cliff.
 
 ---
 
@@ -330,6 +335,18 @@ traditional 28.76% / taxable **33.41%** after tax — the taxable account is the
 constraint after tax, not the smaller. The ranking above is stated per dollar of shelter
 capacity precisely to sidestep that.
 
+**The wrapper's weight depends on which shelter holds it, once the unit is after tax.**
+After-tax wealth at equal nominal thirds and a 24% withdrawal rate is
+`33.3 + 33.3 × 0.76 + 33.4` = 92.0 points. RSST 30 in the traditional is `30 × 0.76 / 92.0`
+= **24.8%** of after-tax wealth; the same 30 in the Roth, where f = 0 forces it (§3.6), is
+`30 / 92.0` = **32.6%**. That 7.8-point gap is wider than the five points §2 argues over.
+Every decision on this page is made in nominal units: §2's weight, §3.7's headroom, §3.8's
+flows and §7's rules. Nominal is the right unit for holdability, because the statement the
+investor reads and the drawdown that would make them sell are nominal. After tax is the
+right unit for growth, which is the unit the Roth-versus-traditional line above is priced
+in, and in that unit moving the wrapper between shelters moves its weight more than the
+25-versus-30 choice does.
+
 ### 3.5 What the plan is worth
 
 Three benchmarks, and their answers do not add.
@@ -407,13 +424,79 @@ Two consequences.
 Restoring the target without a taxable sale is reachable **iff every fund's taxable holding
 is at or below its portfolio target weight** (exact, not a heuristic). At a 30% wrapper: VTV
 14.3 against a 15 target, VTI 19.0 against 19.0. VTI sits exactly at target, so it has zero
-headroom, and the constrained direction is selling US equity to buy international. That rotation needs
-roughly two points of the portfolio a year; contributions of 5–15%/yr cover it 2.5 to 7.5
-times over.
+headroom, and the constrained direction is selling US equity to buy international. That
+rotation needs roughly two points of the portfolio a year. Contributions cover it only where
+they land in a shelter: about 2.5 points a year through the Roth cap when the tax-deferred
+third receives nothing new, 5 to 11 through an active employer plan at 5–15%/yr (§3.8).
 
 The clean fix is to leave one or two points of headroom on VTI — hold 18 in taxable and 1 in
 the Roth at a 30% wrapper, or 23 and 1 at 25%. The repository's joint solution costs **0.28 bp/yr** for a 1 pp headroom band. A
 forced taxable sale costs hundreds of times a spread.
+
+### 3.8 Where new money lands, and what the contribution rules can execute
+
+The plan in §3.4 is a snapshot. Two rules on this page spend new money, §7's 60/40 move and
+the rotation in §3.7, and neither said which account the money reaches, though the account
+decides which funds it can buy. Stated at an illustrative **$300,000 in equal thirds** with
+**10%/yr** of contributions, growth ignored; the formulas take any balance.
+
+Write `B` for the balance, `c` for the contribution rate and `C = cB`. 2026 limits from the
+tax page (`structural-and-tax-edges.md` §8.6): IRA **$7,500**, §402(g) deferral **$24,500**.
+
+- Roth: `R = min(C, 7,500)`. At the 18.8% and 23.8% columns the direct contribution is phased
+  out ($242,000 to $252,000 of modified AGI filing jointly), so the $7,500 arrives as a
+  designated-Roth deferral or a conversion; beside a rollover IRA a backdoor contribution is
+  mostly a taxable conversion under the pro-rata rule.
+- Employer plan: `E = min(C − R, 24,500)` while a plan is receiving deferrals; **0** when the
+  tax-deferred third is a rollover IRA and nothing else, because an IRA takes no more than
+  the $7,500 already counted. A solo 401(k) or SEP is the one open-menu plan.
+- Taxable: `X = C − R − E`.
+
+| The year's $30,000 | Active employer plan | Rollover IRA only |
+| --- | ---: | ---: |
+| Roth, any of the seven funds | $7,500 (2.5 points) | $7,500 (2.5 points) |
+| Employer plan, VTI or VXUS only (§3.6 menu) | $22,500 (7.5 points) | $0 |
+| Taxable, VTV and VTI under §3.4, anything else at the §3.2 cost | $0 | $22,500 (7.5 points) |
+
+At 5%/yr the plan takes $7,500 and taxable $0 or $7,500; at 15%/yr the plan takes its $24,500
+cap and $13,000 spills to taxable either way.
+
+**"Direct all new money to AVDV and VXUS until 60/40" is executable in one column and not the
+other.** AVDV can be bought with new money only in the Roth, at $7,500 a year; no employer
+menu carries it. VXUS can be bought in the Roth or the plan. With an active plan the whole
+$30,000 can go ex-US inside shelter (Roth to VXUS, plan to its ex-US fund), the 7.7 points
+§7 needs arrive in `7.7 / 10` = 0.77 years, and the placement cost is zero. Without a plan,
+$22,500 of the $30,000 lands in taxable, where the rule means buying AVDV at **65.45 bp/yr
+per dollar** or VXUS at **64.91** at 23.8% (§3.2), the whole shelter saving forgone; net of
+the VTI dollar a taxable dollar otherwise holds, 40.06 and 39.52.
+
+That cost is not the rule's, because at f = 1 the taxable account outgrows its US lines in
+the first year. Taxable holds VTV 15 + VTI 19 = 34 points and receives 75% of new money:
+after one year it is $122,500 against a 34-point allowance of `0.34 × 330,000` = $112,200,
+so $10,300 (3.1 points) must hold something else, and the queue says VXUS, the cheapest
+international line in taxable at 23.8% and tied with AVDV at 18.8%. In both columns the
+wrapper's own top-up, `0.3 × C` = $9,000 a year, exceeds the Roth's $7,500, and the Roth is
+the only account new wrapper money can reach: no employer menu carries it and a rollover
+IRA receives nothing. Above `cB` = $25,000 a year the 30% target therefore evicts about half
+a point of a sheltered tilt to taxable every year, VTV's 0.7 first and then VXUS, at about
+0.3 bp/yr per year cumulatively. The §3.4 plan decays under contributions whatever the
+rules say; an active plan slows the decay from 3.1 points a year to half a point.
+
+**The executable rule.** Every new sheltered dollar goes to VXUS, in the plan's ex-US fund or
+the Roth, until the equity notional reads 60/40; taxable dollars go to VTI and VTV up to
+their targets and to VXUS after that; AVDV is bought only to hold it at 10. With an active
+plan the split reads 60/40 in about a year at no placement cost. Without one it reads 37.6%
+ex-US after a year and 39.9% after two, and the taxable VXUS it uses is the overflow the
+account holds anyway, so the move costs nothing the account structure was not already
+paying.
+
+**Where AVDV ends up.** "AVDV first" with all 7.7 points into AVDV takes it to
+`(10 + 7.7) / 107.7` = **16.4%** of the enlarged book; with only the Roth's $7,500 a year
+into AVDV and the plan's money into VXUS, 11.1%. The +0.28 pp/yr [+0.05, +0.56] was measured
+at 10 and nowhere else (§1), AVDV's 30.03 bp net cost is the highest of the tilts, and no
+run has scored it at 16. The rule keeps it at 10: the Roth's first `0.10 × C` = $3,000 a year
+tops AVDV up and the rest goes to VXUS. Under the VXUS-only move AVDV would drift to 9.3% by
+dilution, which is what the top-up restores.
 
 ---
 
@@ -526,6 +609,46 @@ by no issuer, because futures financing lives in the basis, and it decides the *
 overlay's contribution. **52% of the managed-futures ETFs listed in 2019 had stopped filing
 by the end of 2025.** RSST is under three years old.
 
+### The fallback, the week the wrapper is closed
+
+RSST is $504.95m of net assets at 2026-08-20 and the issuer's shelf is eight funds, five of
+five clean cases trailing their own benchmark since inception
+(`live-stacked-fund-records.md` §1); the unit of closure risk is the issuer and trust, not
+the fund. A liquidation or mandate-change notice is a review trigger, and this is what the
+week looks like.
+
+- **Sell** RSST 30 before the last trading day, or take the liquidation at NAV; the 9 bp
+  spread is the whole execution cost. **Buy** VTI with the proceeds in the same account. Both
+  placements hold the wrapper in a shelter, the traditional at f = 1 (§3.4) and the Roth at
+  f = 0 (§3.6), so the **tax cost is zero** either way: nothing inside an IRA is a
+  realisation event. That is an unstated benefit of sheltering the wrapper and a reason not
+  to move it.
+- **The fallback vector: RSST 0 / VTI 49 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5**,
+  the six holdings of the site's portfolio three. Equity notional falls from 101.5% to 100%
+  and trend notional from 30 to zero.
+- **Exposure cost.** The overlay's expected gap over the cheap index at 30% and the trend
+  prior's median is **0.84 pp/yr** (`trend-weight-under-uncertainty.md` §3), so each year
+  without a replacement costs about that in expectation; a permanent loss of the sleeve is
+  the whole case for the wrapper in §1, and the closure base rate above is the probability
+  that multiplies it.
+- **Residual placement cost.** The traditional now holds VTI 30 + IDMO 3.3 while VTV 14.3
+  sits in taxable, the inverse of the §3.2 order for those two: `(43.08 − 25.39) × 0.143` =
+  **2.5 bp/yr** at 23.8%. Undo it with contributions, new taxable money to VTI and new
+  sheltered money to VTV, or leave it; a taxable sale of VTV to fix it costs more than it
+  saves.
+- **Replacements, in review order, and the test each currently fails** (§1, §4): **CTAP**,
+  fee waiver lapses 2026-12-04 to about 0.99% all-in, 82.48% of net assets in a bilateral
+  swap with one bank, 33 bp spread, portfolio manager left 2026-08-07; **MATE**, δ −0.159
+  keeps the funding gap but no measured loading, one N-CSRS to 2026-02-28 and no
+  tax-character table; **JPFP**, $32.75m, no Form N-PORT filed with the first due
+  2026-09-29, cash creations that forfeit the in-kind shield; **RSIT**, $73.39m at
+  2026-08-31, inception 2026-05-06, no N-PORT, δ read from a marketing page, and an
+  international base leg that would move the US/ex-US split by 30 points; **a standalone
+  managed-futures fund such as DBMF bought by selling equity**, which fails the funding
+  rule in §1, since δ = 1 keeps none of the +2.44 pp/yr and a substitution adds its edge as
+  an average rather than a sum. The first of the four wrappers to clear its test is bought
+  in the same account with the fallback's VTI, again at no tax cost.
+
 ---
 
 ## 6. What would change this
@@ -542,15 +665,17 @@ Ordered by how much it moves the answer.
    evidence supports and its placement cost.
 3. **RSST's 2026-07-31 Form N-PORT, due by 2026-09-29**, which refreshes the trend loading
    from 31 to 34 filed months; then 48 months around 2027-09.
-4. **JPFP's first N-PORT, due by 2026-09-29.** It has filed none; its structure (direct
+4. **A liquidation or mandate-change notice from RSST's issuer or trust**, which fires the
+   fallback in §5 the week it lands.
+5. **JPFP's first N-PORT, due by 2026-09-29.** It has filed none; its structure (direct
    futures plus direct stocks, no ETF or swap, 59 bp) is an assumption until then.
-5. **The fund-level financing spread**, which decides the sign of the overlay's contribution.
-6. **RSST's next December distribution**, which resolves the recognised-versus-distributed
+6. **The fund-level financing spread**, which decides the sign of the overlay's contribution.
+7. **RSST's next December distribution**, which resolves the recognised-versus-distributed
    reading behind the placement's conditional line.
-7. **CTAP's waiver on 2026-12-04**, and its spread and counterparty concentration after it.
-8. **RSIT at 24 filed months**, if the international sleeve is ever to be financed too.
-9. **Your broker's service-fee list**, re-read before a first purchase; resolved clear at
-   Fidelity as of 2026-08-15 (§4), unpublished at Schwab.
+8. **CTAP's waiver on 2026-12-04**, and its spread and counterparty concentration after it.
+9. **RSIT at 24 filed months**, if the international sleeve is ever to be financed too.
+10. **Your broker's service-fee list**, re-read before a first purchase; resolved clear at
+    Fidelity as of 2026-08-15 (§4), unpublished at Schwab.
 
 ---
 
@@ -565,34 +690,65 @@ external capital-market assumption is sized on
 ([decision 0012](../decisions/0012-valuation-enters-through-the-drawdown-assumption.md)).
 Three things follow for this investor.
 
-**The conditional TIPS rule.** At a stated tolerable drawdown of **−50% or tighter**, hold
-**10 points of long TIPS, unlevered, in the traditional account**, funded from VTI and VXUS
-pro rata, and shrink the wrapper to the notional ladder's figure (19.1% at −50%). At **−60% or
-looser, hold none.** The default for a contributing, leverage-accepting investor is none.
-The rule is conditional because the drawdown constraint is the only route through which a
-valuation reading enters the construction: Experiment 018 prices the substitution at −0.55
-to −0.77 pp/yr of mean for about 4 pp of 1929- and 2008-scale drawdown, earned on a 6–7 pp
-realised premium, and at today's 0–1.5 pp equity premium over TIPS the expected cost is
-0–0.2 pp/yr. A 30-year TIPS at 2.99% real is the best contractual real line in the record.
+**The conditional TIPS rule, which is a 10-point Experiment 018 arm and not the ladder's
+row.** At a stated tolerable drawdown of **−50% or tighter**, hold **10 points of long TIPS,
+unlevered, in the traditional account**, funded from VTI and VXUS pro rata, and set the
+wrapper to the notional ladder's figure (19.1% at −50%), with the 10.9 points that frees
+going to VTI as in §2. At **−60% or looser, hold none.** The default for a contributing,
+leverage-accepting investor is none. The rule is conditional because the drawdown
+constraint is the only route through which a valuation reading enters the construction.
+The 10-point size is what Experiment 018 froze and priced, at −0.55 to −0.77 pp/yr of mean
+for about 4 pp of 1929- and 2008-scale drawdown, earned on a 6–7 pp realised premium, and
+at today's 0–1.5 pp equity premium over TIPS the expected cost is 0–0.2 pp/yr; it does not
+fall out of any tolerance. A 30-year TIPS at 2.99% real is the best contractual real line
+in the record. Both versions worked through, at the 1.050 leg:
+
+| | (a) the rule as written | (b) the ladder's −50% row |
+| --- | --- | --- |
+| Vector | RSST 19.1 / VTI 24.5 / VTV 15 / VXUS 11.4 / AVDV 10 / IDMO 5 / AVES 5 / TIPS 10 | RSST 19.1 / VTI 12.2 / VTV 9.7 / VXUS 10.3 / AVDV 6.4 / IDMO 3.2 / AVES 3.2 / TIPS 35.9 |
+| Equity notional | `19.1 × 1.05 + 70.9` = **91.0%** | **65.1%** |
+| Trend notional | 19.1 | 19.1 |
+| Defensive | 10 | 35.9 |
+| Gross | 1.20 | 1.20 |
+| Placement, 23.8% | traditional TIPS 10 + RSST 19.1 + IDMO 4.2; Roth IDMO 0.8, AVES 5, AVDV 10, VXUS 11.4, VTV 6.2; taxable VTV 8.8, VTI 24.5. Nothing evicted; cost zero. | traditional RSST 19.1 + TIPS 14.2; Roth TIPS 21.7, IDMO 3.2, AVES 3.2, AVDV 5.3; taxable AVDV 1.1, VXUS 10.3, VTV 9.7, VTI 12.2. Cost about **7 bp/yr**. |
+
+The ladder's −50% row (`leverage-and-the-notional-budget.md` §3.2) is base notional 0.651
+with trend 0.191. The 19.1% wrapper figure is that row's trend column, and (a) keeps the
+trend column while discarding the equity column: it delivers 0.91 of equity, not 0.651. (b)
+is what the row supports, and its defensive size is arithmetic: the wrapper's `19.1 × 1.05`
+= 20.1 points of equity leave 45.0 points of unlevered equity to reach 65.1, so
+`100 − 19.1 − 45.0` = **35.9 points of TIPS**, and every unlevered line scales by
+`45.0 / 70` = 0.643 because the ladder scales the equity book whole. TIPS in a taxable
+account are ordinary income on the coupon and on the inflation accrual, which is taxed the
+year it accrues and paid at maturity (phantom income): at the 30-year's 2.99% real that is
+`2.99 × 0.408` = 122 bp/yr per dollar at zero inflation plus 40.8 bp per point of inflation,
+218 bp at the 2.35% ten-year breakeven on the regime page, ahead of every international
+line in the §3.2 queue at any inflation rate and ahead of IDMO above 0.6%. So (b)'s 35.9
+points take shelter before the international lines: 14.2 fit beside the wrapper in the
+traditional third and 21.7 spill into the Roth, which evicts VXUS 10.3 and AVDV 1.1 to
+taxable at 64.91 and 65.45 bp per dollar, `10.3 × 64.91 + 1.1 × 65.45` = **7.4 bp/yr**,
+about the whole booked placement edge of §3.5. Putting the 21.7 in taxable instead would
+cost 13.9 bp/yr at zero inflation before the phantom income, so the eviction is the cheaper
+route. Which version an investor takes is their tolerance, which nobody has supplied (§6);
+what this page no longer says is that (a) is the ladder's consequence.
 
 **The 60/40 move, by contributions only.** The book is 64.5% US / 35.5% ex-US in equity
-notional (65.5 of 101.5 at the 1.050 leg). Direct **100% of new money to AVDV and VXUS**, AVDV
-first because the developed-ex-US discount sits in the value half and not in Japan, Korea or
-Taiwan, until the split reads 60/40, then revert to pro rata. That needs about 7.7 points of
-capital: roughly a year at 10%/yr of contributions, a year and a half at 5%. No sale, no tax.
-The expected value of the move is about 7 bp/yr against 40–72 bp of tracking error, which is
-why it is worth doing with free money and not with taxed money. 50/50 is unsupported.
+notional (65.5 of 101.5 at the 1.050 leg). Reaching 60/40 without a sale needs
+`(0.4 × 101.5 − 36) / 0.6` = **7.7 points** of new ex-US capital, all of it VXUS: the
+developed-ex-US discount sits in the value half rather than in Japan, Korea or Taiwan, but
+AVDV's evidence is at 10 and it stays there (§3.8). The expected value of the move is about
+7 bp/yr against 40–72 bp of tracking error, which is why it is worth doing with sheltered
+money and not with taxed money. §3.8 gives the executable version: about a year through an
+active employer plan at 10%/yr at no placement cost, about two years without one, riding the
+taxable VXUS the account has to hold anyway. 50/50 is unsupported.
 
-**The placement consequence if the TIPS leg is taken.** As the rule is written, with the
-wrapper shrunk to 19.1%, the traditional third holds TIPS 10 + RSST 19.1 + IDMO 4.2, the
-Roth holds the rest of the international lines, and nothing is evicted to taxable: no
-placement cost. An investor who takes the TIPS leg **and keeps the wrapper at 30%** pays for
-it: 10 points of RSST move from the traditional into the Roth, and 4.7 points of VXUS (pro
-rata funding) or 9.3 (VTI-only funding) go to taxable at 64.91 bp per dollar at the 23.8%
-bracket, plus VTV's last 0.7 points — about **3 to 6 bp/yr, roughly the whole booked placement
-edge of +2 to +7 bp/yr** in §3.5. Moving the wrapper to the Roth also shifts its dispersion
-onto the investor's side of the partnership, which §3.4 prices as a forecast. State the cost;
-do not hide it.
+**An investor who takes the 10-point leg and keeps the wrapper at 30%** pays for it: 10
+points of RSST move from the traditional into the Roth, and 4.7 points of VXUS (pro rata
+funding) or 9.3 (VTI-only funding) go to taxable at 64.91 bp per dollar at the 23.8%
+bracket, plus VTV's last 0.7 points, about **3 to 6 bp/yr, roughly the whole booked
+placement edge of +2 to +7 bp/yr** in §3.5. Moving the wrapper to the Roth also shifts its
+dispersion onto the investor's side of the partnership, which §3.4 prices as a forecast, and
+raises its after-tax weight from 24.8% to 32.6%. State the cost; do not hide it.
 
 ---
 
@@ -613,8 +769,9 @@ priorities at all three brackets. The f = 1 and f = 0 fill orders for the seven-
 construction at both wrapper weights. The 34-to-1 wrapper regret ratio. The 0.52
 menu-binding fraction. The 9.12 bp menu cost at 30% and 6.00 at 25%. The 7.45 bp of forfeited credit. Weighted net cost of 31.3 bp at a 25% wrapper
 and 36.2 bp at 30%. The notional decomposition at both RSST legs (126.3 / 126.8 gross at 25%,
-131.5 / 132.2 at 30%). The §7 placement arithmetic for the TIPS leg and the 7.7 points of
-capital the 60/40 move needs.
+131.5 / 132.2 at 30%). The §7 arithmetic for both TIPS versions, the §3.8 contribution
+flows and the years to 60/40, the §5 fallback's 2.5 bp residual, the after-tax wrapper
+weights in §3.4, and the 7.7 points of capital the 60/40 move needs.
 
 **Assumed.** VTV, VXUS and AVDV yields are trailing-twelve-month figures from an aggregator
 read 2026-08-23, not sponsor filings. VXUS's and AVDV's qualified fractions are blends of

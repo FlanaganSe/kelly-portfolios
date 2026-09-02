@@ -180,8 +180,9 @@ US equity, obtained through IBIT and CME bitcoin futures. `alternative-sleeves-a
 concludes bitcoin should be funded from the speculation budget by *selling* equity; RSSX is
 the construction in which it is not. That does not make the sleeve better — the funding
 algebra improves the hurdle, it does not create a premium where the return evidence is a
-price expectation — but the repository's crypto verdict is currently written against a
-pro-rata construction only, and a financed one now exists at 0.67%.
+price expectation — and the financed construction has since been measured: the funding
+rule is worth its algebra and nothing else, and the verdict stands
+([audit](alternative-sleeves-audit.md) §3.1).
 
 ### 2.2 Managed futures and trend
 

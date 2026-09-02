@@ -104,4 +104,12 @@ randomness the generator seed is an explicit argument with a committed default.
   realises, so a liquidation reverses the benefit in full while §1014 and §170 forgive it
   — and both destroy the unused carryforward. Reads no market data;
   ``_tax_loss_harvesting_tables`` is the companion that touches the cache.
+* :mod:`financed_gold_bitcoin` — whether financing a gold-and-bitcoin sleeve on top of
+  the construction, as RSSX does, changes the crypto verdict that was measured on a
+  pro-rata construction: the wrapper algebra Experiment 018 uses with a bitcoin leg
+  admitted, one arm against the reference with the floor beside the gap, the closed-form
+  break-even bitcoin premium and the variance term that turns it into a growth
+  break-even, and a check of an assumed exposure vector against a fund's printed months.
+  Reads no market data; ``_financed_gold_bitcoin_tables`` is the companion that touches
+  the cache and, because its choices were made after the audit, ledgers its own run.
 """

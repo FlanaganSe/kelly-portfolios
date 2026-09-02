@@ -1,0 +1,678 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    The investor asked whether "strategies like the 200 day SMA" belong in the
+#    portfolio and has said leverage is acceptable when it has a purpose. The
+#    repository has tested a 10-month moving average on UNLEVERED equity at
+#    monthly resolution (docs/research/timing-rules-on-the-equity-sleeve.md:
+#    +0.74 pp/yr against a beta-matched control, floor 3.03, unresolved, and
+#    dominated by cheaper substitutes). It has never tested the two retail
+#    constructions that pair daily-reset leveraged funds with that signal:
+#    Gayed's "Leverage for the Long Run" (2016), which holds a 2x or 3x S&P 500
+#    fund above the 200-day moving average and T-bills below it, and the static
+#    HFEA mix of 55% UPRO and 45% TMF rebalanced quarterly. The question is
+#    whether either adds anything the financed trend overlay the portfolio
+#    already holds does not, at a price worth paying. This file measures it.
+#
+# 2. THIS SCORES CONSTRUCTIONS ON PUBLIC SERIES, NOT FUNDS.
+#    No fund return series is committed (decision 0002). A leveraged fund here is
+#    a daily-reset exposure of L times the Ken French market return, financed at
+#    the bill rate plus a stated spread on the (L - 1) it borrows, less a stated
+#    fee, compounded day by day. That is the mechanism of a swap-based leveraged
+#    ETF and it is not any fund's NAV. The volatility drag of daily reset is not
+#    a parameter: it arises from compounding the daily series and nothing else.
+#
+# 3. THE PRICE INDEX IS THE TOTAL-RETURN INDEX.
+#    The library publishes no price-only daily index. The 200-day average is
+#    therefore taken on the total-return index, which biases the signal toward
+#    being in the market by roughly the dividend yield times half the window
+#    (about 0.4 to 1.6 percent of the level over the sample). A price-index
+#    proxy that deflates the level by a constant 2.5 percent a year is run as a
+#    sensitivity so the size of that bias can be read rather than assumed.
+#
+# 4. THE FINANCING SPREAD IS AN ASSUMPTION AND ISSUERS DO NOT DISCLOSE IT.
+#    A swap-based leveraged ETF pays a financing rate on its swap notional that
+#    appears in no fee table. 40 bp over the bill rate is the base case and 80 bp
+#    the stress case; both are declared here, not measured. Every scored gap is
+#    reported at both, and a gap that changes sign between them is unresolved.
+#
+# 5. WHAT THIS FILE PREDICTS BEFORE IT IS RUN.
+#    `parameters.minimum_detectable_effect` is arithmetic on window length and a
+#    grid of tracking errors and required no look at the data. On the 99-year
+#    daily window the floor is about 0.28 pp/yr per point of tracking error; on
+#    the 1990-11 window it is about 0.47. A 3x fund switched by the rule tracks
+#    an unlevered index at roughly 30 to 35 points and its beta-matched control
+#    at roughly 25 to 30, so the floors are of the order of 8 to 10 pp/yr on the
+#    long window and 14 to 16 on the modern one. THE EXPECTED OUTCOME IS THAT
+#    EVERY MEAN GAP ON EVERY TIMED ARM COMES BACK `unresolved`, on both windows,
+#    against every control, because the design cannot see a gap smaller than
+#    the whole equity premium. The descriptive predictions, also made before the
+#    run: buy-and-hold 3x draws down more than 95 percent on the long window and
+#    buy-and-hold 2x about 90 percent; the 200-day rule on 3x draws down between
+#    55 and 80 percent; HFEA draws down more than 80 percent on the long window
+#    and 55 to 70 percent in 2022; the rule's realised gains in a taxable account
+#    are mostly short-term and its tax cost at the top bracket is several points
+#    a year on the 3x arm; the 200-day rule's deflated significance on the
+#    beta-matched active return is below 0.5 at the effective trial count.
+#    These are written here so that they cannot afterwards be presented as
+#    findings this design earned or as disappointments it suffered.
+#
+# 6. THE DECISION-RELEVANT OUTPUTS CARRY NO SIGNIFICANCE CLAIM.
+#    Drawdown, time under water, round trips a year, crisis-episode returns and
+#    the after-tax path are descriptive statistics of one realised history. They
+#    are what the investor asked about and are reported in full, with no
+#    p-value, no interval and no status.
+#
+experiment_family: exp_021_leveraged_etf_rules
+title: >
+  Leveraged ETFs and the 200-day moving average: do Gayed's "Leverage for the
+  Long Run" (2x and 3x daily-reset market funds above the 200-day average,
+  bills below) or the static 55/45 UPRO/TMF mix (HFEA) beat an unlevered index,
+  a continuous 1.3x exposure and their own beta-matched control, after fund
+  fee, swap financing and daily-reset compounding, on Ken French daily US data
+  1926-07..2026-06 and on 1990-11 onward?
+entry_point: exp_021_leveraged_etf_rules
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260902
+
+hypothesis: >
+  A 200-day moving-average switch on a daily-reset 2x or 3x US market fund
+  (in the fund when the total-return index closes above its 200-day average,
+  in bills when below, evaluated at each close and traded at the next close)
+  earns a higher arithmetic mean daily total return than (i) an unlevered
+  index fund, (ii) a continuous daily-reset 1.3x exposure with no timing and
+  (iii) a constant-weight portfolio holding the same leveraged fund at the
+  rule's own average exposure, after a 0.89 percent fund fee, financing at the
+  bill rate plus 40 bp on the borrowed notional, a 10 bp one-way trading cost
+  and the volatility drag that daily reset produces; and, descriptively, it
+  draws down less than buy-and-hold at the same leverage. Separately, a
+  55/45 UPRO/TMF mix rebalanced quarterly earns a higher arithmetic mean
+  monthly return than the unlevered index and the 1.3x exposure over 1926-07
+  onward and over 1990-11 onward. EVERY MEAN GAP IS EXPECTED TO COME BACK
+  `unresolved` (freeze note 5). The useful outputs are the size of the smallest
+  gap each window could have seen, beside each estimate, and the descriptive
+  drawdown, whipsaw, crisis-episode and after-tax tables.
+
+mechanism: >
+  Three mechanisms, all visible in the daily arithmetic. LEVERAGE: a daily-reset
+  L-times fund earns L times the market excess return plus the bill rate, less
+  (L - 1) times the financing spread and the fee, so its arithmetic mean rises
+  with L while its geometric mean falls by about (L^2 - L) sigma^2 / 2 a year,
+  which at 18 percent volatility is 3.2 pp for 2x and 9.7 pp for 3x. TIMING: a
+  long/flat switch truncates the left tail, and because volatility clusters in
+  falling markets the drag it avoids is larger for a levered fund than for an
+  unlevered one, which is the whole of Gayed's argument; against a control at
+  the rule's own average exposure that credit is exactly the timing content and
+  nothing else. FUNDING: the switch realises the whole position at every exit,
+  so in a taxable account it converts deferred gain into current gain, mostly
+  short-term, which the after-tax path prices on the realised history. HFEA is
+  a static 1.65x equity plus 1.35x long-Treasury exposure whose case rests on
+  the 1981-2020 bond-equity correlation regime; the bond leg is modelled
+  monthly from the Goyal-Welch long government bond return, the same series
+  Experiment 018 used, so its 1981-2020 bull market and its 2022 are both in
+  the panel.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each scored arm,
+  against each named control separately, on each window, on the primary
+  metric: (a) `rejected` if the arithmetic mean gap point estimate is at or
+  below zero; (b) `unresolved` if the gap is positive but smaller than the
+  minimum detectable effect at 80 percent power computed from that
+  comparison's own Newey-West standard error, reported in the same row;
+  (c) `unresolved` if the gap exceeds its floor but its Benjamini-Hochberg
+  adjusted p-value within the declared family (one family per control per
+  window) exceeds 0.10; (d) `unresolved` if the gap survives (b) and (c) but
+  changes sign at the 80 bp stress spread, because the financing spread is the
+  one unobservable cost and a result that lives inside it is not a result;
+  (e) `exploratory` otherwise. Under no outcome may this specification produce
+  a status above `exploratory`. Drawdown, time under water, round trips,
+  crisis-episode, deflation and after-tax tables are descriptive and receive
+  NO status. The whole-experiment status is `exploratory` when any scored
+  comparison reaches (e) and `unresolved` otherwise.
+
+universe:
+  description: >
+    One daily US market excess return and one daily bill rate from a single
+    Ken French file, so the cash leg inside Mkt-RF and the cash leg the rule
+    holds are the same number; plus one monthly long government bond return
+    for the HFEA arm. No fund share class, NAV series, swap term sheet or
+    intraday data appears anywhere.
+  legs:
+    - id: market
+      source: Ken French `F-F_Research_Data_Factors_daily`, `Mkt-RF`
+      basis: >
+        US value-weighted market return in excess of the bill, daily,
+        1926-07-01 onward, dividends included. There is no price-only index in
+        the library (freeze note 3).
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors_daily`, `RF`
+      basis: >
+        The file's own words: "the simple daily rate that, over the number of
+        trading days, compounds to 1-month TBill rate". Summed over a month it
+        reproduces the monthly file's RF. It is NOT an annual rate over 252.
+    - id: treasury
+      source: Goyal-Welch `PredictorData2025.xlsx`, monthly, `ltr`, less French monthly `RF`
+      basis: >
+        Long-term US government bond total return, about a 20-year bond,
+        1926-01..2025-12, the series Experiment 018 used. TMF holds 20-year-plus
+        Treasury exposure, so the duration is close; the window contains the
+        1981-2020 bull market and Experiment 018's era table applies.
+  excluded:
+    - Any claim that a simulated fund path is SSO, UPRO or TMF's NAV.
+    - Any weight or lookback search that is not the declared deflation grid.
+    - Intraday data, stop orders or any execution finer than one close.
+
+sample_policy:
+  start: "1926-07-01"
+  end: "2026-06-30"
+  held_out: >
+    Nothing is held out. The daily window is the whole file less the 200-day
+    burn-in, and 1990-11 is the boundary the rest of the repository uses for
+    its modern panels rather than a boundary chosen here. The signal, the
+    lookback and the leverage levels are the published retail constructions,
+    chosen by people who have read the earlier timing-rule study.
+  embargo: >
+    None. Every position on day t is decided from closes at or before day
+    t - 1 - lag; nothing in the position can see the return it earns.
+  eras:
+    - name: full_daily
+      start: "1927-04"
+      end: "2026-06"
+      rationale: >
+        The daily file from the first day the 200-day average is formed at a
+        one-day lag (about 1927-04-19) to the file's end. Every daily arm and
+        control is scored on this common window.
+    - name: modern_daily
+      start: "1990-11"
+      end: "2026-06"
+      rationale: >
+        The window the repository's developed ex-US, emerging and stacked
+        panels use, so the leveraged arms can be read beside them. The signal
+        is formed from the full history and only the returns are windowed.
+    - name: full_monthly
+      start: "1926-07"
+      end: "2025-12"
+      rationale: >
+        The HFEA panel: the monthly intersection of the daily-compounded 3x
+        equity fund and the Goyal-Welch bond leg, which ends 2025-12.
+    - name: modern_monthly
+      start: "1990-11"
+      end: "2025-12"
+      rationale: The HFEA panel from the repository's modern boundary.
+
+benchmark:
+  primary:
+    id: cheap
+    definition: >
+      An unlevered index fund at 3 bp, held; the daily-reset model at L = 1,
+      which is the market total return less the fee. For the monthly HFEA panel
+      it is the same path compounded within each calendar month.
+    rationale: "Decision 0003, charter question 1: can a construction beat a cheap index."
+  secondary:
+    id: leverage_matched_130
+    definition: >
+      A continuous daily-reset 1.3x market exposure with no timing: 85 percent
+      of capital in the 3 bp index fund and 15 percent in the 3x fund, held at
+      those exposures every day, which is 0.85 x 3 + 0.15 x 89 = 15.9 bp of fee
+      and financing on 0.30 of notional at the bill rate plus the spread. The
+      published portfolio's gross notional is 1.32x, so this is the leverage the
+      investor already carries, taken as plain equity beta instead of as trend.
+    rationale: >
+      Charter, benchmarks and funding: is it a timing effect or is it beta. A
+      timed 3x arm averages roughly 2.2x of exposure and a timed 2x arm roughly
+      1.5x; scoring them against 1.0x credits them for beta they carry, and this
+      control prices some of it at the leverage the portfolio already accepts.
+  tertiary:
+    id: exposure_matched
+    definition: >
+      The same leveraged fund held at a constant weight equal to the rule's own
+      average time in market on the window, remainder in bills, rebalanced
+      daily, with no trading cost. Its excess return over bills is exactly w
+      times the fund's, with no rebalancing term, so the gap against it is the
+      timing content of the rule and nothing else. This is the control the
+      earlier timing-rule study called the honest one.
+    rationale: >
+      A rule out of the market a quarter of the time carries a quarter less
+      beta. Scored against a fully invested fund it is credited for risk it
+      declined to take; scored here it is credited for timing only.
+  aggregation_rule: >
+    THREE CONTROLS ARE THREE FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED
+    OR PLACED IN ONE COLUMN. Every reported gap names its control and its
+    window. Benjamini-Hochberg is applied within one control on one window and
+    never across. Buy-and-hold arms are identical to their own exposure-matched
+    control and are marked identical rather than scored against it.
+
+primary_metric:
+  name: arithmetic mean daily total-return gap, annualised
+  definition: >
+    `sum(r_arm - r_control) / calendar years` over the window, both series
+    funded total returns net of every cost charged inside the simulation.
+    Annualised by calendar span rather than by 252 because the file has six
+    trading days a week until 1952. For the monthly HFEA panel the same
+    quantity on monthly returns. Arithmetic rather than geometric because the
+    question is whether the rule adds expected return per unit of capital;
+    the geometric growth of each arm is reported beside it and the two are
+    never mixed.
+  units: percentage points per year
+  uncertainty: >
+    Newey-West standard error of the mean daily difference with a declared
+    21-lag Bartlett kernel (one trading month), 95 percent normal interval,
+    plus a minimum detectable effect at 80 percent power from the same standard
+    error; and beside it a stationary block bootstrap of the mean with a 21-day
+    mean block and 2000 resamples, 95 percent percentile interval, as a check
+    on the HAC interval. The monthly panel uses the automatic Newey-West lag
+    rule and a 12-month mean block.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80 percent power
+    units: percentage points per year
+    note: "`2.801585 * HAC standard error * rows per year * 100`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+    note: "`(2.801585 * sigma_gap / gap)^2`; beyond a human horizon is a finding."
+  - name: compound annual growth rate of the funded wealth path
+    units: percent per year
+  - name: arithmetic mean total return, annualised
+    units: percent per year
+  - name: volatility, annualised by rows per year
+    units: percent
+  - name: maximum drawdown of the funded wealth path
+    units: percent
+  - name: longest run below the running peak
+    units: trading days and calendar years
+  - name: time in market and round trips per year
+    units: fraction; count per year
+    note: A round trip is one exit and the re-entry that follows it.
+  - name: cumulative return and peak-to-trough inside each predeclared crisis episode
+    units: percent
+  - name: deflated Sharpe ratio of the beta-matched active return
+    units: probability
+    note: >
+      On the declared grid of 28 rules (`parameters.deflation_grid`), trial
+      dispersion and mean off-diagonal correlation of the ACTIVE returns, the
+      linear effective-trial count, and the 200-day rule's deflated
+      significance at that count, at the 14.8 the earlier timing-rule study
+      used, at 100 and at 10000. Never on the arm's own Sharpe ratio, which
+      contains the equity premium by construction.
+  - name: after-tax annualised log growth by account
+    units: percent per year
+    note: >
+      `studies/timing_rules.taxable_path` on the realised 1990-11 onward daily
+      path at the two brackets the earlier study used (top bracket 40.8 / 23.8
+      with the 3.8 percent surtax; upper-middle 24 / 15), step-up and
+      liquidation, against the sheltered path of the same arm and against
+      buy-and-hold of the unlevered index in the same account.
+
+cost_model:
+  applied: fully, inside the simulation, every day, before any statistic
+  charged_on: >
+    (1) the fund fee on the fund's net assets, accrued per calendar day
+    elapsed between closes at annual / 365.25; (2) financing on the notional
+    borrowed, (L - 1) per dollar, at the bill rate plus the spread, the bill
+    part through the daily-reset identity `RF + L * (Mkt - RF)` and the spread
+    accrued per calendar day; (3) a one-way trading cost on the whole position
+    at every switch of the rule, so a whipsaw pays twice; (4) the same one-way
+    cost on the turnover of the quarterly HFEA rebalance. Nothing is a
+    post-hoc haircut.
+  fund_fee_basis_points:
+    index_1x: 3
+    levered_2x: 89
+    levered_3x: 89
+    treasury_3x: 100
+    leverage_matched_130: 15.9
+  fund_fee_sources: >
+    3 bp is the repository's cheap-index convention. 89 bp is the task's
+    declared fee for a daily-reset 2x or 3x US equity ETF (SSO's stated
+    expense ratio; UPRO's is 91). 100 bp for the 3x long-Treasury fund is an
+    assumption near TMF's stated ratio. 15.9 bp is the blend that produces a
+    1.3x exposure from 85 percent index and 15 percent 3x fund.
+  swap_financing_spread_basis_points_over_bill:
+    base: 40
+    stress: 80
+  one_way_trading_cost_basis_points: 10
+  trading_cost_sensitivity_basis_points: [0, 5, 10, 25]
+  not_charged:
+    - Bid-ask on the initial purchase; every arm starts from a common portfolio.
+    - The swap counterparty's collateral haircuts, which no issuer publishes.
+    - Any tax inside the pre-tax tables; the after-tax section prices it separately.
+
+rebalance_rule:
+  frequency: >
+    Daily-reset funds rebalance to L times exposure at every close by
+    construction. The timed arms hold 100 percent of the fund or 100 percent
+    bills and switch only when the signal changes. The 1.3x control holds its
+    two funds at constant weights every day. HFEA rebalances to 55/45 at the
+    end of every third month from the first month of the panel and drifts in
+    between.
+  signal: >
+    Total-return index level at close d against the simple average of the 200
+    closes ending at d, inclusive. Base arm: in when above, in bills when
+    below. Band arm: enter when the level exceeds the average by more than 1
+    percent, exit when it falls below the average by more than 1 percent, hold
+    the previous state inside the band (hysteresis). A signal read at close d
+    governs the position held on day d + 1 + lag; the base lag is 1 (evaluated
+    at each close, traded at the next close) and lag 0 (traded at the same
+    close, the literature's convention) is a sensitivity.
+  drift: Weights drift within the day and the drifted position earns the day's return.
+
+inference:
+  bootstrap: >
+    stationary block bootstrap of the mean paired difference, 21-day mean
+    block on daily panels and 12-month on the monthly panel, chunked so that
+    no resample matrix exceeds a few hundred rows, reported beside the HAC
+    interval that is the primary interval
+  block_length_policy: >
+    Frozen at one trading month for daily data and twelve months for monthly.
+    Not tuned on the data. The HAC lag count is frozen at 21 on daily data for
+    the same reason and at the Newey-West automatic rule on monthly data, where
+    the repository's other studies use it.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each control family on each window,
+    never across; and, separately, a deflated Sharpe ratio on the beta-matched
+    active return over the declared 28-rule grid. The family omits the
+    sensitivities and the twenty earlier specifications that searched this
+    data; the adjusted p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 2000
+  notes: >
+    An interval containing zero is reported as unresolved. The floor is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per control, per window, and
+  record which clause fired. `unresolved` is the expected outcome for every
+  timed comparison (freeze note 5). Under no outcome may this specification
+  produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    funds_are_modelled_exposures: true
+    statement: >
+      Every levered fund is L times a public market series financed and
+      charged as declared. No fund's returns were used. The experiment scores
+      CONSTRUCTIONS; a result transfers to a fund only to the extent the fund
+      delivers the exposure at the cost.
+    order_of_operations: >
+      This file was written and frozen before the experiment module produced
+      any statistic. The 200-day lookback and the 2x, 3x and 55/45 constructions
+      are the published retail rules, not a search, and the deflation grid is
+      declared here so that the lookback's selection by the literature can be
+      priced rather than repeated.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired difference."
+    computed_before_freezing: >
+      Arithmetic on the window lengths and a grid of tracking errors. Full
+      daily window about 99.2 years: 0.281 pp/yr per point of tracking error.
+      Modern window 1990-11..2026-06, 35.7 years: 0.469. HFEA monthly window
+      1926-07..2025-12, 99.5 years: 0.281; modern monthly 35.2 years: 0.472.
+    floor_at_assumed_tracking_error_full:
+      "5.0": 1.40
+      "10.0": 2.81
+      "15.0": 4.21
+      "20.0": 5.62
+      "25.0": 7.02
+      "30.0": 8.43
+      "35.0": 9.83
+    floor_at_assumed_tracking_error_modern:
+      "5.0": 2.35
+      "10.0": 4.69
+      "15.0": 7.04
+      "20.0": 9.38
+      "25.0": 11.73
+      "30.0": 14.07
+      "35.0": 16.42
+    expected_tracking_errors: >
+      200-day rule on 3x against the 1x index: about 30 to 35 points, floor 8
+      to 10 (full) and 14 to 16 (modern). On 2x against 1x: 15 to 20 points,
+      floor 4 to 6 and 7 to 9. On 3x against its beta-matched control: 25 to
+      30 points, floor 7 to 8 and 12 to 14. On 1x against its beta-matched
+      control: about 10 points, floor 2.8 and 4.7, which reproduces the earlier
+      monthly study's 3.03. HFEA against the 1x index: 25 to 30 points, floor 7
+      to 8 and 12 to 14. A timing effect worth having would be a few points a
+      year: BELOW EVERY FLOOR ABOVE.
+
+  windows:
+    - id: full_daily
+      frequency: daily
+      start: null
+      end: null
+      note: From the first day every arm has a formed position, to the file's end.
+    - id: modern_daily
+      frequency: daily
+      start: "1990-11-01"
+      end: null
+      note: The repository's modern boundary; signals carry over from the full history.
+
+  rule:
+    lookback_days: 200
+    band: 0.01
+    execution_lag_days: 1
+    execution_lag_sensitivity_days: 0
+    signal_index: total_return
+    price_proxy_dividend_yield_percent: 2.5
+
+  leverage_levels: [1, 2, 3]
+
+  arms:
+    hold_1x:
+      role: cheap control as an arm
+      construction: buy_and_hold
+      leverage: 1
+      note: Identically the cheap control; listed so the table has the unlevered row.
+    hold_2x:
+      role: candidate; buy-and-hold daily-reset 2x
+      construction: buy_and_hold
+      leverage: 2
+    hold_3x:
+      role: candidate; buy-and-hold daily-reset 3x
+      construction: buy_and_hold
+      leverage: 3
+    lev_130:
+      role: leverage-matched control as an arm
+      construction: constant_130
+      leverage: 1.3
+      note: Identically the leverage-matched control; listed so the table has the row.
+    sma200_1x:
+      role: candidate; the earlier study's rule at daily resolution
+      construction: sma
+      leverage: 1
+      band: 0.0
+    sma200_1x_band:
+      role: candidate; the same with a 1 percent hysteresis band
+      construction: sma
+      leverage: 1
+      band: 0.01
+    sma200_2x:
+      role: candidate; Gayed's rule on a 2x fund
+      construction: sma
+      leverage: 2
+      band: 0.0
+    sma200_2x_band:
+      role: candidate; the same with a 1 percent band
+      construction: sma
+      leverage: 2
+      band: 0.01
+    sma200_3x:
+      role: candidate; Gayed's rule on a 3x fund
+      construction: sma
+      leverage: 3
+      band: 0.0
+    sma200_3x_band:
+      role: candidate; the same with a 1 percent band
+      construction: sma
+      leverage: 3
+      band: 0.01
+
+  hfea:
+    equity_weight: 0.55
+    treasury_weight: 0.45
+    equity_leverage: 3
+    treasury_leverage: 3
+    rebalance_every_months: 3
+    equity_leg: >
+      The daily-reset 3x fund compounded within each calendar month, so the
+      intra-month reset drag is in the leg.
+    treasury_leg: >
+      `RF + 3 * (ltr - RF)` less two units of spread and the fee, per month.
+      No daily bond series exists in the repository, so the treasury leg is
+      reset monthly rather than daily; at a bond volatility near 10 percent
+      the omitted intra-month drag is of the order of a point a year and is
+      stated, not modelled.
+    windows:
+      - id: full_monthly
+        start: null
+        end: null
+      - id: modern_monthly
+        start: "1990-11"
+        end: null
+
+  controls: [cheap, leverage_matched_130, exposure_matched]
+  controls_in_estimates: [cheap, leverage_matched_130, exposure_matched]
+  multiple_testing_q: 0.10
+  hac_lags_daily: 21
+  bootstrap_block_days: 21
+  bootstrap_block_months: 12
+  bootstrap_chunk_rows: 250
+
+  deflation_grid:
+    lookbacks_days: [20, 50, 100, 150, 200, 250, 300]
+    bands: [0.0, 0.01]
+    leverage_levels: [2, 3]
+    execution_lag_days: 1
+    window: full_daily
+    note: >
+      28 rules. The 200-day rule was selected from at least this family by the
+      literature, so its Sharpe ratio is an order statistic over at least this
+      many trials. The true search over daily US equity history is far larger,
+      so the effective count is a LOWER bound and the deflated significance an
+      UPPER bound on the evidence. Deflated on the beta-matched active return,
+      never on the arm's own Sharpe.
+    trial_counts_also_reported: [14.8, 100, 10000]
+
+  after_tax:
+    window: modern_daily
+    arms: [sma200_3x, sma200_2x, sma200_1x, hold_3x, hold_2x, hold_1x]
+    dividend_yield_percent:
+      index_1x: 1.75
+      levered: 0.5
+    long_term_holding_trading_days: 252
+    brackets: [top, upper_middle]
+    disposals: [step_up, liquidate]
+    note: >
+      Sheltered path (Roth or traditional) and taxable path on the realised
+      1990-11 onward daily history, average-cost basis, loss carryforwards
+      against later capital gains only, tax paid out of the account. The tax
+      cost of a rule is the widening of its shortfall against buy-and-hold of
+      the unlevered index between the sheltered and the taxable account.
+
+  crisis_episodes:
+    daily:
+      - {name: crash_1929, start: "1929-09-03", end: "1932-06-30"}
+      - {name: october_1987, start: "1987-10-01", end: "1987-11-30"}
+      - {name: dotcom_2000, start: "2000-03-24", end: "2002-10-09"}
+      - {name: gfc_2008, start: "2007-10-09", end: "2009-03-09"}
+      - {name: covid_2020, start: "2020-02-19", end: "2020-03-23"}
+      - {name: rate_shock_2022, start: "2022-01-03", end: "2022-10-12"}
+    monthly:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: october_1987, start: "1987-10", end: "1987-11"}
+      - {name: dotcom_2000, start: "2000-03", end: "2002-10"}
+      - {name: gfc_2008, start: "2007-10", end: "2009-03"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-10"}
+    note: >
+      Frozen here. Each episode reports every arm's cumulative return and its
+      peak-to-trough inside the window. The 1987 and 2020 episodes are the
+      reason the daily file was needed: a monthly rule cannot see them coming
+      and a daily one may or may not.
+
+  sensitivities:
+    spread_stress_basis_points: 80
+    execution_lag_days: 0
+    price_proxy_dividend_yield_percent: 2.5
+    reporting: >
+      Every scored arm's point gap against every control on both windows at the
+      stress spread, at lag 0, on the price-proxy index and at each trading
+      cost; no bootstrap. The stress-spread gap feeds falsifier clause (d).
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic. Every file is read from
+      the local raw cache; this experiment never downloads.
+    files:
+      - id: french_us_ff3_daily
+        source: french
+        dataset_id: french_us_ff3_daily
+        table_id: daily
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: 39f9ae1d0e9f575024bc23145980ac270cea508fb67e592578b3f4d65f36d006
+        committed_manifest: data-manifests/french_us_ff3_daily.json
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+
+data_sources:
+  - id: french_us_ff3_daily
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_daily_CSV.zip
+    manifest: data-manifests/french_us_ff3_daily.json
+    construction: Mkt-RF and RF daily, used as published; the total-return index is the cumulative product of their sum
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: monthly RF for the Treasury leg's excess return
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr less French monthly RF as the HFEA bond leg
+
+hostile_tests:
+  - Charge the fee, the spread and the trading cost inside every arm and inside the 1.3x control on the same terms; not charging the control is the error this test exists to catch.
+  - Score every timed arm against a control at its own average exposure, so that beta it declined to carry is not credited as timing.
+  - Re-run every scored gap at the 80 bp stress spread and mark any sign change unresolved.
+  - Re-run every scored gap at lag 0 and on the price-proxy index, and report both beside the base case, so the alignment and the dividend bias can each be read.
+  - Report the deflated Sharpe ratio on the ACTIVE return over the declared 28-rule grid, never on the rule's own Sharpe.
+  - Report the after-tax path at two brackets and two disposals on the realised modern history.
+  - Report every crisis episode including 1987-10 and 2020-03, which a monthly rule cannot resolve, with peak-to-trough inside the window.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Reconcile the daily 1x rule against the earlier monthly study's beta-matched gap and floor, and say whether daily resolution changed the reading.
+
+reporting_requirements:
+  - The freeze note with every table, including that funds are modelled exposures and that the signal index is the total-return index.
+  - The floor and the control named beside every gap, in the same row; never a figure combining two controls or two windows.
+  - CAGR, arithmetic mean, volatility, maximum drawdown, longest time under water, time in market and round trips a year for every arm on both windows, labelled descriptive.
+  - Every crisis episode for every arm.
+  - The deflation table with the effective trial count and the counts it was also read at.
+  - The after-tax table with the tax cost of each rule stated as a difference of shortfalls.
+  - The sha256 of every source file read and the spread, fee, cost and lag actually used.
+
+notes: >
+  Exploratory in the strongest sense: the constructions are the published
+  retail rules, the daily file is new to the repository and the earlier
+  monthly study was read before this file was written. This experiment can
+  rank constructions on public series and cannot rank funds. Retain
+  `unresolved` wherever the instrument cannot separate an arm from its
+  control, and read the drawdown, whipsaw, episode and after-tax tables as
+  descriptions of one history, which is what they are. No sleeve, fund, rule
+  or portfolio is promoted by this specification.

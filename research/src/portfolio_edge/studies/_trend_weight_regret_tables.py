@@ -69,6 +69,12 @@ TOLERANCE: Final = 0.0010
 DECAY_WEIGHTS: Final = (0.17, 0.11, 0.17, 0.16, 0.11, 0.11, 0.17, 0.0)
 #: A coarser grid for the simulated arm, which costs a bootstrap per cell.
 HOLDABILITY_WEIGHTS: Final = (0.0, 0.05, 0.10, 0.15, 0.20, 0.25, 0.30, 0.35, 0.40)
+#: The contribution stream the recommendation cites as the reason a position survives a
+#: drought: 5-15% of starting capital a year, paid monthly to BOTH arms. Zero is the row
+#: every other table on the page is built on. Two bases bracket the effect: a fixed
+#: nominal instalment, and one that keeps pace with the benchmark portfolio's wealth.
+CONTRIBUTION_RATES: Final = (0.0, 0.05, 0.10, 0.15)
+CONTRIBUTION_WEIGHTS: Final = (0.25, 0.30)
 
 #: All-in retail cost per unit of trend notional obtained through the candidate's wrapper:
 #: 99 bp of RSST fee plus 20.5 bp of equity-index-futures basis on the 0.331 of financed
@@ -127,9 +133,10 @@ CRISIS_WINDOWS: Final[Mapping[str, tuple[str, str]]] = {
     "2022 inflation": ("2022-01", "2022-10"),
 }
 
-#: Relative-drawdown triggers for the capitulation arm. -21.3% is the sibling page's own
-#: measured central-case worst relative run at a 30% weight, so a -20% trigger is a central
-#: case rather than a pessimistic one.
+#: Relative-drawdown triggers for the capitulation arm. The sibling page's corrected
+#: central-case worst relative run at a 30% weight is -15.7% (its first version read -21.3%
+#: off the retracted 1.80% row), so a -20% trigger sits four points beyond the central case
+#: and is a pessimistic input rather than a central one.
 TRIGGERS: Final = (-0.15, -0.20, -0.30)
 
 #: Experiment 012's own window, so that the scenario built from it is the scenario that
@@ -787,6 +794,55 @@ def main() -> None:
         "\n  Quitting truncates both tails and it truncates the good one hardest: at a\n"
         "  negative premium abandonment SAVES money, at a positive one it costs. That is what\n"
         "  makes the two errors asymmetric and it is why a growth-only surface cannot see it.\n"
+    )
+
+    print("== 4c. the same rule with a contribution stream inside the path ==\n")
+    print(
+        "  The same resamples, the same -20% trigger, and the same dollars paid into BOTH\n"
+        "  arms every month: a fixed instalment of the stated share of starting capital a\n"
+        "  year, or the same share of the benchmark portfolio's wealth so the stream keeps\n"
+        "  pace with it. Relative wealth is the ratio of the two pots INCLUDING the new\n"
+        "  money, which is what a statement shows; the held and after-quitting columns are\n"
+        "  then the terminal wealth ratio per year, money-weighted, not a return gap.\n"
+    )
+    print(
+        f"  {'w':>5} {'m':>7} {'contrib':>8} {'basis':>16} {'P(quit)':>8} {'median yr':>10} "
+        f"{'held':>8} {'after quitting':>15} {'P(lose)':>8}"
+    )
+    for weight in CONTRIBUTION_WEIGHTS:
+        for net in (prior.support[0], prior.median):
+            trend_net = restate_annual_mean(trend, annual_mean=net)
+            candidate = _candidate(equity, trend_net, cash, weight=weight)
+            for basis in ("starting_capital", "control_wealth"):
+                for rate in CONTRIBUTION_RATES:
+                    if rate == 0.0 and basis == "control_wealth":
+                        continue
+                    outcome = abandonment_adjusted_gap(
+                        candidate,
+                        cheap_control,
+                        weight=weight,
+                        net_premium=net,
+                        trigger=-0.20,
+                        horizon_years=30.0,
+                        resamples=RESAMPLES,
+                        block_length=BLOCK_MONTHS,
+                        rng=np.random.default_rng(SEED),
+                        contribution_rate=rate,
+                        contribution_basis=basis,
+                    )
+                    months = outcome.median_months_to_abandonment
+                    print(
+                        f"  {weight:5.2f} {net * 100:6.2f}% {rate:8.0%} {basis:>16} "
+                        f"{outcome.probability_abandoned:8.1%} "
+                        f"{months / 12.0 if math.isfinite(months) else float('nan'):10.1f} "
+                        f"{outcome.gap_if_held * 1e4:7.0f}b "
+                        f"{outcome.gap_with_abandonment * 1e4:14.0f}b "
+                        f"{outcome.probability_underperform_with_abandonment:8.1%}"
+                    )
+    print(
+        "\n  A contribution stream dilutes an accumulated relative deficit with money that has\n"
+        "  not yet had time to fall behind. Whether that moves the -20% trigger materially\n"
+        "  is what the rows above measure; the zero-contribution rows reproduce section 4.\n"
     )
 
     print("== 4a. the regret surface once capitulation is inside the path ==\n")

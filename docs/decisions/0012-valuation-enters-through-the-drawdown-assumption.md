@@ -36,14 +36,20 @@ first time, on 1929–2025 and three shorter panels, and an adversarial review r
    notional budget, which sizes the wrapper against the investor's stated tolerance.
    (b) A conditional TIPS substitution rule gated on that stated tolerance: at −50% or
    tighter, ten points of long TIPS held unlevered in the traditional account, funded from VTI
-   and VXUS pro rata, with the wrapper shrunk to the ladder's figure (19.1% at −50%); at −60%
-   or looser, none.
+   and VXUS pro rata, with the wrapper shrunk to 19.1%; at −60% or looser, none. Amended
+   2026-09-02: the ten points are Experiment 018's frozen substitution arm and the 19.1% is
+   the ladder's trend column at −50%; the rule is not a derivation from the ladder's equity
+   column, which would call for about 36 points of TIPS, and it is labelled as such in
+   [part A](../research/portfolio-for-one-investor.md) §7.
    The default for a contributing, leverage-accepting investor is none.
    (c) The US/international split adjusted by contributions only, from 65/35 toward 60/40,
    never by a sale in a taxable account.
    No route is a market return forecast, a CAPE-level timing rule, or a rule run in a taxable
-   account. The excess-CAPE-yield rule stays `exploratory` and unimplemented until a
-   specification is frozen and run.
+   account. The excess-CAPE-yield rule was frozen and run on 2026-09-02 (Experiment 022):
+   it clears its floor against a risk-matched control on a century, is unresolved since
+   1990, and is admissible in the traditional third as a 25% wrapper plus a 5-point
+   ten-year Treasury or TIPS line. It stays `exploratory` and is offered as the investor's
+   valuation-conditioned choice rather than adopted into the published vector.
 2. **The financed bond stack is not adopted, on a scoped rejection.** Tested as 20 and 40
    points of an RSSB-like Treasury leg on the 70% equity core plus 30% trend wrapper, it reads
    +0.34 [−0.01, +0.69] and +0.68 pp/yr against the reference on 1157 months, `unresolved`; its
@@ -73,13 +79,14 @@ first time, on 1929–2025 and three shorter panels, and an adversarial review r
 
 ## Consequences
 
-The capital-weight vector is unchanged by the September 2026 review, and the site asks the
-investor for a tolerable drawdown and shows the ladder rather than choosing a number for
-them. A valuation page may say what a reading is and what the repository's rules would
+The capital-weight vector is unchanged by the September 2026 review, and the site shows the
+ladder beside the published weight, stating that 30% is its loosest row, rather than
+choosing a number for the investor (this record claimed a prompt for the tolerance before
+one existed; the ladder was published on 2026-09-02). A valuation page may say what a reading is and what the repository's rules would
 prescribe; it may not book a forecast. The stacked-bond question stays open as research
 under [0010](0010-bars-carry-a-reopening-condition.md); what is closed is adopting it into
 the published construction on the evidence held.
 
 This record should be revisited when the investor supplies a tolerance, when any trigger in
-clause 4 fires, or when a frozen specification of the excess-CAPE-yield rule is run. It is
+clause 4 fires, or when the excess-CAPE-yield rule's post-1990 window clears its floor. It is
 superseded if a later record admits a return forecast into the construction.

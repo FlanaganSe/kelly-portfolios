@@ -70,6 +70,7 @@ from portfolio_edge.core.drawdown import drawdown_summary
 
 __all__ = [
     "AbandonmentOutcome",
+    "ContributionBasis",
     "DecadeGap",
     "OverlayGrowthModel",
     "PremiumPrior",
@@ -82,6 +83,7 @@ __all__ = [
     "regret_surface",
     "restate_annual_mean",
     "robust_range",
+    "wealth_with_contributions",
     "years_to_resolve",
 ]
 
@@ -501,15 +503,79 @@ def restate_annual_mean(
     )
 
 
+#: How a contribution stream is sized. ``starting_capital`` pays a fixed nominal
+#: instalment, ``rate / periods_per_year`` of the initial dollar every period, the way a
+#: savings rate against a salary looks from inside a portfolio that then outgrows it.
+#: ``control_wealth`` pays the same fraction of the *benchmark* portfolio's wealth at the
+#: previous period end, so the contribution keeps pace with the portfolio; it is the
+#: stronger dilution and brackets the first from above. In both cases the same dollars go
+#: to both arms, which is what makes the two arms one investor with one income.
+ContributionBasis = Literal["starting_capital", "control_wealth"]
+
+
+def wealth_with_contributions(
+    candidate_steps: FloatArray,
+    control_steps: FloatArray,
+    *,
+    contribution_rate: float = 0.0,
+    contribution_basis: ContributionBasis = "starting_capital",
+    periods_per_year: int = MONTHS_PER_YEAR,
+) -> tuple[FloatArray, FloatArray]:
+    """Wealth paths of two arms that start at one dollar and receive one contribution stream.
+
+    ``candidate_steps`` and ``control_steps`` are ``(paths, periods)`` arrays of gross
+    returns ``1 + r``. Each period the wealth compounds and then the instalment arrives,
+    so a contribution never earns the return of the period it was paid in. With
+    ``contribution_rate == 0`` both paths are plain cumulative products.
+
+    The arithmetic is what a reader would do on paper: ``W_t = W_{t-1} (1 + r_t) + c_t``,
+    with ``c_t = rate / periods_per_year`` on the ``starting_capital`` basis and
+    ``c_t = rate / periods_per_year * W_control,{t-1}`` on the ``control_wealth`` basis.
+    """
+    candidate = np.asarray(candidate_steps, dtype=np.float64)
+    control = np.asarray(control_steps, dtype=np.float64)
+    if candidate.shape != control.shape or candidate.ndim != 2:
+        raise ValueError("candidate and control steps must be two-dimensional and the same shape")
+    if contribution_rate < 0.0:
+        raise ValueError(f"contribution_rate must be non-negative, got {contribution_rate}")
+    if contribution_rate == 0.0:
+        return np.cumprod(candidate, axis=1), np.cumprod(control, axis=1)
+
+    instalment = contribution_rate / periods_per_year
+    paths, periods = candidate.shape
+    candidate_wealth = np.empty((paths, periods), dtype=np.float64)
+    control_wealth = np.empty((paths, periods), dtype=np.float64)
+    previous_candidate = np.ones(paths, dtype=np.float64)
+    previous_control = np.ones(paths, dtype=np.float64)
+    for t in range(periods):
+        if contribution_basis == "starting_capital":
+            paid = np.full(paths, instalment, dtype=np.float64)
+        else:
+            paid = instalment * previous_control
+        previous_candidate = previous_candidate * candidate[:, t] + paid
+        previous_control = previous_control * control[:, t] + paid
+        candidate_wealth[:, t] = previous_candidate
+        control_wealth[:, t] = previous_control
+    return candidate_wealth, control_wealth
+
+
 @dataclass(frozen=True, slots=True, kw_only=True)
 class AbandonmentOutcome:
-    """What a stated capitulation rule costs at one weight and one premium."""
+    """What a stated capitulation rule costs at one weight and one premium.
+
+    With a contribution stream, ``gap_if_held`` and ``gap_with_abandonment`` are the log of
+    the terminal wealth ratio per year, which includes the contributions and is therefore a
+    money-weighted figure rather than a time-weighted growth gap; the two coincide only at
+    ``contribution_rate == 0``.
+    """
 
     weight: float
     net_premium: float
     relative_drawdown_trigger: float
     horizon_years: float
     resamples: int
+    contribution_rate: float
+    contribution_basis: ContributionBasis
     probability_abandoned: float
     median_months_to_abandonment: float
     gap_if_held: float
@@ -534,6 +600,8 @@ def abandonment_adjusted_gap(
     resamples: int,
     block_length: int,
     rng: np.random.Generator,
+    contribution_rate: float = 0.0,
+    contribution_basis: ContributionBasis = "starting_capital",
     periods_per_year: int = MONTHS_PER_YEAR,
 ) -> AbandonmentOutcome:
     """Growth against a control when the investor sells the sleeve after a bad stretch.
@@ -542,7 +610,16 @@ def abandonment_adjusted_gap(
     draw is one investor's two portfolios on one history. On each path the relative wealth
     ``W_candidate / W_control`` is tracked against its own running peak; the first month
     that ratio sits ``trigger`` below its peak, the investor switches to the control and
-    stays there, which freezes relative wealth at its trough for the rest of the horizon.
+    stays there. Without contributions that freezes relative wealth at its trough for the
+    rest of the horizon. With a contribution stream the same dollars reach both arms every
+    month, so the accumulated deficit is diluted by new money on both sides and the ratio
+    drifts back toward one after the sale; the path is simulated rather than frozen so the
+    two cases share one mechanism.
+
+    The running peak starts at the first month's relative level rather than at the
+    initial 1.0. Including the start moves the published probabilities by at most 0.25
+    points at 4,000 resamples, inside the binomial resolution of the design, and the
+    convention is kept so the rows without contributions reproduce exactly.
 
     **The trigger is an input, not an estimate**, and it should be read against the sibling
     page's measured worst relative run rather than tuned. Nothing in this repository
@@ -569,16 +646,36 @@ def abandonment_adjusted_gap(
     drawn = (starts[:, :, None] + offsets[None, None, :]) % n
     indices = drawn.reshape(resamples, -1)[:, :horizon]
 
-    relative_step = (1.0 + candidate[indices]) / (1.0 + control[indices])
-    relative = np.cumprod(relative_step, axis=1)
+    candidate_steps = 1.0 + candidate[indices]
+    control_steps = 1.0 + control[indices]
+    candidate_wealth, control_wealth = wealth_with_contributions(
+        candidate_steps,
+        control_steps,
+        contribution_rate=contribution_rate,
+        contribution_basis=contribution_basis,
+        periods_per_year=periods_per_year,
+    )
+    relative = candidate_wealth / control_wealth
     peak = np.maximum.accumulate(relative, axis=1)
     breached = relative / peak - 1.0 <= trigger
 
     any_breach = breached.any(axis=1)
     first = np.where(any_breach, breached.argmax(axis=1), horizon - 1)
-    frozen = relative[np.arange(resamples), first]
     held = relative[:, -1]
-    with_abandonment = np.where(any_breach, frozen, held)
+    if contribution_rate == 0.0:
+        frozen = relative[np.arange(resamples), first]
+        with_abandonment = np.where(any_breach, frozen, held)
+    else:
+        after_sale = np.arange(horizon)[None, :] > first[:, None]
+        switched_steps = np.where(after_sale, control_steps, candidate_steps)
+        switched_wealth, _ = wealth_with_contributions(
+            switched_steps,
+            control_steps,
+            contribution_rate=contribution_rate,
+            contribution_basis=contribution_basis,
+            periods_per_year=periods_per_year,
+        )
+        with_abandonment = switched_wealth[:, -1] / control_wealth[:, -1]
 
     years = horizon / periods_per_year
     return AbandonmentOutcome(
@@ -587,6 +684,8 @@ def abandonment_adjusted_gap(
         relative_drawdown_trigger=trigger,
         horizon_years=years,
         resamples=resamples,
+        contribution_rate=contribution_rate,
+        contribution_basis=contribution_basis,
         probability_abandoned=float(np.mean(any_breach)),
         median_months_to_abandonment=(
             float(np.median(first[any_breach]) + 1) if any_breach.any() else float("nan")

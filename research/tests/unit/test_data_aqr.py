@@ -389,6 +389,11 @@ def test_a_day_first_text_date_is_refused_rather_than_reordered(
             "VME Factors",
             "Value-and-Momentum-Everywhere-Factors-Monthly.xlsx",
         ),
+        (
+            "aqr_century_factor_premia",
+            "Century of Factor Premia",
+            "Century-of-Factor-Premia-Monthly.xlsx",
+        ),
     ],
 )
 def test_the_new_workbooks_pin_a_sheet_and_declare_a_gross_return_basis(

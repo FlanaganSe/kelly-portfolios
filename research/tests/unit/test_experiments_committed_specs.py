@@ -52,6 +52,10 @@ SPEC_NAMES = (
     "exp_016f_matched_pairs",
     "exp_017_longonly_ladder",
     "exp_018_defensive_engines",
+    "exp_019_carry_engine",
+    "exp_020_conditional_treasury_stack",
+    "exp_021_leveraged_etf_rules",
+    "exp_022_ecy_rule",
     "phase1_ff_reproduction",
 )
 

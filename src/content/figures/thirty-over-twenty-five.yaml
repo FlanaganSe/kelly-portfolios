@@ -20,5 +20,7 @@ note: >-
   panel; and the gap is negative for the 25% arm in all seven declared sub-periods, -0.19 to
   -0.94. It is a statement about borrowing rather than about how the thing is built: the two
   portfolios differ by 5.4 points of exposure, and over a stretch where US stocks paid 9.83% a
-  year above cash, more exposure wins. 016e's own open question 4 asks for the pair that would
-  settle it, matched at the same gross exposure, and it has not been run.
+  year above cash, more exposure wins. 016e's own open question 4 asked for the pair that would
+  settle it. Experiment 016f has since run it: the seven funds at 30% against the same seven
+  at 25% read +0.51, plausibly +0.30 to +0.72, against a 0.31 floor, and the rest of this
+  gap was the four-holding fund-list change, +0.01 against a 0.26 floor.

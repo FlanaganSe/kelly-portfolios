@@ -1,0 +1,619 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    docs/research/valuation-and-the-allocation.md section 3 measured, as an
+#    unregistered study, that tilting an 80/20 equity/bond mix on the expanding
+#    percentile of Shiller's excess CAPE yield (ECY) at k = 0.4 earned +49.5 bp/yr
+#    gross against a constant 80/20 on 1921-01..2026-07, +47.7 bp of it timing
+#    rather than de-risking, +48.6 bp in a sheltered account, negative in a taxable
+#    one, wrong sign in 1980-2000, on about 2.5 independent 30-year windows and on
+#    a revised (non-point-in-time) workbook. Decision 0012 left the rule
+#    `exploratory` and unimplemented "until a specification is frozen and run".
+#    Two thirds of this investor's assets are sheltered, where the taxable
+#    objection does not apply. This file freezes the rule and runs it, sheltered
+#    only, so that the repository can say with a registered result whether the
+#    rule belongs in the traditional third.
+#
+# 2. THE FUNCTIONAL FORM IS THE STUDY'S, NOT A NEW FIT.
+#    `w_t = clip(0.80 + k * (pct_t - 0.5), 0, 1)` with `pct_t` the expanding
+#    percentile of the ECY signal (high percentile = cheap) over at least 479
+#    prior months, exactly `studies/valuation_conditioning.conditional_weight`.
+#    k = 0.4 is the primary arm; k = 0.2 and 0.6 are predeclared secondary arms.
+#    No coefficient is fitted anywhere in this experiment. The anchor of 0.80 is
+#    the study's and is kept so the registered figure is comparable with it; the
+#    reading for an all-equity sheltered base is a stated scaling in the artifact,
+#    not a second rule.
+#
+# 3. K = 0.4 WAS CHOSEN ON THIS DATA. THIS CANNOT BE CONFIRMATORY.
+#    The study that produced +49.5 bp used the same Shiller workbook, the same
+#    window and k in {0.4, 0.8}. Running k = 0.4 here on the same series is a
+#    registration of a seen result under a frozen design, with the changes listed
+#    in note 4, and NOT an out-of-sample test. The run kind is exploratory and
+#    the status ceiling is `exploratory`. What is new to this run and was not
+#    seen: the one-month signal lag, the risk-matched and 85/15 controls with
+#    HAC intervals and floors, the k = 0.2 and 0.6 arms, the TIPS defensive leg,
+#    the annual-band rebalancing variant, the Holm family, the crisis-episode
+#    table, and the French month-end panel. The 1990-11 window was seen in the
+#    study's era table (2000- and 1980-2000 cells) and is a registration, not a
+#    holdout.
+#
+# 4. WHAT CHANGES FROM THE STUDY, ALL DECLARED HERE.
+#    (a) ONE-MONTH LAG. The study set the weight for the month t -> t+1 return
+#        from the row-t signal. Shiller's row t holds a monthly-average price, an
+#        interpolated earnings figure and a CPI released in the middle of month
+#        t+1, so the row-t reading is not available at the end of month t. This
+#        run uses the row t-1 signal for the t -> t+1 return. The study's
+#        alignment is re-run as a sensitivity so the cost of the lag is visible.
+#    (b) REAL-YIELD PROXY. Before 2003 there is no market real yield. The primary
+#        signal is Shiller's own construction throughout the whole window:
+#        `100/CAPE - (GS10 - trailing ten-year annualised CPI inflation)`, in
+#        percentage points, verified in this repository to reproduce the
+#        workbook's `Excess_CAPE_Yield` column to 1e-15 (test fixture). It is
+#        used before AND after 2003 so that the percentile is taken over one
+#        homogeneous series. The secondary signal splices the TIPS-based measure
+#        `100/CAPE - FII10` from 2003-01 onward on to the Shiller measure before
+#        it, with the expanding percentile taken over the spliced series; the
+#        splice changes the level by about one point at the join and the
+#        artifact reports what that does to today's reading.
+#    (c) POINT-IN-TIME. The workbook is revised on every release and publishes
+#        no vintages. The lag removes the availability look-ahead; it does NOT
+#        remove revision. Every figure here is on revised data and this biases
+#        the rule in its own favour, as the study said.
+#    (d) SHELTERED ONLY. No capital-gains tax is charged on any arm. Execution
+#        is charged on traded fraction at 3 bp (net-optimistic, a Treasury or
+#        TIPS ETF and a broad index fund) and 10 bp (net-pessimistic, the study's
+#        figure). Gross is reported beside both.
+#    (e) DEFENSIVE LEG. Primary: Shiller's modelled real total return on a
+#        ten-year Treasury (`Real_Total_Bond_Returns`), the study's leg.
+#        Secondary: a spliced real leg that is the Shiller Treasury before
+#        2003-02 and a modelled ten-year TIPS par bond from FRED `FII10` from
+#        2003-02 on, priced by `studies/fixed_income_shelf.par_bond_total_returns`
+#        at ten-year maturity; a par bond struck on a real yield returns real
+#        dollars, so no CPI gross-up is needed. Both legs are MODELLED: no fund,
+#        no bid/ask, no roll rule.
+#
+# 5. CONTROLS, THREE, NEVER ADDED.
+#    `equity100`: constant 100% equity, the investor's sheltered counterfactual.
+#    `risk_matched`: constant equity at the arm's own full-window mean weight,
+#    THE PRIMARY CONTROL, because it strips out "held less equity" and leaves
+#    timing; each arm has its own. `mix85`: constant 85/15, frozen here as the
+#    reading the study's rule gives today when scaled to an all-equity base
+#    (0.675 / 0.80 = 0.84 to 1 - 0.125 = 0.88). Every control is run on the same
+#    rebalancing clock as the arm it is compared with.
+#
+# 6. WHAT THIS FILE PREDICTS BEFORE IT IS RUN. Arithmetic on the study's
+#    reported tracking error of 146 bp/yr against a constant mix, with no look
+#    at any return under this design.
+#      Full window 1921-01..2026-07, 1267 months: MDE80 = 2.801585 * 1.46 /
+#      sqrt(105.6) = 0.40 pp/yr against the risk-matched control; against
+#      equity100 the tracking error is about 0.2 x 16 = 3.2 points and the
+#      floor about 0.87 pp/yr; against mix85 about 0.44 pp/yr.
+#      1990-11..2026-07, 429 months: 0.68, 1.50 and 0.75 pp/yr respectively.
+#    PREDICTED OUTCOME. Primary arm against the risk-matched control, gross:
+#    +30 to +50 bp/yr on the full window (the lag is expected to cost 0 to 15
+#    bp), which sits AT its own 40 bp floor and is expected to come back
+#    `unresolved` or barely clear it; the Holm-adjusted p across the six-arm
+#    family is expected to exceed 0.05, so `unresolved` is the expected
+#    whole-experiment status. On 1990-11 onward the gap is expected between
+#    -20 and +30 bp/yr against a 68 bp floor: `unresolved`. Against equity100
+#    the arm is expected to LOSE on both windows by 50 to 120 bp/yr because it
+#    holds 20 points of bonds on average through a 4.6 pp/yr realised premium:
+#    `rejected` on mean, with a lower drawdown, which carries no status.
+#    The drawdown and crisis tables are expected to show the rule at roughly
+#    75 to 85% equity going into 1929, 2000 and 2008 and near 65 to 70% going
+#    into 2022, with a proportionally smaller loss, which is a description of
+#    one history.
+#
+# 7. THE DECISION-RELEVANT OUTPUTS THAT CARRY NO SIGNIFICANCE CLAIM.
+#    Maximum drawdown, months under water, the five crisis-episode returns, the
+#    rolling-window share ahead, turnover, the regret table for today's position
+#    and the construction implication are descriptive or arithmetic. They are
+#    what the investor asked for and are reported in full with no status.
+#
+experiment_family: exp_022_ecy_rule
+title: >
+  The excess-CAPE-yield rule, frozen and run sheltered-only: does tilting an
+  80/20 real equity/Treasury mix on the expanding percentile of Shiller's
+  excess CAPE yield at k = 0.4, with a one-month signal lag and no tax, beat a
+  constant mix held at its own mean equity share, 100% equity, and a frozen
+  85/15 mix, on 1921-01..2026-07 and 1990-11..2026-07?
+entry_point: exp_022_ecy_rule
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260902
+
+hypothesis: >
+  A rule that raises the equity share when the excess CAPE yield is high in
+  its own expanding history and lowers it when low, `w = clip(0.80 + k (pct -
+  0.5), 0, 1)`, k = 0.4, decided on the prior month's signal and rebalanced
+  monthly in a sheltered account, earns a positive arithmetic mean monthly
+  real-return gap against a constant mix held at the rule's own full-window
+  mean equity share, net of execution, on 1921-01..2026-07, and the gap
+  exceeds the design's own minimum detectable effect. Secondary hypotheses,
+  same form: k = 0.2 and k = 0.6; the TIPS-spliced defensive leg; the
+  1990-11..2026-07 window; the annual-review, 25%-relative-band rebalancing
+  variant. The freeze note predicts the primary gap sits at its own floor and
+  the family fails Holm, so `unresolved` is the expected status.
+
+mechanism: >
+  The signal is joint. The study found the real yield alone lost 80 bp/yr and
+  the CAPE yield alone earned 16 bp of timing, while the difference earned 48
+  bp: the rule buys equity when the earnings yield is high relative to the
+  real bond alternative and sells when it is low, which is a relative-value
+  statement between the two assets it holds rather than a level forecast. At
+  an average weight of 0.80 it barely de-risks, so the whole gap against the
+  risk-matched control is reallocation in time. The regressor is a price-scaled
+  ratio, so the one-month predictive slope carries a Stambaugh bias the
+  artifact recomputes for this signal, and the Shiller price is a monthly
+  average, which inflates serial correlation; both are reasons the study's
+  figure is an upper bound and both are reported beside the result.
+
+falsifier: >
+  Applied to the PRIMARY comparison only: k = 0.4, Shiller ten-year Treasury
+  leg, Shiller-proxy signal with the one-month lag, monthly rebalancing,
+  against the risk-matched control, gross, on 1921-01..2026-07.
+  (a) `rejected` if the arithmetic mean gap is at or below zero;
+  (b) `unresolved` if the gap is positive but below the minimum detectable
+  effect at 80% power computed from the comparison's own paired monthly
+  difference series;
+  (c) `unresolved` if the gap clears (b) but its Holm-adjusted HAC p-value
+  within the six-arm family (three k values times two defensive legs, each
+  against its own risk-matched control, this window) exceeds 0.05;
+  (d) `unresolved` if the gap clears (b) and (c) but the same rule on the
+  French month-end real market return (1926-07 onward, same bond leg) has a
+  gap of the opposite sign, because the Shiller price is a monthly average and
+  a rule that only works on averaged prices is an artefact;
+  (e) `exploratory` otherwise.
+  Under no outcome may this specification produce a status above
+  `exploratory` (freeze note 3). Every other comparison is reported with the
+  same clauses applied per row and named in the row; none of them sets the
+  whole-experiment status. The drawdown, months-under-water, crisis-episode,
+  rolling-window, turnover, regret and construction tables are descriptive
+  and receive no status.
+
+universe:
+  description: >
+    Two real monthly return legs from one workbook, one modelled real leg from
+    FRED, and one hostile-test equity leg. US only, because the signal is a US
+    CAPE. Every return is REAL (constant-dollar); the study was real and the
+    investor's question is about real wealth.
+  legs:
+    - id: equity
+      source: Shiller `ie_data`, `Real_Total_Return_Price`, monthly log difference
+      basis: >
+        Real total return on the S&P composite from a monthly-average price.
+        Averaging suppresses volatility and drawdown and raises serial
+        correlation (AR(1) 0.265 against 0.087 month-end); every drawdown here
+        is understated for that reason.
+    - id: treasury
+      source: Shiller `ie_data`, `Real_Total_Bond_Returns`, monthly log difference
+      basis: >
+        Shiller's modelled real total return on a ten-year Treasury. Not a
+        fund; no bid/ask, no roll rule, no tax.
+    - id: tips
+      source: FRED `FII10`, ten-year TIPS constant-maturity real yield, monthly average
+      basis: >
+        Ten-year par bond struck on the real yield, `par_bond_total_returns`
+        at maturity 10, one-month real return, 2003-02 onward. MODELLED.
+    - id: equity_french
+      source: Ken French `F-F_Research_Data_Factors`, `Mkt-RF` plus `RF`, deflated by Shiller CPI
+      basis: >
+        Month-end CRSP value-weighted real total return, 1926-07 onward, the
+        hostile-test response for the averaged-price check (falsifier clause d).
+        The universe differs from the S&P composite as well as the dating; the
+        two cannot be separated and the artifact says so.
+  signal:
+    primary: >
+      `ecy_shiller_pp = 100 / CAPE - (GS10 - 100 * ((CPI_t / CPI_{t-120})**(1/10) - 1))`,
+      from the workbook's own CAPE, GS10 and CPI columns; equals the workbook's
+      `Excess_CAPE_Yield` times 100.
+    secondary: >
+      `ecy_tips_pp = 100 / CAPE - FII10` from 2003-01, spliced on to the primary
+      signal before that; percentile over the spliced series.
+    percentile: >
+      Expanding, strictly backward-looking, the share of prior observations
+      strictly below the current one, first used after 479 prior months.
+    lag_months: 1
+  excluded:
+    - Any fitted coefficient. The anchor, the sensitivities and the floor and cap are declared.
+    - Any CAPE-level rule; the study rejected those and they are not re-run.
+    - Any tax. This is the sheltered case by construction.
+    - Non-US equity, which would cut the window to 1990-11.
+
+sample_policy:
+  start: "1881-01"
+  end: "2026-08"
+  held_out: >
+    Nothing is held out. The Shiller workbook was searched by the study this
+    registers and by two earlier pages; k = 0.4 was chosen on it. The 1990-11
+    window is a registration of an era the study's era table already showed,
+    not a holdout. The French panel is the only response series the study did
+    not run this rule on.
+  embargo: >
+    One month between the signal row and the first return it governs. The
+    expanding percentile uses only rows at or before the signal row.
+  eras:
+    - name: full
+      start: "1921-01"
+      end: "2026-07"
+      rationale: >
+        The study's window: first decision after 479 prior months of CAPE
+        history from 1881-01, last return the 2026-07 to 2026-08 row pair.
+        1267 monthly returns.
+    - name: modern
+      start: "1990-11"
+      end: "2026-07"
+      rationale: >
+        The window on which every other page in this repository can hold
+        developed ex-US equity, so that a result here is comparable with the
+        construction's own evidence; 429 monthly returns.
+    - name: study_1921_1950
+      start: "1921-01"
+      end: "1949-12"
+      rationale: The study's first era, in which the rule earned +115 bp/yr.
+    - name: study_1950_1980
+      start: "1950-01"
+      end: "1979-12"
+      rationale: The study's second era, +53 bp/yr.
+    - name: study_1980_2000
+      start: "1980-01"
+      end: "1999-12"
+      rationale: The study's third era, the one with the wrong sign, -28 bp/yr.
+    - name: study_2000_on
+      start: "2000-01"
+      end: "2026-07"
+      rationale: The study's fourth era, +33 bp/yr.
+    - name: tips_era
+      start: "2003-02"
+      end: "2026-07"
+      rationale: >
+        The months on which the TIPS leg and the TIPS signal exist; 282
+        returns, 0.78 independent 30-year windows. Description only.
+
+benchmark:
+  primary:
+    id: risk_matched
+    definition: >
+      A constant equity weight equal to the arm's own full-window mean weight,
+      the balance in the same defensive leg, rebalanced on the same clock as
+      the arm. Each arm has its own.
+    rationale: >
+      Strips out the part of any gap that is "held less equity" and leaves the
+      timing, which is the claim. The study's `timing_vs_matched` column.
+  secondary:
+    id: equity100
+    definition: Constant 100% equity, no rebalancing needed.
+    rationale: >
+      The investor's sheltered counterfactual: the traditional third holds no
+      bond today. A rule that loses to it on mean is a drawdown purchase and
+      is priced as one in the regret table.
+  tertiary:
+    id: mix85
+    definition: >
+      Constant 85% equity, 15% in the arm's defensive leg, rebalanced on the
+      same clock as the arm. Frozen as what the rule holds today, scaled to an
+      all-equity base.
+    rationale: >
+      Isolates the value of MOVING against the value of the position the rule
+      currently prescribes.
+  aggregation_rule: >
+    THREE CONTROLS ARE THREE FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED
+    OR PLACED IN ONE COLUMN. Every reported gap names its control and window.
+    Holm is applied within the six-arm family against the risk-matched
+    control on one window and never across controls or windows.
+
+primary_metric:
+  name: arithmetic mean monthly real-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` on monthly real simple returns, net of
+    execution charged inside the walk at the stated basis. Reported gross, at
+    3 bp and at 10 bp; the falsifier reads the gross figure against the
+    risk-matched control, which pays the same rebalancing cost on its own clock.
+  units: percentage points per year
+  uncertainty: >
+    Newey-West HAC standard error on the paired monthly difference, 12 lags,
+    two-sided normal p-value, 95% interval; plus a stationary block bootstrap
+    (mean block 12 months, 10000 resamples, 95% percentile) on the primary
+    comparison as a check on the HAC interval; plus the minimum detectable
+    effect at 80% power from the same paired series, beside every gap.
+
+secondary_metrics:
+  - name: annualised log-growth gap
+    units: percentage points per year
+    note: "`1200 * mean(log1p(r_arm) - log1p(r_control))`; reported beside, never mixed."
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)` on the paired difference, beside every gap."
+  - name: years to distinguish
+    units: years
+  - name: Holm-adjusted p-value within the six-arm family
+    units: probability
+  - name: deflated Sharpe ratio of the primary arm's active return
+    units: probability
+    note: >
+      On `r_arm - r_risk_matched`, trial dispersion and mean off-diagonal
+      correlation across the six arms' active returns, at the nominal count of
+      six and at the effective count; reported with both counts.
+  - name: rolling 30-year window share ahead and median gap
+    units: fraction; basis points per year
+    note: "908 windows on the full window from about 2.5 independent blocks; the count is printed."
+  - name: maximum drawdown and longest time under water of the real wealth path
+    units: percent; months
+  - name: cumulative real return and worst drawdown in each frozen crisis episode, with the weight held at entry
+    units: percent
+  - name: one-way annual turnover and rebalances per year, monthly and annual-band
+    units: fraction of portfolio per year; count per year
+  - name: Stambaugh bias of the one-month predictive slope of the signal
+    units: share of the fitted slope
+  - name: effective number of independent 30-year windows
+    units: count
+  - name: regret table for today's position against 100% equity
+    units: basis points per year; percent of terminal wealth
+  - name: today's signal reading, percentile and prescribed weight under each signal
+    units: percentage points; fraction; fraction
+
+cost_model:
+  applied: inside the walk, every month, on the traded fraction, before any statistic
+  execution_basis_points_on_traded_fraction:
+    gross: 0
+    net_optimistic: 3
+    net_pessimistic: 10
+  capital_gains_tax: >
+    NONE. This is the sheltered case. The study's taxable figures stand and
+    are not re-run.
+  not_charged:
+    - Bid/ask on the initial purchase; every arm starts from a common portfolio.
+    - Any fund fee; both legs are index-level series.
+    - Any tax.
+
+rebalance_rule:
+  primary: >
+    MONTHLY. Every month the weight is driven to the rule's target; weights
+    drift within the month and the drifted weights earn the month's return.
+    The study's form.
+  variant: >
+    ANNUAL REVIEW WITH A 25% RELATIVE BAND, the policy
+    docs/research/rebalancing-policy.md prescribes: the target is recomputed
+    every twelfth decision month; a trade happens only if the held bond
+    weight differs from the target bond weight by more than 25% of the target;
+    otherwise the portfolio drifts. Reported for every arm beside the monthly
+    figure, with its turnover and its rebalances per year.
+  controls: Every control is run on the same clock as the arm it is compared with.
+
+inference:
+  bootstrap: stationary block bootstrap on the paired monthly difference of the primary comparison, as a check on the HAC interval
+  block_length_policy: >
+    Mean block length frozen at 12 months, not tuned. HAC lag frozen at 12.
+  multiple_testing_correction: >
+    Holm-Bonferroni at alpha 0.05 within the six-arm family against the
+    risk-matched control on each window, never across windows or controls; a
+    deflated Sharpe ratio on the primary arm's active return at the nominal
+    and the effective trial count. The family omits the two rebalancing
+    clocks, the two signals, the lag sensitivity and the study's own search,
+    so the adjusted p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval containing zero is reported as unresolved. The MDE is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order to the primary comparison and record
+  which clause fired. Apply the same clauses per row to every other
+  comparison and print the clause in the row. `unresolved` is the predicted
+  outcome (freeze note 6). Under no outcome may this specification produce a
+  status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    k_selected_on_this_data: true
+    statement: >
+      k = 0.4 was selected by docs/research/valuation-and-the-allocation.md
+      section 3 on this workbook and this window. This run registers that
+      result under a frozen design with a one-month lag, new controls, new
+      arms and a new panel; it does not test it out of sample.
+    order_of_operations: >
+      This file was written, including the prediction in freeze note 6,
+      before the experiment module produced any statistic. Off-ledger smoke
+      runs on 2026-09-02 against a scratch ledger exposed three implementation
+      defects (the French leg and the FII10 yield were read as percent where
+      the loaders already return decimals; the FII10 pin was a vintage ending
+      2026-07, so today's TIPS reading did not exist) and all were corrected
+      before the ledgered run, together with the addition of the
+      window-matched Shiller sensitivity so the French comparison is read on
+      one window. The falsifier, arms, controls, windows, clocks, costs and
+      the prediction were not changed.
+
+  rule:
+    base_weight: 0.80
+    floor: 0.0
+    cap: 1.0
+    sensitivities: [0.2, 0.4, 0.6]
+    primary_sensitivity: 0.4
+    burn_in_prior_months: 479
+    signal_lag_months: 1
+    all_equity_scaling_note: >
+      For a sheltered third that holds no bond, the artifact reports the rule's
+      current weight divided by 0.80 and, separately, one minus the rule's
+      current cut; the study quoted the pair as 84 to 88%.
+
+  signals:
+    - id: shiller
+      role: primary
+      real_yield_proxy_before_2003: GS10 less trailing ten-year annualised CPI inflation, Shiller's own
+      real_yield_proxy_after_2003: the same, unchanged, so the percentile is over one series
+    - id: tips_spliced
+      role: secondary
+      real_yield_proxy_before_2003: the Shiller proxy
+      real_yield_proxy_after_2003: FRED FII10 monthly average, from 2003-01
+
+  defensive_legs:
+    - id: treasury
+      role: primary
+      series: Shiller `Real_Total_Bond_Returns`
+    - id: tips_spliced
+      role: secondary
+      series: Shiller Treasury before 2003-02; ten-year par TIPS from FII10 from 2003-02
+
+  controls: [risk_matched, equity100, mix85]
+  primary_control: risk_matched
+  mix85_equity_weight: 0.85
+
+  arms:
+    k02_treasury: {sensitivity: 0.2, defensive_leg: treasury, signal: shiller}
+    k04_treasury: {sensitivity: 0.4, defensive_leg: treasury, signal: shiller, role: primary}
+    k06_treasury: {sensitivity: 0.6, defensive_leg: treasury, signal: shiller}
+    k02_tips: {sensitivity: 0.2, defensive_leg: tips_spliced, signal: shiller}
+    k04_tips: {sensitivity: 0.4, defensive_leg: tips_spliced, signal: shiller}
+    k06_tips: {sensitivity: 0.6, defensive_leg: tips_spliced, signal: shiller}
+  holm_family: [k02_treasury, k04_treasury, k06_treasury, k02_tips, k04_tips, k06_tips]
+  holm_alpha: 0.05
+
+  sensitivities:
+    signal_variant: k = 0.4, Treasury leg, `tips_spliced` signal
+    lag_zero: k = 0.4, Treasury leg, the study's alignment (row-t signal for the t -> t+1 return)
+    french_month_end: k = 0.4, Treasury leg, French month-end real equity, 1926-07 onward
+    shiller_french_window: k = 0.4, Treasury leg, Shiller equity on exactly the months the French panel covers
+    annual_band: every arm under the annual-review 25%-band clock, controls on the same clock
+
+  rebalancing:
+    monthly: {review_every_months: 1, relative_band: 0.0}
+    annual_band: {review_every_months: 12, relative_band: 0.25}
+
+  windows:
+    - {id: full, start: "1921-01", end: "2026-07"}
+    - {id: modern, start: "1990-11", end: "2026-07"}
+  rolling_window_years: 30
+  hac_lags: 12
+  bootstrap_block_months: 12
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    computed_before_freezing: >
+      Study tracking error 146 bp/yr against a constant mix. Full window
+      1267 months: 0.40 pp/yr against risk_matched, about 0.87 against
+      equity100 (tracking about 3.2 points), about 0.44 against mix85.
+      Modern window 429 months: 0.68, 1.50 and 0.75.
+
+  crisis_episodes:
+    - {name: crash_1929, start: "1929-09", end: "1932-06"}
+    - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+    - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+    - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+  crisis_episodes_note: >
+    The boundaries exp_018 froze. On a monthly-average price the 2020
+    episode is two rows and understated. Cumulative real return and worst
+    drawdown inside the episode, for the arm and each control, with the
+    weight the arm held at the first row.
+
+  regret:
+    position_equity_weight: 0.85
+    counterfactual_equity_weight: 1.00
+    premium_over_tips_pp_yr: [0.0, 1.5, 3.0, 5.0]
+    horizons_years: [10, 30]
+    second_moment_source: >
+      Realised full-window real volatility of the equity leg and the Treasury
+      leg and their correlation, from the same walk; on an averaged price the
+      equity figure is understated and the credit for de-risking with it.
+    framing: >
+      docs/research/trend-weight-under-uncertainty.md section 2: regret at
+      (action, state) is the best action's log growth in that state less the
+      action's. Two actions, four states, no forecast.
+
+  construction:
+    published_vector: {RSST: 30, VTI: 19, VTV: 15, VXUS: 16, AVDV: 10, IDMO: 5, AVES: 5}
+    traditional_third: {RSST: 30.0, IDMO: 3.3}
+    third_size_pp: 33.3
+    note: >
+      Stated in the artifact as arithmetic on the published vector; part A is
+      not edited by this experiment.
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic. Every file is read
+      from the local raw cache; this experiment never downloads.
+    files:
+      - id: shiller_ie_data
+        source: shiller
+        dataset_id: shiller_ie_data
+        table_id: monthly
+        columns: ["CAPE", "Long_Interest_Rate_GS10", "CPI", "Real_Total_Return_Price", "Real_Total_Bond_Returns", "Excess_CAPE_Yield"]
+        expected_sha256_raw: 71c3636da5269b074489db41ecf0dcf0caef6275d1f3ecaf753ddaca2b81db2f
+        committed_manifest: data-manifests/shiller_ie_data_monthly.json
+      - id: fred_fii10
+        source: fred
+        dataset_id: FII10
+        table_id: monthly
+        columns: ["FII10"]
+        expected_sha256_raw: 5c396a034bbb62cf128de2b8a5495e82d3444bb80e7d4dc88b1a9b805dfa35e0
+        committed_manifest: data-manifests/fred_fii10.json
+        manifest_note: >
+          The cached file (2003-01..2026-08) is a LATER vintage than the one the
+          committed manifest records (fa8082c5..., 2026-08-18, which ends
+          2026-07). The pin is the cached digest so that today's TIPS reading
+          exists; the manifest mismatch is recorded in the artifact as a
+          finding, as exp_018 did for LBMA.
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+
+data_sources:
+  - id: shiller_ie_data
+    url: https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/e27e58c1-8ae0-488c-a976-a298708c7175/ie_data.xls?ver=1785857394436
+    manifest: data-manifests/shiller_ie_data_monthly.json
+    construction: >
+      CAPE, GS10 and CPI for the signal; Real_Total_Return_Price and
+      Real_Total_Bond_Returns for the two legs; Excess_CAPE_Yield only to
+      verify the signal reconstruction.
+  - id: fred_fii10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=FII10
+    manifest: data-manifests/fred_fii10.json
+    construction: ten-year TIPS real yield, monthly average; the TIPS signal and the modelled TIPS leg
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF plus RF, deflated by the Shiller CPI; the averaged-price hostile test only
+
+hostile_tests:
+  - Lag the signal one month; re-run the study's own alignment as a sensitivity so the cost of availability is visible.
+  - Compare against the arm's own mean weight, not only against 80/20 or 100/0, so that de-risking cannot masquerade as timing.
+  - Run the rule on French month-end real returns; a sign flip there is falsifier clause (d).
+  - Report the 1980-2000 era, the one with the wrong sign, beside the full-window mean.
+  - Holm across the six arms; report the deflated Sharpe at the effective trial count and say the family is a lower bound.
+  - Report the minimum detectable effect and years to distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Recompute the Stambaugh bias for this signal's one-month predictive slope and print it beside the result.
+  - Report the annual-band clock beside the monthly clock with its turnover, because the investor would run the former.
+  - Report the TIPS-spliced signal's reading today beside the Shiller reading, because the two disagree by about a point.
+
+reporting_requirements:
+  - The freeze note, including that k = 0.4 was selected on this data and that the workbook is revised, with every table.
+  - The MDE, the control and the window named beside every gap, in the same row; never a figure combining two controls.
+  - Gross, 3 bp and 10 bp columns, never collapsed.
+  - Maximum drawdown, months under water, every crisis episode with the entry weight, the rolling-window share ahead with its independent-window count, and turnover under both clocks, labelled descriptive.
+  - The Holm-adjusted p-values and the deflated Sharpe with both trial counts.
+  - The Stambaugh table for the signal.
+  - Today's reading, percentile and prescribed weight under both signals, with the all-equity scaling.
+  - The regret table for the 85/15 position against 100% equity at the four stated premia.
+  - The construction implication as arithmetic on the published vector.
+  - The sha256 of every source file read.
+
+notes: >
+  Exploratory in the strongest sense: the primary sensitivity was chosen on
+  this data by the study this run registers, and the specification records
+  that. Retain `unresolved` wherever the instrument cannot separate the rule
+  from its control. No rule, sleeve or portfolio is promoted by this
+  specification; what it can do is replace an unregistered +49.5 bp with a
+  registered figure that carries its floor, its lag, its family and its
+  crisis record.

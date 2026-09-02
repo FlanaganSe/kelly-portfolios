@@ -100,9 +100,14 @@ Experiment 016e ran that construction through the frozen tournament machinery, w
 
 Against a cheap index levered to the same 1.268× and charged the same financing, the
 25% arm reads **+2.20 pp/yr [+0.05, +4.57] against a 2.83 floor** — unresolved,
-and 59 years of holding before the design could see it. Tracking error 6.0%; probability of
-trailing 15.6% / 7.1% / 3.4% at 10 / 20 / 30 years with median shortfalls of −0.79 / −0.46 /
-−0.30; drawdown −50.3% against the levered control's −64.6%.
+and 59 years of holding before the design could see it. Tracking error 6.0%; drawdown −50.3%
+against the levered control's −64.6% and the unlevered cheap index's −52.7%. The probability
+of trailing depends on the comparator and the premium, and the three readings belong on one
+line: 15.6 / 7.1 / 3.4% at 10 / 20 / 30 years against the cheap index at the realised premium
+with the edge treated as known (median shortfalls −0.79 / −0.46 / −0.30); 25.3 / 16.7 / 11.5%
+against the same index at the forward prior's median; and 69.5 / 76.5 / 80.2% against the
+leverage-matched control, the comparator this page calls load-bearing
+([trend weight](trend-weight-under-uncertainty.md) §6).
 
 **The candidate constructions cannot be told apart.** Recommended +2.20, the AVUV variant
 +2.35, the previous recommendation +1.92, the investor's original +2.49 — a spread of 0.57
@@ -126,12 +131,15 @@ against VTV at a 0.67 floor. None of these separates from the published vector.
    the same 30% differ by +0.01 [−0.18, +0.19] against a 0.26 floor. It is a *leverage* result
    at the panel's realised premium — the pair's break-even trend haircut is 10.08 pp/yr, and at
    the 4.07 forward premium the same pair reads about +0.18 against its 0.30 floor. It is the
-   number behind the published 30%, taken against the holdability evidence rather than with
-   it, and the trade should be stated to the investor as a choice rather than resolved on
-   their behalf.
+   number behind the published 30%. It resolves at the realised premium and not at the
+   forward one, so the trade is stated to the investor as a choice, below, rather than
+   resolved on their behalf.
 2. **The tilt complex alone beats the cheap index by +0.80 pp/yr [+0.36, +1.31] against a 0.47
-   floor — resolvable, in 12 years.** This reproduces Experiment 016's +0.79 on a different
-   fund list, which is independent confirmation rather than a restatement.
+   floor on i.i.d. inference and a 0.72 floor on matched HAC inference, where the horizon is
+   30 years rather than 12; shrinking the fitted alphas takes it to +0.60, which fails the
+   matched floor.** This reproduces Experiment 016's +0.79 on a different fund list, which is
+   independent confirmation rather than a restatement; the qualifications are in *Optional
+   factor tilts* below and are not repeated.
 
 **AVDV's addition reads +0.28 pp/yr [+0.05, +0.56] against a 0.29 floor** — short of resolution
 by 0.01, and positive in every sub-period. The unlevered tilt-only pair gives +0.29
@@ -148,7 +156,11 @@ pp/yr at a 15% weight [−0.63, +0.42], negative under all four premium scenario
 HML +0.369 over VTV but also **RMW −0.204 and UMD −0.173 — it pays for value by selling
 profitability and momentum** — at 42%/yr turnover. SPMO is the better momentum vehicle than
 MTUM (13 bp, 44% turnover against 116%) and still reads +0.02 pp/yr at 5% [−0.14, +0.18], with
-an active leg +0.626 correlated with IDMO's.
+an active leg +0.626 correlated with IDMO's. **ITAN, the intangible-adjusted value fund the
+September sweep raised, is rejected the same way**: over VTV it loads RMW −0.381 and UMD −0.221
+with both intervals excluding zero and HML −0.154 unresolved, so VTV 15 → VTV 10 + ITAN 5 reads
+−0.10 pp/yr [−0.28, +0.07] on its own panel and negative under all four premium scenarios, at
+50 bp against VTV's 2.70 ([tilts](untested-tilt-candidates.md) §7).
 
 ## Optional financed trend
 
@@ -158,22 +170,28 @@ repository stated for most of its history. Four independent routes now bracket t
 | Route | Weight | What it optimises |
 |---|---|---|
 | Variance minimisation, `w* = −ρ σₑ/σ_d` | 21.6%, interval [10.3, 32.8] | portfolio variance |
-| Growth subject to holdability | 15–25%, centre 20% | after-cost log growth |
+| Growth subject to holdability | 20–30%, centre 25% (corrected 2026-09-02; the earlier 15–25% read the retracted 1.80% row) | after-cost log growth |
 | Regret over an explicit premium prior | 25%, robust 20–30% | maximum regret, then capitulation |
 | Construction tournament | no interior optimum | growth against a leverage-matched control |
 
-**25% is the only weight all four routes admit, and 30% is the weight the one resolvable
-measurement prefers.** Nothing in the corrected growth arithmetic argues below 0.28 on the
-investor's own benchmark under any reweighting of the premium prior; what holds the four-route
-consensus below the regret surface's own 0.36 is the premium-free holdability evidence — 15–25%
-from tracking error, and 19.1% from the CAPE-conditioned drawdown.
+**Every route admits 25%, and after the correction every route admits 30% as well.** The
+tracking-error route was described here as premium-free. It was not: its central row was the
+retracted 1.80% figure, and at the corrected 4.07 it reads a worst relative run of −15.7% over
+188 months and an 8.7% thirty-year probability of a −20% relative run at 30%, doubling to
+18.2% at 35% ([leverage](leverage-and-the-notional-budget.md) §6a, §9). Nothing in the
+corrected growth arithmetic argues below 0.28 on the investor's own benchmark under any
+reweighting of the premium prior. The one route still arguing below 30% is the
+CAPE-conditioned drawdown ladder, 19.1% at a −50% tolerance, and it terminates in a
+tolerance the investor has not supplied.
 
 Experiment 016f then ran the matched pair: **the 30% arm beats the 25% arm by +0.51 pp/yr
 [+0.30, +0.72] against a 0.31 floor**, the only whole-portfolio comparison here that clears its
 own resolution, and a leverage result at the realised premium. What it does not settle is
 whether the investor can hold a sleeve through a decade in which it contributes nothing while
 equities rise — abandonment probability runs about 17% at the median at 30% against 11% at
-25%, and 66.7% at 30% if the premium is gone entirely.
+25%, and 66.7% at 30% if the premium is gone entirely. A contribution stream does not change
+those figures: at 5, 10 or 15%/yr of starting capital the median reads 17.6 to 17.8% and the
+no-premium case 63.3 to 64.9% ([trend weight](trend-weight-under-uncertainty.md) §4).
 
 **On 96 years the overlay clears its floor at the top of a bracket and not at the bottom.**
 Experiment 018 ([run `311048fb…`](../../research/artifacts/311048fbc6b44072a3715ff24d1507a4/summary.md),
@@ -191,11 +209,14 @@ portfolio-level evidence for the overlay the repository holds; it is US-only, th
 is a construction rather than a fund, and it promotes nothing. The defensive arms run beside
 it are in [defensive engines in the construction](defensive-engines-in-the-construction.md).
 
-**For an investor contributing 5–15%/yr with a multi-decade horizon, 30% is the better choice**,
-because a contribution stream is what carries a position through a drought and the growth
-comparison, imperfect as it is, is the only one in the programme that clears its own floor. For an investor who would sell it,
-25% is better, and a portfolio held beats a better one abandoned. State the trade; do not
-resolve it silently.
+**The choice between 25% and 30% is the investor's, and it turns on one input.** The
+argument that a contribution stream carries the position through a drought was tested and is
+withdrawn: contributions dilute the edge and the deficit alike and move abandonment by under a
+point. What remains for 30% is that every route now admits it and the matched pair prefers it
+at the realised premium. What remains for 25% is the same pair at the forward premium and the
+drawdown ladder, which at any stated tolerance of −60% or tighter puts the wrapper at 23.7% or
+below; an investor who supplies no tolerance is holding the ladder's loosest row, near −70%.
+A portfolio held beats a better one abandoned. State the trade; do not resolve it silently.
 
 Three things to hold onto:
 
@@ -277,6 +298,14 @@ measurement.
   engine and substitutes four tilts, which is why it has one financed leg and why more tilts,
   a second momentum fund, or a gold or bond stack do not add
   ([stacking](stacking-and-effective-breadth.md)).
+- **Cross-asset carry is the one second engine that adds as a sum, and it is not added by
+  default.** It correlates +0.06 with the trend book on a century and +0.07 in the worst
+  decile of equity months. A 10-point RSSY-like stack reads +0.58 pp/yr [+0.28, +0.86] against
+  a 0.35 floor on the gross vendor series at full loading, +0.22 against 0.35 once a 2 pp/yr
+  trading-cost haircut and a 0.681 delivered loading are charged, −0.41 since 2013, and the
+  substitution of carry for half the trend leg is negative on both panels. RSSY is 27 months
+  old and behind. For an investor who wants it anyway: 10 points from VTI, in shelter, at
+  about 6 bp/yr of placement cost ([carry](carry-as-a-second-engine.md)).
 
 ## Valuation, taken into account
 
@@ -297,25 +326,42 @@ What the repository's evidence licenses ([valuation](valuation-and-the-allocatio
    Routed through the notional budget, that supports a wrapper of 14.9% / 19.1% / 23.7% at a
    −40% / −50% / −60% stated tolerance; the current book implies a tolerance near −70%. The
    investor has not supplied the number; `/portfolio` asks for it and shows the ladder.
-3. **The excess-CAPE-yield rule (k = 0.4)** is the one valuation rule with a positive record:
-   +49.5 bp/yr gross, +48.6 sheltered, −15.6 net in a taxable account at a 15% effective rate,
-   ahead in 98.5% of rolling 30-year windows gross and 39.4% net, wrong sign in 1980–2000,
-   73% Stambaugh bias, revised data. Today it would hold about 84–88% equity with the rest in
-   a ten-year Treasury or TIPS, sheltered only. It stays `exploratory` and unimplemented. What
-   it does say is that at a 0th-percentile excess CAPE yield an unlevered 10–15 point TIPS
+3. **The excess-CAPE-yield rule (k = 0.4)** is the one valuation rule with a positive record,
+   and it is now registered (Experiment 022, `exploratory` because k was chosen on this data;
+   [valuation](valuation-and-the-allocation.md) §3.3). Against a constant mix at the rule's
+   own mean weight it reads **+0.63 pp/yr [+0.26, +0.99] against a 0.42 floor** on 1921–2026,
+   ahead in 99.9% of rolling 30-year windows drawn from 2.5 independent blocks, wrong sign in
+   1980–2000, and **+0.37 [−0.09, +0.83] against 0.49 since 1990-11, unresolved**. Against
+   100% equity it is **−0.67 [−1.50, +0.16]**, a drawdown purchase priced at the premium:
+   the position it takes today, about 85/15, gains 31 bp/yr in log growth if the forward
+   equity premium over bonds is zero, 8 bp at 1.5, and costs 14 bp at 3 and 44 bp at 5, with
+   break-even near 2 pp/yr. It is admissible in the traditional third and not adopted by
+   default. Applied there, the only line that funds it is the wrapper: **RSST 30 → 24.8, a
+   ten-year Treasury or TIPS 5.2**, no taxable line moved, gross 1.32 → 1.27, which is the
+   25% arm every route admits plus a 5-point defensive line. That is the vector for an
+   investor who wants the August 2026 valuation to move a point of the portfolio, and the
+   choice is theirs. What the same evidence says about the 0th-percentile excess CAPE yield
+   is that an unlevered 10–15 point TIPS
    line in the traditional IRA is the cheapest drawdown protection has been in expectation:
    the substitution's historical cost of 0.55–0.77 pp/yr was earned on a 6–7 pp realised
    premium, and at 0–1.5 pp over TIPS it is 0–0.2. It costs shelter space, since the
    traditional third is 90% RSST. **The conditional rule: at a tolerable drawdown of −50% or
    tighter, hold 10 points of long TIPS unlevered in the traditional account, funded from VTI
-   and VXUS pro rata, and shrink the wrapper to the ladder's figure (19.1% at −50%); at −60% or
-   looser, hold none.** The default for this contributing, leverage-accepting investor is none.
+   and VXUS pro rata, and shrink the wrapper to 19.1%; at −60% or looser, hold none.** The 10
+   points are Experiment 018's frozen substitution arm and the 19.1% is the ladder's trend
+   column, not a derivation from the ladder: the rule leaves equity notional near 91% where the
+   ladder's −50% row carries 65%, and the ladder-consistent version needs about 36 points of
+   TIPS, which spills out of the traditional third at about 7.4 bp/yr
+   ([part A](portfolio-for-one-investor.md) §7). The default for this contributing,
+   leverage-accepting investor is none.
 4. **US versus international: 65/35 to 60/40 by contributions only.** 81% of 35 years of US
    outperformance was re-rating; relative CAPE 1.70× developed and 1.85× EM; a 10 pp shift
    is worth about 14 bp/yr against 80–144 bp of tracking error and 55–178 years to
-   demonstrate. All new money goes to AVDV and VXUS, AVDV first because the ex-US discount
-   sits in the value half, until the split reads 60/40 — about a year at 5–10%/yr. 50/50 is
-   unsupported.
+   demonstrate. New money reaches AVDV only through the Roth's annual cap, so the executable
+   rule is every sheltered dollar to VXUS until 60/40, taxable dollars to VTI and VTV to
+   target and then VXUS, and AVDV bought only to hold 10%, the weight at which it was measured:
+   about a year with an employer plan receiving deferrals, two without
+   ([part A](portfolio-for-one-investor.md) §3.8). 50/50 is unsupported.
 5. **Value tilts: hold, do not enlarge.** Spread 7.54×, 81st percentile, closed 0.27 log
    units in eighteen months, fitted slope a third of its detection floor, positive
    out-of-sample R².
@@ -327,8 +373,9 @@ credit; the value spread below 4.95× re-examines tilt size; CAPE below 30 rever
 drawdown assumption; the Shiller excess CAPE yield's expanding percentile at 0.50, or the
 TIPS-based measure back at its 2.97 pp median, returns the ECY rule to its anchor; a 30-year
 TIPS real yield below about 2.0% ends the "cheapest in the record" note; a term premium above
-1.5 pp, or a year of negative trailing bond–equity correlation, reopens the stacked Treasury
-leg.
+1.5 pp *and* a negative trailing 36-month bond–equity correlation, both required, reopen the
+stacked Treasury leg, because the correlation alone sorted months only inside the 1981–2020
+bull market (Experiment 020).
 
 ## Bonds, gold, and other alternatives
 
@@ -360,6 +407,12 @@ holdability constraints; they need not beat equity standalone.
   IRA only (§1256 mark-to-market; RSSB's 2025 distribution was 3.4% of NAV, 73% ordinary), as
   an explicit correlation-reversion bet; NTSX is the cheaper wrapper per Treasury dollar and
   RSSB the cleaner one.
+- **A regime-conditioned stack does not rescue it** (Experiment 020, `unresolved`;
+  [defensive engines](defensive-engines-in-the-construction.md) §3.1). Switched on only when
+  the trailing 36-month bond–equity correlation is negative, the same 20-point leg reads +0.16
+  pp/yr [−0.06, +0.38] against a 0.32 floor on 96 years and −0.15 [−0.33, +0.04] on the 685
+  months outside the bull market, where the signal picked the losing months. Eighteen switches
+  in 96 years, off since 2023-02: the rule would hold the published vector today.
 - **Substitution arms are `rejected` on mean and are the only route that cuts drawdown.** Ten
   points of equity into cash, long Treasuries or a bonds-plus-trend wrapper read −0.55 to
   −0.77 pp/yr against the reference and cut 1929- and 2008-scale drawdown by about 4 pp.
@@ -379,7 +432,12 @@ holdability constraints; they need not beat equity standalone.
   between 0.08 and 0.68, mean 0.46; one-year realised volatility 44%. Ether staking is a real
   contractual payer and a small one: ETHE's 2.5% sponsor fee exceeds its staking income, ETHB
   nets about 1.9% annualised, and the reward is ordinary income. BlackRock's own guidance is
-  1–2%, risk-budgeted like a single mega-cap stock.
+  1–2%, risk-budgeted like a single mega-cap stock. Financing it does not change the verdict: a
+  financed 3.5-point leg beats the same points sold from equity by +0.37 pp/yr, which is the
+  equity premium on the capital not sold and contains no property of bitcoin. A 10-point
+  RSSX-like stack's +3.15 [+1.53, +4.81] against a 2.25 floor is bitcoin's own +73 pp/yr over
+  eleven years doing the work, and the stack needs bitcoin to earn +3.0 pp/yr arithmetic and
+  +8.1 in log growth to break even ([audit](alternative-sleeves-audit.md) §3.1).
 - **Explicit tail hedges are rejected on measured cost against measured benefit.** Across
   eight candidate engines, none showed statistically resolvable convexity; the only
   significant kink was BAB's, and its sign is *concave*.
@@ -412,6 +470,16 @@ signal on about fifty markets, financed rather than sold, at 0.32 pp/yr of distr
 and the tax cost of the rule in a taxable account is 1.92 pp/yr — several times the entire
 pre-tax gap. A pooled test on the JST annual panel finds +0.97 (t 2.74) on uninvestable data.
 See [timing rules](timing-rules-on-the-equity-sleeve.md).
+
+The leveraged versions are measured too (Experiment 021, daily data 1926–2026;
+[leveraged ETFs](leveraged-etfs-and-timing-rules.md)). The 200-day rule on a 3× fund carries
+no resolvable timing content against the same fund held at the rule's own average exposure:
++4.79 pp/yr against an 8.41 floor over 99 years and −0.44 since 1990. Everything else it earns
+is beta on paths that draw down 85 to 99.9%. It cut the slow bear markets, did nothing in
+October 1987, and its deepest drawdown is a run of whipsaws in 1933–35 at −84.6%. The UPRO/TMF
+mix is the 1981–2020 bond bull market with equity leverage attached; it lost 52% across
+1972–81 while the index gained 60%. In a taxable account the rule costs 1.8 to 3.2 pp/yr.
+None belongs in any third.
 
 ## Account placement
 
@@ -484,6 +552,12 @@ reversible, and worth the annual deduction cap and little else. See
 
 ## What this construction will feel like
 
+This portfolio has no crash protection worth the name; it has a lost-decade hedge. In a fast
+crash it falls with the market, −50.3% against the unlevered cheap index's −52.7%, and the
+overlay at RSST's delivered loading offsets about 7% of the equity loss in the tail. The only
+route that cuts crash drawdown is the unlevered TIPS substitution the valuation rule defaults
+to zero, and at today's real yields it costs 0 to 0.2 pp/yr in expectation.
+
 The failure mode is not a crash. It is a decade of quiet monthly underperformance against
 the most familiar comparator: a US value tilt has run 54.3% behind for 17.7 years without
 recovering; an international sleeve 69.0% behind over 18.2 years; a financed trend sleeve,
@@ -515,8 +589,8 @@ Research capable of changing the position:
   59 bp) has filed no N-PORT; review it at its first, due by 2026-09-29. **RSIT** is reviewed
   at 24 filed months and **MATE** has six. None replaces RSST yet;
 - the numeric valuation triggers listed under *Valuation, taken into account*, and a term
-  premium above 1.5 pp or a year of negative trailing bond–equity correlation for the stacked
-  Treasury leg;
+  premium above 1.5 pp together with a negative trailing bond–equity correlation for the
+  stacked Treasury leg;
 - the fund-level financing spread, which decides the sign of an overlay's contribution and
   which no issuer discloses because futures financing lives in the basis;
 - a survivorship-corrected, point-in-time live-product panel including dead funds;
@@ -528,7 +602,15 @@ Research capable of changing the position:
 
 Review the construction when investor circumstances change, a chosen vehicle changes fee,
 mandate, liquidity or tax treatment, a monitoring boundary is crossed, or new evidence can
-materially reverse a decision.
+materially reverse a decision. An issuer or trust liquidation notice is a review trigger.
+
+**If RSST announces liquidation or a mandate change**, sell it before the last trading day and
+buy VTI in the same account. The tax cost is zero under both placements because the wrapper is
+sheltered; the exposure cost is the overlay's expected gap of about 0.84 pp/yr for each year
+without a replacement; the resulting vector is RSST 0 / VTI 49 / VTV 15 / VXUS 16 / AVDV 10 /
+IDMO 5 / AVES 5, the site's portfolio three. Candidate replacements are reviewed in the order
+CTAP, MATE, JPFP, RSIT, and each currently fails a stated test
+([part A](portfolio-for-one-investor.md) §5).
 
 Monitor on evidence and on a calendar, never on price. Do not set a performance review for a
 diversifying sleeve: at a 30% weight such a sleeve underperforms in 43.8% of resampled

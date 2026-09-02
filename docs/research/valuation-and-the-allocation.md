@@ -17,9 +17,11 @@ Measured figures regenerate from
 and its cache companion
 [`_valuation_conditioning_tables.py`](../../research/src/portfolio_edge/studies/_valuation_conditioning_tables.py),
 run with `uv run python -m portfolio_edge.studies.valuation_conditioning`; the arithmetic is
-pinned in `research/tests/unit/test_studies_valuation_conditioning.py`. **Everything measured
-here is `exploratory`**: no specification was frozen before the numbers were seen and no
-experiment is registered, so nothing below may support a promoted claim.
+pinned in `research/tests/unit/test_studies_valuation_conditioning.py`. **Sections 2, 4 and 5
+are `exploratory` study output**: no specification was frozen before their numbers were seen.
+The excess-CAPE-yield rule of §3 is also a **registered experiment** (022, §3.3, run
+2026-09-02) whose status ceiling is `exploratory` because its sensitivity was chosen on this
+data. Nothing on this page may support a promoted claim.
 
 ---
 
@@ -51,13 +53,18 @@ experiment is registered, so nothing below may support a promoted claim.
    and a 15% effective capital-gains rate. "Halve above the CAPE median" lost **−55 bp
    gross and −202 bp net**. Both used a **revised, non-point-in-time** history, which
    flatters them.
-5. **One valuation rule does have a real gross edge, and tax eats it.** Tilting on the
-   **excess CAPE yield** rather than the level earned **+49.5 bp/yr** gross against a
-   constant 80/20, of which **+47.7 bp is timing** rather than de-risking, and it was ahead
-   in **98.5%** of rolling 30-year windows. Net of execution and a 15% effective
-   capital-gains rate it turns **−15.6 bp**, ahead in **39.4%** of windows. The break-even
-   effective capital-gains rate is **11.3%**. **The signal is real and the account decides
-   whether it is worth having.**
+5. **One valuation rule does have a real gross edge, tax eats it in a taxable account, and
+   it is now registered.** Frozen as Experiment 022 with a one-month signal lag and no tax,
+   tilting on the **excess CAPE yield** earned **+63 bp/yr [+26, +99] against a constant mix
+   at its own mean equity share** of 80% on 1,267 months, above a 42 bp floor, ahead in 99.9%
+   of 908 rolling 30-year windows drawn from 2.5 independent blocks, and **+68 bp on
+   month-end French prices**, so it is not the averaged-price artefact that sinks
+   moving-average rules. Since 1990-11 it reads **+37 bp against a 49 bp floor,
+   `unresolved`**, and about zero against the 80/20 anchor. Against **100% equity it loses
+   67 bp/yr** on mean and buys a 1929 real drawdown of 60% instead of 75% and a 2000 drawdown
+   of 25% instead of 43%. The taxable arithmetic is unchanged: break-even effective
+   capital-gains rate 11.3%. **The signal is real, the account decides whether it is worth
+   having, and the price of having it is the equity premium given up** (§3.3, §6.3).
 6. **The risk claim survives, and it is the strongest thing valuation says.** Buyers at
    CAPE above 30 spent a median **59.7% of the following fifteen years below their own real
    entry level**, against **5.0%** for buyers below 20, with a median worst real drawdown of
@@ -94,6 +101,8 @@ experiment is registered, so nothing below may support a promoted claim.
     years** to demonstrate. It is not worth a tax bill; it is nearly free with new money.
     **Hedging currency is worth ≈0.8 pp/yr of carry to a USD investor and has not been tested
     here — it is larger than the valuation edge and should be studied before the split moves.**
+    In the sheltered thirds the registered excess-CAPE-yield rule is admissible; §6.3 sizes
+    what it would do to the vector today and what it costs at each premium.
 
 ---
 
@@ -470,15 +479,122 @@ The instrument's limits, stated before any verdict is read from it.
 
 - The excess-CAPE-yield rule's gross edge of **49.5 bp against 146 bp** of tracking error
   clears its own 30-year minimum detectable effect of **34 bp** and would take **14 years**
-  to reach 90% confidence — on the 106-year sample. **Net, the edge is negative**, so no
-  horizon demonstrates it.
+  to reach 90% confidence — on the 106-year sample. **Net of a 15% effective capital-gains
+  rate the edge is negative**, so no horizon demonstrates it in a taxable account; the
+  sheltered case is registered in §3.3.
 - Every CAPE-level rule has an MDE between **53 and 119 bp/yr** and a measured edge of the
   wrong sign. Those rules are not merely unproven; they lost by more than the design's
   resolution in the taxable case.
 - Every backtest above uses **revised, non-point-in-time** Shiller data. The whole workbook is
   rebuilt on each release, so the "expanding window" hands each historical decision a history
   that had not yet been written. **This biases the conditional rules in their own favour**,
-  and the level rules still lose.
+  and the level rules still lose. Experiment 022 (§3.3) lags the signal one month, which
+  removes the availability look-ahead and not the revision.
+
+### 3.3 Registered result: Experiment 022, the rule frozen and run sheltered-only
+
+`as of 2026-09-02`. Specification
+[`exp_022_ecy_rule.yaml`](../../research/experiments/exp_022_ecy_rule.yaml), code
+[`experiments/exp_022_ecy_rule.py`](../../research/src/portfolio_edge/experiments/exp_022_ecy_rule.py),
+run [`ec4825ca…`](../../research/artifacts/ec4825ca8bae418ca2f6014ed34bd599/summary.md) with
+its [tables](../../research/artifacts/ec4825ca8bae418ca2f6014ed34bd599/tables.md). Status
+**`exploratory`**, the ceiling the specification sets for itself, because k = 0.4 was chosen
+on this workbook by the study above: this is a registration of a seen result under a frozen
+design, not an out-of-sample test. The specification predicted, before the run, +30 to +50
+bp against a 40 bp floor and `unresolved`; the result came in above the prediction.
+
+**What was frozen.** The study's form, `w = clip(0.80 + k (pct − 0.5), 0, 1)` on the
+expanding percentile of Shiller's own excess CAPE yield, `100/CAPE − (GS10 − trailing
+ten-year CPI inflation)`, reconstructed from the workbook's columns and pinned to its
+published column to 1e-15. The signal is used unchanged before and after 2003 so the
+percentile is taken over one series; a TIPS-spliced signal (`100/CAPE − FII10` from 2003) is
+a secondary arm. **One-month lag**: the row t−1 signal sets the weight for the t to t+1
+return. **No tax**; execution at 0, 3 and 10 bp on the traded fraction. Defensive leg:
+Shiller's modelled real ten-year Treasury (primary) and a spliced leg that is a modelled
+ten-year TIPS par bond from 2003-02 (secondary). Three controls, each on the arm's own
+rebalancing clock and never added: **risk-matched** (a constant at the arm's own mean
+weight, the primary control, which strips out "held less equity"), **100% equity**, and a
+frozen **85/15**. Newey-West intervals at 12 lags, an 80%-power floor beside every gap, Holm
+across the six arms (k of 0.2, 0.4, 0.6 by two legs), and a French month-end panel as the
+averaged-price check.
+
+**Verified.** Gross, arithmetic mean gap in pp/yr with its 95% interval and its floor.
+
+| window | against | k = 0.4 rule | floor | verdict |
+| --- | --- | --- | ---: | --- |
+| 1921-01…2026-07, 1,267 months | risk-matched, 0.804 equity | **+0.63 [+0.26, +0.99]** | 0.42 | clears (e); Holm p 0.004 |
+| same | 100% equity | **−0.67 [−1.50, +0.16]** | 0.91 | `rejected` on mean |
+| same | 85/15 | +0.32 [−0.09, +0.73] | 0.45 | `unresolved` |
+| 1990-11…2026-07, 429 months | risk-matched, 0.744 equity | **+0.37 [−0.09, +0.83]** | 0.49 | `unresolved`; Holm p 0.68 |
+| same | 100% equity | −1.32 [−2.86, +0.23] | 1.68 | `rejected` on mean |
+| same | 85/15 | −0.33 [−1.07, +0.41] | 0.77 | `rejected` on mean |
+
+The bootstrap check on the primary comparison, a stationary block bootstrap at a 12-month
+mean block, gives [+0.26, +1.02], the same interval. The log-growth gap is +0.61. At 10 bp
+of execution the gap is +0.62: the rule turns over 12.4% a year one way against the
+constant mix's 6.0%, so cost is not where the answer lives.
+
+Sensitivities, full window, gross, against the risk-matched control:
+
+| variant | gap | floor | note |
+| --- | --- | ---: | --- |
+| annual review, 25% relative band | +0.54 [+0.16, +0.92] | 0.41 | 4.5% turnover, 0.5 rebalances a year; on 1990-11 onward +0.28 against 0.50 |
+| the study's alignment, no lag | +0.49 [+0.15, +0.83] | 0.40 | the lag did not cost the edge; it added to it |
+| French month-end real return, 1926-07…2026-06 | **+0.68 [+0.29, +1.08]** | 0.48 | Shiller on the same months: +0.64 [+0.27, +1.01] |
+| TIPS-spliced signal | +0.61 [+0.24, +0.98] | 0.42 | |
+| TIPS-spliced leg | +0.62 [+0.25, +0.98] | 0.42 | |
+| k = 0.2 / k = 0.6 | +0.31 [+0.13, +0.50] / +0.92 [+0.39, +1.45] | 0.21 / 0.61 | linear in k, as the form implies |
+
+**The averaged-price check passes.** [Timing rules](timing-rules-on-the-equity-sleeve.md)
+§2 found a moving-average rule's edge triples on Shiller's monthly-average price; this rule
+reads +0.68 on French month-end prices against +0.64 on Shiller over the same months. A
+slow percentile signal does not trade the autocorrelation that averaging manufactures.
+
+**Distribution and eras.** Over 908 rolling 30-year windows from **2.5 independent blocks**
+the rule is ahead of the risk-matched control in 99.9%, median +35 bp, p10 +14, p90 +157;
+ahead of 100% equity in 8.0%, median −57 bp; ahead of 85/15 in 85%, median +16 bp. By the
+study's eras, against the full-window control: 1921–1950 **+150 bp**, 1950–1980 +56,
+1980–2000 **−24**, 2000 onward +41, and **1990-11 onward −2 bp**. Read those last two
+together: since 1990 the rule, at a mean weight of 74%, kept up with a constant 80% and beat
+a constant 74% by 37 bp, inside a 49 bp floor. The 1980–2000 sign is still wrong.
+
+**Drawdown, descriptive, one history.** Full-window maximum real drawdown: rule **−61.8%**,
+risk-matched −66.0%, 85/15 −68.9%, 100% equity −76.8%; months under water 123. The five
+frozen episodes, cumulative real return with the equity weight the rule held going in:
+
+| episode | entry weight | rule | risk-matched | 85/15 | 100% equity |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| 1929-09…1932-06 | 0.63 | −59.6% | −64.3% | −67.2% | −75.4% |
+| 2000-09…2002-09 | 0.61 | −24.7% | −32.7% | −35.2% | −42.6% |
+| 2007-11…2009-02 | 0.72 | −38.7% | −37.8% | −40.1% | −47.1% |
+| 2020-02…2020-03 | 0.79 | −9.5% | −9.9% | −11.0% | −14.7% |
+| 2022-01…2022-09 | 0.79 | −21.8% | −21.9% | −21.9% | −22.2% |
+
+The rule was near its floor going into 1929 and 2000 and did what a lower weight does; in
+2008 it added equity as prices fell and finished a point behind its own control; in 2022 the
+bond leg fell with equity and nothing here protected anyone. Shiller's averaged price
+understates every figure in the table.
+
+**Bias and deflation.** The Stambaugh correction this page computes in §2.2 is for
+`log(1/CAPE)`: 73.4% of the slope. Recomputed for this signal in the same alignment it is
+**7.5%** (root 0.988, innovation correlation −0.24), because the yield and trailing-inflation
+terms, not the price, dominate the signal's monthly innovation; in the lagged alignment the
+rule trades on it is 0. The six-arm Holm family is degenerate: the arms are one signal at
+three scales on two nearly identical legs, mean off-diagonal correlation 0.998, **1.0
+effective trials of 6**, so the Holm-adjusted p of 0.004 (full) and 0.68 (1990-11) and a
+deflated Sharpe of 1.00 add nothing. The multiplicity that matters is the study's own search
+that chose k = 0.4 and the excess-yield signal over the CAPE level, and it is not in the
+family. The effective number of independent 30-year windows is **2.5**.
+
+**Interpretation.** Against its own mean weight the rule's timing edge is real on this
+data, larger with the lag than without it, present on month-end prices, and unresolved on
+the only window anyone will live through next. Against the all-equity position the
+sheltered third actually holds, it is a drawdown purchase whose realised price was 67 bp/yr
+at a 6.6 pp realised premium; §6.3 prices it at the premia on offer today.
+
+**Open.** A point-in-time history (§7); whether the 1990-11 window would clear its floor
+with the twenty more years it needs; whether a rule this slow survives a reader who
+overrides it in the one year in ten it matters.
 
 ---
 
@@ -897,28 +1013,69 @@ default for a contributing investor is none.
 
 ### 6.3 A dynamic, valuation-conditional rule
 
-**No, in a taxable account. Defensible but unpromoted in a sheltered one.**
+**No, in a taxable account. Admissible in the sheltered thirds, registered as Experiment 022
+(§3.3), `exploratory`, and priced: it buys drawdown with the equity premium.**
 
 - Rules on the CAPE **level** lose gross and net, in every specification tested. There is no
   version of this worth running.
-- The **excess CAPE yield** rule is the only one with a real gross edge (+49.5 bp, +47.7 bp of
-  it timing), and its break-even effective capital-gains rate is **11.3%** — below where a
-  long-held taxable position sits.
-- In a tax-advantaged account it nets **+48.6 bp against 146 bp of tracking error**. That is a
-  real but modest number, on a rule that had the wrong sign in one of four eras, was measured
-  on revised data that flatters it, and rests on ~2.5 independent 30-year windows. **It is
-  `exploratory` and no specification was frozen.** It should not be implemented on this
-  evidence; it is a candidate for a registered experiment.
-- The signal's current reading, for the record and not as a recommendation (`as of
-  2026-09-01`): the excess CAPE yield sits at the **18.7th percentile** of its expanding
-  history on Shiller's own measure and the **0th percentile** of the TIPS era. The k = 0.4
-  rule would hold **0.675 against its 0.80 anchor** — a cheap-end reading, held in 6.9% of
-  months since 1921 with a minimum of 0.603, not the extreme — and a CAPE-level rule 0.604.
-  Scaled to this investor's all-equity base that is about **84–88% equity** with the balance
-  in a ten-year Treasury or TIPS, in the sheltered account only. Every caveat above travels
-  with it: `exploratory`, wrong sign in 1980–2000, ~2.5 independent windows, revised data, a
-  73% Stambaugh bias on the underlying slope, and a regret of 30–60 bp/yr if the realised
-  premium is 2–4% (§6.2).
+- The **excess CAPE yield** rule, frozen with a one-month lag and no tax, reads **+63 bp/yr
+  [+26, +99] against a constant mix at its own 80% mean weight** on 1921–2026, above a 42 bp
+  floor and confirmed on month-end prices, and **+37 bp against a 49 bp floor since 1990-11,
+  `unresolved`**. Against **100% equity** it reads **−67 bp/yr** on the full window and
+  −132 bp since 1990-11, both `rejected` on mean, with a 1929 real drawdown of 60% against
+  75% and a 2000 drawdown of 25% against 43%. The break-even effective capital-gains rate of
+  11.3% still keeps it out of the taxable third.
+- **What the rule holds today** (`as of 2026-08`, the workbook's August row). On the frozen
+  Shiller measure the signal is **+0.97 pp at the 18.7th percentile** of its expanding
+  history and the k = 0.4 rule holds **0.675 against its 0.80 anchor**, which is **84 to 88%
+  equity** on an all-equity base. On the TIPS-based measure the signal is **+0.03 pp at the
+  6.9th percentile** of the spliced history and the rule holds 0.628, **78 to 83% equity**.
+  The two real-yield proxies disagree by a point at the join and by six points of equity
+  weight today; the primary is the Shiller measure and the 85/15 control was frozen on it.
+- **What the 85/15 position costs against 100% equity**, log growth, with the full-window
+  second moments (equity 15.2%, Treasury 5.8%, correlation 0.08, on an averaged price that
+  understates the de-risking credit). The regret framing is
+  [trend weight under uncertainty](trend-weight-under-uncertainty.md) §2: no forecast, the
+  reader chooses the row.
+
+  | forward premium over TIPS | arithmetic cost | log-growth gap | regret of 85/15 | regret of 100/0 | 30-year wealth |
+  | ---: | ---: | ---: | ---: | ---: | ---: |
+  | 0.0 pp/yr | 0 bp | **+31 bp** | 0 | 31 bp | +9.6% |
+  | +1.5 pp/yr | 23 bp | **+8 bp** | 0 | 8 bp | +2.5% |
+  | +3.0 pp/yr | 45 bp | **−14 bp** | 14 bp | 0 | −4.2% |
+  | +5.0 pp/yr | 75 bp | **−44 bp** | 44 bp | 0 | −12.5% |
+
+  Break-even is a premium near 2 pp/yr. Four of the six managers in §1.4 sit between −2.2
+  and +1.5 pp over TIPS, where the cut is free or better; the realised full-window figure is
+  6.6 pp, where it costs 44 bp a year and an eighth of terminal wealth over thirty years.
+  What the cut buys is in the episode table of §3.3, on one history: about 15 points of 1929
+  drawdown, 18 of 2000, 8 of 2008, and nothing in 2022.
+- **What it implies for the published vector, applied only inside the traditional third.**
+  The third is 33.3 points of capital holding RSST 30.0 and IDMO 3.3
+  ([part A](portfolio-for-one-investor.md) §3.4). The rule's 84% is a 15.6% cut of the
+  third, **5.2 points of the portfolio**, and the only line that can fund it without touching
+  the Roth or the taxable account is the wrapper: **RSST 30.0 becomes 24.8, a ten-year
+  Treasury or TIPS takes 5.2, IDMO stays 3.3**. That sells 5.6 points of equity notional and
+  **5.2 points of trend notional**, gross exposure 1.32 to 1.27, and moves no taxable line, so
+  the rebalancing headroom is unchanged. On the TIPS-signal reading the cut is 7.2 points and
+  RSST lands at 22.8. Scaled to the whole portfolio the registered timing edge is a third of
+  +63 bp, about +21 bp/yr against a constant 80/20 third, and the realised cost against the
+  all-equity third the investor holds is a third of −67, about **−22 bp/yr**; the regret rows
+  above scale the same way, +10 bp/yr at a zero premium and −15 at 5 pp. **The position the
+  rule prescribes today is the 25% wrapper that
+  [trend weight under uncertainty](trend-weight-under-uncertainty.md) §8 already selects by
+  two premium-free routes, funded from the same line.** The rule adds a 12% a year turnover
+  commitment, or 4.5% on the annual band, and a claim on the trend sleeve it never priced.
+- **Whether it belongs in the traditional third.** It is admissible there and this page does
+  not adopt it. The reasons, in order: the modern window is `unresolved` and the 1980–2000
+  sign is wrong; the rule's mean cost is the premium, and the investor's brief is to beat the
+  market; and the one trade it prescribes today is already available on the trend page's own
+  grounds without a timing rule attached. What would change this: the 1990-11 window clearing
+  its floor, which needs roughly twenty more years at the current gap; a point-in-time
+  history; or a stated drawdown tolerance that the equity share cannot meet, at which point
+  §6.2's TIPS substitution and this rule are the same trade and the rule is the cheaper way
+  to time its size. Confidence: moderate that the timing edge exists on this data; low that
+  it pays over the next thirty years; high that against 100% equity it is a drawdown purchase.
 
 ### 6.4 The one-line answer to the investor
 
@@ -944,8 +1101,9 @@ available from hedging the currency, which nobody here has studied.
   buyback activity at those firms is down 64% year on year. CAPE and the forward multiple
   disagree by a factor the answer to this question would resolve. **This repository has no
   instrument for it.**
-- **What does the excess CAPE yield rule do on a point-in-time history?** Every result in §3
-  used a revised workbook. No vintage archive is published, so this needs a different source.
+- **What does the excess CAPE yield rule do on a point-in-time history?** Every result in §3,
+  Experiment 022 included, used a revised workbook; the lag removes availability look-ahead
+  and not revision. No vintage archive is published, so this needs a different source.
 - **Does the cross-sectional relation hold on cap-weighted regional indices with currency?**
   The JST panel is local-currency, equal-treatment, dividend-yield-based and ends in 2020. A
   test on MSCI USA against MSCI EAFE and EM in USD, with a CAPE or composite valuation
@@ -984,9 +1142,10 @@ first.
 
 ## Status
 
-§1 is **read**, with sources and read dates; §§2-5 are **measured** and `exploratory`; §6 is
-**interpretation**. Nothing here is promoted, no specification was frozen before the results
-were seen, and no experiment is registered. Under
+§1 is **read**, with sources and read dates; §§2, 4 and 5 are **measured** and `exploratory`;
+§3.3 is a **registered experiment** (022) with a frozen specification and an `exploratory`
+ceiling, because its sensitivity was chosen on this data; §6 is **interpretation**. Nothing
+here is promoted. Under
 [decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md) the nulls in §2.3,
 §3 and §5 are scoped to their designs: "not detected here" is not "does not exist," and the
 independent-observation counts beside every table are there so that no verdict outruns its

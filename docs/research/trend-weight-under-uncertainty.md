@@ -21,7 +21,9 @@ premium at all, which is [trend and managed futures](trend-marginal-value.md)'s,
 [the adversarial review](adversarial-review.md) §1's; this page takes their answers as a
 **weighted range on one stated basis** and shows what the decision does across it.
 
-`as of 2026-08-22`. Every figure regenerates from
+`as of 2026-08-22`; §4, §6 and §8 corrected `as of 2026-09-02`, when the sibling page's
+holdability table was found to rest on the same retracted 1.80 and a contribution stream was
+put inside the capitulation path. Every figure regenerates from
 [`studies/trend_weight_regret.py`](../../research/src/portfolio_edge/studies/trend_weight_regret.py)
 via `cd research && uv run python -m portfolio_edge.studies.trend_weight_regret`; the closed
 forms and the minimax identity are pinned in
@@ -92,7 +94,12 @@ surface over quantities other pages measured.
    flat-to-negative equity decade — **1999-03…2009-02, −2.55%/yr** — forgoes **+2.21 pp/yr** at
    30% and **+1.49** at 20%, against **+0.83** in every other decade. **The position's
    holdability and its return are a bet on the same parameter, which is not a diversification
-   of the risk but the same risk twice.** §4, §5.
+   of the risk but the same risk twice.** A contribution stream of 5–15% of starting capital
+   a year, paid into both arms, moves the 17.2% to **17.6–17.8%** and the 66.7% to
+   **63.3–64.9%**; indexed to the portfolio it moves them to 23.6–25.6% and 34.8–58.6%.
+   **New money does not carry the position through a drought at the prior's median; it
+   dilutes the deficit only where the premium is gone, which is where quitting saves money.**
+   §4, §4c, §5.
 
 7. **The exchange-rate argument no longer identifies a cut-off below 30%, and that is the
    largest consequence of the correction.** Priced per percentage point of abandonment
@@ -102,16 +109,20 @@ surface over quantities other pages measured.
    growth for +15 points of abandonment probability — about 2.1 bp per point, against 0.86 before.**
    §4b.
 
-8. **Sized answer: 25% of capital in the wrapper, robust over 20–30%, and 30% is no longer
-   excluded.** Nothing in the corrected growth-and-regret arithmetic argues below 0.28 on the
-   investor's own benchmark. What still argues lower is the **premium-free** holdability
-   evidence in [the notional budget](leverage-and-the-notional-budget.md) — a tracking-error
-   route and a CAPE-41 conditioned drawdown route landing at 15–25% — which the basis error
-   never touched. **25% is the only weight both routes admit.** §6. **The published weight is
-   30%**, which this page's own robust range admits and none of its four routes selects; it
-   is set in [part A](portfolio-for-one-investor.md) §2 on Experiment 016e's one resolvable
-   whole-portfolio comparison, and [the recommendation](portfolio-recommendation.md) records
-   what that comparison does and does not isolate.
+8. **Sized answer: 25% of capital in the wrapper, robust over 20–30%, and 30% is admitted by
+   every route.** Nothing in the corrected growth-and-regret arithmetic argues below 0.28 on
+   the investor's own benchmark. The holdability evidence in
+   [the notional budget](leverage-and-the-notional-budget.md) was described here as
+   premium-free and as landing at 15–25%; it was neither. Its tracking-error table was read
+   from the same retracted 1.80, and corrected to 4.07% gross it **admits 0.30 and first bites
+   at 0.35** (a 30-year probability of a −20% relative run of 8.7% at 0.30, 18.2% at 0.35).
+   What still argues below 30% is that page's CAPE-41 conditioned drawdown route at 19.1%,
+   which is premium-free and rests on a tolerance nobody has supplied, and the doubling of
+   the relative-run probability between 0.30 and 0.35 at the top of the band. **20–30% is the
+   band all four routes admit; 25% is its centre and 30% its top.** §6. **The published
+   weight is 30%**, set in [part A](portfolio-for-one-investor.md) §2 on Experiment 016f's
+   one resolvable whole-portfolio comparison; [the recommendation](portfolio-recommendation.md)
+   records what that comparison does and does not isolate.
 
 9. **Cost is not what decides this.** Every gap depends on the premium and the cost only
    through their difference, so the whole taxable-versus-sheltered question — RSST's 32 bp/yr
@@ -399,8 +410,11 @@ running peak, then hold the control for good. 4,000 joint 24-month block resampl
 horizon, both arms drawn on the same history. **The trigger is an input, not an estimate** —
 nothing in this repository measures a real investor's capitulation threshold, and fitting one
 inside an optimiser would manufacture the quantity the design exists to expose. Read −20%
-against [the notional budget](leverage-and-the-notional-budget.md) §6a's measured central-case
-worst relative run of −21.3%.
+against [the notional budget](leverage-and-the-notional-budget.md) §6a's corrected
+central-case worst relative run of **−15.7%** at the 4.07% gross premium (the −21.3% this
+page first cited was that table's retracted 1.80% row): the trigger sits four points beyond
+the central case, so it is a pessimistic input rather than a central one, and every
+probability below is read with that in mind.
 
 At a −20% trigger, `P(the position is sold)` over thirty years:
 
@@ -468,6 +482,59 @@ percentage point of abandonment risk.** The steep fall is now entirely inside 0.
 of abandonment probability — about 2.1 bp per point, against 0.86 on the old axis.** This is the
 largest single consequence of the correction for the recommendation, and it argues the weight
 *up*.
+
+### 4c. The same rule with a contribution stream inside the path
+
+[Part A](portfolio-for-one-investor.md) §2 gives *"a contribution stream is what carries a
+position through a drought"* as a reason to prefer 30% over 25%. Until `2026-09-02` no arm on
+any page ran one: the table in §4 is a lump-sum resample. This one keeps the same resamples,
+the same −20% trigger and the same 30-year horizon, and pays the same dollars into **both**
+arms every month, because one investor has one income and the counterfactual portfolio
+receives it too. Two bases bracket the effect: a fixed nominal instalment of 5, 10 or 15% of
+starting capital a year, which is what a savings rate against a salary looks like from inside
+a portfolio that outgrows it; and the same share of the benchmark portfolio's wealth, so the
+stream keeps pace with the portfolio for thirty years, which no salary does and which is the
+upper bound on dilution. Relative wealth is the ratio of the two pots *including* the new
+money, which is what a statement shows; after the sale the candidate earns the control's
+return and keeps receiving the instalment, so the deficit is diluted rather than frozen. The
+held and after-quitting columns are then the terminal wealth ratio per year, a money-weighted
+figure, not the time-weighted gap of §4.
+
+| `w` | `m` | contribution | basis | `P(quit)` | median year | held | after quitting |
+| ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |
+| 0.25 | −1.17% (floor) | 0% | | **50.7%** | 17.8 | −26 bp | −20 bp |
+| | | 5 / 10 / 15% | starting capital | 48.5 / 47.3 / 46.5% | 18.8–19.7 | −24 to −22 | −19 to −18 |
+| | | 5 / 10 / 15% | portfolio wealth | 35.9 / 21.6 / 12.0% | 20.5–23.0 | −12 to −5 | −10 to −5 |
+| 0.25 | +2.73% (median) | 0% | | **7.6%** | 19.8 | 71 bp | 69 bp |
+| | | 5 / 10 / 15% | starting capital | 7.7 / 7.7 / 7.7% | 21.2–21.6 | 64 to 59 | 63 to 58 |
+| | | 5 / 10 / 15% | portfolio wealth | 9.2 / 9.4 / 7.2% | 23.7–24.1 | 39 to 17 | 38 to 16 |
+| 0.30 | −1.17% (floor) | 0% | | **66.7%** | 15.6 | −32 bp | −21 bp |
+| | | 5 / 10 / 15% | starting capital | 64.9 / 64.2 / 63.3% | 16.4–17.1 | −30 to −28 | −20 to −19 |
+| | | 5 / 10 / 15% | portfolio wealth | 58.6 / 46.3 / 34.8% | 17.8–20.2 | −15 to −6 | −10 to −5 |
+| 0.30 | +2.73% (median) | 0% | | **17.2%** | 18.1 | 84 bp | 78 bp |
+| | | 5 / 10 / 15% | starting capital | 17.8 / 17.6 / 17.7% | 18.9–19.1 | 76 to 70 | 71 to 65 |
+| | | 5 / 10 / 15% | portfolio wealth | 24.1 / 25.6 / 23.6% | 22.0–22.7 | 46 to 20 | 42 to 17 |
+
+**Contributions do not materially change the 17.2% and 66.7%, and at the median they move the
+wrong way.** On the nominal basis the 30% weight's abandonment probability at the prior's
+median goes from 17.2% to 17.6–17.8%, and at the floor from 66.7% to 63.3–64.9%; the 25%
+weight's 7.6% and 50.7% become 7.7% and 46.5–48.5%. The differences at the median are inside
+the binomial resolution of 4,000 resamples (about ±0.6 points at 17%). Indexed to the
+portfolio, the strongest dilution available, the floor falls to 34.8% at 30% and 12.0% at
+25%, and the median *rises* to 23.6–25.6% and 7.2–9.4%: new money pulls the relative-wealth
+ratio back toward one from both sides, so it also erases the accumulated lead that, without
+contributions, carries the ratio away from its trigger. A drifting random walk becomes a
+stationary one, and the range of a stationary process over thirty years crosses 20% more
+often than a walk with a positive drift does.
+
+**What the mechanism actually does is dilute the edge.** The held column falls from 84 bp/yr
+to 70–76 on the nominal basis and to 20–46 indexed, because the overlay's premium compounds
+only on money that has been in the pot. That is the money-weighted truth of a contribution
+stream and it cuts both ways: a drought costs less because less of the money was there for
+it, and a good decade pays less for the same reason. **The sentence that a contribution stream
+carries a position through a drought is withdrawn as a reason for 30 over 25.** Where
+contributions help holdability is at zero premium, where §4 already shows that quitting
+saves money.
 
 ---
 
@@ -546,22 +613,29 @@ thirty-year histories at the prior's median, and that comparison does not move w
 
 **25% is not the minimax-regret weight on either benchmark and this page does not pretend it
 is.** Benchmark A's is 0.36 and benchmark B's is 0.12; the charter forbids averaging results
-measured against different comparators. 25% is the weight at which the two *surviving*
-constraints overlap:
+measured against different comparators. 25% is the centre of the band every route admits once
+the sibling page's tracking-error table is corrected, and 30% is that band's top:
 
 | route | what it constrains | answer | depends on the premium? |
 | --- | --- | ---: | --- |
 | this page's regret surface, benchmark A | expected growth against the investor's own portfolio, under every reweighting tried | **0.28–0.40** | yes |
 | this page's regret surface, benchmark B | growth against a leverage-matched control at the realised equity premium | 0.00–0.12 | yes, and on the *equity* premium |
-| [notional budget](leverage-and-the-notional-budget.md) §6a, tracking error | how long a stretch of relative underperformance is holdable | 15–25% | **no** |
+| [notional budget](leverage-and-the-notional-budget.md) §6a, tracking error, corrected | how long a stretch of relative underperformance is holdable: a 30-year probability of a −20% relative run of 2.4% at 0.25, 8.7% at 0.30, 18.2% at 0.35 at the corrected 4.07% gross premium | **admits 0.30, bites at 0.35** | **yes**; the 15–25% first quoted here was read from the retracted 1.80% row |
 | [notional budget](leverage-and-the-notional-budget.md) §3.2, CAPE-41 drawdown | how deep an absolute loss is holdable | **19.1%** at a −50% tolerance | **no** |
 
-**Robust over 20% to 30%, and 30% is no longer excluded.** It sits inside benchmark A's robust
-band, it is exactly the leverage-matched minimax weight at
-[decision 0004](../decisions/0004-no-sleeve-promoted.md)'s own 5.00% equity premium, and its
-abandonment probability at the prior's median is 17% rather than the 42% the old axis produced.
-Below 20% the investor gives up more than a percentage point a year in the decade the sleeve
-exists for, for a step whose exchange rate is the best on the ladder.
+**Robust over 20% to 30%, and 30% is admitted by every route.** It sits inside benchmark A's
+robust band, it is exactly the leverage-matched minimax weight at
+[decision 0004](../decisions/0004-no-sleeve-promoted.md)'s own 5.00% equity premium, its
+abandonment probability at the prior's median is 17% rather than the 42% the old axis
+produced, and the sibling page's corrected tracking-error route admits it with a 30-year
+probability of a −20% run of 8.7%. **The correction of that route moved the band up**: the
+holdability evidence that was doing the whole job of holding this page's answer below the
+regret surface's 0.36 was built on the same retracted number, and what holds it there now is
+the doubling of that probability between 0.30 and 0.35, the CAPE-41 drawdown route at 19.1%,
+and the 15% of the prior at or below zero. What §4c adds is that the contribution stream
+[part A](portfolio-for-one-investor.md) cites in favour of 30 does not lower the abandonment
+probability at the median. Below 20% the investor gives up more than a percentage point a year
+in the decade the sleeve exists for, for a step whose exchange rate is the best on the ladder.
 
 **Not a repository recommendation.** [Decision 0004](../decisions/0004-no-sleeve-promoted.md)'s
 non-promotion and zero-leverage default are untouched.
@@ -665,8 +739,11 @@ elbow that only existed on the understated axis, and it stated the abandonment p
 `w = 0.30` as 42.3% when the corrected figure is 17.2%. **The "20% over 30%" trade as I
 originally quantified it does not survive the correction.** What does survive is the framing —
 two benchmarks that bracket the answer, minimax as an endpoint rule, the two-armed asymmetry —
-and the premium-free holdability evidence on the sibling page, which is now doing the whole
-job of holding the recommendation below the regret surface's own answer.
+and the holdability evidence on the sibling page. That evidence was itself built on the same
+1.80 and, corrected `as of 2026-09-02`, admits 30% and bites at 35%; what holds the
+recommendation below the regret surface's 0.36 is now the doubling of the relative-run
+probability between 0.30 and 0.35 and the CAPE-conditioned drawdown route, not a premium-free
+tracking-error band.
 
 ---
 
@@ -683,7 +760,10 @@ action space and against a 20,001-point numerical average of the optimal weight 
 support. That the term separating the two benchmarks contains no property of the trend leg.
 That the capitulation probability rises with the weight, that a trigger which cannot fire
 reproduces the held gap exactly, and that a constant-return pair annualises to
-`12 log(1+c) − 12 log(1+k)` to 1e-12.
+`12 log(1+c) − 12 log(1+k)` to 1e-12. The contribution arithmetic against a three-month path
+worked on paper, against the annuity closed form `(1+r)^T + c((1+r)^T − 1)/r` on constant
+returns, and against a hand-built sale in which the candidate switches to the control and
+keeps receiving the instalment.
 
 **Assumed.**
 
@@ -708,6 +788,11 @@ reproduces the held gap exactly, and that a constant-return pair annualises to
 9. **US equity only, nominal, and pre-tax** except in §7.
 10. **Log growth is the loss function.** Regret prices terminal wealth and, in §4, the sale of
     the position. It prices no utility over drawdown.
+11. **Contributions in §4c reach both arms in the same dollars**, arrive after each month's
+    return, and are either fixed in nominal terms or indexed to the benchmark portfolio's
+    wealth; a stream indexed to a salary sits between the two. The running peak of relative
+    wealth starts at the first month's level rather than at 1.0, which understates the
+    abandonment probabilities by at most 0.25 points at 4,000 resamples.
 
 **Open.**
 
@@ -718,6 +803,8 @@ reproduces the held gap exactly, and that a constant-return pair annualises to
    crisis-conditional one is over the 1929–2025 span the review reaches.
 5. **A capitulation threshold estimated from anything.** §4's whole arm is a sensitivity to an
    input.
+6. **A contribution stream indexed to income.** §4c's two bases bracket it; neither moves the
+   abandonment probability at the median in the direction part A's sentence assumed.
 
 **Reproducibility.** `cd research && uv run python -m portfolio_edge.studies.trend_weight_regret`.
 Closed forms and decision rules in

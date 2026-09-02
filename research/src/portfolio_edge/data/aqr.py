@@ -405,6 +405,98 @@ DATASETS: Final[dict[str, AqrDataset]] = {
                 "VALLS_VME_COM", "MOMLS_VME_COM",
             ),
         ),
+        AqrDataset(
+            dataset_id="aqr_century_factor_premia",
+            filename="Century-of-Factor-Premia-Monthly.xlsx",
+            data_sheet="Century of Factor Premia",
+            description=(
+                "Monthly self-financing excess returns of cross-sectional value, "
+                "momentum, carry and defensive factors within US and international "
+                "stock selection, equity indices, fixed income, currencies and "
+                "commodities, plus 'All Stock Selection', 'All Macro' and 'All "
+                "asset classes' composites, from 1926-07. An updated and extended "
+                "version of the portfolios in Ilmanen, Israel, Lee, Moskowitz and "
+                "Thapar (2021), 'How Do Factor Premia Vary Over Time? A Century of "
+                "Evidence', Journal of Investment Management 19(4). Registered for "
+                "the CARRY columns, which are the only cross-asset carry return "
+                "series in any free library: the equity-index, fixed-income, "
+                "currency and commodity carry legs and the 'All Macro Carry' "
+                "composite of the four. The currency leg begins 1974-02, so the "
+                "composite before that month is an average of three asset classes "
+                "and after it of four; the workbook does not say how the composite "
+                "is weighted, and the factor definitions and portfolio-formation "
+                "rules are shipped as pictures on the Definition sheet with no "
+                "recoverable text. What the sheet's own preamble says is that the "
+                "factors use 'the simplest, best-documented measures' with rank-"
+                "weighted long/short construction within each asset class; the "
+                "carry measures in the paper are the dividend yield less the "
+                "local short rate (equity indices), the term spread (fixed "
+                "income), the short-rate differential (currencies) and the "
+                "futures-curve slope (commodities)."
+            ),
+            declared_source_units="decimal",
+            declared_units="decimal",
+            declared_unit_transform="identity",
+            declared_return_basis=(
+                "monthly SELF-FINANCING EXCESS return of a long/short factor "
+                "portfolio, per the workbook's own preamble. The Definition sheet "
+                "states in its one text cell that 'returns are presented gross of "
+                "trading costs and fees', so the series is gross of every "
+                "implementation cost, and the paper's deliberately simple "
+                "construction (one indicator per style, no sector neutralisation) "
+                "means the risk weights across styles and asset classes are not "
+                "equal. A stock-selection momentum cell is blank in the earliest "
+                "months and becomes missing, not zero."
+            ),
+            availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY_RECONSTRUCTED,
+            expected_columns=(
+                "US Stock Selection Value",
+                "US Stock Selection Momentum",
+                "US Stock Selection Defensive",
+                "US Stock Selection Multi-style",
+                "Intl Stock Selection Value",
+                "Intl Stock Selection Momentum",
+                "Intl Stock Selection Defensive",
+                "Intl Stock Selection Multi-style",
+                "Equity indices Value",
+                "Equity indices Momentum",
+                "Equity indices Carry",
+                "Equity indices Defensive",
+                "Equity indices Multi-style",
+                "Fixed income Value",
+                "Fixed income Momentum",
+                "Fixed income Carry",
+                "Fixed income Defensive",
+                "Fixed income Multi-style",
+                "Currencies Value",
+                "Currencies Momentum",
+                "Currencies Carry",
+                "Currencies Multi-style",
+                "Commodities Value",
+                "Commodities Momentum",
+                "Commodities Carry",
+                "Commodities Multi-style",
+                "All Stock Selection Value",
+                "All Stock Selection Momentum",
+                "All Stock Selection Defensive",
+                "All Stock Selection Multi-style",
+                "All Macro Value",
+                "All Macro Momentum",
+                "All Macro Carry",
+                "All Macro Defensive",
+                "All Macro Multi-style",
+                "All asset classes Value",
+                "All asset classes Momentum",
+                "All asset classes Carry",
+                "All asset classes Defensive",
+                "All asset classes Multi-style",
+                "Equity indices Market",
+                "Fixed income Market",
+                "Commodities Market",
+                "All Macro Market",
+            ),
+        ),
     )
 }
 

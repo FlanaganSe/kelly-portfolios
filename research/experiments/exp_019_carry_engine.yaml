@@ -1,0 +1,759 @@
+# FREEZE NOTE — READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    The recommended portfolio is 70% cheap equity core plus 30% of an RSST-like
+#    stocks-plus-trend wrapper: 1.0216 equity notional, 0.300 trend notional,
+#    1.3216 gross. The stacking arithmetic (docs/research/stacking-and-effective-
+#    breadth.md §1) says a FINANCED overlay adds its edge as a sum while a
+#    substitution adds it as an average, so a second financed engine earns its
+#    place only with a positive expected excess return and a low correlation to
+#    what is already held. Experiment 018 tested defensive engines and found
+#    none that met both. This file tests the one candidate with a literature
+#    claim to both: multi-asset futures carry — long/short carry across equity
+#    indices, government bonds, currencies and commodities, the engine inside
+#    the RSSY wrapper (US stocks 100% + "futures yield" 100%). Koijen,
+#    Moskowitz, Pedersen and Vrugt (2018, "Carry", JFE 127) report that a
+#    diversified carry factor is weakly correlated with time-series momentum;
+#    this repository has rejected long/short COMMODITY carry on overlap with
+#    trend (alternative-sleeves-audit.md §8) and has never measured cross-asset
+#    carry as an engine.
+#
+# 2. THIS SCORES CONSTRUCTIONS ON PUBLIC SERIES, NOT FUNDS.
+#    No fund return series is committed (decision 0002). Every wrapper is a
+#    per-dollar exposure vector — units of equity, trend or carry excess return —
+#    less a fee and less a financing charge on the notional it holds beyond its
+#    capital. RSSY_LIKE is an ASSUMPTION modelled on RSSY's summary prospectus of
+#    2026-04-27 (100% US equity as 75% ETF plus 25% E-mini, 100% futures-yield
+#    notional, 0.99% total expense) and is stated in `parameters.wrappers`. A
+#    reader who quotes a growth figure here as RSSY's expected return has misread
+#    the experiment.
+#
+# 3. THE CARRY LEG IS A VENDOR RECONSTRUCTION, GROSS OF EVERY COST.
+#    AQR `Century-of-Factor-Premia-Monthly.xlsx`, column `All Macro Carry`: the
+#    cross-sectional rank-weighted long/short carry factor averaged across equity
+#    indices, fixed income, currencies and commodities (Ilmanen, Israel, Lee,
+#    Moskowitz and Thapar 2021). The workbook's one text cell says returns are
+#    "gross of trading costs and fees". The currency leg begins 1974-02, so the
+#    composite is three asset classes before that month and four after; the
+#    workbook does not state how the composite is weighted, and its factor
+#    definitions are shipped as pictures with no recoverable text. AQR
+#    reconstructs the full history on every update. This is a replication target
+#    from a firm that sells the strategy, not an investable product. RSSY's own
+#    strategy is proprietary, daily, and may hold different instruments; nothing
+#    here measures RSSY.
+#
+# 4. THE TREND LEG IS EXPERIMENT 018'S, UNCHANGED.
+#    Primary panels: this repository's own 4-asset time-series-momentum book
+#    (US equity, long government, corporate, commodity), `studies/
+#    time_series_momentum` defaults, no trading cost, scaled to 12.38% volatility
+#    by one constant computed from its realised full-window volatility on the
+#    primary window — the same rule, and on the same 1929-01..2025-05 window the
+#    same scalar (1.9771), as Experiment 018. Secondary and check panels: AQR
+#    TSMOM as published.
+#
+# 5. THE CARRY LEG IS SCALED THE SAME WAY, AND THAT IS A DESIGN CHOICE.
+#    `All Macro Carry` is scaled to 12.38% volatility by one constant computed
+#    from its realised full-window volatility on the primary window, so that one
+#    unit of carry notional carries the same risk as one unit of trend notional
+#    and the 15-trend / 15-carry substitution arm swaps like for like. RSSY
+#    states no volatility target for its futures-yield leg. The scaling is
+#    Sharpe-preserving and changes no sign; every carry gap scales linearly in
+#    the carry weight, so a reader who believes the fund runs the leg at 10%
+#    volatility reads the 10-point stack as an 8.1-point one. The scalar is
+#    printed in the artifact.
+#
+# 6. WHAT THIS FILE PREDICTS BEFORE IT IS RUN.
+#    `parameters.minimum_detectable_effect` is arithmetic on each panel's length
+#    and a grid of tracking errors and required no look at the data. On the
+#    1157-month primary panel the floor is 0.285 pp/yr per point of tracking
+#    error. A 10-point carry stack tracks the reference arm at about 1.2 points
+#    (floor 0.35); a 20-point stack at about 2.5 (floor 0.71); the 15/15
+#    substitution at about 2.6 if carry and trend are uncorrelated (floor 0.75);
+#    a 30-point carry-only wrapper tracks the cheap control at about 3.7, exactly
+#    as the trend wrapper does (floor 1.06). The published century-of-evidence
+#    carry composites run a gross Sharpe ratio somewhere near 0.5 to 0.8 across
+#    macro asset classes; at 12.38% volatility that is 6 to 10 pp/yr per unit of
+#    notional, and a 10-point stack would contribute about 0.6 to 1.0 pp/yr
+#    before its certain cost of 11 bp/yr. THE PREDICTION IS THEREFORE A BRACKET,
+#    NOT A NULL: the 10- and 20-point stacks against the reference arm are
+#    expected to reach `exploratory` on the primary panel at the vendor's gross
+#    series and full loading, and to fall back to `unresolved` under the 2 pp/yr
+#    trading-cost haircut and the 0.681 delivered loading, because
+#    0.10 × 0.681 × (8 − 2) − 0.11 ≈ 0.30 is under the 0.35 floor. The
+#    substitution arm's sign is not predictable and is expected `unresolved`.
+#    Every comparison against the leverage-matched control is expected
+#    `rejected` or `unresolved`, as it was for the trend wrapper. The post-2013
+#    check window cannot resolve anything (floor about 1 pp/yr on a 1.2-point
+#    tracking error). The whole-experiment status will read `exploratory` for
+#    the reason Experiment 018's did — the trend reference clears its floor
+#    against the cheap control — and that status says NOTHING about carry; the
+#    carry question is read only from the paired rows against the reference arm.
+#
+# 7. THE DECISION-RELEVANT OUTPUTS CARRY NO SIGNIFICANCE CLAIM.
+#    The correlation tables (full sample and worst decile of equity months), the
+#    drawdown table, the months-under-water table, the crisis-episode table and
+#    the sum-rule check are DESCRIPTIVE statistics of one realised history and
+#    are reported with no status.
+#
+experiment_family: exp_019_carry_engine
+title: >
+  Carry as a second financed engine: does a multi-asset futures-carry leg
+  (RSSY-like, 100% US stocks + 100% futures yield) stacked on top of, or
+  substituted for half of, the 30-point RSST-like trend wrapper improve 70%
+  equity core + 30% stocks-plus-trend on growth, drawdown and crisis behaviour
+  against cheap, leverage-matched, volatility-matched and reference controls,
+  on 1157, 616, 494 and 150 months?
+entry_point: exp_019_carry_engine
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260902
+
+hypothesis: >
+  The reference construction is `base_trend30`: 70% of capital in a 3 bp equity
+  core and 30% in an RSST-like wrapper holding 1.072 equity and 1.000 trend per
+  dollar. Each candidate arm adds an RSSY-like wrapper holding 1.000 equity and
+  1.000 carry per dollar: stacked at 10 and 20 points in place of core (equity
+  notional unchanged, gross rising), substituted for half the trend wrapper
+  (15 trend / 15 carry), stacked at 30 points beside 30 of trend to show the sum
+  rule, and held alone at 30 points with no trend. The hypothesis under test,
+  per arm and per control, is that the arm's arithmetic mean monthly total
+  return exceeds the control's after every cost charged inside the rule. The
+  stacking arithmetic predicts that a financed leg with positive expected excess
+  return and low correlation to trend and equity adds its edge as a sum; the
+  paired rows against the reference arm are the test of that prediction, and
+  the correlation tables are the test of its premise. The prediction is a
+  bracket (freeze note 6): `exploratory` at the top, `unresolved` at the bottom.
+
+mechanism: >
+  The overlay-growth condition from `portfolio_edge.studies.overlay_growth`: a
+  financed leg raises log growth when its net Sharpe ratio exceeds
+  `L rho sigma_p`. For carry the premise is that rho against the equity-plus-
+  trend reference is near zero, so the threshold is near zero and any positive
+  net premium adds. The two things that can break it are measured here: a
+  positive correlation of carry with equity in the worst decile of equity months
+  (Koijen et al. report carry losing in global recessions), which raises the
+  threshold exactly when the leg is wanted; and a positive correlation of carry
+  with trend, which would make the second engine a second dose of the first.
+  COST: 99 bp on the wrapper capital plus 62 bp on the 0.25 of equity futures the
+  wrapper finances, less the 3 bp core it displaces: 11.45 bp/yr of portfolio
+  return per 10 points stacked, certain. The carry book's own trading is not
+  charged in the vendor series and is swept as a haircut.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each candidate arm,
+  against each named control separately, on the primary metric:
+  (a) `rejected` if the arithmetic mean gap point estimate is at or below zero;
+  (b) `unresolved` if the gap is positive but smaller than the minimum detectable
+  effect at 80% power computed from that comparison's own paired difference
+  series, reported in the same row;
+  (c) `unresolved` if the gap exceeds its MDE but its Benjamini-Hochberg adjusted
+  p-value within the declared family (one family per control per panel) exceeds
+  0.10;
+  (d) `unresolved` if the gap survives (b) and (c) but changes sign anywhere on
+  the declared equity-financing band;
+  (e) `exploratory` otherwise. Under no outcome may this specification produce a
+  status above `exploratory`.
+  The correlation, drawdown, months-under-water, worst-decile, crisis-episode,
+  sum-rule and terminal-wealth tables are descriptive and receive NO status. The
+  whole-experiment status is `exploratory` when any primary-, subwindow- or
+  secondary-panel comparison reaches (e) and `unresolved` otherwise; that status
+  is inherited from the trend reference and is not a statement about carry.
+
+universe:
+  description: >
+    Three monthly excess-of-cash legs plus the cash rate, on four scored panels
+    and four sensitivity panels. US-only equity throughout, because the question
+    needs 1929-1932, 1937, 1973-74 and 1977-81. Cash is the Ken French one-month
+    bill, the same `RF` inside `Mkt-RF`. No fund share class, NAV series,
+    contract-level futures data, roll or collateral model appears anywhere.
+  legs:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published, 1926-07 onward.
+    - id: trend
+      source: >
+        Primary panels: this repository's own 4-asset time-series-momentum book
+        (French Mkt-RF, Goyal-Welch ltr and corpr less Goyal-Welch Rfree, AQR
+        equal-weight commodity excess), `studies/time_series_momentum` defaults,
+        minimum three live instruments, scaled to 12.38% volatility by one
+        full-window constant. Secondary and check panels: AQR `TSMOM` as
+        published.
+      basis: Excess of cash, no trading cost charged on either series.
+    - id: carry
+      source: >
+        AQR `Century-of-Factor-Premia-Monthly.xlsx`, sheet `Century of Factor
+        Premia`, column `All Macro Carry`, 1926-07..2026-02, scaled to 12.38%
+        volatility by one full-window constant on the primary window. The four
+        per-asset-class carry columns are read for the descriptive component
+        table only and enter no arm.
+      basis: >
+        Self-financing long/short excess return, gross of trading costs and fees
+        by the workbook's own statement. Three asset classes before 1974-02, four
+        after.
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `RF`
+  excluded:
+    - Any claim that a wrapper's simulated path is RSSY's or RSST's return.
+    - Any weight search. Every arm's weights are declared here and nothing optimises them.
+    - Developed ex-US or emerging equity, which would cut the panel to 1990-11.
+    - Stock-selection carry, which the workbook does not define, and equity-index or bond "market" columns.
+
+sample_policy:
+  start: "1926-01"
+  end: "2026-05"
+  held_out: >
+    Nothing is held out. Each panel is the intersection of what its sources
+    publish, and neither boundary of any scored panel was chosen by looking at a
+    result: the primary panel begins when the 4-asset book has three live
+    instruments (1929-01) and ends when the AQR commodity leg ends (2025-05); the
+    four-class sub-window begins when the currency carry leg begins (1974-02);
+    the secondary panel begins with AQR TSMOM (1985-01) and ends with the carry
+    file (2026-02); the check window begins the month after Koijen, Moskowitz,
+    Pedersen and Vrugt's NBER working paper 19325 was circulated (2013-08), so it
+    is the one window no carry paper could have fitted. The arms were chosen by
+    people who had read Experiment 018 and the stacking page.
+  embargo: >
+    None. The constant-weight arms estimate nothing. The 4-asset trend book uses
+    only data before each month; the two volatility scalars are the only
+    look-ahead and are Sharpe-preserving constants (freeze notes 4 and 5).
+  eras:
+    - name: first_half
+      start: "1929-01"
+      end: "1977-03"
+      rationale: The first 579 of 1157 primary-panel months, a mechanical midpoint chosen by counting.
+    - name: second_half
+      start: "1977-04"
+      end: "2025-05"
+      rationale: The remaining 578 primary-panel months.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: The one flat-to-negative equity decade in the modern panel, with the boundaries exp_016e froze.
+    - name: three_class_carry
+      start: "1929-01"
+      end: "1974-01"
+      rationale: >
+        The currency carry leg does not exist yet; the composite is equity
+        indices, fixed income and commodities. Declared so the four-class result
+        can be read beside the era it does not cover.
+    - name: four_class_carry
+      start: "1974-02"
+      end: "2025-05"
+      rationale: The composite holds all four asset classes; the sub-window panel is this era.
+    - name: post_2009
+      start: "2009-01"
+      end: "2025-05"
+      rationale: >
+        The era in which the trend overlay's gap decayed to an unresolvable size
+        (Experiment 018 §2); declared so that carry's post-2009 behaviour can be
+        read beside trend's on the same months.
+    - name: post_publication
+      start: "2013-09"
+      end: "2025-05"
+      rationale: >
+        After the circulation of NBER working paper 19325 (August 2013). The
+        century-of-evidence workbook is a 2021 reconstruction, so this is the
+        only window the carry series could not have been fitted to.
+
+benchmark:
+  primary:
+    id: cheap
+    definition: 100% equity core at 3 bp, unlevered, rebalanced on the same clock.
+    rationale: Decision 0003, charter question 1.
+  secondary:
+    id: leverage_matched
+    definition: >
+      The equity core levered to the arm's own gross notional, financed at cash
+      plus the equity-futures basis, debt accruing monthly as in exp_016.
+  tertiary:
+    id: volatility_matched
+    definition: >
+      Equity core plus T-bills scaled so that full-window volatility of monthly
+      total return equals the arm's (ex post, one constant), and separately so
+      that each month's trailing 36-month volatility matches (ex ante, rolling;
+      scored from month 37 on). A scale above one is levered equity at the
+      equity-futures basis.
+  quaternary:
+    id: reference
+    definition: The `base_trend30` arm itself.
+    rationale: >
+      The decision is whether adding carry improves the current recommendation,
+      so the recommendation is the comparator that answers it. The paired row
+      against the reference is the only row in which the trend leg cancels.
+  aggregation_rule: >
+    FOUR CONTROLS ARE FOUR FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED OR
+    PLACED IN ONE COLUMN. Every reported gap names its control and its panel.
+    Benjamini-Hochberg is applied within one control on one panel and never
+    across. The sum-rule check adds three gaps against ONE control (cheap) on
+    one panel and is a descriptive identity check, not an estimate.
+
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` over monthly funded total returns net of
+    every cost charged inside the simulation. Arithmetic rather than log because
+    the question is whether an engine adds expected return per unit of capital at
+    the stated leverage; annualised log growth is reported beside it as a
+    secondary metric and the two are never mixed.
+  units: percentage points per year
+  uncertainty: >
+    Stationary block bootstrap over the joint monthly panel, whole rows, mean
+    block 12 months, 10000 resamples, 95% percentile interval, plus a minimum
+    detectable effect at 80% power from each comparison's own paired difference
+    series (the exp_016 functions, reused by import).
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+  - name: annualised log growth
+    units: percentage points per year
+  - name: maximum drawdown of the funded wealth path
+    units: percent
+  - name: longest run of months below the running peak
+    units: months
+  - name: correlation of carry with trend and with equity, and of trend with equity
+    units: correlation
+    note: >
+      Pearson on the panel's excess-return legs, full sample and on the worst
+      decile of equity months; by era; and for each of the four per-asset-class
+      carry columns against the trend book and equity. Descriptive.
+  - name: worst-decile-of-equity-months mean offset against the reference arm
+    units: percentage points per month
+  - name: cumulative return in each predeclared crisis episode
+    units: percent
+  - name: sum-rule residual
+    units: percentage points per year
+    note: >
+      `gap(trend30_carry30 vs cheap) − gap(base_trend30 vs cheap) −
+      gap(carry30_no_trend vs cheap)`; zero up to rebalancing drift if the
+      overlay adds as a sum.
+  - name: era gaps against each control
+    units: percentage points per year
+  - name: contribution-weighted terminal wealth ratio
+    units: ratio
+  - name: carry-leg volatility scalar and realised volatility
+    units: multiple; percent
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    (1) each wrapper's expense ratio on the capital allocated to it; (2)
+    financing at cash plus the equity basis on the equity futures a wrapper holds
+    beyond its physical capital; (3) the equity basis on the debt of any control
+    whose capital weights exceed one; (4) a 0.55 bp round-trip US equity spread,
+    half-crossed on one-sided monthly rebalancing turnover, on every line; (5) on
+    the sensitivity panels, a flat annual haircut on the carry leg. Nothing is a
+    post-hoc haircut on a reported estimate.
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    RSSY_LIKE: 99
+    CASH: 0
+  financing_basis_points_over_cash:
+    equity: 62
+  financing_sources: >
+    Equity 62 bp: `docs/research/structural-and-tax-edges.md` section 3, ten
+    E-mini rolls Dec-2022..Mar-2025 against 3-month Term SOFR, the figure exp_016
+    and exp_018 charge. The long/short carry and trend books are charged no
+    signed basis: a futures book long some contracts and short others has a
+    financing cost near zero.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  carry_leg_haircut_pp_yr:
+    published: 0.0
+    cost_1pp: 1.0
+    cost_2pp: 2.0
+    rationale: >
+      The vendor series states no trading cost. A rank-weighted cross-sectional
+      carry book rebalanced monthly turns over less than a trend book on most
+      legs (currencies and bonds) and more on commodities; 20 bp one-way on
+      roughly 250-500% one-way turnover is 0.5 to 1.0 pp/yr, and 2.0 pp/yr is
+      the pessimistic bound. Both are ASSUMPTIONS and are swept, not estimated.
+  not_charged:
+    - The 4-asset trend book's own trading (262% one-way turnover; 20 bp one-way takes its Sharpe from 0.58 to 0.50).
+    - The vendor's trading costs inside AQR's TSMOM and inside the carry composite, by omission; the carry haircut panels bound the second.
+    - Any tax. No arm holds tax lots; the comparison is pre-tax throughout.
+    - Bid/ask on the initial purchase; every arm starts from a common portfolio.
+
+rebalance_rule:
+  frequency: >
+    MONTHLY, every month, back to the arm's capital weights, so that the arms
+    are held to the same clock as the leverage-matched and ex-ante volatility-
+    matched controls.
+  drift: Weights drift within the month and the drifted weights earn the month's return.
+  overlay_legs: >
+    A wrapper's internal notional is a property of the wrapper and is never
+    rebalanced by the investor. The per-dollar exposures in `parameters.wrappers`
+    are constants.
+  debt: >
+    Positions and debt are carried in absolute terms, exp_016's `_simulate`,
+    reused by import. Debt accrues at cash plus the equity-futures basis.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, as in exp_016e and exp_018; not tuned
+    on the data.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each control family on each scored
+    panel, never across. The family omits the sensitivity panels, the era
+    tables, and the eighteen earlier specifications that searched this data.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval containing zero is reported as unresolved. The MDE is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per control, per panel, and
+  record which clause fired. The prediction is a bracket (freeze note 6). Under
+  no outcome may this specification produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    carry_leg_is_a_vendor_reconstruction: true
+    statement: >
+      Every wrapper is an assumed per-dollar exposure vector and a fee. No fund's
+      returns were used. The carry leg is a vendor-authored century-long
+      reconstruction, gross of every cost, by a firm that sells the strategy. The
+      experiment scores CONSTRUCTIONS; a result transfers to RSSY only to the
+      extent the fund delivers the mapped exposure at the mapped cost, and RSSY
+      has 27 months of history against which that has not been measured.
+    order_of_operations: >
+      This file was written and frozen before the experiment module produced any
+      statistic and before any correlation between the carry series and any
+      other series was computed. The only facts about the carry file read before
+      freezing were its sheet and column names, its first and last observation
+      per column, and the count of missing cells, which are what the data-set
+      registration and manifest require.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired monthly difference."
+    computed_before_freezing: >
+      Arithmetic on the panel lengths and a grid of tracking errors. Primary
+      1157 months (96.4 years): 0.285 pp/yr per point of tracking error.
+      Four-class sub-window 616 months: 0.391. Secondary 494 months: 0.437.
+      Post-publication check 150 months: 0.792.
+    floor_at_assumed_tracking_error_primary:
+      "1.0": 0.29
+      "1.2": 0.34
+      "2.0": 0.57
+      "2.5": 0.71
+      "3.0": 0.86
+      "3.7": 1.06
+    floor_at_assumed_tracking_error_secondary:
+      "1.0": 0.44
+      "1.2": 0.52
+      "2.0": 0.87
+      "2.5": 1.09
+      "3.0": 1.31
+      "3.7": 1.62
+    expected_tracking_errors: >
+      Carry stack 10 against reference: about 0.10 x 12.38 = 1.2 points, floor
+      0.35 (primary), 0.48 (sub-window), 0.54 (secondary), 0.98 (check). Carry
+      stack 20: 2.5 points, floor 0.71 / 0.97 / 1.08 / 1.96. Trend 15 / carry 15
+      against reference: about 0.15 x 12.38 x sqrt(2) = 2.6 points at zero
+      correlation, floor 0.75 / 1.03 / 1.15. Carry 30 alone against cheap, and
+      trend 30 + carry 30 against reference: about 3.7 points, floor 1.06 / 1.45
+      / 1.62. A 10-point stack of a leg earning 6 to 10 pp/yr gross per unit of
+      notional contributes 0.6 to 1.0 pp/yr before an 11 bp certain cost: ABOVE
+      the primary floor at the gross series and full loading, and at or below it
+      under a 2 pp/yr haircut and a 0.681 loading.
+
+  panels:
+    - id: primary
+      role: primary
+      trend_source: own_4_asset_book
+      carry_source: published
+      legs: [equity, trend, carry]
+      note: >
+        The longest window on which equity, T-bills, the own trend book and the
+        carry composite all exist. Expected 1929-01..2025-05, 1157 months; the
+        composite holds three asset classes before 1974-02.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: four_class_subwindow
+      role: primary_subwindow
+      trend_source: own_4_asset_book
+      carry_source: published
+      start: "1974-02"
+      legs: [equity, trend, carry]
+      note: The primary panel from the first month the currency carry leg exists. Expected 616 months.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: secondary
+      role: secondary
+      trend_source: aqr_tsmom
+      carry_source: published
+      legs: [equity, trend, carry]
+      note: AQR TSMOM replaces the own book; 1985-01..2026-02, the carry file's end. Expected 494 months.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: post_publication_check
+      role: check
+      trend_source: aqr_tsmom
+      carry_source: published
+      start: "2013-09"
+      legs: [equity, trend, carry]
+      note: >
+        A CHECK, NOT A TEST: 150 months after the carry paper circulated, on
+        which no floor under about 1 pp/yr exists for any carry arm.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: carry_cost_1pp
+      role: sensitivity
+      trend_source: own_4_asset_book
+      carry_source: cost_1pp
+      legs: [equity, trend, carry]
+      note: The primary panel with 1.0 pp/yr charged on every unit of carry notional.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: carry_cost_2pp
+      role: sensitivity
+      trend_source: own_4_asset_book
+      carry_source: cost_2pp
+      legs: [equity, trend, carry]
+      note: The primary panel with 2.0 pp/yr charged on every unit of carry notional, the pessimistic bound.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: carry_loading_0681
+      role: sensitivity
+      trend_source: own_4_asset_book
+      carry_source: loading_0681
+      legs: [equity, trend, carry]
+      note: >
+        The primary panel with the carry leg delivered at 0.681 of a unit, the
+        loading RSST's filings show for its trend leg, applied here to the
+        sister wrapper as an assumption; the fee is unchanged.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+    - id: carry_shifted_one_month
+      role: sensitivity
+      trend_source: own_4_asset_book
+      carry_source: shifted_one_month
+      legs: [equity, trend, carry]
+      note: >
+        The primary panel with the carry series moved one month later. A
+        vendor return series cannot be positionally lagged, so this is an
+        ALIGNMENT test: it leaves the carry mean unchanged and destroys its
+        same-month co-movement with equity and trend, so it bounds how much of
+        each result is diversification rather than mean.
+      arms: [base_trend30, base_no_trend, carry30_no_trend, trend30_carrystack10, trend30_carrystack20, trend15_carry15, trend30_carry30]
+
+  trend_book:
+    instruments: [equity, treasury, credit, commodity]
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.10
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of the book on the
+      primary panel`, applied to every month of the book on every panel that uses
+      it. Identical to exp_018 and expected to reproduce its 1.9771.
+
+  carry_leg:
+    column: All Macro Carry
+    component_columns: [Equity indices Carry, Fixed income Carry, Currencies Carry, Commodities Carry]
+    target_volatility_percent: 12.38
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of All Macro Carry
+      on the primary panel`, applied to every month on every panel. Sharpe-
+      preserving; a look-ahead on magnitude only; printed in the artifact.
+    delivered_loading_sensitivity: 0.681
+
+  wrappers:
+    CORE:
+      exposures: {equity: 1.0}
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures: {equity: 1.072, trend: 1.0}
+      financed: {equity: 0.331}
+      note: >
+        As exp_016 and exp_018 map RSST's N-PORT of 2026-04-30: 74.09% physical
+        S&P 500 plus 33.1% E-mini futures, and a trend book delivering 100% of
+        risk exposure. Financing on the 0.331 of equity futures at the equity
+        rate; the long/short trend book is charged no signed basis.
+    RSSY_LIKE:
+      exposures: {equity: 1.0, carry: 1.0}
+      financed: {equity: 0.25}
+      note: >
+        AN ASSUMED STRUCTURE from RSSY's summary prospectus of 2026-04-27: 100%
+        US large-cap equity as 75% ETF plus 25% E-mini futures, and 100%
+        notional in a long/short futures-yield book across commodities,
+        currencies, equity indices and fixed income, over T-bill collateral.
+        Financing on the 0.25 of equity futures at the equity rate; the
+        long/short carry book is charged no signed basis. The issuer's holdings
+        page of 2026-09-01 shows 74.29% IVV and 13.82% E-mini, which is read as
+        a point-in-time snapshot rather than the design.
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+
+  contestants:
+    base_trend30:
+      role: reference arm; the current recommendation
+      weights: {CORE: 0.70, RSST_LIKE: 0.30}
+      note: 1.0216 equity, 0.300 trend, 0 carry, 1.3216 gross.
+    base_no_trend:
+      role: cheap control as an arm
+      weights: {CORE: 1.0}
+      note: Identically the cheap control; scored against the reference so the trend leg's own contribution is in the table.
+    carry30_no_trend:
+      role: candidate; the carry wrapper in place of the trend wrapper
+      weights: {CORE: 0.70, RSSY_LIKE: 0.30}
+      note: 1.000 equity, 0 trend, 0.300 carry, 1.300 gross. Carry scored exactly as trend is, against the cheap control.
+    trend30_carrystack10:
+      role: candidate; financed carry leg stacked in place of ten points of core
+      weights: {CORE: 0.60, RSST_LIKE: 0.30, RSSY_LIKE: 0.10}
+      note: 1.0216 equity, 0.300 trend, 0.100 carry, 1.4216 gross. Same equity notional as the reference.
+    trend30_carrystack20:
+      role: candidate; financed carry leg, larger
+      weights: {CORE: 0.50, RSST_LIKE: 0.30, RSSY_LIKE: 0.20}
+      note: 1.0216 equity, 0.300 trend, 0.200 carry, 1.5216 gross.
+    trend15_carry15:
+      role: candidate; half the trend wrapper replaced by the carry wrapper
+      weights: {CORE: 0.70, RSST_LIKE: 0.15, RSSY_LIKE: 0.15}
+      note: 1.0108 equity, 0.150 trend, 0.150 carry, 1.3108 gross. The substitution arm; equal risk in each leg by construction (freeze note 5).
+    trend30_carry30:
+      role: candidate; both engines at 30 points, the sum rule
+      weights: {CORE: 0.40, RSST_LIKE: 0.30, RSSY_LIKE: 0.30}
+      note: 1.0216 equity, 0.300 trend, 0.300 carry, 1.6216 gross.
+
+  reference_arm: base_trend30
+  controls: [cheap, leverage_matched, volatility_matched_expost, volatility_matched_exante, reference]
+  controls_in_estimates: [cheap, leverage_matched, volatility_matched_expost, reference]
+  volatility_match_window_months: 36
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.10
+  multiple_testing_q: 0.10
+  bootstrap_block_months: 12
+
+  crisis_episodes:
+    deflationary_or_growth:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: recession_1937, start: "1937-03", end: "1938-03"}
+      - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+      - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    inflation_or_rate:
+      - {name: oil_1973, start: "1973-01", end: "1974-09"}
+      - {name: inflation_1977, start: "1977-01", end: "1981-09"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+    note: >
+      The eight episodes Experiment 018 froze, unchanged, so the carry arms can
+      be read beside the defensive arms on the same windows. Koijen et al.
+      report carry losing in global recessions, so the first list is where a
+      carry leg is expected to hurt and the second is where it is not.
+
+  financing_sensitivity:
+    equity_basis_points: [62, 98, 130, 165, 200, 231]
+    reporting: >
+      Report every arm's gap against the cheap control and against the reference
+      arm at every point, and whether the arm ordering against the reference is
+      the same at every point. IF IT IS NOT, THE ORDERING IS NOT A FINDING.
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic. Every file is read from
+      the local raw cache; this experiment never downloads.
+    files:
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "corpr", "Rfree"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - id: aqr_commodities_long_run
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+      - id: aqr_tsmom_factors
+        source: aqr
+        dataset_id: aqr_tsmom_factors
+        table_id: monthly
+        columns: ["TSMOM"]
+        expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+        committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+      - id: aqr_century_factor_premia
+        source: aqr
+        dataset_id: aqr_century_factor_premia
+        table_id: monthly
+        columns: ["All Macro Carry", "Equity indices Carry", "Fixed income Carry", "Currencies Carry", "Commodities Carry"]
+        expected_sha256_raw: 0bf8ba978e64964282ead98a6a25691218d4517d07c98c89e2716706f6f0a127
+        committed_manifest: data-manifests/aqr_century_factor_premia_monthly.json
+
+data_sources:
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr and corpr less Rfree inside the trend book
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end sets the primary panel's end
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    construction: TSMOM, used as published; secondary and check panels only
+  - id: aqr_century_factor_premia
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Century-of-Factor-Premia-Monthly.xlsx
+    manifest: data-manifests/aqr_century_factor_premia_monthly.json
+    construction: All Macro Carry, scaled by one constant; the four per-class carry columns for the component table only
+
+hostile_tests:
+  - Charge financing to every levered control on the same terms as the arms.
+  - Sweep the equity-futures basis 62-231 bp and report whether the ordering against the reference arm survives.
+  - Charge 1 and 2 pp/yr on every unit of carry notional and report every carry arm's gap again.
+  - Deliver the carry leg at 0.681 of a unit with the fee unchanged and report every carry arm's gap again.
+  - Move the carry series one month and report whether the paired gaps survive losing same-month alignment.
+  - Report the carry-trend, carry-equity and trend-equity correlations on the full sample and on the worst decile of equity months, on every panel, and by era.
+  - Report every crisis episode of both types, including the five deflationary episodes in which carry is expected to hurt.
+  - Report the post-2009 and post-publication eras so that no full-window result is quoted without the era the paper could not have fitted.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Report the sum-rule residual so that "adds as a sum" is checked rather than assumed.
+  - Report the ex-ante volatility-matched control beside the ex-post one.
+
+reporting_requirements:
+  - The freeze note with every table, including that wrappers are assumed exposure vectors and the carry leg is a gross vendor reconstruction.
+  - The MDE and the control named beside every gap, in the same row; never a figure combining two controls.
+  - Gross, equity, trend, carry and cash notional beside every arm.
+  - Both volatility scalars and the sha256 of every source file read.
+  - The correlation tables, full sample and worst decile, and the per-asset-class carry component table, labelled descriptive.
+  - Maximum drawdown, months under water, worst-decile offset, both episode-type means, the flat-decade gap and the terminal-wealth ratio for every arm, labelled descriptive.
+  - The sum-rule residual on every scored panel.
+  - A statement that the composite holds three asset classes before 1974-02.
+
+notes: >
+  Exploratory in the strongest sense: the arms were selected after every earlier
+  result was read, and the specification records that. This experiment can rank
+  constructions on public series and cannot rank funds. The carry leg is the
+  vendor's gross reconstruction and the haircut panels are the only cost
+  evidence. Retain `unresolved` wherever the instrument cannot separate an arm
+  from its control, and read the correlation, drawdown and crisis tables as
+  descriptions of one history. No sleeve, fund or portfolio is promoted by this
+  specification.

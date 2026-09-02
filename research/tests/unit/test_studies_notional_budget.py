@@ -31,6 +31,7 @@ from portfolio_edge.studies.notional_budget import (
     notional_for_drawdown,
     portfolio_exposure,
     premium_for_leverage,
+    relative_run_outcomes,
     volatility_targeted_leverage,
 )
 
@@ -592,4 +593,87 @@ def test_horizon_outcomes_rejects_mismatched_arms_and_bad_grids() -> None:
             resamples=10,
             block_length=0,
             rng=np.random.default_rng(1),
+        )
+
+
+# ---------------------------------------------------------------------------
+# 6a. Relative runs by horizon
+# ---------------------------------------------------------------------------
+
+
+def test_identical_arms_never_breach_a_relative_run() -> None:
+    rng = np.random.default_rng(31)
+    series = rng.normal(0.006, 0.04, size=600)
+    outcome = relative_run_outcomes(
+        series,
+        series,
+        trigger=-0.01,
+        horizons_years=(10.0, 20.0, 30.0),
+        resamples=50,
+        block_length=24,
+        rng=np.random.default_rng(1),
+    )
+    assert all(p == 0.0 for p in outcome.breach_probability_by_horizon.values())
+    assert all(w == 0.0 for w in outcome.median_worst_run_by_horizon.values())
+
+
+def test_relative_run_breach_month_matches_a_hand_computed_geometric_decay() -> None:
+    """Constant returns: relative wealth decays by 1.006/1.008 a month from a peak set in
+    month one, so a -20% run first appears when ``rho**(t-1) <= 0.8``: ``t = 114`` months.
+    A nine-year horizon cannot see it and a ten-year horizon must."""
+    rho = 1.006 / 1.008
+    first_breach = math.ceil(math.log(0.8) / math.log(rho)) + 1
+    assert first_breach == 114
+    outcome = relative_run_outcomes(
+        np.full(400, 0.006),
+        np.full(400, 0.008),
+        trigger=-0.20,
+        horizons_years=(9.0, 10.0, 20.0),
+        resamples=20,
+        block_length=24,
+        rng=np.random.default_rng(2),
+    )
+    assert outcome.breach_probability_by_horizon == {9.0: 0.0, 10.0: 1.0, 20.0: 1.0}
+    assert outcome.median_worst_run_by_horizon[9.0] == pytest.approx(rho**107 - 1.0)
+
+
+def test_relative_run_probabilities_are_nested_across_horizons() -> None:
+    rng = np.random.default_rng(37)
+    control = rng.normal(0.006, 0.045, size=500)
+    candidate = control + rng.normal(0.0, 0.012, size=500)
+    outcome = relative_run_outcomes(
+        candidate,
+        control,
+        trigger=-0.10,
+        horizons_years=(5.0, 10.0, 20.0, 30.0),
+        resamples=400,
+        block_length=24,
+        rng=np.random.default_rng(3),
+    )
+    probabilities = [outcome.breach_probability_by_horizon[h] for h in (5.0, 10.0, 20.0, 30.0)]
+    assert probabilities == sorted(probabilities)
+    assert 0.0 < probabilities[-1] <= 1.0
+
+
+def test_relative_run_outcomes_reject_bad_arguments() -> None:
+    series = np.full(120, 0.005)
+    with pytest.raises(ValueError, match="negative relative drawdown"):
+        relative_run_outcomes(
+            series, series, trigger=0.1, horizons_years=(10.0,), resamples=10,
+            block_length=12, rng=np.random.default_rng(0),
+        )
+    with pytest.raises(ValueError, match="same length"):
+        relative_run_outcomes(
+            series, series[:50], trigger=-0.1, horizons_years=(10.0,), resamples=10,
+            block_length=12, rng=np.random.default_rng(0),
+        )
+    with pytest.raises(ValueError, match="at least one horizon"):
+        relative_run_outcomes(
+            series, series, trigger=-0.1, horizons_years=(), resamples=10,
+            block_length=12, rng=np.random.default_rng(0),
+        )
+    with pytest.raises(ValueError, match="at least one period"):
+        relative_run_outcomes(
+            series, series, trigger=-0.1, horizons_years=(0.0,), resamples=10,
+            block_length=12, rng=np.random.default_rng(0),
         )

@@ -29,12 +29,23 @@ gold and TIPS legs and three substitutions inside the leveraged construction on 
 against cheap, leverage-matched and volatility-matched controls. Every mean gap for a
 defensive leg came back `unresolved` or `rejected`, as its freeze note predicted.
 
-What remains: a **bond-regime-conditioned test**, a stack switched on by trailing
-bond–equity correlation and scored on the 691 months outside 1981–2020, which is the one
-design that could resolve the Treasury leg; a **TIPS series before 2003**, without which
-the leg the valuation argument points at cannot be scored on a panel containing 1970–81;
-and the regret evaluation across plausible inputs, which no experiment has yet run on the
-defensive arms.
+The September 2026 round added four registered experiments on the same machinery. The
+bond-regime-conditioned stack ([Experiment 020](defensive-engines-in-the-construction.md))
+did not resolve the Treasury leg: the correlation signal sorts months only inside the
+1981–2020 bull market and picks the losing ones outside it, and its regret surface is 15 bp
+wide. Cross-asset carry ([Experiment 019](carry-as-a-second-engine.md)) is the first second
+engine that adds as a sum, at +0.58 pp/yr gross and +0.22 after cost and delivered loading
+against a 0.35 floor, and is not added by default. Leveraged 200-day rules and the UPRO/TMF
+mix ([Experiment 021](leveraged-etfs-and-timing-rules.md)) carry no resolvable timing
+content. A financed gold-and-bitcoin stack ([audit](alternative-sleeves-audit.md) §3.1) is
+worth exactly the funding-rule algebra.
+
+What remains: a **TIPS series before 2003**, without which the leg the valuation argument
+points at cannot be scored on a panel containing 1970–81; a **term-premium-conditioned
+stack**, since the correlation rule cannot see carry and needs a point-in-time term-premium
+series before 1990; a **costed cross-asset carry series** or a repository-built carry book on
+public yields, to replace the 1–2 pp/yr haircut band; and whether dropping carry's
+equity-index and currency legs, which hold its equity tail risk, leaves a usable engine.
 
 ## 2. Measure crisis-conditional dependence
 
@@ -49,7 +60,7 @@ three value tilts merge, IDMO–trend rises to +0.64, effective bets fall from 3
 on eight frozen deflationary and inflationary episodes and read the bond-equity
 correlation era by era.
 
-What remains: the bond-regime-conditioned test named under item 1; **RSST's own tail
+What remains: a term-premium-conditioned test (item 1); **RSST's own tail
 behaviour from its filings at its delivered loading**, because every conditional trend
 figure so far is a vendor index or a fund-free construction, and the loading refresh due
 at its 2026-07-31 N-PORT (filing deadline 2026-09-29); **JPFP's first N-PORT**, due by the
@@ -104,10 +115,24 @@ account capacity, tax rates, human capital, liabilities, and tolerable drawdown/
 error. Sensitivity analysis on these inputs may change the portfolio more than another
 strategy experiment.
 
+Done so far: the drawdown ladder is published on the site, the contribution flow by account
+is worked through in [part A](portfolio-for-one-investor.md) §3.8, and the holdability band
+is re-run at the corrected premium with a contribution stream
+([trend weight](trend-weight-under-uncertainty.md) §4). The one input that still moves the
+most points of the vector is the investor's tolerable drawdown, which nobody has supplied:
+at −60% or tighter the wrapper falls to 23.7% or below under the programme's own rule.
+Human capital and job correlation with the equity sleeve remain unexamined.
+
 ## 8. Broaden discovery before closing families
 
-Continue inexpensive screens of catastrophe risk, duration-hedged credit, long/short
-commodities, defensive option structures, and other economically distinct mechanisms.
+The [September 2026 sweep](discovery-sweep-2026-09.md) screened the 2025–26 launches from
+issuer pages and Form N-PORT: cross-asset carry was the one new financed engine and has
+since been measured; intangible-adjusted value (ITAN) is scored in
+[untested tilt candidates](untested-tilt-candidates.md); box spreads price the financing
+alternative to a 99 bp wrapper; bank quant baskets, defensive equity and bitcoin income
+products are closed on their live records. Continue inexpensive screens of catastrophe risk,
+duration-hedged credit, long/short commodities, defensive option structures, and other
+economically distinct mechanisms.
 Classify access, payoff shape, plausible net return, shared failure modes, and the instrument
 needed for evaluation. A missing retail vehicle is an implementation finding, not proof that
 the return source is absent.

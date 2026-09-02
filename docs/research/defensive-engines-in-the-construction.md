@@ -30,6 +30,10 @@ that every mean gap against every control would come back `unresolved`. A red-te
 re-ran the frozen code paths in memory with one input substituted at a time (4,000
 bootstrap resamples where the artifact used 10,000); its reproductions are restated where
 they change a reading, and nothing it produced was registered.
+[Experiment 020](../../research/experiments/exp_020_conditional_treasury_stack.yaml), run
+[`88e58977…`](../../research/artifacts/88e58977f62e444b8a3df3162d683db1/summary.md), adds
+the regime-conditioned Treasury stack that this page's first version named as its open
+question 1; it is in §3.1.
 
 ---
 
@@ -51,7 +55,12 @@ they change a reading, and nothing it produced was registered.
    It leaves the maximum drawdown within 1 pp, helps the three modern deflationary episodes
    by 1–5 pp, costs 22–42 pp across 1977–81 and 2–5 pp in 2022. At today's 0.8 pp term
    premium its expected contribution is about **+0.04 pp/yr against 1.71 points of tracking
-   error**, after an 11 bp certain cost. **Not added.** §3.
+   error**, after an 11 bp certain cost. **Not added.** §3. The same leg switched on by the
+   trailing bond–equity correlation, the one design that could have resolved it, is
+   `unresolved` on 96 years (**+0.16 [−0.06, +0.38] against a 0.32 floor**) and `rejected`
+   on the 685 months outside the bull market (**−0.15 [−0.33, +0.04]**): the signal sorts
+   months inside 1981–2020 and nowhere else, and it picked the losing bond months outside.
+   **Not added.** §3.1.
 3. **Substitution is the one measurable defensive trade, and it is `rejected` on the
    mean.** Ten points of equity moved into cash, long Treasuries or an RSBT-like wrapper
    cost **−0.55 to −0.77 pp/yr** against the reference and cut the 1929 and 2008 drawdowns
@@ -251,6 +260,109 @@ or below, which is a regime forecast the proposal does not state.
 6 bp/yr, tracking error 0.85), only in the rollover IRA (§8), as an explicit bet that the
 bond–equity correlation reverts.
 
+### 3.1 The regime-conditioned stack
+
+`as of 2026-09-02`. **`unresolved`.**
+[Experiment 020](../../research/experiments/exp_020_conditional_treasury_stack.yaml), spec
+`acbe4f87…`, run
+[`88e58977…`](../../research/artifacts/88e58977f62e444b8a3df3162d683db1/summary.md), tables
+in [`tables.md`](../../research/artifacts/88e58977f62e444b8a3df3162d683db1/tables.md); the
+ledger also holds an identical earlier run, `149509ed…`, re-run after a change to the
+artifact's number formatting. The same 20-point RSSB-like leg, on the same 1929–2025 panel
+with the same costs, is held only in months whose trailing correlation of monthly US equity
+and long-Treasury excess returns, computed through the previous month, is below zero. Four
+rules were frozen with one primary (36-month window, threshold zero; then a 60-month window,
+a −0.2 threshold, and the 36-month value below its own trailing ten-year median), a 10 bp
+one-way cost on each dollar moved at a switch (4 bp of portfolio per switch, swept 0–25),
+Newey–West intervals beside the block bootstrap, and a written prediction: `unresolved` on
+both windows, the 1977–81 loss avoided, the 2022 loss not avoided, one switch every three to
+six years. Every prediction held.
+
+| Primary arm against | Window | Months | On | Gap, pp/yr | 95% HAC interval | Floor | Status |
+| --- | --- | ---: | ---: | ---: | :---: | ---: | --- |
+| reference | full, 1929-07… | 1,151 | 39% | **+0.16** | [−0.06, +0.38] | 0.32 | `unresolved` |
+| reference | outside 1981-10…2020-07 | 685 | 31% | **−0.15** | [−0.33, +0.04] | 0.23 | `rejected` |
+| unconditional stack | full | 1,151 | 39% | −0.19 | [−0.46, +0.08] | 0.37 | `rejected` |
+| unconditional stack | outside the bull market | 685 | 31% | +0.09 | [−0.22, +0.39] | 0.43 | `unresolved` |
+
+The other three arms read +0.15, +0.04 and +0.10 against the reference on the full window
+(floors 0.32, 0.25, 0.35) and −0.16, −0.17 and −0.22 outside the bull market (floors 0.25,
+0.18, 0.32), the same clause pattern in all four. The bootstrap intervals agree with the HAC
+ones to 0.02. Sweeping the switching cost 0–25 bp and the Treasury basis 0–50 bp moves no
+scored gap by more than 0.05 and changes no sign. Against the cheap control every arm is
++2.0 to +2.1 (floors 1.1–1.2), which is the trend leg inside it; against the leverage-matched
+control −0.3 to −0.7, as the reference is.
+
+**What the rule did.** On 39% of months, 18 switches in 96 years, on-spells averaging 50
+months, the longest off-spell 278 months (1966-09…1989-10). On through 1929-11…1932-03,
+1936–37, 1939–40, 1955-10…1966-02, 1989-11…1990-01, 2000-08…2009-03 and 2009-05…2023-01;
+off since 2023-02. Inside the bull market it was on 52% of months and earned **+0.61 pp/yr**
+against the reference where the unconditional stack earned +1.20; outside it was on 31%
+and lost **−0.15** where the unconditional lost −0.25. The full-window +0.16 is
+`(466 × 0.61 + 685 × (−0.15)) / 1151`. It was off for every month of 1977-01…1981-09
+(episode offset 0.00 against the reference, +22.07 pp against the unconditional stack) and
+on for every month of 2022 (−2.38 pp, the unconditional stack's loss exactly). Maximum
+drawdown −82.94% against the reference's −82.78% and the unconditional stack's −82.53%;
+months under water 164, the reference's own figure, where the unconditional stack's is 88:
+the rule was on for 91% of the 1929 crash and the bond leg did not pay then. Terminal
+wealth with contributions 1.165× the reference and 0.903× the unconditional stack.
+
+**Why it did not resolve, which is the finding.** The signal sorts months inside the bull
+market and nowhere else. In on-months inside 1981-10…2020-07 the realised bond–equity
+correlation was **−0.29 against +0.28** in off-months, with the bond leg earning about 6.5
+pp/yr in both states; outside that era the on-month correlation was **+0.17 against +0.16**,
+and the on-months carried a bond excess return of **−1.63 pp/yr against −0.12** in
+off-months. The trailing correlation predicted the forward correlation in exactly the era
+in which the unconditional stack already worked, and in the era in which it did not, the
+rule selected the worse bond months. A rule that needs eighteen months to turn also pays
+the first year of every adverse regime, which is what 2022 was.
+
+**Deflation.** Four rules on one signal: the four paired-difference series correlate 0.69
+on average, an effective 1.9 trials of 4 on the linear reading the code marks unverified.
+The primary arm's paired difference runs an annualised Sharpe of 0.15 on 1,032 common
+months; its deflated significance is 0.89 at 1.9 trials, 0.84 at 4 and 0.67 at 100, below
+the 0.95 convention at every count. Benjamini–Hochberg within each control-by-window family
+leaves the smallest adjusted p at 0.11.
+
+**Regret**, in bp/yr of expected log growth, arithmetic on the run's realised inputs
+(on-fraction 0.39, on-state correlation −0.10, post-2020 correlation +0.37, bond volatility
+8.55%, reference volatility 19.0%, certain cost 11.4 bp while on, switching 0.75 bp/yr):
+
+| Term premium, pp/yr | Correlation persists: conditioned / unconditional | Reverts: conditioned / unconditional |
+| ---: | :---: | :---: |
+| −0.5 | 0 / −35 | −8 / −25 |
+| 0.0 | 0 / −25 | −5 / −15 |
+| +0.5 | 0 / −15 | −1 / −5 |
+| +1.0 | 0 / −5 | +3 / +5 |
+| +1.5 | 0 / +5 | +7 / +15 |
+
+Holding neither reads 0 in every cell. Maximum regret: conditioned 8.5, neither 14.7,
+unconditional 35.1; the minimax action is the conditioned stack, and the whole surface is
+15 bp/yr wide against 1.1 points of tracking error and a rule that trades every five years.
+The "reverts" column also assumes the signal sorts as it did over the full window; with the
+complement's on-state correlation of +0.17 instead, the conditioned cell reads +1 bp at a
+1.0 pp premium and +5 at 1.5.
+
+**No TIPS before 2003.** The only real-yield series in the repository is FRED FII10, from
+2003-01. No pre-2003 TIPS proxy exists in the panel and none was built for this
+experiment: a modelled one would be realised inflation dressed as a bond, and 1970–81, the
+window it would be built for, is the one in which that substitution decides the answer.
+Open question 2 stands.
+
+**Consequence.** The vector does not change: RSST 30 / VTI 19 / VTV 15 / VXUS 16 /
+AVDV 10 / IDMO 5 / AVES 5. Sized: a 20-point conditioned stack funded from VTI would be
+**off today** (the trailing 36-month correlation of the two legs is **+0.51** through
+2025-12 on French `Mkt-RF` and Goyal–Welch `ltr` less `RF`, positive since 2023-02) and
+would therefore hold the published vector exactly; when on, its expected contribution across
+the term-premium grid is −8 to +7 bp/yr against 1.1 to 1.7 points of tracking error, and in
+the one era in which it was on and the unconditional stack did not work (1929–1981) it cost
+−0.07 pp/yr. **Review trigger**, both parts required: (i) the trailing 36-month correlation
+of monthly US equity and long-Treasury returns turns negative, which the investor can
+compute from any total-return index pair; and (ii) a published term-premium estimate
+(Kim–Wright or ACM) is above 1.5 pp/yr. Either alone earns nothing this instrument can see:
+(i) alone selected the losing months outside 1981–2020, and (ii) alone is priced in §3 at
++0.04 pp/yr at today's 0.8. §9's reopening condition is revised to match.
+
 ---
 
 ## 4. Substitution: the trade the experiment can measure
@@ -372,10 +484,10 @@ none. The rule costs shelter space: the TIPS line displaces about 10 points of R
 the traditional account into the Roth and pushes about 7 points of VXUS into the taxable
 account, roughly the whole placement edge ([tax edges](structural-and-tax-edges.md) §8).
 
-**Reopening conditions.** A term-premium estimate above about 1.5 pp/yr, or a year of
-negative trailing 36-month bond–equity correlation, reopens the stacked Treasury leg; the
-test to freeze then is a correlation-conditioned stack scored on the complement of the
-bond bull market. Evidence from RSST's own filings that it covered the 2022 bond loss at
+**Reopening conditions.** A term-premium estimate above about 1.5 pp/yr *and* a negative
+trailing 36-month bond–equity correlation, together, reopen the stacked Treasury leg; the
+correlation-conditioned stack has now been scored on the complement of the bond bull
+market (§3.1) and the correlation alone earned nothing there. Evidence from RSST's own filings that it covered the 2022 bond loss at
 its delivered loading would move §3's 2022 reading. A 30-year TIPS real yield below about
 2.0% ends the "cheapest in the record" note; a CAPE below 30 reverts the widened drawdown
 assumption.
@@ -385,7 +497,9 @@ assumption.
 ## Verified, assumed, open
 
 **Verified.** Every gap, interval, floor, drawdown, episode and era figure in §2–§7, from
-run `311048fb…` against a specification hashed before the run. The costs are charged: zeroing
+run `311048fb…` against a specification hashed before the run, and every figure in §3.1
+from run `88e58977…` against a specification whose freeze note wrote its predictions down
+first. The costs are charged: zeroing
 every fee and financing rate moves the reference arm's mean by 0.3796 pp/yr, which is
 `0.7 × 3 + 0.3 × (99 + 0.331 × 62)` bp exactly. The red team's reproduction of the central
 case matches the artifact to four decimals before any substitution. Product facts in §8
@@ -396,12 +510,18 @@ where the funds hold 6.4–6.75 years. A trend book scaled by one full-window co
 charged no trading; the 0.681 rescale in §2 is arithmetic on the decomposition, not a
 re-simulation, and ignores the loading's own interval. The complement-of-the-bull floor
 joins two disjoint eras. Gold financing at 30 bp. The term premium is two model estimates.
-No tax anywhere in §2–§7.
+No tax anywhere in §2–§7. In §3.1 the 10 bp one-way switching cost is an assumption swept
+0–25; the signal correlates excess rather than total returns; the complement window joins
+two disjoint eras that the HAC and bootstrap treat as adjacent; the effective trial count
+is the linear reading; the regret table's "reverts" state uses the full-window on-state
+correlation.
 
 **Open.**
 
-1. A bond-regime-conditioned test: a stack switched on by trailing correlation, frozen and
-   scored on the 691 months outside 1981–2020.
+1. A term-premium-conditioned stack. The correlation rule (§3.1) cannot see the carry, and
+   the eras in which the leg lost (1966–81, 2020–) were eras of a negative realised bond
+   excess return; a rule on an ex-ante term-premium estimate needs a point-in-time
+   term-premium series before 1990, which the repository does not hold.
 2. A TIPS series before 2003, without which the leg the valuation argument points at cannot
    be scored on a panel containing 1970–81.
 3. RSST's own 2022 from its filings at its delivered loading, rather than from either trend
@@ -415,6 +535,9 @@ No tax anywhere in §2–§7.
   and whose bottom does not, on US-only equity with a fund-free trend leg.
 - **Not** that a Treasury stack is harmful: inside its floor wherever the floors agree,
   with a sign set by which era is in the window.
+- **Not** that a correlation-conditioned stack is harmful: `rejected` outside the bull
+  market means a point estimate at or below zero inside a 0.23 floor, and the design's
+  minimax action on the regret grid is still the conditioned stack, by 6 bp/yr.
 - **Not** that the substitution is recommended: it is priced, §9 says when the price is
   worth paying, and the default is that it is not.
 - **Not** a promotion. Nothing here is above `exploratory`, and
@@ -426,6 +549,8 @@ No tax anywhere in §2–§7.
 cd research
 uv run python -m portfolio_edge.experiments.exp_018_defensive_engines --view-results
 uv run pytest tests/unit -k defensive_engines
+uv run python -m portfolio_edge.experiments.exp_020_conditional_treasury_stack --view-results
+uv run pytest tests/unit -k conditional_treasury_stack
 ```
 
 A new run requires the FRED GS10 vintage to hash to the pinned value; the failed start

@@ -88,6 +88,17 @@ _AVAILABILITY_MONTHLY: Final = (
     "do not treat Last-Modified as the availability date of older rows."
 )
 
+_AVAILABILITY_DAILY: Final = (
+    "Rebuilt from a CRSP vintage after month end and posted without a published "
+    "release timestamp; the daily file is refreshed on the same monthly cycle as "
+    "the monthly file, so a daily row is not available on its own date and may "
+    "not be available for weeks after it. The HTTP Last-Modified header of the "
+    "zip is the only upper bound this code can observe on when a row became "
+    "available. Treat every observation as unavailable until at least the month "
+    "after its period, and do not treat Last-Modified as the availability date "
+    "of older rows."
+)
+
 _REVISION_POLICY: Final = (
     "Not point-in-time. The entire history is recomputed from the current source "
     "vintage on every rebuild, so observations from the 1920s can and do change "
@@ -263,6 +274,33 @@ DATASETS: Final[dict[str, FrenchDataset]] = {
                 "return is needed before 1963-07."
             ),
             availability_policy=_AVAILABILITY_MONTHLY,
+            revision_policy=_REVISION_POLICY,
+            default_source_units="percent",
+        ),
+        FrenchDataset(
+            dataset_id="french_us_ff3_daily",
+            filename="F-F_Research_Data_Factors_daily_CSV.zip",
+            description=(
+                "Fama-French three factors (Mkt-RF, SMB, HML) and the Treasury "
+                "bill rate, US, DAILY from 1926-07-01. The one free research-grade "
+                "daily US market series, and the only file here on which a "
+                "daily-reset product or a 200-day moving average can be built "
+                "without inventing intra-month paths. Two things the file's own "
+                "preamble states and a caller must not forget: RF is 'the simple "
+                "daily rate that, over the number of trading days, compounds to "
+                "1-month TBill rate', so summing it over a month reproduces the "
+                "monthly file's RF and it is NOT an annual rate divided by 252; "
+                "and the trading calendar is six days a week until 1952, so the "
+                "number of rows in a year runs from about 300 before then to about "
+                "252 after, and anything accrued 'per day' must be accrued per "
+                "calendar day elapsed rather than per row. Mkt-RF includes "
+                "dividends; there is no price-only index in the library, so a "
+                "rule on 'the price index' is here a rule on the total-return "
+                "index, which biases a moving-average signal slightly toward "
+                "being in the market by roughly the dividend yield times half "
+                "the window length."
+            ),
+            availability_policy=_AVAILABILITY_DAILY,
             revision_policy=_REVISION_POLICY,
             default_source_units="percent",
         ),
@@ -550,6 +588,14 @@ def build_manifests(
     )
     manifests: list[DatasetManifest] = []
     for table in parsed.tables:
+        # ``french_us_ff3`` + ``monthly`` -> ``french_us_ff3_monthly``. A dataset
+        # whose id already ends in the table's frequency (``french_us_ff3_daily``)
+        # is not suffixed twice.
+        manifest_id = (
+            dataset.dataset_id
+            if dataset.dataset_id.endswith(f"_{table.table_id}")
+            else f"{dataset.dataset_id}_{table.table_id}"
+        )
         banner_note = (
             f"source table banner (verbatim): {table.banner.strip()!r}"
             if table.banner.strip()
@@ -557,7 +603,7 @@ def build_manifests(
         )
         manifests.append(
             manifest_from_table(
-                dataset_id=f"{dataset.dataset_id}_{table.table_id}",
+                dataset_id=manifest_id,
                 entry=entry,
                 table=table,
                 parser_version=PARSER_VERSION,

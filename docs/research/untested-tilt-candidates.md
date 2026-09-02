@@ -1,11 +1,13 @@
-# Four tilts the recommendation never priced
+# Five tilts the recommendation never priced
 
 **Question.** The recommended portfolio was assembled by correcting the investor's own list
 of eight tickers. It was never asked whether *better* tilts existed on the shelf. Four
 candidates were never scored against it: **AVDV** (developed ex-US small value), **AVUV**
 (US small value), **MTUM** (US momentum) and **QVAL** (Alpha Architect's concentrated US
-value, which is not on the shelf at all). What does each add to the portfolio actually
-held, after everything it actually costs?
+value, which is not on the shelf at all). A fifth, **ITAN** (Sparkline's intangible-adjusted
+US value), arrived from [the discovery sweep](discovery-sweep-2026-09.md) and is scored in
+§7 against the vector as published. What does each add to the portfolio actually held,
+after everything it actually costs?
 
 **Decision it informs.** Whether to change the construction as it stood when this page was
 written — RSST 25%, VTI 25%, VTV 15%, VXUS 25%, IDMO 5%, AVES 5% — and by how much. **AVDV
@@ -71,6 +73,14 @@ the filing reads in
    **11 bp/yr more tax-efficient than the total-market fund** despite turning over its
    whole portfolio each year, because the ETF in-kind redemption shield does the work.
    AVDV against VXUS is **−0.01 pp/yr**: parity. Tax does not decide any of these four.
+7. **ITAN in place of five points of VTV is not worth making, and the sign does not depend
+   on the sample.** Over VTV it delivers **UMD −0.221 [−0.328, −0.114]** and **RMW −0.381
+   [−0.521, −0.241]**, both resolved, and HML −0.154 against a floor of 0.338, unresolved;
+   it costs 50 bp against VTV's 3 and turns over 31% against 8%. The move reads
+   **−0.10% a year at 5%, range −0.28% to +0.07%**, and is negative in all four premium
+   scenarios including the null. Its overlap with VTV's active leg is +0.009 over the full
+   sample, which is what the sweep hoped for, and +0.80 in the five worst equity months,
+   which is not. §7.
 
 ---
 
@@ -454,6 +464,232 @@ only figure on this page whose sign the data can resolve. It also duplicates wha
 
 ---
 
+## 7. ITAN: intangible-adjusted value in place of five points of VTV
+
+`as of 2026-09-02`. **`exploratory`.** No specification was frozen before these numbers
+were seen. Each run is recorded in the ledger under `study_itan_substitution`; reproduce
+with `cd research && uv run python -m portfolio_edge.studies.itan_substitution`. The
+arithmetic is in
+[`itan_substitution.py`](../../research/src/portfolio_edge/studies/itan_substitution.py)
+and the filing reads in
+[`_itan_substitution_tables.py`](../../research/src/portfolio_edge/studies/_itan_substitution_tables.py).
+
+**The question.** [The discovery sweep](discovery-sweep-2026-09.md) proposes VTV 15
+becoming VTV 10 + ITAN 5, on the hope that a value fund which counts intangibles is a
+different bet from the value funds already held, and names the measurement: ITAN's
+correlation with the held value and momentum legs, and a regression on the French five
+factors plus momentum to see whether its value exposure is positive at all or whether the
+label covers growth. Both are measured here, and the substitution is scored the way §3 to
+§6 score the candidates above: on delivered exposure, cost and overlap, never on the
+measured extra return, which at 54 months is not a number.
+
+### Conclusion
+
+**Do not make the substitution.** Moving five points of capital from VTV to ITAN changes
+expected portfolio return by about **−0.10% a year, range −0.28% to +0.07%**, and the sign
+holds under **every premium scenario the repository carries**: own-panel, pooled, half and
+null. It holds because the exposures the move buys are *short* the two priced US factors
+that decide it. Over VTV, ITAN delivers **UMD −0.221 [−0.328, −0.114]** against a floor of
+0.153 and **RMW −0.381 [−0.521, −0.241]** against 0.200, both resolved. Its value
+exposure over VTV is **−0.154 [−0.390, +0.083]** against a floor of 0.338, unresolved,
+which is the polite way of saying the window cannot tell whether it has less value
+exposure than VTV or the same. On its own ITAN is a mild value fund on the French
+definition, **HML +0.133 [+0.050, +0.215]**, about a third of VTV's on the same months,
+with a beta of 1.05, short profitability and short momentum: value in the label, growth
+in the loadings. The sweep's hoped-for overlap is real and irrelevant. Its active leg is
+**+0.009** correlated with VTV's over the full sample, and a negative edge does not
+become positive by being uncorrelated with what is held. In the five worst VTI months of
+the window the same correlation is **+0.80 [−0.29, +0.99]**.
+
+**Sized implication for the published vector.** RSST 30 / VTI 19 / VTV 15 / VXUS 16 /
+AVDV 10 / IDMO 5 / AVES 5 stands. The proposed RSST 30 / VTI 19 / VTV 10 / VXUS 16 /
+AVDV 10 / IDMO 5 / AVES 5 / ITAN 5 would give up about 0.10% a year of expected return and
+cut the active position's tracking error by 0.13 to 0.38 pp/yr, because it removes a
+third of the value tilt and replaces it with a leg that is nearly uncorrelated with the
+rest. That is a smaller tilt, not a broader one. At 10 and 15 points the loss scales:
+−0.21% and −0.31% a year.
+
+### What was filed
+
+ITAN commenced 2021-06-28 and has filed **56 whole months, 2021-07 to 2026-05**, after the
+launch stub. The trust (CIK 1592900, the same one QVAL files under) reports quarters
+ending February, May, August and November, and no filing covers the quarter ending
+2021-11-30, so **2021-09 to 2021-11 have no filed return**. The longest gapless run is
+**54 months, 2021-12 to 2026-05**, and every fit below is on it. The sweep's "60 filed
+months (2021-07 to 2026-06)" was the span between first and last filing, not the run.
+VTV and VTI file through 2026-06; AVUV and AVDV through 2026-05; IDMO and VXUS through
+2026-04, which is why the overlap table stops a month earlier.
+
+### Loadings
+
+Each column is a fund less a fund on the filed returns, regressed on the US FF5+UMD panel
+with Newey-West errors at six lags. ITAN alone is its excess return over the one-month
+bill. The market leg is VTI's own filed return, not the French market factor, so that a
+fund is compared with the fund the investor would otherwise hold; the French factor is a
+control.
+
+| | ITAN alone | ITAN over VTV | ITAN over VTI | VTV over VTI, same months |
+| --- | ---: | ---: | ---: | ---: |
+| Months | 54 | 54 | 54 | 54 |
+| Mkt-RF | **+1.048** [+1.000, +1.096] | **+0.217** [+0.140, +0.294] | +0.045 [−0.005, +0.095] | **−0.172** [−0.220, −0.123] |
+| HML | **+0.133** [+0.050, +0.215] | −0.154 [−0.390, +0.083] | **+0.126** [+0.044, +0.208] | **+0.280** [+0.061, +0.499] |
+| SMB | −0.061 [−0.157, +0.034] | −0.146 [−0.294, +0.002] | −0.066 [−0.162, +0.029] | +0.080 [−0.035, +0.194] |
+| RMW | **−0.177** [−0.307, −0.047] | **−0.381** [−0.521, −0.241] | **−0.197** [−0.322, −0.073] | **+0.184** [+0.121, +0.247] |
+| CMA | −0.011 [−0.130, +0.109] | **−0.246** [−0.480, −0.012] | −0.033 [−0.151, +0.084] | +0.213 [−0.016, +0.442] |
+| UMD | **−0.192** [−0.269, −0.116] | **−0.221** [−0.328, −0.114] | **−0.195** [−0.268, −0.122] | +0.026 [−0.036, +0.089] |
+| Extra return, pp/yr | +0.14 [−4.02, +4.30] | +0.70 [−3.76, +5.17] | +0.30 [−3.71, +4.31] | −0.40 [−3.20, +2.40] |
+| Smallest detectable extra return | 5.95 | 6.38 | 5.73 | 4.00 |
+
+The substitution's delivered exposure is the **ITAN over VTV** column, and each gap sits
+beside the smallest gap the window could have found at 80% power:
+
+| ITAN over VTV | Delivered | Floor | Reading |
+| --- | ---: | ---: | --- |
+| HML | −0.154 | 0.338 | unresolved; less value than VTV or the same |
+| SMB | −0.146 | 0.211 | unresolved |
+| RMW | **−0.381** | 0.200 | resolved; sells profitability |
+| CMA | −0.246 | 0.335 | unresolved |
+| UMD | **−0.221** | 0.153 | resolved; sells momentum |
+| Extra return | +0.70 pp/yr | 6.38 pp/yr | unresolved by a factor of nine, and unused |
+
+The fitted alpha of +0.70 pp/yr over VTV is reported because the investor asked that a
+young fund not be dismissed for a short record. It is not dismissed for its record; its
+record is not consulted. A window that could only have detected 6.38 pp/yr cannot say
+anything about 0.70, in either direction.
+
+### Overlap
+
+ITAN's active leg (ITAN less VTI) against each held leg (VTV and AVUV less VTI; AVDV and
+IDMO less VXUS), on the 53 months every pair shares, 2021-12 to 2026-04, and in the five
+worst VTI months of that window (2022-01, 2022-04, 2022-06, 2022-09, 2025-03). Intervals
+are Fisher-z at 95%.
+
+| Against | Full sample | Worst decile |
+| --- | ---: | ---: |
+| VTV | **+0.009** [−0.26, +0.28] | **+0.797** [−0.29, +0.99] |
+| AVUV | +0.324 [+0.06, +0.55] | +0.654 [−0.54, +0.97] |
+| AVDV | −0.001 [−0.27, +0.27] | +0.401 [−0.74, +0.95] |
+| IDMO | −0.300 [−0.53, −0.03] | −0.417 [−0.95, +0.74] |
+
+The sweep's threshold was an excess-return correlation with VTV below 0.2, and the full
+sample clears it. Two things stop that from mattering. The first is that the worst-decile
+figure rests on five months and its interval spans almost the whole line, so the
+diversification is established only in the months when it is not needed. The second is
+the −0.300 against IDMO, which is the fund's short momentum leg read from the other side:
+ITAN is anti-correlated with the momentum sleeve because it sells what that sleeve buys,
+which is the same finding §3 of [the final construction test](final-construction-test.md)
+records for RPV.
+
+### Cost and facts
+
+| | Value | Source |
+| --- | ---: | --- |
+| Fee | 50 bp | Form 497K dated 2025-09-30 |
+| Securities lending, median of 5 fiscal years | 0.048 bp | Form N-CEN, fiscal years to 2022-05 through 2026-05 (0.023, 1.356, 0.087, 0.048, 0.001 bp) |
+| Net cost | 49.95 bp | against VTV's 2.70 |
+| Portfolio turnover | 31%/yr | 497K, fiscal year to 2025-05-31; VTV 8% |
+| Incremental cost over VTV | 0.70 to 0.86 pp/yr | fee gap plus 23 points of excess turnover at k = 1.0 to 1.7 |
+| Net assets | $117.45m | issuer page, 2026-09-01 |
+| Holdings | 163 | issuer page, 2026-09-01; prospectus floor 50 |
+| 30-day median bid-ask spread | 0.09% | issuer page, 2026-09-01 |
+| Premium to NAV | −0.05% | issuer page, 2026-09-01 |
+| Distributions | quarterly | issuer page |
+
+**Is the value definition disclosed? In concept, not in formula.** The summary prospectus
+says the sub-adviser buys stocks that appear cheap relative to a proprietary measure of
+"intangible-augmented intrinsic value", which adds intangible value from intellectual
+property, brand, human capital and network effects to tangible assets, scored with natural
+language processing over patents, job postings and earnings calls. The weights, the
+scoring and the rebalancing rule are not published, there is no index, and the prospectus
+expects "significant exposure to companies in the information technology sector". The
+fund is a discretionary quantitative strategy under a value name, which is consistent with
+the loadings.
+
+### The substitution across four premium scenarios
+
+`weight × Σ_k (h_ITAN,k − h_VTV,k) × premium_k − weight × cost`, with no capture fraction
+anywhere in it. Per dollar moved and for the whole portfolio at five points of capital,
+the range spanning the cost bracket:
+
+| Scenario | Per dollar moved, pp/yr | Portfolio at 5%, % a year |
+| --- | ---: | ---: |
+| own-panel | −2.08 to −1.92 | **−0.104 to −0.096** |
+| pooled | −4.28 to −4.11 | −0.214 to −0.206 |
+| half | −1.47 to −1.31 | −0.074 to −0.065 |
+| null | −0.86 to −0.70 | −0.043 to −0.035 |
+
+On the own-panel premia the gross exposure change is **−1.22 pp/yr per dollar**, of which
+**−0.93 is momentum** (−0.221 × 4.19), −0.24 is value and −0.05 is size; profitability and
+investment carry no own-panel premium and contribute nothing. The costs then add 0.70 to
+0.86. Momentum decides it, and the momentum premium is the one this repository cannot
+sign: +4.19 pp/yr against a 7.27 floor. That cuts both ways and does not rescue the
+substitution, because if the premium is zero the move still costs 0.04% a year.
+
+### Given what the vector already holds
+
+The page's rule for a replacement is that the displaced position is dropped from the held
+set first, so the five points of ITAN are scored against RSST 30 / VTV 10 / AVDV 10 /
+IDMO 5 / AVES 5, from the funds' own filed returns. A position scored against a held set
+that still contains it reads as pure overlap, which is an artefact and not a finding.
+
+| Held set | Months | Held tracking error | ρ(ITAN over VTI, held) | Standalone edge | Marginal edge | Active tracking error, published to proposed |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| with the trend wrapper | 31, 2023-10 to 2026-04 | 3.59 | +0.128 | −1.61 | **−1.74** | 3.76 to 3.63 |
+| without it | 53, 2021-12 to 2026-04 | 1.29 | −0.088 | −1.61 | **−1.43** | 1.67 to 1.29 |
+
+Conditioning changes nothing that matters: a sleeve whose standalone edge is negative in
+every scenario stays negative once what is held is netted off. The tracking-error column is
+the one number in ITAN's favour, and it is not a diversification gain. The active position
+gets smaller because a third of the value tilt is removed, which is what selling VTV for a
+fund with a third of its value loading does.
+
+### The headline, in plain percentages
+
+Centre is the own-panel premia at the worse end of the cost bracket, fitted on the ITAN
+less VTV series directly. The range carries the premia's own standard error at 95%, summed
+rather than added in quadrature as everywhere on this page; the loadings' own sampling error
+is in the tables above and is not folded in.
+
+| Capital moved from VTV to ITAN | Expected change in portfolio return | Range | If every premium is zero |
+| ---: | ---: | :---: | ---: |
+| **5%** | **−0.10% a year** | −0.28% to +0.07% | −0.04% |
+| 10% | −0.21% a year | −0.55% to +0.14% | −0.09% |
+| 15% | −0.31% a year | −0.83% to +0.21% | −0.13% |
+
+### Verified, interpretation, open
+
+**Verified here.** Every loading, interval and floor above, from Form N-PORT Item B.5 and
+Ken French's US files on the 54-month gapless run. Every correlation, from the funds' own
+filed returns. ITAN's series and class identifiers from the SEC's ticker map; its fee and
+turnover from its own Form 497K; its lending income and average net assets from five
+fiscal years of the trust's Form N-CEN; the three-month hole in its filings. The internal
+check that the difference fitted directly on ITAN less VTV (−2.081 pp/yr per dollar) agrees
+with the two funds' separate edges over VTI (−1.605 and +0.473, difference −2.078).
+
+**Interpretation.** That ITAN is a growth fund with a value name rests on reading a beta
+of 1.05 with negative RMW and UMD loadings through the French lens; the fund's own thesis
+is that the French value definition is what is wrong. That the worst-decile correlation of
++0.80 means the diversification fails when needed rests on five months. That the momentum
+premium is worth +4.19 pp/yr is an input carried from [stacking](stacking-and-effective-breadth.md)
+§2, and the substitution's centre figure is mostly that input times −0.221.
+
+**Open.**
+
+1. **Whether an intangible-adjusted value factor is a premium in its own right.** This
+   repository prices five French factors and momentum and does not price the Eisfeldt,
+   Kim and Papanikolaou factor the fund is built on. If that factor were established as a
+   premium distinct from HML, RMW and UMD, and ITAN loaded on it, the scoring here would
+   be charging the fund for its exposures without crediting its thesis. Nothing here
+   measures that; a long intangible-value factor series is the data it would take.
+2. **54 months.** Shorter than one value cycle, and §2 of this page is a demonstration of
+   what twenty-three extra months can do to a conclusion. The sign of the substitution
+   does not rest on the sample, but the resolved RMW and UMD loadings do.
+3. **The five worst months.** A worst-decile correlation on five observations is a
+   direction, not a number; the next reading is at 80 filed months, when the decile holds
+   eight.
+
+---
+
 ## Verified, assumed, open
 
 **Verified here.** Eighteen published loadings reproduced on their own windows to within
@@ -505,7 +741,12 @@ same number as this page's +0.32% at a 10% weight.
 - **Not** that international value "works". §2 establishes the opposite of a clean story:
   the negative result for large-cap international value is a window effect, and the
   small-cap advantage over it is a model residual.
-- **Not** that AVUV, MTUM or QVAL are bad funds. Each is scored against *this* portfolio at
-  *this* moment; AVUV against a portfolio with no US value line would read differently.
+- **Not** that AVUV, MTUM, QVAL or ITAN are bad funds. Each is scored against *this*
+  portfolio at *this* moment; AVUV against a portfolio with no US value line would read
+  differently, and ITAN against a portfolio with no momentum sleeve would lose the IDMO
+  reading but not its sign.
+- **Not** that intangible-adjusted value is not a premium. §7 prices ITAN on the factors
+  this repository can price and finds it short two of them; it does not measure the factor
+  the fund is built on.
 - **Not** a promotion. Nothing here is `production-eligible`, no specification was frozen,
-  and no experiment is registered.
+  and no experiment is registered; the ITAN runs are ledgered as a study.

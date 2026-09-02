@@ -1,0 +1,629 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    Experiment 018 held a financed 20-point Treasury leg (RSSB-like) on top of
+#    the 70% equity core + 30% RSST-like reference construction and found it
+#    `unresolved` on 1157 months: +0.34 pp/yr against a 0.49 floor, with the
+#    whole contribution inside 1981-10..2020-07 (+1.20 pp/yr on 466 months) and
+#    a negative reading on the 691 months outside it (-0.25 [-0.69, +0.16]), and
+#    the stacked portfolio 576 consecutive months behind the reference from
+#    1933 to 1981. The search agenda names exactly one design that could resolve
+#    it: a stack switched on by the trailing bond-equity correlation, scored on
+#    the complement of the bond bull market as well as on the whole window.
+#    This file freezes that design.
+#
+# 2. THE SIGNAL IS THE ONLY NEW THING; EVERYTHING ELSE IS EXPERIMENT 018'S.
+#    Wrappers, fees, financing rates, the own 4-asset trend book and its
+#    scaling, the reference arm, the unconditional 20-point stack, the cheap,
+#    leverage-matched and volatility-matched controls, the eight crisis episodes
+#    and the eras are inherited unchanged and reproduced here so that this file
+#    hashes on its own. The panel is the same 1929-01..2025-05 intersection. The
+#    signal is the trailing correlation of monthly equity and Treasury EXCESS
+#    returns (Mkt-RF and ltr-RF, the same two series the exp_018 regime table
+#    correlates), computed over the months up to and including t-1 and applied
+#    to month t. It uses only equity and Treasury history, which begins 1926-07,
+#    so the primary arm's first scored month is the first month with 36
+#    signal months behind it, 1929-07, not the panel's 1929-01.
+#
+# 3. FOUR ARMS, ONE PRIMARY, AND THE FAMILY IS DECLARED HERE.
+#    (i) 36-month correlation below zero (PRIMARY); (ii) 60-month below zero;
+#    (iii) 36-month below -0.2; (iv) 36-month below its own trailing 120-month
+#    median. Four rules on one signal are not four independent trials; the
+#    artifact reports the mean off-diagonal correlation of the four paired
+#    difference series and the effective trial count it implies, beside the
+#    Benjamini-Hochberg treatment within each family. Nothing after the run may
+#    move an arm into or out of the family.
+#
+# 4. WHAT THIS FILE PREDICTS BEFORE IT IS RUN.
+#    `parameters.minimum_detectable_effect` is arithmetic on window length and
+#    a grid of tracking errors. The unconditional stack tracks the reference at
+#    1.71 points; a conditioned stack that is on a fraction f of months tracks
+#    it at about 1.71 sqrt(f) and tracks the unconditional stack at about
+#    1.71 sqrt(1-f). At f = 0.4 the floors are about 0.31 pp/yr on the full
+#    window and 0.40 on the complement. A 20-point leg earning even 4 pp/yr of
+#    excess return in its on-months, on 40% of months, less the 11.4 bp/yr
+#    certain cost and a switching cost, contributes roughly +0.2 pp/yr. THE
+#    EXPECTED OUTCOME IS `unresolved` AGAINST THE REFERENCE AND AGAINST THE
+#    UNCONDITIONAL STACK ON BOTH WINDOWS. Descriptively, the design predicts
+#    (a) the conditioned stack's complement-window gap against the reference is
+#    less negative than the unconditional stack's -0.25 and may be near zero,
+#    because the rule should be off through most of 1966-1981; (b) the 1977-81
+#    episode loss (-22 pp unconditional) is mostly avoided; (c) the 2022 loss is
+#    NOT avoided, because the trailing 36-month correlation entering 2022 was
+#    negative and a lagged rule is on when the regime turns; (d) the rule
+#    switches on the order of once every three to six years. These are written
+#    here so that they cannot afterwards be presented as findings the design
+#    earned by looking.
+#
+# 5. THE PANEL HOLDS NO TIPS BEFORE 2003.
+#    The only real-yield series in the repository is FRED FII10, from 2003-01.
+#    No pre-2003 TIPS proxy exists in the panel and none is built here; a
+#    modelled one would be a forecast of realised inflation dressed as a bond.
+#
+# 6. THE REGRET TABLE IS ARITHMETIC ON STATED INPUTS, NOT A MEASUREMENT.
+#    It takes the forward term premium from a declared grid, the on-fraction,
+#    the on-state and unconditional bond-equity correlations and the bond and
+#    portfolio volatilities from the run, and prices adopting or not adopting
+#    each stack under two stated states of the world (the post-2020 positive
+#    correlation persists, or it reverts to the history). It carries no
+#    interval and no status.
+#
+experiment_family: exp_020_conditional_treasury_stack
+title: >
+  A bond-regime-conditioned Treasury stack: does switching a 20-point RSSB-like
+  leg on when the trailing bond-equity correlation is negative resolve, against
+  the 70% equity + 30% RSST-like reference and against the unconditional stack,
+  what the unconditional stack could not, on 1929-2025 and on the months
+  outside the 1981-2020 bond bull market?
+entry_point: exp_020_conditional_treasury_stack
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260902
+
+hypothesis: >
+  A financed Treasury leg raises growth only when its net Sharpe exceeds
+  `L rho sigma_p`, and the bond-equity correlation is the term that moved
+  between the eras exp_018 froze (+0.15 before 1981-10, -0.02 inside the bull
+  market, +0.37 after 2020-07). The hypothesis under test is that a 20-point
+  RSSB-like stack held only in months whose trailing bond-equity correlation
+  (computed through month t-1) is below a fixed threshold has a higher
+  arithmetic mean monthly total return than (a) the reference construction and
+  (b) the unconditional 20-point stack, after every cost charged inside the
+  rule including a stated one-way switching cost, on the full window and on
+  the months outside 1981-10..2020-07. The primary arm is the 36-month
+  correlation with a zero threshold. EVERY MEAN GAP IS EXPECTED TO COME BACK
+  `unresolved` (freeze note 4); the useful outputs are the complement-window
+  gap beside its floor, the fraction of months on, the switch count, the
+  episode table, and the regret table across the term-premium grid.
+
+mechanism: >
+  Three mechanisms. DIVERSIFICATION: a financed sleeve's contribution to log
+  growth is `w mu_b - cost - (w^2 sigma_b^2 + 2 w rho sigma_p sigma_b) / 2`;
+  at rho = -0.15 the covariance term is a gain of roughly 0.1 pp/yr on 20
+  points and at rho = +0.37 a drag of roughly 0.13. A rule that holds the leg
+  only when trailing rho is negative keeps the gain months and avoids the drag
+  months IF the trailing correlation predicts the forward one, which is the
+  empirical question; the artifact reports the forward realised correlation
+  and the bond excess return in on-months and off-months. CARRY: the rule
+  does not observe the term premium, so on-months can carry a negative bond
+  excess return (1930s, 1940s) as well as a positive one. LAG: a 36-month
+  trailing window turns about eighteen months after the regime does, so the
+  rule pays the first year of each adverse regime (2022) and misses the first
+  year of each favourable one.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each arm, against
+  the reference and against the unconditional stack separately, on the full
+  window and on the complement separately, on the primary metric:
+  (a) `rejected` if the arithmetic mean gap point estimate is at or below zero;
+  (b) `unresolved` if the gap is positive but smaller than the minimum
+  detectable effect at 80% power computed from that comparison's own paired
+  difference series, reported in the same row;
+  (c) `unresolved` if the gap exceeds its floor but its Benjamini-Hochberg
+  adjusted Newey-West p-value within the declared family (the four arms, one
+  family per control per window) exceeds 0.10;
+  (d) `unresolved` if the gap survives (b) and (c) but changes sign anywhere on
+  the declared switching-cost band or the declared Treasury-financing band;
+  (e) `exploratory` otherwise. Under no outcome may this specification produce
+  a status above `exploratory`. Comparisons against the cheap, leverage-matched
+  and volatility-matched controls, the era gaps, the episode table, the
+  drawdown table and the regret table are reported and receive NO status. The
+  whole-experiment status is `exploratory` when any scored comparison reaches
+  (e) and `unresolved` otherwise.
+
+universe:
+  description: >
+    Three monthly excess-of-cash legs plus the cash rate on one panel, the
+    exp_018 primary panel. US-only equity, because the question needs 1929-32,
+    1937, 1973-74 and 1977-81. Cash is the Ken French one-month bill.
+  legs:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published, 1926-07 onward.
+    - id: treasury
+      source: Goyal-Welch `PredictorData2025.xlsx`, monthly, `ltr`, less French `RF`
+      basis: >
+        Long-term US government bond total return, roughly a 20-year bond,
+        LONGER duration than the 2-to-30-year ladders RSSB and NTSX hold
+        (exp_018 freeze note 3). Also the second series in the signal.
+    - id: trend
+      source: >
+        This repository's own 4-asset time-series-momentum book (equity,
+        treasury, corporate, commodity), `studies/time_series_momentum`
+        defaults, minimum three live instruments, scaled to 12.38% volatility by
+        one full-window constant computed exactly as exp_018 computes it.
+      basis: Excess of cash, no trading cost charged.
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `RF`
+  signal:
+    id: trailing_bond_equity_correlation
+    definition: >
+      Pearson correlation of the `equity` and `treasury` excess-return legs over
+      the trailing `window` months ending at month t-1, applied to month t.
+      Computed on the full equity-Treasury history (1926-07 onward) so that the
+      first scored month is `window` months after 1926-07; the median variant
+      needs a further 120 signal months.
+    lag_months: 1
+    note: >
+      Excess returns rather than total returns, because a common cash rate
+      induces a positive correlation between two total-return series that says
+      nothing about co-movement; the exp_018 regime table correlates the same
+      excess series.
+  excluded:
+    - Any claim that a wrapper's simulated path is a fund's return.
+    - Any search over the window or the threshold beyond the four declared arms.
+    - Any TIPS leg; freeze note 5.
+    - The AQR TSMOM secondary panel, which begins inside the bond bull market and cannot score the complement.
+
+sample_policy:
+  start: "1926-07"
+  end: "2025-05"
+  held_out: >
+    Nothing is held out. The panel is the exp_018 primary intersection
+    (1929-01..2025-05, 1157 months) and each arm is scored from the first month
+    its signal exists. The eras and episodes are exp_018's, frozen there before
+    that run; the complement of the bond bull market is the window the search
+    agenda named before this file was written.
+  embargo: >
+    The signal uses months up to t-1 only. The trend book uses only data before
+    each month; its volatility scalar is the one look-ahead and it is a
+    Sharpe-preserving constant that cancels in every paired comparison against
+    the reference.
+  eras:
+    - name: bond_bull_market
+      start: "1981-10"
+      end: "2020-07"
+      rationale: Peak ten-year yield to trough, exp_018's boundary; the era that made the unconditional stack's gap.
+    - name: before_bond_bull
+      start: "1929-01"
+      end: "1981-09"
+      rationale: The complement, first part; rising or flat yields, positive bond-equity correlation on average.
+    - name: after_bond_bull
+      start: "2020-08"
+      end: "2025-05"
+      rationale: The complement, second part; 58 months of rising yields including 2022.
+    - name: complement_of_bond_bull
+      start: "1929-01"
+      end: "2025-05"
+      rationale: >
+        The two complement parts joined, 691 panel months: the window the search
+        agenda named as the one that could resolve the Treasury leg. The code
+        removes 1981-10..2020-07 from this range; the joined series has one
+        discontinuity, at 1981-09/2020-08, which the block bootstrap and the
+        HAC estimator both treat as adjacent months. Stated, not corrected.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: The one flat-to-negative equity decade in the modern panel, exp_016e's boundaries.
+    - name: inflation_1977
+      start: "1977-01"
+      end: "1981-09"
+      rationale: The episode the unconditional stack lost 22 pp in; scored as an era gap as well as an episode.
+    - name: rate_shock_2022
+      start: "2022-01"
+      end: "2022-09"
+      rationale: The one modern inflation episode; predicted NOT to be avoided by a lagged rule (freeze note 4c).
+    - name: positive_bond_equity_correlation
+      start: "1966-01"
+      end: "1997-12"
+      rationale: The era of positive published bond-equity correlation, exp_018's boundary.
+
+benchmark:
+  primary:
+    id: reference
+    definition: The `base_trend30` arm, 70% CORE + 30% RSST_LIKE, exp_018's reference and the current recommendation.
+    rationale: The decision is whether a conditioned leg improves the recommendation.
+  secondary:
+    id: unconditional_stack
+    definition: The `trend30_bondstack20` arm, 50% CORE + 30% RSST_LIKE + 20% RSSB_LIKE, exp_018's unconditional stack.
+    rationale: The question the agenda asked is whether conditioning does what holding the leg always did not.
+  tertiary:
+    id: cheap
+    definition: 100% CORE at 3 bp, unlevered, same clock.
+    rationale: Decision 0003; reported, not scored.
+  quaternary:
+    id: leverage_matched
+    definition: >
+      CORE levered each month to the arm's own gross notional that month
+      (1.3216 off, 1.5216 on), financed at cash plus the equity-futures basis.
+    rationale: Is it a construction effect or is it beta; reported, not scored.
+  quinary:
+    id: volatility_matched_expost
+    definition: CORE plus T-bills scaled so that full-window volatility matches the arm's (one constant).
+    rationale: Reported, not scored.
+  aggregation_rule: >
+    Controls are families and their gaps are never added or averaged. Every
+    reported gap names its control and its window. Benjamini-Hochberg is
+    applied within one control on one window across the four arms and never
+    across.
+
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` over the arm's scored months, net of every
+    cost charged inside the simulation. The annualised log-growth gap is
+    reported beside it as a secondary metric and the two are never mixed.
+  units: percentage points per year
+  uncertainty: >
+    Newey-West HAC standard error on the paired monthly difference with the
+    1994 automatic bandwidth, 95% normal interval, two-sided p-value; and a
+    stationary block bootstrap (mean block 12 months, 10000 resamples, 95%
+    percentile) on the full and complement windows for comparability with
+    exp_018. The minimum detectable effect at 80% power from each comparison's
+    own paired series is beside every gap.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+  - name: annualised log-growth gap
+    units: percentage points per year
+  - name: fraction of scored months the stack is on; number of switches; mean and longest on-spell and off-spell
+    units: fraction; count; months
+  - name: bond excess return and forward bond-equity correlation in on-months and off-months
+    units: percentage points per year; correlation
+    note: Whether the trailing correlation predicted anything; the mechanism check.
+  - name: maximum drawdown and longest run under water of the funded wealth path
+    units: percent; months
+  - name: cumulative return in each frozen crisis episode, offset against the reference and the unconditional stack, with the fraction of episode months the stack was on
+    units: percent; percentage points; fraction
+  - name: era gaps against each control, with HAC interval and floor
+    units: percentage points per year
+  - name: worst-decile-of-equity-months mean offset against the reference
+    units: percentage points per month
+  - name: contribution-weighted terminal wealth ratio against the reference and the unconditional stack
+    units: ratio
+  - name: effective number of trials across the four arms, and the deflated Sharpe ratio of the primary arm's paired difference at that count
+    units: count; probability
+  - name: regret of adopting and of not adopting each stack across the term-premium grid and two correlation states
+    units: basis points per year of expected log growth
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    (1) each wrapper's expense ratio on the capital allocated to it; (2)
+    financing on the notional a wrapper holds beyond its capital, at the rate
+    for that leg; (3) the equity-futures basis on the debt of any control whose
+    capital weights exceed one; (4) a 0.55 bp round-trip US equity spread,
+    half-crossed on one-sided monthly rebalancing turnover, on every line
+    including the switch trade; (5) a one-way switching cost on each dollar of
+    capital moved when the rule changes state, on top of (4), charged in the
+    switch month. A switch moves 20 points out of one holding and 20 into
+    another, so at the central 10 bp it costs 4 bp of portfolio value.
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    RSSB_LIKE: 39
+    CASH: 0
+  financing_basis_points_over_cash:
+    equity: 62
+    treasury: 15
+    gold: 30
+    tips: 15
+  switching_cost_one_way_basis_points: 10
+  switching_cost_band_basis_points: [0, 10, 25]
+  switching_cost_source: >
+    An assumption of this file. RSSB's measured spread is 16 bp round trip
+    (exp_018 section 8), so 8 bp half-crossed plus an allowance for the
+    displaced core line; 25 bp is the pessimistic end.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  not_charged:
+    - The 4-asset trend book's own trading (cancels in every paired comparison against the reference and the unconditional stack, which hold the same trend leg).
+    - Any tax. The comparison is pre-tax; a switching rule in a taxable account would realise gains and this file does not price that.
+    - Bid/ask on the initial purchase.
+
+rebalance_rule:
+  frequency: MONTHLY, every month, back to the arm's capital weights for that month.
+  drift: Weights drift within the month and the drifted weights earn the month's return.
+  overlay_legs: A wrapper's internal notional is a property of the wrapper and is never rebalanced by the investor.
+  state: >
+    The rule's state for month t is decided from the signal through month t-1
+    and the capital weights for month t are CORE 0.70 - 0.20 s, RSST_LIKE
+    0.30, RSSB_LIKE 0.20 s with s in {0, 1}. The switch trade is executed at
+    the start of month t at the same rebalance.
+  debt: Positions and debt carried in absolute terms, exp_016's `_simulate` by import.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, as exp_018. HAC bandwidth is the
+    Newey-West 1994 rule of thumb, `floor(4 (T/100)^(2/9))`, not tuned.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each family (four arms, one family
+    per control per scored window), never across; and the effective number of
+    trials from the mean off-diagonal correlation of the four arms' paired
+    difference series, reported with the deflated Sharpe ratio of the primary
+    arm's paired difference at that count and at 4 and 100 trials. The family
+    omits the earlier specifications that searched this data; the adjusted
+    p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: An interval containing zero is reported as unresolved. The MDE is beside every gap.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per scored control, per scored
+  window, and record which clause fired. `unresolved` is the expected outcome
+  for every comparison (freeze note 4). Under no outcome may this specification
+  produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    statement: >
+      Every wrapper is an assumed per-dollar exposure vector and a fee. The
+      experiment scores constructions on public series; a result transfers to
+      a fund only to the extent the fund delivers the mapped exposure at the
+      mapped cost. The arms were chosen by people who had read exp_018's
+      artifact, including its era table; that look-ahead is recorded and no
+      freezing removes it. The thresholds and windows were fixed by convention
+      (36 and 60 months are the standard rolling-correlation windows; zero and
+      -0.2 are the thresholds the mechanism names) before any conditioned path
+      was simulated.
+    order_of_operations: >
+      This file was written and frozen, with its predictions, before the
+      experiment module produced any statistic.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired monthly difference."
+    computed_before_freezing: >
+      Arithmetic on window length and a grid of tracking errors. Full window
+      from 1929-07, 1151 months (95.9 years): 0.286 pp/yr per point of tracking
+      error. Complement of the bond bull market from 1929-07, about 685 months
+      (57.1 years): 0.371 per point. The 60-month arm loses 24 further months
+      and the median arm 120 further months at the start.
+    floor_per_point_of_tracking_error:
+      full_window: 0.286
+      complement: 0.371
+    expected_tracking_error_against_reference:
+      note: "about 1.71 sqrt(f) points, f the fraction of months on; exp_018 measured 1.71 for the always-on stack"
+      "0.25": 0.86
+      "0.40": 1.08
+      "0.50": 1.21
+      "0.60": 1.32
+    expected_tracking_error_against_unconditional_stack:
+      note: "about 1.71 sqrt(1 - f) points"
+      "0.25": 1.48
+      "0.40": 1.32
+      "0.50": 1.21
+      "0.60": 1.08
+    expected_floors_at_f_0_40:
+      vs_reference_full: 0.31
+      vs_reference_complement: 0.40
+      vs_unconditional_full: 0.38
+      vs_unconditional_complement: 0.49
+    expected_gap: >
+      The certain cost of the leg is 11.4 bp/yr while on (0.2 x (39 + 15 +
+      0.10 x 62) - 0.2 x 3). With the on-state bond excess return unknown, 4
+      pp/yr on 40% of months gives 0.2 x 4 x 0.4 - 0.114 x 0.4 - switching, about
+      +0.25 pp/yr: BELOW EVERY FLOOR ABOVE. On the complement the on-fraction
+      is expected to be lower and the on-state bond excess return lower still.
+
+  predicted_descriptives:
+    fraction_on_full_window: "0.30 to 0.50"
+    switches_full_window: "15 to 30"
+    complement_gap_vs_reference: "between -0.2 and +0.2 pp/yr, inside its floor"
+    episode_1977_81_offset_vs_reference: "between -8 and +2 pp; the unconditional stack read -22"
+    episode_2022_offset_vs_reference: "about -2.4 pp, the same as the unconditional stack, because the rule is on"
+
+  trend_book:
+    instruments: [equity, treasury, credit, commodity]
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.10
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of the book on the
+      primary panel`, computed exactly as exp_018 computes it; the artifact
+      prints it and it is expected to equal exp_018's 1.9771.
+
+  wrappers:
+    CORE:
+      exposures: {equity: 1.0}
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures: {equity: 1.072, trend: 1.0}
+      financed: {equity: 0.331}
+      note: exp_018's RSST-like wrapper, unchanged.
+    RSSB_LIKE:
+      exposures: {equity: 1.0, treasury: 1.0}
+      financed: {equity: 0.10, treasury: 1.0}
+      note: exp_018's RSSB-like wrapper, unchanged; the bond leg is a ~20-year bond, longer than RSSB's ladder.
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+
+  contestants:
+    base_trend30:
+      role: reference arm; the current recommendation
+      weights: {CORE: 0.70, RSST_LIKE: 0.30}
+      note: 1.0216 equity, 0.300 trend, 1.3216 gross.
+    trend30_bondstack20:
+      role: unconditional stack; exp_018's candidate
+      weights: {CORE: 0.50, RSST_LIKE: 0.30, RSSB_LIKE: 0.20}
+      note: 1.0216 equity, 0.300 trend, 0.200 bond, 1.5216 gross.
+
+  conditioned_arms:
+    stack_points: 0.20
+    stack_wrapper: RSSB_LIKE
+    funded_from: CORE
+    primary: cond36_below0
+    arms:
+      cond36_below0:
+        rule: threshold
+        window_months: 36
+        threshold: 0.0
+        note: PRIMARY. On when the trailing 36-month correlation through t-1 is below zero.
+      cond60_below0:
+        rule: threshold
+        window_months: 60
+        threshold: 0.0
+        note: The slower window.
+      cond36_below_minus02:
+        rule: threshold
+        window_months: 36
+        threshold: -0.2
+        note: The stricter threshold; on less often.
+      cond36_below_median120:
+        rule: trailing_median
+        window_months: 36
+        median_window_months: 120
+        note: On when the 36-month correlation is below the median of its own trailing 120 values; a relative rule with no fixed threshold.
+
+  controls: [reference, unconditional_stack, cheap, leverage_matched, volatility_matched_expost]
+  scored_controls: [reference, unconditional_stack]
+  scored_windows: [full, complement_of_bond_bull]
+  reported_windows: [full, complement_of_bond_bull, before_bond_bull, bond_bull_market, after_bond_bull, flat_equity_decade, inflation_1977, rate_shock_2022, positive_bond_equity_correlation]
+  minimum_window_months: 9
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.10
+  multiple_testing_q: 0.10
+  bootstrap_block_months: 12
+  forward_correlation_horizon_months: 12
+
+  crisis_episodes:
+    deflationary_or_growth:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: recession_1937, start: "1937-03", end: "1938-03"}
+      - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+      - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    inflation_or_rate:
+      - {name: oil_1973, start: "1973-01", end: "1974-09"}
+      - {name: inflation_1977, start: "1977-01", end: "1981-09"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+    note: exp_018's eight episodes, unchanged. The 1929 crash begins two months after the primary arm's first scored month and is flagged partial where an arm starts later.
+
+  financing_sensitivity:
+    treasury_basis_points: [0, 15, 30, 50]
+    switching_cost_basis_points: [0, 10, 25]
+    reporting: >
+      Report every scored gap at every point and whether its sign survives;
+      clause (d) reads the sign.
+
+  regret:
+    term_premium_grid_pp_yr: [-0.5, 0.0, 0.5, 1.0, 1.5]
+    correlation_states:
+      persists: >
+        The post-2020 positive correlation persists: the conditioned rule is
+        off in every month (gap zero, no switches), the unconditional stack is
+        on with rho = the after_bond_bull realised correlation.
+      reverts: >
+        The correlation reverts to its history: the conditioned rule is on the
+        fraction of months it was on over the full window with rho = the
+        on-state forward realised correlation, and pays its realised switching
+        cost per year; the unconditional stack is on always with rho = the
+        full-window realised correlation.
+    formula: >
+      Expected annual log-growth gap of holding a w-point financed leg =
+      f x [w x tp - certain_cost - (w^2 sigma_b^2 + 2 w rho sigma_p sigma_b)/2]
+      - switching_cost_per_year, with f the on-fraction, tp the term premium,
+      sigma_b and sigma_p the realised bond and reference volatilities, and rho
+      the state's correlation. Regret of adopting = max(0, -gap); regret of
+      not adopting = max(0, gap). The minimax action across the grid is
+      reported for the conditioned stack, the unconditional stack and holding
+      neither. Arithmetic on stated inputs; no interval, no status.
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: A raw-hash mismatch aborts before any statistic. Read from the local raw cache; never downloads.
+    files:
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "corpr", "Rfree"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - id: aqr_commodities_long_run
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+
+data_sources:
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published; Mkt-RF is the equity leg and one half of the signal
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr less French RF as the bond leg and the other half of the signal; ltr, corpr less Rfree inside the trend book
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end sets the panel's end
+
+hostile_tests:
+  - Charge the switching cost and the wrapper costs inside the rule and sweep the switching cost 0-25 bp and the Treasury basis 0-50 bp; a sign that does not survive the band is not a result.
+  - Score the complement of the bond bull market as a first-class window with its own floor, and report the inside-bull window beside it so that no conditional result is quoted without its complement.
+  - Report the bond excess return and the forward realised correlation in on-months and off-months, so that a positive gap can be attributed to carry or to correlation and a null to the signal's failure to predict.
+  - Report 1977-81 and 2022 as era gaps and as episodes with the fraction of months the rule was on, because the freeze note predicts one is avoided and the other is not.
+  - Report the effective number of trials across the four arms and the deflated Sharpe ratio of the primary arm's paired difference, beside the Benjamini-Hochberg treatment.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Report the regret table for the conditioned stack, the unconditional stack and holding neither on one grid, and name the state of the world each needs.
+  - Report the leverage-matched control levered month by month to the arm's own gross notional, not to a constant.
+
+reporting_requirements:
+  - The freeze note with every table, including that wrappers are assumed exposure vectors and that the bond leg is a ~20-year bond whose history contains the 1981-2020 bull market.
+  - The MDE, the HAC interval and the control named beside every gap, in the same row; never a figure combining two controls.
+  - Fraction on, switch count and spell lengths for every conditioned arm, on every reported window.
+  - The eight episodes for every arm with the fraction of episode months on.
+  - The on-month and off-month bond excess return and forward correlation for every arm.
+  - The effective trial count and the deflated Sharpe ratio of the primary arm.
+  - The regret table across the declared grid, labelled arithmetic.
+  - The trend-book volatility scalar and the sha256 of every source file read.
+  - A one-paragraph statement that no pre-2003 TIPS series exists in the panel and none was built.
+
+notes: >
+  Exploratory in the strongest sense: the arms were selected after exp_018's
+  artifact was read, and the specification records that. This experiment can
+  rank constructions on public series and cannot rank funds. Retain
+  `unresolved` wherever the instrument cannot separate an arm from its
+  control; read the episode, drawdown and regret tables as descriptions of one
+  history and as arithmetic on stated inputs, which is what they are. No
+  sleeve, fund or portfolio is promoted by this specification.

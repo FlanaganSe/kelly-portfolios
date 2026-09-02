@@ -42,7 +42,9 @@ and the arithmetic is pinned in
 windows were chosen by eye from [the standing episode list](evidence-base.md), and four
 of the legs are AQR vendor series their author reconstructs on every release. The stress
 windows and the tail quantile are hypothesis-bearing analytical choices and **owe a
-ledger entry**; the module and its tests are committed so the choice is inspectable.
+ledger entry**; the module and its tests are committed so the choice is inspectable. The
+financed construction in §3.1 is the exception: its study writes its own ledger entry on
+every run.
 
 ---
 
@@ -248,7 +250,9 @@ vehicle is an implementation finding, not proof that the return source is absent
 from the defensive sleeve, held in a taxable account, and labelled a speculation rather
 than a diversifier. Zero is also defensible. Anything above about 5% is a leveraged equity
 position that the investor could obtain more cheaply and with a shallower drawdown by
-holding more equity.**
+holding more equity. Financing the position instead of selling equity for it, which RSSX
+now does, improves the hurdle by about 0.4 pp/yr per 3.5 points of bitcoin and changes
+nothing else; see §3.1.**
 
 **The mechanism, stated honestly.** There is no cash-flow claim. A bond pays a coupon
 because a borrower is contractually obliged; an equity pays because a firm earns; a cat
@@ -351,10 +355,143 @@ their headline distribution rates run 27% to 73% against 30-day SEC yields of 0.
 and at least one fund's most recent 19a-1 notice estimates the distribution as **100%
 return of capital**. That is your own money handed back with a tax form attached.
 
+### 3.1 The financed construction: RSSX, and whether the funding rule changes the verdict
+
+**Conclusion. It does not.** Financing bitcoin instead of selling equity for it keeps the
+equity premium on the capital not sold, and that is worth **+0.37 pp/yr per 3.5 points of
+bitcoin** on this window, which is the whole of the funding-rule gap. Everything the
+verdict rests on is unchanged by it: the asset's down-beta of 1.65, its −7.51% mean in the
+worst decile of equity months, the drawdown it adds to the construction, and the fact that
+its expected return is a price expectation. Ten points of an RSSX-like stack on the
+recommended construction reads **+3.15 pp/yr [+1.53, +4.81] against a 2.25 floor** on
+2015-02 to 2026-05, and that number is bitcoin's own +73 pp/yr arithmetic excess return
+over eleven years doing the work, not the wrapper. The break-even below is the price
+expectation the reader is being asked to hold, and the published vector does not move.
+
+`as of 2026-09-02`, **`exploratory`**, ledgered under `study_financed_gold_bitcoin`; no
+specification was frozen, the gold/bitcoin split was read from one day's holdings, the
+bitcoin financing basis is an assumption swept over a range, and the window is whatever
+the bitcoin series allows. Regenerate with
+`uv run python -m portfolio_edge.studies.financed_gold_bitcoin`; the arithmetic is pinned
+in `research/tests/unit/test_studies_financed_gold_bitcoin.py`.
+
+**What RSSX is.** Return Stacked U.S. Stocks & Gold/Bitcoin ETF, inception 2025-05-29,
+**0.67%** on the issuer page (the 2025-05-22 prospectus estimates 0.65% management plus
+0.03% acquired-fund fees, 0.68%), **$75.6M** at 2026-08-31, 30-day median spread 0.28%
+([issuer page](https://www.returnstackedetfs.com/rssx-return-stacked-us-stocks-gold-bitcoin/)
+and [prospectus](https://www.returnstackedetfs.com/wp-content/uploads/2025/05/RSSX-497_PRO_WEB.pdf),
+read 2026-09-02). The prospectus targets 100% exposure to a US large-cap equity strategy
+and 100% to a gold/bitcoin strategy per dollar, the split between gold and bitcoin set by
+"a risk parity framework designed to balance the contribution of volatility from each
+asset", which it expects to put **75 to 95% in gold and 5 to 25% in bitcoin**. Holdings on
+2026-09-01: SPYM 70.85% plus S&P 500 E-mini futures 30.65% (equity 101.5%), micro gold
+futures 64.43%, CME bitcoin futures 26.73% plus IBIT 7.75% (bitcoin 34.5%), a government
+money fund 9.30% and cash 12.09%. **The read split is 65/35, outside the band the
+prospectus called typical**, which is what a risk-parity rule does when gold's forecast
+volatility rises towards half of bitcoin's; the fund rebalances daily. Futures sit in a
+Cayman subsidiary capped at 25% of assets at each fiscal quarter-end, the same structure
+§8 describes for GDE, so its income is ordinary and §1256 treatment does not reach the
+holder; one distribution of $0.393 went ex on 2025-12-29. Issuer NAV returns to
+2026-08-31: one year +15.30% and since inception +23.87% annualised, against the S&P 500's
++20.38% and +24.68%.
+
+**The assumed exposure vector reproduces the fund.** On the thirteen months 2025-06 to
+2026-06 for which the repository holds every leg, one dollar of equity plus 0.65 gold plus
+0.35 bitcoin at 67 bp, financing charged at 30 bp on gold and 62 bp on bitcoin, returns
++15.1% cumulative against RSSX's **+17.2%** at market price, with a monthly correlation of
+**0.988**, a residual of +0.13 pp/month (standard error 0.38) and a 4.7%/yr tracking
+error. The structure is the fund; the split is a snapshot.
+
+**The construction, tested as one object.** The reference is Experiment 018's
+`base_trend30`, 70% in a 3 bp core and 30% in an RSST-like wrapper, on the longest window
+the repository's bitcoin series allows: 136 months, 2015-02 to 2026-05, with AQR TSMOM as
+the trend leg because the own 4-asset book ends 2025-05 (that book is the check panel, 124
+months). Each candidate replaces ten points of the core with a stacked wrapper, or sells
+two to three and a half points of it for a spot ETP at 25 bp, which is this page's
+construction above. Bitcoin is FRED `CBBTCUSD` month-end and gold the LBMA PM fix, both
+less cash; every cost is inside the rule. Gaps are arm minus reference, pp/yr, with a
+stationary block bootstrap (12-month mean block, 10,000 draws) and the 80%-power floor
+from each pair's own difference series; "tail" is the arm-minus-reference mean in the 13
+worst equity months, pp/month.
+
+| Arm, 2015-02 to 2026-05 | Gap | 95% interval | Floor | Log gap | Max DD (ref −18.5%) | Tail, hit |
+| --- | ---: | :---: | ---: | ---: | ---: | ---: |
+| 10 pts RSSX-like, 65/35 (6.5 gold + 3.5 bitcoin, financed) | **+3.15** | [+1.53, +4.81] | 2.25 | +2.94 | −21.8% | −0.15, 31% |
+| 10 pts RSSX-like, 80/20 (the prospectus band) | +2.21 | [+1.13, +3.24] | 1.56 | +2.08 | −20.6% | −0.01, 46% |
+| 10 pts RSSX-like, 50/50 | +4.09 | [+1.83, +6.50] | 3.05 | +3.78 | −22.9% | −0.29, 15% |
+| 10 pts financed gold alone, at RSSX's fee | +0.95 | [+0.16, +1.84] | 1.23 | +0.92 | −19.3% | +0.18, 62% |
+| 10 pts GDE-like (Experiment 018's gold arm) | +0.77 | [+0.07, +1.57] | 1.11 | +0.77 | −19.0% | +0.24, 77% |
+| 3.5 pts bitcoin, **financed** (RSSX's bitcoin leg alone) | +2.49 | [+0.92, +4.24] | 2.08 | +2.30 | −21.4% | −0.27, 8% |
+| 3.5 pts bitcoin, **sold from equity** | +2.12 | [+0.66, +3.78] | 1.97 | +2.02 | −20.6% | +0.02, 46% |
+| 2 pts bitcoin, sold from equity (the verdict's construction) | +1.21 | [+0.38, +2.16] | 1.13 | +1.16 | −19.7% | +0.01, 46% |
+
+Three readings, in order of how much they should be trusted.
+
+1. **The funding rule is worth exactly what the algebra says and nothing more.** The
+   matched pair, 3.5 points of bitcoin financed against 3.5 points sold from equity, differs
+   by **+0.37 pp/yr**: 3.5 points times the window's 12.6 pp/yr equity excess return,
+   less the 64 bp of extra fee on ten points of wrapper and 62 bp of basis on the bitcoin
+   notional, plus the spot ETP's fee saved. On the own-book panel it is +0.33. It is the
+   `sigma_p**2 (L-1)` term the [overlay algebra](marginal-sleeve-value.md) already prices,
+   and it contains no property of bitcoin. Financing changes the hurdle; the sweep of the
+   bitcoin basis from 0 to 1,000 bp moves the stack's gap from +3.17 to +2.82, so the
+   unmeasured cost is not where the answer lives either.
+2. **The financed leg buys the same tail.** The financed bitcoin arm is negative in 12 of
+   the 13 worst equity months, −0.27 pp/month against the reference; the pro-rata arm is
+   flat there (+0.02) because selling equity for bitcoin removes as much down-beta as it
+   adds. The stack deepens maximum drawdown from −18.5% to −21.8%, costs 2.7 pp across
+   the 2022 rate shock and 0.7 pp across 2025-10 to 2026-05, when bitcoin fell 39.5% while
+   equity rose 10.8% and gold 16.0%. Gold alone is the arm that pays in the tail (+0.18
+   pp/month, 62% hit rate) and in both 2025 episodes (+1.5 and +1.8 pp), and it is the arm
+   this page still does not add, for the reasons in §8.
+3. **The gap that clears its floor is the sample mean of one asset.** Bitcoin's arithmetic
+   excess return on this window is **+73 pp/yr at 71% volatility**, and every bitcoin arm
+   inherits it. The post-hoc cut from 2020-01 (77 months) takes the RSSX-like stack to
+   +2.79 [+0.82, +4.54] against a 2.77 floor, the financed bitcoin leg to +1.78 against
+   2.48, and the 2-point pro-rata sleeve to +0.79 [−0.04, +1.68] against 1.25; the tail
+   worsens to −0.42 pp/month and the financed leg's hit rate to 0 of 7. Eleven years of one
+   asset is a floor on what could have been seen, not a verdict on what will be.
+
+**The break-even, which is the price expectation the verdict rests on.** Ten points of the
+65/35 stack replacing ten points of core adds nothing in expectation when bitcoin's
+arithmetic excess return equals `[(67 − 3) bp + 0.65 × gold basis + 0.35 × bitcoin basis −
+0.65 × gold premium] / 0.35`. The stack adds variance, and half of it, 1.79 pp/yr per
+dollar of stack at a 10% weight, is what a log-growth investor must also be paid.
+
+| Gold premium assumed | Bitcoin basis | Arithmetic break-even | Log-growth break-even |
+| --- | ---: | ---: | ---: |
+| 0 | 62 bp | +3.0 pp/yr | **+8.1 pp/yr** |
+| 0 | 300 bp | +5.4 | +10.5 |
+| +1.75 (§8's half-century figure) | 62 bp | −0.2 | +4.9 |
+| +1.75 | 300 bp | +2.1 | +7.3 |
+| bitcoin leg alone, no gold | 62 bp | +2.5 | +7.1 |
+| bitcoin leg alone, no gold | 300 bp | +4.8 | +9.5 |
+
+Read the last two rows as the bitcoin question on its own: a financed 3.5-point bitcoin
+leg is worth holding for growth only if bitcoin's expected excess return is at least
+**+7 to +10 pp/yr** for the indefinite future, after a decade in which the S&P 500's own
+excess return was about 12.6. That expectation is a claim about the future marginal buyer,
+which is what the verdict above says it is. With gold's long-run premium assumed, the
+gold leg carries the arithmetic break-even below zero, and the reader should notice that
+this is an argument for financed gold, which §8 prices separately, and not for bitcoin.
+
+**Consequence for the published vector, RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 /
+IDMO 5 / AVES 5.** No line changes. Bitcoin stays at 0 to 2%, outside the vector, and the
+financed construction changes how a 2% position should be bought if the investor insists
+on one, not whether. The prospectus-band version of RSSX, 80/20, carries 2 points of
+bitcoin per 10 points of capital and reads +2.21 against a 1.56 floor with a flat tail
+(−0.01 pp/month) and a 2.1 pp deeper drawdown; it would replace ten points of VTI, in the
+rollover IRA where the Cayman subsidiary's ordinary income costs nothing, and it bundles 8
+points of financed gold at a real price this repository reads at the 98.5th percentile.
+The investor who wants the bitcoin position takes it that way and knows they are buying
+gold to get it; the investor who does not is not asked to. Nothing here is above
+`exploratory`, and the reopening condition is the one below.
+
 **What would change this — and one condition has moved.** The three triggers were a
 correlation to equity back below +0.2 on a window containing a recession; **a cash-flow
 claim with a contractual payer**; or a realised equity bear market in which the asset does
-not fall harder than equity.
+not fall harder than equity. A cheaper funding rule is not on the list, and §3.1 measures
+why: it is worth its algebra and touches none of the three.
 
 The second has partially arrived, and not for bitcoin. **Rev. Proc. 2025-31** created a
 safe harbour letting a grantor trust stake proof-of-stake assets without losing trust

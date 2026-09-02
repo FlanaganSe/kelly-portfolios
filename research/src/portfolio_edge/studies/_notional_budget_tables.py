@@ -83,6 +83,7 @@ from portfolio_edge.studies.notional_budget import (
     notional_for_drawdown,
     portfolio_exposure,
     premium_for_leverage,
+    relative_run_outcomes,
     volatility_targeted_leverage,
 )
 from portfolio_edge.studies.outperformance_horizon import horizon_for_confidence
@@ -196,11 +197,33 @@ CLIFF_SEEDS: Final = (SEED + 1, 12345, 999983, 20260822)
 EPISODE_SCAN: Final = (0.0, 0.05, 0.10, 0.30, 0.58, 0.59, 0.60, 1.00)
 
 #: Forward GROSS trend excess returns to restate every measured row at. The panel's own
-#: realised figure is far above anything this repository can sign forward: decision 0004
-#: records a post-publication trend excess of roughly 1.8 pp/yr, and Experiment 010b's
-#: marginal figure is inside its own detection floor. Zero is included because a forecast
-#: of zero is admissible and the sleeve still has to be scored at it.
-FORWARD_TREND_PREMIA: Final = (0.000, 0.018, 0.037)
+#: realised figure is far above anything this repository can sign forward. Zero is
+#: included because a forecast of zero is admissible and the sleeve still has to be
+#: scored at it. The three other rows, and their status:
+#:
+#: * 1.80% is decision 0004's convention and is RETRACTED as a gross figure. The
+#:   adversarial review (docs/research/adversarial-review.md section 1) traced it to AQR
+#:   TSMOM 2012-01..2025-12 taken geometrically and net of a 1.50% fee the wrapper's cost
+#:   term already charges. It is kept so every table that was built on it can be read
+#:   against its corrected value, and it must not be read as a central case.
+#: * 3.90% is the trend-weight page's prior median, +2.73% net of the wrapper's 1.165%
+#:   all-in cost, put back on this table's gross axis: 2.73 + 1.165 = 3.895. This table
+#:   then charges its own 96 bp convention, so the same row reads 2.94% net here; the two
+#:   pages' cost conventions differ by 21 bp and that difference is stated rather than
+#:   merged. Both figures are at the tournament panel's 12.38% trend volatility; this
+#:   panel's leg runs 12.46%, and a Sharpe-preserving rescale would move the row by
+#:   +0.03 pp, inside the rounding.
+#: * 4.07% is the same 1.80 restated to one basis by the review: 1.80 + 1.50 of fee
+#:   + 0.77 of variance drag at 12.38% volatility. It is the corrected central case.
+FORWARD_TREND_PREMIA: Final = (0.000, 0.018, 0.037, 0.039, 0.0407)
+#: The rows of the section 6a weight ladder, in the order the page reads them.
+HOLDABILITY_PREMIA: Final = (0.0407, 0.039, 0.018, 0.000)
+#: Capital in the wrapper for the section 6a weight ladder. Each row's equity notional
+#: follows the filing (1.072 of equity per dollar of RSST) rather than being held at 1.0.
+HOLDABILITY_WEIGHTS: Final = (0.15, 0.20, 0.25, 0.30, 0.35)
+#: The relative-drawdown trigger the trend-weight page's capitulation arm uses, so the
+#: probabilities in section 6a and the abandonment probabilities there are one quantity.
+RELATIVE_RUN_TRIGGER: Final = -0.20
 
 
 # --------------------------------------------------------------------------------
@@ -1343,6 +1366,73 @@ def main() -> None:
             f"    {forward_premium * 100:10.2f}%   {summary.max_drawdown * 100:17.1f}%   "
             f"{summary.max_time_under_water:12d}   {float(np.quantile(worst, 0.05)) * 100:24.1f}%"
         )
+    print(
+        "   1.80% is the RETRACTED convention, kept for comparison only: the review restated\n"
+        "   it to 4.07% gross on this axis, and the trend-weight page's prior median is 3.90%\n"
+        "   gross (2.73% net of the wrapper's 1.165%). The central case is the 4.07% row."
+    )
+
+    print(
+        "\n   the same, across the capital weight the investor is choosing between, with the\n"
+        f"   probability that relative wealth sits {RELATIVE_RUN_TRIGGER:.0%} below its running"
+        " peak within\n"
+        f"   10, 20 and 30 years ({RESAMPLES} joint {BLOCK_MONTHS}-month block resamples,"
+        " nested):"
+    )
+    print(
+        "    gross trend   w      base    worst run   months   p5 resampled"
+        "   P(-20% run) 10y   20y   30y"
+    )
+    for forward_premium in HOLDABILITY_PREMIA:
+        for weight in HOLDABILITY_WEIGHTS:
+            exposure = portfolio_exposure(
+                [
+                    Holding("core US equity", 1.0 - weight, (NotionalLeg("us-equity", 1.0),)),
+                    Holding("RSST", weight, RSST_LEGS),
+                ]
+            )
+            arm = _two_leg_total(
+                equity,
+                restated[forward_premium],
+                cash,
+                base_notional=exposure.equity_notional,
+                sleeve_notional=exposure.non_equity_notional,
+                cost=(RSST_FEE - VTI_FEE) * exposure.non_equity_notional,
+            )
+            arm_relative = (1.0 + arm) / (1.0 + control_total) - 1.0
+            summary = drawdown_summary(np.cumprod(1.0 + arm_relative))
+            rng = np.random.default_rng(SEED + 5)
+            blocks = math.ceil(arm_relative.size / BLOCK_MONTHS)
+            starts = rng.integers(0, arm_relative.size, size=(RESAMPLES, blocks))
+            offsets = np.arange(BLOCK_MONTHS, dtype=np.intp)
+            drawn = (starts[:, :, None] + offsets[None, None, :]) % arm_relative.size
+            indices = drawn.reshape(RESAMPLES, -1)[:, : arm_relative.size]
+            wealth = np.cumprod(1.0 + arm_relative[indices], axis=1)
+            peaks = np.maximum.accumulate(wealth, axis=1)
+            worst = np.min(wealth / peaks - 1.0, axis=1)
+            runs = relative_run_outcomes(
+                arm,
+                control_total,
+                trigger=RELATIVE_RUN_TRIGGER,
+                horizons_years=HORIZONS,
+                resamples=RESAMPLES,
+                block_length=BLOCK_MONTHS,
+                rng=np.random.default_rng(SEED + 7),
+            )
+            breach = runs.breach_probability_by_horizon
+            p5 = float(np.quantile(worst, 0.05))
+            print(
+                f"    {forward_premium * 100:10.2f}%   {weight:4.2f}  "
+                f"{exposure.equity_notional:6.4f}   {summary.max_drawdown * 100:8.1f}%   "
+                f"{summary.max_time_under_water:6d}   {p5 * 100:11.1f}%"
+                f"   {breach[10.0]:15.1%} {breach[20.0]:5.1%} {breach[30.0]:5.1%}"
+            )
+    print(
+        "   The worst run and months under water are the ACTUAL path, restated to the row's\n"
+        "   premium; the resampled columns impose the block-stationary null. The 30-year\n"
+        "   probability is the trend-weight page's abandonment probability measured on this\n"
+        "   panel: same trigger, same rule, different trend leg and window."
+    )
 
     # ----------------------------------------------------------------------------
     print("\n== 7. the specific danger: leverage, a volatility spike, forced deleveraging ==")

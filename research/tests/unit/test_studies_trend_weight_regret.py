@@ -25,6 +25,7 @@ from portfolio_edge.studies.trend_weight_regret import (
     regret_surface,
     restate_annual_mean,
     robust_range,
+    wealth_with_contributions,
     years_to_resolve,
 )
 
@@ -540,3 +541,156 @@ def test_years_to_resolve_is_the_square_of_the_floor_ratio() -> None:
         years_to_resolve(gap=0.01, minimum_detectable_effect=0.01, window_years=0.0)
     with pytest.raises(ValueError, match="non-negative"):
         years_to_resolve(gap=0.01, minimum_detectable_effect=-0.01, window_years=10.0)
+
+
+# --------------------------------------------------------------------------------
+# Contributions inside the capitulation path
+# --------------------------------------------------------------------------------
+
+
+class _ZeroStarts(np.random.Generator):
+    """A generator whose block starts are all zero, so every resample is the series itself."""
+
+    def integers(self, low, high=None, size=None, dtype=np.int64, endpoint=False):  # type: ignore[no-untyped-def]
+        return np.zeros(size, dtype=np.intp)
+
+
+def test_wealth_with_contributions_matches_a_hand_built_three_month_path() -> None:
+    """Every number here was computed on paper before the function existed.
+
+    Candidate loses 10% then 15% then gains 5%; the control is flat; 12% of starting
+    capital a year arrives as 0.01 a month AFTER each month's return.
+    """
+    candidate = np.array([[0.90, 0.85, 1.05]])
+    control = np.array([[1.0, 1.0, 1.0]])
+    fixed_c, fixed_k = wealth_with_contributions(
+        candidate, control, contribution_rate=0.12, contribution_basis="starting_capital"
+    )
+    assert fixed_c[0].tolist() == pytest.approx([0.91, 0.7835, 0.832675], abs=1e-12)
+    assert fixed_k[0].tolist() == pytest.approx([1.01, 1.02, 1.03], abs=1e-12)
+
+    # Indexed to the control's wealth at the previous month end: 0.01, 0.0101, 0.010201.
+    indexed_c, indexed_k = wealth_with_contributions(
+        candidate, control, contribution_rate=0.12, contribution_basis="control_wealth"
+    )
+    assert indexed_c[0].tolist() == pytest.approx([0.91, 0.7836, 0.832981], abs=1e-12)
+    assert indexed_k[0].tolist() == pytest.approx([1.01, 1.0201, 1.030301], abs=1e-12)
+
+
+def test_zero_contribution_is_a_plain_cumulative_product() -> None:
+    rng = np.random.default_rng(23)
+    steps = 1.0 + rng.normal(0.005, 0.04, size=(5, 36))
+    other = 1.0 + rng.normal(0.004, 0.03, size=(5, 36))
+    wealth_a, wealth_b = wealth_with_contributions(steps, other, contribution_rate=0.0)
+    np.testing.assert_allclose(wealth_a, np.cumprod(steps, axis=1))
+    np.testing.assert_allclose(wealth_b, np.cumprod(other, axis=1))
+
+
+def test_wealth_with_contributions_rejects_bad_input() -> None:
+    steps = np.ones((2, 3))
+    with pytest.raises(ValueError, match="non-negative"):
+        wealth_with_contributions(steps, steps, contribution_rate=-0.05)
+    with pytest.raises(ValueError, match="two-dimensional"):
+        wealth_with_contributions(steps[0], steps[0], contribution_rate=0.05)
+    with pytest.raises(ValueError, match="same shape"):
+        wealth_with_contributions(steps, steps[:1], contribution_rate=0.05)
+
+
+def test_abandonment_with_contributions_matches_the_annuity_closed_form() -> None:
+    """Constant returns: terminal wealth is ``(1+r)^T + c ((1+r)^T - 1) / r``, an annuity."""
+    months = 120
+    r_c, r_k, rate = 0.008, 0.006, 0.10
+    outcome = abandonment_adjusted_gap(
+        np.full(months, r_c),
+        np.full(months, r_k),
+        weight=0.3,
+        net_premium=0.02,
+        trigger=-0.99,
+        horizon_years=10.0,
+        resamples=16,
+        block_length=12,
+        rng=np.random.default_rng(1),
+        contribution_rate=rate,
+    )
+    c = rate / 12.0
+    terminal_c = (1 + r_c) ** months + c * ((1 + r_c) ** months - 1) / r_c
+    terminal_k = (1 + r_k) ** months + c * ((1 + r_k) ** months - 1) / r_k
+    expected = math.log(terminal_c / terminal_k) / 10.0
+    assert outcome.gap_if_held == pytest.approx(expected, abs=1e-12)
+    assert outcome.gap_with_abandonment == pytest.approx(expected, abs=1e-12)
+    assert outcome.probability_abandoned == 0.0
+    assert outcome.contribution_rate == rate
+    assert outcome.contribution_basis == "starting_capital"
+    # Dilution: the same edge compounds on less of the money, so the ratio is smaller.
+    undiluted = 12.0 * math.log((1 + r_c) / (1 + r_k))
+    assert 0.0 < expected < undiluted
+
+
+def test_abandonment_with_contributions_switches_to_the_control_after_the_sale() -> None:
+    """Hand path: -10%, -15%, +5%, +2% against a flat control, 0.01 a month paid to both.
+
+    The running peak starts at the first month, so the second month's relative drawdown
+    is 0.768137 / 0.900990 - 1 = -14.7% and a -10% trigger fires there. After the sale the
+    candidate earns the control's zero return and keeps receiving the instalment:
+    0.7835 -> 0.7935 -> 0.8035 against a control at 1.04, a ratio of 0.772596. Held, the
+    candidate reaches 0.7835 * 1.05 + 0.01 = 0.832675, then * 1.02 + 0.01 = 0.8593285.
+    """
+    candidate = np.array([-0.10, -0.15, 0.05, 0.02])
+    control = np.zeros(4)
+    outcome = abandonment_adjusted_gap(
+        candidate,
+        control,
+        weight=0.3,
+        net_premium=0.0,
+        trigger=-0.10,
+        horizon_years=4.0 / 12.0,
+        resamples=3,
+        block_length=4,
+        rng=_ZeroStarts(np.random.PCG64(0)),
+        contribution_rate=0.12,
+    )
+    assert outcome.probability_abandoned == 1.0
+    assert outcome.median_months_to_abandonment == 2.0
+    assert outcome.gap_if_held == pytest.approx(3.0 * math.log(0.8593285 / 1.04), abs=1e-12)
+    assert outcome.gap_with_abandonment == pytest.approx(
+        3.0 * math.log(0.8035 / 1.04), abs=1e-12
+    )
+    assert outcome.probability_underperform_with_abandonment == 1.0
+
+    frozen = abandonment_adjusted_gap(
+        candidate,
+        control,
+        weight=0.3,
+        net_premium=0.0,
+        trigger=-0.10,
+        horizon_years=4.0 / 12.0,
+        resamples=3,
+        block_length=4,
+        rng=_ZeroStarts(np.random.PCG64(0)),
+    )
+    # Without contributions the sale freezes the ratio at its trough: 0.9 * 0.85 = 0.765.
+    assert frozen.gap_with_abandonment == pytest.approx(3.0 * math.log(0.765), abs=1e-12)
+    assert frozen.gap_if_held == pytest.approx(
+        3.0 * math.log(0.9 * 0.85 * 1.05 * 1.02), abs=1e-12
+    )
+
+
+def test_an_identical_pair_never_capitulates_on_either_contribution_basis() -> None:
+    rng = np.random.default_rng(29)
+    series = rng.normal(0.005, 0.04, size=300)
+    for basis in ("starting_capital", "control_wealth"):
+        outcome = abandonment_adjusted_gap(
+            series,
+            series,
+            weight=0.3,
+            net_premium=0.0,
+            trigger=-0.05,
+            horizon_years=20.0,
+            resamples=100,
+            block_length=24,
+            rng=np.random.default_rng(5),
+            contribution_rate=0.10,
+            contribution_basis=basis,
+        )
+        assert outcome.gap_if_held == pytest.approx(0.0, abs=1e-12)
+        assert outcome.probability_abandoned == 0.0

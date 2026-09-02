@@ -47,8 +47,8 @@ For the major decisions:
   shelves look like refitted on matched windows, and the first measurement of a stacked
   wrapper's delivered trend exposure, taken from the fund's own SEC filings rather than
   from a price feed.
-- [Four tilts the recommendation never priced](research/untested-tilt-candidates.md): AVDV,
-  AVUV, MTUM and QVAL scored against the portfolio actually held rather than against each
+- [Tilts the recommendation never priced](research/untested-tilt-candidates.md): AVDV,
+  AVUV, MTUM, QVAL and ITAN scored against the portfolio actually held rather than against each
   other — why the negative delivered return found for large-cap international value turns
   out to be a property of the measurement window rather than of capitalisation, why a
   116%-turnover momentum fund is nonetheless more tax-efficient than a total-market index
@@ -71,7 +71,8 @@ For the major decisions:
 - [Leverage and the notional budget](research/leverage-and-the-notional-budget.md): what
   gross and net exposure a 30% stacked-fund line actually carries, what the growth objective
   wants across the premium surface, what the embedded financing costs, and why the binding
-  constraint is holdability rather than drawdown.
+  constraint is holdability rather than drawdown — with the tracking-error route re-run at
+  the corrected premium, which moved the band from 15–25% to 20–30%.
 - [Stacking and effective breadth](research/stacking-and-effective-breadth.md): what a
   pile of sleeves is worth once their excess returns are correlated, how many
   independent bets the proposed portfolio is actually making, and — under
@@ -110,16 +111,40 @@ For the major decisions:
   whose bottom does not, why the bond stack's whole contribution is the 1981–2020 bull
   market and what it is worth at today's term premium, the one defensive trade the design
   can resolve, what an RSSB or NTSX leg would actually be, and the conditional TIPS rule
-  that follows.
+  that follows. [Experiment 020](../research/experiments/exp_020_conditional_treasury_stack.yaml)
+  adds the regime-conditioned stack the agenda asked for: switched on by trailing
+  bond–equity correlation, it sorts months only inside the 1981–2020 bull market and picks
+  the losing ones outside it.
 - [The trend weight under acknowledged ignorance](research/trend-weight-under-uncertainty.md):
   the tournament's number-one next test — the forward trend premium as a weighted range on one
   stated basis, the regret surface over weight and premium against two benchmarks that give
-  opposite answers, why a minimax rule relocates the prior rather than removing it, and the two
-  arms of the asymmetry that decide the size.
+  opposite answers, why a minimax rule relocates the prior rather than removing it, the two
+  arms of the asymmetry that decide the size, and why a contribution stream does not carry
+  the position through a drought.
 - [Adversarial review](research/adversarial-review.md): a red team on the August 2026
   session — which of its conclusions survive their own detection floors, where a forward
   premium was compared on the wrong basis, and what the resolvable edge is worth against
   a savings rate.
+- [Carry as a second financed engine](research/carry-as-a-second-engine.md): the first
+  candidate measured that is nearly uncorrelated with the trend overlay (+0.06 on a
+  century), stacked inside the construction under
+  [Experiment 019](../research/experiments/exp_019_carry_engine.yaml) — the sum rule holds
+  to the fourth decimal, the gross vendor series clears its floor at full loading and
+  falls back inside it once a trading-cost haircut and a delivered loading are charged,
+  substitution for trend fails, and the one live fund is 27 months old and behind. Not
+  added; sized for an investor who wants it anyway.
+- [Leveraged ETFs and the 200-day rule](research/leveraged-etfs-and-timing-rules.md):
+  Gayed's 2x and 3x rule and the UPRO/TMF mix on a century of daily data under
+  [Experiment 021](../research/experiments/exp_021_leveraged_etf_rules.yaml) — the timing
+  content is unresolved at every leverage and negative since 1990, everything else is
+  beta, the protection covers slow bear markets and not October 1987, and the rule's
+  deepest drawdown is a run of whipsaws in 1933–35. None belongs in any third.
+- [Discovery sweep, September 2026](research/discovery-sweep-2026-09.md): what exists
+  that the audit and the market scan never screened, read from issuer pages and Form
+  N-PORT — cross-asset carry as the one new financed engine, intangible-adjusted value
+  as the one equity idea outside the held value funds, box spreads as an observable
+  financing rate, and what the live records of bank quant baskets, defensive equity and
+  bitcoin income products have already settled.
 
 ## What should we research next?
 

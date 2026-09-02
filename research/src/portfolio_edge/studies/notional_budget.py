@@ -834,6 +834,83 @@ def horizon_outcomes(
     )
 
 
+# --------------------------------------------------------------------------------
+# 6a. The stretch to sit through: how often a stated relative run arrives, by horizon
+# --------------------------------------------------------------------------------
+
+
+@dataclass(frozen=True, slots=True, kw_only=True)
+class RelativeRunOutcome:
+    """How often relative wealth falls a stated distance below its running peak."""
+
+    trigger: float
+    resamples: int
+    block_length: int
+    breach_probability_by_horizon: Mapping[float, float]
+    median_worst_run_by_horizon: Mapping[float, float]
+
+
+def relative_run_outcomes(
+    candidate_total: FloatArray,
+    control_total: FloatArray,
+    *,
+    trigger: float,
+    horizons_years: Sequence[float],
+    resamples: int,
+    block_length: int,
+    rng: np.random.Generator,
+    periods_per_year: int = MONTHS_PER_YEAR,
+) -> RelativeRunOutcome:
+    """P(relative wealth sits ``trigger`` below its peak within each horizon), resampled.
+
+    One set of joint block resamples is drawn at the **longest** horizon and every shorter
+    horizon is read off the same paths as a prefix, so the probabilities are nested by
+    construction: a run that arrives inside ten years has arrived inside twenty. The
+    relative path and its running peak are defined exactly as
+    :func:`portfolio_edge.studies.trend_weight_regret.abandonment_adjusted_gap` defines
+    them, so a probability here and an abandonment probability there are the same
+    quantity measured on two panels.
+    """
+    if trigger >= 0.0:
+        raise ValueError(f"trigger must be a negative relative drawdown, got {trigger}")
+    candidate = np.asarray(candidate_total, dtype=np.float64)
+    control = np.asarray(control_total, dtype=np.float64)
+    if candidate.shape != control.shape or candidate.ndim != 1:
+        raise ValueError("candidate and control must be one-dimensional and the same length")
+    if block_length < 1 or resamples < 1:
+        raise ValueError("block_length and resamples must both be at least one")
+    if not horizons_years:
+        raise ValueError("at least one horizon is required")
+    horizons = [round(h * periods_per_year) for h in horizons_years]
+    if min(horizons) < 1:
+        raise ValueError("every horizon must cover at least one period")
+
+    n = candidate.size
+    longest = max(horizons)
+    blocks = math.ceil(longest / block_length)
+    starts = rng.integers(0, n, size=(resamples, blocks))
+    offsets = np.arange(block_length, dtype=np.intp)
+    drawn = (starts[:, :, None] + offsets[None, None, :]) % n
+    indices = drawn.reshape(resamples, -1)[:, :longest]
+
+    relative = np.cumprod((1.0 + candidate[indices]) / (1.0 + control[indices]), axis=1)
+    peak = np.maximum.accumulate(relative, axis=1)
+    drawdown = relative / peak - 1.0
+    breach_by_horizon: dict[float, float] = {}
+    worst_by_horizon: dict[float, float] = {}
+    for years, months in zip(horizons_years, horizons, strict=True):
+        prefix = drawdown[:, :months]
+        breach_by_horizon[years] = float(np.mean((prefix <= trigger).any(axis=1)))
+        worst_by_horizon[years] = float(np.median(np.min(prefix, axis=1)))
+    return RelativeRunOutcome(
+        trigger=trigger,
+        resamples=resamples,
+        block_length=block_length,
+        breach_probability_by_horizon=breach_by_horizon,
+        median_worst_run_by_horizon=worst_by_horizon,
+    )
+
+
 if __name__ == "__main__":  # pragma: no cover - regenerates the published tables
     from portfolio_edge.studies._notional_budget_tables import main
 

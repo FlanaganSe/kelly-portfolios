@@ -27,6 +27,9 @@ Regenerate every table below with:
 cd research && uv run python -m portfolio_edge.studies.timing_rules
 ```
 
+The same signal on daily-reset 2x and 3x funds (Gayed's *Leverage for the Long Run*) and the
+static 55/45 UPRO/TMF mix are measured in [leveraged ETFs and timing rules](leveraged-etfs-and-timing-rules.md), Experiment 021.
+
 ---
 
 ## Conclusion
