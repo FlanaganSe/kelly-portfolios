@@ -771,9 +771,12 @@ on a **"service fee eligible" list**, and purchases of their ETFs now carry **$1
 ([ETF Investments, read 2026-08-23](https://etfinvestments.substack.com/p/fidelity-just-added-100-fees-to-120);
 [RIABiz, 2026-05-07](https://riabiz.com/a/2026/5/7/schwab-is-joining-fidelity-in-law-of-the-jungle-shakedown-of-etfs-with-vanguard-not-immune-to-claim-up-to-15-of-fee-revenues-and-charge-investors-100-per-trade-for-using-non-compliant-etf-managers)).
 
-**Schwab:** CEO Rick Wurster has confirmed a **year-end 2026** rollout of a comparable
-programme claiming up to **15% of ETF fee revenues**, with the same $100-per-trade penalty for
-non-participating managers. Timing described as flexible.
+**Schwab:** CEO Rick Wurster said on the Q1 2026 call (2026-04-16) that an issuer platform-fee
+programme would be "in place and live" by the end of 2026; a spokesperson later gave "no later
+than Q1 2027"; the Q2 call (2026-07-21) added nothing. The reported terms — about 15% of ETF
+fee revenue, or a $100 ticket charge on non-paying issuers — are press anticipation, not a
+Schwab statement. **Announced, not in effect, and no issuer list exists** (`as of 2026-09-01`;
+Schwab's pricing pages carry no per-trade ETF fee).
 
 **Vanguard:** reportedly reached an undisclosed agreement with Fidelity by May 2026, while
 maintaining it does not pay distribution fees that incentivise sales.
@@ -785,10 +788,15 @@ are liable**.
 XOVR, IVES, Inspire, Hedgeye, Rareview, Polen, Brandes, WEBs Defined Volatility, Cyber Hornet,
 Guinness Atkinson, Strategy Shares, Faith Investor Services.
 
-**None of this repository's shelf issuers appears on any published list I could reach.** But
-**I could not read Fidelity's live service-fee list** — `fidelity.com/trading/etfs/service-fee-etfs`
-returns HTTP 403 to automated fetches. **This is an unresolved verification, and it is the one
-I would resolve first**, because:
+**Resolved 2026-09-01.** Fidelity's own PDF, "ETFs Subject to Service Fee, as of August 15,
+2026" (`fidelity.com/bin-public/…/service-fee-eligible-ETFs.pdf`), lists **84 tickers** (press
+counts run to about 108) from AltShares, American Conservative Values, Atlas, CrossingBridge,
+Cultivar, Wedbush, ERShares, Formidable, Fortuna, Hedgeye, Kingsbarn, Miller Value, Point
+Bridge, Rareview, Renaissance, Roundhill, Siren, Spear and WealthTrust. **None of
+Tidal/Return Stacked, Simplify, Pacer, J.P. Morgan, Invesco, Avantis or Dimensional appears,
+and no shelf ticker appears.** The list is "subject to change without notice", so it is a
+reading, not a clearance. The exposure it would have created is still worth stating, because
+the list can grow:
 
 - A **$100 flat fee on a $10,000 purchase is 100 bp** — larger than the entire expense ratio of
   every fund on the shelf except the trend wrappers, and roughly **four times AVDV's 36 bp
@@ -807,6 +815,22 @@ I would resolve first**, because:
 online stock and ETF trades**. Options differ — Schwab $0.65/contract; **Vanguard restructured
 its schedule on 2026-07-10** into tiers based on "Qualifying Assets," replacing its previous
 $1.00/contract flat rate.
+
+**Addendum, read 2026-09-01.** Three fund facts that bear on the stacked-fund comparisons:
+
+- **RSSB's fee is 0.39% with no expiry.** The 485BPOS of 2026-04-27 records that the waiver to
+  0.35% "was terminated by the Board and the Fund's management fee was reduced to 0.35%"
+  (plus 0.04% AFFE); the 497K's "reflected only through May 31, 2026" line is the old waiver
+  language. The waiver question in §2.1 is closed.
+- **GDT** (WisdomTree Efficient TIPS Plus Gold, 2026-01-22, 0.20% after a cut from 0.30%
+  effective about 2026-04-20): roughly a dollar of short TIPS plus a dollar of gold futures,
+  $11.8m; a TIPS-and-gold stack, not a Treasury one.
+- **NTSD** (WisdomTree Efficient U.S. Plus International Equity, 2026-03-19, 0.35%): 90%
+  US large cap plus about 60% developed-international index futures, $46.7m; Treasuries only
+  as collateral, so not a bond stack.
+- **SDMF** (Simplify DBi CTA Managed Futures Index, 2026-02-17, 0.35% net): replicates DBi's
+  CTA index through swaps and futures with a weekly rebalance, $39m; a cheaper cousin of
+  DBMF with no track record, `not filed` for loading purposes.
 
 ### 6.2 Bid-ask spreads — the number the shelf's cost model omits
 

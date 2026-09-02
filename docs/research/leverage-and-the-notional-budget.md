@@ -136,6 +136,11 @@ canonical in `src/content/shelf.ts` and in
 | MATE (N-PORT 2026-02-28) | 1.3348 | 1.0348 | trend 0.3000 | +0.3348 |
 | **JPFP** | **no figure** | — | — | — |
 
+RSST's equity leg rereads at 1.050 from the same 2026-04-30 filing (`as of 2026-09-01`;
+[part A](portfolio-for-one-investor.md) §1), which would put its row at 1.315 gross and
+1.015 equity; every table on this page keeps the 1.3216 / 1.0216 it was built on, and the
+difference changes nothing on the page.
+
 Four readings the table does not make on its own.
 
 **The equity share barely moves.** 1.0216 against a nominal 1.0000. Anyone comparing this

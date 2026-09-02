@@ -16,7 +16,8 @@ supersede any page below.
 which [alternative sleeves](alternative-sleeves-audit.md) owns; and any moving-average or
 trend timing rule, which [timing rules](timing-rules-on-the-equity-sleeve.md) owns.
 
-`as of 2026-08-23`. Every measured figure regenerates from
+`as of 2026-08-23`, with the priced inputs in §1 refreshed to `2026-08-31` (H.15 and FRED,
+refetched 2026-09-02). Every measured figure regenerates from
 [`studies/_current_pricing_tables.py`](../../research/src/portfolio_edge/studies/_current_pricing_tables.py),
 run with `uv run python -m portfolio_edge.studies._current_pricing_tables`; the arithmetic
 is pinned in `research/tests/unit/test_studies_current_pricing.py`. **Everything measured
@@ -29,15 +30,15 @@ experiment is registered, and nothing below may support a promoted claim.
 
 1. **The two things this portfolio does not own are the two things that are cheap, and the
    two things it does own are the two that are dear.** Long real yields sit at the top of
-   their record — the thirty-year TIPS real yield of **2.95%** is above **99.5%** of its
+   their record — the thirty-year TIPS real yield of **2.99%** is above **99.8%** of its
    own history since 2010 — while US equity and corporate credit are both near the
    expensive extreme of theirs. That is an uncomfortable arrangement and it is *not* on its
    own a reason to trade, for the reason in point 4.
 2. **Credit is the clearest extreme on the longest record available.** The Moody's Baa−Aaa
    quality spread — what an investor is paid for holding weaker corporate credit rather
-   than the strongest — is **0.43 pp**, wider in **98.2% of the 1,201 months since
-   1926** and wider in **every one of the 439 months since 1990**. Investment-grade OAS is
-   82 bp and high yield 275 bp. It has never been cheaper to be a borrower in this record.
+   than the strongest — is **0.44 pp**, wider in **97.8% of the 1,202 months since
+   1926** and wider in all but one of the **440 months since 1990**. Investment-grade OAS is
+   80 bp and high yield 263 bp. It has never been cheaper to be a borrower in this record.
 3. **The predictable part of the opportunity set is the part this portfolio has excluded.**
    Of twenty-seven conditioning relations tested, the only ones that survive both a Hodrick
    1B statistic and a positive out-of-sample record predict **bond and credit** returns, not
@@ -90,8 +91,8 @@ adjustments. Repeated here only so the comparison in §3 has a row.
 | CAPE | 41.18 (`as of 2026-08-01`) | 0.989 | 1881–2026 |
 | CAPE earnings yield | 2.43%/yr | 0.010 | 1881–2026 |
 | Shiller excess CAPE yield | +0.97 pp | 0.187 | 1881–2026 |
-| **TIPS excess CAPE yield** | **+0.08 pp** | **0.000** | 2003–2026 |
-| Forward earnings yield (FactSet fwd P/E 20.0, `as of 2026-08-07`) | ≈5.0%/yr | not computed | — |
+| **TIPS excess CAPE yield** | **−0.01 pp** (`as of 2026-08-31`; +0.03 pp on the August average) | **0.000** | 2003–2026, fifth month at the floor |
+| Forward earnings yield (FactSet fwd P/E 19.6, `as of 2026-08-28`) | ≈5.1%/yr | not computed | — |
 
 The two excess-yield rows are the same construction with a different real rate and they
 disagree by nearly a percentage point. The forward multiple disagrees with both. That
@@ -119,45 +120,53 @@ relation is undetectable after 1990.
 
 ### 1.3 Real rates, the nominal curve, and cash
 
-FRED, refetched 2026-08-23; each percentile is taken over that series' own record, which
-for the TIPS series is short.
+FRED and the Federal Reserve H.15 release, refetched 2026-09-02 for the 2026-08-31 close;
+each percentile is taken over that series' own record, which for the TIPS series is short.
+The 2-year note was not refetched and keeps its 2026-08-20 reading.
 
 | Measure | Value | `as of` | Percentile | Window (n) | Median |
 | --- | ---: | --- | ---: | --- | ---: |
-| **30y TIPS real yield** | **2.95%** | 2026-08-20 | **0.995** | 2010-02…2026-08 (4,128) | 1.01% |
-| **10y TIPS real yield** | **2.35%** | 2026-08-20 | **0.944** | 2003-01…2026-08 (5,913) | 1.05% |
-| 10y nominal | 4.69% | 2026-08-20 | 0.426 | 1962–2026 (16,144) | 5.41% |
-| 30y nominal | 5.23% | 2026-08-20 | 0.474 | 1977–2026 (12,374) | 5.42% |
+| **30y TIPS real yield** | **2.99%** | 2026-08-31 | **0.998** | 2010-02…2026-08 (4,135) | 1.01% |
+| **10y TIPS real yield** | **2.44%** | 2026-08-31 | **0.967** | 2003-01…2026-08 (5,920) | 1.05% |
+| 10y nominal | 4.75% | 2026-08-31 | 0.435 | 1962–2026 | 5.40% |
+| 30y nominal | 5.25% | 2026-08-31 | ≈0.47 | 1977–2026 | 5.42% |
 | 2y nominal | 4.19% | 2026-08-20 | 0.447 | 1976–2026 (12,552) | 4.62% |
-| 3m bill | 3.71% | 2026-08-20 | 0.455 | 1954–2026 (18,150) | 4.10% |
-| Fed funds effective | 3.63% | 2026-08-20 | 0.427 | 1954–2026 (26,349) | 4.27% |
-| 10y breakeven inflation | 2.34% | 2026-08-21 | 0.688 | 2003–2026 (5,914) | 2.22% |
-| Slope, 10y − 3m | +0.82 pp | 2026-08-20 | 0.308 | 1981–2026 (11,242) | +1.57 pp |
-| Slope, 10y − 2y | +0.50 pp | 2026-08-20 | 0.389 | 1976–2026 (12,552) | +0.78 pp |
-| Slope, 30y − 10y | +0.54 pp | 2026-08-20 | 0.664 | 1977–2026 (12,374) | +0.30 pp |
-| Real slope, 30y − 10y | +0.60 pp | 2026-08-20 | 0.560 | 2010–2026 (4,128) | +0.56 pp |
+| 3m bill | 3.78% | 2026-08-31 | 0.462 | 1954–2026 | 4.10% |
+| Fed funds effective | 3.63% | 2026-08-31 | 0.427 | 1954–2026 | 4.27% |
+| 10y breakeven inflation | 2.35% | 2026-09-01 | 0.713 | 2003–2026 | 2.22% |
+| Slope, 10y − 3m | +0.84 pp | 2026-08-31 | 0.312 | 1981–2026 | +1.57 pp |
+| Slope, 10y − 2y | +0.56 pp | 2026-08-31 / 08-20 | ≈0.40 | 1976–2026 | +0.78 pp |
+| Slope, 30y − 10y | +0.50 pp | 2026-08-31 | 0.638 | 1977–2026 | +0.30 pp |
+| Real slope, 30y − 10y | +0.55 pp | 2026-08-31 | 0.495 | 2010–2026 | +0.56 pp |
+| **Term premium, 10y, Kim–Wright** | **+0.84 pp** | 2026-08-14 | — | FRED `THREEFYTP10`, 1990–2026 | — |
+| Term premium, 10y, ACM | ≈ +0.80 pp | 2026-08-13 | — | NY Fed, read from aggregators | — |
 
 **Three readings.**
 
-**Nominal yields are ordinary; real yields are extreme.** A 4.69% ten-year is the 43rd
-percentile of sixty-four years — unremarkable. The same maturity's *real* yield is the 94th
+**Nominal yields are ordinary; real yields are extreme.** A 4.75% ten-year is the 44th
+percentile of sixty-four years — unremarkable. The same maturity's *real* yield is the 97th
 percentile of everything the TIPS market has ever printed, and the thirty-year real yield of
-2.95% has been equalled or exceeded on **19 of 4,128 days since 2010**. The difference is that inflation
-compensation is priced near normal (2.34% breakeven, 69th percentile) while the real
-component is not. **The percentile is short-windowed and the level is not**: 2.95% real is
-also the best contractual real yield the US Treasury has offered in this record, and the
+2.99% is above **99.8% of the 4,135 daily readings since 2010**. The difference is that
+inflation compensation is priced near normal (2.35% breakeven, 71st percentile) while the
+real component is not. **The percentile is short-windowed and the level is not**: 2.99% real
+is also the best contractual real yield the US Treasury has offered in this record, and the
 July 2026 ten-year TIPS auction cleared at a real yield of 2.438%, the highest since
 October 2008 ([tipswatch](https://tipswatch.com/2026/07/23/10-year-tips-auction-gets-real-yield-of-2-438-a-great-result-for-investors/),
 `as of 2026-07-23`).
 
-**The curve is positive but flat by its own standards** — the 10y−3m slope of +0.82 pp is
-the 31st percentile. The long end is the exception: 30y−10y at +0.54 pp is the 66th
+**The curve is positive but flat by its own standards** — the 10y−3m slope of +0.84 pp is
+the 31st percentile. The long end is the exception: 30y−10y at +0.50 pp is the 64th
 percentile, so the extra term compensation available today is concentrated beyond ten years.
 
-**No term-premium estimate is supported by this cache.** The Adrian–Crump–Moench and
-Kim–Wright decompositions are not in it, and a slope is not a term premium: it mixes
-expected future short rates with the premium and no arithmetic here separates them.
-`unresolved`, and honestly so.
+**The term premium is measured, by two independent decompositions, at about +0.8 pp.**
+Kim–Wright reads +0.84% (Federal Reserve Board series on FRED, 2026-08-14) and ACM about
++0.80% (NY Fed, 2026-08-13, read from aggregators rather than the primary CSV, so medium
+confidence). The two agree, and they are materially positive for the first time in about
+five years, which says the +0.84 pp 10y−3m slope is roughly all term premium and roughly no
+expected rate change. That is the expected excess return of a financed Treasury leg before
+its costs, and it is the number
+[defensive engines in the construction](defensive-engines-in-the-construction.md) prices a
+stacked Treasury leg against.
 
 ### 1.4 Cash in real terms
 
@@ -166,10 +175,13 @@ expected future short rates with the premium and no arithmetic here separates th
 | Nominal 3m bill (monthly average) | 3.73% | 2026-07 | 0.591 | 1926–2026 |
 | Trailing 12-month CPI inflation | 3.54% | 2026-07 | 0.657 | 1927–2026 |
 | **Real bill, ex-post** (bill − trailing CPI) | **+0.19 pp** | 2026-07 | **0.446** | 1927–2026 (1,190) |
-| **Real bill, ex-ante** (bill − 10y breakeven) | **+1.37 pp** | 2026-08-20 | **0.777** | 2003–2026 (5,913) |
+| **Real bill, ex-ante** (bill − 10y breakeven) | **+1.47 pp** | 2026-08-31 | **0.784** | 2003–2026 |
 
-The two conventions disagree by 1.2 pp because realised inflation over the last year
-(3.54%) is well above what the bond market prices for the next ten (2.34%). Both are
+The BLS's own July 2026 print (released 2026-08-12) is 3.4% headline and 2.5% core, not
+seasonally adjusted; the 3.54% above is the module's computation from the FRED index and is
+the figure the real bill uses. The two conventions disagree by 1.3 pp because realised
+inflation over the last year is well above what the bond market prices for the next ten
+(2.35%). Both are
 reported because neither is definitive: the ex-post measure is the one with a century of
 history, and the ex-ante measure is the one an investor actually chooses against.
 
@@ -183,10 +195,10 @@ about the last fifteen years and false about the last hundred.
 
 | Measure | Value | `as of` | Percentile | Window (n) | Since 1990 | Since 2010 |
 | --- | ---: | --- | ---: | --- | ---: | ---: |
-| IG corporate OAS | 0.82 pp | 2026-08-20 | 0.355 | **2023-08…2026-08 only (786)** | — | — |
-| High-yield OAS | 2.75 pp | 2026-08-20 | 0.151 | **2023-08…2026-08 only (787)** | — | — |
-| **Moody's Baa − Aaa (quality)** | **0.43 pp** | 2026-07 | **0.018** | 1926-07…2026-07 (1,201) | **0.000** | **0.000** |
-| Moody's Baa − 10y (default) | 1.59 pp | 2026-07 | 0.456 | 1926-07…2026-07 (1,201) | 0.355 | 0.080 |
+| IG corporate OAS | 0.80 pp | 2026-08-31 | 0.236 | **2023-08…2026-08 only (784)** | — | — |
+| High-yield OAS | 2.63 pp | 2026-08-31 | 0.015 | **2023-08…2026-08 only** | — | — |
+| **Moody's Baa − Aaa (quality)** | **0.44 pp** | 2026-08 | **0.022** | 1926-07…2026-08 (1,202) | **0.002** | **0.005** |
+| Moody's Baa − 10y (default) | 1.64 pp | 2026-08 | 0.478 | 1926-07…2026-08 (1,202) | — | 0.120 |
 | Moody's Baa − 10y, daily | 1.64 pp | 2026-08-20 | 0.144 | 1986-01…2026-08 (10,159) | 0.143 | 0.081 |
 
 **A data-contract finding first, because it decides what can be said.** ICE BofA's
@@ -198,17 +210,17 @@ history can be computed from FRED**, and the "35th percentile" in that row means
 series, which begin in 1919, are the long-history substitute.
 
 **The two long measures disagree, and the disagreement is the finding.** The *quality*
-spread — Baa yield less Aaa yield, both long corporate — is at the **1.8th percentile of a
-century** and has not been this narrow in any month since 1990. The *default* spread — Baa
+spread — Baa yield less Aaa yield, both long corporate — is at the **2.2nd percentile of a
+century** and has been this narrow in one month since 1990. The *default* spread — Baa
 less the ten-year Treasury — is at the 46th percentile of the same century. They differ
 because Baa−10y is not a clean credit spread: Moody's Baa is a long-maturity corporate
 yield, so subtracting a ten-year Treasury leaves a **term premium mixed into the credit
 premium**, which is the same confound [alternative sleeves](alternative-sleeves-audit.md)
 documents for the unhedged corporate leg. On the shorter windows where the two can be
-compared the story converges: Baa−10y is at the **8th percentile since 2010** and the daily
+compared the story converges: Baa−10y is at the **12th percentile since 2010** and the daily
 series at the **14th since 1986**.
 
-**Read together with the 82 bp OAS, all four measures say the same thing: an investor is
+**Read together with the 80 bp OAS, all four measures say the same thing: an investor is
 being paid unusually little for corporate credit risk right now.**
 
 ### 1.6 The value spread
@@ -249,9 +261,10 @@ longer near the 2022 extreme.
 | Real gold price, LBMA PM fix deflated by CPI | **$4,027/oz** in 2026-07 money | 2026-07 | **0.985** | 1975-01…2026-07 (618) |
 
 For scale: the January 1980 peak was **$2,786** and the August 2011 peak **$2,669** in the
-same money, against a period median of **$1,170**. The 2026-08-21 fix of $4,582 is higher
-still. Gold has no cash flow and therefore no valuation ratio; the real price is the only
-state variable available, and it is near the top of its record.
+same money, against a period median of **$1,170**. Spot was $4,457 on 2026-08-31, about 20%
+below the futures record of $5,542 set on 2026-01-29 and still higher than any real reading
+in the module's monthly series. Gold has no cash flow and therefore no valuation ratio; the
+real price is the only state variable available, and it is near the top of its record.
 
 ### 1.8 What is not priced
 
@@ -262,7 +275,7 @@ over definitions with no pre-registration, which is how a spurious conditioning 
 made. They are `unpriced`, and that is a property of the engines, not a gap in the data.
 
 One arithmetic note that is not a forecast: a fully collateralised futures programme earns
-the bill rate on its collateral, so a 3.71% bill adds roughly 3.6 pp/yr to a managed-futures
+the bill rate on its collateral, so a 3.78% bill adds roughly 3.7 pp/yr to a managed-futures
 sleeve's total return that a 0.05% bill did not. **For the stacked wrapper this nets to
 approximately nothing**, because the same rate is what the wrapper pays to finance its
 equity exposure. The level of rates is close to neutral for the construction actually held.
@@ -358,18 +371,18 @@ out-of-sample record* exists for that engine — not what it forecasts.
 
 | Rank | Engine | Priced by | Reading | Does conditioning on it have an OOS record? |
 | ---: | --- | --- | --- | --- |
-| 1 | **Long inflation-linked duration** | 30y TIPS real yield 2.95% | **cheapest** — 99.5th pct since 2010 | Partly: term and default spreads predict *nominal* long-bond excess (OOS +0.127, +0.136). Not tested on TIPS. |
-| 2 | 10y inflation-linked duration | 10y TIPS real yield 2.35% | cheap — 94th pct since 2003 | as above |
+| 1 | **Long inflation-linked duration** | 30y TIPS real yield 2.99% | **cheapest** — 99.8th pct since 2010 | Partly: term and default spreads predict *nominal* long-bond excess (OOS +0.127, +0.136). Not tested on TIPS. |
+| 2 | 10y inflation-linked duration | 10y TIPS real yield 2.44% | cheap — 97th pct since 2003 | as above |
 | 3 | **US value tilt** | value spread 7.54x | wide — 81st pct of 100 yr, narrowing | Yes, but **unresolved**: OOS +0.033/+0.080, estimate one third of MDE |
-| 4 | Cash | ex-ante real bill +1.37 pp | well paid vs 2003–2026 (78th pct); ordinary vs 1927–2026 (45th) | **No.** Best OOS +0.007 across six cells |
+| 4 | Cash | ex-ante real bill +1.47 pp | well paid vs 2003–2026 (78th pct); ordinary vs 1927–2026 (45th) | **No.** Best OOS +0.007 across six cells |
 | 5 | Emerging beta | CAPE 19.4 vs US 35.8 | cheap in level; percentile **unavailable**; AQR reads EM's own CAPE at the 98th pct since 2001 | Not detectable after 1990 ([valuation](valuation-and-the-allocation.md)) |
 | 6 | International developed beta | CAPE 21.0 vs US 35.8 | cheap in level; percentile **unavailable** | as above |
-| 7 | Nominal duration | 10y 4.69%, 30y 5.23% | ordinary — 43rd and 47th pct | **Yes**, the best on the page (term spread, OOS +0.127) |
+| 7 | Nominal duration | 10y 4.75%, 30y 5.25%; term premium ≈ +0.8 pp | ordinary — 44th and 47th pct | **Yes**, the best on the page (term spread, OOS +0.127) |
 | = | **Momentum** | — | **unpriced** | no state variable exists |
 | = | **Trend** | — | **unpriced** | no state variable exists |
-| 8 | US equity beta | CAPE 41.18; TIPS excess CAPE yield +0.08 pp | expensive — 98.9th pct on CAPE, 0th pct on the TIPS-based excess yield since 2003 | **No.** OOS `R**2` −0.44 at ten years ([valuation](valuation-and-the-allocation.md)) |
+| 8 | US equity beta | CAPE 41.18; TIPS excess CAPE yield −0.01 pp | expensive — 98.9th pct on CAPE, 0th pct on the TIPS-based excess yield since 2003 | **No.** OOS `R**2` −0.44 at ten years ([valuation](valuation-and-the-allocation.md)) |
 | 9 | **Gold** | real price $4,027 | **expensive** — 98.5th pct since 1975, above the 1980 and 2011 real peaks | none tested |
-| 10 | **Credit** | IG OAS 82 bp; Baa−Aaa 0.43 pp | **most expensive on the longest record** — 1.8th pct of a century, 0th since 1990 | **Yes**, the second-best on the page (OOS +0.107/+0.154) |
+| 10 | **Credit** | IG OAS 80 bp; Baa−Aaa 0.44 pp | **most expensive on the longest record** — 2.2nd pct of a century, 0.2nd since 1990 | **Yes**, the second-best on the page (OOS +0.107/+0.154) |
 
 **Credit is last and it is the only entry where "expensive" and "has a conditioning record"
 coincide.** For every other engine, either the price is not extreme or the conditioning
@@ -379,14 +392,14 @@ evidence is absent. That coincidence is what makes §5's one firm conclusion pos
 
 ## 4. Three ways this ranking could mislead
 
-**A short window makes an extreme look more extreme.** The TIPS real yield's 99.5th
+**A short window makes an extreme look more extreme.** The TIPS real yield's 99.8th
 percentile is taken over sixteen years, all of them inside the era of quantitative easing.
-Before 2003 there is no TIPS market to measure. The *level* — a 2.95% contractual real
+Before 2003 there is no TIPS market to measure. The *level* — a 2.99% contractual real
 yield — carries more information than the percentile does, and the percentile should not be
 read as "once in two hundred years."
 
 **A percentile is not a probability.** Nineteen of 1,748 months have equalled today's CAPE
-and eighteen of them are one episode; fewer than 2% of the 1,201 months since 1926 have
+and eighteen of them are one episode; about 2% of the 1,202 months since 1926 have
 carried a narrower quality spread, and they are not spread evenly across the century.
 A count of past occurrences drawn from two or three episodes is a description, not a
 frequency, and [valuation and the allocation](valuation-and-the-allocation.md) makes the same
@@ -423,15 +436,15 @@ changes a decision, and it strengthens a caution
 - duration-hedged credit is the largest *candidate* addition on that page, at a measured
   **+2.13%/yr** over 1,062 months at 4.12% volatility;
 - that premium was earned across the full range of spread regimes, and the current gross
-  spread is **82 bp** with the century-long quality spread at its **1.8th percentile** and
-  the tightest reading in 439 months;
+  spread is **80 bp** with the century-long quality spread at its **2.2nd percentile** and
+  the tightest reading but one in 440 months;
 - **credit is the one engine here whose conditioning variable has a positive out-of-sample
   record** — a wider default spread has bought more subsequent credit excess return, OOS
   `R**2` +0.107 at one year and +0.154 at five.
 
 The consequence is not that the engine is refuted. It is that **the one place the evidence
 says entry price matters is also the place the entry price is worst**, and a 14–24 bp
-wrapper plus expected default loss is being charged against 82 bp of gross spread. Defer,
+wrapper plus expected default loss is being charged against 80 bp of gross spread. Defer,
 size to the spread, or build in over time. A specific, falsifiable reopening condition:
 **revisit when the Moody's Baa−Aaa quality spread returns to its century median of 0.90 pp**,
 which is a level, not a forecast, and can be checked from the same series in one command.
@@ -450,11 +463,13 @@ months. The 15% US value and 5% emerging value weights need no adjustment from t
 The portfolio holds no bonds, and [the recommendation](portfolio-recommendation.md) is
 explicit that the defensive allocation should be decided by the withdrawal path and the
 ability to persist, not by a return forecast. That does not change. What changes is the
-price of the instrument *if* that decision is ever made: a 30-year TIPS at 2.95% real is a
+price of the instrument *if* that decision is ever made: a 30-year TIPS at 2.99% real is a
 contractual line in the certainty class this repository reserves for statutes, and it is
 the best such line in the record. Long-horizon, contributions of 5–15%/yr, no near-term
-withdrawal need — this investor has no current use for it. The note is for the review, not
-for today.
+withdrawal need — this investor has no current use for it unless a stated drawdown
+tolerance binds, which is the conditional rule [valuation and the
+allocation](valuation-and-the-allocation.md) §6.2 states. The note lapses when the 30-year
+real yield falls below about 2.0%.
 
 **Cash: no change, and the framing was wrong.** A +0.19 pp ex-post real bill is the 45th
 percentile of a century. It is unusual only against the post-2008 window. And it predicts
@@ -480,8 +495,9 @@ Four things could not be measured and are recorded as gaps, not as excuses.
   default spreads are the long-history substitutes and they are not the same instrument.
 - **A percentile for the US-versus-international valuation gap.** The only long panel in the
   cache ends in 2020 and measures a dividend yield, not a CAPE.
-- **A term-premium decomposition.** Neither the ACM nor the Kim–Wright series is in the
-  cache, and a curve slope is not a term premium.
+- **A term-premium decomposition from the cache.** The Kim–Wright series (`THREEFYTP10`)
+  and the ACM series are published and are quoted in §1.3 from outside the cache; neither is
+  yet fetched and hashed by the module, and the ACM figure is an aggregator read.
 - **A value spread outside the US.** French's developed-ex-US and emerging portfolio files
   carry returns, firm counts and market caps but **no `BE/ME` block**, so the same
   construction cannot be run for the international core or the emerging value sleeve. That

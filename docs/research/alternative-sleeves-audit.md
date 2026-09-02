@@ -152,7 +152,8 @@ Four readings, and the third is the one that should change a portfolio:
    −91.2% peak-to-trough. This is the same conclusion as
    [marginal sleeve value](marginal-sleeve-value.md) reached by a different route, and it
    is why gold keeps failing: it is not that gold does not diversify, it is that cash
-   diversifies nearly as well for nothing.
+   diversifies nearly as well for nothing. Financed inside the leveraged construction it
+   reads the same way: `unresolved` (Experiment 018, §8).
 4. **Commodities and bitcoin are worse than cash in the lower tail**, and bitcoin is worse
    by 75 bp a month. Two assets frequently sold as diversifiers are, on this measurement,
    negative-value tail hedges.
@@ -275,10 +276,27 @@ claim on any government's solvency. Those are properties, not premia.
 - **And the most recent evidence is the same evidence again.** In the first half of 2026
   bitcoin fell **−33.2%** while US equity returned **+9.9%** — measured on the same panel,
   and independently corroborated by the CME CF BRRNY rate falling from $87,549 to $58,605
-  over the same six months (CF Benchmarks, read 2026-08-22). It has since recovered to
-  $77,338. A 33% fall against a rising equity market in the sample's final six months is
-  not a diversifier failing to help; it is an asset behaving as the beta measurement says
-  it does, with the idiosyncratic risk on top.
+  over the same six months (CF Benchmarks, read 2026-08-22). A 33% fall against a rising
+  equity market in the sample's final six months is not a diversifier failing to help; it is
+  an asset behaving as the beta measurement says it does, with the idiosyncratic risk on top.
+- **The two 2025–26 drawdowns, on daily data** (Coinbase closes against the S&P 500,
+  computed 2026-09-01). In the tariff episode bitcoin fell **−28.2%** and ether **−60.1%**
+  peak to trough against the S&P 500's −18.9%, and all three troughed on 2025-04-08. From
+  the 2025-10-06 cycle high to end-June 2026 bitcoin fell **−53.1%** and ether **−66.6%**
+  while the S&P 500's own drawdown was −9.1% (2026-01-27 to 03-30); crypto kept falling for
+  three months after equities bottomed. Trailing to 2026-08-31: bitcoin −27.4% over one
+  year and +10.8%/yr over five against the S&P 500 price index's +19.0% and +11.2%; ether
+  −43.8% and −6.4%/yr. The 30-day correlation to the S&P 500 in 2026 ran from 0.08 to 0.68
+  with a mean of 0.46 (90-day 0.33–0.62), and one-year realised volatility was 44.2%, about
+  3.5× the index's. IBIT's own standardised one-year return at NAV to 2026-06-30 was
+  −45.62%, and it held $60.2bn on 2026-09-01.
+- **What the managers who sell it say.** BlackRock's June 2026 note puts a reasonable
+  allocation at **1–2%**, sized by risk budget so that it contributes about what a single
+  "Magnificent 7" stock does to a 60/40, with a 2% cap because "allocations beyond 2%
+  elevate portfolio risk disproportionately, given bitcoin's volatility and unstable
+  correlations", and names 70–80% peak-to-trough selloffs as the risk. Fidelity's midyear
+  outlook says "you can have 75% drawdowns in a long-term uptrend". Vanguard opened its
+  platform to third-party crypto funds on 2025-12-02 and recommends no allocation.
 
 **Why not zero, then.** Because the loss from a 1–2% position that goes to zero is 1–2%,
 the position is not correlated with the investor's human capital, and the investor has
@@ -345,10 +363,16 @@ about 82% and 83% of their ether and **recognised $18.8M and $16.9M of staking i
 H1 2026 against $0 in 2025**, and BlackRock launched a separate staked trust (ETHB, 86.9%
 staked) rather than turning staking on inside ETHA. That is a genuine contractual payer —
 the protocol pays for validation — and it is the first thing in this family that is a yield
-rather than a price expectation. **It is also not bitcoin**, it carries slashing and
-validator risk, the sponsor takes a cut of the reward, and the income is ordinary. It is a
-reason to reopen the *ether* question with a real estimand, not a reason to raise a bitcoin
-weight.
+rather than a price expectation. **The economics, from the Q2-2026 Forms 10-Q, are small.**
+The gross reward runs about 1.9% annualised on average net assets; ETHE's 2.5% sponsor fee
+exceeds its staking income, so its net investment result is a loss and its carry is
+negative; ETH (mini, 0.15%) keeps most of it; ETHB nets about 1.9% after a 0.12% waived fee
+and the sponsor's share of rewards, paid monthly in cash. The holder recognises the reward
+as ordinary income as earned, whether or not cash is distributed (Rev. Rul. 2023-14), and
+the sponsor fee is a non-deductible miscellaneous itemised expense. **It is also not
+bitcoin**, it carries slashing and validator risk, and a 1.9% gross yield on an asset that
+fell 67% from its 2025 high is a coupon on a price bet. It is a reason to reopen the *ether*
+question with a real estimand, not a reason to raise a bitcoin weight.
 
 ---
 
@@ -878,6 +902,18 @@ its fee instead. For an investor who wants gold's inflation-state payoff and doe
 to reduce equity to get it, that is the correct instrument. The reason this page still caps
 it at 5% is §1.3: gold's crisis contribution over cash is 12 bp a month, and financing does
 not make that number larger.
+
+**Inside the leveraged construction the financed form reads `unresolved`, and the verdict
+holds.** Experiment 018 ([run `311048fb…`](../../research/artifacts/311048fbc6b44072a3715ff24d1507a4/summary.md),
+`exploratory`) stacked ten points of GDE-like gold on the 70% equity core plus 30% trend
+wrapper. On 1968–2025 it reads **+0.35 pp/yr [−0.20, +0.94] against a 0.64 floor** against
+the reference construction; drawdown −44.4% against −45.9%; +6.8 pp across the 1970s
+inflation episodes, which is the state it is bought for. On the AQR 1985–2025 panel it is
++0.27 [−0.22, +0.75] against 0.61, and on the 2003–2025 check +0.80 [+0.21, +1.39] against
+0.88. Gold financing at 30 bp is an assumption. With the real gold price at the 98.5th
+percentile since 1975 ([current regime](current-regime-and-pricing.md) §1.7), the sleeve is
+not added; the reopening condition is a measured gap that clears its own floor on a window
+that does not begin in 1971.
 
 **Commodity vehicles carry a structural tax split worth naming once.** The broad commodity
 products divide into 1940-Act funds that hold futures through a Cayman subsidiary and issue

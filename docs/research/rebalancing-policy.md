@@ -633,7 +633,10 @@ hold 100% equity and holding 102.16%.
 
 **The 1.072 is a dated filing fact, not a constant.** It is 74.09% of net assets in a
 physical S&P 500 fund plus 33.1% in E-mini futures, read from the 2026-04-30 Form N-PORT.
-It moves as the futures leg moves. **A target stated in notional therefore changes every
+Reread on 2026-09-01 from the same filing's own contract values, the E-mini line is 30.94%
+and the leg 1.050 (delta −0.05, gross 2.05), which is what `src/content/shelf.ts` now
+carries; the tables on this page keep the 1.072 they were built on
+([part A](portfolio-for-one-investor.md) §1). It moves as the futures leg moves. **A target stated in notional therefore changes every
 quarter without the investor touching anything; a target stated in capital does not.**
 
 ### What goes wrong when the target is stated in exposure
@@ -1068,6 +1071,10 @@ drop, a loading 51 months old, and it fails that page's strictest robustness set
 
 ### The recommendation
 
+This is Part B's line-count recommendation for the eight-line candidate it studies. The
+published capital-weight vector is RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 /
+AVES 5 ([the recommendation](portfolio-recommendation.md)).
+
 **Six tickers: RSST 30, VTI 20, AVLV 15, a total-international fund at 25, IDMO 5,
 AVES 5.** Five if AVES goes into the international line as well. That is DFIV dropped on
 its own evidence, VEA and IEMG merged for free, and the two lines with the best and the
@@ -1118,8 +1125,9 @@ precommitment while nothing is wrong.
 
 **Three specific moments, named.**
 
-**A strong equity year with a flat trend leg.** The wrapper still carries 1.072x of equity,
-so it does not *fall* — it merely fails to add, while the 99 bp fee and the trend leg's own
+**A strong equity year with a flat trend leg.** The wrapper still carries 1.072x of equity
+(reread 2026-09-01 as 1.050; see [part A](portfolio-for-one-investor.md) §1), so it does not
+*fall* — it merely fails to add, while the 99 bp fee and the trend leg's own
 drag subtract. On the live-fund basis this stretch ran **eleven years and ended 59.9%
 behind a plain index fund**. **This is the failure mode, and it is not a crash. It is a
 decade of quiet, visible, monthly underperformance against the most familiar comparator

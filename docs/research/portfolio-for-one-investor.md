@@ -1,6 +1,6 @@
 # Part A — the portfolio for one investor, derived
 
-`as of 2026-08-23`. Working analysis behind `/portfolio`. Not personalised advice; every
+`as of 2026-09-01`. Working analysis behind `/portfolio`. Not personalised advice; every
 figure is a function of stated inputs.
 
 **The investor.** Roughly equal nominal thirds in a Roth, a traditional tax-deferred
@@ -48,17 +48,21 @@ derived here from the eight funds' Form N-CEN medians in
 
 ### Notional exposure — a derived audit quantity, never typed
 
-RSST delivers 1.072 of US equity and 1.00 of managed-futures notional per dollar of
-capital (Form N-PORT 2026-04-30; `src/content/shelf.ts`).
+RSST's 2026-04-30 Form N-PORT holds SPLG at 74.09% of net assets and S&P 500 e-mini futures
+at 30.94%, so the fund delivers **1.050** of US equity per dollar of capital (1.117 counting
+its 6.63% Nasdaq-100 future, which may belong to the trend sleeve) and 1.00 of
+managed-futures notional. `src/content/shelf.ts` carries **1.072**, which adds 33.1% of
+e-mini; that figure does not appear in the filing and the client content agent reconciles
+it. Both are shown (`as of 2026-09-01`).
 
-| Exposure | Notional, % of capital | Where it comes from |
-| --- | ---: | --- |
-| US equity | 65.8 | VTI 24 + VTV 15 + RSST 25 × 1.072 |
-| International equity | 36.0 | VXUS 16 + AVDV 10 + IDMO 5 + AVES 5 |
-| Managed futures (trend) | 25.0 | RSST 25 × 1.00 |
-| **Gross** | **126.8** | 1.268× |
+| Exposure | Notional at 1.050 | At the shelf's 1.072 | Where it comes from |
+| --- | ---: | ---: | --- |
+| US equity | 65.3 | 65.8 | VTI 24 + VTV 15 + RSST 25 × leg |
+| International equity | 36.0 | 36.0 | VXUS 16 + AVDV 10 + IDMO 5 + AVES 5 |
+| Managed futures (trend) | 25.0 | 25.0 | RSST 25 × 1.00 |
+| **Gross** | **126.3** | **126.8** | 1.263× / 1.268× |
 
-Equity notional is 101.8%. Bonds: zero. That is a position, not an oversight, and the
+Equity notional is 101.3% (101.8% on the shelf's leg). Bonds: zero. That is a position, not an oversight, and the
 equity-versus-bond split is a larger decision than everything else on this page —
 60/40 to 90/10 was worth **+127.1 bp/yr against 485 bp of tracking error** (B3).
 
@@ -111,31 +115,24 @@ stated as such:
 | | 25% wrapper | 30% wrapper |
 | --- | --- | --- |
 | Capital weights | RSST 25, VTI 24, VTV 15, VXUS 16, AVDV 10, IDMO 5, AVES 5 | RSST 30, VTI 19, VTV 15, VXUS 16, AVDV 10, IDMO 5, AVES 5 |
-| Gross notional | 1.268× | 1.322× |
-| US equity notional | 65.8% | 66.2% |
+| Gross notional | 1.263× (1.268× on the shelf's 1.072 leg) | 1.315× (1.322×) |
+| US equity notional | 65.3% (65.8%) | 65.5% (66.2%) |
 | Trend notional | 25% | 30% |
 | Weighted gross fee | 33.4 bp | 38.2 bp |
 | Weighted net cost | 31.3 bp | 36.2 bp |
 
-The five points come out of VTI. Because RSST carries 1.072 of US equity per dollar, US
-equity notional barely moves (65.8 → 66.2) and the whole change is +5 points of trend.
+The five points come out of VTI. Because RSST carries about one dollar of US equity per
+dollar, US equity notional barely moves and the whole change is +5 points of trend.
 
-**Growth.** The higher weight wins by **0.50 pp/yr [0.23, 0.77] against a 0.39 floor** — the
-only whole-portfolio comparison in either tournament that clears its own resolution, negative
-for the 25% arm in all seven declared sub-periods (−0.19 to −0.94). The tournament is explicit
-that this is a *leverage* result, not a construction one: at the panel's realised 9.83% US
-equity premium, more notional wins.
-
-**And it is not the comparison in the table above.** 016e's `recommended_vs_original` scores
-RSST 25 / VTI 24 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 against the investor's
-*original eight-fund* proposal — RSST 30, VTI 20, AVLV 15, DFIV 10, VEA 10, IDMO 5, IEMG 5,
-AVES 5 — so **the pair differs in four holdings as well as in five points of the wrapper**,
-and **no arm in the programme holds these seven funds at 30%**. The reason to read the gap as
-the wrapper: the two tilt complexes, stripped of trend and of leverage, score **+0.7996** and
-**+0.79** pp/yr against the same unlevered control on the same 427 months, leaving the wrapper
-as what moved. That is an argument and not a paired measurement — the two figures come from
-two tournaments and carry no interval of their own — so it cannot bound the fund-list
-contribution. 016e's open question 4 asks for the matched pair, and it has not been run.
+**Growth.** Experiment 016f ran the matched pair
+([run `36f14b39…`](../../research/artifacts/36f14b395e53407f8fdfaee3b4e8e37a/summary.md)):
+the 30% arm beats the 25% arm by **+0.51 pp/yr [+0.30, +0.72] against a 0.31 floor**, the
+only whole-portfolio comparison in the programme that clears its own resolution. It is a
+*leverage* result at the panel's realised premium: the pair's break-even trend haircut is
+10.08 pp/yr, and at the 4.07 forward premium the same pair reads about +0.18 against its 0.30
+floor. The same run settles what 016e could not: its −0.50 between the 25% arm and the
+investor's original eight funds was **all wrapper weight**, since the two fund lists at the
+same 30% differ by +0.01 [−0.18, +0.19] against a 0.26 floor.
 
 **Holdability.** Abandonment probability over thirty years at a −20% relative-drawdown
 trigger runs about **17% at 30% against 11% at 25%** at the premium prior's median, and
@@ -156,11 +153,10 @@ minimisation 21.6% [10.3, 32.8]; growth subject to holdability 15–25%; minimax
 For *this* investor. Three reasons, in order of weight.
 
 1. **The comparison that favours 30% is the only one in the programme that clears its own
-   floor**, even though it does not isolate the weight. Nearly everything else here is
+   floor**, and since 016f it isolates the weight. Nearly everything else here is
    unresolved. Discarding the one resolved measurement in favour of four routes that
-   disagree with each other is choosing the weaker evidence — but it is one arm short of
-   the comparison it is being asked to be, and that belongs in the reason rather than in a
-   footnote.
+   disagree with each other is choosing the weaker evidence — with the caveat that the
+   measurement resolves only at the realised premium.
 2. **A contribution stream is what carries a position through a drought.** The abandonment
    model's trigger is a relative drawdown, and the mechanism that defeats it is new money
    arriving at a low price. This investor contributes 5–15%/yr, which is 2.5 to 7.5 times
@@ -442,38 +438,30 @@ about 0.99% all-in. If the waiver is renewed, its spread tightens with age and s
 82.48%-of-net-assets bilateral swap exposure to one bank falls, the comparison is worth
 reopening. Not before.
 
-### Fidelity's $100 per ETF purchase
+### Fidelity's $100 per ETF purchase — resolved
 
-Fidelity began charging **$100 per trade** on ETFs from issuers refusing platform fees on
-2026-06-01; Schwab has confirmed a comparable programme for year-end 2026. On a $10,000
-purchase that is **100 bp on day one** — larger than the entire annual expense ratio of
-every fund here except the wrapper, and about three times AVDV's whole annual net cost.
+Fidelity charges **5% of trade value, capped at $100**, on purchases of ETFs from issuers
+that do not pay it a platform fee, on cohorts dated 2025-11-03 and 2026-06-01. On a $10,000
+purchase that is 100 bp on day one — larger than the annual expense ratio of every fund here
+except the wrapper. The exposure is structurally asymmetric: a boutique such as Tidal, which
+issues RSST, is exactly the profile at risk.
 
-**Does it change the recommendation? It changes how you execute it, not what you hold — and
-it is the one open item that could change what you hold.**
+**Resolved `as of 2026-09-01`.** Fidelity's list "ETFs Subject to Service Fee, as of August
+15, 2026" (84 tickers in the PDF; press counts run to about 108) names none of
+Tidal/Return Stacked, Simplify, Pacer, J.P. Morgan, Invesco, Avantis or Dimensional, and no
+ticker in this construction. The list is "subject to change without notice", so re-check
+before a first purchase. **Schwab** has announced a comparable programme for late 2026 to Q1
+2027 and published no list. Two operating rules survive: a per-trade fee is fatal to monthly
+contributions and survivable annually ($100 twelve times a year on a $200,000 portfolio is
+60 bp/yr; once a year is 5 bp), so if a line is ever listed, buy it once or twice a year and
+direct monthly contributions at the index funds; and one wrapper line rather than a separate
+managed-futures fund means one exposed purchase rather than two.
 
-The exposure is structurally asymmetric. Vanguard, iShares, Invesco and American Century
-(Avantis) are not plausibly at risk. **Tidal, which issues RSST, is exactly the profile that
-is** — a boutique with little fee revenue to hand over. No shelf issuer appears on any
-published list, but **Fidelity's live service-fee list returns HTTP 403 to automated fetches
-and could not be read**, so this is unverified rather than cleared.
-
-Three concrete consequences for a contributing investor:
-
-1. **Check your broker's service-fee list before the first purchase**, for RSST above all.
-2. **A per-trade fee is fatal to monthly contributions and survivable annually.** $100 twelve
-   times a year on a $200,000 portfolio is 60 bp/yr. Once a year on the same portfolio is
-   5 bp. If RSST carries the fee at your broker, either move that line to a broker that does
-   not charge it, or buy it once or twice a year and direct monthly contributions at the
-   index funds.
-3. **This is a reason to prefer the wrapper over a standalone managed-futures fund a second
-   time.** One line rather than two means one exposed purchase rather than two.
-
-One more thing the scan turned up that is *not* a change yet. **RSIT** — Return Stacked
-International Stocks & Managed Futures, inception 2026-05-06, 0.98%, $68.53m, spread 0.15% —
-is the international twin of RSST, with a base leg near 1.00 and δ ≈ 0.00. It lands exactly
-where this construction is thin. It is three and a half months old with no N-PORT and no
-measurable loading, so nothing can be promoted from it. Revisit when it has 24 filed months.
+One more thing that is *not* a change yet. **RSIT** — Return Stacked International Stocks &
+Managed Futures, inception 2026-05-06, 0.98%, $73.39m and a 0.14% spread at 2026-08-31 — is
+the international twin of RSST, with a base leg near 1.00 and δ ≈ 0.00. It lands exactly
+where this construction is thin. Its first N-PORT (period 2026-07-31) is not yet filed and it
+has no measurable loading, so nothing can be promoted from it. Revisit at 24 filed months.
 
 ---
 
@@ -544,19 +532,67 @@ by the end of 2025.** RSST is under three years old.
 
 Ordered by how much it moves the answer.
 
-1. **Your own numbers.** The rollover share `f` of the tax-deferred third — it moves the
-   booked placement line from −2.0 to +6.7 bp/yr and decides whether AVDV can be sheltered
-   at all. Your maximum tolerable drawdown and months underwater, which is the single most
-   valuable missing input in this repository and is not a research task. Your bracket.
+1. **Your own numbers.** Your maximum tolerable drawdown, which is the single most valuable
+   missing input in this repository and is not a research task: it sets the wrapper under
+   the widened drawdown assumption and decides the conditional TIPS leg in §7. The rollover
+   share `f` of the tax-deferred third, which moves the booked placement line from −2.0 to
+   +6.7 bp/yr and decides whether AVDV can be sheltered at all. Your bracket.
 2. **The equity-versus-bond split**, which this construction sets at 100% equity by omission
-   and which is worth more than every tilt combined.
-3. **RSST's trend loading refreshed at 48 filed months, around 2027-09.**
-4. **The fund-level financing spread**, which decides the sign of the overlay's contribution.
-5. **RSST's next December distribution**, which resolves the recognised-versus-distributed
+   and which is worth more than every tilt combined. §7 states the one conditional rule the
+   evidence supports and its placement cost.
+3. **RSST's 2026-07-31 Form N-PORT, due by 2026-09-29**, which refreshes the trend loading
+   from 31 to 34 filed months; then 48 months around 2027-09.
+4. **JPFP's first N-PORT, due by 2026-09-29.** It has filed none; its structure (direct
+   futures plus direct stocks, no ETF or swap, 59 bp) is an assumption until then.
+5. **The fund-level financing spread**, which decides the sign of the overlay's contribution.
+6. **RSST's next December distribution**, which resolves the recognised-versus-distributed
    reading behind the placement's conditional line.
-6. **Whether your broker charges $100 per purchase on the wrapper.** Unverified; HTTP 403.
 7. **CTAP's waiver on 2026-12-04**, and its spread and counterparty concentration after it.
 8. **RSIT at 24 filed months**, if the international sleeve is ever to be financed too.
+9. **Your broker's service-fee list**, re-read before a first purchase; resolved clear at
+   Fidelity as of 2026-08-15 (§4), unpublished at Schwab.
+
+---
+
+## 7. Valuation, September 2026
+
+`as of 2026-08-31`: CAPE 41.7, 10-year TIPS real yield 2.44% (96.7th percentile since 2003),
+30-year 2.99% (99.8th since 2010), TIPS-based excess CAPE yield −0.01 pp, the 0th percentile
+of its record for a fifth month. The derivation is in
+[valuation and the allocation](valuation-and-the-allocation.md) and the standing position in
+[the recommendation](portfolio-recommendation.md); nothing here is a forecast, and no
+external capital-market assumption is sized on
+([decision 0012](../decisions/0012-valuation-enters-through-the-drawdown-assumption.md)).
+Three things follow for this investor.
+
+**The conditional TIPS rule.** At a stated tolerable drawdown of **−50% or tighter**, hold
+**10 points of long TIPS, unlevered, in the traditional account**, funded from VTI and VXUS
+pro rata, and shrink the wrapper to the notional ladder's figure (19.1% at −50%). At **−60% or
+looser, hold none.** The default for a contributing, leverage-accepting investor is none.
+The rule is conditional because the drawdown constraint is the only route through which a
+valuation reading enters the construction: Experiment 018 prices the substitution at −0.55
+to −0.77 pp/yr of mean for about 4 pp of 1929- and 2008-scale drawdown, earned on a 6–7 pp
+realised premium, and at today's 0–1.5 pp equity premium over TIPS the expected cost is
+0–0.2 pp/yr. A 30-year TIPS at 2.99% real is the best contractual real line in the record.
+
+**The 60/40 move, by contributions only.** The book is 64.5% US / 35.5% ex-US in equity
+notional (65.5 of 101.5 at the 1.050 leg). Direct **100% of new money to AVDV and VXUS**, AVDV
+first because the developed-ex-US discount sits in the value half and not in Japan, Korea or
+Taiwan, until the split reads 60/40, then revert to pro rata. That needs about 7.7 points of
+capital: roughly a year at 10%/yr of contributions, a year and a half at 5%. No sale, no tax.
+The expected value of the move is about 7 bp/yr against 40–72 bp of tracking error, which is
+why it is worth doing with free money and not with taxed money. 50/50 is unsupported.
+
+**The placement consequence if the TIPS leg is taken.** As the rule is written, with the
+wrapper shrunk to 19.1%, the traditional third holds TIPS 10 + RSST 19.1 + IDMO 4.2, the
+Roth holds the rest of the international lines, and nothing is evicted to taxable: no
+placement cost. An investor who takes the TIPS leg **and keeps the wrapper at 30%** pays for
+it: 10 points of RSST move from the traditional into the Roth, and 4.7 points of VXUS (pro
+rata funding) or 9.3 (VTI-only funding) go to taxable at 64.91 bp per dollar at the 23.8%
+bracket, plus VTV's last 0.7 points — about **3 to 6 bp/yr, roughly the whole booked placement
+edge of +2 to +7 bp/yr** in §3.5. Moving the wrapper to the Roth also shifts its dispersion
+onto the investor's side of the partnership, which §3.4 prices as a forecast. State the cost;
+do not hide it.
 
 ---
 
@@ -566,14 +602,19 @@ Ordered by how much it moves the answer.
 sub-period in §1, §2 and §5, from `final-construction-test.md` and run `cd2fb4b9…`. Every
 filed tax characteristic for RSST, VTI, IDMO and AVES, and the 23.8/18.8/15 priorities for
 those four, from `structural-and-tax-edges.md` §8 and `src/content/placement.ts`. Net costs
-from 50 fiscal years of Form N-CEN. Wrapper structure and δ from Form N-PORT 2026-04-30.
-Spreads and the broker programme from `.claude/scratch/market-scan-2026.md`.
+from 50 fiscal years of Form N-CEN. Wrapper structure and δ from Form N-PORT 2026-04-30; the
+1.050 equity leg is SPLG 74.09% + S&P 500 e-mini 30.94% from the same filing, and the shelf's
+1.072 is recorded beside it until reconciled. Spreads from `.claude/scratch/market-scan-2026.md`;
+the Fidelity service-fee list from the issuer PDF as of 2026-08-15; 016f figures from run
+`36f14b39…`.
 
 **Derived here, and reproducible from `scratchpad/placement.mjs`.** VTV, VXUS and AVDV
 priorities at all three brackets. The f = 1 and f = 0 fill orders for the seven-fund
 construction at both wrapper weights. The 34-to-1 wrapper regret ratio. The 0.52
 menu-binding fraction. The 9.12 bp menu cost at 30% and 6.00 at 25%. The 7.45 bp of forfeited credit. Weighted net cost of 31.3 bp at a 25% wrapper
-and 36.2 bp at 30%. The notional decomposition and the 126.8 gross.
+and 36.2 bp at 30%. The notional decomposition at both RSST legs (126.3 / 126.8 gross at 25%,
+131.5 / 132.2 at 30%). The §7 placement arithmetic for the TIPS leg and the 7.7 points of
+capital the 60/40 move needs.
 
 **Assumed.** VTV, VXUS and AVDV yields are trailing-twelve-month figures from an aggregator
 read 2026-08-23, not sponsor filings. VXUS's and AVDV's qualified fractions are blends of

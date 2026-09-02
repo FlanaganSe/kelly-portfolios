@@ -11,8 +11,8 @@ premium is real ([factor persistence](factor-persistence.md)), what a wrapper's 
 is worth ([capital efficiency](capital-efficiency-and-breadth.md)), and what to hold
 ([the recommendation](portfolio-recommendation.md)).
 
-**Status: `exploratory`.** For sections 1 to 4, no specification was frozen before the
-numbers were seen and no experiment was registered. [Section 5](#5-how-many-candidates-a-long-only-optimiser-actually-holds)
+**Status: `exploratory`.** For sections 1 to 4 and 6, no specification was frozen before
+the numbers were seen and no experiment was registered. [Section 5](#5-how-many-candidates-a-long-only-optimiser-actually-holds)
 is the exception: its weight-space search runs under
 [Experiment 017](../../research/experiments/exp_017_longonly_ladder.yaml) with a frozen
 grid and a ledger entry, and it reads no market data at all. Throughout, the arithmetic is
@@ -598,8 +598,9 @@ Three things that change must carry with it, none of them optional.
 4. **It raises the portfolio's exposure to a crash that is known to be correlated.** All
    three regions of momentum [lost their worst calendar year in 2009 together](factor-persistence.md#do-the-regions-crash-together-yes-and-it-is-the-finding),
    and IDMO is +0.331 correlated with the trend overlay, which is itself a momentum
-   strategy in another asset class. Every correlation on this page is unconditional; in the
-   tail this pairing is worse than 3.42 effective bets suggests.
+   strategy in another asset class. In the worst decile of US equity months that pairing
+   reads +0.64 and the five-sleeve count falls to 2.87
+   ([§6](#6-crisis-conditional-breadth-measured)).
 
 ### What the international allocation is and is not
 
@@ -701,6 +702,85 @@ edges. **Each omission favours the thesis**, so this is the generous case.
 
 ---
 
+## 6. Crisis-conditional breadth, measured
+
+`as of 2026-09-01`. Every correlation in §1–§4 is unconditional, and the question this
+page left open was whether the five active sleeves stay five bets when equity falls. The
+same 422-month panel (1990-11…2025-12), same modelled sleeve excess returns, conditioned
+four ways: the worst decile of US equity months, the worst decile of the 65/25/10 blend,
+the union of [Experiment 004](trend-marginal-value.md)'s frozen crisis windows, and months
+whose trailing twelve-month US return is negative. The condition is a regime label formed
+on the same month's return, not a signal; nothing here could be acted on. **No
+specification was frozen and nothing is ledgered.**
+
+| Condition | Months | `1'R^-1 1` of 5 | 95% i.i.d. bootstrap |
+| --- | ---: | ---: | :---: |
+| all months (reproduces §1) | 422 | **3.71** | [3.27, 4.33] |
+| worst decile, US equity | 42 | **2.87** | [2.21, 4.44] |
+| worst decile, 65/25/10 blend | 42 | 2.91 | [2.24, 4.51] |
+| Experiment 004 crisis windows, union | 53 | 2.80 | [2.22, 4.11] |
+| trailing 12-month US return negative | 75 | 2.68 | [2.17, 3.59] |
+
+The intervals overlap 3.71 in three of four conditions; the one that excludes it is the
+trailing-return condition, on an i.i.d. interval the study itself calls optimistic for a
+clustered tail. The worst-decile matrix, US equity:
+
+| | AVLV | DFIV | IDMO | AVES | trend |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| **AVLV** | 1.000 | **0.809** | −0.218 | **0.637** | −0.107 |
+| **DFIV** | 0.809 | 1.000 | −0.198 | 0.612 | −0.079 |
+| **IDMO** | −0.218 | −0.198 | 1.000 | 0.005 | **0.636** |
+| **AVES** | 0.637 | 0.612 | 0.005 | 1.000 | 0.098 |
+| **trend** | −0.107 | −0.079 | 0.636 | 0.098 | 1.000 |
+
+**The three value tilts merge** (AVLV–DFIV 0.57 → 0.81, AVLV–AVES 0.32 → 0.64, DFIV–AVES
+0.41 → 0.61), **and IDMO's correlation with trend rises** from +0.445 to +0.64, the
+pairing §4 flagged. The value-to-momentum and value-to-trend correlations stay near zero
+or negative.
+
+Conditional means in the worst decile of US equity, pp/month, with the Newey–West interval
+the study prints and, for trend, the interval that prices the selection:
+
+| Sleeve | Mean | Interval | All-months mean |
+| --- | ---: | :---: | ---: |
+| AVLV | +0.12 | [−0.63, +0.87] | +0.06 |
+| DFIV | +0.88 | [−0.10, +1.87] | +0.28 |
+| IDMO | +0.68 | [−0.07, +1.42] | +0.37 |
+| AVES | +0.30 | [+0.04, +0.55] | +0.16 |
+| trend (AQR TSMOM) | **+2.84** | NW [+1.65, +4.04]; **joint block bootstrap [+0.70, +4.37]** | +0.89 |
+
+**No active sleeve has a negative conditional mean in any of the four conditions**, and
+only AVES's and trend's intervals exclude zero. The plain reading: **they merge, they do
+not fail together.** Inside the frozen windows, compounded, the four tilts ran −4.9% to
++1.8% through the GFC while trend ran +29.6%; through the dotcom bust all five were
+positive; through 2022 all five were positive.
+
+Four corrections to the trend figure, each from the red-team re-run. The Newey–West
+interval is computed on the time-ordered subsequence of tail months, which treats 2008-10
+and 2009-01 as adjacent and ignores that the tail was selected; a stationary block
+bootstrap over the joint panel that re-selects the worst decile in every replicate gives
+**[+0.70, +4.37]**. The +2.84 largely restates the unconditional relation: a linear fit on
+TSMOM's −0.159 correlation with US equity predicts +2.04 at the tail's mean equity return
+of −7.75%, and five months (2012-05, 2002-12, 2020-03, 2008-10, 2001-09) carry 47 of the
+tail's 119 pp. On the repository's own 4-asset book, scaled as
+[Experiment 018](defensive-engines-in-the-construction.md) uses it, the same conditional
+mean is **+1.94 [+0.23, +3.65]** on 1990-11…2025-05 and +1.43 [+0.35, +2.52] on 1929–2025.
+And the figure is per dollar of the vendor index: at RSST's fitted 0.681 loading it is
++1.94, and at 30% of capital **+0.58 pp/month against an equity leg at −7.9**, so the
+overlay offsets about 7% of the equity loss in the tail; lagged one month the tail mean
+halves to +1.44. Whether trend covered a stacked bond leg's 2022 loss depends on which
+trend series is read, and on the own book it did not
+([defensive engines](defensive-engines-in-the-construction.md) §3).
+
+Reproduce it:
+
+```sh
+cd research
+uv run python -m portfolio_edge.studies._conditional_breadth_tables
+```
+
+---
+
 ## Verified, assumed, open
 
 **Verified.** The closed forms, against an independent covariance solve, at every `k` from
@@ -752,13 +832,14 @@ Experiment 005's 1.49 for the same factor over a different era.
    not exist; the repository's figures are at 10% and 15% weights in different base
    portfolios, and the client's own note on this construction records that the trend
    closure turns on the reference weight rather than on evidence.
-2. **Crisis-conditional breadth, and it now bears on the recommendation.** Every
-   correlation here is unconditional. Momentum's three regions
-   [crash together](factor-persistence.md#do-the-regions-crash-together-yes-and-it-is-the-finding),
-   and the change recommended above increases the portfolio's momentum exposure while
-   leaving it +0.331 correlated with a trend overlay that is momentum in another asset
-   class. **3.71 effective bets is an all-months figure and the tail number is smaller.**
-   Measuring the conditional version is the next informative test this page implies.
+2. **Crisis-conditional breadth is measured ([§6](#6-crisis-conditional-breadth-measured))
+   and what remains is narrower.** The tail count is 2.7–2.9 of 5 on intervals that mostly
+   still contain 3.71, so the measurement cannot yet separate "the tilts merge" from
+   sampling noise on 42 months. Two things would: a bond-regime-conditioned version, since
+   the one financed leg tested beside trend behaves differently in each correlation regime
+   ([defensive engines](defensive-engines-in-the-construction.md) §3); and RSST's own tail
+   behaviour from its filings at its delivered loading, in place of the vendor series that
+   runs the trend leg about a third hot.
 3. **Whether a loading estimated on 45 to 77 fund months forecasts the next thirty years.**
    Every delivered loading on this page comes from a window shorter than one value cycle.
 4. **The ex-US large-value alpha.** Four funds read −2.2 to −4.1 pp/yr and it decides this
@@ -795,6 +876,7 @@ uv run python -m portfolio_edge.studies._stacking_tables
 uv run pytest tests/unit/test_studies_stacking.py
 uv run python -m portfolio_edge.experiments.exp_017_longonly_ladder --view-results
 uv run pytest tests/unit/test_studies_longonly_ladder.py
+uv run python -m portfolio_edge.studies._conditional_breadth_tables
 ```
 
 The arithmetic for sections 1 to 4 is

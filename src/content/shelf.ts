@@ -85,7 +85,7 @@ export interface FactorLoading {
  */
 export interface NotionalExposure {
   readonly kind: "us-equity" | "global-equity" | "equity" | "treasury-futures" | "gold-futures" | "trend";
-  /** Notional per $1 of capital, as a fraction. 1.072 means 107.2% of net assets. */
+  /** Notional per $1 of capital, as a fraction. 1.05 means 105% of net assets. */
   readonly perDollarOfCapital: number;
 }
 
@@ -239,6 +239,14 @@ const liveStacked: Citation = {
 };
 
 const READ = asOf("2026-08-17");
+
+/**
+ * The 2026-09-01 refresh: the latest Form N-PORT per stacked fund re-read from EDGAR, the
+ * Return Stacked and Simplify issuer pages re-read for size and spread, and RSST's equity
+ * line re-derived from the filing's own contract values. Only the records that changed
+ * carry this date; the rest still carry the date they were actually read.
+ */
+const REFRESH = asOf("2026-09-01");
 
 /**
  * The two dates behind every {@link SpreadFact} on this shelf. Rule 6c-11 spreads were
@@ -2164,39 +2172,48 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: "exploratory",
     verdict:
-      "It delivers the trend exposure it sells, and this is the first measurement of it: TSMOM +0.681 [+0.406, +0.955] over 31 filed months to 2026-04, beside an equity beta of +0.979 [+0.763, +1.195] — one dollar of equity and about seven tenths of a dollar of trend, per dollar of capital, against a filed exposure of one and one. Regressed on DBMF instead of on the vendor index it reads +0.857 [+0.719, +0.995]. Structure and cost are from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus E-mini futures at 33.1% — 107.2% equity — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross exposure to deliver ~100% of risk exposure. delta is −0.07, so it keeps 100% of the +2.44 pp/yr funding-rule gap and the hurdle this holding has to clear is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% exposure weight.",
+      "It delivers the trend exposure it sells, and this is the first measurement of it: TSMOM +0.681 [+0.406, +0.955] over 31 filed months to 2026-04, beside an equity beta of +0.979 [+0.763, +1.195] — one dollar of equity and about seven tenths of a dollar of trend, per dollar of capital, against a filed exposure of one and one. Regressed on DBMF instead of on the vendor index it reads +0.857 [+0.719, +0.995]. Structure and cost are from filings. Its 2026-04-30 N-PORT shows SPDR Portfolio S&P 500 at 74.09% of net assets plus a long E-mini S&P 500 future at 30.94% — 105.0% equity, with a further 6.63% in a Nasdaq-100 future that belongs to the trend book — with a government money fund at 16.04% as collateral and a trend book running ~294% of net assets in gross exposure to deliver ~100% of risk exposure. delta is −0.05, so it keeps 100% of the +2.44 pp/yr funding-rule gap and the hurdle this holding has to clear is 0.00 where a standalone managed-futures fund pays the full 2.44. All-in 0.99%, no waiver, and Form N-CEN for the year ended 2026-01-31 reports no recoupment clause. Distribution tax drag 0.32 pp/yr, 4.5 bp of it incremental once the VTI it displaces is subtracted, and 1.3 bp of portfolio return at a 30% exposure weight.",
     caution:
       "The trend exposure above rests on 31 filed months, which is roughly one market regime. Its 95% interval runs from +0.406 to +0.955, so this window cannot tell one dollar of delivered trend from four fifths of one, and the smallest exposure it could have detected at 80% power is 0.392. It is exposure delivered, not a return earned: there is still no alpha, no Sharpe and no drawdown measured for the fund. It does not disclose its financing cost and files 0.00% of interest expense, like every fund in its family. Its 28-month tax window is entirely a rising market; the failure mode is a flat-equity, strong-trend year, which is the year the holding exists for. Under three years old. Its 9 bp median spread against CTAP's 33 is what separates the two once entry cost is counted — 24 bp/yr on a one-year hold, against 18 bp of fee dispersion across the three stacked funds (`docs/research/market-scan-2026.md` §6.2) — and a spread is paid once where a fee is paid every year.",
     wrapper: {
-      delta: -0.07,
+      delta: -0.05,
       fundingCapturePercent: 100,
       allInCostBp: 99,
-      grossNotionalPerDollar: 2.07,
+      grossNotionalPerDollar: 2.05,
       distributionTaxDragPpYr: 0.32,
       incrementalTaxDragBp: 4.5,
       structureAsOf: asOf("2026-04-30"),
     },
     notionalExposure: [
-      { kind: "us-equity", perDollarOfCapital: 1.072 },
+      { kind: "us-equity", perDollarOfCapital: 1.05 },
       { kind: "trend", perDollarOfCapital: 1.0 },
     ],
+    /**
+     * The 2026-07-31 filing is the only dated unknown on this record: it extends the trend
+     * regression by three months and re-reads the base leg, and it does not exist yet.
+     */
+    reviewTrigger: {
+      on: asOf("2026-09-29"),
+      what: "RSST's own Form N-PORT for the period ending 2026-07-31 is due by 2026-09-29 and had not been filed at 2026-09-01; the 2026-04-30 filing of 2026-06-25 is still the latest. Read it for three things. The base leg, summed as the S&P 500 fund plus the S&P 500 future, the way this record now reads it. Item B.5 monthly returns for May, June and July 2026, which extend the trend regression from 31 filed months to 34. And whether the Nasdaq-100 contract is still in the book. A base leg that moves by several points changes the delta above; a refreshed exposure whose interval no longer clears 0.4 changes the verdict; nothing in that filing can promote the fund.",
+    },
     issuer: {
       notes: [
         "The fund's own words: \"one dollar invested in the Fund provides approximately one dollar of exposure to the Fund's U.S. Equity strategy and approximately one dollar of exposure to the Fund's Managed Futures strategy\", targeting 100% of each.",
         "The managed-futures leg runs through a wholly-owned Cayman subsidiary capped at 25% of total assets, tested quarterly. The subsidiary is not registered under the 1940 Act, and breaching the cap would put the fund's RIC status at risk.",
-        "35 months live at 2026-08-17, at $508.70m of net assets on 2026-08-14. The fee table shows no waiver line at all, so 99 bp is both gross and net.",
+        "35 months live at 2026-08-17, at $508.70m of net assets on 2026-08-14 and $528.93m on 2026-08-31, both from the issuer page. The fee table shows no waiver line at all, so 99 bp is both gross and net.",
         "Over its short life it has trailed US equity: the prospectus reports 17.17% a year since inception on 2023-09-05 against 21.50% for the S&P 500. Thirty-five months settles nothing about a holding whose whole purpose is the years equities lose, and it is not evidence either way.",
+        "Corrected 2026-09-01. This record previously carried the E-mini S&P 500 line at 33.1% of net assets and the equity leg at 107.2%. The 2026-04-30 filing's own contract value for that position is $128,379,507 against $414,986,862 of net assets, which is 30.94%, and no line in the filing reads 33.1%: the figure is consistent with the filed 373 contracts repriced at a later index level of about 7,365 rather than the filing's 6,884. The equity leg is therefore 105.0%, the delta −0.05 and the gross exposure 2.05 per dollar, and the same read applied to the 2026-04-30 filing of RSSB, MATE and CTAP is what those records already carry. The filing also holds a Nasdaq-100 future at 6.63%, which takes every US equity instrument to 111.7%. It is counted with the trend book rather than the base leg, for the reason MATE's record gives: RSBT runs the identical trend book on a bond base and holds the same Nasdaq contract at 6.64% beside an S&P 500 future at 7.49%, so about 14 points of RSST's index futures are the book's own positions and the base leg is the S&P 500 fund plus the S&P 500 future, as it is for the other two. Under either reading delta is below zero and nothing about the verdict moves.",
       ],
       source: {
         label: "RSST summary prospectus, 497K filed 2026-04-27",
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/1924868/000199937126009152/rsst-497k_042726.htm",
       },
-      readOn: asOf("2026-08-17"),
+      readOn: REFRESH,
     },
     spread: { bp: 9, asOf: SPREADS_READ },
     source: capital,
-    asOf: READ,
+    asOf: REFRESH,
   },
   {
     ticker: "CTAP",
@@ -2232,11 +2249,11 @@ export const shelf: readonly ShelfFund[] = [
     ],
     reviewTrigger: {
       on: asOf("2026-12-04"),
-      what: "Two dates, and the near one is a filing. Its next Form N-PORT, for the quarter ending 2026-06-30, is due 2026-08-29: reread the base leg and the swap exposure and recompute delta. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified stacked fund on the fund list and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
+      what: "Two dates, and the near one has arrived. Its Form N-PORT for 2026-06-30, filed 2026-08-24, reads iShares Core S&P 500 at 78.45% of net assets plus the E-mini at 30.99%, 109.44% equity, against 113.1% of total-return-swap exposure — 93.2% on a CTA index and 19.9% on CTA itself, all receive-index and pay-SOFR, with Bank of America, BNP Paribas and Citi — so delta is −0.083 on that filing and the conclusion above stands; the structure block still carries the 2026-03-31 read until the verdict is rewritten against the new one. Then on 2026-12-04 the fee waiver lapses unless renewed, taking the filed net expense from 0.10% to 0.28% and the all-in trend dollar from about 0.81% to about 0.99% — at which point it is the same price as RSST with an affiliated-fund conflict and single-bank counterparty exposure attached. If the waiver is renewed on the same terms and the counterparty concentration falls, this becomes the cheapest verified stacked fund on the fund list and the ranking is worth reopening; if it lapses, nothing about the cost case survives.",
     },
     issuer: {
       notes: [
-        "Inception 2025-12-08, so eight months live at 2026-08-22, and $157,883,998.76 of net assets on 2026-08-21 — larger than MATE and JPFP together, and the fastest asset growth on this shelf.",
+        "Inception 2025-12-08, so eight months live at 2026-08-22, and $157,883,998.76 of net assets on 2026-08-21 — larger than MATE and JPFP together, and the fastest asset growth on this shelf. Its 2026-06-30 N-PORT, filed 2026-08-24, reports $163,366,486; the issuer page reports $153,670,684 on 2026-08-31. The management-fee reduction to 0.07% runs through at least 2026-12-04.",
         "The prospectus fixes both legs in its own summary: the fund uses derivatives to add the Managed Futures Strategy on top of the US Equity Strategy, so that for each one dollar invested it has one dollar of US equity exposure and one dollar of CTA futures exposure.",
         'The trend leg is an affiliated fund reached by swap: "The Fund primarily executes the Managed Futures Strategy indirectly by investing in a total return swap on the Simplify Managed Futures Strategy ETF ("CTA"), which is a US domiciled exchange-traded fund managed by the adviser." The prospectus concedes the conflict: "The adviser is subject to an indirect conflict of interest in allocating the Fund\'s assets to a swap linked to CTA, as CTA is an affiliated fund that may underperform other futures-based funds."',
         'The fee table reads 0.25% management plus 0.03% acquired-fund fees for 0.28% gross, less an 0.18% waiver, for 0.10% net. The waiver is a fee reduction and not an expense cap: "The Fund\'s adviser has contractually agreed, through at least December 4, 2026, to reduce its management fees to 0.07% of the Fund\'s average daily net assets. This agreement may be terminated only by the Simplify Exchange Traded Funds\' Board of Trustees." The words "recoup" and "recapture" do not appear anywhere in the statutory prospectus, so there is nothing to be clawed back — the risk here is the expiry, not a recoupment.',
@@ -2248,11 +2265,11 @@ export const shelf: readonly ShelfFund[] = [
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/1810747/000182912625009650/simplifyetf_497k.htm",
       },
-      readOn: asOf("2026-08-22"),
+      readOn: REFRESH,
     },
     spread: { bp: 33, asOf: SPREADS_READ },
     source: capital,
-    asOf: asOf("2026-08-22"),
+    asOf: REFRESH,
   },
   {
     ticker: "RSSB",
@@ -2297,17 +2314,21 @@ export const shelf: readonly ShelfFund[] = [
     issuer: {
       notes: [
         'One dollar of global equity plus one dollar of US Treasury futures, and 39 bp rather than RSST\'s 99 — because Treasury futures generate qualifying income, so no Cayman subsidiary is needed. The words "Cayman" and "Subsidiary" do not appear in its summary prospectus.',
-        'Its expense example still carries the sentence "The management fee waiver discussed above is reflected only through May 31, 2026" although no waiver is discussed and none appears in the fee table. Read gross = net = 39 bp and treat the sentence as stale boilerplate.',
+        'Its expense example still carries the sentence "The management fee waiver discussed above is reflected only through May 31, 2026" although no waiver appears in the fee table. The statutory prospectus of the same date settles it: before 2026-04-27 the adviser waived its 0.50% unitary fee down to 0.35%, and on 2026-04-27 the board terminated the waiver and cut the management fee itself to 0.35%. So 0.39% (0.35% plus 0.04% of acquired-fund fees) is gross, net and permanent, with nothing to expire and nothing to recoup; the annual report for the year ended 2026-01-31 shows the pre-cut contract at 0.50% waived to 0.35%, waivers not recoupable.',
+        "$520.83m of net assets on 2026-08-31 from the issuer page, against $476.6m in the 2026-04-30 N-PORT. Its 30-day median bid-ask spread on the same page and date is 0.16%.",
+        "The equity leg is 63% US and 37% ex-US: SPDR Portfolio S&P 1500 at 53.38% of net assets plus the S&P 500 future at 9.54%, against Vanguard Total International at 37.15%, at 2026-04-30; 63.3% and 36.7% on the issuer's 2026-09-01 holdings. The prospectus floor is 40% non-US, or 30% when it judges conditions unfavourable.",
+        "The 2025 distribution, paid 2025-12-29 at $0.97883 a share, was about 3.4% of NAV: 73% ordinary income and 27% long-term capital gain, no return of capital, from the annual report for the year ended 2026-01-31. That is the Treasury futures' year-end mark-to-market arriving as a distribution, and it is why this fund sits in a sheltered account or not at all.",
       ],
       source: {
         label: "RSSB summary prospectus, 497K filed 2026-04-27",
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/1924868/000199937126009149/rssb-497k_042726.htm",
       },
-      readOn: asOf("2026-08-17"),
+      readOn: REFRESH,
     },
+    spread: { bp: 16, asOf: asOf("2026-08-31") },
     source: capital,
-    asOf: READ,
+    asOf: REFRESH,
   },
   {
     ticker: "NTSX",
@@ -2410,7 +2431,7 @@ export const shelf: readonly ShelfFund[] = [
     ],
     issuer: {
       notes: [
-        "Man Active Trend Enhanced ETF — a Man Group fund sub-advised by AHL Partners, not a Return Stacked product and not merger arbitrage. Inception 2025-12-16, so eight months live at 2026-08-22.",
+        "Man Active Trend Enhanced ETF — a Man Group fund sub-advised by AHL Partners, not a Return Stacked product and not merger arbitrage. Inception 2025-12-16, so eight months live at 2026-08-22. $39.41m of net assets in the 2026-05-31 N-PORT, which is still its latest filing at 2026-09-01, and $39.87m on 2026-09-01 from an aggregator.",
         '97 bp all-in: a 0.95% unitary fee plus 0.02% of acquired-fund fees, both "based on estimated amounts for the current fiscal year" rather than incurred. No waiver. A 12b-1 plan of up to 25 bp is adopted but dormant.',
         'Its own words fix the diversifier leg the delta divides by: "The Fund will target a 100% exposure to each of its Trend-Following Strategy and Equity Strategy."',
         'The Cayman subsidiary carries commodities only, not the whole trend book — "The Fund intends to gain exposure to the commodities futures markets by investing through a wholly-owned subsidiary" — and the fund "intends to manage the exposure to the Subsidiary so that the Fund\'s investments in the Subsidiary do not exceed 25% of the total assets at the end of any quarter."',
@@ -2421,10 +2442,10 @@ export const shelf: readonly ShelfFund[] = [
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/2065379/000119312525316292/d98016d485bpos.htm",
       },
-      readOn: asOf("2026-08-22"),
+      readOn: REFRESH,
     },
     source: capital,
-    asOf: asOf("2026-08-22"),
+    asOf: REFRESH,
   },
   {
     ticker: "JPFP",
@@ -2441,16 +2462,16 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Still unmeasurable, and now for a filing-level reason rather than an unexamined one: no Form N-PORT exists for it. Its series is S000101300 in the SEC's own ticker map, and none of the 24 N-PORT filings the J.P. Morgan Exchange-Traded Fund Trust made for the 2026-05-31 period carries that series. It commenced 2026-05-27, so its first holdings filing belongs to the quarter ending 2026-06-30 or 2026-07-31 and is due 2026-08-29 or 2026-09-29. Until one is filed there is no base leg, no diversifier leg and therefore no delta; its stack rests on one sentence of the prospectus, which says only that its total exposure will exceed its net assets, and nothing else. Checked 2026-08-22.",
+      "Still unmeasurable, and now for a filing-level reason rather than an unexamined one: no Form N-PORT exists for it. Its series is S000101300 in the SEC's own ticker map, and none of the 24 N-PORT filings the J.P. Morgan Exchange-Traded Fund Trust made for the 2026-05-31 period carries that series. It commenced 2026-05-27, so its first holdings filing belongs to the quarter ending 2026-06-30 or 2026-07-31 and is due 2026-08-29 or 2026-09-29. Until one is filed there is no base leg, no diversifier leg and therefore no delta; its stack rests on one sentence of the prospectus, which says only that its total exposure will exceed its net assets, and nothing else. Checked 2026-08-22 and again 2026-09-01: still none, so the 2026-08-29 date has passed and 2026-09-29 is the one that remains.",
     caution:
-      "It is the one product that would reorder the stacked-fund cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. Three months live at $17.07m makes it the smallest fund on this shelf and the likeliest to close. It also carries one tax cost the other stacked funds do not disclose: it expects to create and redeem in cash, which forfeits the in-kind shield on its equity leg as well as on what it adds on top. No delta, no exposure, no record — and no Form N-PORT, so all three wait on the same filing.",
+      "It is the one product that would reorder the stacked-fund cost ranking outright — a 40 bp saving against RSST's 99 bp, on a line where 40 bp is a third of the whole fee — and it cannot yet be recommended. Three months live at about $33m makes it one of the smallest funds on this shelf and among the likeliest to close. It also carries one tax cost the other stacked funds do not disclose: it expects to create and redeem in cash, which forfeits the in-kind shield on its equity leg as well as on what it adds on top. No delta, no exposure, no record — and no Form N-PORT, so all three wait on the same filing.",
     /**
      * The dated review trigger. This is the only entry on the shelf whose structure is
      * unknown for a reason that expires, so the recheck has a date rather than a condition.
      */
     reviewTrigger: {
       on: asOf("2026-09-29"),
-      what: "Read JPFP's first Form N-PORT — its series is S000101300, and the filing is due 2026-08-29 if its first reporting period ends 2026-06-30 or 2026-09-29 if it ends 2026-07-31 — and compute delta from the base leg and the diversifier leg the way MATE's was computed, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. If delta comes back at or below zero, JPFP keeps the whole funding-rule gap at 59 bp against RSST's 99 and MATE's 97, and it reorders the stacked-fund cost ranking outright. That still would not make it holdable at a 30% weight: at $17.07m it would be the smallest fund on this shelf with three months of record, so a negative delta buys it a place in the comparison, not the allocation. If no filing has appeared by 2026-09-29, that is itself the finding and the next date is the following quarter.",
+      what: "Read JPFP's first Form N-PORT, series S000101300. None had been filed at 2026-09-01: its filings to date are the registration statement, the 497K and 497J of 2026-04-15, a trust SAI of 2026-06-24 and an N-PX of 2026-08-28. So the 2026-08-29 date for a first period ending 2026-06-30 has passed, and the filing is due by 2026-09-29 for a period ending 2026-07-31. Compute delta from the base leg and the diversifier leg the way MATE's and RSST's were computed, summing any equity fund holding and the S&P 500 future that completes it rather than reading the largest line alone. The 497K says what to expect. The managed-futures side is direct futures, forwards and swaps on equity, rate and currency markets, with commodities through a wholly owned Cayman subsidiary of up to 25% of assets; the equity side is direct large-cap US stocks and/or US equity index futures. No ETF and no swap on an affiliated fund, so there is no acquired-fund fee under the 0.59% unitary fee and no CTAP-style swap conflict, and there is no numeric target for either leg. If delta comes back at or below zero, JPFP keeps the whole funding-rule gap at 59 bp against RSST's 99 and MATE's 97, and it reorders the stacked-fund cost ranking outright. That still would not make it holdable at a 30% weight: at about $33m it would be one of the smallest funds on this shelf with three months of record, so a negative delta buys it a place in the comparison, not the allocation. If no filing has appeared by 2026-09-29, that is itself the finding and the next date is the following quarter.",
     },
     wrapper: {
       delta: null,
@@ -2463,8 +2484,9 @@ export const shelf: readonly ShelfFund[] = [
     },
     issuer: {
       notes: [
-        "It has since commenced. Performance inception 2026-05-27, so three months live at 2026-08-22, with $17.07m of net assets on its 2026-06-30 fact sheet — the smallest fund on this shelf and the one with the highest closure risk. No later issuer figure was reachable: the J.P. Morgan product page renders its data client-side and returned none.",
+        "It has since commenced. Performance inception 2026-05-27 and Nasdaq listing 2026-05-28, so three months live at 2026-09-01, with $17.07m of net assets on its 2026-06-30 fact sheet and about $33.4m on 2026-09-02 from an aggregator — one of the smallest funds on this shelf and among those with the highest closure risk. No issuer figure was reachable: the J.P. Morgan product page renders its data client-side and returned none.",
         "59 bp unitary, no waiver, no recoupment: 40 bp cheaper than RSST for a structurally similar product, which is why it is a standing review trigger in the research rather than a footnote.",
+        "The structure the first N-PORT will be read against, from the 497K of 2026-04-15: the Managed Futures Strategy holds futures, forwards and swaps directly on equity, rate and currency markets, with commodities through the Cayman subsidiary; the U.S. Equity Strategy holds large-cap US stocks replicating broad indexes and/or US equity index futures. No ETF is mentioned on either side, and there is no swap on an index or on an affiliated fund. No N-PORT had been filed at 2026-09-01.",
         'It says only that it "seeks to provide full exposure to each of the Managed Futures Strategy and the U.S. Equity Strategy, simultaneously" and that its total exposure will exceed its net assets. Unlike RSST, RSSB and MATE it publishes no numeric per-dollar breakdown anywhere, so none is stated here.',
         'The commodity leg runs through Managed Futures Plus Fund CS Ltd., a wholly-owned Cayman subsidiary, and the fund gains commodity exposure "by investing up to 25% of the Fund\'s assets" in it.',
         'It discloses a tax cost the other two candidates do not: "the Fund expects to generally effect its creations and redemptions entirely or partially in cash, rather than primarily for in-kind securities. Therefore, it will be required to sell portfolio securities and subsequently recognize a gain on such sales that the Fund might not have recognized if it were to distribute portfolio securities in kind."',
@@ -2475,10 +2497,10 @@ export const shelf: readonly ShelfFund[] = [
         docPath: "docs/research/capital-efficiency-and-breadth.md",
         href: "https://www.sec.gov/Archives/edgar/data/1485894/000119312526156138/d63821d485bpos.htm",
       },
-      readOn: asOf("2026-08-22"),
+      readOn: REFRESH,
     },
     source: capital,
-    asOf: asOf("2026-08-22"),
+    asOf: REFRESH,
   },
   {
     ticker: "SCHD",
@@ -2602,14 +2624,26 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "The international twin of RSST, and nothing about it has been measured. It listed 2026-05-06 at $68.53m and is the first fund to stack the two legs this repository separately reaches for — a developed ex-US holding and trend. The only structure available is an issuer-page estimate rather than a filed measurement: an equity leg of roughly 75% SPDW plus 25% MSCI EAFE index futures, so a base leg near 1.00 against a trend leg of 1.00 and a delta near 0.00. Read that as a description off a marketing page. RSST's delta of −0.07 was computed from an N-PORT; this one was not computed at all, which is why this record carries no fund-structure block.",
     caution:
-      "Three and a half months old, no Form N-PORT, no filed monthly return, and therefore no exposure, no alpha, no delta and no place in the stacked-fund comparison. Its 15 bp median spread is the second widest of the funds whose Rule 6c-11 disclosure was read, and at $68.53m it sits in the size band where this repository's own attrition measurement bites. It sits in the stacked-fund category on its mandate; it carries no `wrapper` block, because the two legs of that block are read off a filing and this fund has not made one.",
+      "Three and a half months old, no Form N-PORT, no filed monthly return, and therefore no exposure, no alpha, no delta and no place in the stacked-fund comparison. Its 15 bp median spread is the second widest of the funds whose Rule 6c-11 disclosure was read, and at $73.39m on 2026-08-31 it sits in the size band where this repository's own attrition measurement bites. It sits in the stacked-fund category on its mandate; it carries no `wrapper` block, because the two legs of that block are read off a filing and this fund has not made one.",
     spread: { bp: 15, asOf: SPREADS_READ },
     reviewTrigger: {
       on: asOf("2026-09-29"),
-      what: "Read RSIT's first Form N-PORT and compute delta from the base leg and the diversifier leg, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. Tidal Trust II's fiscal year ends 31 January — RSST files Form N-CEN for years ended that date — so a fund that commenced 2026-05-06 has its first reporting period ending 2026-07-31 and its filing due about 2026-09-29. A delta at or below zero would put it beside RSST at a 1 bp lower fee; it would still have no measured exposure, because an exposure needs filed monthly returns and one quarter is not a window.",
+      what: "Read RSIT's first Form N-PORT — series S000103919, class C000274517, in Tidal Trust II — and compute delta from the base leg and the diversifier leg, summing the equity ETF holding and the index future that completes it rather than reading the largest line alone. None had been filed at 2026-09-01, and none could have been: a fund that commenced 2026-05-06 has its first reporting period ending 2026-07-31, and the filing is due by 2026-09-29, the same date as RSST's own 2026-07-31 filing. A delta at or below zero would put it beside RSST at a 1 bp lower fee; it would still have no measured exposure, because an exposure needs filed monthly returns and one quarter is not a window.",
+    },
+    issuer: {
+      notes: [
+        "0.98% all-in from the 497K dated 2026-05-04: a 0.95% management fee, 0.02% of other expenses and 0.01% of acquired-fund fees, with no waiver.",
+        "$73.39m of net assets and a 0.14% 30-day median spread on 2026-08-31, both from the issuer page. Inception 2026-05-06.",
+      ],
+      source: {
+        label: "RSIT registration statement, 485BPOS filed 2026-05-04",
+        docPath: "docs/research/market-scan-2026.md",
+        href: "https://www.sec.gov/Archives/edgar/data/0001924868/000199937126009889/rsit-485bpos_050426.htm",
+      },
+      readOn: REFRESH,
     },
     source: scan,
-    asOf: asOf("2026-08-22"),
+    asOf: REFRESH,
   },
   {
     ticker: "RSSX",
@@ -2767,7 +2801,8 @@ export const fundingRuleGapPpYr = {
   asOf: READ,
 } as const;
 
-export const shelfAsOf = READ;
+/** The latest date any record on the shelf was read; every record's own `asOf` is on or before it. */
+export const shelfAsOf = REFRESH;
 
 /** Re-exported so a route can name the owning page without re-declaring a citation. */
 export const shelfSources = { products, recommendation, structural, capital, trend } as const;

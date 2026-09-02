@@ -27,8 +27,9 @@ improve it.
 > come out of VTI and go into trend; nothing else changes. A frozen specification is not
 > amended after its results were inspected
 > ([decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md) clause 4), so the
-> labels stay and this note carries the correction. **No arm in this file, or in any other
-> experiment in the programme, holds the recommended seven funds at a 30% trend weight.**
+> labels stay and this note carries the correction. **No arm in this file holds the
+> recommended seven funds at a 30% trend weight; Experiment 016f does, and
+> [§1a](#1a-the-matched-pair-run-as-experiment-016f) records what it found.**
 
 `as of 2026-08-23`. **`exploratory`.** The tournament arm is
 [Experiment 016e](../../research/experiments/exp_016e_final_construction.yaml)
@@ -149,7 +150,8 @@ comparison in either tournament that clears its own floor. **It is not a 25-agai
 comparison at a fixed construction.** `recommended_vs_original` scores RSST 25 / VTI 24 /
 VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 against RSST 30 / VTI 20 / AVLV 15 / DFIV 10 /
 VEA 10 / IDMO 5 / IEMG 5 / AVES 5, so **the pair differs in four of its holdings as well as
-in five points of trend**, and no arm anywhere holds the recommended seven funds at 30%.
+in five points of trend**. [§1a](#1a-the-matched-pair-run-as-experiment-016f) separates
+the two.
 
 Two reasons to read the gap as the trend weight rather than the fund list, and one reason
 not to over-read it. The tilt complexes are near enough identical: `recommended_no_trend`
@@ -158,8 +160,9 @@ unlevered cheap control on the same 427 months, so what is left to move the whol
 number is the wrapper. And the gap is negative in all seven declared sub-periods as well as
 the full window, from −0.19 post-GFC to −0.94 before the flat decade. Against that: the two
 tilt-only figures come from two tournaments and are not a paired difference, so they carry
-no interval of their own and cannot bound the fund-list contribution. **The clean design is
-in *Open* item 4 and has not been run.**
+no interval of their own and cannot bound the fund-list contribution. **The clean design
+was run afterwards as Experiment 016f ([§1a](#1a-the-matched-pair-run-as-experiment-016f)),
+and it attributes the whole −0.50 to the wrapper weight.**
 
 What survives is that this is a leverage result rather than a construction one: the two
 portfolios differ by 5.4 points of gross notional, and
@@ -176,6 +179,46 @@ portfolios at identical leverage differing in one sleeve, +0.28 pp/yr against a 
 every sub-period (+0.06 to +0.73), its Benjamini–Hochberg adjusted p is 0.033, and its
 probability of trailing over thirty years is 1.3%. Calling that "unresolved" is correct and
 is also the least interesting true thing about it.
+
+### 1a. The matched pair, run as Experiment 016f
+
+`as of 2026-09-01`. **`exploratory`.**
+[Experiment 016f](../../research/experiments/exp_016f_matched_pairs.yaml), run
+[`36f14b39…`](../../research/artifacts/36f14b395e53407f8fdfaee3b4e8e37a/summary.md), 17
+constructions on the same 427 months, same basis-mapped machinery, same block bootstrap.
+It holds the recommended seven funds at 30% (`rec30`, 1.322× gross) and scores the pairs
+this page could not.
+
+| Pair, same fund list unless stated | Gap, pp/yr | 95% interval | Floor | Verdict |
+| --- | ---: | :---: | ---: | --- |
+| **rec30 − rec25** (five points of wrapper weight, nothing else) | **+0.51** | [+0.30, +0.72] | 0.30 (block 0.31) | **resolved** |
+| rec30 − investor's original eight at 30% | +0.01 | [−0.18, +0.19] | 0.26 | unresolved |
+| VEA 11 + IEMG 5 in place of VXUS 16 | +0.05 | [+0.00, +0.10] | 0.07 | unresolved (p 0.047, BH-adjusted 0.19) |
+| AVLV in place of VTV | −0.01 | [−0.06, +0.05] | 0.09 | unresolved |
+| DFIV in place of AVDV | −0.10 | [−0.29, +0.10] | 0.26 | unresolved |
+| AVUV in place of VTV | +0.15 | [−0.34, +0.67] | 0.67 | unresolved |
+
+**All of 016e's −0.50 was wrapper weight.** `(rec30 − original30) − (rec30 − rec25) =
++0.0117 − 0.5101 = −0.4984`, which is this page's `recommended_vs_original` to four
+decimals; the four-holding fund-list change is worth +0.01 against a 0.26 floor. By hand,
+`0.05 × 10.976` trend `+ 0.0036 × 9.83` equity `− 0.048` fee `− 0.010` financing `= +0.526`
+arithmetic, less variance drag on the growth basis.
+
+**It is a leverage result at the realised premium.** The pair's break-even trend haircut
+is 10.08 pp/yr on the stored premium surface; at the like-for-like forward figure of 4.07
+([trend weight](trend-weight-under-uncertainty.md) §1.1) it reads about +0.18 against its
+0.30 floor, and at the 1.80 convention +0.07. "Resolvable" is a property of 1990–2026's
+10.98 pp/yr, not of the construction. 30% stands for a contributing investor; 25% for one
+who would sell it; the holdability figures on the trend-weight page are unchanged.
+
+**Every fund-list pair is inside its floor**, which is what the specification declared
+before the run: each is one or two points of capital moved between funds with near-identical
+mappings. The VEA + IEMG pair is 5 bp/yr from one point of developed-to-emerging weight
+under the 0.75/0.25 VXUS assumption, and the pair is 1–2 bp cheaper after lending; AVLV
+costs 12 bp more than VTV for −0.01; DFIV's −0.10 carries its −3.8 fitted alpha, which
+[stacking](stacking-and-effective-breadth.md) §4 leaves unexplained. The investor's label
+"AVLV (SCV US)" is wrong: AVLV is large-cap value; AVUV is the small-cap value fund, and
+it reads +0.15 against a 0.67 floor.
 
 ### The tilt component on its own
 
@@ -451,9 +494,12 @@ carry. The contestants, cost model and inference blocks are this file's own.
    at the gross fee; it would move the *best* case from −0.73 to about −0.47 pp/yr per
    dollar of sleeve. Still negative, because turnover and the momentum leg rather than the
    fee are what decide it.
-4. **The head-to-head against the investor's original proposal is a leverage comparison
-   wearing a construction label**, and no arm here separates the two. The clean design is a
-   pair matched at the same gross notional, which means choosing a trend weight first.
+4. **Run.** The head-to-head against the investor's original proposal was a leverage
+   comparison wearing a construction label, and Experiment 016f separated the two
+   ([§1a](#1a-the-matched-pair-run-as-experiment-016f)): rec30 − rec25 = +0.51 [+0.30,
+   +0.72] against a 0.30 floor, and the fund-list change +0.01 against 0.26. What remains
+   open is the forward premium at which the pair stays resolvable, which is the
+   trend-weight page's question.
 5. **Everything in §3 and §4 rests on 78 months**, which is shorter than one value cycle.
 
 ## What this does not establish

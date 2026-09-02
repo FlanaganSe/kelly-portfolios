@@ -11,7 +11,8 @@ forecasts no market.
 **Out of scope.** Trend and moving-average timing, which is a different signal and a
 different page. Sector or single-stock valuation. Any claim that a level "must" mean revert.
 
-`as of 2026-08-22`. Measured figures regenerate from
+`as of 2026-08-22`; the market readings in §1.1, §1.2 and §1.4 are `as of 2026-09-01`.
+Measured figures regenerate from
 [`studies/valuation_conditioning.py`](../../research/src/portfolio_edge/studies/valuation_conditioning.py)
 and its cache companion
 [`_valuation_conditioning_tables.py`](../../research/src/portfolio_edge/studies/_valuation_conditioning_tables.py),
@@ -111,39 +112,42 @@ August 1st reading.**
 | Total-return CAPE | 43.98 | 0.987 | max 48.11 (1999-12) |
 | CAPE earnings yield | 2.43%/yr | 0.010 | not an expected return |
 | **Shiller excess CAPE yield** | **+0.97 pp** | **0.187** | against a *trailing-inflation-adjusted* nominal 10y |
-| **TIPS excess CAPE yield** | **+0.08 pp** | **0.000 since 2003** | against DFII10 2.35% on 2026-08-20 |
+| **TIPS excess CAPE yield** | **−0.01 pp** | **0.000 since 2003** | against DFII10 2.44% on 2026-08-31; +0.03 pp on the August daily average (DFII10 2.40%) |
 
 **The last two rows are the finding.** They are the same construction with a different real
-rate, and they disagree by nearly a percentage point, because the real yield implied by
-Shiller's own column is **1.45%** where the market prices **2.35%** (2026-08-20) to **2.41%**
-(the Aug 1-20 average). On Shiller's measure today sits at the 19th percentile of 145 years
-and is unremarkable. On a market-priced real yield the excess CAPE yield is **+0.02 pp on the
-August average and +0.08 pp on the latest daily reading — the lowest level of the entire
-23-year TIPS record**, and it has now sat at that 0th percentile for four consecutive months.
+rate, and they disagree by a percentage point, because the real yield implied by Shiller's
+own column is **1.45%** where the market prices **2.44%** (2026-08-31, the 96.7th percentile
+of the ten-year TIPS record since 2003; the thirty-year is 2.99%, the 99.8th since 2010). On
+Shiller's measure today sits at the 19th percentile of 145 years and is unremarkable. On a
+market-priced real yield the excess CAPE yield is **+0.03 pp on the August average and
+−0.01 pp on the 2026-08-31 daily reading — the first sub-zero print in the 23-year TIPS
+record**, and it has sat at the 0th percentile of 284 months for five consecutive months.
 
 For scale on how far this has moved: the TIPS-based measure averaged **2.82 pp** over
 2003-2026 with a standard deviation of 1.25, peaked at **5.80 pp** in 2009-03, and by annual
-average has gone 2.83 (2022) → 1.72 (2023) → 0.94 (2024) → 0.74 (2025) → **0.52 (2026)**.
+average has gone 2.83 (2022) → 1.72 (2023) → 0.94 (2024) → 0.74 (2025) → **0.46 (2026, to
+August)**.
 
 **The "low rates justify a high CAPE" defence has expired.** It was a good argument in 2021
 and it is not one now.
 
 Both prior CAPE peaks had a *negative* Shiller excess CAPE yield: **−1.09 pp** at 1999-12 and
 **−0.61 pp** at 1929-09. On that measure today is less extreme than either. On the
-market-priced measure the gap has closed to eight basis points.
+market-priced measure the gap has closed to zero.
 
 ### 1.2 The same level from the web, and why the readings differ
 
 | Measure | Value | Source as-of | Source, read 2026-08-22 |
 | --- | ---: | --- | --- |
-| Shiller CAPE | 41.96 | 2026-08-21 close | [multpl.com/shiller-pe](https://www.multpl.com/shiller-pe) |
+| Shiller CAPE | 41.74 (41.96 on 2026-08-21) | 2026-09-01 close | [multpl.com/shiller-pe](https://www.multpl.com/shiller-pe) |
 | CAPE mean / median, from 1871 | 17.40 / 16.11 | full history | same |
 | S&P 500 | 7,674.37 | 2026-08-21 | [TradingEconomics](https://tradingeconomics.com/united-states/stock-market) |
 | 2026 YTD total return | +12.9% | 2026-08-21 | [ChartRow](https://chartrow.com/sp500/returns) |
-| Forward 12-month P/E | 20.0 (5yr avg 19.9, 10yr avg 19.0) | 2026-08-07 | [FactSet Earnings Insight](https://insight.factset.com/sp-500-earnings-season-update-august-7-2026) |
+| Forward 12-month P/E | 19.6 (20.0 on 2026-08-07; 5yr avg 19.9, 10yr avg 19.0) | 2026-08-28 | [FactSet Earnings Insight](https://advantage.factset.com/hubfs/Website/Resources%20Section/Research%20Desk/Earnings%20Insight/EarningsInsight_082826.pdf) |
 | Forward P/E, forward EPS | 19.7, $393.28 | 2026-08-22 | [Yardeni](https://www.yardeniquicktakes.com/us-market-call-stocks-getting-cheaper-as-earnings-outpace-prices/) |
 | Trailing P/E, earnings yield | 29.58, 3.38% | 2026-08-21 | [multpl](https://www.multpl.com/s-p-500-pe-ratio) |
-| 10y nominal / 10y TIPS (CMT) | 4.69% / 2.35% | 2026-08-20 | [Federal Reserve H.15](https://www.federalreserve.gov/releases/h15/) |
+| 10y nominal / 10y TIPS / 30y TIPS (CMT) | 4.75% / 2.44% / 2.99% | 2026-08-31 | [Federal Reserve H.15](https://www.federalreserve.gov/releases/h15/) |
+| 10y nominal / 10y TIPS (CMT) | 4.69% / 2.35% | 2026-08-20 | H.15, the reading the §2–§4 tables were built on |
 | 10y nominal / 10y TIPS | 4.74% / 2.39% | 2026-08-21 | [TradingEconomics](https://tradingeconomics.com/united-states/government-bond-yield) |
 | 10y TIPS auction real yield | 2.438%, highest since Oct 2008 | 2026-07-23 | [tipswatch](https://tipswatch.com/2026/07/23/10-year-tips-auction-gets-real-yield-of-2-438-a-great-result-for-investors/) |
 
@@ -205,9 +209,20 @@ a 50% chance realised ten-year returns fall outside its own error bars.
 **Every forecaster with a public number ranks US large-cap last.** They do not agree on
 anything else: GMO's US large-cap forecast is 12 pp below AQR's, and GMO and Vanguard put EM
 *below* the US while AQR puts it above. AQR's global 60/40 expected real return is **3.4%**,
-about 1.5 pp above its 2021 low and still well below the long-run US average. Research
-Affiliates reportedly forecasts 3.1% nominal for US large cap against 4.7% for US aggregate
-bonds, but that came through a search snippet only and **is unverified**.
+about 1.5 pp above its 2021 low and still well below the long-run US average.
+
+**Six managers' 2026 assumptions, reconciled to one basis** (ten-year nominal geometric USD,
+collected 2026-09-01 from each firm's own document), span fourteen points on US large cap:
+Syzygy/Research Affiliates **3.3%** (as of 2026-07-31, full reversion of the cyclically
+adjusted earnings yield over twenty years), Vanguard 5.1%, AQR 6.3% (no reversion term),
+J.P. Morgan 6.7%, BlackRock **9.0%** (an AI-earnings scenario weighting), and GMO −5.1% on a
+seven-year real forecast converted at 2.3% inflation. Their implied equity premium over a
+market TIPS runs from −9.9 pp (GMO) and −2.2 (RA) through +1.2 to +1.5 (J.P. Morgan,
+Vanguard, AQR) to +3.8 (BlackRock): four of six sit between −2.2 and +1.5, the models that
+revert the multiple at the bottom and the models that do not at the top. Every source except
+BlackRock puts developed ex-US above US large cap; bonds and cash agree within half a point.
+**These are external inputs, displayed for the reader and sized on by nothing here**
+([decision 0012](../decisions/0012-valuation-enters-through-the-drawdown-assumption.md)).
 
 ### 1.5 Sources that could not be reached
 
@@ -872,6 +887,14 @@ investor has not yet supplied.** That number — the tolerable peak-to-trough re
 is the single most valuable missing input in this repository, and it is worth more than any
 further valuation research.
 
+**The one conditional rule this licenses**, priced inside the leveraged construction by
+Experiment 018 ([defensive engines](defensive-engines-in-the-construction.md)): at a stated
+tolerance of −50% or tighter, hold 10 points of long TIPS unlevered in the traditional
+account, funded from VTI and VXUS pro rata, and shrink the wrapper to the notional ladder's
+figure (19.1% at −50%); at −60% or looser, hold none. The substitution's historical cost of 0.55–0.77 pp/yr
+was earned on a 6–7 pp realised premium; at today's 0–1.5 pp over TIPS it is 0–0.2. The
+default for a contributing investor is none.
+
 ### 6.3 A dynamic, valuation-conditional rule
 
 **No, in a taxable account. Defensible but unpromoted in a sheltered one.**
@@ -886,10 +909,16 @@ further valuation research.
   on revised data that flatters it, and rests on ~2.5 independent 30-year windows. **It is
   `exploratory` and no specification was frozen.** It should not be implemented on this
   evidence; it is a candidate for a registered experiment.
-- The signal's current reading, for the record and not as a recommendation: the excess CAPE
-  yield sits at the **18.7th percentile** of its expanding history on Shiller's own measure
-  and the **0th percentile** of the TIPS era. A k=0.4 rule tilting on the former would set
-  0.675 against a 0.80 base; a CAPE-level rule would set 0.604.
+- The signal's current reading, for the record and not as a recommendation (`as of
+  2026-09-01`): the excess CAPE yield sits at the **18.7th percentile** of its expanding
+  history on Shiller's own measure and the **0th percentile** of the TIPS era. The k = 0.4
+  rule would hold **0.675 against its 0.80 anchor** — a cheap-end reading, held in 6.9% of
+  months since 1921 with a minimum of 0.603, not the extreme — and a CAPE-level rule 0.604.
+  Scaled to this investor's all-equity base that is about **84–88% equity** with the balance
+  in a ten-year Treasury or TIPS, in the sheltered account only. Every caveat above travels
+  with it: `exploratory`, wrong sign in 1980–2000, ~2.5 independent windows, revised data, a
+  73% Stambaugh bias on the underlying slope, and a regret of 30–60 bp/yr if the realised
+  premium is 2–4% (§6.2).
 
 ### 6.4 The one-line answer to the investor
 

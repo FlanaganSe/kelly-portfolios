@@ -16,30 +16,47 @@ outside it when the mechanism and decision relevance are stated.
 ## 1. Compare portfolios as portfolios
 
 Run a common construction tournament across feasible combinations of the core, bonds,
-trend, gold, and other accessible diversifiers.
+trend, gold, and other accessible diversifiers, with predeclared investor scenarios,
+pro-rata, cash and financed funding rules compared rather than chosen, MDE computed before
+freezing, risk- and leverage-matched controls, and expected-return assumptions kept apart
+from diversification effects.
 
-Design requirements:
+Run so far: the [construction tournament](construction-tournament.md) and
+[final construction](final-construction-test.md) on the equity-plus-trend candidates
+(Experiments 016–016f), and now a defensive arm,
+[Experiment 018](defensive-engines-in-the-construction.md), which holds stacked Treasury,
+gold and TIPS legs and three substitutions inside the leveraged construction on 96 years
+against cheap, leverage-matched and volatility-matched controls. Every mean gap for a
+defensive leg came back `unresolved` or `rejected`, as its freeze note predicted.
 
-- predeclare investor scenarios and their liquidity, leverage, drawdown, and account limits;
-- compare pro-rata funding, cash funding, and financed overlays rather than selecting one as
-  doctrine;
-- use attainable materiality thresholds and compute MDE before freezing;
-- report risk- and leverage-matched controls;
-- separate expected-return assumptions from diversification effects;
-- evaluate regret and robustness across plausible inputs, not only an estimated optimum.
-
-Why first: this is the only test that can tell whether several individually uncertain
-sources form a useful joint portfolio. A sleeve-by-sleeve tournament cannot answer it.
+What remains: a **bond-regime-conditioned test**, a stack switched on by trailing
+bond–equity correlation and scored on the 691 months outside 1981–2020, which is the one
+design that could resolve the Treasury leg; a **TIPS series before 2003**, without which
+the leg the valuation argument points at cannot be scored on a panel containing 1970–81;
+and the regret evaluation across plausible inputs, which no experiment has yet run on the
+defensive arms.
 
 ## 2. Measure crisis-conditional dependence
 
 Trend's allocation case depends more on its relationship with equity in bad states than on
-its full-sample average. Predeclare equity-stress windows or a state model, test sensitivity
-to window definitions, and distinguish static beta from nonlinear crisis response. Define a
-monitoring boundary that would reduce or remove an overlay.
+its full-sample average, and so does every defensive leg's.
 
-Extend the same test to nominal bonds, TIPS, gold, duration-hedged credit, and any new
-candidate. Low average correlation is only an admission signal.
+Measured so far: the tilt-plus-trend correlation matrix in the worst decile of equity
+months and three other conditions ([stacking](stacking-and-effective-breadth.md) §6: the
+three value tilts merge, IDMO–trend rises to +0.64, effective bets fall from 3.71 to
+2.7–2.9, no sleeve's conditional mean is negative), and Experiment 018's episode tables
+([defensive engines](defensive-engines-in-the-construction.md) §3), which score every arm
+on eight frozen deflationary and inflationary episodes and read the bond-equity
+correlation era by era.
+
+What remains: the bond-regime-conditioned test named under item 1; **RSST's own tail
+behaviour from its filings at its delivered loading**, because every conditional trend
+figure so far is a vendor index or a fund-free construction, and the loading refresh due
+at its 2026-07-31 N-PORT (filing deadline 2026-09-29); **JPFP's first N-PORT**, due by the
+same date, before any wrapper comparison can include it; a state model rather than a
+regime label, so that the conditional figures could be acted on; and the same measurement
+for duration-hedged credit and any new candidate. Low average correlation is only an
+admission signal.
 
 ## 3. Build a point-in-time live-product panel
 

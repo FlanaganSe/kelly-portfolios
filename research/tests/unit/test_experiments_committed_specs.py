@@ -49,7 +49,9 @@ SPEC_NAMES = (
     "exp_016c_financing_band",
     "exp_016d_premium_surface",
     "exp_016e_final_construction",
+    "exp_016f_matched_pairs",
     "exp_017_longonly_ladder",
+    "exp_018_defensive_engines",
     "phase1_ff_reproduction",
 )
 
@@ -990,3 +992,43 @@ def test_exp_011_carries_a_sleeve_that_is_expected_to_fail_the_admission_bar() -
     }
     assert "commodity" in as_sequence(parameters["sleeves"])
     assert "commodity" not in as_sequence(parameters["portfolio_sleeve_order"])
+
+
+def test_exp_016f_contestants_are_fully_invested_before_leverage() -> None:
+    """A matched pair is only matched if both sides spend exactly one unit of capital.
+
+    Every constant-weight arm's target weights must sum to 1.0 before the
+    ``leverage`` multiplier is applied; a variant that quietly held 99 or 101
+    points would put an unplanned cash or borrowing difference inside a pair
+    that claims to differ by one holding.
+    """
+    spec = load("exp_016f_matched_pairs")
+    validate_specification(spec)
+    assert spec.run_kind is RunKind.EXPLORATORY
+    assert spec.entry_point == "exp_016_construction_tournament"
+    contestants = as_mapping(as_mapping(spec.parameters)["contestants"])
+    weighted = {
+        name: as_mapping(as_mapping(entry)["weights"])
+        for name, entry in contestants.items()
+        if "weights" in as_mapping(entry)
+    }
+    assert weighted, "no constant-weight arm found"
+    for name, weights in weighted.items():
+        total = sum(float(str(value)) for value in weights.values())
+        # The financed overlay is the one arm that borrows through its weights
+        # rather than through `leverage`: 100% of the base plus 30% trend on top.
+        expected = 1.30 if name == "fund_overlay_30" else 1.0
+        assert total == pytest.approx(expected, abs=1e-9), f"{name} sums to {total}"
+    # The pairs the file exists for, each at equal gross on both sides.
+    for arm, benchmark in (
+        ("rec30_vs_original30", "original30"),
+        ("rec30_avlv_vs_rec30", "rec30"),
+        ("rec30_dfiv_vs_rec30", "rec30"),
+        ("rec30_vea_iemg_vs_rec30", "rec30"),
+        ("rec30_avuv_vs_rec30", "rec30"),
+    ):
+        assert as_mapping(contestants[arm])["benchmark"] == benchmark
+        assert weighted[arm]["RSST"] == weighted[benchmark]["RSST"] == 0.30
+    # The wrapper-weight pair is the one deliberate leverage mismatch.
+    assert as_mapping(contestants["rec30_vs_rec25"])["benchmark"] == "rec25"
+    assert weighted["rec25"]["RSST"] == 0.25

@@ -18,6 +18,9 @@ For the major decisions:
 - [Valuation and the allocation](research/valuation-and-the-allocation.md): what an August
   2026 CAPE of 41 licenses — a wider drawdown assumption, not a timing rule — and why the
   US/international spread is a differently identified question from the US level.
+  [Decision 0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md)
+  records why the CAPE enters the construction as a wider drawdown assumption and a
+  conditional TIPS rule rather than a forecast, and why no bond stack was added.
 - [Current regime and pricing](research/current-regime-and-pricing.md): which of the
   portfolio's engines are cheap and which are expensive *today*, each level beside its own
   historical percentile — and which conditioning variables have ever predicted anything.
@@ -100,6 +103,14 @@ For the major decisions:
   it was chosen over, why only one of those comparisons is resolvable and why that one is
   measuring leverage, what every fund on the tilt shelf actually costs once Form N-CEN's
   securities-lending income is netted off the fee, and why RPV and SPMO are both rejected.
+- [Defensive engines inside the construction](research/defensive-engines-in-the-construction.md):
+  the first experiment to hold a stacked Treasury, gold or TIPS leg, or a cash or
+  long-Treasury substitution, *inside* the leveraged construction rather than beside an
+  unlevered base — the 96-year bracket on the trend overlay whose top clears its floor and
+  whose bottom does not, why the bond stack's whole contribution is the 1981–2020 bull
+  market and what it is worth at today's term premium, the one defensive trade the design
+  can resolve, what an RSSB or NTSX leg would actually be, and the conditional TIPS rule
+  that follows.
 - [The trend weight under acknowledged ignorance](research/trend-weight-under-uncertainty.md):
   the tournament's number-one next test — the forward trend premium as a weighted range on one
   stated basis, the regret surface over weight and premium against two benchmarks that give
@@ -166,5 +177,6 @@ Decision records: [0001](decisions/0001-contained-python-research-workspace.md),
 [0007](decisions/0007-application-may-render-research.md),
 [0008](decisions/0008-growth-decides-crra-reports.md),
 [0009](decisions/0009-blocks-lifted-and-closures-rescoped.md),
-[0010](decisions/0010-bars-carry-a-reopening-condition.md), and
-[0011](decisions/0011-the-site-publishes-answers-not-notes.md).
+[0010](decisions/0010-bars-carry-a-reopening-condition.md),
+[0011](decisions/0011-the-site-publishes-answers-not-notes.md), and
+[0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md).

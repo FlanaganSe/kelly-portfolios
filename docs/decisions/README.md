@@ -21,6 +21,11 @@ retested; the current interpretation lives in the relevant synthesis.
 - [0011](0011-the-site-publishes-answers-not-notes.md): the research corpus stays in the
   repository as provenance and is not published; the site carries pages written for a
   reader, and a figure cites a source rather than a file path.
+- [0012](0012-valuation-enters-through-the-drawdown-assumption.md): a valuation reading
+  changes the construction only through the drawdown assumption, a tolerance-gated TIPS
+  rule and contribution-directed rebalancing, never through a return forecast; the financed
+  bond stack is not adopted, with numeric reopening triggers; external capital-market
+  assumptions are inputs, never edges.
 
 ## Scoped findings and historical corrections
 

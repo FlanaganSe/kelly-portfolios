@@ -1,0 +1,797 @@
+# FREEZE NOTE — READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    The portfolio this repository currently recommends is 100% equity notional
+#    plus a 30% financed trend overlay — 70% cheap equity core and 30% of an
+#    RSST-like stacked wrapper, 1.32x gross — and holds NO bonds, TIPS, gold or
+#    cash. Every earlier sleeve test priced those assets in isolation or at a 10%
+#    pro-rata weight against an unlevered equity base (exp_010, the fixed-income
+#    shelf, the gold sleeve study). The construction tournament (016, 016b-e)
+#    explicitly holds none of them. Nobody has held a defensive engine INSIDE the
+#    leveraged construction and asked whether it improves growth, drawdown and
+#    crisis-conditional behaviour against controls that are cheap, leverage-
+#    matched and volatility-matched. This file does that.
+#
+# 2. THIS SCORES CONSTRUCTIONS ON PUBLIC SERIES, NOT FUNDS.
+#    No fund return series is committed (decision 0002). Every wrapper below is a
+#    per-dollar exposure vector — so many units of equity, Treasury, trend or gold
+#    excess return — less a fee and less a financing charge on the notional it
+#    holds beyond its capital. The exposure vectors are ASSUMPTIONS modelled on
+#    filed structures (RSST, RSSB, RSBT, NTSX, GDE) and are stated per wrapper in
+#    `parameters.wrappers`. A reader who quotes a growth figure here as a fund's
+#    expected return has misread the experiment.
+#
+# 3. THE BOND LEG IS REALISED HISTORY THAT CONTAINS THE 1981-2020 BULL MARKET.
+#    Goyal-Welch `ltr` is a ~20-year government bond total return. Its window
+#    contains forty years of falling yields that no term-premium forecast promises
+#    again, and it is LONGER duration than the Treasury-futures ladders RSSB and
+#    NTSX actually hold. Every bond-stack arm inherits both facts. The artifact
+#    reports the bond leg's realised excess return in every era BESIDE the gap so
+#    that a reader can haircut it, and a 10-year par bond modelled from GS10
+#    (1953-05 onward) is run as the duration sensitivity.
+#
+# 4. THE TREND LEG ON THE LONG PANEL IS THIS REPOSITORY'S OWN 4-ASSET BOOK.
+#    US equity, long government, corporate and commodities, built on the frozen
+#    `studies/time_series_momentum` with its declared defaults and no trading
+#    cost, exactly as the adversarial review used it (1929-01..2025-05, Sharpe
+#    0.58). It is scaled to 12.38% volatility by ONE constant computed from its
+#    own realised full-window volatility on the primary panel — a Sharpe-
+#    preserving, look-ahead rescale that changes no sign and no ratio, chosen so
+#    that the trend notional means what it means in exp_016. The scalar is
+#    printed in the artifact. The secondary panel uses AQR's TSMOM, a vendor
+#    series gross of the vendor's own trading costs by omission.
+#
+# 5. GOLD.
+#    LBMA PM month-end USD fixes, licence-restricted (hashes only, no bytes
+#    committed). The gold sub-window of the primary panel begins 1968-05 and
+#    therefore INCLUDES 1971-08..1974-12, when the dollar price was an
+#    administered peg and then a market a US person could not legally hold
+#    bullion in. That window is NOTED AND NOT DROPPED, because dropping it would
+#    be selecting on the one stretch in which gold's real return was made by
+#    policy. Gold futures financing is an ASSUMPTION at 30 bp/yr over cash and is
+#    swept 0-60.
+#
+# 6. WHAT THIS FILE PREDICTS BEFORE IT IS RUN.
+#    `parameters.minimum_detectable_effect` is arithmetic on each panel's length
+#    and a grid of tracking errors, and it required no look at the data. On the
+#    1157-month primary panel the floor is 0.285 pp/yr per point of tracking
+#    error; on the 497-month secondary panel it is 0.435. A bond stack at 20
+#    points tracks the reference arm at roughly 1.7 points and can resolve about
+#    0.5 pp/yr; the reference arm tracks the cheap control at roughly 4 points
+#    and can resolve about 1.1 pp/yr (primary) or 1.7 pp/yr (secondary). A
+#    financed 20-point Treasury leg whose realised excess return is about 2 pp/yr
+#    before a 15 bp financing charge and a 39 bp wrapper fee on 20 points of
+#    capital can contribute at most a few tenths of a point. THE EXPECTED OUTCOME
+#    IS THAT EVERY MEAN GAP AGAINST EVERY CONTROL COMES BACK `unresolved`. That is
+#    written here, before the run, so that it cannot afterwards be presented as
+#    a disappointment or as a finding this design earned.
+#
+# 7. THE DECISION-RELEVANT OUTPUTS CARRY NO SIGNIFICANCE CLAIM.
+#    The drawdown table, the months-under-water table, the worst-decile offsets,
+#    the crisis-episode table and the contribution-weighted terminal wealth are
+#    DESCRIPTIVE statistics of one realised history. They are what the investor
+#    asked about and they are reported in full, with no p-value, no interval and
+#    no status, because a maximum drawdown is one order statistic of one path.
+#
+experiment_family: exp_018_defensive_engines
+title: >
+  Defensive engines inside the leveraged construction: does a financed Treasury
+  stack, a gold stack, a cash or long-Treasury substitution, or a bond-plus-trend
+  wrapper improve 70% equity core + 30% RSST-like trend wrapper on growth,
+  drawdown and crisis behaviour against cheap, leverage-matched and
+  volatility-matched controls, on 1157, 685, 497 and 280 months?
+entry_point: exp_018_defensive_engines
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260901
+
+hypothesis: >
+  The reference construction is `base_trend30`: 70% of capital in a 3 bp equity
+  core and 30% in an RSST-like wrapper holding 1.072 equity and 1.000 trend per
+  dollar, which is 1.0216 equity notional, 0.300 trend notional and 1.3216 gross.
+  Each candidate arm replaces part of the core, or part of the wrapper, with a
+  defensive engine — a financed Treasury leg (RSSB-like, NTSX-like), a financed
+  gold leg (GDE-like), unlevered cash or long Treasuries, a bond-plus-trend
+  wrapper (RSBT-like) in place of ten points of the equity core, or a financed
+  TIPS leg on the short check window. The hypothesis under test, per arm and per
+  control, is that the arm's arithmetic mean monthly total return exceeds the
+  control's after every cost charged inside the rule; and, descriptively, that it
+  draws down less, spends fewer months under water, loses less in the worst
+  decile of equity months and in the predeclared crisis episodes, and ends with
+  more contribution-weighted wealth than the reference arm. EVERY MEAN GAP IS
+  EXPECTED TO COME BACK `unresolved` (freeze note 6). The useful output is the
+  size of the smallest difference each panel could have seen, beside each
+  estimate, and the descriptive drawdown and crisis tables, which carry no
+  significance claim (freeze note 7).
+
+mechanism: >
+  Three mechanisms, all inherited from `portfolio_edge.studies.overlay_growth`.
+  DIVERSIFICATION: a financed sleeve raises growth when its net Sharpe ratio
+  exceeds `L rho sigma_p`; at the near-zero or negative bond-equity correlation
+  of 1998-2020 the threshold is near zero, and at the positive correlation of
+  1965-1998 and 2022 it is not, which is why the bond-equity correlation regime
+  is reported era by era beside every bond arm. FUNDING: a stacked leg keeps the
+  funding-rule gap `sigma_p**2 (L-1)` that a pro-rata substitution pays, so the
+  stacked and the substituted versions of the same engine are different
+  hypotheses and both are run. COST: fees on wrapper capital plus financing on
+  financed notional, all inside the rule — the RSSB-like leg costs 39 bp on its
+  capital plus 15 bp on 1.00 of Treasury notional plus 62 bp on 0.10 of equity
+  futures; a bond leg earning about 2 pp/yr of excess return therefore nets
+  roughly 1.4 pp/yr per unit of notional, before its diversification effect.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each candidate arm,
+  against each named control separately, on the primary metric:
+  (a) `rejected` if the arithmetic mean gap point estimate is at or below zero;
+  (b) `unresolved` if the gap is positive but smaller than the minimum detectable
+  effect at 80% power computed from that comparison's own paired difference
+  series, reported in the same row;
+  (c) `unresolved` if the gap exceeds its MDE but its Benjamini-Hochberg adjusted
+  p-value within the declared family (one family per control per panel) exceeds
+  0.10;
+  (d) `unresolved` if the gap survives (b) and (c) but changes sign anywhere on
+  the declared equity-financing band, because the financing charge is the one
+  unobservable cost and a result that lives inside it is not a result;
+  (e) `exploratory` otherwise. Under no outcome may this specification produce a
+  status above `exploratory`.
+  The drawdown, months-under-water, worst-decile, crisis-episode and terminal-
+  wealth tables are descriptive and receive NO status. The whole-experiment
+  status is `exploratory` when any primary- or secondary-panel comparison reaches
+  (e) and `unresolved` otherwise.
+
+universe:
+  description: >
+    Five monthly excess-of-cash legs plus the cash rate, on four panels. US-only
+    equity throughout, because developed ex-US begins 1990-11 and the question
+    needs the 1929-1932, 1937, 1973-74 and 1977-81 episodes. Cash is the Ken
+    French one-month bill, the same `RF` inside `Mkt-RF`, so no cross-source cash
+    rate is spliced. No fund share class, NAV series, contract-level futures data,
+    roll or collateral model appears anywhere.
+  legs:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published, 1926-07 onward.
+      note: >
+        The three-factor file rather than the five-factor file, because the
+        five-factor file begins 1963-07; `Mkt-RF` and `RF` are identical between
+        the two where both exist.
+    - id: treasury
+      source: Goyal-Welch `PredictorData2025.xlsx`, monthly, `ltr`, less French `RF`
+      basis: >
+        Long-term US government bond total return, 1926-01..2025-12, roughly a
+        20-year bond. LONGER duration than the 2-to-30-year Treasury-futures
+        ladders RSSB and NTSX hold; see `parameters.bond_series_sensitivity`.
+    - id: trend
+      source: >
+        Primary panel: this repository's own 4-asset time-series-momentum book
+        (equity, treasury, corporate, commodity; French Mkt-RF, Goyal-Welch ltr
+        and corpr less Goyal-Welch Rfree, AQR equal-weight commodity excess),
+        `studies/time_series_momentum` defaults, minimum three live instruments,
+        scaled to 12.38% volatility by one full-window constant. Secondary panel:
+        AQR `TSMOM`, used as published and not re-scaled.
+      basis: Excess of cash, no trading cost charged on either series.
+    - id: gold
+      source: LBMA Gold Price PM, last USD fix of each month, price return less French `RF`
+      basis: >
+        Spot excess return, 1968-05 onward. A gold futures position earns
+        approximately this less a basis, which is charged in the wrapper.
+    - id: tips
+      source: >
+        FRED `FII10` ten-year real par yield, priced as a rolled par bond by
+        `studies/fixed_income_shelf.par_bond_total_returns`, grossed up by CPI-U
+        with the three-month reference-CPI lag by `tips_nominal_total_return`,
+        less French `RF`. MODELLED; check window only.
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `RF`
+  excluded:
+    - Any claim that a wrapper's simulated path is that fund's return.
+    - Any weight search. Every arm's weights are declared here and nothing optimises them.
+    - Developed ex-US or emerging equity, which would cut the panel to 1990-11.
+
+sample_policy:
+  start: "1926-01"
+  end: "2026-05"
+  held_out: >
+    Nothing is held out. Each panel is the intersection of what its sources
+    publish, and neither boundary of any panel was chosen: the primary panel
+    begins when the 4-asset book has three live instruments (1929-01) and ends
+    when the AQR commodity leg ends (2025-05); the secondary panel is the AQR
+    TSMOM file (1985-01..2026-05); the gold sub-window begins at the first LBMA
+    monthly return (1968-05); the check window begins at the first modelled TIPS
+    return (2003-02). The data has been searched by seventeen earlier
+    specifications and the arms were chosen by people who read them.
+  embargo: >
+    None. The constant-weight arms estimate nothing. The 4-asset trend book uses
+    only data before each month; its volatility scalar is the one look-ahead and
+    it is a Sharpe-preserving constant (freeze note 4).
+  eras:
+    - name: first_half
+      start: "1929-01"
+      end: "1977-03"
+      rationale: >
+        The first 579 of 1157 primary-panel months, a mechanical midpoint chosen
+        by counting. Each panel's own halves are computed the same way in code;
+        this entry documents the primary panel's.
+    - name: second_half
+      start: "1977-04"
+      end: "2025-05"
+      rationale: The remaining 578 primary-panel months.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: >
+        The one flat-to-negative equity decade in the modern panel, with the
+        boundaries exp_016e froze, so that the overlay's conditional contribution
+        is read on this instrument rather than inherited.
+    - name: bond_bull_market
+      start: "1981-10"
+      end: "2020-07"
+      rationale: >
+        Peak ten-year yield to trough. Declared so that a bond arm's full-window
+        gap can be read beside the era that made it and the eras that did not.
+    - name: before_bond_bull
+      start: "1929-01"
+      end: "1981-09"
+      rationale: The complement, first part; rising or flat yields.
+    - name: after_bond_bull
+      start: "2020-08"
+      end: "2025-05"
+      rationale: The complement, second part; 58 months of rising yields including 2022.
+    - name: positive_bond_equity_correlation
+      start: "1966-01"
+      end: "1997-12"
+      rationale: >
+        The era in which US bond and equity returns were positively correlated in
+        the published literature, declared so the correlation regime table has a
+        boundary that was not found in this data.
+
+benchmark:
+  primary:
+    id: cheap
+    definition: 100% equity core at 3 bp, unlevered, rebalanced on the same clock.
+    rationale: Decision 0003, charter question 1 — can a construction beat a cheap index.
+  secondary:
+    id: leverage_matched
+    definition: >
+      The equity core levered to the arm's own gross notional, financed at cash
+      plus the equity-futures basis, debt accruing monthly as in exp_016.
+    rationale: Charter, benchmarks and funding — is it a construction effect or is it beta.
+  tertiary:
+    id: volatility_matched
+    definition: >
+      Equity core plus T-bills scaled so that full-window volatility of monthly
+      total return equals the arm's (ex post, one constant), and separately so
+      that each month's trailing 36-month volatility matches (ex ante, rolling;
+      scored from month 37 on). A scale above one is levered equity at the
+      equity-futures basis.
+    rationale: >
+      A defensive engine changes the risk dimension; a control matched on it
+      asks whether the engine did anything a cheaper risk dial could not.
+  quaternary:
+    id: reference
+    definition: The `base_trend30` arm itself.
+    rationale: >
+      The decision is whether adding an engine improves the current
+      recommendation, so the recommendation is the comparator that answers it.
+  aggregation_rule: >
+    FOUR CONTROLS ARE FOUR FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED OR
+    PLACED IN ONE COLUMN. Every reported gap names its control and its panel.
+    Benjamini-Hochberg is applied within one control on one panel and never
+    across.
+
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` over monthly funded total returns net of
+    every cost charged inside the simulation. Arithmetic rather than log because
+    the question is whether an engine adds expected return per unit of capital
+    at the stated leverage; the geometric growth of each arm is reported beside
+    it as a secondary metric and the two are never mixed.
+  units: percentage points per year
+  uncertainty: >
+    Stationary block bootstrap over the joint monthly panel, whole rows, mean
+    block 12 months, 10000 resamples, 95% percentile interval, plus a minimum
+    detectable effect at 80% power from each comparison's own paired difference
+    series (the exp_016 functions, reused by import).
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+    note: "`(2.801585 * sigma_gap / gap)**2`; beyond a human horizon is a finding."
+  - name: annualised log growth
+    units: percentage points per year
+  - name: maximum drawdown of the funded wealth path
+    units: percent
+  - name: longest run of months below the running peak
+    units: months
+  - name: worst-decile-of-equity-months mean offset against the reference arm
+    units: percentage points per month
+    note: >
+      `studies/stress_dependence.tail_dependence` on the arm-minus-reference
+      series, split by the equity leg's own worst 10% of months; hit rate beside it.
+  - name: convexity of the offset against the reference arm
+    units: slope
+    note: "`studies/stress_dependence.convexity` kappa with Newey-West t, descriptive."
+  - name: cumulative return in each predeclared crisis episode
+    units: percent
+    note: "`studies/stress_dependence.episode_returns`; partial coverage flagged."
+  - name: mean episode offset against the reference arm, by episode type
+    units: percentage points of cumulative return
+  - name: era gaps against each control
+    units: percentage points per year
+  - name: contribution-weighted terminal wealth ratio
+    units: ratio
+    note: >
+      Wealth path with a contribution of 1% of the starting balance added at the
+      start of every month before that month's return, terminal value divided by
+      the reference arm's and by the cheap control's.
+  - name: bond-equity correlation and bond excess return by era
+    units: correlation; percentage points per year
+  - name: gross, equity, trend, bond, gold and cash notional per arm
+    units: multiple of net asset value
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    (1) each wrapper's expense ratio on the capital allocated to it; (2)
+    financing on the notional a wrapper holds beyond its physical capital, at the
+    rate for that asset; (3) the equity-futures basis on the debt of any control
+    whose capital weights exceed one, accruing as in exp_016's simulator; (4) a
+    0.55 bp round-trip US equity spread, half-crossed on one-sided monthly
+    rebalancing turnover, on every line. Nothing is a post-hoc haircut.
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    RSSB_LIKE: 39
+    RSBT_LIKE: 97
+    NTSX_LIKE: 20
+    GDE_LIKE: 20
+    LTBOND: 5
+    TIPSSTACK_LIKE: 39
+    CASH: 0
+  financing_basis_points_over_cash:
+    equity: 62
+    treasury: 15
+    gold: 30
+    tips: 15
+  financing_sources: >
+    Equity 62 bp: `docs/research/structural-and-tax-edges.md` section 3, ten
+    E-mini rolls Dec-2022..Mar-2025 against 3-month Term SOFR, the figure exp_016
+    charges. Treasury 15 bp: `docs/research/leverage-and-the-notional-budget.md`
+    section 4, Treasury futures over OIS, borrowed there and not measured. Gold
+    30 bp: AN ASSUMPTION of this file — no gold-futures basis is measured anywhere
+    in this repository — swept 0 to 60. TIPS: no TIPS-futures market exists; the
+    Treasury rate is charged as a placeholder on the check window only.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  not_charged:
+    - The 4-asset trend book's own trading (262% one-way turnover; 20 bp one-way takes its Sharpe from 0.58 to 0.50).
+    - The vendor's trading costs inside AQR's TSMOM, by omission.
+    - Any tax. No arm holds tax lots; the comparison is pre-tax throughout.
+    - Bid/ask on the initial purchase; every arm starts from a common portfolio.
+
+rebalance_rule:
+  frequency: >
+    MONTHLY, every month, back to the arm's capital weights. Monthly rather than
+    exp_016's annual clock because the leverage-matched and ex-ante volatility-
+    matched controls are defined month by month and the arms must be held to the
+    same clock as their controls.
+  drift: Weights drift within the month and the drifted weights earn the month's return.
+  overlay_legs: >
+    A wrapper's internal notional is a property of the wrapper and is never
+    rebalanced by the investor. The per-dollar exposures in `parameters.wrappers`
+    are constants.
+  debt: >
+    Positions and debt are carried in absolute terms, exp_016's `_simulate`,
+    reused by import. Debt accrues at cash plus the equity-futures basis.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months. Not tuned on the data; 6 and 24 are
+    not re-run here because exp_016e already showed the interval width is
+    insensitive to them on these series.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each control family on each panel,
+    never across. The family omits the sensitivities, the era tables, and the
+    seventeen earlier specifications that searched this data; the adjusted
+    p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval containing zero is reported as unresolved. The MDE is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per control, per panel, and
+  record which clause fired. `unresolved` is the expected outcome for every
+  comparison; see freeze note 6 and `parameters.minimum_detectable_effect`.
+  Under no outcome may this specification produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    statement: >
+      Every wrapper is an assumed per-dollar exposure vector and a fee. No fund's
+      returns were used, because none is committed. The experiment scores
+      CONSTRUCTIONS; a result transfers to a fund only to the extent the fund
+      delivers the mapped exposure at the mapped cost.
+    order_of_operations: >
+      This file was written and frozen before the experiment module produced any
+      statistic. The arms were chosen by people who had read exp_016 and every
+      sleeve study; that look-ahead is recorded and no freezing removes it.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired monthly difference."
+    computed_before_freezing: >
+      Arithmetic on the panel lengths and a grid of tracking errors. Primary
+      1157 months (96.4 years): 0.285 pp/yr per point of tracking error. Gold
+      sub-window 685 months: 0.371. Secondary 497 months: 0.435. Check window
+      280 months: 0.585.
+    floor_at_assumed_tracking_error_primary:
+      "1.0": 0.29
+      "2.0": 0.57
+      "3.0": 0.86
+      "4.0": 1.14
+      "6.0": 1.71
+      "8.0": 2.28
+    floor_at_assumed_tracking_error_secondary:
+      "1.0": 0.44
+      "2.0": 0.87
+      "3.0": 1.31
+      "4.0": 1.74
+      "6.0": 2.61
+      "8.0": 3.48
+    expected_tracking_errors: >
+      Reference arm against cheap: about 0.30 x 12.38 = 3.7 points, floor 1.1
+      (primary) and 1.6 (secondary). Bond stack 20 against reference: about
+      0.20 x 8.5 = 1.7 points, floor 0.5 and 0.7. Bond stack 40: 3.4 points,
+      floor 1.0 and 1.5. RSBT 10, cash 10, long-bond 10 against reference: about
+      2 points, floor 0.6 and 0.9. NTSX against reference: about 6.7 points,
+      floor 1.9 and 2.9. Gold stack 10 against reference: about 1.4 points,
+      floor 0.5 (1968 sub-window) and 0.6. A financed 20-point Treasury leg
+      earning about 2 pp/yr less 15 bp financing less 39 bp fee on its capital
+      contributes roughly 0.3 pp/yr: BELOW EVERY FLOOR ABOVE.
+
+  panels:
+    - id: primary
+      role: primary
+      trend_source: own_4_asset_book
+      bond_source: goyal_welch_ltr
+      legs: [equity, treasury, trend]
+      note: >
+        The longest window on which equity, T-bills, long government bonds and
+        the own trend book all exist. Expected 1929-01..2025-05, 1157 months.
+      arms: [base_trend30, base_no_trend, trend30_bondstack20, trend30_bondstack40, trend20_rsbt10, ntsx100, trend30_cash10, trend30_ltbond10]
+    - id: primary_gold_subwindow
+      role: primary_subwindow
+      trend_source: own_4_asset_book
+      bond_source: goyal_welch_ltr
+      legs: [equity, treasury, trend, gold]
+      note: >
+        The primary panel from the first LBMA monthly return (1968-05) so that
+        the gold arm can run beside every other arm on the own trend book. It
+        INCLUDES 1971-08..1974-12; freeze note 5.
+      arms: [base_trend30, base_no_trend, trend30_bondstack20, trend30_bondstack40, trend20_rsbt10, ntsx100, trend30_goldstack10, trend30_cash10, trend30_ltbond10]
+    - id: secondary
+      role: secondary
+      trend_source: aqr_tsmom
+      bond_source: goyal_welch_ltr
+      legs: [equity, treasury, trend, gold]
+      note: AQR TSMOM replaces the own book; 1985-01..2026-05 less the bond series' 2025-12 end.
+      arms: [base_trend30, base_no_trend, trend30_bondstack20, trend30_bondstack40, trend20_rsbt10, ntsx100, trend30_goldstack10, trend30_cash10, trend30_ltbond10]
+    - id: tertiary_check
+      role: check
+      trend_source: aqr_tsmom
+      bond_source: goyal_welch_ltr
+      legs: [equity, treasury, trend, gold, tips]
+      note: >
+        A CHECK, NOT A TEST: 280 months from 2003-02, on which the modelled TIPS
+        series exists, so that a TIPS-stack arm can at least be described.
+      arms: [base_trend30, base_no_trend, trend30_bondstack20, trend30_tipsstack20, trend30_goldstack10]
+    - id: bond_series_sensitivity
+      role: sensitivity
+      trend_source: own_4_asset_book
+      bond_source: gs10_par_bond
+      legs: [equity, treasury, trend]
+      note: >
+        The primary arms re-run from 1953-05 with a 10-year par bond modelled
+        from FRED GS10 in place of `ltr`, and again on the same window with `ltr`,
+        so the duration of the bond leg can be read as a difference on one window.
+      arms: [base_trend30, base_no_trend, trend30_bondstack20, trend30_bondstack40, trend20_rsbt10, ntsx100, trend30_cash10, trend30_ltbond10]
+    - id: bond_series_sensitivity_ltr
+      role: sensitivity
+      trend_source: own_4_asset_book
+      bond_source: goyal_welch_ltr
+      start: "1953-05"
+      legs: [equity, treasury, trend]
+      note: The `ltr` companion to the GS10 sensitivity, on the identical window.
+      arms: [base_trend30, base_no_trend, trend30_bondstack20, trend30_bondstack40, trend20_rsbt10, ntsx100, trend30_cash10, trend30_ltbond10]
+
+  trend_book:
+    instruments: [equity, treasury, credit, commodity]
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.10
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of the book on the
+      primary panel`, applied to every month of the book on every panel that uses
+      it. Sharpe-preserving; a look-ahead on magnitude only; printed in the artifact.
+
+  wrappers:
+    CORE:
+      exposures: {equity: 1.0}
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures: {equity: 1.072, trend: 1.0}
+      financed: {equity: 0.331}
+      note: >
+        RSST's N-PORT of 2026-04-30 as exp_016 maps it: 74.09% physical S&P 500
+        plus 33.1% E-mini futures, and a trend book delivering 100% of risk
+        exposure. Financing on the 0.331 of equity futures at the equity rate; the
+        long/short trend book is charged no signed basis.
+    RSSB_LIKE:
+      exposures: {equity: 1.0, treasury: 1.0}
+      financed: {equity: 0.10, treasury: 1.0}
+      note: >
+        AN ASSUMED STRUCTURE: 90% physical equity, 10% cash collateral, 10% equity
+        futures and 100% Treasury futures across a 2-to-30-year ladder. The bond
+        leg here is a ~20-year bond, longer than that ladder (freeze note 3).
+    RSBT_LIKE:
+      exposures: {treasury: 1.0, trend: 1.0}
+      financed: {treasury: 1.0}
+      note: >
+        Assumed: 100% Treasury futures over T-bill collateral plus a 100% trend book.
+    NTSX_LIKE:
+      exposures: {equity: 0.9, treasury: 0.6}
+      financed: {treasury: 0.6}
+      note: >
+        Assumed: 90% physical equity plus 60% Treasury futures, the fund's stated structure.
+    GDE_LIKE:
+      exposures: {equity: 0.9, gold: 0.9}
+      financed: {gold: 0.9}
+      note: >
+        Assumed: 90% physical equity plus 90% gold futures, financed at the gold rate.
+    LTBOND:
+      exposures: {treasury: 1.0}
+      financed: {}
+      note: An unlevered long-Treasury index fund at 5 bp.
+    TIPSSTACK_LIKE:
+      exposures: {equity: 1.0, tips: 1.0}
+      financed: {equity: 0.10, tips: 1.0}
+      note: RSSB_LIKE with the modelled TIPS series in place of the Treasury leg. Check window only.
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+
+  contestants:
+    base_trend30:
+      role: reference arm; the current recommendation
+      weights: {CORE: 0.70, RSST_LIKE: 0.30}
+      note: 1.0216 equity, 0.300 trend, 1.3216 gross. Scored against cheap, leverage-matched and volatility-matched controls.
+    base_no_trend:
+      role: cheap control as an arm
+      weights: {CORE: 1.0}
+      note: Identically the cheap control; scored against the reference so the trend leg's own contribution is in the table.
+    trend30_bondstack20:
+      role: candidate; financed Treasury leg
+      weights: {CORE: 0.50, RSST_LIKE: 0.30, RSSB_LIKE: 0.20}
+      note: 1.0216 equity, 0.300 trend, 0.200 bond, 1.5216 gross.
+    trend30_bondstack40:
+      role: candidate; financed Treasury leg, larger
+      weights: {CORE: 0.30, RSST_LIKE: 0.30, RSSB_LIKE: 0.40}
+      note: 1.0216 equity, 0.300 trend, 0.400 bond, 1.7216 gross.
+    trend20_rsbt10:
+      role: candidate; bond-plus-trend wrapper in place of part of the trend wrapper
+      weights: {CORE: 0.70, RSST_LIKE: 0.20, RSBT_LIKE: 0.10}
+      note: 0.9144 equity, 0.300 trend, 0.100 bond, 1.3144 gross. Same trend notional as the reference with ten points of equity swapped for bonds.
+    ntsx100:
+      role: candidate; the classic capital-efficient alternative, no trend
+      weights: {NTSX_LIKE: 1.0}
+      note: 0.900 equity, 0.600 bond, 1.500 gross.
+    trend30_goldstack10:
+      role: candidate; financed gold leg
+      weights: {CORE: 0.60, RSST_LIKE: 0.30, GDE_LIKE: 0.10}
+      note: 1.0116 equity, 0.300 trend, 0.090 gold, 1.4016 gross. Gold panels only.
+    trend30_cash10:
+      role: candidate; lower equity share, unlevered cash
+      weights: {CORE: 0.60, RSST_LIKE: 0.30, CASH: 0.10}
+      note: 0.9216 equity, 0.300 trend, 0.100 cash, 1.2216 gross.
+    trend30_ltbond10:
+      role: candidate; unlevered long Treasury in place of ten points of core
+      weights: {CORE: 0.60, RSST_LIKE: 0.30, LTBOND: 0.10}
+      note: 0.9216 equity, 0.300 trend, 0.100 bond, 1.3216 gross.
+    trend30_tipsstack20:
+      role: candidate; financed TIPS leg, check window only
+      weights: {CORE: 0.50, RSST_LIKE: 0.30, TIPSSTACK_LIKE: 0.20}
+      note: As bondstack20 with the modelled TIPS series. Described, not tested.
+
+  reference_arm: base_trend30
+  controls: [cheap, leverage_matched, volatility_matched_expost, volatility_matched_exante, reference]
+  controls_in_estimates: [cheap, leverage_matched, volatility_matched_expost, reference]
+  volatility_match_window_months: 36
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.10
+  multiple_testing_q: 0.10
+  bootstrap_block_months: 12
+
+  crisis_episodes:
+    deflationary_or_growth:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: recession_1937, start: "1937-03", end: "1938-03"}
+      - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+      - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    inflation_or_rate:
+      - {name: oil_1973, start: "1973-01", end: "1974-09"}
+      - {name: inflation_1977, start: "1977-01", end: "1981-09"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+    note: >
+      Frozen here. Episodes a panel does not cover are reported as not covered;
+      partial coverage is flagged by `episode_returns`. The type split is the
+      point: a Treasury leg is expected to help in the first list and hurt in
+      the second, and an arm is described on both or on neither.
+
+  financing_sensitivity:
+    equity_basis_points: [62, 98, 130, 165, 200, 231]
+    treasury_basis_points: [0, 15, 30, 50]
+    gold_basis_points: [0, 15, 30, 45, 60]
+    reporting: >
+      Report every arm's gap against the cheap control and against the reference
+      arm at every point, and whether the arm ordering against the reference is
+      the same at every point. IF IT IS NOT, THE ORDERING IS NOT A FINDING.
+
+  bond_series_sensitivity:
+    what: >
+      `ltr` (~20-year) against a 10-year par bond modelled from GS10, both from
+      1953-05, both on the own trend book, difference of gaps against the reference.
+    modelled_series_caveat: >
+      The GS10 par bond has no on-the-run premium, no roll rule and no coupon
+      reinvestment convention; it is a duration check, not a second bond history.
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic. Every file is read from
+      the local raw cache; this experiment never downloads.
+    files:
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "corpr", "Rfree"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - id: aqr_commodities_long_run
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+      - id: aqr_tsmom_factors
+        source: aqr
+        dataset_id: aqr_tsmom_factors
+        table_id: monthly
+        columns: ["TSMOM"]
+        expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+        committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+      - id: lbma_gold_pm
+        source: lbma
+        dataset_id: lbma_gold_pm
+        table_id: daily
+        columns: ["USD"]
+        expected_sha256_raw: cbc6b2a70a2d2ba4d66c799fb08c2ae661d4f00013ada426ab7d61b5130f9b0b
+        manifest_note: >
+          The cached file (retrieved 2026-08-23) is a LATER vintage than the one
+          the committed manifest records (fa986c0a..., retrieved 2026-08-17).
+          LBMA republishes one history and the licence forbids committing bytes,
+          so the pin is the cached digest and the manifest mismatch is recorded
+          in the artifact as a finding rather than treated as an abort.
+        committed_manifest: data-manifests/lbma_gold_pm.json
+      - id: fred_gs10
+        source: fred
+        dataset_id: GS10
+        table_id: monthly
+        columns: ["GS10"]
+        expected_sha256_raw: a875d88b7ed6a413f697ddb6332f13e61ac58ac7ae0ef52d66a62174995ec6f7
+        committed_manifest: data-manifests/fred_gs10.json
+      - id: fred_fii10
+        source: fred
+        dataset_id: FII10
+        table_id: monthly
+        columns: ["FII10"]
+        expected_sha256_raw: fa8082c519714fda5de4cf207464fcd0cf4ee652007a1aad3caf8d5686d4a897
+        committed_manifest: data-manifests/fred_fii10.json
+      - id: fred_cpiaucns
+        source: fred
+        dataset_id: CPIAUCNS
+        table_id: monthly
+        columns: ["CPIAUCNS"]
+        expected_sha256_raw: ff0e1a1bb2af9364c1975f373cbac514f4f537fea9515c83c8b6994e8aa9a8a1
+        committed_manifest: data-manifests/fred_cpiaucns.json
+
+data_sources:
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr less French RF as the bond leg; ltr, corpr less Rfree inside the trend book
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end sets the primary panel's end
+  - id: aqr_time_series_momentum
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+    manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    construction: TSMOM, used as published; secondary and check panels only
+  - id: lbma_gold_pm
+    url: https://prices.lbma.org.uk/json/gold_pm.json
+    manifest: data-manifests/lbma_gold_pm.json
+    construction: last USD PM fix of each month; price return less RF
+  - id: fred_gs10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10
+    manifest: data-manifests/fred_gs10.json
+    construction: 10-year par bond total return, modelled; sensitivity only
+  - id: fred_fii10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=FII10
+    manifest: data-manifests/fred_fii10.json
+    construction: 10-year real par bond, modelled, grossed up by CPI-U; check window only
+  - id: fred_cpiaucns
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS
+    manifest: data-manifests/fred_cpiaucns.json
+    construction: reference-CPI gross-up for the TIPS leg, three-month lag
+
+hostile_tests:
+  - Charge financing to every levered control on the same terms as the arms; not charging it is the error this test exists to catch.
+  - Sweep the equity-futures basis 62-231 bp, the Treasury basis 0-50 bp and the gold basis 0-60 bp, and report whether the ordering against the reference arm survives.
+  - Replace the ~20-year `ltr` with a modelled 10-year par bond on one window and report the change in every bond arm's gap.
+  - Report the bond leg's realised excess return and its correlation to equity in every era beside every bond arm's gap.
+  - Report every crisis episode of both types, including 1973-74, 1977-81 and 2022 where a bond leg is expected to hurt, with partial coverage flagged.
+  - Report the flat equity decade and both eras of the bond bull market's complement, so that no conditional result is quoted without its complement.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Report the gold arm with 1971-08..1974-12 inside its window and say so.
+  - Report the ex-ante volatility-matched control beside the ex-post one, because the ex-post match uses the arm's realised volatility.
+
+reporting_requirements:
+  - The freeze note with every table, including that wrappers are assumed exposure vectors.
+  - The MDE and the control named beside every gap, in the same row; never a figure combining two controls.
+  - Gross, equity, trend, bond, gold and cash notional beside every arm.
+  - Maximum drawdown, months under water, worst-decile offset, both episode-type means, the flat-decade gap and the contribution-weighted terminal-wealth ratio for every arm, labelled descriptive.
+  - The bond-equity correlation regime and the bond leg's excess return in every era.
+  - The trend-book volatility scalar, and the sha256 of every source file read.
+  - A statement that the gold sub-window includes 1971-74 and that the bond history includes the 1981-2020 bull market.
+
+notes: >
+  Exploratory in the strongest sense: the arms were selected after every earlier
+  result was read, and the specification records that. This experiment can rank
+  constructions on public series and cannot rank funds. Retain `unresolved`
+  wherever the instrument cannot separate an arm from its control, and read the
+  drawdown and crisis tables as descriptions of one history, which is what they
+  are. No sleeve, fund or portfolio is promoted by this specification.
