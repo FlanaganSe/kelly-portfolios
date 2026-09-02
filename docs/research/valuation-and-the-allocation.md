@@ -81,7 +81,12 @@ data. Nothing on this page may support a promoted claim.
    return with `t = 3.65` on 14 independent observations — **and the relation is undetectable
    after 1990** (slope −0.0006, `t = −0.03`) on a design that could have found the historical
    0.07 at 80% power. AQR's own version of the same test reports a **+0.5 correlation on "4+
-   independent observations."**
+   independent observations."** Run as a regret decision rather than a forecast (§5.7), over
+   four re-rating futures crossed with growth and currency at ±1 pp/yr, the **minimax-regret
+   split is 50/50** at ten and thirty years; the expected-regret split is the grid floor
+   under every prior that puts more than about 10% on reversion, because the dividend-yield
+   gap alone is −1.41 pp/yr; and **60/40 by contributions stands as the first stop** at 43
+   bp/yr of tracking error, with 55/45 and 50/50 available at 98 and 152 bp.
 8. **The 65/35 split is not a US overweight.** Siblis's global index is **~64% US**
    (`as of 2026-06-30`), so 65/35 is a **+1.0 pp** active bet against global market-cap
    weight. The question is therefore not "should we cut an overweight" but "should we
@@ -900,6 +905,174 @@ question in front of the investor is therefore not "should I unwind an overweigh
 isn't one — but "should I deliberately underweight the market portfolio on a signal whose
 cross-sectional relation has been undetectable for 35 years and whose implied edge has a
 confidence interval four times its point estimate."
+
+### 5.7 The split as a regret decision, on a stated loss function
+
+`as of 2026-09-02`. [Search coverage](search-coverage.md) §6 asks that the split be resolved
+as a robustness decision: regret across plausible futures rather than an expected-return
+winner that history cannot identify. §5 has established why it cannot: the cross-sectional
+relation is undetectable after 1990 on a design that could have found it, and a 10 pp shift
+needs 55 to 178 years to demonstrate. This subsection is what is left once a forecast is
+given up. It is a grid evaluation, not a weight-space search, and **no specification was
+frozen** before its numbers were seen; it regenerates from
+[`studies/global_split_regret.py`](../../research/src/portfolio_edge/studies/global_split_regret.py)
+and its cache companion
+[`_global_split_regret_tables.py`](../../research/src/portfolio_edge/studies/_global_split_regret_tables.py)
+via `uv run python -m portfolio_edge.studies.global_split_regret`, which records each run in
+the ledger under `study_global_split_regret` (run `ff0b3c27…`); the identity and the regret
+arithmetic are pinned in `research/tests/unit/test_studies_global_split_regret.py`.
+
+**Conclusion.** The minimax-regret split is **50/50** at both horizons. The split that
+minimises expected regret is the grid floor, 40/60, under both stated priors, and that
+answer is a sign bet rather than a decision: at ten years it flips from 80/20 to 40/60 as
+the prior weight on reversion crosses about 5 to 10%, because the dividend-yield
+differential alone puts the US **1.41 pp/yr behind** before any re-rating, and at thirty
+years it is 40/60 at every prior. **60/40 by contributions stands as the first stop**: it
+is on the path to the minimax split, reached in 0.7 years at 10%/yr of contributions, and
+it cuts the worst ten-year regret from 21.9 to 17.4 log points at 43 bp/yr of tracking
+error. Continuing to 55/45 (13.0, at 98 bp) or to the minimax 50/50 (11.3, at 152 bp) is a
+tracking-error tolerance the investor has not stated, in the same class as the drawdown
+number §6.2 asks for. This is a decision under stated priors. It forecasts nothing.
+
+**The identity, with every input dated.** Over `T` years the US-minus-ex-US differential is
+`d = (y_US − y_X) + g + Δ/T − c`: the dividend-yield differential, the relative real
+per-share earnings growth, the change in the log relative multiple spread over the horizon,
+and the currency leg's contribution to the unhedged ex-US dollar return. It is §5.1's
+decomposition of the realised 1990-2024 gap turned forward. Buybacks sit inside `g`, because
+a repurchase raises per-share earnings and never appears in a dividend yield; the +1 pp
+growth scenario is where AQR puts the US's century-average growth edge.
+
+| Input | Value | `as of` | Source |
+| --- | ---: | --- | --- |
+| US dividend yield, `D/P` | 1.09% | 2026-06 | Shiller `ie_data`, last row carrying both |
+| Ex-US dividend yield | 2.50% | 2026-07-31 | VXUS cash yield, Vanguard fund-yield endpoint ([part A](portfolio-for-one-investor.md) §3.1); carries EM at about a quarter, and AVDV's 2.62% and Europe ex-UK's 2.80% bracket the developed-only figure from above |
+| Relative CAPE, US over developed ex-US | 1.704 (log +0.533) | 2026-06-30 | Siblis, 35.82 over 21.02 |
+| Long-run median of the US-minus-panel log valuation spread | −0.015 | 1871-2020 | JST R6 dividend-yield spread, §5's own series |
+| Standard deviation of that spread | 0.317 | 1871-2020 | same |
+| Cap-weight US share | 64% | 2026-06-30 | Siblis global index |
+| US and ex-US volatility, correlation | 15.19%, 16.33%, 0.766 | 1990-07…2026-06, 432 months | French US and developed ex-US `Mkt-RF + RF`, USD |
+
+Two facts fall out of the moments before any scenario is read. The relative volatility is
+**10.84%/yr**, so tracking error against the cap-weighted world is **108 bp/yr per 10 pp**
+of split, inside §5.5's 80 to 144 bracket. And the variance-minimising split is **65.4%
+US**, within a point of the cap weight: the tracking-error-minimising and the
+variance-minimising splits coincide, which is why the grid is centred where it is.
+
+**Scenarios, predeclared.** The relative multiple holds, reverts halfway to the long-run
+median, reverts fully, or re-rates a further one standard deviation up; crossed with a
+growth differential of 0, +1 and −1 pp/yr and a currency leg of 0, +1 and −1 pp/yr, the
+measured mean of the currency leg being +0.17 pp/yr on the VEA basket 1999-02…2026-06
+against a detection floor of 3.48 ([currency](currency-and-the-international-sleeve.md)
+§2.1). Thirty-six cells per horizon. The central cell of each re-rating state:
+
+| Re-rating state | Log change | 10-year `d` | 30-year `d` |
+| --- | ---: | ---: | ---: |
+| Hold | 0 | **−1.41 pp/yr** | −1.41 pp/yr |
+| Half reversion | −0.274 | −4.15 | −2.33 |
+| Full reversion | −0.548 | −6.89 | −3.24 |
+| Further, +1 sd | +0.317 | +1.76 | −0.36 |
+
+Growth adds its value and currency subtracts its value, so the ten-year range runs from
++3.76 (further, +1 growth, −1 currency) to −8.89 pp/yr (full, −1 growth, +1 currency), and
+the thirty-year range from +1.64 to −5.24. **The anchor is the assumption doing the most
+work.** It applies a 150-year dividend-yield spread to a CAPE ratio, and §5.2 has shown that
+about a third of the US's elevation is payout policy and §5.1 that about half of its relative
+richness is sector mix. A buyback-and-sector-adjusted anchor near 1.3x would make today's
+premium log +0.27 rather than +0.53, so the **half-reversion row doubles as full reversion to
+an adjusted anchor**, and the reader who believes the adjustment should read that row.
+
+**The loss.** Terminal log wealth of the rebalanced sleeve over `T` years, relative to the
+best split on the grid in that scenario; the sleeve's growth is `s·d − var(s)/2`, and the
+variance term moves by about 2 bp/yr across the whole grid because the two markets are 77%
+correlated. Regret is therefore close to `T·|d|·|s − s*|` with `s*` at a corner, which is
+why every scenario's best split is 80 or 40 and why the expected-regret rule is bang-bang.
+Tracking error is reported beside regret and never added to it: regret is what a split
+costs in a future the reader names, tracking error is what it costs in every future.
+
+**The regret table.** Ten years, log points × 100 of terminal wealth (divide by 10 for
+bp/yr × 100; 11.3 points is 10.7% of terminal wealth). State columns are the central cell;
+the maximum and the expectations run over all 36.
+
+| US share | TE bp/yr | Hold | Half | Full | Further | **Max, all 36** | Worst cell | E, equal prior | E, reversion-tilted |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | --- | ---: | ---: |
+| 80 | 173 | 5.4 | 16.4 | 27.3 | 0.0 | 35.3 | full, −1 growth, +1 currency | 12.4 | 16.4 |
+| 70 | 65 | 3.9 | 12.1 | 20.3 | 1.6 | 26.3 | same | 9.6 | 12.3 |
+| 65 | 11 | 3.2 | 10.0 | 16.9 | 2.5 | 21.9 | same | 8.2 | 10.3 |
+| 60 | 43 | 2.5 | 7.9 | 13.4 | 3.4 | 17.4 | same | 6.9 | 8.4 |
+| 55 | 98 | 1.8 | 5.9 | 10.0 | 4.3 | 13.0 | same | 5.6 | 6.4 |
+| **50** | 152 | 1.2 | 3.9 | 6.7 | 5.3 | **11.3** | further, +1 growth, −1 currency | 4.3 | 4.5 |
+| 40 | 260 | 0.0 | 0.0 | 0.0 | 7.3 | 15.3 | same | **1.9** | **0.8** |
+
+Thirty years, the same layout:
+
+| US share | TE bp/yr | Hold | Half | Full | Further | **Max, all 36** | E, equal prior | E, reversion-tilted |
+| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
+| 80 | 173 | 16.2 | 27.2 | 38.1 | 3.5 | 62.1 | 22.5 | 27.0 |
+| 65 | 11 | 9.5 | 16.3 | 23.2 | 1.5 | 38.2 | 13.9 | 16.4 |
+| 60 | 43 | 7.4 | 12.9 | 18.4 | 1.1 | 30.4 | 11.2 | 13.1 |
+| 55 | 98 | 5.4 | 9.5 | 13.6 | 0.7 | 22.6 | 8.6 | 9.8 |
+| **50** | 152 | 3.5 | 6.3 | 9.0 | 0.4 | **15.0** | 6.0 | 6.7 |
+| 40 | 260 | 0.0 | 0.0 | 0.0 | 0.0 | 20.5 | **1.3** | **0.6** |
+
+The equal prior is a quarter on each re-rating state; the reversion-tilted prior is 0.20
+hold, 0.35 half, 0.35 full, 0.10 further, growth and currency uniform inside each state.
+Minimax regret is 11.3 points at ten years (113 bp/yr) and 15.0 at thirty (50 bp/yr), both
+at 50/50; the 65/35 the vector holds carries roughly twice that in its worst cell.
+
+**Sensitivity to the reversion prior.** Put weight `p` on reversion, split equally between
+half and full, and the rest equally on hold and further. At ten years `E[d]` is +0.17 pp/yr
+at `p = 0` and falls 0.57 pp per 0.1 of `p`; the grid answer is 80 at `p = 0`, 55 at 0.05,
+and 40 from 0.10 onward. The unconstrained growth-optimal split, `s_minvar + E[d]/var`,
+moves **−48.5 points per 0.1 of prior weight on reversion at ten years and −16.2 at
+thirty**, which is 85 points of split per percentage point of expected differential: the
+log-wealth criterion leaves the grid almost at once, which is the finding rather than a
+defect of the grid. At thirty years `E[d]` is −0.88 pp/yr even at `p = 0`, so no prior in
+the family moves the answer off 40. The break-even is the yield term: under "hold" with
+the century-average +1 pp growth edge, `d` is −0.41 pp/yr, and reading the yield as total
+shareholder yield rather than dividend yield (US ≈2.8% against Europe ex-UK ≈3.55%, §5.2)
+would add about +0.7 pp to every cell, the size of one growth step.
+
+**Implementation, by contributions only.** [Part A](portfolio-for-one-investor.md) §3.8
+sets the executable rule: every new sheltered dollar to VXUS until the equity notional
+reads the target, AVDV held at 10, no taxable sale. From the vector's 64/36 (RSST 30 + VTI
+19 + VTV 15 against VXUS 16 + AVDV 10 + IDMO 5 + AVES 5), growth ignored, years to reach
+each split with all new equity money on the under-weight side and, in brackets, 70% of it:
+
+| US share | 5%/yr | 10%/yr | 15%/yr |
+| ---: | ---: | ---: | ---: |
+| 70 | 4.0 (5.7) | 2.0 (2.9) | 1.3 (1.9) |
+| 60 | 1.3 (1.9) | 0.7 (1.0) | 0.4 (0.6) |
+| 55 | 3.3 (4.7) | 1.6 (2.3) | 1.1 (1.6) |
+| 50 | 5.6 (8.0) | 2.8 (4.0) | 1.9 (2.7) |
+| 40 | 12.0 (17.1) | 6.0 (8.6) | 4.0 (5.7) |
+
+**Verified.** The moments, the tracking error per split, the coincidence of the
+variance-minimising split with the cap weight, and the regret arithmetic given the
+readings; the identity and the two-split regret table are pinned against hand-computed
+fixtures. **Interpretation.** The scenario anchor in dividend-yield units, the yield
+readings as forward yields, the two priors, and terminal log wealth as the loss.
+**Open.** A relative-CAPE history long enough to set the anchor in the units the current
+reading is in, which Siblis does not publish; the hedged and unhedged legs run separately,
+since §7's next test would change the currency axis from an assumption to a measurement;
+a sector-neutral spread; and the investor's own tracking-error tolerance, without which
+the choice between 60 and 50 cannot be made here.
+
+**What history can and cannot resolve.** It can supply the second moments, and does so
+precisely. It cannot sign the mean: the 1990-2010 cross-section found zero at 80% power
+for the historical slope, AQR's own version rests on four independent observations, and
+§5.5's 55 to 178 years to demonstrate a 10 pp shift stands. The table above does not
+change that. It says what each split costs in each named future, and which split loses
+least in the worst of them.
+
+**Consequence for the published vector.** RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 /
+IDMO 5 / AVES 5 holds 64/36 of equity notional. The minimax split would take the ex-US
+lines from 36 to 50 points of equity notional, all of it VXUS under §3.8's rule, in 2.8
+years at 10%/yr of contributions and 5.6 at 5%; 60/40 is 4 points of VXUS and 0.7 years.
+**60/40 by contributions stands, as the first stop rather than the destination**: the
+regret table supports continuing to 55/45 within 100 bp/yr of tracking error and to 50/50
+at 152 bp, and stops there, because at 40/60 the worst cell is the US re-rating further
+and regret rises again. Nothing here supports a taxable sale, a move to EM on this
+argument (§6.1 point 7), or reading any cell as a probability.
 
 ---
 

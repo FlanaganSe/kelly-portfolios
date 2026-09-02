@@ -17,7 +17,10 @@ For the major decisions:
   investor constraints decide the rest.
 - [Valuation and the allocation](research/valuation-and-the-allocation.md): what an August
   2026 CAPE of 41 licenses — a wider drawdown assumption, not a timing rule — and why the
-  US/international spread is a differently identified question from the US level.
+  US/international spread is a differently identified question from the US level; §3.3
+  registers the excess-CAPE-yield rule (Experiment 022) and §5.7 frames the US/international
+  split as regret across re-rating scenarios, where 60/40 is the first stop and 50/50 the
+  minimax split.
   [Decision 0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md)
   records why the CAPE enters the construction as a wider drawdown assumption and a
   conditional TIPS rule rather than a forecast, and why no bond stack was added.
@@ -104,6 +107,9 @@ For the major decisions:
   it was chosen over, why only one of those comparisons is resolvable and why that one is
   measuring leverage, what every fund on the tilt shelf actually costs once Form N-CEN's
   securities-lending income is netted off the fee, and why RPV and SPMO are both rejected.
+  [Experiment 023](../research/experiments/exp_023_tilts_out_of_sample.yaml) adds the tilt
+  complex's first out-of-sample window, 1981–1990 on AQR's Value and Momentum Everywhere
+  basis, where the sign reproduces and clears its floor.
 - [Defensive engines inside the construction](research/defensive-engines-in-the-construction.md):
   the first experiment to hold a stacked Treasury, gold or TIPS leg, or a cash or
   long-Treasury substitution, *inside* the leveraged construction rather than beside an

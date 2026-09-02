@@ -1,0 +1,759 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 0. WHAT THIS FILE PREDICTS, WRITTEN BEFORE THE RUN.
+#    PRIMARY OUTCOME: the arithmetic-mean gap of the tilt complex over the cheap
+#    same-split index on the PRIMARY WINDOW 1981-07..1990-10, on AQR's Value and
+#    Momentum Everywhere (VME) stock-selection factors, at the fund loadings
+#    Experiment 016e uses, unscaled. Prediction: POSITIVE, between +0.4 and +1.2
+#    pp/yr, and `unresolved` against a detection floor of roughly 1.0 pp/yr on
+#    112 months. A point estimate at or below zero is the informative outcome and
+#    would be reported as `rejected` under clause (a). The bridged-loading
+#    sensitivity is predicted to come in at roughly half the unscaled figure.
+#    BASIS CHECK: on 1990-11..2026-05 the VME-basis gap is predicted to be BELOW
+#    016e's +0.80, at roughly +0.4, because the VME value factors carry lower
+#    means than the French ones over that window; the French-basis arithmetic gap
+#    on the same estimand is predicted to reproduce +0.80 within 0.1.
+#    ORDER OF OPERATIONS, STATED HONESTLY: before this file was frozen a data
+#    availability probe printed, for each VME stock-selection column, its first
+#    and last observation, its full-sample mean and volatility, and, on
+#    1990-11..2026-05, its mean, volatility, correlation with and regression slope
+#    on the corresponding French factor. Those full-sample and overlap means
+#    arithmetically imply the pre-1990-11 means, so the primary prediction above
+#    is NOT blind: it is the arithmetic those means imply. What the probe did not
+#    print and what this experiment measures is every interval, floor,
+#    sub-period sign, leg attribution and trailing probability. No result of
+#    this experiment was computed before the hash below was taken.
+#
+# 1. WHY THIS FILE EXISTS.
+#    The one whole-portfolio comparison the recommendation can resolve is the
+#    tilt complex against the cheap index: 016e's `recommended_no_trend` arm,
+#    VTI 49 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 against VTI 65 /
+#    VXUS 35, +0.80 pp/yr [+0.36, +1.31] against a 0.47 i.i.d. floor and a 0.68
+#    block-bootstrap floor on 1990-11..2026-05. The adversarial review (section
+#    5) attributes 86% of the equivalent 016 arm's edge to the developed ex-US
+#    and emerging French panels, which begin 1990-11 and have NO out-of-sample
+#    period in this repository. AQR's VME file carries stock-selection value and
+#    momentum for the US, UK, continental Europe and Japan from 1972-01. This
+#    file runs the same tilt complex on the years BEFORE the French ex-US panels
+#    begin, which is the only genuine out-of-sample test of the tilt result the
+#    repository's data can support.
+#
+# 2. THE PRIMARY WINDOW IS 1981-07..1990-10, NOT 1972-01..1990-10, AND WHY.
+#    The request that produced this file asked for 1972-01..1990-10. The VME
+#    workbook's UK, Europe and Japan VALUE columns are empty until 1981-07 (114
+#    empty rows each); their momentum columns begin 1972-01 (UK) and 1974-02
+#    (Europe, Japan); the US columns begin 1972-02. The longest pre-1990-11
+#    window on which EVERY mapped leg exists is therefore 1981-07..1990-10, 112
+#    months, and that is the primary window. Each leg is additionally reported on
+#    its own longest pre-1990-11 window (US value from 1972-02, developed
+#    momentum from 1974-02, developed value from 1981-07) so that the longer
+#    history is not thrown away; those are leg-level figures and not the
+#    portfolio outcome.
+#
+# 3. THE MAPPING, LEG BY LEG. Every fund is the basis expression 016e gives it.
+#    Only the factor legs enter this comparison (see 4); the market legs cancel
+#    except for a stated residual.
+#    * US value: VTV's 0.337 on French HML and VTI's 0.0247 on French HML go
+#      onto VME `VALLS_VME_US90` at the same coefficients.
+#    * Developed ex-US value: AVDV's 0.510 and IDMO's 0.218 on French developed
+#      ex-US HML go onto the EQUAL-WEIGHTED mean of `VALLS_VME_UK90`,
+#      `VALLS_VME_ROE90` and `VALLS_VME_JP90`.
+#    * Developed ex-US momentum: IDMO's 0.540 and AVDV's 0.008 on French
+#      developed ex-US WML go onto the equal-weighted mean of the three
+#      developed momentum columns.
+#    * VME HAS NO SIZE, PROFITABILITY OR INVESTMENT FACTOR. AVDV's +0.671 SMB,
+#      +0.386 RMW and -0.114 CMA and IDMO's -0.164 SMB, +0.040 RMW and -0.394
+#      CMA are UNMAPPED and contribute nothing here. Their net contribution on
+#      the French basis over 1990-11..2026-05 is computed by the run and reported
+#      as the price of the omission. Direction of the bias: on that window the
+#      developed SMB premium was +0.61 pp/yr, RMW +3.17 and CMA +1.91 (016e's
+#      panel moments), and the net unmapped exposure is +0.059 SMB, +0.041 RMW
+#      and -0.031 CMA, so omitting them REMOVES roughly +0.1 pp/yr that the
+#      French-basis figure contains. The VME figures are therefore biased
+#      DOWNWARD relative to 016e by the small-cap half of AVDV, not upward.
+#    * Emerging value: AVES's 0.237 on French emerging HML has no counterpart
+#      before 1990-11 anywhere. In the out-of-sample arms AVES IS DROPPED: its
+#      5% is scored as the VXUS it displaces, with no exposure and VXUS's 5 bp
+#      fee. In the arms that carry it, AVES's 0.237 is placed on the developed
+#      VME value factor as a STATED APPROXIMATION, and the two treatments are
+#      reported side by side on every window so that the size of the
+#      approximation is visible.
+#    * A VME factor is a rank-weighted long/short book over the most liquid 90%
+#      of each market; a French factor is a 2x3 sorted spread. They are not the
+#      same object and a loading fitted on one is not a loading on the other.
+#      The PRIMARY arms apply the French loadings UNSCALED, as instructed. The
+#      BRIDGED arms multiply each leg by the OLS slope of the French factor on
+#      the VME factor over 1990-11..2026-05, pinned in `parameters.bridge`
+#      (0.532 US value, 0.564 developed value, 0.876 developed momentum): that
+#      is the translation the repository's own data supports, it is fitted on
+#      the overlap and never on the out-of-sample window, and the run recomputes
+#      it and reports any drift from the pinned values. The two mappings
+#      bracket the answer.
+#
+# 4. THE ESTIMAND IS THE ACTIVE-LEG ARITHMETIC GAP, AND WHAT THAT DROPS.
+#    016e's primary metric is the after-cost log-growth gap of two simulated,
+#    annually rebalanced, drifting portfolios. That simulation needs a market
+#    return for every regional leg, and no developed ex-US or emerging market
+#    series exists in this repository before 1990-07. The primary outcome here
+#    is therefore the arithmetic mean of the paired monthly difference in
+#    excess return between the two constant-weight portfolios, in which the
+#    market legs cancel except for a REGIONAL RESIDUAL of -1.0 point US, +0.75
+#    point developed ex-US and +0.25 point emerging (the complex holds 64/27/9
+#    where the control holds 65/26.25/8.75). That residual is geography, not
+#    tilt; it is DROPPED from every VME arm and its value on the French basis
+#    over 1990-11..2026-05 is reported beside the basis check. The variance-drag
+#    difference between the arithmetic and the log-growth estimand is
+#    `(sigma_control^2 - sigma_complex^2) / 2` and 016e's two portfolios have
+#    volatilities of 14.73% and 14.51%, so it is about +0.02 pp/yr in the
+#    complex's favour and is also reported.
+#
+# 5. COSTS ARE 016E'S. Fees: VTI 3, VTV 3, VXUS 5, AVDV 36, IDMO 25, AVES 30
+#    bp, charged on capital; the complex pays 9.07 bp weighted and the control
+#    3.70, a difference of 5.37 bp/yr (4.12 with AVES dropped). Rebalancing
+#    spread: 016e measured 2.98% and 2.60% one-sided annual turnover on the two
+#    portfolios at 0.55/1.18/2.72 bp round-trip spreads, which is 0.0136 and
+#    0.0118 bp/yr; the 0.002 bp/yr difference is charged as a constant and is
+#    four orders of magnitude below any floor here. No alpha is charged, as in
+#    016e's headline arms. The VME series are gross of every implementation
+#    cost, exactly as the French series are.
+#
+# 6. DEFLATION. This is ONE predeclared primary test. It extends the 016 family
+#    (016, 016b, 016c, 016d, 016e, 016f), so the effective specification count
+#    on this question is seven, and 016e's `recommended_no_trend` arm was one
+#    of fifteen scored arms in a Benjamini-Hochberg family that itself sat
+#    inside sixteen earlier searches of the same French data. The primary
+#    window here has NOT been searched by any earlier specification in this
+#    repository. The Harvey-Liu-Zhu t = 3 hurdle is reported beside the primary
+#    as the family-level deflation the adversarial review applied to 016.
+#
+# 7. VME FLAGS. `docs/research/evidence-base.md` records that the VME
+#    asset-allocation legs stop at 2025-01 and change construction after 2014;
+#    NOTHING IS READ FROM THEM. Only the eight stock-selection columns enter.
+#    The file is vendor-authored, reconstructed in full on every update, and
+#    states no cost basis; the raw and normalised hashes are pinned below and a
+#    mismatch aborts the run.
+#
+# 8. THIS SPECIFICATION IS NOT CONFIRMATORY. The loadings, the weights and the
+#    fund list were chosen by people who had read the 1990-2026 result. The
+#    pre-1990-11 window is out of sample for the DATA; it is not out of sample
+#    for the DESIGN, which was built on the in-sample answer.
+#
+experiment_family: exp_023_tilts_out_of_sample
+title: >
+  The tilt complex out of sample: does VTI 49 / VTV 15 / VXUS 16 / AVDV 10 /
+  IDMO 5 / AVES 5 beat the cheap 65/35 index on AQR's Value and Momentum
+  Everywhere stock-selection factors before 1990-11, where the French ex-US
+  panels that carry 86% of its +0.80 pp/yr edge do not exist, and does the VME
+  basis reproduce the French one where the two overlap?
+entry_point: exp_023_tilts_out_of_sample
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260902
+
+hypothesis: >
+  (i) PRIMARY. On 1981-07..1990-10 the tilt complex's active legs, mapped onto
+  VME US value, developed value and developed momentum at 016e's loadings and
+  charged 016e's costs, earn a positive arithmetic-mean gap over the cheap
+  same-split index. The prediction (freeze note 0) is +0.4 to +1.2 pp/yr,
+  unresolved against a floor of about 1.0.
+  (ii) BASIS CHECK. On 1990-11..2026-05 the same estimand on the VME basis
+  falls short of 016e's +0.80, and on the French basis reproduces it, so that
+  the difference between the two bases can be read separately from the
+  difference between the two windows.
+  (iii) FULL WINDOW. On 1981-07..2026-05, 539 months, the VME-basis gap is
+  positive and clears its own floor.
+  (iv) ATTRIBUTION. The developed value leg carries the largest share of the
+  out-of-sample gap, as it does in sample; a result carried by a leg that
+  carries nothing in sample would be a different finding and is not predicted.
+
+mechanism: >
+  A long-only tilt earns `weight x (fund loading - incumbent loading) x premium
+  - cost`, three terms and no capture fraction. Summed over the six funds of the
+  complex less the two of the control, the active exposure is +0.0466 on US
+  value, +0.0619 on developed value (+0.0738 with AVES approximated), +0.0278 on
+  developed momentum, and 5.37 bp/yr of fee (4.12 with AVES dropped). Nothing
+  else differs between the two portfolios except the regional residual of freeze
+  note 4 and the unmapped size, profitability and investment legs of freeze
+  note 3. The gap is therefore a weighted sum of three factor premia less a
+  constant, and its sign out of sample is the sign of those premia before 1990
+  at these weights.
+
+falsifier: >
+  For the PRIMARY arm, `tilts_oos` on 1981-07..1990-10, VME basis, unscaled
+  loadings, AVES dropped:
+  (a) `rejected` if the after-cost arithmetic-mean gap is at or below zero.
+  This is the clause that would mean the in-sample tilt edge does not reproduce
+  out of sample.
+  (b) `unresolved` if the gap is positive but smaller than the minimum
+  detectable effect at 80% power from the arm's own paired difference series,
+  which must be reported in the same sentence, with the HAC and block-bootstrap
+  floors beside it.
+  (c) `unresolved` if the gap clears (b) but its 95% stationary-block-bootstrap
+  interval or its 95% HAC interval includes zero.
+  (d) `unresolved` if the gap clears (b) and (c) but changes sign anywhere on
+  the +/-0.15 loading perturbation grid or in either declared half of the
+  window.
+  (e) `exploratory` otherwise. Under no outcome may this specification produce
+  a status above `exploratory` (freeze note 8).
+  The whole-experiment status is the primary arm's status. Every secondary arm
+  is reported with the same clauses applied, for information, and none of them
+  can change the whole-experiment status.
+
+universe:
+  description: >
+    Eight VME stock-selection columns, reduced to three basis legs, plus the
+    French series 016e uses, read for the basis check and the residual only.
+    No fund return, no market series before 1990-07 for any non-US region, and
+    nothing from the VME asset-allocation columns.
+  basis_series:
+    - id: us_val
+      source: AQR VME `VALLS_VME_US90`, monthly excess return of a rank-weighted long/short US value book
+      first_observation: "1972-02"
+    - id: dev_val
+      source: equal-weighted mean of `VALLS_VME_UK90`, `VALLS_VME_ROE90`, `VALLS_VME_JP90`
+      first_observation: "1981-07"
+      basis: >
+        Equal weights, not the vendor's inverse-volatility weights, because the
+        French developed ex-US HML this leg stands in for is a cap-weighted
+        regional composite and equal weighting is the least-fitted substitute.
+        The vendor's own `VAL^SS` average includes the US and is not used.
+    - id: dev_mom
+      source: equal-weighted mean of `MOMLS_VME_UK90`, `MOMLS_VME_ROE90`, `MOMLS_VME_JP90`
+      first_observation: "1974-02"
+    - id: us_hml
+      source: Ken French `F-F_Research_Data_5_Factors_2x3`, `HML`; basis check and bridge only
+    - id: dxus_hml
+      source: Ken French `Developed_ex_US_5_Factors`, `HML`; basis check and bridge only
+    - id: dxus_smb
+      source: same file, `SMB`; the unmapped-leg price only
+    - id: dxus_rmw
+      source: same file, `RMW`; the unmapped-leg price only
+    - id: dxus_cma
+      source: same file, `CMA`; the unmapped-leg price only
+    - id: dxus_umd
+      source: Ken French `Developed_ex_US_Mom_Factor`, `WML`; basis check and bridge only
+    - id: em_hml
+      source: Ken French `Emerging_5_Factors`, `HML`; basis check only
+    - id: us_mkt
+      source: Ken French `F-F_Research_Data_5_Factors_2x3`, `Mkt-RF`; the regional residual only
+    - id: dxus_mkt
+      source: Ken French `Developed_ex_US_5_Factors`, `Mkt-RF`; the regional residual only
+    - id: em_mkt
+      source: Ken French `Emerging_5_Factors`, `Mkt-RF`; the regional residual only
+  excluded:
+    - Every VME asset-allocation column (`*_EQ`, `*_FX`, `*_FI`, `*_COM`, `VAL^AA`, `MOM^AA`, `VAL`, `MOM`).
+    - The vendor's global averages `VAL^SS` and `MOM^SS`, which include the US.
+    - Any claim that a mapped path is a fund's return.
+    - Any refit of a loading on any window.
+
+sample_policy:
+  start: "1972-01"
+  end: "2026-05"
+  held_out: >
+    The primary window 1981-07..1990-10 is held out FROM THE DATA that produced
+    the in-sample result: no French developed ex-US or emerging series exists
+    there and no earlier specification in this repository has scored anything on
+    it. It is not held out from the design, which was chosen after reading
+    1990-2026. Nothing after 1990-10 is held out from anything.
+  embargo: >
+    None. The two windows are separated by the availability boundary of the
+    French ex-US files, which was not chosen.
+  eras:
+    - name: primary_out_of_sample
+      start: "1981-07"
+      end: "1990-10"
+      rationale: >
+        The longest pre-1990-11 window on which every mapped leg exists. Set by
+        the first developed VME value observation and the first French developed
+        momentum observation; neither boundary was chosen.
+    - name: oos_first_half
+      start: "1981-07"
+      end: "1986-02"
+      rationale: The first 56 of 112 months. A mechanical midpoint.
+    - name: oos_second_half
+      start: "1986-03"
+      end: "1990-10"
+      rationale: The remaining 56 months, containing October 1987.
+    - name: overlap_with_016e
+      start: "1990-11"
+      end: "2026-05"
+      rationale: 016e's 427-month joint window, on which the basis check is made.
+    - name: full_vme_window
+      start: "1981-07"
+      end: "2026-05"
+      rationale: Every month on which every mapped leg exists, 539 months.
+    - name: full_first_half
+      start: "1981-07"
+      end: "2003-12"
+      rationale: The first 270 of 539 months.
+    - name: full_second_half
+      start: "2004-01"
+      end: "2026-05"
+      rationale: The remaining 269 months.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: 016e's declared era, carried so the two files can be read together.
+    - name: post_gfc
+      start: "2009-04"
+      end: "2026-05"
+      rationale: 016e's declared least-favourable era, carried for the same reason.
+    - name: us_value_longest_oos
+      start: "1972-02"
+      end: "1990-10"
+      rationale: The US value leg's own longest pre-1990-11 window; leg-level only.
+    - name: dev_momentum_longest_oos
+      start: "1974-02"
+      end: "1990-10"
+      rationale: The developed momentum leg's own longest pre-1990-11 window; leg-level only.
+
+benchmark:
+  primary:
+    id: control_capweight
+    definition: >
+      65% VTI + 35% VXUS on 016e's mappings: US market plus 0.0247 US value on
+      the VTI leg, 0.75 developed plus 0.25 emerging market on the VXUS leg, at
+      3 and 5 bp.
+    rationale: >
+      Decision 0003 and 016e's `control_capweight`. The same-split cheap index,
+      so the comparison changes the construction and not the geography.
+  aggregation_rule: >
+    One benchmark, so nothing is combined. Arms on different windows are never
+    placed in one column and never pooled.
+
+primary_metric:
+  name: after-cost arithmetic-mean gap in excess return
+  definition: >
+    `1200 * mean(d_t)` where `d_t = sum_legs e_leg * f_leg,t - c / 12`, `e_leg`
+    is the complex's net active exposure to the leg, `f_leg,t` the leg's monthly
+    return, and `c` the annual cost difference in decimal. Arithmetic rather
+    than log growth for the reason in freeze note 4; the variance-drag
+    difference is reported.
+  units: percentage points per year
+  uncertainty: >
+    Three intervals and three floors, all reported. (1) Newey-West HAC standard
+    error with the repository's automatic lag rule, 95% normal interval. (2)
+    Stationary block bootstrap of the paired difference series, mean block 12
+    months, 10000 resamples, 95% percentile interval. (3) The i.i.d. minimum
+    detectable effect `2.801585 * 1200 * sd(d) / sqrt(T)` at 80% power, with
+    the HAC and block-bootstrap equivalents beside it.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power, i.i.d., HAC and block bootstrap
+    units: percentage points per year
+  - name: tracking error of the paired difference
+    units: percent per year
+  - name: years to distinguish at 80% power
+    units: years
+  - name: gap in each declared sub-period, with its sign
+    units: percentage points per year
+  - name: probability of trailing the control over the declared horizons, and the median shortfall when trailing
+    units: probability, percentage points per year
+    note: >
+      From block-bootstrap resampled paths of the paired difference. Horizons
+      of 10, 20 and 30 years as in 016e where the window holds them; the primary
+      window holds 112 months, so it reports the 5-year horizon only and says so.
+  - name: contribution of each leg and of cost to the gap
+    units: percentage points per year
+  - name: gap with the best month removed and with the worst month removed
+    units: percentage points per year
+  - name: gap range over the loading perturbation grid
+    units: percentage points per year
+  - name: bootstrap interval at mean block lengths 6 and 24
+    units: percentage points per year
+  - name: implied t-statistic against the Harvey-Liu-Zhu hurdle of 3
+    units: ratio
+  - name: price of the unmapped legs and of the regional residual, French basis, 1990-11..2026-05
+    units: percentage points per year
+  - name: log-growth gap and its variance-drag difference from the arithmetic gap, French basis, 1990-11..2026-05
+    units: percentage points per year
+
+cost_model:
+  applied: as a constant annual charge divided by twelve, subtracted from every month of the paired difference
+  fund_expense_ratio_basis_points:
+    VTI: 3
+    VTV: 3
+    VXUS: 5
+    AVDV: 36
+    IDMO: 25
+    AVES: 30
+  expense_ratio_source: 016e `cost_model.fund_expense_ratio_basis_points`, unchanged.
+  aves_when_dropped: >
+    Charged VXUS's 5 bp, because its 5% of capital is scored as the VXUS it
+    displaces. Charging 30 bp for an exposure that is not carried would be a
+    cost with no position.
+  rebalancing_spread_difference_bp_per_year: 0.002
+  rebalancing_spread_source: >
+    016e run cd2fb4b9: 2.978% and 2.601% one-sided annual turnover on
+    `recommended_no_trend` and `control_capweight`, at 0.55 / 1.18 / 2.72 bp
+    round-trip spreads weighted by each portfolio's regional mix, half a spread
+    per unit traded. 0.0136 less 0.0118 bp/yr.
+  not_charged:
+    - Any measured alpha, as in 016e's headline arms.
+    - The VME book's own trading, shorting and financing costs; the series states none.
+    - Securities lending, as in 016e.
+    - Tax of any kind.
+
+rebalance_rule:
+  frequency: >
+    Constant weights, monthly. There is no simulated drift because there is no
+    market leg to drift on before 1990-07; the cost of 016e's annual rebalancing
+    is charged as the constant in `cost_model`.
+  drift: none, and stated as a difference from 016e rather than hidden.
+
+inference:
+  bootstrap: stationary block bootstrap of the paired monthly difference series
+  block_length_policy: >
+    Mean block 12 months, with 6 and 24 predeclared as robustness. The
+    Politis-White rule is not used to set the block length.
+  multiple_testing_correction: >
+    ONE primary test; no correction can move it. Benjamini-Hochberg at q = 0.10
+    is applied over the secondary arms as a family for information only.
+    Family-level deflation over the 016 family is reported as the implied t
+    against the Harvey-Liu-Zhu hurdle of 3.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    Every gap is printed with its three floors. An interval that includes zero
+    is `unresolved` and is never narrowed by changing the estimator.
+
+rejection_rule: >
+  Apply the falsifier clauses in order to the primary arm and record the clause
+  that fired. The primary arm's status is the experiment's status.
+
+parameters:
+  primary_arm: tilts_oos
+  reference_016e:
+    run_id: cd2fb4b964cf4f8b966432076906ad82
+    arm: recommended_no_trend
+    growth_gap_pp_yr: 0.7996
+    interval_pp_yr: [0.3582, 1.3105]
+    mde_iid_pp_yr: 0.47
+    mde_block_bootstrap_pp_yr: 0.6796
+    tracking_error_pct: 1.0008
+    complex_volatility_pct: 14.5125
+    control_volatility_pct: 14.727
+    window: "1990-11..2026-05"
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    computed_before_the_run: >
+      Primary window 112 months, 9.333 years. Floor at 80% power is
+      `2.801585 * TE / sqrt(9.333)`: 0.46 at 0.5% tracking error, 0.92 at 1.0%,
+      1.38 at 1.5%, 1.83 at 2.0%. The unscaled VME exposures imply a tracking
+      error of roughly 1.0 to 1.2% from the legs' own volatilities, so the
+      floor is about 0.9 to 1.1 pp/yr. Against a true effect of +0.8 that is
+      roughly 60% power. THE PRIMARY TEST IS UNDERPOWERED FOR A FULL-SIZE
+      REPLICATION AND WELL POWERED FOR A LARGE NEGATIVE, and that asymmetry is
+      declared here.
+    floor_at_assumed_tracking_error:
+      "0.5": 0.46
+      "1.0": 0.92
+      "1.5": 1.38
+      "2.0": 1.83
+
+  portfolios:
+    complex:
+      VTI: 0.49
+      VTV: 0.15
+      VXUS: 0.16
+      AVDV: 0.10
+      IDMO: 0.05
+      AVES: 0.05
+    control:
+      VTI: 0.65
+      VXUS: 0.35
+
+  fund_mapping:
+    doctrine: >
+      Each fund's French-basis coefficients are 016e's, verbatim. `vme_leg`
+      names the VME leg each French leg is carried onto; `null` means unmapped
+      and dropped. Market legs are listed so the residual can be computed on
+      the French basis and are never carried onto VME.
+    funds:
+      - ticker: VTI
+        french:
+          us_mkt: 1.000
+          us_hml: 0.0247
+      - ticker: VXUS
+        french:
+          dxus_mkt: 0.750
+          em_mkt: 0.250
+      - ticker: VTV
+        french:
+          us_mkt: 1.000
+          us_hml: 0.337
+      - ticker: AVDV
+        french:
+          dxus_mkt: 1.000
+          dxus_hml: 0.510
+          dxus_smb: 0.671
+          dxus_rmw: 0.386
+          dxus_cma: -0.114
+          dxus_umd: 0.008
+      - ticker: IDMO
+        french:
+          dxus_mkt: 1.000
+          dxus_umd: 0.540
+          dxus_hml: 0.218
+          dxus_smb: -0.164
+          dxus_rmw: 0.040
+          dxus_cma: -0.394
+      - ticker: AVES
+        french:
+          em_mkt: 1.000
+          em_hml: 0.237
+    french_to_vme:
+      us_hml: us_val
+      dxus_hml: dev_val
+      dxus_umd: dev_mom
+      dxus_smb: null
+      dxus_rmw: null
+      dxus_cma: null
+      em_hml: null
+      us_mkt: null
+      dxus_mkt: null
+      em_mkt: null
+    aves_treatments:
+      dropped: >
+        AVES's 5% is scored as VXUS: no factor leg, fee 5 bp. Used in every
+        out-of-sample arm because emerging value has no series before 1990-11.
+      developed_value: >
+        AVES's 0.237 em_hml is carried onto `dev_val`. An approximation, stated,
+        used in the overlap and full-window VME arms and reported beside
+        `dropped` on every window.
+      emerging_value: >
+        AVES's 0.237 on French `em_hml`, exactly as 016e. French-basis arms only.
+
+  bridge:
+    definition: >
+      OLS slope of the French factor on the VME leg over 1990-11..2026-05, both
+      in decimal monthly returns, no intercept constraint. A bridged arm
+      multiplies each VME exposure by this slope. Pinned before the run from the
+      availability probe; the run recomputes each and records the drift.
+    slopes:
+      us_val: 0.532
+      dev_val: 0.564
+      dev_mom: 0.876
+    window: "1990-11..2026-05"
+    drift_tolerance: 0.01
+
+  arms:
+    tilts_oos:
+      role: PRIMARY
+      window: primary_out_of_sample
+      basis: vme
+      scaling: unscaled
+      aves: dropped
+      note: The arm this file exists for.
+    tilts_oos_bridged:
+      role: sensitivity, loading translation
+      window: primary_out_of_sample
+      basis: vme
+      scaling: bridged
+      aves: dropped
+    tilts_oos_aves_dev:
+      role: sensitivity, AVES approximation
+      window: primary_out_of_sample
+      basis: vme
+      scaling: unscaled
+      aves: developed_value
+    tilts_overlap_vme:
+      role: basis check, VME
+      window: overlap_with_016e
+      basis: vme
+      scaling: unscaled
+      aves: developed_value
+    tilts_overlap_vme_dropped:
+      role: basis check, VME, AVES dropped
+      window: overlap_with_016e
+      basis: vme
+      scaling: unscaled
+      aves: dropped
+    tilts_overlap_vme_bridged:
+      role: basis check, VME, bridged
+      window: overlap_with_016e
+      basis: vme
+      scaling: bridged
+      aves: developed_value
+    tilts_overlap_french:
+      role: basis check, French, same estimand
+      window: overlap_with_016e
+      basis: french
+      scaling: unscaled
+      aves: emerging_value
+      note: >
+        Mapped legs only, so that the difference from `tilts_overlap_vme` is
+        the basis and nothing else. The unmapped legs and the regional residual
+        are priced separately in the diagnostics.
+    tilts_overlap_french_complete:
+      role: basis check, French, every leg 016e carries
+      window: overlap_with_016e
+      basis: french
+      scaling: unscaled
+      aves: emerging_value
+      complete: true
+      note: >
+        Every factor leg AND the regional market residual, so that this arm's
+        arithmetic gap can be set beside 016e's +0.7996 log-growth gap with only
+        the estimand between them.
+    tilts_full_vme:
+      role: full window, VME
+      window: full_vme_window
+      basis: vme
+      scaling: unscaled
+      aves: developed_value
+    tilts_full_vme_dropped:
+      role: full window, VME, AVES dropped
+      window: full_vme_window
+      basis: vme
+      scaling: unscaled
+      aves: dropped
+    tilts_full_vme_bridged:
+      role: full window, VME, bridged
+      window: full_vme_window
+      basis: vme
+      scaling: bridged
+      aves: developed_value
+
+  leg_windows:
+    us_val: us_value_longest_oos
+    dev_mom: dev_momentum_longest_oos
+    dev_val: primary_out_of_sample
+
+  sub_periods_by_window:
+    primary_out_of_sample: [oos_first_half, oos_second_half]
+    overlap_with_016e: [flat_equity_decade, post_gfc]
+    full_vme_window: [primary_out_of_sample, overlap_with_016e, full_first_half, full_second_half, flat_equity_decade, post_gfc]
+
+  underperformance_horizons_years:
+    primary_out_of_sample: [5]
+    overlap_with_016e: [10, 20, 30]
+    full_vme_window: [10, 20, 30]
+
+  loading_perturbation:
+    factor_loading_delta: [-0.15, 0.0, 0.15]
+    rule: >
+      Added to the magnitude of every non-market French coefficient before
+      mapping, preserving sign, as in 016e. Reported as a range; clause (d).
+
+  bootstrap_block_months: 12
+  bootstrap_block_robustness_months: [6, 24]
+  hlz_hurdle_t: 3.0
+
+  deflation:
+    predeclared_primary_tests: 1
+    specifications_in_the_016_family_including_this_one: 7
+    arms_in_016e_family_the_in_sample_result_came_from: 15
+    statement: >
+      One primary test on a window no earlier specification has touched. The
+      in-sample result it tests was one of fifteen scored arms in 016e and sat
+      inside sixteen earlier searches of the same French data; the primary
+      window here carries none of that search. The implied t of the primary is
+      reported against 3.0.
+
+  source_pin:
+    abort_on_hash_change: true
+    files:
+      - id: aqr_vme_factors
+        source: aqr
+        dataset_id: aqr_vme_factors
+        table_id: monthly
+        columns:
+          - VALLS_VME_US90
+          - VALLS_VME_UK90
+          - VALLS_VME_ROE90
+          - VALLS_VME_JP90
+          - MOMLS_VME_UK90
+          - MOMLS_VME_ROE90
+          - MOMLS_VME_JP90
+        expected_sha256_raw: a2351d0323ab60c715a359c55d70a596560af75da335e7ceaa9326b9737daf49
+        expected_sha256_normalized: 5472ceb31e54afcba1dc42bfce654826aa3e9ec57baaa10cc3ef280141e74a96
+        committed_manifest: data-manifests/aqr_vme_factors_monthly.json
+      - id: french_us_ff5
+        source: french
+        dataset_id: french_us_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "HML"]
+        expected_sha256_raw: cbc3724812132654fbbe8daae3c46e0f90e70008434f94a7986fe49f1db6ad3b
+        expected_sha256_normalized: e1a9870b29d8302c68bc2e8daa902bf5f01039b6420c8e48eb21d9c781fca752
+        committed_manifest: data-manifests/french_us_ff5_monthly.json
+      - id: french_developed_ex_us_ff5
+        source: french
+        dataset_id: french_developed_ex_us_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "SMB", "HML", "RMW", "CMA"]
+        expected_sha256_raw: 54ffd319a49811548eb4bdcaae6eaedfdd2cf13da2d3ae2e23fb5c43185f563d
+        expected_sha256_normalized: 8e09ae56db0222f8f633b448f54690cb0f18a3f43282e11e77a183a9a5820fd2
+        committed_manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+      - id: french_developed_ex_us_momentum
+        source: french
+        dataset_id: french_developed_ex_us_momentum
+        table_id: monthly
+        columns: ["WML"]
+        expected_sha256_raw: ca8297c338b45cc2121b81ac23f0bba9cd8b8cf3c6afb523a413542fd1557bb6
+        expected_sha256_normalized: faef3644e3da9d2d348c3aa8c7e098c8a6b02cf03bc16a171fbc761e77d82adc
+        committed_manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+      - id: french_emerging_ff5
+        source: french
+        dataset_id: french_emerging_ff5
+        table_id: monthly
+        columns: ["Mkt-RF", "HML"]
+        expected_sha256_raw: ea71c1f51d1788c2eeea42ead56897175c5ca24ac4abe40a59346128b1ac51b8
+        expected_sha256_normalized: 300e14451a59af3e4a34dc4db6d4f9677052672373a7f9f860ab68bf58182406
+        committed_manifest: data-manifests/french_emerging_ff5_monthly.json
+
+data_sources:
+  - id: aqr_vme_factors
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Value-and-Momentum-Everywhere-Factors-Monthly.xlsx
+    sheet: VME Factors
+    manifest: data-manifests/aqr_vme_factors_monthly.json
+    construction: seven stock-selection columns, used as published; nothing from the asset-allocation legs
+  - id: french_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_5_Factors_2x3_CSV.zip
+    manifest: data-manifests/french_us_ff5_monthly.json
+  - id: french_developed_ex_us_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_5_Factors_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_ff5_monthly.json
+  - id: french_developed_ex_us_momentum
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Developed_ex_US_Mom_Factor_CSV.zip
+    manifest: data-manifests/french_developed_ex_us_momentum_monthly.json
+  - id: french_emerging_ff5
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/Emerging_5_Factors_CSV.zip
+    manifest: data-manifests/french_emerging_ff5_monthly.json
+
+hostile_tests:
+  - Report the i.i.d., HAC and block-bootstrap floors beside every gap, and mark any gap below its i.i.d. floor unresolved rather than positive.
+  - Report both halves of the primary window; a sign that flips between them fires clause (d).
+  - Remove the best month and, separately, the worst month from the primary window and report the gap again.
+  - Perturb every mapped loading by +/-0.15 and report the range; a sign change fires clause (d).
+  - Run the bridged loadings beside the unscaled ones on every window, so that the loading translation cannot be chosen after the fact.
+  - Run AVES dropped beside AVES approximated on every window that can carry both.
+  - Price the unmapped size, profitability and investment legs on the French basis over the overlap window and state the direction of the bias they introduce.
+  - Price the regional residual on the French basis over the overlap window.
+  - Reproduce 016e's +0.7996 on the French basis to within the variance-drag difference, or report the failure as a defect in this file.
+  - Repeat the bootstrap at mean block lengths 6 and 24.
+  - Report the implied t of the primary against the Harvey-Liu-Zhu hurdle of 3.
+  - Report each leg on its own longest pre-1990-11 window so that the 1972 history the primary window cannot use is not discarded.
+
+reporting_requirements:
+  - The freeze note, including that the loadings are French loadings applied to VME factors and that the primary window is 112 months.
+  - The three floors beside every gap, in the same row.
+  - The window beside every gap; arms on different windows are never in one column.
+  - The leg attribution table for the primary arm and the full-window arm.
+  - The sha256 of every source file and the observed first and last observation of every VME column read.
+  - A statement that nothing was read from the VME asset-allocation legs.
+
+notes: >
+  The out-of-sample window is short and the loadings on it are borrowed from
+  another basis. That is the state of the evidence, not a defect of the design:
+  no longer pre-1990 series for developed value exists in this repository, and
+  fitting anything on the out-of-sample window would spend it. The most likely
+  outcome is a positive point estimate inside its own floor, which would be
+  weak evidence for the sign and no evidence about the size; a negative point
+  estimate would be the finding that changes the tilt weights, and it is the
+  outcome this file is built to be able to see.

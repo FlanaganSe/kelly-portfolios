@@ -139,7 +139,13 @@ against VTV at a 0.67 floor. None of these separates from the published vector.
    30 years rather than 12; shrinking the fitted alphas takes it to +0.60, which fails the
    matched floor.** This reproduces Experiment 016's +0.79 on a different fund list, which is
    independent confirmation rather than a restatement; the qualifications are in *Optional
-   factor tilts* below and are not repeated.
+   factor tilts* below and are not repeated. **It now has an out-of-sample window** (Experiment
+   023, [final construction](final-construction-test.md) §1b): the same complex on AQR's
+   Value and Momentum Everywhere basis over 1981-07…1990-10, a window disjoint from every
+   series it was chosen on, reads **+0.89 pp/yr [+0.44, +1.34] against a 0.65 HAC floor**,
+   both halves positive, developed value carrying +0.54 of it, with the developed small-cap
+   half of AVDV unmapped and therefore biasing the figure down. On the same basis the
+   1990–2026 window reads +0.40 against 0.62, so the sign reproduces and the size does not.
 
 **AVDV's addition reads +0.28 pp/yr [+0.05, +0.56] against a 0.29 floor** — short of resolution
 by 0.01, and positive in every sub-period. The unlevered tilt-only pair gives +0.29
@@ -249,8 +255,10 @@ perturbation grid, at 10 bp of fee.** Three qualifications belong in the same br
 - the published detection floor of 0.47 used i.i.d. inference while the interval beside it
   used HAC; on matched inference the floor is **0.72 and the horizon is 30 years, not 13**,
   and the implied *t* of 3.05 sits exactly on the Harvey–Liu–Zhu multiple-testing hurdle;
-- **86% of the measured edge comes from the repository's shortest series** — developed
-  ex-US and emerging panels starting 1990-11, with no out-of-sample period at all;
+- **86% of the measured edge comes from the repository's shortest series**, developed
+  ex-US and emerging panels starting 1990-11; the 1981–1990 out-of-sample window in
+  Experiment 023 now carries the sign on a different basis, at a size the 112 months cannot
+  pin down;
 - charging fitted alphas moves the result from +0.79 to +0.60 under empirical-Bayes
   shrinkage and to +0.30 charged raw. The threshold rule used elsewhere in this repository
   is harsher than the defensible estimator, and it charges only the side whose alphas were
@@ -339,8 +347,10 @@ What the repository's evidence licenses ([valuation](valuation-and-the-allocatio
    default. Applied there, the only line that funds it is the wrapper: **RSST 30 → 24.8, a
    ten-year Treasury or TIPS 5.2**, no taxable line moved, gross 1.32 → 1.27, which is the
    25% arm every route admits plus a 5-point defensive line. That is the vector for an
-   investor who wants the August 2026 valuation to move a point of the portfolio, and the
-   choice is theirs. What the same evidence says about the 0th-percentile excess CAPE yield
+   investor who wants the August 2026 valuation to move a point of the portfolio, and
+   [part A](portfolio-for-one-investor.md) §7 takes it as the working default for the
+   reference investor, who has stated that concern and no tolerance. The published
+   construction stays the 30% vector, which is the same book at a tolerance of −70% or looser. What the same evidence says about the 0th-percentile excess CAPE yield
    is that an unlevered 10–15 point TIPS
    line in the traditional IRA is the cheapest drawdown protection has been in expectation:
    the substitution's historical cost of 0.55–0.77 pp/yr was earned on a 6–7 pp realised
@@ -361,7 +371,12 @@ What the repository's evidence licenses ([valuation](valuation-and-the-allocatio
    rule is every sheltered dollar to VXUS until 60/40, taxable dollars to VTI and VTV to
    target and then VXUS, and AVDV bought only to hold 10%, the weight at which it was measured:
    about a year with an employer plan receiving deferrals, two without
-   ([part A](portfolio-for-one-investor.md) §3.8). 50/50 is unsupported.
+   ([part A](portfolio-for-one-investor.md) §3.8). Framed as regret across stated
+   re-rating scenarios ([valuation](valuation-and-the-allocation.md) §5.7), 60/40 is the first
+   stop rather than the destination: 50/50 is the minimax-regret split at 152 bp/yr of
+   tracking error and 2.8 years of contributions at 10%/yr, 55/45 sits between at 98 bp, and
+   40/60 is not supported because its worst cell flips under further US re-rating. Where to
+   stop between 60 and 50 is a tracking-error tolerance the investor has not stated.
 5. **Value tilts: hold, do not enlarge.** Spread 7.54×, 81st percentile, closed 0.27 log
    units in eighteen months, fitted slope a third of its detection floor, positive
    out-of-sample R².

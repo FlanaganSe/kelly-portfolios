@@ -56,6 +56,7 @@ SPEC_NAMES = (
     "exp_020_conditional_treasury_stack",
     "exp_021_leveraged_etf_rules",
     "exp_022_ecy_rule",
+    "exp_023_tilts_out_of_sample",
     "phase1_ff_reproduction",
 )
 

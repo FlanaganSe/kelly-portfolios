@@ -223,8 +223,11 @@ frozen tournament:
 
 **US tilts contribute +0.125 pp/yr; non-US tilts contribute +0.683.** The 1990-start
 problem the session named for trend applies with far more force to the tilts: the whole
-non-US factor evidence in this repository is 427 months with **zero out-of-sample**, and
-it carries 86% of the only result the session calls resolvable. The US value premium — the
+non-US factor evidence in this repository was, when this was written, 427 months with
+**zero out-of-sample**, and it carries 86% of the only result the session calls
+resolvable. Experiment 023 has since supplied one on AQR's VME factors, 1981-07 to
+1990-10: +0.89 pp/yr against a 0.60 floor, recorded in
+[the final construction test](final-construction-test.md#1b-out-of-sample-as-experiment-023). The US value premium — the
 one with a century of history — was **+2.16 pp/yr over this window with `t = 0.95`**, and
 contributes about 10 bp.
 

@@ -100,13 +100,23 @@ For factors and other premia, focus on questions the data can resolve:
 - alpha intervals reported as unresolved when the panel cannot distinguish them.
 
 More regressions on the same short return window have low information value unless the
-estimand or instrument changes.
+estimand or instrument changes. The instrument did change once: Experiment 023 scored the
+tilt complex on AQR's 1972-onward stock-selection factors, giving the 1981–1990 window the
+French-basis result never had. What remains there is a size factor before 1990, which no
+free ex-US source supplies, and the emerging leg before 1990, which none supplies at all.
 
 ## 6. Resolve global versus US exposure as a robustness decision
 
 Compare global and US cores under currency, valuation, tax-credit, product, and historical
 survivor uncertainty. Frame the result as regret across plausible futures rather than an
 expected-return winner that history cannot reliably identify.
+
+Run on 2026-09-02 as an exploratory grid ([valuation](valuation-and-the-allocation.md) §5.7):
+minimax regret sits at 50/50, expected regret at the grid floor because a 1.4 pp dividend-yield
+gap is a sign bet, and the log-wealth criterion moves 85 points of split per pp of expected
+differential, so tracking error is what constrains the answer. 60/40 by contributions stands
+as the first stop. What remains is the investor's tracking-error tolerance, and an anchor for
+relative CAPE that is buyback- and sector-adjusted.
 
 ## 7. Parameterize the investor
 

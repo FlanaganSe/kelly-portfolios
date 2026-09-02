@@ -7,7 +7,9 @@ construction beat a leverage-matched cheap index, and does it beat the alternati
 chosen over? Second: the shelf quoted fees where net costs belong, and Form N-CEN carries
 the missing term — does reading it change the VTV call? Third: two products were named as
 the right way to revisit US value and US momentum and neither was ever priced — what are
-RPV and SPMO worth?
+RPV and SPMO worth? A fourth was added on 2026-09-02: the one whole-portfolio result this
+page can resolve, the tilt complex against the cheap index, rests on ex-US panels that begin
+1990-11 and had never been tested before that date. Does it hold out of sample?
 
 **Decision it informs.** Whether to keep RSST 25% / VTI 24% / VTV 15% / VXUS 16% /
 AVDV 10% / IDMO 5% / AVES 5% as it stands, and which of four named substitutions would
@@ -100,6 +102,17 @@ improve it.
    things sink it: the US momentum premium it buys is **+4.19 pp/yr against a 7.27 pp/yr
    floor**, and its active leg is **+0.626 correlated with IDMO's**, a tighter overlap
    than MTUM's +0.554.
+9. **The tilt complex holds out of sample, and it is the first result on this page that
+   does.** On AQR's Value and Momentum Everywhere stock-selection factors, 1981-07 to
+   1990-10, before any French ex-US panel exists, the same complex at the same loadings and
+   costs earns **+0.89 pp/yr, HAC 95% [+0.44, +1.34], block bootstrap [+0.45, +1.29],
+   against floors of 0.60 (i.i.d.), 0.65 (HAC) and 0.60 (block bootstrap)**, positive in
+   both halves, with an implied t of 3.86 against the 3.0 deflation hurdle. The same basis
+   reads only **+0.40 against a 0.62 floor** on 1990-11 to 2026-05, so on a like-for-like
+   basis the out-of-sample period was the better one. Developed value carries 0.54 of the
+   0.89; US value 0.22 on a premium its own window cannot sign; developed momentum 0.17.
+   Nothing here argues for moving VTV 15 / AVDV 10 / IDMO 5 / AVES 5
+   ([§1b](#1b-out-of-sample-as-experiment-023)).
 
 ---
 
@@ -220,6 +233,110 @@ costs 12 bp more than VTV for −0.01; DFIV's −0.10 carries its −3.8 fitted 
 "AVLV (SCV US)" is wrong: AVLV is large-cap value; AVUV is the small-cap value fund, and
 it reads +0.15 against a 0.67 floor.
 
+### 1b. Out of sample, as Experiment 023
+
+`as of 2026-09-02`. **`exploratory`.**
+[Experiment 023](../../research/experiments/exp_023_tilts_out_of_sample.yaml) (spec
+`59181ce6…`), run
+[`6915b674…`](../../research/artifacts/6915b6746af046c5ba54beb2902bbab2/summary.md), with
+the full tables in
+[`tables.md`](../../research/artifacts/6915b6746af046c5ba54beb2902bbab2/tables.md) and the
+code in
+[`exp_023_tilts_out_of_sample.py`](../../research/src/portfolio_edge/experiments/exp_023_tilts_out_of_sample.py).
+
+**Conclusion.** The tilt complex's edge over the cheap index reproduces before 1990-11 with
+the same sign and, on a like-for-like basis, a larger size. On AQR's Value and Momentum
+Everywhere (VME) stock-selection factors, 1981-07 to 1990-10, 112 months: **+0.89 pp/yr,
+HAC 95% [+0.44, +1.34], block bootstrap [+0.45, +1.29], against floors of 0.60 (i.i.d.),
+0.65 (HAC) and 0.60 (block bootstrap)**; tracking error 0.66%; four years to distinguish at
+80% power. Both halves are positive, +1.05 on 1981-07 to 1986-02 (floor 0.97) and +0.73 on
+1986-03 to 1990-10 (floor 0.73). Removing the best month gives +0.82 and the worst +0.94; the
+plus or minus 0.15 loading grid spans +0.56 to +1.22; block lengths of 6 and 24 months give
+[+0.45, +1.33] and [+0.48, +1.27]. The implied t is 3.86 against the Harvey, Liu and Zhu
+hurdle of 3 that [the adversarial review](adversarial-review.md) §3 applied to the
+in-sample figure. The specification predicted +0.4 to +1.2 and `unresolved`; the size
+landed inside the range and the status did not, because the tracking error came in at
+0.66% rather than the 1.0% the floor was budgeted on.
+
+**Why it is not a replication of +0.80.** The mapping carries the four tilt legs onto VME
+the way 016e carries them onto French: VTV's +0.337 and VTI's +0.0247 onto VME US value;
+AVDV's +0.510 and IDMO's +0.218 onto the equal-weighted UK, Europe and Japan value factor;
+IDMO's +0.540 and AVDV's +0.008 onto the equal-weighted developed momentum factor. The
+French loadings are applied unscaled to a rank-weighted long/short book they were not fitted
+on, and the same complex on the same VME basis over 016e's own 427 months reads **+0.40
+[HAC −0.15, +0.96] against a 0.62 floor, unresolved**. Three things separate that from
+016e's +0.80, and the run prices each on the French basis over 1990-11 to 2026-05:
+
+| Piece | pp/yr | Where it comes from |
+| --- | ---: | --- |
+| 016e `recommended_no_trend`, log-growth gap | +0.80 | [run `cd2fb4b9…`](../../research/artifacts/cd2fb4b964cf4f8b966432076906ad82/summary.md) |
+| same complex, arithmetic active-leg gap, every French leg | +0.75 | this run; the −0.05 is annual rebalancing drift and constant costs, net of +0.03 variance drag |
+| less the legs VME cannot carry | −0.20 | AVDV's and IDMO's SMB (+0.04), RMW (+0.13) and CMA (−0.06), and AVES's emerging value (+0.10) |
+| less the regional residual | +0.04 | the complex holds 64/27/9 where the control holds 65/26.25/8.75; the residual is −0.04 and dropping it adds it back |
+| French basis, mapped legs only | +0.59 | the estimand the VME arms measure, on French data |
+| VME basis, same legs, same loadings | +0.40 | VME's value factors carry lower means: 0.92 against 2.16 pp/yr in the US and 3.45 against 5.12 developed |
+
+**VME has no size, profitability or investment factor, so the small-cap half of AVDV is
+unmapped, and the omission biases every VME figure downward**, by about 0.20 pp/yr on the
+window where it can be measured. Out of sample the bias runs the same way: what VME cannot
+carry is exactly the part of AVDV's exposure that 016e credits, so +0.89 is the complex
+with its size leg removed. The bridged mapping, which multiplies each VME exposure by the
+slope of the French factor on it over 1990-11 to 2026-05 (0.532, 0.564, 0.876, recomputed
+by the run to within 0.0004 of the pins), reads **+0.53 [+0.28, +0.78] against a 0.34
+floor** out of sample; the two mappings bracket the answer and both clear their floors.
+
+**Which leg drove it.** Developed value +0.54 of the 0.89, US value +0.22, developed
+momentum +0.17, cost −0.04. On each leg's own longest window before 1990-11: developed
+value +8.72 pp/yr [+4.18, +13.26] on 112 months, contributing +0.54 [+0.26, +0.82] against
+a 0.36 floor; developed momentum +6.62 [+2.79, +10.45] on 201 months from 1974-02,
+contributing +0.18 [+0.08, +0.29] against 0.15; **US value +5.10 [−0.79, +10.99] on 225
+months from 1972-02, against a 7.93 floor**, contributing +0.24 [−0.04, +0.51] against
+0.37. The result is carried by the leg that carries it in sample, which is what the
+specification predicted, and the one leg with a century of history is the one the window
+cannot sign on its own.
+
+**AVES is dropped before 1990-11**, its 5% scored as the VXUS it displaces, because no
+emerging value series exists there. Carrying its +0.237 on the developed value factor
+instead, as a stated approximation, adds +0.09 (+0.98 against a 0.65 floor).
+
+**The full 539 months, 1981-07 to 2026-05, are the second basis**: **+0.52 [+0.07, +0.98]
+against 0.51 (i.i.d.), 0.65 (HAC) and 0.70 (block bootstrap)**, clearing the first floor by
+0.01 and neither of the other two; +0.89 before 1990-11 and +0.40 after; +0.89 in the first
+half and +0.16 in the second; **+0.04 post-GFC against a 0.74 floor**, which is 016e's own
+worst era read again on a different basis. Probability of trailing the control: 14.2% over
+ten years, 7.7% over twenty, 3.8% over thirty, with median shortfalls of −0.21, −0.12 and
+−0.09.
+
+**Sized implication for the tilt weights.** Nothing here argues for moving VTV 15 /
+AVDV 10 / IDMO 5 / AVES 5, and the result ranks the four lines by how much of the evidence
+each one owns. Per point of capital, net of the fee difference against the line it
+displaces: out of sample IDMO earned about 5.0 bp/yr, AVDV 4.2, VTV 1.5 and AVES (approximated)
+1.8; in sample on the French basis with every leg, 4.6, 3.8, 0.7 and 1.7; bridged, about
+0.55 of each out-of-sample figure. The developed lines earn their weights on both windows.
+**VTV's 15 points are the least supported on the shelf**: 1.5 bp/yr per point out of sample
+on a premium the window cannot sign, and 0.7 in sample. That is not a reason to cut it, since
+it costs 3 bp and the complex needs a US value line, but it is a reason not to raise it and
+the reason the AVUV question stays unresolved. Had the primary come back at or below zero,
+clause (a), that would have been the evidence to cut AVDV and IDMO; it did not.
+
+**Verified here.** Every gap, interval, floor, sub-period, leg contribution and trailing
+probability above, from the run artifact against a specification frozen and hashed before
+the run, with the raw and normalised hashes of the VME workbook and the four French files
+pinned and a mismatch aborting. Nothing was read from the VME asset-allocation legs, which
+[the evidence base](evidence-base.md) flags as changing construction after 2014.
+
+**Assumed.** That 016e's loadings, fitted on 51 to 77 months of fund filings after 2019,
+describe the same funds' exposure in the 1980s, and that a loading on a French 2x3 spread
+transfers unscaled to a rank-weighted VME book; the bridged arm is the sensitivity. That
+equal-weighting the UK, Europe and Japan factors is the right stand-in for a cap-weighted
+developed ex-US composite. That the arithmetic active-leg gap stands in for the simulated
+log-growth gap, which the basis check bounds at 0.05.
+
+**Open.** The primary window is 112 months and its floor is 0.60. The VME series are
+vendor-authored and reconstructed on every update. The design was chosen after reading the
+1990-2026 result: the window is out of sample for the data and not for the design. AVES
+has no out-of-sample test and cannot have one on any series in this repository.
+
 ### The tilt component on its own
 
 Strip the wrapper out and replace it with plain US beta at the same capital, and score
@@ -236,6 +353,10 @@ proposed. It is positive in the full window and in all seven declared sub-period
 in the second half at +0.35 and post-GFC at +0.43, strongest through the lost decade at +1.71, and it costs 9.1 bp of weighted fee against the control's
 3.7. **The difference between the two rows is AVDV again, at +0.29 pp/yr on the unlevered
 pair against +0.28 on the levered one** — the same answer arrived at twice.
+
+Both rows are measured on 427 months whose developed ex-US and emerging factor series begin
+1990-11, so until 2026-09-02 neither had an out-of-sample period.
+[§1b](#1b-out-of-sample-as-experiment-023) supplies one.
 
 ### Risk, and what it will feel like
 
@@ -512,5 +633,8 @@ carry. The contestants, cost model and inference blocks are this file's own.
   delivered, and the comparison against AVUV is unresolved on both admissible windows.
 - **Not** that RPV or SPMO are bad funds. Each is scored against *this* portfolio at *this*
   moment; SPMO against a portfolio holding no momentum at all would read differently.
+- **Not** that the tilt complex is worth +0.80 pp/yr going forward. Out of sample it is
+  +0.89 on a basis that reads +0.40 in sample, with AVDV's size leg unmapped on both; the
+  sign is established on two disjoint windows and the size is not.
 - **Not** a promotion. Nothing here is `production-eligible` and
   [decision 0004](../decisions/0004-no-sleeve-promoted.md)'s non-promotion stands.

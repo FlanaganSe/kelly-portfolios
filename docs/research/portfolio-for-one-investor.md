@@ -750,6 +750,29 @@ placement edge of +2 to +7 bp/yr** in §3.5. Moving the wrapper to the Roth also
 dispersion onto the investor's side of the partnership, which §3.4 prices as a forecast, and
 raises its after-tax weight from 24.8% to 32.6%. State the cost; do not hide it.
 
+**The decision for this investor, made rather than deferred** (`as of 2026-09-02`). Two facts
+are on record: the investor has said the August 2026 valuation must count, and has not stated
+a tolerable drawdown. Under those two facts the working default is the vector the
+excess-CAPE-yield rule produces when applied to the traditional third
+([valuation](valuation-and-the-allocation.md) §3.3, Experiment 022):
+
+| | Vector | Where the defensive line sits |
+| --- | --- | --- |
+| Working default | **RSST 25 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 / ten-year TIPS 5** | traditional: RSST 25 + TIPS 5 + IDMO 3.3; Roth and taxable as in §3.4; no taxable line moves |
+| Published construction | RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5 | for a stated tolerance of −70% or looser |
+| Rule (a) above | RSST 19.1 / TIPS 10, wrapper funds VTI | for a stated tolerance of −50% or tighter |
+
+Why this one. It is the 25% arm every route admits after the §6a correction. It sits between
+the ladder's −50% and −60% rows (19.1 and 23.7), which is where an investor who names the
+valuation concern and accepts leverage plausibly sits. Against 100% equity it costs about 14
+bp/yr of log growth if the forward equity premium over bonds is 3 pp and gains 31 if it is
+zero, with break-even near 2 pp, and six managers' 2026 ten-year expectations put that premium
+between −2.2 and +1.5 pp over TIPS. Against the 30% vector it gives up about 0.18 pp/yr at the
+forward trend premium, inside a 0.30 floor. Gross notional falls from 1.32 to 1.27. The three
+vectors are within resolution of each other on every measurement this repository holds; what
+separates them is the drawdown the investor can hold, and this paragraph is the assumption
+made in the absence of that number. A stated tolerance replaces it the day it is supplied.
+
 ---
 
 ## Verified, derived, assumed
