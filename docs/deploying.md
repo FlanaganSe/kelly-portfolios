@@ -82,7 +82,7 @@ the certificate, the aliases, or any DNS record:
    not `ListBucket`, so a missing key is a 403.
 3. **[`directory-index.js`](../scripts/cloudfront/directory-index.js) replaces SST's
    function.** It derives `<route>/index.html` from the URL and redirects `/start` to
-   `/evidence/` so one document has one URL rather than two. Because a function is the whole
+   `/start/` so one document has one URL rather than two. Because a function is the whole
    behaviour of the site, `repair.sh` runs it against CloudFront's own `test-function`
    harness — seven paths, including the redirect, a hashed asset and a query string — and
    refuses to publish it if any answer is wrong. That harness is what caught `for...of`
@@ -148,7 +148,7 @@ with the current key and has to be done in the console.
 
 ```sh
 curl -sI https://kellyportfolios.com/ | head -5
-curl -so /dev/null -w '%{http_code}\n' https://kellyportfolios.com/evidence/
+curl -so /dev/null -w '%{http_code}\n' https://kellyportfolios.com/strategies/
 curl -so /dev/null -w '%{http_code}\n' https://kellyportfolios.com/no-such-page/   # must be 404
 curl -so /dev/null -w '%{http_code}\n' https://kellyportfolios.com/stacking        # must be 301
 ```
