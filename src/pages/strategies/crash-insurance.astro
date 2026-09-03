@@ -78,7 +78,8 @@ const COLUMNS = ["Holding", "Share of the worst stock months it rose"] as const;
 
     <h2>Insurance that did not pay</h2>
 
-    <p>TAIL is the best-known crash fund. It holds about 91% Treasuries and 5% put options and charges 0.59%.
+    <p>TAIL is the best-known crash fund. It holds about 91% Treasuries and 5% put options, contracts that pay out when the market falls, and
+    charges 0.59%.
     Between 2017 and the end of 2024 it lost 8.4% a year while US stocks made 14.5%. It made 7% in 2020. In
     2022, the bear market it was bought for, it lost 13% while the S&amp;P 500 lost 18%, because the Treasuries
     it holds fell too. Holding 10% of a portfolio in it would have cost about 2.2 points a year of growth.
@@ -99,11 +100,13 @@ const COLUMNS = ["Holding", "Share of the worst stock months it rose"] as const;
 
     <h2>Bonds and TIPS</h2>
 
+    <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="Too close to call" /> <span>A choice about how much you can lose, not a way to earn more.</span></p>
+
     <p>Bonds are different. They are not insurance and nobody should buy them expecting a return edge. They are
     how you choose to lose less.</p>
 
-    <p>Over 96 years, replacing 10% of stocks with cash cost 0.77 points a year of growth, and with Treasury
-    bonds 0.55. Those were the only changes I tested that cut the depth of a 1929-scale or 2008-scale fall, by
+    <p>Inside the portfolio on this site, over 96 years, moving 10% from stocks to cash cost 0.77 points a year
+    of growth, and moving it to Treasury bonds cost 0.55. Those were the only changes I tested that cut the depth of a 1929-scale or 2008-scale fall, by
     4 to 5 points. That is the trade: give up about half a point a year, lose a bit less at the bottom.
     Whether it is worth it depends on the fall you could sit through, which is why
     <a href="/portfolios/">the portfolio pages</a> ask that question and not this one.</p>
