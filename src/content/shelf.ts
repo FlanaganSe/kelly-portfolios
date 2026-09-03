@@ -28,6 +28,7 @@ import { asOf } from "~/content/types";
  */
 
 export type ShelfCategory =
+  | "global-core"
   | "us-core"
   | "us-value"
   | "us-small"
@@ -388,9 +389,9 @@ export const shelf: readonly ShelfFund[] = [
   {
     ticker: "VT",
     name: "Vanguard Total World Stock ETF",
-    category: "us-core",
+    category: "global-core",
     mandate:
-      "The whole world at capitalisation weight, US included, in one fund. What portfolios 1 and 2 hold, and the one-fund answer to the whole equity question.",
+      "The whole world at capitalisation weight, US included, in one fund. What portfolio 1 holds, and the one-fund answer to the whole equity question.",
     expenseRatioBp: 6,
     securitiesLendingBp: null,
     netCostBp: null,
@@ -401,9 +402,9 @@ export const shelf: readonly ShelfFund[] = [
     pedestalPpYr: null,
     status: null,
     verdict:
-      "Held as the whole of portfolios 1 and 2 and never regressed, because it is the market rather than a bet against it. Its 6 bp fee is twice VTI's 3 bp plus VXUS's 5 bp blended, which is the price of one ticker instead of two. No Form N-CEN was read for it, so its lending income and net cost are unknown rather than zero.",
+      "Held as the whole of portfolio 1 and never regressed, because it is the market rather than a bet against it. Its 6 bp fee is twice VTI's 3 bp plus VXUS's 5 bp blended, which is the price of one ticker instead of two. No Form N-CEN was read for it, so its lending income and net cost are unknown rather than zero.",
     caution:
-      "Roughly three fifths of it is the US market, so a reader holding it beside VTI owns the US twice. Sold as a single fund it cannot be rebalanced between regions, which is the whole of what portfolios 3 and 4 buy with their extra tickers.",
+      "Roughly three fifths of it is the US market, so a reader holding it beside VTI owns the US twice. Sold as a single fund it cannot be rebalanced between regions, which is the whole of what portfolios 2 and 3 buy with their extra tickers.",
     issuer: {
       notes: [
         "0.05% management fee, no 12b-1 fee, 0.01% other expenses and 0.06% total annual fund operating expenses, from the ETF Shares summary prospectus dated 2026-02-27. Tracks the FTSE Global All Cap Index. Portfolio turnover 3% in the most recent fiscal year. The prospectus says nothing about securities lending.",
@@ -483,6 +484,7 @@ export const shelf: readonly ShelfFund[] = [
       "Its SMB leg of +0.88 is the largest of any US value product here and the size premium is not signable on any panel (+0.33 against a 2.47 pp/yr floor). At a 20% weight it buys +43.1 bp for 312 bp of drift and reaches 90% confidence in 86 years. Against a portfolio that already holds a US value line it adds nothing: its active leg over VTI is +0.455 correlated with the recommended portfolio's own, and 87% of what it delivers beyond VTV is size.",
     issuer: {
       notes: [
+        "Re-read 2026-09-02: 0.25% gross and net expense ratio as of 2026-01-01 on the Avantis fund page, unchanged. The footnote about a management-fee schedule decrease effective 2026-08-01 appears on the AVGE fund-of-funds page, not on this one.",
         "0.25% total annual fund operating expenses and 6% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-12-31.",
         "Five-year return before taxes 14.12% and after taxes on distributions 13.68% to 2024-12, a drag of 0.44 pp/yr against VTI's 0.42: parity.",
         "Median net securities-lending income of 0.46 bp/yr across six fiscal years of Form N-CEN, 2020-08-31 to 2025-08-31, so its net cost is 24.54 bp. Lending barely moves it: US small value is not what short sellers borrow.",
@@ -1471,6 +1473,7 @@ export const shelf: readonly ShelfFund[] = [
       "The only value fund we priced carrying two side loads whose intervals exclude zero: SMB +0.671 on a premium of +0.49 [−1.44, +2.44], and RMW +0.386 on a rejected factor. It is fourth or fifth of five on growth per unit of drift in every window. Its alpha is a window artefact: +2.47 on 45 months, +0.55 on 75 and +1.84 on 55, against floors of 3.96 to 4.64. None of the three is evidence and no verdict may rest on one.",
     issuer: {
       notes: [
+        "Re-read 2026-09-02: 0.36% gross and net expense ratio as of 2026-01-01 on the Avantis fund page, unchanged. The footnote about a management-fee schedule decrease effective 2026-08-01 appears on the AVGE fund-of-funds page, not on this one.",
         "0.36% total annual fund operating expenses and 4% portfolio turnover in the most recent fiscal year — the lowest turnover of any factor product on this shelf — per its summary prospectus dated 2025-12-31.",
         "Five-year return before taxes 6.35% and after taxes on distributions 5.57% to 2024-12, a drag of 0.78 pp/yr against VXUS's 0.79 over the same period: parity with the fund it would displace.",
         "Median net securities-lending income of 5.97 bp/yr across six fiscal years of Form N-CEN, 2020-08-31 to 2025-08-31, so its net cost is 30.03 bp rather than 36 — the largest fee-to-cost gap of any lean on this shelf.",
@@ -1828,6 +1831,7 @@ export const shelf: readonly ShelfFund[] = [
       "The panel does the heaviest work here: the same fund reads −0.074 on the US panel, which would flip the sign of the only evidence that the emerging value premium is purchasable at all. At 36 bp it costs 27 bp a year more than IEMG's 9 bp, which is the extra cost the lean has to clear before its exposure matters — and that exposure is the one this shelf cannot sign. Its net cost is 29.21 bp: 36 bp less a median 6.79 bp of securities lending across four fiscal years of Form N-CEN, 2022-08-31 to 2025-08-31. Turnover and every tax figure for AVES remain unread. Only its shrunk alpha, −0.16 against a 4.48 floor, was published.",
     issuer: {
       notes: [
+        "Re-read 2026-09-02: 0.36% gross and net expense ratio as of 2026-01-01 on the Avantis fund page, unchanged. The footnote about a management-fee schedule decrease effective 2026-08-01 appears on the AVGE fund-of-funds page, not on this one.",
         "36 bp, gross equal to net, with no fee waiver and no expense cap — so unlike IEMG's contractual 9 bp cap there is nothing here to expire and nothing to be recouped.",
         "$1.5B of net assets and inception 2021-09-28, against the MSCI Emerging Markets IMI Value Index. No closure, liquidation or adviser change is disclosed.",
       ],

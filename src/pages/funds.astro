@@ -45,6 +45,7 @@ import type { EvidenceStatus } from "~/content/types";
  * project would recognise.
  */
 const CATEGORY_LABEL = {
+  "global-core": "The whole world in one fund",
   "us-core": "US, the whole market",
   "us-value": "US, leaning to cheaper companies",
   "us-small": "US, leaning to smaller companies",
@@ -117,8 +118,8 @@ function recheckOn(fund: ShelfFund): string {
 
 /**
  * A fund nothing here has measured: no exposure fitted, no return scored, no cost read,
- * and no structure computed from a holdings filing. All of them are young enough that the
- * filing which would answer any of those does not exist yet.
+ * and no structure computed from a holdings filing. Some are too young for the filing to
+ * exist; the rest were priced and left there.
  *
  * A fee does not disqualify a fund from this set. A fee is read off a prospectus; it is
  * not a measurement made here.
@@ -129,6 +130,31 @@ const nothingMeasured = (fund: ShelfFund) =>
   fund.alphaPpYr === null &&
   fund.netCostBp === null &&
   (fund.wrapper?.delta ?? null) === null;
+
+/**
+ * The inception date, read from the issuer notes where one was recorded. The shelf keeps
+ * it inside the note that cites it rather than as a field, so it is parsed here.
+ */
+const inceptionOf = (fund: ShelfFund): Date | null => {
+  for (const note of fund.issuer?.notes ?? []) {
+    const match = /inception (\d{4}-\d{2}-\d{2})/i.exec(note);
+    if (match) return new Date(`${match[1]}T00:00:00Z`);
+  }
+  return null;
+};
+
+const THREE_YEARS_MS = 3 * 365.25 * 24 * 60 * 60 * 1000;
+
+/**
+ * "Too new to say" is for a fund whose filings cannot exist yet: launched within about
+ * three years of the shelf date. An older fund with nothing measured was simply priced.
+ */
+const tooNew = (fund: ShelfFund): boolean => {
+  if (!nothingMeasured(fund)) return false;
+  const inception = inceptionOf(fund);
+  if (inception === null) return true;
+  return new Date(shelfAsOf).getTime() - inception.getTime() < THREE_YEARS_MS;
+};
 
 /** The research word for a verdict, in the words a reader would use for it. */
 const VERDICT_LABEL = {
@@ -145,7 +171,7 @@ const VERDICT_LABEL = {
 const verdictOf = (fund: ShelfFund): string => {
   if (IN_PORTFOLIOS[fund.ticker]) return "Held here";
   if (fund.status) return VERDICT_LABEL[fund.status];
-  return nothingMeasured(fund) ? "Too new to say" : "Priced only";
+  return tooNew(fund) ? "Too new to say" : "Priced only";
 };
 
 /**
@@ -163,7 +189,7 @@ const IN_PORTFOLIOS: Readonly<Record<string, string>> = {
   RSST: "Portfolio 3",
 };
 
-const unmeasured = shelf.filter(nothingMeasured);
+const unmeasured = shelf.filter(tooNew);
 
 const iemg = fundByTicker("IEMG");
 const vwo = fundByTicker("VWO");
@@ -308,10 +334,12 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const
       does much the same job, and it lost.</li>
       <li><strong>Too close to call.</strong> The fund has too few months of history for the data to say either
       way. That is a statement about the evidence, not about the fund.</li>
-      <li><strong>Too new to say.</strong> The filings that would show what the fund holds do not exist yet. You
-      get a fee, because a fee is printed in a prospectus. You do not get a cost or a verdict. Today that is
+      <li><strong>Too new to say.</strong> The fund is under three years old, so the filings that would show
+      what it holds do not exist yet. You get a fee, because a fee is printed in a prospectus. You do not get a
+      cost or a verdict. Today that is
       <span data-numeric>{unmeasured.map((fund) => fund.ticker).join(", ")}</span>.</li>
-      <li><strong>Priced only.</strong> The cost was read and no comparison was run.</li>
+      <li><strong>Priced only.</strong> The fee was read, and where the fund lends its holdings the cost after
+      lending too, and no comparison was run.</li>
     </ul>
 
     <p>There is no beat-the-market column. Whether a fund beat what its holdings alone would have paid is a
