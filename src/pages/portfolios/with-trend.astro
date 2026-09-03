@@ -21,7 +21,7 @@ const NUMBERS = [
   {
     value: await figureValue("trend-96-year-gap"),
     label: "a year over an all-stock fund, 1929 to 2025",
-    note: "Range 1.3 to 2.7. A trend series scaled to the fund's size, not the fund.",
+    note: "Range 1.3 to 2.7. Built from a long trend-following series, because the fund is only three years old.",
   },
   {
     value: await figureValue("trend-gap-since-2009"),
@@ -95,8 +95,8 @@ const LADDER = [
     and makes money. In a sudden crash like March 2020 it has no time to switch and does not help.</p>
 
     <p>Since 2000, trend following rose in 64% of the worst months for stocks, more than gold at 59%, Treasuries at
-    55% to 58%, or anything else I measured. It is not insurance. It is a holding that tends to do well in the
-    years stocks do worst, which nothing else in this portfolio does.</p>
+    55% to 58%, or anything else I measured. It will not save you in a crash, but it tends to do well in the
+    years stocks do worst, and nothing else in this portfolio does that.</p>
   </div>
 
   <div class="prose mt-14">
@@ -104,7 +104,8 @@ const LADDER = [
 
     <p>Most managed-futures funds ask you to sell stocks to buy them. Stocks earn more than trend does over the long
     run, so every dollar moved out of stocks gives up return to buy the diversification. RSST borrows inside the
-    fund to hold the stocks and the trend program at once. Over 1990 to 2026, buying the same amount of trend by
+    fund to hold the stocks and the trend program at once. Sell $30 of every $100 in stocks to buy trend and you
+    own $70 of stocks. Hold RSST at 30% and you still own about $100 of stocks plus $30 of trend. Over 1990 to 2026, buying the same amount of trend by
     selling stocks instead of adding it on top would have cost about
     <Figure id="financing-vs-selling" inline showUnit={false} /> a year of growth. That is why a strategy that
     looks ordinary on its own can help a portfolio when it is stacked on top: you keep the stock return and add
@@ -125,13 +126,13 @@ const LADDER = [
 
     <p>On the shorter 1990 to 2026 window, using the actual funds' behaviour, the portfolio with RSST at 25%
     fell <Figure id="with-trend-worst-fall" inline showUnit={false} /> at worst and took 42 months to recover,
-    against 52.7% and 63 months for the cheap mix. Its chance of trailing a cheap index fund, at the more modest
+    against 52.7% and 63 months for the cheap mix. That 25% version's chance of trailing a cheap index fund, at the more modest
     returns I would expect from here, is about <Figure id="trailing-odds" inline /> over ten, twenty and thirty
     years.</p>
 
     <p>The decade that makes the case is 1999 to 2009. US stocks returned <Figure id="flat-decade" inline /> for
-    ten years. A 30% trend holding on top would have turned that into about 0.05% a year. This portfolio has no
-    crash protection worth the name. What it has is a lost-decade hedge.</p>
+    ten years. A 30% trend holding on top would have turned that into about 0.05% a year. The protection on offer
+    is against a lost decade, not against a crash.</p>
   </div>
 
   <div class="prose mt-14">
@@ -144,11 +145,11 @@ const LADDER = [
     by the end of 2025. If RSST closes, the fallback is <a href="/portfolios/value-lean/">portfolio three</a>, with
     the 30% going back into VTI.</p>
 
-    <p>Funds running the same idea also differ far more than index funds do: in 2022, four managed-futures funds
-    returned 30.52%, 23.07%, 5.52% and −5.81%. I chose RSST over the alternatives on its age, size and trading
-    costs, not on return, because the returns cannot be told apart. Its gains are taxed as ordinary income, so hold
-    it in a retirement account or do not hold it. The <a href="/tools/which-account/">which-account tool</a> puts
-    it first in the queue for shelter at every tax rate.</p>
+    <p>Funds running the same idea differ far more than index funds do, so I chose RSST over the alternatives on
+    its age, size and trading costs, not on return. Its gains are taxed as ordinary income, so hold it in a
+    retirement account or do not hold it. The <a href="/tools/which-account/">which-account tool</a> puts it
+    first in the queue for shelter at every tax rate, as long as its income is counted the way its filings record
+    it.</p>
   </div>
 
   <div class="prose mt-14">
@@ -175,18 +176,16 @@ const LADDER = [
     96 years it would have trailed the 30% version by about
     <Figure id="working-default-gap" inline showUnit={false} /> a year. At the returns I would expect from here it
     trails by 0 to 0.2 points, and it comes out ahead only if stocks beat bonds by less than about 1.5 points a
-    year. In exchange, its worst fall is 1.8 points shallower. It is a priced bet on high prices meaning
-    something, not a free lunch.</p>
+    year. In exchange, its worst fall is 1.8 points shallower. That is the price of betting that today's high prices
+    matter.</p>
   </div>
 
   <div class="prose mt-14">
     <h2>What losing feels like</h2>
 
-    <p>Not a crash. The failure is a decade of quiet, monthly underperformance against a plain US index fund. At its
-    worst, trend following ran <Figure id="trend-drawdown" inline showUnit={false} /> the stocks it replaced,
-    over 11.2 years. In the seventeen years since 2009, this construction trailed a comparable all-stock mix by about
-    <Figure id="since-2009-vs-control" inline showUnit={false} /> a year, after beating it by 8.2 points a year
-    through 1999 to 2009. In simulated thirty-year histories, <Figure id="abandonment-30" inline showUnit={false} />
+    <p>Losing here looks like a decade of quiet, monthly underperformance against a plain US index fund, not a
+    crash. At its worst, trend following ran <Figure id="trend-drawdown" inline showUnit={false} /> the stocks it
+    replaced, over 11.2 years. In simulated thirty-year histories, <Figure id="abandonment-30" inline showUnit={false} />
     of holders reached the point of giving up on the 30% version, and
     <Figure id="abandonment-30-dead" inline showUnit={false} /> if trend following has stopped paying altogether.
     Choose 25% if you think you would sell.</p>

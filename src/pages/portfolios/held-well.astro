@@ -20,7 +20,7 @@ const NUMBERS = [
     label: "saved a year by leaving a typical active fund",
     note: "Range 0.40% to 0.59%. Zero if you already hold index funds.",
   },
-  { value: "7% vs 52%", label: "ETFs vs mutual funds that paid out a taxable gain in 2025" },
+  { value: "7%", label: "of ETFs paid out a taxable gain in 2025, against 52% of mutual funds" },
   { value: "1.12%", label: "a year lost to tax by the average US stock fund in a taxable account" },
   { value: p.feeOn10k, label: "Fee a year on $10,000" },
 ];
@@ -84,9 +84,9 @@ const NUMBERS = [
     <h2>What it is worth</h2>
 
     <p>Between 0.04 and 2.70 points a year. The range is that wide because it depends on where you start. Someone
-    already in a cheap index ETF in one account gains almost nothing. Someone leaving an active mutual fund
-    charging 0.57% a year, the average for active funds, held in a taxable account, gains the fee gap of about
-    <Figure id="fee-gap" inline showUnit={false} /> plus the tax the old fund was costing. Two questions set your
+    already in a cheap index ETF in one account gains almost nothing. Someone leaving an active mutual fund in a
+    taxable account gains more. The average active fund charges 0.57% a year, so the fee gap alone is about
+    <Figure id="fee-gap" inline showUnit={false} />, and the tax the old fund was costing comes on top. Two questions set your
     number: what do you pay now, and do you hold anything outside a retirement account.</p>
   </div>
 

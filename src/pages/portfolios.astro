@@ -8,6 +8,7 @@
  */
 import AllocationBar from "~/components/AllocationBar.astro";
 import Breakout from "~/components/Breakout.astro";
+import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
 import Ladder from "~/components/Ladder.astro";
@@ -57,7 +58,7 @@ const LADDER = [
 >
   <Hero
     title="Four portfolios, side by side"
-    lede="Each one contains the one before it. The question is not which is best. It is how much of the clever stuff you can hold through a bad decade."
+    lede="Each one contains the one before it. The question is how much of the clever stuff you can hold through a bad decade."
   />
 
   <Breakout scroll class="mt-8" heading="The comparison" maxWidth="64rem">
@@ -115,33 +116,30 @@ const LADDER = [
     }
   </div>
 
-  <div class="prose mt-8">
+  <Callout kind="caveat" label="Three comparisons, not one" class="mt-8">
     <p>The "what it adds" row compares each portfolio with a different thing, on purpose. Portfolio two is compared
     with whatever you hold today, because that is where its saving comes from. Portfolios three and four are
     compared with a cheap index mix holding the same split of US and international stocks. The three figures do
     not add up to one number, and I have not added them.</p>
-  </div>
+  </Callout>
 
   <div class="prose mt-14">
     <h2>What each is for</h2>
 
     <p><strong>One fund</strong> is the market. Over ten years to mid-2025, 90.3% of US stock funds run by
-    professionals did worse than it. If you hold nothing else and never sell, you will do better than most of
-    them.</p>
+    professionals did worse than it.</p>
 
     <p><strong>Held well</strong> is the same fund with four habits: the cheapest version of it, the right account
-    for each piece, an ETF rather than a mutual fund, and no trading. The habits are worth between 0.04 and 2.70
-    points a year. The low end is someone already in cheap index funds. The high end is someone leaving an
-    expensive fund in a taxable account. Everything here is arithmetic, not a forecast.</p>
+    for each piece, an ETF rather than a mutual fund, and no trading. Worth between 0.04 and 2.70
+    points a year depending on what you hold now, and all of it arithmetic rather than forecast.</p>
 
     <p><strong>Value lean</strong> replaces the one fund with six, and leans toward companies that are cheaper,
     smaller and more profitable than average. Over 1990 to 2026 that lean earned about
     <Figure id="value-lean-gap" inline showUnit={false} /> a year over a cheap index mix, with a range of 0.4 to
-    1.3. It is a bet with a long record and a long losing stretch inside it.</p>
+    1.3.</p>
 
     <p><strong>With trend</strong> adds one fund, RSST, that holds US stocks and a trend-following program at the
-    same time. It is the only holding on this site that adds an idea on top of stocks rather than swapping stocks
-    for it. On 96 years of data it added about <Figure id="trend-96-year-gap" inline /> over an all-stock
+    same time, adding an idea on top of stocks rather than swapping stocks for it. On 96 years of data it added about <Figure id="trend-96-year-gap" inline /> over an all-stock
     fund. Since 2009 the gap has been <Figure id="trend-gap-since-2009" inline showUnit={false} />,
     which is too small to tell from luck.</p>
   </div>
@@ -154,8 +152,8 @@ const LADDER = [
     <ul>
       <li>If the answer is less than 30%, none of these as written. Hold fewer stocks and more bonds.</li>
       <li>If it is 30% to 50%, hold portfolio two with some bonds beside it, or portfolio four at the row of the
-      ladder below that matches your number. Every portfolio on this page fell by about half at some point since
-      1990.</li>
+      ladder below that matches your number. The cheap mix and the trend version both fell by about half at some point
+      since 1990.</li>
       <li>If it is 50% or more and you would rather match the market than risk trailing it for a decade, hold
       portfolio two.</li>
       <li>If it is 50% or more and you want a lean with a long record, hold portfolio three.</li>
