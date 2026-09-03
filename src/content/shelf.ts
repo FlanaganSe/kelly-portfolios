@@ -248,6 +248,27 @@ const READ = asOf("2026-08-17");
  */
 const REFRESH = asOf("2026-09-01");
 
+const evidence: Citation = { label: "The evidence base", docPath: "docs/research/evidence-base.md" };
+const leveraged: Citation = {
+  label: "Two-times and three-times funds and the 200-day rule",
+  docPath: "docs/research/leveraged-etfs-and-timing-rules.md",
+};
+const discovery: Citation = {
+  label: "Discovery sweep, September 2026",
+  docPath: "docs/research/discovery-sweep-2026-09.md",
+};
+const currency: Citation = {
+  label: "Currency and the international holding",
+  docPath: "docs/research/currency-and-the-international-sleeve.md",
+};
+
+/**
+ * The 2026-09-02 extension: the asset classes a casual investor asks about, read from
+ * issuer pages, fact sheets and EDGAR filings on that date. None of these funds has been
+ * regressed or scored here; their records carry cost and structure and say so.
+ */
+const WEB_READ = asOf("2026-09-02");
+
 /**
  * The two dates behind every {@link SpreadFact} on this shelf. Rule 6c-11 spreads were
  * read from issuer pages on 2026-08-22/23 for the diversifier and factor funds
@@ -363,6 +384,41 @@ export const shelf: readonly ShelfFund[] = [
     spread: { bp: 0, asOf: READ },
     source: structural,
     asOf: READ,
+  },
+  {
+    ticker: "VT",
+    name: "Vanguard Total World Stock ETF",
+    category: "us-core",
+    mandate:
+      "The whole world at capitalisation weight, US included, in one fund. What portfolios 1 and 2 hold, and the one-fund answer to the whole equity question.",
+    expenseRatioBp: 6,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: 3,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Held as the whole of portfolios 1 and 2 and never regressed, because it is the market rather than a bet against it. Its 6 bp fee is twice VTI's 3 bp plus VXUS's 5 bp blended, which is the price of one ticker instead of two. No Form N-CEN was read for it, so its lending income and net cost are unknown rather than zero.",
+    caution:
+      "Roughly three fifths of it is the US market, so a reader holding it beside VTI owns the US twice. Sold as a single fund it cannot be rebalanced between regions, which is the whole of what portfolios 3 and 4 buy with their extra tickers.",
+    issuer: {
+      notes: [
+        "0.05% management fee, no 12b-1 fee, 0.01% other expenses and 0.06% total annual fund operating expenses, from the ETF Shares summary prospectus dated 2026-02-27. Tracks the FTSE Global All Cap Index. Portfolio turnover 3% in the most recent fiscal year. The prospectus says nothing about securities lending.",
+        "Inception 2008-06-24 and $77,627m of ETF net assets at 2026-06-30, from Vanguard's own investment profile dated as of 2026-06-30. The 0.06% printed there matches the prospectus. Vanguard's product page is rendered by script and could not be read; an aggregator showed $81.26bn on 2026-09-02, which is a later date and not an issuer figure.",
+        "Not on Vanguard's 2026-02-01 fee-cut list, which named 53 funds and 84 share classes; the fee has been 0.06% since at least the 2025 prospectus.",
+      ],
+      source: {
+        label: "Vanguard Total World Stock Index Fund, ETF Shares 497K dated 2026-02-27",
+        docPath: "docs/research/portfolio-recommendation.md",
+        href: "https://www.sec.gov/Archives/edgar/data/857489/000119312526077566/f44201d1.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: recommendation,
+    asOf: WEB_READ,
   },
   // -------------------------------------------------------------------------
   // US value and small. Nine systematic products, all `exploratory`, and the two
@@ -1870,6 +1926,664 @@ export const shelf: readonly ShelfFund[] = [
     asOf: READ,
   },
   // -------------------------------------------------------------------------
+  // The rest of the bond aisle, added 2026-09-02. TIPS, Treasuries by maturity, cash
+  // substitutes, bonds outside the US and corporate credit. Wherever a fund is in the
+  // fixed-income cost audit behind `docs/research/setting-the-equity-share.md`, its fee
+  // is the fund's own Form 497K fee table and its lending income the median over the
+  // fiscal years of Form N-CEN Item C.6, both held as manifests under
+  // `research/data-manifests/fixed_income_shelf/` and cited by path; a fund whose N-CEN
+  // answers "No" to lending in every filed year carries 0, as BND does. The rest are
+  // issuer pages read that day, and say so. None of these has a verdict of its own: the asset-class
+  // findings live on the alternatives audit and the evidence base, and a fund is not
+  // an asset class.
+  // -------------------------------------------------------------------------
+  {
+    ticker: "VTIP",
+    name: "Vanguard Short-Term Inflation-Protected Securities ETF",
+    category: "bonds",
+    mandate: "TIPS maturing inside five years. Inflation protection with almost no interest-rate risk.",
+    expenseRatioBp: 3,
+    securitiesLendingBp: 0,
+    netCostBp: 3,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 3 bp with no lending at all: Vanguard answers Form N-CEN Item C.6.a 'No' in every fiscal year from 2018-09 to 2025-09, so the fee is the whole cost. TIPS and nominal Treasuries are one bet on this repository's measurements, correlated +0.76 to +0.85 across eighteen bond funds, so this adds inflation matching rather than a second way of making money.",
+    caution:
+      "Short TIPS match a real spending liability and little else; over the 79 filed months every TIPS fund trailed VTI at matched volatility by more than the test could resolve, which is a statement about a bond bear market and not about the fund.",
+    issuer: {
+      notes: [
+        "0.03% total annual fund operating expenses with no waiver, from the ETF Shares 497K dated 2026-01-28, which names the Bloomberg U.S. Treasury Inflation-Protected Securities 0-5 Years Index. Vanguard's 2026-02-01 fee cuts moved the Institutional share class to 0.02%; the ETF class still printed 0.03% on Vanguard's product page on 2026-09-02, with a fee as-of date of 2026-01-28.",
+        "Inception 2012-10-12 and $20.5bn of ETF net assets at 2026-08-31, from Vanguard's investor and advisor pages read on 2026-09-02.",
+      ],
+      source: {
+        label: "Vanguard Short-Term Inflation-Protected Securities Index Fund, ETF Shares 497K dated 2026-01-28",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/836906/000119312526024990/f43883d1.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "STIP",
+    name: "iShares 0-5 Year TIPS Bond ETF",
+    category: "bonds",
+    mandate: "The same short TIPS claim as VTIP, from iShares.",
+    expenseRatioBp: 3,
+    securitiesLendingBp: 0.06,
+    netCostBp: 2.94,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 3 bp less a 0.06 bp median of lending income over seven filed fiscal years to 2025-10, so 2.94 bp net and a hair cheaper than VTIP to own. Same one-bet reading as VTIP: TIPS and nominal Treasuries move together.",
+    caution:
+      "Its lending income fell to 0.002 bp in the 2025 fiscal year, so the 0.06 bp difference from VTIP is a median of small numbers and may not persist.",
+    issuer: {
+      notes: [
+        "0.03% management fee and 0.03% total, no waiver, from the 497K dated 2026-02-27, which names the ICE U.S. Treasury 0-5 Year Inflation Linked Bond Index.",
+        "Inception 2010-12-01 and $16,280,812,836 of net assets at 2026-09-02, from the iShares product page; the fact sheet printed $15,883.69m at 2026-06-30.",
+      ],
+      source: {
+        label: "iShares 0-5 Year TIPS Bond ETF, Form 497K dated 2026-02-27",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1100663/000119312526081782/d33535d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "LTPZ",
+    name: "PIMCO 15+ Year U.S. TIPS Index Exchange-Traded Fund",
+    category: "bonds",
+    mandate: "TIPS with fifteen or more years to run. The most interest-rate risk any inflation-linked fund carries.",
+    expenseRatioBp: 20,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only, and the dearest TIPS fund on this list at 20 bp against 3 bp for SCHP, VTIP and STIP. Its Form N-CEN says it lends but files no income figure in any of eight fiscal years, so the net cost is unknown rather than 20.",
+    caution:
+      "The target index's dollar-weighted average maturity was 18.89 years at 2025-09-30, and a real yield move of one point moves a fund of that maturity by roughly a sixth of its value. It fell furthest of the TIPS funds in 2022 for that reason.",
+    issuer: {
+      notes: [
+        "0.20% management fee and 0.20% total, with no 'other expenses' line and no waiver, from the 497K dated 2025-10-31, which names the ICE BofA 15+ Year US Inflation-Linked Treasury Index and its 18.89-year index maturity at 2025-09-30.",
+        "Inception 2009-09-03 and $708m of net assets at 2026-06-30, from PIMCO's own ETF quicksheet dated as of that day; PIMCO's product page rendered no data on 2026-09-02. An aggregator showed $877.67m at 2026-09-03.",
+      ],
+      source: {
+        label: "PIMCO 15+ Year U.S. TIPS Index ETF, Form 497K dated 2025-10-31",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1450011/000119312525249126/d25858d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "TIPX",
+    name: "SPDR Bloomberg 1-10 Year TIPS ETF",
+    category: "bonds",
+    mandate: "TIPS between one and ten years. The middle of the maturity range, from State Street.",
+    expenseRatioBp: 15,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only, from the issuer page rather than a filing: 15 bp gross, five times SCHP for a narrower maturity band. No Form N-CEN was read for it, so lending and net cost are unknown.",
+    caution:
+      "It was not in the fixed-income audit, so its fee is an issuer-page figure and not a fee-table one; the 497K should be read before it is quoted as a cost.",
+    issuer: {
+      notes: [
+        "0.15% gross expense ratio, with no net figure printed and no waiver stated, inception 2013-05-29 and $2,064.86m of net assets at 2026-09-01, from the State Street product page. Tracks the Bloomberg 1-10 Year U.S. Government Inflation-Linked Bond Index.",
+        "State Street Global Advisors became State Street Investment Management on 2025-06-30 and the fund's name now carries the 'State Street SPDR' prefix; ticker, index and fee are unchanged.",
+      ],
+      source: {
+        label: "State Street SPDR Bloomberg 1-10 Year TIPS ETF, issuer page",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.ssga.com/us/en/intermediary/etfs/spdr-bloomberg-1-10-year-tips-etf-tipx",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "VGIT",
+    name: "Vanguard Intermediate-Term Treasury ETF",
+    category: "bonds",
+    mandate: "US Treasuries of three to ten years. The middle of the curve, and nothing else.",
+    expenseRatioBp: 3,
+    securitiesLendingBp: 0,
+    netCostBp: 3,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 3 bp and no lending in any of eight filed fiscal years, so 3 bp is the cost. The alternatives audit's third-ranked move is raising the cash and short-to-intermediate Treasury allocation instead of buying a tail hedge, and this is one of the funds that move would be made with.",
+    caution:
+      "Over the 79 filed months to 2026-05 every nominal Treasury fund's excess return was negative; that is a bond bear market and settles nothing about the next one. A Treasury's pay in a crash is era-dependent, positive in seven of twelve five-year blocks and negative in five.",
+    issuer: {
+      notes: [
+        "0.03% total annual fund operating expenses, no waiver, from the ETF Shares 497K dated 2025-12-19 as supplemented 2026-06-30, whose target index had a dollar-weighted average maturity of 5.6 years at 2025-08-31. Vanguard's 2026-02-01 cuts took the Institutional class to 0.03% from 0.04%; the ETF class was already there.",
+        "Inception 2009-11-19 and $39.8bn of ETF net assets at 2026-08-31, from Vanguard's investor and advisor pages read 2026-09-02. Tracks the Bloomberg U.S. Treasury 3-10 Year Index.",
+      ],
+      source: {
+        label: "Vanguard Intermediate-Term Treasury Index Fund, ETF Shares 497K dated 2025-12-19",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1021882/000102188226000464/f45475d1.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "VGLT",
+    name: "Vanguard Long-Term Treasury ETF",
+    category: "bonds",
+    mandate: "US Treasuries of ten years and longer, at Vanguard's price.",
+    expenseRatioBp: 3,
+    securitiesLendingBp: 0,
+    netCostBp: 3,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 3 bp with no lending, one fifth of TLT's 15 bp for a similar claim on the long end. Long Treasuries paid in every growth and deflation shock on the century-long panel and lost up to 40% in the inflation ones.",
+    caution:
+      "The target index's average maturity was 22 years at 2025-08-31. Experiment 018 already declined a stacked long-Treasury leg at 20 points, and the 2022 loss is what a fund of this maturity does when real yields rise two points.",
+    issuer: {
+      notes: [
+        "0.03% total annual fund operating expenses, no waiver, from the ETF Shares 497K dated 2025-12-19 as supplemented 2026-06-30, whose target index had a dollar-weighted average maturity of 22 years at 2025-08-31.",
+        "Inception 2009-11-19 and $10.6bn of ETF net assets at 2026-08-31, from Vanguard's pages read 2026-09-02. Tracks the Bloomberg U.S. Long Treasury Bond Index.",
+      ],
+      source: {
+        label: "Vanguard Long-Term Treasury Index Fund, ETF Shares 497K dated 2025-12-19",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1021882/000102188226000463/f45478d1.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "GOVT",
+    name: "iShares U.S. Treasury Bond ETF",
+    category: "bonds",
+    mandate: "The whole Treasury curve from one to thirty years in one fund.",
+    expenseRatioBp: 5,
+    securitiesLendingBp: 0.05,
+    netCostBp: 4.95,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 5 bp less a 0.05 bp median of lending income over eight fiscal years to 2025-10, so 4.95 bp net: dearer than VGIT and VGLT and cheaper than TLT for a claim that spans both of theirs.",
+    caution:
+      "It is the whole curve at market weight, so its interest-rate risk is set by what the Treasury chooses to issue rather than by the holder.",
+    issuer: {
+      notes: [
+        "0.05% management fee and 0.05% total, no waiver, from the 497K dated 2026-02-27.",
+        "Inception 2012-02-14 and $41,601,260,510 of net assets at 2026-09-02, from the iShares product page; the fact sheet printed $43,729.89m at 2026-06-30. Tracks the ICE US Treasury Core Bond Index.",
+      ],
+      source: {
+        label: "iShares U.S. Treasury Bond ETF, Form 497K dated 2026-02-27",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1100663/000119312526081797/d50915d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "SGOV",
+    name: "iShares 0-3 Month Treasury Bond ETF",
+    category: "bonds",
+    mandate: "Treasury bills of three months or less. Cash, as a fund.",
+    expenseRatioBp: 9,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only, from the issuer page: 9 bp, which is 4.5 bp cheaper than BIL for the same bills. In the lower tail of equity months, cash is the benchmark almost nothing on the alternatives audit beats, and this is the cheapest listed way to hold it.",
+    caution:
+      "Not in the fixed-income audit, so no fee table or Form N-CEN was read; the 9 bp is the product page's figure. Its income is ordinary and state-tax-exempt, which is a placement question rather than a return one.",
+    issuer: {
+      notes: [
+        "0.09% expense ratio, with the fact sheet showing a 0.09% management fee, 0.00% other expenses and no waiver line; the earlier waiver expired in July 2024. Inception 2020-05-26 and $106,698,501,969 of net assets at 2026-09-02, from the iShares product page. Tracks the ICE 0-3 Month US Treasury Securities Index. Prospectus dated 2026-06-29.",
+      ],
+      source: {
+        label: "iShares 0-3 Month Treasury Bond ETF, issuer page",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.ishares.com/us/products/314116/ishares-0-3-month-treasury-bond-etf",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "BIL",
+    name: "SPDR Bloomberg 1-3 Month T-Bill ETF",
+    category: "bonds",
+    mandate: "The same Treasury bills as SGOV, in the older and larger fund.",
+    expenseRatioBp: 13.53,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict: "Priced only. 13.53 bp gross against SGOV's 9 for the same bills, which is the whole comparison.",
+    caution: "The fee is the issuer page's gross figure with no net printed; no filing was read for it.",
+    issuer: {
+      notes: [
+        "0.1353% gross expense ratio, no net figure and no waiver stated, inception 2007-05-25 and $46,183.83m of net assets at 2026-09-01, from the State Street product page. Tracks the Bloomberg 1-3 Month U.S. Treasury Bill Index. Renamed with the 'State Street SPDR' prefix after the 2025-06-30 rebrand; ticker, index and fee unchanged.",
+      ],
+      source: {
+        label: "State Street SPDR Bloomberg 1-3 Month T-Bill ETF, issuer page",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.ssga.com/us/en/intermediary/etfs/spdr-bloomberg-1-3-month-t-bill-etf-bil",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "BOXX",
+    name: "Alpha Architect 1-3 Month Box ETF",
+    category: "bonds",
+    mandate: "A bill-like return built from index option box spreads, paid as price rather than as interest.",
+    expenseRatioBp: 19.49,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The one fund here whose filed returns were read: 4.28% a year at 0.39% volatility over 44 months from its N-PORT, with a correlation of 0.00 to VTI, and 4.70% a year since 2022-12 by the issuer's own table. The discovery sweep's use for it is as the taxable account's cash and as the observable financing rate that prices the alternative to a stacked fund.",
+    caution:
+      "The whole case rests on tax treatment that has not been ruled on. The prospectus taxes index options under section 1256 and warns that section 1258 conversion-transaction rules could turn the gain into ordinary income and that the IRS could disagree; press reports in 2026-05 say the IRS has started asking questions, and no ruling either way has been found. It paid an unintended taxable distribution in 2024-08. Its 19.49 bp net fee rests on a 5 bp waiver.",
+    reviewTrigger: {
+      on: asOf("2027-02-01"),
+      what: "Read the prospectus dated on or after 2027-02-01 for the fee waiver. The 2026-02-01 prospectus caps expenses at 0.1949% 'until at least February 1, 2027'; if the cap lapses the fee is 24.49 bp, and if the tax section changes the fund's reason for being here changes with it.",
+    },
+    issuer: {
+      notes: [
+        "0.2449% gross less a 0.0500% waiver for 0.1949% net, from the issuer page at 2026-09-02 and the prospectus dated 2026-02-01, which holds the cap 'in place until at least February 1, 2027' and terminable only by the board. Inception 2022-12-27 and $14,636.63m of net assets at 2026-09-02.",
+        "Actively managed. It buys exchange-listed box spreads on indexes such as the S&P 500 as synthetic zero-coupon bonds in the one-to-three-month sector; the issuer calls the box market 'an alternative lending market'. The objective no longer mentions capital-gain treatment. The old boxxetf.com domain is parked; the issuer page is funds.alphaarchitect.com.",
+      ],
+      source: {
+        label: "Alpha Architect 1-3 Month Box ETF, issuer page and prospectus dated 2026-02-01",
+        docPath: "docs/research/discovery-sweep-2026-09.md",
+        href: "https://funds.alphaarchitect.com/boxetf/",
+      },
+      readOn: WEB_READ,
+    },
+    source: discovery,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "TLT",
+    name: "iShares 20+ Year Treasury Bond ETF",
+    category: "bonds",
+    mandate:
+      "US Treasuries of twenty years and longer. The long end, and the fund the research uses as its duration control.",
+    expenseRatioBp: 15,
+    securitiesLendingBp: 0.003,
+    netCostBp: 14.997,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 15 bp less a lending median of 0.003 bp over seven filed fiscal years to 2026-02, which rounds to nothing, so the fee is the cost and it is five times VGLT's. Its own filed monthly return is the duration factor the real-estate regression uses.",
+    caution:
+      "It is the longest nominal Treasury exposure on this list and the one the 2022 rate rise hurt most. Its 15 bp buys nothing VGLT's 3 bp does not, except a deeper options market that a long holder never uses.",
+    issuer: {
+      notes: [
+        "0.15% management fee and 0.15% total, with 0.00% other expenses and no waiver, from the 497K dated 2026-06-29.",
+        "Inception 2002-07-22 and $46,667,171,682 of net assets at 2026-09-02, from the iShares product page; the fact sheet printed $41,099.93m at 2026-06-30. Tracks the ICE US Treasury 20+ Year Bond Index.",
+      ],
+      source: {
+        label: "iShares 20+ Year Treasury Bond ETF, Form 497K dated 2026-06-29",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1100663/000119312526287948/d128154d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "BNDX",
+    name: "Vanguard Total International Bond ETF",
+    category: "bonds",
+    mandate: "Investment-grade bonds outside the US, with the currency risk hedged back to dollars.",
+    expenseRatioBp: 7,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only, and nothing about it has been measured: this repository holds no bond history outside the United States beyond an annual panel, which the evidence base names as a gap. 7 bp from Vanguard's fact sheet; no N-CEN read, so lending and net cost are unknown.",
+    caution:
+      "A hedged fund converts its currency gains into currently taxed income. The currency page reaches 'disqualified from the taxable account' for hedged equity funds on that mechanism; whether the same arithmetic transfers to a hedged bond fund was not examined here.",
+    issuer: {
+      notes: [
+        "0.07% expense ratio as reported in the most recent prospectus, inception 2013-05-31 and $82,965m of ETF net assets ($123,286m for the whole fund) at 2026-06-30, from Vanguard's own fact sheet dated as of that day. Tracks the Bloomberg Global Aggregate ex-USD Float Adjusted RIC Capped Index, hedged, by sampling. Vanguard's script-rendered product pages could not be read on 2026-09-02.",
+        "Not on Vanguard's 2026-02-01 fee-cut list for the ETF class; the Institutional class went to 0.03% from 0.06% that day. The last documented ETF cut was to 0.07% from 0.08% in 2022-02.",
+      ],
+      source: {
+        label: "Vanguard Total International Bond ETF, fact sheet as of 2026-06-30",
+        docPath: "docs/research/evidence-base.md",
+        href: "https://workplace.vanguard.com/assets/corp/fund_communications/pdf_publish/us-products/fact-sheet/F3711.pdf",
+      },
+      readOn: WEB_READ,
+    },
+    source: evidence,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "IAGG",
+    name: "iShares Core International Aggregate Bond ETF",
+    category: "bonds",
+    mandate: "The same hedged non-US investment-grade bond claim as BNDX, from iShares.",
+    expenseRatioBp: 7,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only, at the same 7 bp as BNDX for a similar index, and unmeasured for the same reason: no bond history outside the US is held here.",
+    caution: "Same hedged-fund tax question as BNDX, unexamined for bonds.",
+    issuer: {
+      notes: [
+        "0.07% expense ratio as stated in the prospectus, no waiver, inception 2015-11-30 and $11,850,751,702 of net assets at 2026-09-02, from the iShares product page. Tracks the Bloomberg Global Aggregate ex USD 10% Issuer Capped (Hedged to USD) Index. The last documented cut was to 0.07% from 0.08% on 2022-04-01.",
+      ],
+      source: {
+        label: "iShares Core International Aggregate Bond ETF, issuer page",
+        docPath: "docs/research/evidence-base.md",
+        href: "https://www.ishares.com/us/products/279626/ishares-international-aggregate-bond-etf",
+      },
+      readOn: WEB_READ,
+    },
+    source: evidence,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "BWX",
+    name: "SPDR Bloomberg International Treasury Bond ETF",
+    category: "bonds",
+    mandate:
+      "Government bonds outside the US in their own currencies, unhedged. A currency position as much as a bond one.",
+    expenseRatioBp: 35,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only: 35 bp gross, five times BNDX, for the unhedged version of a similar claim. Unmeasured; the currency page measured what a dollar holder gets from unhedged developed-market exposure through equity funds, not through this.",
+    caution:
+      "Most of its volatility is exchange rates rather than bonds, so it answers a currency question the holder may not have meant to ask.",
+    issuer: {
+      notes: [
+        "0.35% gross expense ratio, no net printed and no waiver listed, inception 2007-10-02 and $1,306.71m of net assets at 2026-09-01, from the State Street product page. Tracks the Bloomberg Global Treasury ex-US Capped Index, unhedged.",
+        "Renamed 'State Street SPDR Bloomberg International Treasury Bond ETF' between the 2025-10-31 and 2026-04-30 schedules of series; ticker, index and fee unchanged. Not among the four funds State Street closed in 2026-05.",
+      ],
+      source: {
+        label: "State Street SPDR Bloomberg International Treasury Bond ETF, issuer page",
+        docPath: "docs/research/currency-and-the-international-sleeve.md",
+        href: "https://www.ssga.com/us/en/intermediary/etfs/spdr-bloomberg-international-treasury-bond-etf-bwx",
+      },
+      readOn: WEB_READ,
+    },
+    source: currency,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "EMB",
+    name: "iShares J.P. Morgan USD Emerging Markets Bond ETF",
+    category: "bonds",
+    mandate: "Emerging-market government bonds issued in dollars. Credit risk on countries, without the currency.",
+    expenseRatioBp: 39,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only, at 39 bp against VWOB's 15 for a similar dollar-denominated index. Unmeasured: no emerging-market bond history is held here.",
+    caution:
+      "Sovereign credit spreads widen in the same states that hurt equity, so read it as credit rather than as a second way of making money until something here measures it.",
+    issuer: {
+      notes: [
+        "0.39% expense ratio as stated in the prospectus, no waiver, inception 2007-12-17 and $14,658,306,397 of net assets at 2026-09-02, from the iShares product page. Tracks the J.P. Morgan EMBI Global Diversified Core index. Not among BlackRock's 2026-06-12 liquidations.",
+      ],
+      source: {
+        label: "iShares J.P. Morgan USD Emerging Markets Bond ETF, issuer page",
+        docPath: "docs/research/evidence-base.md",
+        href: "https://www.ishares.com/us/products/239572/ishares-jp-morgan-usd-emerging-markets-bond-etf",
+      },
+      readOn: WEB_READ,
+    },
+    source: evidence,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "VWOB",
+    name: "Vanguard Emerging Markets Government Bond ETF",
+    category: "bonds",
+    mandate: "The same dollar-denominated emerging-market government bond claim as EMB, at Vanguard's price.",
+    expenseRatioBp: 15,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Priced only. 15 bp against EMB's 39, which is the whole comparison between the two; neither has been measured here.",
+    caution: "Same credit reading as EMB.",
+    issuer: {
+      notes: [
+        "0.13% management fee plus 0.02% other expenses for 0.15% total, with no waiver line, from the prospectus dated 2026-02-27; the fact sheet as of 2026-06-30 prints the same 0.15%, inception 2013-05-31 and $6,278m of ETF net assets ($6,761m for the whole fund). Tracks the Bloomberg USD Emerging Markets Government RIC Capped Index by sampling.",
+        "Cut to 0.15% from 0.20% on 2025-02-01, the largest of Vanguard's bond-ETF cuts that year; the Institutional class went to 0.08% from 0.13% on 2026-02-01 and the ETF class did not move.",
+      ],
+      source: {
+        label: "Vanguard Emerging Markets Government Bond ETF, prospectus dated 2026-02-27",
+        docPath: "docs/research/evidence-base.md",
+        href: "https://fund-docs.vanguard.com/p3820.pdf",
+      },
+      readOn: WEB_READ,
+    },
+    source: evidence,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "LQD",
+    name: "iShares iBoxx $ Investment Grade Corporate Bond ETF",
+    category: "bonds",
+    mandate: "Investment-grade US corporate bonds, with all their interest-rate risk left in.",
+    expenseRatioBp: 14,
+    securitiesLendingBp: 1.94,
+    netCostBp: 12.06,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "14 bp less a 1.94 bp lending median over eight fiscal years to 2026-02, so 12.06 bp net: four times VCIT's cost for a similar claim. Its filed monthly returns were regressed against VTI at matched volatility over 79 months and the gap excluded zero, at a floor the test could not otherwise resolve. The alternatives audit's finding is about the instrument: unhedged corporate credit correlates +0.83 with Treasuries, and the duration-hedged spread is the part that is a separate bet.",
+    caution:
+      "Its lending income runs 0.95 to 3.11 bp across years, so the net cost moves by a couple of bp with the lending market. It is the fund the audit rejected for carrying twenty years of duration in front of the credit it was bought for.",
+    issuer: {
+      notes: [
+        "0.14% management fee and 0.14% total, no waiver, from the 497K dated 2026-06-29.",
+        "Inception 2002-07-22 and $31,131,899,302 of net assets at 2026-09-02, from the iShares product page. Tracks the iBoxx USD Liquid Investment Grade Index. LQDW, a different fund, is being renamed around 2026-09-17; LQD is unaffected.",
+      ],
+      source: {
+        label: "iShares iBoxx $ Investment Grade Corporate Bond ETF, Form 497K dated 2026-06-29",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1100663/000119312526287952/d128812d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6-duration-hedged-credit-the-rejection-was-about-the-instrument-not-the-mechanism",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "VCIT",
+    name: "Vanguard Intermediate-Term Corporate Bond ETF",
+    category: "bonds",
+    mandate: "Investment-grade US corporate bonds of five to ten years, at Vanguard's price.",
+    expenseRatioBp: 3,
+    securitiesLendingBp: 0,
+    netCostBp: 3,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "3 bp with no lending in any of eight filed fiscal years to 2025-08, so 3 bp is the cost and it is the cheapest corporate-bond fund here by a factor of four. Regressed against VTI at matched volatility over 79 filed months alongside LQD and HYG, with the same result: a gap excluding zero on a window that is a bond bear market.",
+    caution:
+      "Same instrument problem as LQD in a shorter form: the credit spread arrives with seven years of duration attached, and the audit's admitted version of credit has the duration hedged out.",
+    issuer: {
+      notes: [
+        "0.03% total annual fund operating expenses, no waiver, from the ETF Shares 497K dated 2025-12-19 as supplemented 2026-06-30, whose target index had a dollar-weighted average maturity of 7.4 years at 2025-08-31.",
+        "Inception 2009-11-19 and $67,268m of ETF net assets ($69,479m for the whole fund) at 2026-06-30, from Vanguard's fact sheet as of that day. Tracks the Bloomberg U.S. 5-10 Year Corporate Bond Index by sampling. A cut to 0.03% from 0.04% on 2025-02-01 appears in search snippets only and was not verified from a fetched page.",
+      ],
+      source: {
+        label: "Vanguard Intermediate-Term Corporate Bond Index Fund, ETF Shares 497K dated 2025-12-19",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1021882/000102188226000461/f45481d1.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6-duration-hedged-credit-the-rejection-was-about-the-instrument-not-the-mechanism",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "HYG",
+    name: "iShares iBoxx $ High Yield Corporate Bond ETF",
+    category: "bonds",
+    mandate: "Below-investment-grade US corporate bonds. Equity risk wearing a coupon.",
+    expenseRatioBp: 49,
+    securitiesLendingBp: 9.19,
+    netCostBp: 39.81,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "49 bp less the largest lending income of any bond fund audited, a 9.19 bp median over eight fiscal years to 2026-02, so 39.81 bp net. Regressed against VTI at matched volatility over 79 filed months with LQD and VCIT, with the gap excluding zero. High-yield credit's left tail is the corporate-default state that also hurts equity, which is the audit's reason to hold credit for return rather than for protection.",
+    caution:
+      "Its lending income swung between 3.6 and 14.8 bp across the eight years, so a third of the fee comes back in good lending years and a twelfth in bad ones. At 39.81 bp net it is thirteen times VCIT.",
+    issuer: {
+      notes: [
+        "0.49% management fee and 0.49% total, no waiver, from the 497K dated 2026-06-29.",
+        "Inception 2007-04-04 and $15,546,709,126 of net assets at 2026-09-02, from the iShares product page. Tracks the iBoxx USD Liquid High Yield Index.",
+      ],
+      source: {
+        label: "iShares iBoxx $ High Yield Corporate Bond ETF, Form 497K dated 2026-06-29",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.sec.gov/Archives/edgar/data/1100663/000119312526287950/d128451d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "6-duration-hedged-credit-the-rejection-was-about-the-instrument-not-the-mechanism",
+    },
+    asOf: WEB_READ,
+  },
+  // -------------------------------------------------------------------------
   // Managed futures. The loading is on the AQR TSMOM index, which is a different
   // panel from any equity one; a `delta` of 1.000 means these funds keep none of
   // the +2.44 pp/yr funding-rule gap, because they are bought by selling equity.
@@ -2365,6 +3079,74 @@ export const shelf: readonly ShelfFund[] = [
     asOf: READ,
   },
   {
+    ticker: "NTSI",
+    name: "WisdomTree International Efficient Core Fund",
+    category: "capital-efficient",
+    mandate:
+      "90 cents of developed-market stocks outside the US and 60 of US Treasuries per dollar. NTSX's international twin.",
+    expenseRatioBp: 26,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Same mechanism as NTSX at a 6 bp higher fee, and no Form N-PORT of its own has been read here, so it carries no delta and no measured exposure. The issuer's own standardised figures to 2026-06-30 put it at +6.29% a year since its 2021-05-20 inception against NTSX's +12.81%, and on its filed basis it trailed MSCI EAFE by roughly 3 pp a year while the Treasury leg ran through the 2022 rate rise.",
+    caution:
+      "A five-year record that begins in 2021 is mostly the 2022 bond bear market, and the mechanism supplies exposure rather than a premium. Its prospectus prints no blended 90/60 benchmark, so no risk-matched comparison exists for it. The 60% Treasury leg is a term premium, which this repository does not count as an edge over an equity index.",
+    issuer: {
+      notes: [
+        "0.26% management fee and 0.26% total annual fund operating expenses, with no waiver, from the summary prospectus dated 2025-11-01. The same document says approximately 90% of net assets in developed-market equities outside the US and Canada, and US Treasury futures at approximately 60% of net assets. The 2021 launch prospectus printed the same fee and the same split.",
+        "Inception 2021-05-20. WisdomTree's own pages refused an automated reader on 2026-09-02, so the only size on file is an aggregator's $503.16m at 2026-09-03 and the issuer's $497m at 2026-06-30 recorded in the live stacked-fund page. The FY2025 N-CSR, which would carry lending income, was not read.",
+      ],
+      source: {
+        label: "WisdomTree International Efficient Core Fund, Form 497K dated 2025-11-01",
+        docPath: "docs/research/live-stacked-fund-records.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1350487/000121465925015714/ntsi497k1025.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: liveStacked,
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "NTSE",
+    name: "WisdomTree Emerging Markets Efficient Core Fund",
+    category: "capital-efficient",
+    mandate:
+      "90 cents of emerging-market stocks and 60 of US Treasuries per dollar. The smallest of the three Efficient Core funds.",
+    expenseRatioBp: 32,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Same mechanism as NTSX at a 12 bp higher fee, no Form N-PORT read here, no delta and no measured exposure. The issuer's own figures to 2026-06-30 give +6.70% a year since 2021-05-20, and on the filed basis it trailed MSCI Emerging Markets by roughly 3 pp a year over the same window.",
+    caution:
+      "At $57.1m on 2026-06-30 and $56.2m on an aggregator at 2026-09-03 it sits in the size band where this repository's own attrition measurement bites, and an emerging-market equity leg financed with a US Treasury leg is two different bets in one ticker. No risk-matched benchmark is published for it.",
+    issuer: {
+      notes: [
+        "0.32% management fee and 0.32% total annual fund operating expenses, with no waiver, from the summary prospectus dated 2025-11-01, which states approximately 90% of net assets in emerging-market equities and US Treasury futures at approximately 60% of net assets. Unchanged from the 2021 launch documents.",
+        "Inception 2021-05-20. WisdomTree's pages refused an automated reader on 2026-09-02; the sizes on file are the issuer's $57.1m at 2026-06-30 from the live stacked-fund page and an aggregator's $56.20m at 2026-09-03.",
+      ],
+      source: {
+        label: "WisdomTree Emerging Markets Efficient Core Fund, Form 497K dated 2025-11-01",
+        docPath: "docs/research/live-stacked-fund-records.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1350487/000121465925015713/ntse497k1025.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: liveStacked,
+    asOf: WEB_READ,
+  },
+  {
     ticker: "GDE",
     name: "WisdomTree Efficient Gold Plus Equity Strategy Fund",
     category: "capital-efficient",
@@ -2547,10 +3329,10 @@ export const shelf: readonly ShelfFund[] = [
   {
     ticker: "TIP",
     name: "iShares TIPS Bond ETF",
-    category: "alternative",
+    category: "bonds",
     mandate: "Inflation-linked Treasuries, audited as a candidate second way of making money in bonds.",
     expenseRatioBp: 18,
-    securitiesLendingBp: null,
+    securitiesLendingBp: 0.08,
     netCostBp: 17.92,
     turnoverPercent: null,
     loadings: [],
@@ -2561,7 +3343,7 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Not a second way of making money. Its correlation to the nominal bond funds beside it runs +0.76 to +0.85, and its correlation to equity is +0.131 against nominal bonds' \u22120.076. It is the worse diversifier of the two, which is the opposite of the usual claim.",
     caution:
-      "Its net cost of 17.92 bp against SCHP's 2.99 bp is the sharper point: the two correlate +0.9997, so the fee difference is the entire decision. Read the two cost fields together and they do not close: an 18 bp fee against a 17.92 bp net cost implies 0.08 bp of securities lending, and no Form N-CEN lending figure was read for this fund, so `securitiesLendingBp` stays null rather than carrying a number derived by subtraction. The 0.08 bp gap is the size of the unread term, not a measurement of it.",
+      "Its net cost of 17.92 bp against SCHP's 2.99 bp is the sharper point: the two correlate +0.9997, so the fee difference is the entire decision. The 0.08 bp of lending is the median of Item C.6 over eight Form N-CEN fiscal years to 2025-10 in the fixed-income audit's manifest, which is where the 17.92 came from; it ran from 0.00 to 0.23 bp across those years.",
     issuer: {
       notes: [
         "0.18% management fee, no 12b-1 fee, 0.00% other expenses and 0.18% total annual fund operating expenses, per its summary prospectus dated 2026-02-27.",
@@ -2579,9 +3361,9 @@ export const shelf: readonly ShelfFund[] = [
   {
     ticker: "SCHP",
     name: "Schwab U.S. TIPS ETF",
-    category: "alternative",
+    category: "bonds",
     mandate: "The same inflation-linked Treasuries, at a fifth of the cost.",
-    expenseRatioBp: null,
+    expenseRatioBp: 3,
     securitiesLendingBp: null,
     netCostBp: 2.99,
     turnoverPercent: null,
@@ -2593,9 +3375,444 @@ export const shelf: readonly ShelfFund[] = [
     verdict:
       "Correlated +0.9997 with TIP and costs 2.99 bp net against its 17.92. If any TIPS position is held at all, that arithmetic is the whole of the decision about which one.",
     caution:
-      "The position itself is rejected on correlation. Being the cheaper way to hold it is not an argument for holding it.",
+      "The position itself is rejected on correlation. Being the cheaper way to hold it is not an argument for holding it. The 2.99 bp net rests on the one fiscal year, 2020, in which its Form N-CEN filed a lending income figure; the other seven filed none, so `securitiesLendingBp` stays null.",
+    issuer: {
+      notes: [
+        "0.030% total expense ratio, a single figure with no waiver, inception 2010-08-05 and $16,028,810,838.44 of net assets at 2026-09-01, from Schwab's product page read in a browser on 2026-09-02; the page refuses an automated reader. The 497K dated 2026-04-28 prints the same 0.03% management fee and total, and names the Bloomberg US Treasury Inflation-Linked Bond Index (Series-L); the fund's own N-CSR gives a 7.1-year weighted average maturity and 6.3-year duration at 2025-12-31.",
+        "Not among the four Schwab funds whose fees were cut on 2026-06-11.",
+      ],
+      source: {
+        label: "Schwab U.S. TIPS ETF, issuer page and Form 497K dated 2026-04-28",
+        docPath: "research/data-manifests/fixed_income_shelf/product_facts.json",
+        href: "https://www.schwabassetmanagement.com/products/schp",
+      },
+      readOn: WEB_READ,
+    },
     source: alternatives,
-    asOf: READ,
+    asOf: WEB_READ,
+  },
+  // -------------------------------------------------------------------------
+  // Gold, commodities, bitcoin, real estate outside the US and a 2x fund, added
+  // 2026-09-02. The alternatives audit measured each asset class from long series and
+  // never from these funds, so each carries the class finding in its verdict and a
+  // null status of its own. A bullion or bitcoin trust holds no securities to lend, so
+  // its lending income is 0 by structure, as SPY's is, and its net cost is its fee.
+  // -------------------------------------------------------------------------
+  {
+    ticker: "GLD",
+    name: "SPDR Gold Shares",
+    category: "alternative",
+    mandate: "Physical gold in a trust. The oldest and largest of the four bullion funds, and the dearest.",
+    expenseRatioBp: 40,
+    securitiesLendingBp: 0,
+    netCostBp: 40,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Four times GLDM's fee for the same gold. The audit's verdict on the asset is optional, at most 5%, and only in place of cash or bonds: gold buys about twelve bp a month of lower-tail protection over bills at 16.24% volatility and a 91.2% peak-to-trough, and has earned +1.75% a year over bills since 1975 at a Sharpe of 0.18. None of that was measured on this fund.",
+    caution:
+      "A bullion trust's long-term gain is taxed as a collectible at 28% plus 3.8%, against 23.8% for equity; GLD's own 10-K says so. Its size buys an options market a long holder never uses, and its fee is paid by selling gold, which is itself a taxable disposal.",
+    issuer: {
+      notes: [
+        "0.40% gross expense ratio, the only figure printed, no waiver stated, inception 2004-11-18 and $146,434.15m of net assets at 2026-09-01, from the State Street product page. A grantor trust holding gold bullion, valued at the LBMA Gold Price PM, with HSBC Bank plc and JPMorgan Chase Bank as custodians.",
+        "The 2026-02-09 8-K appointed a new principal executive officer at the sponsor and changed nothing about the fund.",
+      ],
+      source: {
+        label: "SPDR Gold Shares, issuer page",
+        docPath: "docs/research/structural-and-tax-edges.md",
+        href: "https://www.ssga.com/us/en/intermediary/etfs/spdr-gold-shares-gld",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "IAU",
+    name: "iShares Gold Trust",
+    category: "alternative",
+    mandate: "Physical gold in a trust, from iShares, at 25 bp.",
+    expenseRatioBp: 25,
+    securitiesLendingBp: 0,
+    netCostBp: 25,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The same gold as GLD at 25 bp instead of 40, and still nearly three times IAUM, its own sponsor's cheaper twin. The audit's gold verdict applies to it unchanged, and nothing was measured on the fund.",
+    caution:
+      "Collectibles rate on long-term gains, as for every bullion trust. IAU discloses an IRS private letter ruling that an IRA's purchase is not a collectible acquisition, but does not disclose the ruling number, and a ruling binds only its requester.",
+    issuer: {
+      notes: [
+        "0.25% sponsor fee, no waiver stated, inception 2005-01-21 and $64,865,740,715 of net assets at 2026-09-02, from the iShares product page. A grantor trust holding gold bullion; not a 1940-Act investment company.",
+      ],
+      source: {
+        label: "iShares Gold Trust, issuer page",
+        docPath: "docs/research/structural-and-tax-edges.md",
+        href: "https://www.ishares.com/us/products/239561/ishares-gold-trust-fund",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "IAUM",
+    name: "iShares Gold Trust Micro",
+    category: "alternative",
+    mandate: "Physical gold in a trust, at the lowest fee of the four.",
+    expenseRatioBp: 9,
+    securitiesLendingBp: 0,
+    netCostBp: 9,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The cheapest listed gold at 9 bp, one bp under GLDM. If gold is held at all, the 31 bp gap to GLD is the whole of the decision about which fund. The asset itself carries the audit's verdict, not a promotion.",
+    caution:
+      "Collectibles rate on long-term gains. At $7.9bn it is a twentieth of GLD's size, which matters to a trader and not to a holder.",
+    issuer: {
+      notes: [
+        "0.09% sponsor fee, no waiver stated, inception 2021-06-15 and $7,870,219,513 of net assets at 2026-09-02, holding 55.86 tonnes of gold, from the iShares product page. A grantor trust valued at the LBMA Gold Price PM; not a 1940-Act company and not a commodity pool.",
+      ],
+      source: {
+        label: "iShares Gold Trust Micro, issuer page",
+        docPath: "docs/research/structural-and-tax-edges.md",
+        href: "https://www.ishares.com/us/products/306979/ishares-gold-trust-micro",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "GLDM",
+    name: "SPDR Gold MiniShares Trust",
+    category: "alternative",
+    mandate: "Physical gold in a trust, from the sponsor of GLD, at a quarter of GLD's fee.",
+    expenseRatioBp: 10,
+    securitiesLendingBp: 0,
+    netCostBp: 10,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "10 bp for the same gold GLD charges 40 for, and one bp above IAUM. The asset's verdict is the audit's; the fund was not measured.",
+    caution:
+      "Collectibles rate on long-term gains. Its 2025-12 custodian change was administrative and cost holders nothing.",
+    issuer: {
+      notes: [
+        "0.10% gross expense ratio, the only figure printed, no waiver stated, inception 2018-06-25 and $31,503.40m of net assets at 2026-09-01, from the State Street product page. A series of the World Gold Trust holding gold bullion.",
+        "The 8-K filed 2025-12-05 removed ICBC Standard Bank plc as a custodian, leaving JPMorgan Chase Bank as sole custodian, at no cost to shareholders.",
+      ],
+      source: {
+        label: "SPDR Gold MiniShares Trust, issuer page",
+        docPath: "docs/research/structural-and-tax-edges.md",
+        href: "https://www.ssga.com/us/en/intermediary/etfs/spdr-gold-minishares-trust-gldm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "PDBC",
+    name: "Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF",
+    category: "alternative",
+    mandate: "A broad basket of commodity futures held through a 1940-Act fund, so it sends a 1099 rather than a K-1.",
+    expenseRatioBp: 59,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The audit rejects long-only commodities as a diversifier and admits them only as an inflation hedge: their mean in the worst decile of equity months is −1.84%, positive in 36% of them, and they paid in 1973-74 and 2022. That was measured on a century-long series and not on this fund, which is the cheaper and simpler of the two Invesco vehicles to hold.",
+    caution:
+      "Its 0.59% net rests on a waiver of the 0.15% of acquired-fund fees through 2027-08-31; the gross total is 0.74%. It rebalances by rule and the index it follows changed method on 2025-11-10. The long/short version of this idea is already inside the trend holding, which is why the audit rejects it on overlap rather than on the premium.",
+    reviewTrigger: {
+      on: asOf("2027-08-31"),
+      what: "Read the 497K dated on or after 2027-02-27 for the waiver. The 2026-02-27 prospectus waives the acquired-fund fees 'through August 31, 2027'; if it lapses the fee is 74 bp.",
+    },
+    issuer: {
+      notes: [
+        "0.59% management fee, no other expenses, 0.15% acquired fund fees and expenses, 0.74% total, a 0.15% waiver and 0.59% after it, from the 497K dated 2026-02-27, which holds the waiver 'through August 31, 2027'. No portfolio turnover rate is reported because the fund holds only instruments excluded from the calculation.",
+        "Inception 2014-11-07 and $7.43bn of market value at 2026-09-01, from the Invesco product page. Actively managed, invests through a Cayman subsidiary, and seeks to exceed the DBIQ Optimum Yield Diversified Commodity Index Excess Return. That index changed method on 2025-11-10: a wider universe chosen annually, annual review of base weights, sector and single-commodity caps and an intra-year rebalance trigger; Invesco says the objective is unchanged.",
+      ],
+      source: {
+        label: "Invesco Optimum Yield Diversified Commodity Strategy No K-1 ETF, Form 497K dated 2026-02-27",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.sec.gov/Archives/edgar/data/1595386/000119312526079092/d67468d497k.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "DBC",
+    name: "Invesco DB Commodity Index Tracking Fund",
+    category: "alternative",
+    mandate: "The same commodity index as PDBC in a commodity pool, which sends a K-1.",
+    expenseRatioBp: 82,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The older and dearer of the two Invesco commodity funds: 82 bp net against PDBC's 59, plus a Schedule K-1 every spring. The audit's commodity verdict applies to it unchanged, and it was not measured.",
+    caution:
+      "The structural split the audit names, 1099 against K-1, is larger than the fee difference for most investors and decides which account can hold it at all. Its 0.82% net rests on management-fee waivers reported in its 10-Q rather than in a fee-table line.",
+    issuer: {
+      notes: [
+        "0.85% management fee, an estimated 0.04% futures brokerage fee, 0.89% total and 0.82% net, from the Invesco product page at 2026-09-01, which prints no waiver sentence; the Q2 2026 10-Q reports management-fee waivers of $629,135 for the half year, per a search summary that was not read directly. Inception 2006-02-03 and $1.87bn of market value at 2026-09-01.",
+        "A commodity pool, not a 1940-Act company: 'This Fund issues a Schedule K-1'. Tracks the DBIQ Optimum Yield Diversified Commodity Index Excess Return plus bill income, and its 8-K of 2025-09-26 announced the same 2025-11-10 index method change PDBC carries; the page now lists 30 holdings against the old 14.",
+      ],
+      source: {
+        label: "Invesco DB Commodity Index Tracking Fund, issuer page",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.invesco.com/us/en/financial-products/etfs/invesco-db-commodity-index-tracking-fund.html",
+      },
+      readOn: WEB_READ,
+    },
+    source: {
+      ...alternatives,
+      anchor: "8-gold-and-commodities-right-about-the-state-wrong-about-the-state-that-hurts",
+    },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "IBIT",
+    name: "iShares Bitcoin Trust ETF",
+    category: "alternative",
+    mandate: "Bitcoin in a trust. The largest of the eleven US spot bitcoin funds.",
+    expenseRatioBp: 25,
+    securitiesLendingBp: 0,
+    netCostBp: 25,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "25 bp against 15 for the Grayscale mini trust and 20 for Bitwise, for the same coin. The audit's verdict on the asset is a declared speculation at 0 to 2%, sized so that total loss is survivable: it has no cash-flow claim, a beta of 1.5 to 1.6 to equity, a mean of −7.51% in the worst decile of equity months, and it deepened portfolio drawdown at every weight tested. Its own one-year return at NAV to 2026-06-30 was −45.62%.",
+    caution:
+      "Nothing about it diversifies; the case for a position is that the investor wants one and understands it. A 1933-Act grantor trust, not a 1940-Act fund: each sale of coin to pay the fee is a taxable disposal for the holder, and the 28% collectibles rate on gold is not asserted for bitcoin, whose prospectus tax section does not mention it.",
+    issuer: {
+      notes: [
+        "0.25% sponsor fee, no current waiver, inception 2024-01-05 and $60,018,939,295 of net assets at 2026-09-02, from the iShares product page. The Q2 2026 10-Q read on 2026-08-22 gave $43.4bn at 2026-06-30 and the CME CF Bitcoin Reference Rate New York Variant as the pricing benchmark.",
+      ],
+      source: {
+        label: "iShares Bitcoin Trust ETF, issuer page",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.ishares.com/us/products/333011/ishares-bitcoin-trust-etf",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "3-crypto-the-investor-asked-so-here-is-the-arithmetic" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "FBTC",
+    name: "Fidelity Wise Origin Bitcoin Fund",
+    category: "alternative",
+    mandate: "Bitcoin in a trust, custodied by Fidelity itself.",
+    expenseRatioBp: 25,
+    securitiesLendingBp: 0,
+    netCostBp: 25,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The same 25 bp as IBIT for the same coin, priced against Fidelity's own reference rate rather than the CME CF one, which marked the same bitcoin differently on 2026-06-30. The audit's speculation verdict applies unchanged.",
+    caution: "Same as IBIT. Fidelity prints no net-asset figure on its own pages; the size on file is an aggregator's.",
+    issuer: {
+      notes: [
+        "0.25% contractual expense ratio, described in the prospectus dated 2026-04-29 as an annual unified fee of 0.25% of the trust's bitcoin holdings, with no waiver in force; inception 2024-01-10, from Fidelity's overview document dated 2026-08-21. A grantor trust, not a 1940-Act company and not a commodity pool, tracking the Fidelity Bitcoin Reference Rate, with Fidelity Digital Assets, N.A. as custodian and BitGo Bank & Trust as an additional custodian named in the 2026 prospectus.",
+        "Fidelity publishes no net-asset figure on the pages read; the Q2 2026 10-Q gave $10.3bn at 2026-06-30 and an aggregator showed $13.55bn at 2026-09-02. The prospectus says a grantor trust may not take part in lending activity.",
+      ],
+      source: {
+        label: "Fidelity Wise Origin Bitcoin Fund, issuer page and prospectus dated 2026-04-29",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.fidelity.com/etfs/fbtc",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "3-crypto-the-investor-asked-so-here-is-the-arithmetic" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "BTC",
+    name: "Grayscale Bitcoin Mini Trust ETF",
+    category: "alternative",
+    mandate: "Bitcoin in a trust, at the lowest fee of the eleven.",
+    expenseRatioBp: 15,
+    securitiesLendingBp: 0,
+    netCostBp: 15,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "15 bp for the same coin IBIT charges 25 for. If a bitcoin position is held at all, the fee gap is most of the decision about which trust; the position itself carries the audit's speculation verdict.",
+    caution:
+      "Same grantor-trust tax mechanics as IBIT. It is a Grayscale product and not an iShares one, whatever a ticker of BTC suggests; the iShares trust is IBIT.",
+    issuer: {
+      notes: [
+        "A sponsor's fee of 0.15% a year of the trust's assets less liabilities, with no waiver, $3,188,712,000 of net assets at 2026-06-30 and commencement of operations on 2024-07-31, from the Form 10-Q for the quarter ended 2026-06-30, filed 2026-08-04. Priced against the CoinDesk Bitcoin Benchmark Rate from 2026-04-01, with Coinbase Custody Trust Company as custodian; the sponsor treats the trust as a grantor trust for tax. Grayscale's own product page refused an automated reader on 2026-09-02; an aggregator showed $4.79bn that day.",
+      ],
+      source: {
+        label: "Grayscale Bitcoin Mini Trust ETF, Form 10-Q for the quarter ended 2026-06-30",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://www.sec.gov/Archives/edgar/data/2015034/000201503426000008/btc-20260630.htm",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "3-crypto-the-investor-asked-so-here-is-the-arithmetic" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "BITB",
+    name: "Bitwise Bitcoin ETF",
+    category: "alternative",
+    mandate: "Bitcoin in a trust, from Bitwise, at 20 bp.",
+    expenseRatioBp: 20,
+    securitiesLendingBp: 0,
+    netCostBp: 20,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "20 bp, between the Grayscale mini trust's 15 and IBIT's 25, for the same coin. The audit's speculation verdict applies unchanged.",
+    caution:
+      "Same grantor-trust tax mechanics as IBIT. Its launch waiver ended in 2024-07 and the 20 bp is the whole fee.",
+    issuer: {
+      notes: [
+        "0.20% sponsor fee, inception 2024-01-10 and $2,924,613,783 of net assets at 2026-09-01, from the Bitwise product page, with Bank of New York Mellon as trust custodian and Coinbase Custody as digital-asset custodian. The page still prints the launch waiver of the whole fee on the first $1bn for six months from listing, which ended in 2024-07. The Q2 2026 10-Q read on 2026-08-22 gave $2.13bn at 2026-06-30 and the CME CF Bitcoin Reference Rate New York Variant as its benchmark.",
+      ],
+      source: {
+        label: "Bitwise Bitcoin ETF, issuer page",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://bitbetf.com/",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "3-crypto-the-investor-asked-so-here-is-the-arithmetic" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "VNQI",
+    name: "Vanguard Global ex-U.S. Real Estate ETF",
+    category: "alternative",
+    mandate: "Listed real estate outside the US, developed and emerging together.",
+    expenseRatioBp: 12,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "Unmeasured. VNQ's rejection was on dominance against this repository's own equity core, with a Sharpe of 0.157 at a correlation of +0.839, and that was measured on US listed real estate; nothing here has read this fund's returns, so the US finding is a reason to expect the same rather than evidence of it.",
+    caution:
+      "It holds emerging-market property companies unhedged, at 12 bp, and no Form N-CEN was read for it, so lending and net cost are unknown.",
+    issuer: {
+      notes: [
+        "0.08% management fee plus 0.04% other expenses for 0.12% total, from the prospectus dated 2026-02-27 as supplemented 2026-04-21; Vanguard's product page prints 0.12% as of 2026-02-27. Inception 2010-11-01. $3.6bn of share-class net assets and $3.9bn for the whole fund at 2026-07-31 from the product page; the fact sheet printed $3,421m of ETF net assets at 2026-06-30. Full replication of the S&P Global ex-U.S. Property Index.",
+        "Not on Vanguard's 2026-02-01 fee-cut list. The 2026-04-21 supplement's content was not extracted.",
+      ],
+      source: {
+        label: "Vanguard Global ex-U.S. Real Estate Index Fund, prospectus dated 2026-02-27",
+        docPath: "docs/research/alternative-sleeves-audit.md",
+        href: "https://fund-docs.vanguard.com/p3358.pdf",
+      },
+      readOn: WEB_READ,
+    },
+    source: { ...alternatives, anchor: "10-consequence-for-the-portfolio" },
+    asOf: WEB_READ,
+  },
+  {
+    ticker: "SSO",
+    name: "ProShares Ultra S&P500",
+    category: "alternative",
+    mandate: "Twice the daily move of the S&P 500, reset every day. Borrowed money in a fund.",
+    expenseRatioBp: 87,
+    securitiesLendingBp: null,
+    netCostBp: null,
+    turnoverPercent: null,
+    loadings: [],
+    alphaPpYr: null,
+    alphaDetectionFloorPpYr: null,
+    pedestalPpYr: null,
+    status: null,
+    verdict:
+      "The fund the 2x rows of the daily-reset experiment stand for, priced there at a declared 89 bp fee and a 40 bp swap spread rather than measured. On 99 years of the index a held 2x compounds at 12.65% against 10.17% for 1x, after a 98.4% drawdown and 24 years under water; since 1990 the rows read 16.31% against 11.75% with drawdowns of 87.6% and 54.6%. The decision page's default for this investor is none.",
+    caution:
+      "The conditional case is a holdability argument and not a return one: an investor whose stated purpose is equity exposure above one with a slow-crash brake, holding no other such fund, could hold 10 to 15 points under a 200-day rule in a sheltered account, displacing stacked-fund capital rather than adding to it. That rule pays 2.7 pp a year of tax in a taxable account and showed zero measurable timing content. The daily reset means a holding period longer than a day returns something other than twice the index, and the issuer says so.",
+    issuer: {
+      notes: [
+        "0.88% gross and 0.87% net expense ratio, with a contractual waiver through 2026-09-30, inception 2006-06-19 and $8,993,790,119 of net assets at 2026-09-02, from the ProShares product page, which states the objective as two times the daily performance of the S&P 500 and warns that 'for any holding period other than a day, your return may be higher or lower than the Daily Target'. The experiment's 89 bp is the earlier published figure.",
+        "A 2:1 forward split took effect before the open on 2025-11-20, with ticker and CUSIP unchanged; SSO was not in the 2026-05 split round.",
+      ],
+      source: {
+        label: "ProShares Ultra S&P500, issuer page",
+        docPath: "docs/research/leveraged-etfs-and-timing-rules.md",
+        href: "https://www.proshares.com/our-etfs/leveraged-and-inverse/sso",
+      },
+      readOn: WEB_READ,
+    },
+    reviewTrigger: {
+      on: asOf("2026-10-01"),
+      what: "Re-read the ProShares page for the fee after the 2026-09-30 waiver date. If the waiver lapses the fee is 88 bp; either figure is inside the 89 the experiment declared.",
+    },
+    source: { ...leveraged, anchor: "9-the-decision" },
+    asOf: WEB_READ,
   },
   // -------------------------------------------------------------------------
   // The rest of the Return Stacked family. Six funds, no measurement, and a category
@@ -2802,7 +4019,7 @@ export const fundingRuleGapPpYr = {
 } as const;
 
 /** The latest date any record on the shelf was read; every record's own `asOf` is on or before it. */
-export const shelfAsOf = REFRESH;
+export const shelfAsOf = WEB_READ;
 
 /** Re-exported so a route can name the owning page without re-declaring a citation. */
 export const shelfSources = { products, recommendation, structural, capital, trend } as const;

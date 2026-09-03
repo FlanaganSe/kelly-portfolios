@@ -193,6 +193,8 @@ describe("wrappers report structure and cost, never a sleeve", () => {
       "GDE",
       "JPFP",
       "MATE",
+      "NTSE",
+      "NTSI",
       "NTSX",
       "RSBA",
       "RSBT",
@@ -209,7 +211,8 @@ describe("wrappers report structure and cost, never a sleeve", () => {
    * Category is a mandate and `wrapper` is a measurement, and the pair is what the roster
    * assertion above used to conflate. A `wrapper` block carries `delta`, funding capture
    * and gross notional, all of which come off a Form N-PORT; the six Return Stacked funds
-   * added on 2026-08-24 have filed none, so they have no block. Pinning both lists means
+   * added on 2026-08-24 have filed none, and NTSI and NTSE, added 2026-09-02, have had none
+   * read, so they have no block. Pinning both lists means
    * a new fund cannot acquire wrapper facts it has not filed, nor quietly lose the ones
    * it has, which is the invariant the single list was standing in for.
    */
