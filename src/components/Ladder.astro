@@ -1,0 +1,60 @@
+---
+/**
+ * The drawdown ladder: how much of the trend fund to hold for the worst loss a reader
+ * could sit through.
+ *
+ * One row per tolerance. `published` marks the row the site holds, which is drawn with
+ * a stronger rule and a label so a reader can see where the default sits without
+ * reading every row.
+ *
+ *     <Ladder rows={[
+ *       { worstFall: "−30%", rsst: "11%" },
+ *       { worstFall: "about −70%", rsst: "30%", published: true },
+ *     ]} />
+ */
+export interface LadderRow {
+  /** The worst fall the reader would sit through, as text. */
+  readonly worstFall: string;
+  /** The share of the portfolio in RSST at that tolerance, as text. */
+  readonly rsst: string;
+  /** Anything the rule adds at that row, in plain words. */
+  readonly extra?: string;
+  /** The row the site publishes. */
+  readonly published?: boolean;
+}
+
+interface Props {
+  rows: readonly LadderRow[];
+  /** The heading of the third column. Omit it when no row carries `extra`. */
+  extraHeading?: string;
+  class?: string;
+}
+
+const { rows, extraHeading, class: className } = Astro.props;
+const hasExtra = extraHeading !== undefined || rows.some((r) => r.extra);
+const COLUMNS = ["Worst fall you would sit through", "Share in RSST", extraHeading ?? "What else changes"] as const;
+---
+
+<table class:list={["ladder", className]}>
+  <thead>
+    <tr>
+      <th scope="col">{COLUMNS[0]}</th>
+      <th scope="col">{COLUMNS[1]}</th>
+      {hasExtra && <th scope="col">{COLUMNS[2]}</th>}
+    </tr>
+  </thead>
+  <tbody>
+    {
+      rows.map((row) => (
+        <tr data-published={row.published ? "true" : undefined}>
+          <th scope="row" data-numeric>
+            {row.worstFall}
+            {row.published && <span class="ladder-tag">as published</span>}
+          </th>
+          <td data-numeric>{row.rsst}</td>
+          {hasExtra && <td>{row.extra ?? ""}</td>}
+        </tr>
+      ))
+    }
+  </tbody>
+</table>

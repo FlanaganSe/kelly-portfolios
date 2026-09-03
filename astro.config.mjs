@@ -17,7 +17,7 @@ import pagefind from "astro-pagefind";
 // `unified` from `@astrojs/markdown-remark`, set it as `markdown.processor`, and MDX
 // inherits it — `@astrojs/mdx` reads `config.markdown.processor` on its own.
 /**
- * Every route the rendered research corpus used to occupy, pointing at `/evidence/`.
+ * Every route the rendered research corpus used to occupy, pointing at `/strategies/`.
  *
  * Read from the directories rather than written out, because the list was 45 long and a
  * hand-typed copy would rot the first time a file was renamed. The files themselves stay
@@ -31,8 +31,8 @@ function retiredCorpusRoutes() {
       .map((name) => name.replace(/\.md$/, ""));
 
   return Object.fromEntries([
-    ...ids("docs/research").map((id) => [`/research/${id}/`, "/evidence/"]),
-    ...ids("docs/decisions").map((id) => [`/research/decisions/${id}/`, "/evidence/"]),
+    ...ids("docs/research").map((id) => [`/research/${id}/`, "/strategies/"]),
+    ...ids("docs/decisions").map((id) => [`/research/decisions/${id}/`, "/strategies/"]),
   ]);
 }
 
@@ -70,16 +70,34 @@ export default defineConfig({
   redirects: {
     "/start/": "/portfolios/held-well/",
     "/portfolio/": "/portfolios/with-trend/",
-    "/stacking/": "/evidence/how-many-bets/",
-    "/how-many-bets/": "/evidence/how-many-bets/",
-    "/doesnt-work/": "/evidence/",
+    "/stacking/": "/strategies/value-and-momentum/",
+    "/how-many-bets/": "/strategies/value-and-momentum/",
+    "/doesnt-work/": "/strategies/",
     "/how-sure/": "/about/",
     "/methodology/": "/about/",
-    "/lessons/": "/evidence/",
-    "/glossary/": "/evidence/",
-    "/tools/": "/tools/placement/",
-    "/tools/how-long/": "/evidence/",
-    "/research/": "/evidence/",
+    "/lessons/": "/strategies/",
+    "/glossary/": "/strategies/",
+    "/tools/": "/tools/which-account/",
+    "/tools/how-long/": "/strategies/",
+    // A redirect that names a route a page still occupies replaces that page with a
+    // stub, silently. These come on in wave 2, one per page deleted. Uncomment each line
+    // with the page it retires.
+    // "/tools/placement/": "/tools/which-account/",
+    "/research/": "/strategies/",
+    // The evidence pages became the strategies pages.
+    // "/evidence/": "/strategies/",
+    // "/evidence/how-many-bets/": "/strategies/value-and-momentum/",
+    // "/evidence/value-and-factors/": "/strategies/value-and-momentum/",
+    // "/evidence/what-actually-diversifies/": "/strategies/crash-insurance/",
+    // "/evidence/crash-insurance/": "/strategies/crash-insurance/",
+    // "/evidence/bitcoin/": "/strategies/gold-and-bitcoin/",
+    // "/evidence/gold/": "/strategies/gold-and-bitcoin/",
+    // "/evidence/market-timing/": "/strategies/market-timing/",
+    // "/evidence/trend-following/": "/strategies/trend-following/",
+    // "/evidence/rebalancing/": "/strategies/fees-and-taxes/",
+    // "/evidence/direct-indexing/": "/strategies/fees-and-taxes/",
+    // "/evidence/fees-and-accounts/": "/strategies/fees-and-taxes/",
+    // "/portfolios/whole-market/": "/portfolios/one-fund/",
     // The 45 corpus routes, enumerated from the files they were built from. A dynamic
     // redirect may not drop its parameter, and these all collapse to one destination,
     // so they are listed rather than matched.

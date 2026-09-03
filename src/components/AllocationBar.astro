@@ -1,0 +1,87 @@
+---
+/**
+ * A portfolio as one horizontal bar, each fund a segment sized by its weight.
+ *
+ * Pure SVG, so it renders with scripts off and prints. Colour comes from `fundColour`,
+ * which is the same for a ticker on every page, and the legend under the bar repeats
+ * the ticker and weight so nothing depends on colour alone. A `<title>` and `<desc>`
+ * carry the whole allocation for a screen reader.
+ *
+ *     <AllocationBar holdings={[{ ticker: "VTI", weight: 49 }, { ticker: "VXUS", weight: 16 }]} />
+ *
+ * Weights are percentages of the money invested and should sum to about 100; the bar
+ * scales to their total so a rounded list still fills it.
+ */
+import { fundColour } from "~/lib/palette";
+
+export interface Holding {
+  readonly ticker: string;
+  readonly weight: number;
+  /** A plain-words name for the legend. Defaults to the ticker alone. */
+  readonly label?: string;
+}
+
+interface Props {
+  holdings: readonly Holding[];
+  /** Hide the legend when the table beside the bar already lists the holdings. */
+  legend?: boolean;
+  /** A name for the bar, used in the SVG title. */
+  name?: string;
+  class?: string;
+}
+
+const { holdings, legend = true, name = "Portfolio", class: className } = Astro.props;
+
+const total = holdings.reduce((sum, h) => sum + h.weight, 0);
+if (total <= 0) throw new Error("<AllocationBar> needs holdings with positive weights.");
+
+const WIDTH = 1000;
+const HEIGHT = 28;
+let x = 0;
+const segments = holdings.map((h) => {
+  const w = (h.weight / total) * WIDTH;
+  const seg = { ...h, x, w };
+  x += w;
+  return seg;
+});
+
+const description = holdings.map((h) => `${h.ticker} ${h.weight}%`).join(", ");
+---
+
+<figure class:list={["alloc", className]}>
+  <svg
+    class="alloc-bar"
+    viewBox={`0 0 ${WIDTH} ${HEIGHT}`}
+    preserveAspectRatio="none"
+    role="img"
+    aria-labelledby={`alloc-title-${name.replace(/\W+/g, "-")}`}
+  >
+    <title id={`alloc-title-${name.replace(/\W+/g, "-")}`}>{name}: {description}</title>
+    <desc>Each segment is one fund, sized by its share of the money invested.</desc>
+    {
+      segments.map((s) => (
+        <rect x={s.x} y={0} width={s.w} height={HEIGHT} fill={fundColour(s.ticker)}>
+          <title>
+            {s.ticker} {s.weight}%
+          </title>
+        </rect>
+      ))
+    }
+  </svg>
+  {
+    legend && (
+      <figcaption class="alloc-legend">
+        {holdings.map((h) => (
+          <span class="alloc-key">
+            <span class="alloc-swatch" style={`background:${fundColour(h.ticker)}`} aria-hidden="true" />
+            <span class="alloc-ticker">{h.ticker}</span>
+            <span class="alloc-weight" data-numeric>
+              {h.weight}%
+            </span>
+            {h.label && <span class="alloc-label">{h.label}</span>}
+          </span>
+        ))}
+      </figcaption>
+    )
+  }
+</figure>

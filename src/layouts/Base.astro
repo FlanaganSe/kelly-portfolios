@@ -10,9 +10,9 @@ import { ogCard, OG_HEIGHT, OG_WIDTH } from "~/lib/og";
 import {
   canonicalPath,
   CORPUS_AS_OF,
+  FOOTER_ITEMS,
   isCurrent,
   NAV_ITEMS,
-  type NavItem,
   REPO_URL,
   SITE_DESCRIPTION,
   SITE_NAME,
@@ -31,6 +31,13 @@ interface Props {
   indexable?: boolean;
   /** Keep the page out of search-engine results. Used by the 404. */
   noindex?: boolean;
+  /**
+   * The date the numbers on this page were last checked, printed in the page footer as
+   * "Numbers as of". Defaults to the site-wide date; pass `null` to print none.
+   */
+  asOf?: string | null;
+  /** A 48rem measure for pages that are mostly cards and tables; prose keeps 42rem. */
+  wide?: boolean;
 }
 
 const {
@@ -39,6 +46,8 @@ const {
   bareTitle = false,
   indexable = true,
   noindex = false,
+  asOf = CORPUS_AS_OF,
+  wide = false,
 } = Astro.props;
 
 const pageTitle = bareTitle ? title : `${title} · ${SITE_NAME}`;
@@ -77,28 +86,7 @@ const structuredData = {
   },
 };
 
-const navLink = "inline-block border-b-2 py-2 text-sm transition-colors";
 
-/**
- * The footer's own links: the reference shelf, then the pages about the site itself.
- *
- * They live here rather than beside `NAV_ITEMS` on purpose. The masthead order is the
- * argument the site is making, and none of these belongs inside it — a reader reaches
- * them on a different errand. The masthead is five items and stays five, so everything
- * a reader arrives at sideways, from a link in a sentence rather than from the
- * navigation, has to be reachable here.
- *
- * The disclaimer is not in this list. It has its own sentence above, because a reader
- * who needs it is not scanning a row of link text for it.
- */
-const FOOTER_ITEMS = [
-  { href: "/portfolios/", label: "The four portfolios" },
-  { href: "/evidence/", label: "What we found" },
-  { href: "/funds/", label: "Every fund we priced" },
-  { href: "/tools/placement/", label: "Which account" },
-  { href: "/corrections/", label: "Corrections" },
-  { href: "/disclosures/", label: "Disclosures" },
-] as const satisfies readonly NavItem[];
 ---
 
 <html lang="en">
@@ -152,7 +140,7 @@ const FOOTER_ITEMS = [
   </head>
 
   <body>
-    <div class="flex min-h-screen flex-col bg-paper text-ink">
+    <div class:list={["flex min-h-screen flex-col bg-paper text-ink", wide && "canvas-wide"]}>
       <a
         href="#main"
         class="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:rounded-[3px] focus:bg-raised focus:px-3 focus:py-2 focus:text-sm"
@@ -160,47 +148,29 @@ const FOOTER_ITEMS = [
         Skip to content
       </a>
 
-      {/* Five items, and the masthead is the whole of the site's first-level structure.
-          The wordmark is the sixth destination and goes home. */}
-      <header class="border-b border-rule">
-        <div class="page-rail">
-          <div class="flex items-center justify-between gap-4 pt-4 pb-3">
-            <a
-              href="/"
-              class="font-serif text-[1.3125rem] font-semibold tracking-[-0.015em] text-ink transition-colors hover:text-accent"
-            >
-              {SITE_NAME}
-            </a>
-            <div class="flex items-center gap-4 text-xs text-ink-3">
-              <span data-numeric class="hidden sm:inline">Research as of {CORPUS_AS_OF}</span>
-              <a href="/search/" class="text-ink-2 transition-colors hover:text-ink">Search</a>
-              <ThemeToggle />
-            </div>
-          </div>
+      {/* Four items, and the masthead is the whole of the site's first-level structure.
+          The wordmark is the fifth destination and goes home. */}
+      <header class="masthead">
+        <div class="page-rail masthead-row">
+          <a href="/" class="wordmark">{SITE_NAME}</a>
 
-          <nav aria-label="Sections">
-            <ul class="flex flex-wrap gap-x-6">
+          <nav aria-label="Sections" class="masthead-nav">
+            <ul class="flex flex-wrap items-center gap-x-5 gap-y-1">
               {
                 NAV_ITEMS.map((item) => {
                   const current = isCurrent(item.href, pathname);
                   return (
                     <li>
-                      <a
-                        href={item.href}
-                        aria-current={current ? "page" : undefined}
-                        class:list={[
-                          navLink,
-                          current
-                            ? "border-accent font-semibold text-ink"
-                            : "border-transparent text-ink-2 hover:border-rule-strong hover:text-ink",
-                        ]}
-                      >
+                      <a href={item.href} aria-current={current ? "page" : undefined} class="masthead-link">
                         {item.label}
                       </a>
                     </li>
                   );
                 })
               }
+              <li class="masthead-toggle">
+                <ThemeToggle />
+              </li>
             </ul>
           </nav>
         </div>
@@ -209,18 +179,22 @@ const FOOTER_ITEMS = [
       {/* `data-pagefind-body` scopes the search index to the page's own words. Without
           it Pagefind indexes the masthead and footer on every page and every query
           matches everything. */}
-      {/* The two-track canvas, centred: the reading measure, and a right-hand column for
-          sources, dates and caveats. The aside collapses to zero width below 74rem, at
-          which point every child is a single clean column. */}
-      <main id="main" data-pagefind-body={indexable ? true : undefined} class="canvas flex-1 py-12 sm:py-16">
+      <main id="main" data-pagefind-body={indexable ? true : undefined} class="canvas flex-1 py-10 sm:py-14">
         <slot />
+        {
+          asOf && (
+            <p class="page-asof" data-numeric>
+              Numbers as of {asOf}. <a href="/corrections/" class="link">Corrections</a> lists anything that changed.
+            </p>
+          )
+        }
       </main>
 
       {/* The two-line disclaimer sits on every page because the condition it states is a
           condition of the whole site, not of one essay. `/disclaimer/` carries the full
           text and the reasoning; these two sentences are the part a reader has to see
           without clicking. */}
-      <footer class="mt-24 border-t border-rule bg-sunken">
+      <footer class="mt-20 border-t border-rule bg-sunken">
         <div class="page-rail flex flex-col gap-5 pt-8 pb-11 text-sm text-ink-2">
           <p class="max-w-measure">
             General information about investing, and no part of it is personalised advice. This site does not
@@ -243,10 +217,9 @@ const FOOTER_ITEMS = [
           </nav>
 
           {/* The repository is the last thing on the page on purpose. It is where a
-              reader goes to audit the work, which is an errand almost nobody is on,
-              and it used to sit ahead of the disclaimer. */}
+              reader goes to audit the work, which is an errand almost nobody is on. */}
           <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs text-ink-3">
-            <span data-numeric>Research as of {CORPUS_AS_OF}</span>
+            <span>Written by one person, with no sponsor and no advertising.</span>
             <a href={REPO_URL} rel="noopener noreferrer" class="link">Source on GitHub</a>
           </p>
         </div>

@@ -1,0 +1,32 @@
+---
+/**
+ * Two columns: what you get, what you give up.
+ *
+ * Every portfolio past the first buys something and pays for it, and the two lists
+ * belong side by side so a reader weighs them together. Two named slots; each takes a
+ * `<ul>` or a few paragraphs.
+ *
+ *     <Compare>
+ *       <ul slot="get"><li>…</li></ul>
+ *       <ul slot="give"><li>…</li></ul>
+ *     </Compare>
+ */
+interface Props {
+  getLabel?: string;
+  giveLabel?: string;
+  class?: string;
+}
+
+const { getLabel = "What you get", giveLabel = "What you give up", class: className } = Astro.props;
+---
+
+<div class:list={["compare", className]}>
+  <section class="compare-col">
+    <h3 class="eyebrow compare-heading">{getLabel}</h3>
+    <div class="compare-body"><slot name="get" /></div>
+  </section>
+  <section class="compare-col">
+    <h3 class="eyebrow compare-heading">{giveLabel}</h3>
+    <div class="compare-body"><slot name="give" /></div>
+  </section>
+</div>

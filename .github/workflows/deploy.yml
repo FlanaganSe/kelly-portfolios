@@ -190,9 +190,13 @@ jobs:
           fail=0
           # One path from each family that has its own route generator, so a broken
           # collection shows up here rather than in a search console six weeks later.
-          for path in / /portfolios/ /portfolios/whole-market/ /portfolios/with-trend/ \
-                      /evidence/ /evidence/how-many-bets/ /evidence/trend-following/ \
-                      /funds/ /tools/placement/ /search/ \
+          for path in / /portfolios/ /portfolios/one-fund/ /portfolios/held-well/ \
+                      /portfolios/value-lean/ /portfolios/with-trend/ \
+                      /strategies/ /strategies/trend-following/ /strategies/market-timing/ \
+                      /strategies/gold-and-bitcoin/ /strategies/crash-insurance/ \
+                      /strategies/value-and-momentum/ /strategies/international/ \
+                      /strategies/fees-and-taxes/ \
+                      /funds/ /tools/which-account/ /search/ \
                       /about/ /corrections/ /disclosures/ /disclaimer/; do
             code=$(curl -s -o /dev/null -w '%{http_code}' "https://${SITE_DOMAIN}${path}")
             printf '%-32s %s\n' "$path" "$code"
@@ -205,7 +209,9 @@ jobs:
           # answering 200 — a 200 alone would also be true of a stale copy of the page.
           for path in /start/ /portfolio/ /stacking/ /how-sure/ /methodology/ \
                       /doesnt-work/ /research/ /research/long-only-capture/ \
-                      /research/decisions/0004-no-sleeve-promoted/ /tools/; do
+                      /research/decisions/0004-no-sleeve-promoted/ /tools/ \
+                      /tools/placement/ /evidence/ /evidence/trend-following/ \
+                      /evidence/market-timing/ /portfolios/whole-market/; do
             body=$(curl -s "https://${SITE_DOMAIN}${path}")
             if printf '%s' "$body" | grep -qi 'http-equiv="refresh"'; then
               printf '%-48s redirect\n' "$path"

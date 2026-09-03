@@ -16,7 +16,6 @@
  */
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
-import MarginNote from "~/components/MarginNote.astro";
 import Base from "~/layouts/Base.astro";
 ---
 
@@ -54,12 +53,12 @@ import Base from "~/layouts/Base.astro";
 
     <p>Not by email, not in an issue, not privately, not as a favour, and not with the names changed.</p>
 
-    <MarginNote label="Why this one is on the page">
+    <Callout kind="caveat" label="Why this one is on the page">
       <p>
         A publisher stays outside the Investment Advisers Act as long as the writing stays "entirely impersonal".
         Reading someone's actual portfolio is where that stops, and no footer text repairs it.
       </p>
-    </MarginNote>
+    </Callout>
 
     <p>An author who reads your holdings and tells you what to do with them is giving personal investment advice,
     whatever the page says at the bottom.</p>

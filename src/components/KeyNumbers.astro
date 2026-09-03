@@ -1,0 +1,44 @@
+---
+/**
+ * A strip of three or four numbers a page rests on.
+ *
+ * Each tile is a value, a plain label, and an optional note that says what the value is
+ * measured against. A value without its comparison is the one thing this site does not
+ * print, so put the comparison in `note` where the label cannot carry it.
+ *
+ *     <KeyNumbers items={[
+ *       { value: "0.06%", label: "Fee a year", note: "$6 on $10,000" },
+ *       { value: "−83.7%", label: "Worst fall", note: "US stocks from 1929" },
+ *     ]} />
+ */
+export interface KeyNumber {
+  readonly value: string;
+  readonly label: string;
+  readonly note?: string;
+}
+
+interface Props {
+  items: readonly KeyNumber[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+
+if (items.length < 2 || items.length > 4) {
+  throw new Error(`<KeyNumbers> takes two to four items, got ${items.length}.`);
+}
+---
+
+<dl class:list={["key-numbers", className]} data-count={items.length}>
+  {
+    items.map((item) => (
+      <div class="key-number">
+        <dt class="key-number-label">{item.label}</dt>
+        <dd class="key-number-value" data-numeric>
+          {item.value}
+        </dd>
+        {item.note && <dd class="key-number-note">{item.note}</dd>}
+      </div>
+    ))
+  }
+</dl>

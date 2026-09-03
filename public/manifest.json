@@ -1,7 +1,7 @@
 {
-  "name": "Portfolio Edge",
-  "short_name": "Portfolio Edge",
-  "description": "What beating the market actually costs: portfolio candidates, the evidence behind each return engine, and a lab for sizing a tilt. No sleeve is promoted.",
+  "name": "Kelly Portfolios",
+  "short_name": "Kelly Portfolios",
+  "description": "Four portfolios built from cheap funds, from plain to ambitious, with what each costs, how far it has fallen, and how sure the evidence is.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#faf9f6",
@@ -22,5 +22,8 @@
       "purpose": "any"
     }
   ],
-  "categories": ["finance", "education"]
+  "categories": [
+    "finance",
+    "education"
+  ]
 }

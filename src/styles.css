@@ -69,6 +69,30 @@
 
   --selection: #d8e6f2;
   --shadow: 0 1px 2px rgb(23 22 20 / 5%), 0 1px 1px rgb(23 22 20 / 3%);
+
+  /* One hue per fund, the same on every page. Muted, spread around the wheel, and
+     never a traffic light. `src/lib/palette.ts` maps a ticker onto one of these. */
+  --fund-vt: #3b5f8a;
+  --fund-vti: #3b5f8a;
+  --fund-vtv: #6f8fb8;
+  --fund-vxus: #4f8a7a;
+  --fund-avdv: #86b3a2;
+  --fund-idmo: #b08a4a;
+  --fund-aves: #c9ad7a;
+  --fund-rsst: #8a5a7a;
+  --fund-tips: #8f8b82;
+  --fund-cash: #c5c1b6;
+  --fund-other: #a09c92;
+
+  /* The four confidence words, each a wash and an ink. */
+  --conf-settled-ink: #1f3d5c;
+  --conf-settled-wash: #e4edf5;
+  --conf-probably-ink: #2f5d46;
+  --conf-probably-wash: #e3efe8;
+  --conf-close-ink: #6b5420;
+  --conf-close-wash: #f3ecdb;
+  --conf-no-ink: #5a4a4a;
+  --conf-no-wash: #ece4e4;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -97,6 +121,27 @@
 
     --selection: #2a3d4d;
     --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+
+    --fund-vt: #7ea3d0;
+    --fund-vti: #7ea3d0;
+    --fund-vtv: #a8bedb;
+    --fund-vxus: #79b8a5;
+    --fund-avdv: #a9d3c3;
+    --fund-idmo: #d0a760;
+    --fund-aves: #e0c896;
+    --fund-rsst: #c08cb0;
+    --fund-tips: #a7a297;
+    --fund-cash: #6d695f;
+    --fund-other: #7d786d;
+
+    --conf-settled-ink: #c4d9ee;
+    --conf-settled-wash: #1c2c3d;
+    --conf-probably-ink: #b9dcc8;
+    --conf-probably-wash: #1b2f25;
+    --conf-close-ink: #e6d2a0;
+    --conf-close-wash: #33290f;
+    --conf-no-ink: #d8c9c9;
+    --conf-no-wash: #332828;
   }
 }
 
@@ -125,6 +170,27 @@
 
   --selection: #2a3d4d;
   --shadow: 0 1px 2px rgb(0 0 0 / 40%);
+
+  --fund-vt: #7ea3d0;
+  --fund-vti: #7ea3d0;
+  --fund-vtv: #a8bedb;
+  --fund-vxus: #79b8a5;
+  --fund-avdv: #a9d3c3;
+  --fund-idmo: #d0a760;
+  --fund-aves: #e0c896;
+  --fund-rsst: #c08cb0;
+  --fund-tips: #a7a297;
+  --fund-cash: #6d695f;
+  --fund-other: #7d786d;
+
+  --conf-settled-ink: #c4d9ee;
+  --conf-settled-wash: #1c2c3d;
+  --conf-probably-ink: #b9dcc8;
+  --conf-probably-wash: #1b2f25;
+  --conf-close-ink: #e6d2a0;
+  --conf-close-wash: #33290f;
+  --conf-no-ink: #d8c9c9;
+  --conf-no-wash: #332828;
 }
 
 /* The names the components were written against, kept as aliases so a rename in
@@ -228,6 +294,7 @@
   --s-9: 5.5rem;
   --s-10: 7rem;
   --radius: 4px;
+  --radius-card: 8px;
 }
 
 /* ---------------------------------------------------------------------------
@@ -324,7 +391,7 @@ table,
   }
 }
 
-/* Small uppercase label. Used by Callout, Figure, MarginNote, table headings. */
+/* Small uppercase label. Used by Callout, Figure, table headings. */
 @utility eyebrow {
   font-family: var(--font-sans);
   font-size: var(--text-2xs);
@@ -544,7 +611,7 @@ table,
      still hangs into the page margin on the pages that have one. */
   --canvas: calc(var(--content) + var(--edge) * 2);
 
-  /* The names `research/_Document.astro` was written against. */
+  /* Older names, kept so nothing that reads them breaks. */
   --note: var(--aside);
   --note-gap: var(--gutter);
   --measure-track: var(--content);
@@ -555,6 +622,13 @@ table,
   :root {
     --edge: 2.5rem;
   }
+}
+
+/* A page that is mostly cards and tables gets a wider measure. Set on the outer
+   wrapper so the masthead, the canvas and the footer all align to the same rail. */
+.canvas-wide {
+  --content: 48rem;
+  --canvas: calc(var(--content) + var(--edge) * 2);
 }
 
 /* The aside opens here and not before. Below this width it is zero wide and
@@ -618,69 +692,6 @@ table,
     & > .bleed {
       width: calc(100% + var(--gutter) + var(--aside));
     }
-  }
-}
-
-/* ---------------------------------------------------------------------------
-   Margin notes.
-
-   A float rather than a grid child, because a note is written **inside** the
-   `.prose` block it belongs to and so is never a direct child of the canvas.
-   Floating it out by its own width sits it level with the paragraph that follows
-   it in source order and costs the measure nothing; `clear` keeps two
-   consecutive notes from stacking on top of each other.
-
-   Below 74rem the aside track is zero wide, the float is dropped, and the note
-   becomes an indented block in the flow — the only honest way to render it on a
-   phone.
-   --------------------------------------------------------------------------- */
-
-@utility margin-note {
-  display: block;
-  margin-block: 1.25rem;
-  border-left: 2px solid var(--rule-strong);
-  padding-left: var(--s-4);
-  font-family: var(--font-sans);
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  color: var(--ink-2);
-
-  & > * + * {
-    margin-top: 0.4rem;
-  }
-
-  & a {
-    color: var(--accent);
-    text-decoration: underline;
-    text-decoration-thickness: 1px;
-    text-underline-offset: 0.16em;
-    text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
-  }
-}
-
-@media (min-width: 74rem) {
-  .margin-note {
-    float: right;
-    clear: right;
-    width: var(--aside);
-    margin-right: calc(-1 * (var(--aside) + var(--gutter)));
-    margin-top: 0.3rem;
-    margin-bottom: 1.5rem;
-    border-left: 0;
-    padding-left: 0;
-    font-size: var(--text-xs);
-    line-height: 1.55;
-    color: var(--ink-3);
-  }
-
-  /* The hairline sits above the note, echoing the rule under a section heading
-     rather than fencing the note off in a box. */
-  .margin-note::before {
-    content: "";
-    display: block;
-    width: 1.75rem;
-    border-top: 1px solid var(--rule-bold);
-    margin-bottom: 0.5rem;
   }
 }
 
@@ -838,6 +849,467 @@ table,
     stroke-width: 3.5;
     paint-order: stroke;
   }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Masthead.
+
+   One row: the wordmark, then the four links and the theme toggle. It wraps to two
+   rows on a phone. No second line, no date, nothing about the research programme.
+   --------------------------------------------------------------------------- */
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  background-color: var(--paper);
+}
+
+.masthead-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1.5rem;
+  padding-block: 0.9rem;
+}
+
+.wordmark {
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  color: var(--ink);
+  text-decoration: none;
+  transition: color 150ms ease;
+}
+
+.wordmark:hover {
+  color: var(--accent);
+}
+
+.masthead-link {
+  display: inline-block;
+  padding: 0.35rem 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--ink-2);
+  border-bottom: 2px solid transparent;
+  text-decoration: none;
+  transition: color 150ms ease, border-color 150ms ease;
+}
+
+.masthead-link:hover {
+  color: var(--ink);
+  border-bottom-color: var(--rule-strong);
+}
+
+.masthead-link[aria-current="page"] {
+  color: var(--ink);
+  font-weight: 600;
+  border-bottom-color: var(--accent);
+}
+
+.masthead-toggle {
+  margin-left: 0.5rem;
+  display: flex;
+  align-items: center;
+}
+
+/* ---------------------------------------------------------------------------
+   Hero and the numbers strip.
+   --------------------------------------------------------------------------- */
+
+.hero {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s-3);
+}
+
+.hero-title {
+  margin-top: 0.1rem;
+}
+
+.hero-lede {
+  margin-top: 0.25rem;
+  max-width: 40rem;
+}
+
+.hero > .key-numbers {
+  margin-top: var(--s-5);
+}
+
+.key-numbers {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1px;
+  margin: 0;
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-card);
+  background-color: var(--rule);
+  overflow: hidden;
+}
+
+@media (min-width: 40rem) {
+  .key-numbers[data-count="3"] {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .key-numbers[data-count="4"] {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.key-number {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.9rem 1rem 1rem;
+  background-color: var(--surface);
+  min-width: 0;
+}
+
+.key-number-label {
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.key-number-value {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-serif);
+  font-size: var(--text-2xl);
+  line-height: 1.1;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.key-number-note {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: var(--text-xs--line-height);
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+/* ---------------------------------------------------------------------------
+   Cards.
+   --------------------------------------------------------------------------- */
+
+@utility card {
+  display: block;
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-card);
+  padding: 1.1rem 1.2rem 1.2rem;
+  box-shadow: var(--shadow);
+}
+
+.card-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+}
+
+@media (min-width: 40rem) {
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.portfolio-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  transition: border-color 150ms ease;
+}
+
+.portfolio-card:hover {
+  border-color: var(--rule-bold);
+}
+
+.portfolio-card-name {
+  font-family: var(--font-serif);
+  font-size: var(--text-xl);
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  text-wrap: balance;
+}
+
+/* The whole card is the link: the anchor's pseudo-element covers the card, so a tap
+   anywhere goes to the page while the name stays the accessible link text. */
+.portfolio-card-link {
+  color: var(--ink);
+  text-decoration: none;
+}
+
+.portfolio-card-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+}
+
+.portfolio-card-link:focus-visible {
+  outline: none;
+}
+
+.portfolio-card:has(.portfolio-card-link:focus-visible) {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.portfolio-card-tagline {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  color: var(--ink-2);
+  text-wrap: pretty;
+}
+
+.portfolio-card-facts {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, auto));
+  gap: 0.5rem 1rem;
+  margin: 0.2rem 0 0;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--rule);
+}
+
+.portfolio-card-facts dt {
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-3);
+}
+
+.portfolio-card-facts dd {
+  margin: 0.15rem 0 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.portfolio-card-note {
+  display: block;
+  font-size: var(--text-xs);
+  font-weight: 400;
+  color: var(--ink-3);
+}
+
+/* ---------------------------------------------------------------------------
+   The confidence badge.
+   --------------------------------------------------------------------------- */
+
+.verdict-row {
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 0.6rem;
+}
+
+.verdict {
+  display: inline-block;
+  padding: 0.12rem 0.55rem 0.14rem;
+  border-radius: 999px;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  white-space: nowrap;
+  background-color: var(--conf-close-wash);
+  color: var(--conf-close-ink);
+}
+
+.verdict[data-confidence="settled"] {
+  background-color: var(--conf-settled-wash);
+  color: var(--conf-settled-ink);
+}
+
+.verdict[data-confidence="probably"] {
+  background-color: var(--conf-probably-wash);
+  color: var(--conf-probably-ink);
+}
+
+.verdict[data-confidence="close"] {
+  background-color: var(--conf-close-wash);
+  color: var(--conf-close-ink);
+}
+
+.verdict[data-confidence="no"] {
+  background-color: var(--conf-no-wash);
+  color: var(--conf-no-ink);
+  text-decoration: none;
+}
+
+.verdict-gloss {
+  font-size: var(--text-sm);
+  color: var(--ink-2);
+}
+
+/* ---------------------------------------------------------------------------
+   The allocation bar.
+   --------------------------------------------------------------------------- */
+
+.alloc {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+}
+
+.alloc-bar {
+  display: block;
+  width: 100%;
+  height: 1.1rem;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.alloc-bar rect + rect {
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.alloc-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.9rem;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--ink-2);
+}
+
+.alloc-key {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.35rem;
+}
+
+.alloc-swatch {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 2px;
+  transform: translateY(0.05rem);
+}
+
+.alloc-ticker {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.alloc-label {
+  color: var(--ink-3);
+}
+
+/* ---------------------------------------------------------------------------
+   The ladder.
+   --------------------------------------------------------------------------- */
+
+.ladder {
+  width: 100%;
+  max-width: 40rem;
+  border-collapse: collapse;
+  font-size: var(--text-sm);
+}
+
+.ladder th,
+.ladder td {
+  padding: 0.55rem 0.75rem;
+  text-align: left;
+  vertical-align: top;
+  border-bottom: 1px solid var(--rule);
+}
+
+.ladder thead th {
+  font-size: var(--text-2xs);
+  line-height: var(--text-2xs--line-height);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--ink-3);
+  border-bottom: 1px solid var(--rule-strong);
+}
+
+.ladder tbody th {
+  font-weight: 600;
+  color: var(--ink);
+}
+
+.ladder tr[data-published="true"] > * {
+  background-color: var(--accent-wash);
+}
+
+.ladder-tag {
+  display: inline-block;
+  margin-left: 0.5rem;
+  font-size: var(--text-2xs);
+  letter-spacing: var(--text-2xs--letter-spacing);
+  text-transform: uppercase;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+/* ---------------------------------------------------------------------------
+   Two columns: what you get, what you give up.
+   --------------------------------------------------------------------------- */
+
+.compare {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: var(--s-4);
+}
+
+@media (min-width: 40rem) {
+  .compare {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.compare-col {
+  background-color: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: var(--radius-card);
+  padding: 1rem 1.1rem 1.1rem;
+}
+
+.compare-heading {
+  margin-bottom: 0.6rem;
+}
+
+.compare-body {
+  font-size: var(--text-sm);
+  line-height: 1.55;
+  color: var(--ink);
+}
+
+.compare-body ul {
+  padding-left: 1.1em;
+  list-style: disc;
+}
+
+.compare-body li + li {
+  margin-top: 0.35em;
+}
+
+.compare-body > * + * {
+  margin-top: 0.6em;
+}
+
+/* The date line at the foot of the canvas. */
+.page-asof {
+  margin-top: var(--s-8);
+  padding-top: var(--s-4);
+  border-top: 1px solid var(--rule);
+  font-size: var(--text-xs);
+  color: var(--ink-3);
 }
 
 /* ---------------------------------------------------------------------------

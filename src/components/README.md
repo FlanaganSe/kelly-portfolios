@@ -1,192 +1,146 @@
-# Shared primitives
+# Shared components
 
-The component set every content page is built from. Use these rather than
-hand-rolling markup, so a number looks the same on every page and a status never
-gets glossed differently in two places.
+The set every page is built from. Use these rather than hand-rolling markup, so a
+number looks the same on every page and a confidence word is never glossed two ways.
+None of them ships JavaScript; the Solid islands under `islands/` are the only client
+code and are documented in their own files.
 
-## Astro components, which are what new pages use
+## `Hero`
 
-These `.astro` components ship no JavaScript and are the ones a page should reach for.
-The Solid components documented further down belong to the client-routed application
-being ported from, and a new page should not import them.
-
-### `Figure`
-
-`{ id, size?: "sm" | "md" | "lg", inline?, showUnit?, class? }`. Looks the figure up by id in
-the `figures` collection and throws at build time if no record exists, listing the ids
-that do. Records live in `src/content/figures/<id>.yaml`; the id is the filename stem.
+`{ title, lede?, eyebrow?, class? }`. The top of a page: an optional short line above,
+the `h1`, one sentence under it, and a slot for a `KeyNumbers` strip.
 
 ```astro
-import Figure from "~/components/Figure.astro";
-<Figure id="edge-vs-cheap-index" />
+<Hero eyebrow="Portfolio 1 of 4" title="One fund" lede="The whole world in one holding.">
+  <KeyNumbers items={NUMBERS} />
+</Hero>
 ```
 
-The block prints five things and no more: the label, the value with its unit, the
-interval, the note and one source line. A record carries `label`, `value` (always a
-string), `status`, `asOf` and a `source` with `label` and `docPath`, and may carry
-`unit`, `interval`, `certainty`, `period`, `anchor` and `note`. The schema checks that `docPath` names a real file and that
-`anchor` is a real heading inside it, so a renamed section fails `pnpm build`.
+## `KeyNumbers`
 
-### Confidence
-
-There is no component. A confidence reading is a word and a rule:
+`{ items: { value, label, note? }[], class? }`. Two to four tiles. The value is text,
+so a page prints it exactly as the source did; the note is where the comparison goes
+when the label cannot carry it.
 
 ```astro
-import { rungMeta } from "~/lib/rungs";
-
-<p class="confidence" data-level="settled">
-  <span class="confidence-word">{rungMeta.settled.label}</span>
-  <span class="confidence-gloss">{rungMeta.settled.gloss}</span>
-</p>
-```
-
-`data-level` is one of `settled`, `probably`, `might`, `cant-tell`, and it picks the ink
-weight of the left rule. The gloss is optional. Labels and glosses live in
-[`src/lib/rungs.ts`](../lib/rungs.ts); the four-state hand-drawn SVG mark that used to
-sit beside the word is gone, because a mark a reader has to learn from another page is
-not a reading.
-
-### `Callout`
-
-`{ kind, label?, class? }` where kind is `do-this` or `caveat`. A left rule and a label,
-with the body in a slot. Two kinds and no more: a falsifier and an open question are
-both caveats, and `label` is how one says which. Anything that explains why an effect
-should exist is prose, not an aside.
-
-### `Breakout`
-
-`{ scroll?, heading?, level?, label?, maxWidth?, class? }` — a block allowed both tracks
-of the canvas. Must be a direct child of the page canvas. `heading` prints a real `h2`
-(or `h3` with `level={3}`) so the tables on a page are in its outline. `maxWidth` caps
-any table inside through `--tw`: roughly 34rem for three columns, 44rem for a
-comparison, 54rem for the shelf. `scroll` wraps the content in a keyboard-reachable
-scroll region and then needs a `heading` or a `label` to name it.
-
-### Two house rules these all follow
-
-An internal `href` ends in a slash. The build emits one URL form, and a link missing the
-slash is a redirect the reader pays for.
-
-`node tools/prose-lint.mjs` reads `.astro` templates as prose and treats a bare `!` as
-an exclamation mark. Write a positive prop and test it directly rather than negating
-one in a template expression.
-
-Types come from [`src/content/types.ts`](../content/types.ts). Nothing here
-hardcodes a number, and nothing here reformats one: `value` and `interval` are
-strings because the sign, the precision and the interval are part of the fact.
-
-Import through the `~/*` alias:
-
-```tsx
-import { Figure } from "~/components/Figure";
-```
-
-## Layout and text
-
-### `PageHeader`
-
-`{ title, standfirst?, lastChecked?, eyebrow?, class? }` — h1, standfirst, and the
-date the page was last checked against `docs/research/`.
-
-```tsx
-<PageHeader title="Edge budget" standfirst="What is available, line by line." lastChecked="2026-08-12" />
-```
-
-### `Prose`
-
-`{ as?: "div" | "article" | "section", class? }` — the long-form wrapper. Caps the
-measure at 70ch and styles headings, lists, links, `code` and `blockquote`. Write
-plain HTML inside it. Anything that has to break the measure goes outside it.
-
-```tsx
-<Prose as="article"><p>The long-only capture fraction is about 0.520.</p></Prose>
-```
-
-## Numbers and evidence
-
-### `DataTable`
-
-`{ caption, columns, rows, captionHidden?, stickyHeader?, footnote?, class? }` —
-a semantic table. Each column is
-`{ key, header, cell, numeric?, width?, rowHeader? }`. Set `numeric` on every
-number column: it right-aligns and applies tabular numerals. The table scrolls
-sideways inside its own container, so the page body never does.
-
-```tsx
-<DataTable
-  caption="Factor premia, pooled across regions"
-  columns={[
-    { key: "factor", header: "Factor", rowHeader: true, cell: (r) => r.name },
-    { key: "premium", header: "pp/yr", numeric: true, cell: (r) => r.premium },
+<KeyNumbers
+  items={[
+    { value: "0.06%", label: "Fee a year", note: "$6 on $10,000" },
+    { value: "−83.7%", label: "Worst fall", note: "US stocks, from 1929" },
+    { value: "Settled", label: "How sure" },
   ]}
-  rows={factors}
 />
 ```
 
-### `StatusChip` and `CertaintyChip`
+## `AllocationBar`
 
-`{ status: EvidenceStatus, showGloss?, class? }` and
-`{ certainty: CertaintyClass, showGloss?, class? }` — label, tone mark and gloss,
-read straight from `statusMeta` / `certaintyMeta`. Tone carries a distinct shape
-as well as a colour, so it survives greyscale and a printout.
+`{ holdings: { ticker, weight, label? }[], legend?, name?, class? }`. A portfolio as one
+stacked bar with a legend. Colour per ticker comes from `src/lib/palette.ts` and is the
+same on every page; the legend repeats ticker and weight so nothing depends on colour.
 
-```tsx
-<StatusChip status="rejected" showGloss />
+```astro
+<AllocationBar holdings={[{ ticker: "VTI", weight: 49 }, { ticker: "VXUS", weight: 16 }]} />
 ```
 
-### `SourceLink`
+## `PortfolioCard`
 
-`{ citation: Citation, prefix?, class? }` — links a `docPath` to the file on
-GitHub, or to `href` when the citation gives an external primary source. Opens in
-a new tab.
+`{ name, href, tagline, holdings, fee, worstFall, worstFallNote?, confidence, number?, class? }`.
+A card with the bar, three facts and a `Verdict`. The whole card is the link. Put four
+in a `<div class="card-grid">` for the two-by-two grid.
 
-```tsx
-<SourceLink citation={{ label: "Long-only capture", docPath: "docs/research/long-only-capture.md" }} />
+```astro
+<div class="card-grid">
+  <PortfolioCard
+    number={1}
+    name="One fund"
+    href="/portfolios/one-fund/"
+    tagline="The whole world in one holding."
+    holdings={[{ ticker: "VT", weight: 100 }]}
+    fee="0.06%"
+    worstFall="−83.7%"
+    worstFallNote="US stocks, from 1929"
+    confidence="Settled"
+  />
+</div>
 ```
 
-## Controls
+## `Verdict`
 
-Both are controlled. Hold the value in a signal and pass `onInput`.
+`{ word?, status?, gloss?, class? }`. The confidence word as a badge. Pass one of the
+four words (`Settled`, `Probably`, `Too close to call`, `No`) or a research status,
+which `toConfidence` in `src/lib/rungs.ts` maps onto a word. `gloss` prints the one-line
+reading beside it.
 
-### `NumberInput`
-
-`{ label, value, onInput, min?, max?, step?, unit?, precision?, hint?, labelHidden?, disabled?, class? }`
-— a labelled number field. Emits on every parseable keystroke and clamps to
-`min`/`max` only on blur, so typing is never interrupted.
-
-```tsx
-<NumberInput label="Expense ratio" value={fee()} onInput={setFee} min={0} max={2} step={0.01} unit="%" />
+```astro
+<Verdict word="Probably" />
+<Verdict status="unresolved" gloss />
 ```
 
-### `Slider`
+## `Ladder`
 
-`{ label, value, onInput, min, max, step?, unit?, precision?, format?, hint?, ticks?, showBounds?, disabled?, class? }`
-— a native range control, so arrow keys, Home, End and Page Up/Down all work.
-`format` overrides the readout for values that are not plain decimals.
+`{ rows: { worstFall, rsst, extra?, published? }[], extraHeading?, class? }`. The
+drawdown ladder. The row with `published` is highlighted and tagged.
 
-```tsx
-<Slider label="Horizon" value={years()} onInput={setYears} min={1} max={40} unit="yr" showBounds />
+```astro
+<Ladder
+  rows={[
+    { worstFall: "−30%", rsst: "11%" },
+    { worstFall: "−50%", rsst: "19%", extra: "Plus 10 points of inflation-linked Treasuries" },
+    { worstFall: "about −70%", rsst: "30%", published: true },
+  ]}
+/>
 ```
 
-## Shell
+## `Compare`
 
-`App.tsx` owns the header, nav, footer and routes. `ThemeToggle` cycles system,
-light and dark. `ErrorBoundary` wraps the whole app. Page titles are set per
-route with `<Title>` from `@solidjs/meta`.
+`{ getLabel?, giveLabel?, class? }`. Two columns, "What you get" and "What you give up",
+filled through the `get` and `give` slots.
 
-## Styling
+```astro
+<Compare>
+  <ul slot="get"><li>A smaller worst fall.</li></ul>
+  <ul slot="give"><li>About 0.7 points a year against holding.</li></ul>
+</Compare>
+```
 
-Tokens live in [`src/styles.css`](../styles.css) under `@theme`, so Tailwind
-utilities carry them: `bg-paper`, `bg-raised`, `bg-sunken`, `text-ink`, `text-ink-2`,
-`text-ink-3`, `border-rule`, `border-rule-strong`, `border-rule-bold`, `text-accent`,
-`max-w-measure`, `max-w-page`. Body text and every table cell are 17px; the display
-serif is for the wordmark, `h1`, `h2` and a card title, and nothing else.
+## `Callout`
 
-The component classes are `prose`, `link`, `eyebrow`, `control`, `lead`, `h1`, `h2`,
-`h3`, `confidence`, `margin-note`, `breakout`, `scroller` and `plot`. Prefer utilities
-in markup; extract a class only when it repeats.
+`{ kind, label?, class? }` where kind is `do-this` or `caveat`. A left rule and a label,
+with the body in a slot. Two kinds and no more.
 
-Light and dark are one palette swapped on `:root`, so components do not need
-`dark:` variants. Put `data-numeric` on any element holding a number outside a
-table, which turns on tabular numerals. No gradients, no entrance animations;
-transitions belong on hover, focus and disclosure only.
+## `Breakout`
+
+`{ scroll?, heading?, level?, label?, maxWidth?, class? }`. A block allowed past the
+reading measure: a wide table, a chart. Must be a direct child of the page canvas.
+`heading` prints a real `h2` (or `h3` with `level={3}`). A scrolling block needs a
+`heading` or a `label`, so a keyboard user has a name for the region.
+
+## `Figure`
+
+`{ id, size?, inline?, showUnit?, class? }`. Prints a figure record from
+`src/content/figures/<id>.yaml` and throws at build time if none exists. Inline, it
+prints the value in running text; as a block, the label, value, interval, note and
+source line.
+
+## `ThemeToggle`
+
+No props. Cycles system, light and dark and remembers the choice in the browser.
+
+## Layout props on `Base`
+
+`{ title, description?, bareTitle?, indexable?, noindex?, asOf?, wide? }`. `asOf`
+prints "Numbers as of" at the foot of the canvas and defaults to the site-wide date;
+pass `null` for a page with no numbers. `wide` widens the measure from 42rem to 48rem
+for pages that are mostly cards and tables.
+
+## Older confidence markup
+
+A few pages still draw the word with a left rule instead of a badge:
+
+```astro
+<p class="confidence" data-level="settled">
+  <span class="confidence-word">Settled</span>
+</p>
+```
+
+`data-level` is one of `settled`, `probably`, `might`, `cant-tell`. Prefer `Verdict`.

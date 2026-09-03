@@ -1,0 +1,69 @@
+---
+/**
+ * One portfolio, as a card: name, one line on what it is, the allocation bar, three
+ * facts, and the confidence word.
+ *
+ * Four of these sit in a grid on the home page and stack on a phone. The whole card is
+ * one link; the name is the link text and the rest is decoration a screen reader still
+ * reads in order.
+ *
+ *     <PortfolioCard
+ *       name="One fund"
+ *       href="/portfolios/one-fund/"
+ *       tagline="The whole world in one holding."
+ *       holdings={[{ ticker: "VT", weight: 100 }]}
+ *       fee="0.06%"
+ *       worstFall="−83.7%"
+ *       confidence="Settled"
+ *     />
+ */
+import AllocationBar, { type Holding } from "~/components/AllocationBar.astro";
+import Verdict from "~/components/Verdict.astro";
+import type { Confidence } from "~/lib/rungs";
+
+interface Props {
+  name: string;
+  href: string;
+  tagline: string;
+  holdings: readonly Holding[];
+  /** The fee a year, as text: "0.06%". */
+  fee: string;
+  /** The worst fall, as text: "−83.7%". */
+  worstFall: string;
+  /** What the worst fall was measured on, in a few words. */
+  worstFallNote?: string;
+  confidence: Confidence;
+  /** A number to print above the name, for a ladder of portfolios. */
+  number?: string | number;
+  class?: string;
+}
+
+const { name, href, tagline, holdings, fee, worstFall, worstFallNote, confidence, number, class: className } =
+  Astro.props;
+---
+
+<article class:list={["card portfolio-card", className]}>
+  {number !== undefined && <p class="eyebrow">Portfolio {number}</p>}
+  <h2 class="portfolio-card-name">
+    <a href={href} class="portfolio-card-link">{name}</a>
+  </h2>
+  <p class="portfolio-card-tagline">{tagline}</p>
+  <AllocationBar holdings={holdings} name={name} />
+  <dl class="portfolio-card-facts">
+    <div>
+      <dt>Fee a year</dt>
+      <dd data-numeric>{fee}</dd>
+    </div>
+    <div>
+      <dt>Worst fall</dt>
+      <dd data-numeric>
+        {worstFall}
+        {worstFallNote && <span class="portfolio-card-note">{worstFallNote}</span>}
+      </dd>
+    </div>
+    <div>
+      <dt>How sure</dt>
+      <dd><Verdict word={confidence} /></dd>
+    </div>
+  </dl>
+</article>

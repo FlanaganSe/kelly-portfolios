@@ -1,0 +1,27 @@
+---
+/**
+ * The top of a page: a title, one sentence under it, and room for a strip of numbers.
+ *
+ *     <Hero title="One fund" lede="The whole world in one holding.">
+ *       <KeyNumbers items={...} />
+ *     </Hero>
+ *
+ * `eyebrow` is a short line above the title, used for a portfolio's number ("Portfolio
+ * 2 of 4") or a section name.
+ */
+interface Props {
+  title: string;
+  lede?: string;
+  eyebrow?: string;
+  class?: string;
+}
+
+const { title, lede, eyebrow, class: className } = Astro.props;
+---
+
+<header class:list={["hero", className]}>
+  {eyebrow && <p class="eyebrow">{eyebrow}</p>}
+  <h1 class="h1 hero-title">{title}</h1>
+  {lede && <p class="lead hero-lede">{lede}</p>}
+  <slot />
+</header>

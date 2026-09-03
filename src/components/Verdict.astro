@@ -1,0 +1,37 @@
+---
+/**
+ * The confidence word as a small badge.
+ *
+ * Four words and no more: Settled, Probably, Too close to call, No. Each carries one
+ * restrained hue so a reader can find it on a phone, plus a different ink weight so the
+ * reading survives a printout. Never a traffic light: the hues are muted and none of
+ * them is the red or green a reader would take as a verdict on their own money.
+ *
+ *     <Verdict word="Probably" />
+ *     <Verdict status="unresolved" />   maps a research status onto a word
+ */
+import { type Confidence, type ConfidenceInput, confidenceGloss, confidenceSlug, toConfidence } from "~/lib/rungs";
+
+interface Props {
+  /** One of the four words. */
+  word?: Confidence;
+  /** Or a research status, mapped through `toConfidence`. */
+  status?: ConfidenceInput;
+  /** Print the one-line gloss beside the word. */
+  gloss?: boolean;
+  class?: string;
+}
+
+const { word, status, gloss = false, class: className } = Astro.props;
+
+const resolved: Confidence = word ?? (status !== undefined ? toConfidence(status) : "Too close to call");
+if (word === undefined && status === undefined) {
+  throw new Error("<Verdict> needs either `word` or `status`.");
+}
+const slug = confidenceSlug(resolved);
+---
+
+<span class:list={["verdict-row", className]}>
+  <span class="verdict" data-confidence={slug} title={gloss ? undefined : confidenceGloss[resolved]}>{resolved}</span>
+  {gloss && <span class="verdict-gloss">{confidenceGloss[resolved]}</span>}
+</span>

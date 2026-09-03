@@ -27,7 +27,6 @@ const AUTHOR_HOLDINGS = "";
  * The fund count comes from the shelf so it cannot drift out of date in prose.
  */
 import Callout from "~/components/Callout.astro";
-import MarginNote from "~/components/MarginNote.astro";
 import { shelf } from "~/content/shelf";
 import Base from "~/layouts/Base.astro";
 import { REPO_URL } from "~/lib/site";
@@ -40,12 +39,12 @@ import { REPO_URL } from "~/lib/site";
   <div class="prose">
     <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Disclosures</h1>
 
-    <MarginNote label="The question">
+    <Callout kind="caveat" label="The question">
       <p>
         Who is paying for this, and what do they want? As of <span data-numeric>2026-08-23</span>. Every negative
         below can be checked against <a href={REPO_URL} rel="noopener noreferrer">the repository</a>.
       </p>
-    </MarginNote>
+    </Callout>
 
     <p>Nobody pays for this site and nobody is paid for it.</p>
 
@@ -73,12 +72,12 @@ import { REPO_URL } from "~/lib/site";
       and aggregate, and never touches the page.</li>
     </ul>
 
-    <MarginNote label="The one thing stored">
+    <Callout kind="caveat" label="The one thing stored">
       <p>
         Your light or dark preference is kept in the browser under <code>pe-theme</code>. It never leaves the
         browser and there is nothing on the other end to send it to.
       </p>
-    </MarginNote>
+    </Callout>
 
     <p>The site names <span data-numeric>{shelf.length}</span> funds by ticker, which is worth something to the
     companies that run them. They are named because somebody read their filings, several are named unkindly, and
@@ -112,13 +111,13 @@ import { REPO_URL } from "~/lib/site";
 
     <h3 id="tools">Tools and data</h3>
 
-    <MarginNote label="Sources">
+    <Callout kind="caveat" label="Sources">
       <p>
         Ken French's data library, FRED, SEC EDGAR, AQR's public data sets, Robert Shiller's series, Goyal and
         Welch, the Jordà-Schularick-Taylor macrohistory database, LBMA and the World Bank. Free, public, and used
         under their own published terms.
       </p>
-    </MarginNote>
+    </Callout>
 
     <p>The AI tools used to build this were bought at retail. No vendor was consulted, none has seen a page
     before publication, and none has any say in what the pages claim.</p>
