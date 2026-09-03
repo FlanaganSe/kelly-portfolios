@@ -143,6 +143,7 @@ const VERDICT_LABEL = {
 } as const satisfies Readonly<Record<EvidenceStatus, string>>;
 
 const verdictOf = (fund: ShelfFund): string => {
+  if (IN_PORTFOLIOS[fund.ticker]) return "Held here";
   if (fund.status) return VERDICT_LABEL[fund.status];
   return nothingMeasured(fund) ? "Too new to say" : "Priced only";
 };
@@ -294,12 +295,15 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const
   <div class="prose mt-12">
     <h2>What the verdict words mean</h2>
 
-    <p>Every fund carries one of five words. The portfolio pages say which funds each of the four portfolios
-    holds; a fund can be still in the running and held by none of them.</p>
+    <p>Every fund carries one of six words.</p>
 
     <ul>
+      <li><strong>Held here.</strong> One of the eight funds the <a href="/portfolios/">four portfolios</a> hold,
+      with the portfolios it belongs to underneath. VTV is held even though, measured on its own, a cheap mix of
+      VTI and a small-company fund does much the same job; the
+      <a href="/portfolios/value-lean/">value-lean page</a> says why it stays.</li>
       <li><strong>Still in the running.</strong> The fund delivers what it sells, and nothing has ruled it
-      out.</li>
+      out. It can be still in the running and held by none of the four portfolios.</li>
       <li><strong>Didn&rsquo;t make the cut.</strong> The fund was measured against a cheap combination that
       does much the same job, and it lost.</li>
       <li><strong>Too close to call.</strong> The fund has too few months of history for the data to say either

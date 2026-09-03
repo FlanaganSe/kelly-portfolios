@@ -19,7 +19,7 @@ const p = portfolio("with-trend");
 
 const NUMBERS = [
   {
-    value: await figureValue("trend-96-year-gap"),
+    value: `${await figureValue("trend-96-year-gap")} points`,
     label: "a year over an all-stock fund, 1929 to 2025",
     note: "Range 1.3 to 2.7. Built from a long trend-following series, because the fund is only three years old.",
   },
@@ -89,10 +89,12 @@ const LADDER = [
   <div class="prose mt-14">
     <h2>What trend following is</h2>
 
-    <p>A trend-following program is a rule, not a manager's opinion. Across futures on stock indexes, government
-    bonds, currencies and commodities, it buys what has been rising over the past several months and sells short
-    what has been falling. In a long, grinding fall like 2008 or 2022 it ends up short the things that are falling
-    and makes money. In a sudden crash like March 2020 it has no time to switch and does not help.</p>
+    <p>A trend-following program is a rule, not a manager's opinion. It trades futures, contracts that bet on
+    the price of a stock index, a government bond, a currency or a commodity without owning it. It buys what has
+    been rising over the past several months and sells short, that is, bets against, what has been falling. In a
+    long, grinding fall it ends up betting against the things that are falling: in 2022, by the SG Trend index's
+    own count, the strategy made 27% while the S&amp;P 500 lost 18%. In a sudden crash like March 2020 it has no
+    time to switch and does not help.</p>
 
     <p>Since 2000, trend following rose in 64% of the worst months for stocks, more than gold at 59%, Treasuries at
     55% to 58%, or anything else I measured. It will not save you in a crash, but it tends to do well in the
@@ -126,9 +128,9 @@ const LADDER = [
 
     <p>On the shorter 1990 to 2026 window, using the actual funds' behaviour, the portfolio with RSST at 25%
     fell <Figure id="with-trend-worst-fall" inline showUnit={false} /> at worst and took 42 months to recover,
-    against 52.7% and 63 months for the cheap mix. That 25% version's chance of trailing a cheap index fund, at the more modest
-    returns I would expect from here, is about <Figure id="trailing-odds" inline /> over ten, twenty and thirty
-    years.</p>
+    against 52.7% and 63 months for the cheap mix. At the more modest returns I would expect from here, that 25%
+    version's chance of trailing a cheap index fund is about one in four over ten years, one in six over twenty
+    and one in nine over thirty (<Figure id="trailing-odds" inline />).</p>
 
     <p>The decade that makes the case is 1999 to 2009. US stocks returned <Figure id="flat-decade" inline /> for
     ten years. A 30% trend holding on top would have turned that into about 0.05% a year. The protection on offer
@@ -165,7 +167,7 @@ const LADDER = [
   <div class="prose">
     <p>The TIPS rows come from today's prices. US stocks are priced at 41 times their ten-year average earnings, a
     level reached only once before, in 1999 and 2000. In the two past episodes when the market was above 30 times,
-    the worst real fall over the following 15 years was about
+    the typical worst fall after inflation over the following 15 years was about
     <Figure id="worst-fall-above-cape-30" inline showUnit={false} />, against 37% from cheaper starting points.
     Two episodes are a warning, not a forecast, so I let that concern in only through the fall you plan for, never
     as a prediction of returns. Ten-year TIPS pay 2.44% a year above inflation, the highest since 2008, which makes
@@ -185,9 +187,10 @@ const LADDER = [
 
     <p>Losing here looks like a decade of quiet, monthly underperformance against a plain US index fund, not a
     crash. At its worst, trend following ran <Figure id="trend-drawdown" inline showUnit={false} /> the stocks it
-    replaced, over 11.2 years. In simulated thirty-year histories, <Figure id="abandonment-30" inline showUnit={false} />
-    of holders reached the point of giving up on the 30% version, and
-    <Figure id="abandonment-30-dead" inline showUnit={false} /> if trend following has stopped paying altogether.
+    replaced, over 11.2 years. In <Figure id="abandonment-30" inline showUnit={false} /> of simulated thirty-year
+    histories, the 30% version fell far enough behind a plain index fund that most people would have given up on it,
+    and in <Figure id="abandonment-30-dead" inline showUnit={false} /> if trend following has stopped paying
+    altogether.
     Choose 25% if you think you would sell.</p>
   </div>
 
