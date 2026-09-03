@@ -56,14 +56,12 @@ const { name, href, tagline, holdings, fee, worstFall, worstFallNote, confidence
     </div>
     <div>
       <dt>Worst fall</dt>
-      <dd data-numeric>
-        {worstFall}
-        {worstFallNote && <span class="portfolio-card-note">{worstFallNote}</span>}
-      </dd>
+      <dd data-numeric>{worstFall}</dd>
     </div>
     <div>
       <dt>How sure</dt>
       <dd><Verdict word={confidence} /></dd>
     </div>
   </dl>
+  {worstFallNote && <p class="portfolio-card-note">{worstFallNote}</p>}
 </article>
