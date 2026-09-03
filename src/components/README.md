@@ -11,7 +11,7 @@ code and are documented in their own files.
 the `h1`, one sentence under it, and a slot for a `KeyNumbers` strip.
 
 ```astro
-<Hero eyebrow="Portfolio 1 of 3" title="One fund" lede="The whole world in one holding.">
+<Hero eyebrow="Portfolio 1 of 4" title="One fund" lede="The whole world in one holding.">
   <KeyNumbers items={NUMBERS} />
 </Hero>
 ```
