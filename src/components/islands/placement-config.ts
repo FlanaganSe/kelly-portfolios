@@ -35,7 +35,7 @@ export const defaultPlacementConfig: PlacementConfig = {
   ownQualifiedPercent: 23.8,
   rothPercent: 33,
   deferredPercent: 33,
-  basis: "paid-out",
+  basis: "recorded",
 };
 
 const BRACKET = /^[a-z][a-z0-9-]{0,23}$/;
@@ -59,7 +59,7 @@ export function parsePlacementConfig(search: string | URLSearchParams): Placemen
     // The two shelters cannot together exceed the portfolio, so the second is capped by
     // what the first left rather than dropped. A link that over-fills is still readable.
     deferredPercent: Math.min(percentOr(params.get("d"), defaultPlacementConfig.deferredPercent, 100), 100 - roth),
-    basis: params.get("x") === "recorded" ? "recorded" : "paid-out",
+    basis: params.get("x") === "paid-out" ? "paid-out" : "recorded",
   };
 }
 

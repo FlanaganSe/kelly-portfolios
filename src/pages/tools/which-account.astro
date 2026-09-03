@@ -21,7 +21,7 @@ import { derivedRates } from "~/lib/placement";
 /** Equal thirds in a Roth, a traditional account and a taxable one. */
 const SHELTER_SHARE = 0.6667;
 
-const opening = queue(shelf("paid-out"), defaultTaxRegime);
+const opening = queue(shelf("recorded"), defaultTaxRegime);
 const placed = fill(opening, SHELTER_SHARE);
 const forfeited = forfeitedCreditBp(placed);
 const rates = derivedRates(defaultTaxRegime);

@@ -44,7 +44,7 @@ describe("parsePlacementConfig", () => {
   });
 
   it("treats an unknown reading of the stacked fund as the audited one", () => {
-    expect(parsePlacementConfig("x=whatever").basis).toBe("paid-out");
+    expect(parsePlacementConfig("x=whatever").basis).toBe("recorded");
   });
 });
 
@@ -70,7 +70,7 @@ describe("toPlacementSearchParams", () => {
         ownQualifiedPercent: 0,
         rothPercent: 50,
         deferredPercent: 50,
-        basis: "recorded",
+        basis: "paid-out",
       },
     ];
     for (const config of cases) expect(roundTrip(config)).toEqual(config);
