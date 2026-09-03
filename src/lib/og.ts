@@ -130,7 +130,6 @@ export const OG_PAGES = {
     title: "That page is not here",
     alt: `${SITE_NAME}: the page you asked for does not exist on this site.`,
   },
-
 } as const satisfies Readonly<Record<string, OgPage>>;
 
 /** Indexable by an arbitrary path, without losing the literal keys above. */

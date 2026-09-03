@@ -87,8 +87,7 @@ export const PORTFOLIOS: readonly Portfolio[] = [
     fee: "0.09%",
     feeOn10k: "$9",
     worstFall: "17.7 years behind",
-    worstFallNote:
-      "Cheap US stocks against the whole market, 54.3% behind since 2008",
+    worstFallNote: "Cheap US stocks against the whole market, 54.3% behind since 2008",
     confidence: "Probably",
   },
   {
