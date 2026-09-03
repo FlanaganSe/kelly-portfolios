@@ -211,7 +211,8 @@ jobs:
                       /doesnt-work/ /research/ /research/long-only-capture/ \
                       /research/decisions/0004-no-sleeve-promoted/ /tools/ \
                       /tools/placement/ /evidence/ /evidence/trend-following/ \
-                      /evidence/market-timing/ /portfolios/whole-market/; do
+                      /evidence/market-timing/ /portfolios/whole-market/ \
+                      /portfolios/held-well/ /tools/placement/; do
             body=$(curl -s "https://${SITE_DOMAIN}${path}")
             if printf '%s' "$body" | grep -qi 'http-equiv="refresh"'; then
               printf '%-48s redirect\n' "$path"
