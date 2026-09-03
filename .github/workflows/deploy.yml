@@ -212,7 +212,7 @@ jobs:
                       /research/decisions/0004-no-sleeve-promoted/ /tools/ \
                       /tools/placement/ /evidence/ /evidence/trend-following/ \
                       /evidence/market-timing/ /portfolios/whole-market/ \
-                      /portfolios/held-well/ /tools/placement/; do
+                      /portfolios/held-well/; do
             body=$(curl -s "https://${SITE_DOMAIN}${path}")
             if printf '%s' "$body" | grep -qi 'http-equiv="refresh"'; then
               printf '%-48s redirect\n' "$path"
