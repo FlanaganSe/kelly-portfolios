@@ -1,0 +1,215 @@
+---
+/**
+ * The index of ideas: one row per thing people add to a portfolio, a verdict word, one
+ * line, and a link to the page that argues it. The rows are data so the table and its
+ * phone rendering come from one list.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Hero from "~/components/Hero.astro";
+import Verdict from "~/components/Verdict.astro";
+import Base from "~/layouts/Base.astro";
+import type { Confidence } from "~/lib/rungs";
+
+interface Row {
+  readonly idea: string;
+  readonly verdict: Confidence;
+  readonly line: string;
+  readonly href: string;
+  readonly more: string;
+}
+
+const ROWS: readonly Row[] = [
+  {
+    idea: "Cheaper funds",
+    verdict: "Settled",
+    line: "Index funds cost 0.09% a year against 0.57% for the average active fund, and 90% of active US stock funds lost to their benchmark over ten years.",
+    href: "/strategies/fees-and-taxes/",
+    more: "Fees and taxes",
+  },
+  {
+    idea: "The right account",
+    verdict: "Settled",
+    line: "Which fund sits in your Roth, your IRA and your taxable account is worth a few hundredths of a point a year, every year, for the cost of a form.",
+    href: "/tools/which-account/",
+    more: "Which account",
+  },
+  {
+    idea: "An ETF instead of a mutual fund",
+    verdict: "Settled",
+    line: "In 2025, 7% of ETFs paid out a taxable capital gain against 52% of mutual funds.",
+    href: "/strategies/fees-and-taxes/",
+    more: "Fees and taxes",
+  },
+  {
+    idea: "Never trading",
+    verdict: "Settled",
+    line: "Every sale in a taxable account brings a tax bill forward. Not selling is the one free edge.",
+    href: "/strategies/fees-and-taxes/",
+    more: "Fees and taxes",
+  },
+  {
+    idea: "Leaning toward cheaper companies",
+    verdict: "Probably",
+    line: "Beat a plain index mix by about 0.8 points a year between 1990 and 2026, and by 0.9 points on data from the 1980s the funds were not built on. Needs thirty years of patience.",
+    href: "/strategies/value-and-momentum/",
+    more: "Value and momentum",
+  },
+  {
+    idea: "Holding foreign stocks",
+    verdict: "Probably",
+    line: "Worth holding because foreign markets are priced at a big discount to the US, and because nobody knows which region wins the next twenty years. Not because it protects you in a crash.",
+    href: "/strategies/international/",
+    more: "International",
+  },
+  {
+    idea: "Trend following, on top of stocks",
+    verdict: "Too close to call",
+    line: "The strongest candidate on this site. Added 2 points a year over 96 years, most of it before 2009, and the fund that does it is under three years old.",
+    href: "/strategies/trend-following/",
+    more: "Trend following",
+  },
+  {
+    idea: "The 200-day rule",
+    verdict: "No",
+    line: "Cuts the worst fall from 84% to 43% and pays for it with 0.7 points a year less than holding, 58 losing exits out of 73, and a tax bill.",
+    href: "/strategies/market-timing/",
+    more: "Market timing",
+  },
+  {
+    idea: "2x and 3x funds",
+    verdict: "No",
+    line: "A 3x fund held since 1926 spent 28 years under water and fell 99.9% at its worst. Under the 200-day rule it still fell 85%.",
+    href: "/strategies/market-timing/",
+    more: "Market timing",
+  },
+  {
+    idea: "Gold",
+    verdict: "Too close to call",
+    line: "Earned 1.75% a year over cash since 1975 and rose in 59% of the worst stock months since 2000. Small, optional, and instead of cash rather than instead of stocks.",
+    href: "/strategies/gold-and-bitcoin/",
+    more: "Gold and bitcoin",
+  },
+  {
+    idea: "Bitcoin",
+    verdict: "No",
+    line: "The only holding tested that made the portfolio's worst fall deeper at every weight. A bet, not protection. Zero to 2% if you want the bet.",
+    href: "/strategies/gold-and-bitcoin/",
+    more: "Gold and bitcoin",
+  },
+  {
+    idea: "Crash insurance and buffer funds",
+    verdict: "No",
+    line: "The best-known tail fund lost 8% a year while stocks made 14%, and fell 13% in the 2022 bear market. 86 of 102 buffer funds returned less than a plain stock and cash mix.",
+    href: "/strategies/crash-insurance/",
+    more: "Crash insurance",
+  },
+  {
+    idea: "Bonds and TIPS",
+    verdict: "Too close to call",
+    line: "Owning fewer stocks is a choice about how much you can lose, not a way to earn more. Ten-year TIPS now pay 2.4% above inflation, the most since 2008.",
+    href: "/strategies/crash-insurance/",
+    more: "Crash insurance",
+  },
+  {
+    idea: "Carry",
+    verdict: "Too close to call",
+    line: "A second futures strategy that moves independently of trend. Positive on paper, negative since 2013, and the fund is two years old.",
+    href: "/strategies/trend-following/",
+    more: "Trend following",
+  },
+  {
+    idea: "Direct indexing",
+    verdict: "No",
+    line: "Cost money on every one of 400 simulated thirty-year paths. Only 0.2% of the losses it harvests ever save tax for someone who never sells.",
+    href: "/strategies/fees-and-taxes/",
+    more: "Fees and taxes",
+  },
+  {
+    idea: "Rebalancing",
+    verdict: "Settled",
+    line: "Keeps your mix from drifting. Does not earn a return, and every rule tested on a three-region mix lost a little to never trading.",
+    href: "/strategies/fees-and-taxes/",
+    more: "Fees and taxes",
+  },
+  {
+    idea: "Dividend and property funds",
+    verdict: "No",
+    line: "A dividend fund is the stock market with a screen and a tax bill. Property funds fell 41% in 2020 and rose in 3% of the worst stock months.",
+    href: "/strategies/crash-insurance/",
+    more: "Crash insurance",
+  },
+];
+
+const COLUMNS = ["Idea", "Verdict", "In one line", "More"] as const;
+---
+
+<Base
+  title="Strategies"
+  description="Seventeen things people add to a portfolio, and whether each one earns its place once you look at the whole portfolio rather than the idea on its own."
+  asOf="2026-09-02"
+  wide
+>
+  <Hero
+    title="What earns a place in a portfolio"
+    lede="Most things people bolt onto a portfolio look good on their own and do nothing once they are inside one. A few look unimpressive alone and help the whole. The only test that matters is the whole portfolio."
+  />
+
+  <div class="prose">
+    <p>The idea behind this site is simple. No single strategy beats the market by much, and none does it
+    reliably. But if you can find several ideas that each have a modest edge, and they do not all fail at the
+    same time, stacking them gives you better odds than any one of them. The catch is that most candidates fail
+    the second half of that sentence. They either add nothing once fees and taxes are counted, or they fall
+    exactly when your stocks fall, or they only help if you buy them a particular way.</p>
+
+    <p>So every idea below was tested the same way: put it inside a whole portfolio, charge its costs, and
+    compare the result with a cheap index fund holding the same mix. The verdict words are the four I use
+    everywhere on this site. Settled means the direction is not in doubt. Probably means the evidence points
+    one way but a long stretch of bad luck could hide it for decades. Too close to call means the test could
+    not separate the idea from zero. No means it lost, on measured cost against measured benefit.</p>
+  </div>
+
+  <Breakout scroll heading="The verdicts" class="mt-10">
+    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[40rem]">
+      <caption class="sr-only">Seventeen ideas, each with a verdict word, a one-line reason and a link to the page that argues it</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          {COLUMNS.map((heading) => (
+            <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{heading}</th>
+          ))}
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {ROWS.map((row) => (
+          <tr role="row" class="border-b border-rule last:border-0 align-top">
+            <th role="rowheader" scope="row" class="py-3 pr-4 text-left font-medium text-ink">{row.idea}</th>
+            <td role="cell" data-label={COLUMNS[1]} class="py-3 pr-4 whitespace-nowrap"><Verdict word={row.verdict} /></td>
+            <td role="cell" data-label={COLUMNS[2]} class="py-3 pr-4 max-w-[34rem]">{row.line}</td>
+            <td role="cell" data-label={COLUMNS[3]} class="py-3 pr-4 whitespace-nowrap"><a href={row.href} class="link">{row.more}</a></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-14">
+    <h2>Alone and together are different questions</h2>
+
+    <p>Some ideas fail alone and help in a portfolio. Trend following is the clearest case. On its own it earned
+    about 5% a year since 2000 by the SG Trend index's count, with long dead stretches. Bought by selling
+    stocks, it dilutes the portfolio. Added on top of stocks through a fund that borrows inside itself, it rose
+    in 64% of the worst stock months since 2000 and turned the lost decade of 1999 to 2009 from a loss into
+    roughly zero. Cash is the other case. Cash earns the least of anything, and moving 10% of a stock
+    portfolio into Treasury bills would have added 0.9% in the average terrible month since 1926, as much as
+    gold or long bonds and for no fee.</p>
+
+    <p>Others look strong alone and fail inside a portfolio. Bitcoin has the best return for its risk of
+    anything I measured, and it still deepened the portfolio's worst fall at every weight because it falls
+    with stocks and falls further. A standalone managed-futures fund bought by selling stocks gives up the
+    stock return on the money you sold, which is most of what the strategy was supposed to add. Gold has the
+    same problem: bought by selling stocks it costs the portfolio 0.4 points a year against holding the
+    stocks, added on top it gains 0.2, and neither number can be told from zero.</p>
+
+    <p>The rule I take from all of this is to ask two questions of any idea. Does it fall when stocks fall? And
+    how am I paying for it: by selling stocks, or by adding it on top?</p>
+  </div>
+</Base>

@@ -1,0 +1,13 @@
+label: What a ten-year TIPS pays above inflation
+value: 2.44%
+unit: a year above inflation
+status: source-reproduced
+asOf: '2026-08-31'
+source:
+  label: Valuation and the allocation
+  docPath: docs/research/valuation-and-the-allocation.md
+  anchor: 11-the-us-level-from-this-repositorys-own-cache
+  href: https://www.federalreserve.gov/releases/h15/
+note: >-
+  The highest since October 2008 and the 96.7th percentile of every reading since 2003. A
+  thirty-year TIPS paid 2.99% on the same day.

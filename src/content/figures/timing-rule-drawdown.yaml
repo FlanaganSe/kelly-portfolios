@@ -1,0 +1,14 @@
+label: Worst fall under the 200-day rule, against buy and hold
+value: −43.1%
+unit: against −83.7% for holding
+status: source-reproduced
+asOf: '2026-09-02'
+period: 1926-07 to 2026-06
+source:
+  label: Timing rules on the stock holdings
+  docPath: docs/research/timing-rules-on-the-equity-sleeve.md
+  anchor: conclusion
+note: >-
+  US stocks, checked monthly, with a realistic trading cost. The only result in the timing study
+  that is not in doubt, and it is mechanical: a rule that sits in cash for most of a fall cannot
+  lose as much as one that stays in.

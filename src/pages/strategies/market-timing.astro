@@ -1,0 +1,120 @@
+---
+/**
+ * The 200-day rule and the 2x and 3x funds people put under it. What the rule buys, what
+ * it costs, and the fair case for it. Three of its numbers carry figure records.
+ */
+import Compare from "~/components/Compare.astro";
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import KeyNumbers from "~/components/KeyNumbers.astro";
+import Verdict from "~/components/Verdict.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Market timing"
+  description="The 200-day rule buys a smaller worst fall and pays for it with a lower return, a losing trade four times in five, and a tax bill. Put a 3x fund under it and you still lose 85%."
+  asOf="2026-09-02"
+>
+  <Hero
+    title="Does the 200-day rule work?"
+    lede="It cuts the worst fall roughly in half and earns less than holding while doing it. That is a fair trade for some people and a bad one in a taxable account. Adding a 2x or 3x fund on top does not change the answer."
+  >
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="No" /> <span>Not as a way to earn more. A smoother ride is a different purchase, and there are cheaper ways to buy one.</span></p>
+    <KeyNumbers
+      items={[
+        { value: "−0.7 pts", label: "a year against buy and hold, US stocks 1926 to 2026" },
+        { value: "43%", label: "worst fall under the rule", note: "84% for buy and hold" },
+        { value: "58 of 73", label: "exits lost money" },
+        { value: "1.9 pts", label: "a year in tax, top bracket, taxable account" },
+      ]}
+    />
+  </Hero>
+
+  <div class="prose">
+    <h2>The rule</h2>
+
+    <p>Own stocks when the market is above its average price of the last 200 trading days. Sell to cash when
+    it drops below. Check once a month. That is the whole thing, and its appeal is obvious: it would have had
+    you out of stocks for most of 1929 to 1932, 2000 to 2002 and 2008.</p>
+
+    <h2>What it buys</h2>
+
+    <p>A smaller worst fall. Run on US stocks between July 1926 and June 2026 with a realistic trading cost,
+    the rule's deepest loss was <Figure id="timing-rule-drawdown" inline showUnit={false} /> against 84% for
+    holding. That is the one result in this whole study that is not in doubt, and it holds because the
+    arithmetic is mechanical: you cannot lose 84% if you are in cash for most of the fall.</p>
+
+    <p>Meb Faber, who popularised the rule, tested a five-asset version on data through 2005. Concretum ran the
+    same version forward on the years after his paper, 2006 to March 2025, and found the worst fall stayed
+    small at 12% while the return dropped from 11.7% a year in his sample to 6.1% after it. The protection
+    survives. The return edge does not.</p>
+
+    <h2>What it costs</h2>
+
+    <p>A lower return than holding. Over the full century the rule earned 0.73 points a year less than buy and
+    hold. Since 2017, run on SPY, it earned 8.5% a year against 15.0% for holding, and in nine of ten round
+    trips it sold and then bought back at a higher price. Across the century,
+    <Figure id="timing-rule-losing-exits" inline showUnit={false} /> of its exits lost money. The worst run was
+    twelve losing exits in a row between 1948 and 1960, and the rule has not made a new high against buy and
+    hold since June 1932.</p>
+
+    <p>Then tax. Every exit in a taxable account is a sale. In a top bracket that cost
+    <Figure id="timing-rule-tax-cost" inline showUnit={false} /> points a year on top of the return gap, which
+    puts the rule about 3 points a year behind holding. Sheltered, the gap is about 1 point.</p>
+
+    <p>One more comparison. The rule is out of the market about a quarter of the time, so on average it holds
+    73% stocks. Against a portfolio that simply holds 73% stocks and 27% cash all the time, the rule came out
+    <Figure id="timing-rule-gap" inline showUnit={false} /> points a year ahead with a range so wide the test
+    could not tell whether the timing added anything. Holding fewer stocks buys a worst fall of 39% for free,
+    with no trading and no tax.</p>
+
+    <h2>The fair case for it</h2>
+
+    <p>The strongest case I can make for the rule is this. I will probably earn less than holding. I will trade
+    about once a year and be wrong most of those times. I should only do it in an account where tax cannot
+    reach me. What I am buying is a smoother ride and a rule that stops me from panicking at the bottom, which
+    is worth something to a person who knows they would otherwise sell everything in March 2009. If that is
+    you, the rule is a fair purchase, and you should know you are buying a smaller fall, not a bigger
+    return.</p>
+
+    <h2>2x and 3x funds</h2>
+
+    <p>A 3x fund borrows to triple the market's daily move. Held over the century since 1926, it would have
+    compounded at 12.5% a year against 10.2% for the plain index, lost 99.9% at its worst, and spent 28 years
+    under water. Nobody holds that.</p>
+
+    <p>The popular fix is to hold the 3x fund only when the market is above its 200-day average, the idea in
+    Michael Gayed's 2016 paper on holding borrowed stock exposure only above the 200-day average. Over the same
+    century that turned 19.9% a year with a worst fall of 85%, in a run of whipsaws between 1933 and 1935 where
+    the rule kept getting in and out at 3x. October 1987 cost it 67% because a three-week crash cannot be
+    exited by a 200-day average. In 2022 it lost 35% while the index lost 25%. Once you compare the timed 3x
+    fund with the same fund held at the rule's own average exposure, the timing itself is worth somewhere
+    between minus 1 and plus 11 points a year, and the test cannot say which. The return is the borrowing. The
+    rule just decides when you are exposed to it.</p>
+
+    <p>The other popular version is HFEA, 55% of a 3x stock fund and 45% of a 3x long Treasury fund,
+    rebalanced. Since 1926 it returned 16% a year with a worst fall of 93%. Between December 1972 and September
+    1981 it lost 52% while the plain index gained 60%, because bonds and stocks fell together for nine years.
+    It lost 47% in 2022 for the same reason. It is a bet that bonds will rise when stocks fall, and that bet
+    has not paid since 2020.</p>
+
+    <p>In a taxable account the 3x rule costs about 3.3 points a year in tax. The only version I could defend
+    is a small sheltered 2x holding under the rule, at most 10 to 15% of a portfolio, for someone who has
+    decided they want borrowed exposure to stocks and wants a brake for slow crashes. That is an argument about
+    what you can hold through, not what you will earn. The default is none.</p>
+  </div>
+
+  <Compare class="mt-12">
+    <ul slot="get">
+      <li>A worst fall of 43% instead of 84% on a century of US stocks.</li>
+      <li>A rule that gets you out of a slow bear market before the bottom.</li>
+      <li>Something to do instead of panicking.</li>
+    </ul>
+    <ul slot="give">
+      <li>0.7 points a year against holding, and 3 points in a taxable account.</li>
+      <li>Four losing exits in five, including twelve in a row between 1948 and 1960.</li>
+      <li>No protection in a fast crash: October 1987 at 3x cost 67%.</li>
+    </ul>
+  </Compare>
+</Base>

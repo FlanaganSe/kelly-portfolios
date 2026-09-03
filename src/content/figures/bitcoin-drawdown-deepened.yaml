@@ -1,0 +1,14 @@
+label: A portfolio's worst fall before and after a 10% bitcoin holding
+value: 24.8% to 29.2%
+unit: worst fall
+status: exploratory
+asOf: '2026-09-02'
+period: 2015-02 to 2026-06
+source:
+  label: The alternatives, audited
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 15-what-a-sleeve-is-worth-at-the-weight-anyone-would-actually-hold
+note: >-
+  The only holding tested that made the worst fall deeper at every weight tried, because bitcoin
+  moves about one and a half times as far as stocks in both directions and fell with them in
+  every recent sell-off.

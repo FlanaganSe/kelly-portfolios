@@ -9,5 +9,5 @@ source:
   docPath: docs/research/stacking-and-effective-breadth.md
   anchor: correlation-measured
 note: >-
-  Above five because value and momentum move against each other. All sixteen factor-and-region
-  combinations plus trend are worth 10.23 of 16.
+  Above five because value and momentum move against each other. Every combination of five
+  styles and three regions plus trend counted as 10.2 of 16, so region adds much less than style.

@@ -8,6 +8,5 @@ source:
   docPath: docs/research/harvesting-and-direct-indexing.md
   anchor: 3-usage-the-constraint-every-vendor-figure-assumes-away
 note: >-
-  The binding constraint is 26 U.S.C. §1211(b), which caps the deduction of net capital loss
-  against ordinary income at $3,000 a year and has not been indexed since 1978. The other 99.8%
-  waits as a §1212(b) carryforward, which dies with the taxpayer.
+  The tax code caps the loss you can deduct against ordinary income at $3,000 a year, a figure
+  unchanged since 1978. The other 99.8% waits as a carryforward that dies with the taxpayer.

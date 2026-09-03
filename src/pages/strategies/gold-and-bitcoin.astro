@@ -1,0 +1,92 @@
+---
+/**
+ * Gold and bitcoin on one page, each with its own verdict. Gold's return over cash and
+ * bitcoin's effect on the worst fall carry figure records.
+ */
+import Compare from "~/components/Compare.astro";
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import Verdict from "~/components/Verdict.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="Gold and bitcoin"
+  description="Gold rose in most of the worst stock months and cannot be shown to add return either way. Bitcoin has the best return for its risk of anything tested and still made every portfolio's worst fall deeper."
+  asOf="2026-09-02"
+>
+  <Hero
+    title="Should I hold gold or bitcoin?"
+    lede="Gold: a little, if you like, in place of cash rather than stocks. Bitcoin: only as a bet you can afford to lose, never as protection."
+  />
+
+  <div class="prose">
+    <h2>Gold</h2>
+
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="Too close to call" /> <span>Optional, small, and instead of cash.</span></p>
+
+    <p>Since 1975, the first year Americans could own it freely and the price was set by a market, gold has
+    earned <Figure id="gold-over-cash" inline showUnit={false} /> a year over cash. That is a thin return for
+    an asset that swings 16% a year and once fell 91% behind cash from its peak. What it has going for it is
+    when it pays. Gold rose in 59% of the worst stock months since 2000, which only trend following beat. It is
+    not a reliable hedge inside a crash, though: it fell 30% peak to trough during 2008, 21% of that in eleven
+    days, and 12% in nine days in March 2020. It is protection with a lag.</p>
+
+    <p>Whether it adds return to a portfolio depends entirely on how you pay for it. Sell 10% of your stocks to
+    buy gold and the portfolio grows 0.4 points a year slower. Add 10% gold on top of the stocks through a
+    fund that borrows, and it grows 0.2 points faster. Neither number can be told from zero, and the sign flips
+    on the funding alone. Inside the portfolio on this site, a 10% addition on top came out 0.35 points a year
+    ahead of the portfolio without it, with a range between minus 0.2 and plus 0.9. Too close to call.</p>
+
+    <p>The one comparison that matters for a crash: in the worst tenth of stock months since 1926, swapping 10%
+    of stocks into gold would have added 0.92% in the average such month. Swapping the same 10% into Treasury
+    bills would have added 0.92%. Gold does the job of cash in a fall, at 16% a year of swings instead of
+    none.</p>
+
+    <p>That is why the recommendation is small and in place of cash. If you would hold 5% cash anyway, gold is
+    a fair substitute. Two things to know before buying now. Gold's price after inflation sits at the 98.5th
+    percentile of everything since 1975, above its 1980 and 2011 peaks. And a gold fund that borrows to hold
+    gold on top of stocks, GDE, pays out taxable income worth 1.5 points a year, the second-largest tax cost
+    of any fund I priced.</p>
+
+    <h2>Bitcoin</h2>
+
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="No" /> <span>Not as protection. Zero to 2% as a bet, in a taxable account, and zero is fine.</span></p>
+
+    <p>Bitcoin has the best return for its risk of anything I measured. Between 2015 and mid-2026 it earned 60%
+    a year over cash with swings of 71% a year. If that were the whole story it would be in every
+    portfolio.</p>
+
+    <p>The problem is when it falls. Bitcoin moves about one and a half times as far as the stock market, in
+    both directions, and its month-to-month link to stocks has tightened from 0.34 over the full period to 0.53
+    over the last seven years. It rose in 2 of the 12 worst stock months of the past decade. Between February
+    and April 2025 it lost 28% while the S&amp;P 500 lost 19%, and they hit bottom on the same day. In the first
+    half of 2026 it lost 53% while the S&amp;P 500 lost 9%.</p>
+
+    <p>Put that into a portfolio and the result is the one that decides it. Bitcoin is the only holding I
+    tested that made the portfolio's worst fall deeper at every weight. A 10% position took a portfolio's
+    worst fall over that period from <Figure id="bitcoin-drawdown-deepened" inline showUnit={false} />.
+    Everything else I tested, including things that lost money, at least did not do that. Over the five years
+    to August 2026 bitcoin returned 56% against 73% for the S&amp;P 500, with about four times the swings.</p>
+
+    <p>Two smaller points. A fund that holds bitcoin on top of stocks by borrowing, RSSX, beat the same bitcoin
+    bought by selling stocks by 0.4 points a year, which sounds like a finding and is only the stock return on
+    the money not sold. And ether funds that promise staking income mostly do not deliver it: ETHE's 2.5% fee
+    is larger than what staking pays, and ETHB nets about 1.9% a year, taxed as ordinary income.</p>
+
+    <p>If you want the bet, hold 1 to 2% in a taxable account, call it speculation, and expect to lose half of
+    it every few years. BlackRock's own guidance for the fund it sells is 1 to 2%. Zero is also a good
+    answer.</p>
+  </div>
+
+  <Compare class="mt-12">
+    <ul slot="get">
+      <li>Gold: an asset that rose in 59% of the worst stock months since 2000.</li>
+      <li>Bitcoin: the highest return for its risk of anything tested, 60% a year over cash since 2015.</li>
+    </ul>
+    <ul slot="give">
+      <li>Gold: a return that cannot be told from zero either way, at a price above its 1980 and 2011 peaks.</li>
+      <li>Bitcoin: a deeper worst fall at every weight, and losses of 28% and 53% in the last two stock sell-offs.</li>
+    </ul>
+  </Compare>
+</Base>

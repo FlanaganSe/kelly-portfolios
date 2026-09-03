@@ -1,0 +1,80 @@
+---
+/**
+ * Foreign stocks: why hold them, how much, how to get there, and currency. The worst run
+ * behind the US carries a figure record.
+ */
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import Verdict from "~/components/Verdict.astro";
+import Base from "~/layouts/Base.astro";
+---
+
+<Base
+  title="International"
+  description="Foreign stocks are worth holding because they are priced at a large discount to the US and because nobody knows which region wins the next twenty years. They are not crash protection. Move toward 60/40 with new money, never by selling."
+  asOf="2026-09-02"
+>
+  <Hero
+    title="Should I hold foreign stocks?"
+    lede="Probably, at about 40% of your stocks, and for two reasons that have nothing to do with diversification: foreign markets are priced at a deep discount to the US, and the US has just had the best 35 years it is likely to have."
+  >
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="Probably" /> <span>High confidence on "do not sell to get there". Moderate on the direction. Low on how much.</span></p>
+  </Hero>
+
+  <div class="prose">
+    <h2>Not for the reason people give</h2>
+
+    <p>The usual case for foreign stocks is that they protect you when US stocks fall. They do not. Foreign
+    stocks rose in 6% of the worst US stock months since 2000. Value in three regions counts as about one and
+    a half independent ideas, not three. When US stocks fall hard, everything that is a stock falls with
+    them.</p>
+
+    <p>The case that holds up is about price and humility. At the end of June 2026 US stocks traded at 36 times
+    their ten-year average earnings, against 21 for the rest of the developed world and 19 for emerging
+    markets. The US is priced at 1.7 times the developed world and 1.85 times emerging markets. Of the 4.7
+    points a year by which US stocks beat foreign stocks over the 35 years to 2024, AQR estimates that 3.8
+    points came from US stocks becoming more expensive rather than from US companies earning more. A re-rating
+    can run for decades, and it cannot run forever.</p>
+
+    <p>A century of country data says a market this expensive relative to others tends to earn a bit less over
+    the next ten years, by about 1.4 points a year at today's gap. It also says the range around that number
+    runs between minus 7 and plus 4, and that since 1990 the relationship has been too weak to detect. Do not
+    treat it as a forecast. Treat it as a reason not to hold 100% of your stocks in the most expensive market
+    in the world.</p>
+
+    <h2>How much, and how to get there</h2>
+
+    <p>The world's stock market is about 64% US by size, so a 65/35 split is the neutral starting point. The
+    portfolios on this site sit at about 64/36 today and move to 60/40 with new contributions. Past 60/40 is a
+    bet: 55/45 or 50/50 are defensible if you can live with your returns differing from a world index by 1 to
+    1.5 points a year in either direction, and I stop at 60/40 because I cannot say more than that.</p>
+
+    <p>The size of the bet is small either way. Shifting 10 points from US to foreign stocks is worth about 0.14
+    points a year in expected return against 0.8 to 1.4 points a year of year-to-year difference. It would take
+    somewhere between 55 and 178 years of results to know whether it was right. Meanwhile, selling 10 points of
+    a taxable position where three quarters of the value is gain costs about 1.1% of your wealth in tax, once,
+    for certain. So the rule is: move with new money, never by selling. With contributions of 10% a year, 60/40
+    arrives in less than a year at no cost.</p>
+
+    <p>Do not overweight emerging markets on the valuation argument. They are cheap against the US and near the
+    top of their own history, and their companies pay out less to shareholders than US companies do.</p>
+
+    <h2>Currency</h2>
+
+    <p>When you hold a foreign stock you also hold its currency, and the currency has been most of the story
+    lately. A weak dollar added about 7 points to foreign stock returns in 2025, when developed markets
+    returned 32% against 18% for the S&amp;P 500. A strong dollar subtracted about 1.7 points a year through the
+    2010s. Over any long window the currency's average contribution cannot be told from zero.</p>
+
+    <p>A currency-hedged fund removes that. Hedging cuts the swings of a foreign holding by about a fifth, and
+    that reduction is real and reproducible. It does not change the expected return, and the hedge produces
+    taxable gains and losses every year, so if you hedge, do it in a retirement account. The funds on this site
+    are unhedged, and hedging is the input to this question I have looked at least.</p>
+
+    <h2>What losing looks like</h2>
+
+    <p>Foreign stocks trailed the US for 18 years and finished <Figure id="intl-drawdown" inline showUnit={false} />.
+    That happened once already, in living memory, and it can happen again. Hold 40% foreign because you have
+    decided the price is right and you cannot pick the winner, not because you expect it to feel good.</p>
+  </div>
+</Base>

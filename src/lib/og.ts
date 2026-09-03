@@ -133,58 +133,6 @@ export const OG_PAGES = {
 
   // Old routes, kept until wave 2 deletes the pages that render them. Delete each entry
   // with its page.
-  "/portfolios/whole-market/": {
-    title: "The whole market",
-    alt: `${SITE_NAME}: one fund that owns every listed company in the world, and why 90% of professionals could not beat it.`,
-  },
-  "/evidence/": {
-    title: "What we found",
-    alt: `${SITE_NAME}: every idea tested here, the verdict, and how sure we are.`,
-  },
-  "/evidence/fees-and-accounts/": {
-    title: "The part that isn’t a guess",
-    alt: `${SITE_NAME}: what a fund really costs after lending income, and which account each one belongs in.`,
-  },
-  "/evidence/how-many-bets/": {
-    title: "Why stacking good ideas stops working",
-    alt: `${SITE_NAME}: how many unrelated bets a near-certainty would take, and how few of them exist.`,
-  },
-  "/evidence/trend-following/": {
-    title: "Does a managed-futures fund earn its place?",
-    alt: `${SITE_NAME}: the crisis behaviour is real, the return cannot be measured, and the fund you pick decides the outcome.`,
-  },
-  "/evidence/market-timing/": {
-    title: "Should you sell when the market falls below its 200-day average?",
-    alt: `${SITE_NAME}: the moving-average rule has cost money since it became famous, and tax ends it for a taxable account.`,
-  },
-  "/evidence/value-and-factors/": {
-    title: "Do cheaper, smaller, more profitable companies pay more?",
-    alt: `${SITE_NAME}: cheap companies have paid more, small ones have not, and all of it is worth less to a fund holder than to a paper portfolio.`,
-  },
-  "/evidence/gold/": {
-    title: "Is gold worth holding?",
-    alt: `${SITE_NAME}: optional, small, and in place of cash rather than in place of shares.`,
-  },
-  "/evidence/bitcoin/": {
-    title: "Does bitcoin protect a portfolio?",
-    alt: `${SITE_NAME}: the only thing tested that made a portfolio's worst fall deeper at every weight.`,
-  },
-  "/evidence/crash-insurance/": {
-    title: "Can you buy insurance against a crash?",
-    alt: `${SITE_NAME}: it has cost far more than it ever paid out, and holding fewer shares does the same job for no fee.`,
-  },
-  "/evidence/rebalancing/": {
-    title: "Does rebalancing make you money?",
-    alt: `${SITE_NAME}: no, and it does not reliably cost you either; it keeps your mix from drifting and nothing more.`,
-  },
-  "/evidence/direct-indexing/": {
-    title: "Is direct indexing worth it?",
-    alt: `${SITE_NAME}: it costs a long-term investor money at any fee, including a fee of zero.`,
-  },
-  "/evidence/what-actually-diversifies/": {
-    title: "What actually protects you when stocks fall",
-    alt: `${SITE_NAME}: government bonds and trend following, each against one kind of crisis rather than all of them.`,
-  },
   "/tools/placement/": {
     title: "Where to hold each fund",
     alt: `${SITE_NAME}: the account-placement calculator, ranking the fund list by what a sheltered dollar of it saves.`,

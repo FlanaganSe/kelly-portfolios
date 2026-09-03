@@ -1,0 +1,16 @@
+label: Adding 30% trend following on top of US stocks, against a cheap all-stock fund
+value: '+1.98'
+unit: points a year
+interval: '[+1.26, +2.73]'
+status: exploratory
+asOf: '2026-09-02'
+period: 1929-01 to 2025-05
+source:
+  label: Defensive holdings inside the construction
+  docPath: docs/research/defensive-engines-in-the-construction.md
+  anchor: 2-the-trend-overlay-on-96-years
+note: >-
+  An average yearly gap after fund costs, on a simple four-market trend rule built from the data
+  that existed, because no trend fund did. The gain runs between half a point and 3.6 points a
+  year by decade through the 2000s, then 0.6 in the 2010s and 0.3 in the 2020s; measured only from
+  2009 it is 0.4 and cannot be told from zero. Worst fall 82.8% against 83.7% for stocks alone.

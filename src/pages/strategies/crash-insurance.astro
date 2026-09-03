@@ -1,0 +1,137 @@
+---
+/**
+ * What actually rose when stocks fell, and what was sold as protection and did not pay.
+ * The bad-months table is read from published fund and index prices since 2000 and is
+ * typed here as data; the TIPS yield carries a figure record.
+ */
+import Breakout from "~/components/Breakout.astro";
+import Compare from "~/components/Compare.astro";
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import Verdict from "~/components/Verdict.astro";
+import Base from "~/layouts/Base.astro";
+
+const BAD_MONTHS = [
+  { thing: "Trend following", share: "64%" },
+  { thing: "Gold", share: "59%" },
+  { thing: "Medium-term Treasuries", share: "58%" },
+  { thing: "Long-term Treasuries", share: "55%" },
+  { thing: "Commodities", share: "28%" },
+  { thing: "Bitcoin", share: "19%" },
+  { thing: "Foreign stocks", share: "6%" },
+  { thing: "Property funds", share: "3%" },
+  { thing: "High-yield bonds", share: "3%" },
+] as const;
+
+const COLUMNS = ["Holding", "Share of the worst stock months it rose"] as const;
+---
+
+<Base
+  title="Crash insurance"
+  description="Tail funds, buffer funds, bonds, TIPS and cash. Which ones actually rose in the worst stock months, and which cost more than they ever paid back."
+  asOf="2026-09-02"
+>
+  <Hero
+    title="What actually protects you in a crash?"
+    lede="Holding fewer stocks. Everything sold as insurance either cost more than it paid back or failed in the one year you needed it. Bonds and cash are a choice about how much you can lose, not a way to earn more."
+  >
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="No" /> <span>For tail funds, buffer funds and betting-against-the-market funds. Bonds, TIPS and cash are a different question, answered below.</span></p>
+  </Hero>
+
+  <div class="prose">
+    <h2>What rose when stocks fell</h2>
+
+    <p>The table is the whole argument. It shows, for the worst stock months since 2000, how often each asset
+    finished the month up.</p>
+  </div>
+
+  <Breakout scroll label="How often each holding rose in the worst stock months since 2000" maxWidth="36rem" class="mt-6">
+    <table role="table" class="stack-table w-full border-collapse text-base">
+      <caption class="sr-only">For the worst stock months since 2000, the share of those months each holding finished up</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left">
+          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{COLUMNS[0]}</th>
+          <th role="columnheader" scope="col" class="eyebrow py-2 text-right">{COLUMNS[1]}</th>
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-muted">
+        {BAD_MONTHS.map((row) => (
+          <tr role="row" class="border-b border-rule last:border-0">
+            <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal text-ink">{row.thing}</th>
+            <td role="cell" data-label={COLUMNS[1]} data-numeric class="py-2 text-right font-semibold text-ink">{row.share}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </Breakout>
+
+  <div class="prose mt-8">
+    <p>Foreign stocks, property and high-yield bonds are stocks by another name when it matters. Commodities and
+    bitcoin help less than a coin flip. The only things that rose more often than not were trend following,
+    gold and Treasuries.</p>
+
+    <p>A second way to score it: take the worst tenth of all stock months since 1926 and ask what moving 10% of
+    a stock portfolio into each asset would have added in the average such month. Treasury bills: 0.92%. Long
+    Treasuries: 0.94%, in exchange for swings of 8% a year and a worst fall of 59% of their own. Gold: 0.92%.
+    Trend following: 1.08%, and it was positive in 69% of those months. Cash does the job usually credited to
+    bonds, for free, without the risk that bonds fall alongside stocks.</p>
+
+    <h2>Insurance that did not pay</h2>
+
+    <p>TAIL is the best-known crash fund. It holds about 91% Treasuries and 5% put options and charges 0.59%.
+    Between 2017 and the end of 2024 it lost 8.4% a year while US stocks made 14.5%. It made 7% in 2020. In
+    2022, the bear market it was bought for, it lost 13% while the S&amp;P 500 lost 18%, because the Treasuries
+    it holds fell too. Holding 10% of a portfolio in it would have cost about 2.2 points a year of growth.
+    CAOS, a gentler version, made 3% a year over ten years against 15% for the S&amp;P 500. CYA, a fund that
+    promised to profit from crashes, lost 99% of its value between September 2021 and March 2024 and was
+    closed.</p>
+
+    <p>BTAL bets against high-flying stocks and is often sold as protection. It is the only fund I measured
+    whose shape could be read at all, and the shape is wrong: it lost 0.26% for every 1% the market rose and
+    also lost 0.12% for every 1% it fell. It has lost 3.6% a year since launch against 15.4% for the S&amp;P 500,
+    at a 1.4% fee.</p>
+
+    <p>Buffer funds promise to absorb the first 10 or 15% of a fall in exchange for a cap on gains. Of 102 that
+    I could compare with a plain mix of stocks and cash carrying the same risk, 86 returned less, 70 fell
+    further at their worst, and none beat the mix on both counts. A fund that loses money during a bear market
+    is a bet on the shape of the fall, not protection against falling. Holding fewer stocks does the same job
+    for no fee.</p>
+
+    <h2>Bonds and TIPS</h2>
+
+    <p>Bonds are different. They are not insurance and nobody should buy them expecting a return edge. They are
+    how you choose to lose less.</p>
+
+    <p>Over 96 years, replacing 10% of stocks with cash cost 0.77 points a year of growth, and with Treasury
+    bonds 0.55. Those were the only changes I tested that cut the depth of a 1929-scale or 2008-scale fall, by
+    4 to 5 points. That is the trade: give up about half a point a year, lose a bit less at the bottom.
+    Whether it is worth it depends on the fall you could sit through, which is why
+    <a href="/portfolios/">the portfolio pages</a> ask that question and not this one.</p>
+
+    <p>Adding bonds on top of stocks through a fund that borrows, the way RSSB does, is a different bet, and it
+    is a bet on bonds rising when stocks fall. On 96 years it came out 0.34 points a year ahead of the same
+    portfolio without the bonds, with a range that includes zero. All of that gain came between 1981 and 2020.
+    For 576 months in a row, 1933 to 1981, the version with bonds trailed the version without, and across 1977
+    to 1981 it cost 22 points. Since 2020 stocks and bonds have mostly fallen together: their three-year link
+    stood at plus 0.51 at the end of 2025, against about minus 0.4 through the 2010s. I do not hold it.</p>
+
+    <p>TIPS are Treasury bonds whose payments rise with inflation. Today a ten-year TIPS pays
+    <Figure id="tips-real-yield" inline showUnit={false} /> a year above inflation, the highest since October
+    2008, and a thirty-year pays 2.99%. That is the best contractual real return on offer anywhere, and it is
+    the reason <a href="/portfolios/with-trend/">the cautious version of the portfolio on this site</a> holds
+    some. Two things to know. TIPS move with ordinary bonds and slightly with stocks, so they are a worse
+    diversifier than plain Treasuries, not a better one. And SCHP and TIP hold the same bonds; SCHP charges
+    0.03% and TIP 0.18%, so the fee is the whole decision.</p>
+  </div>
+
+  <Compare class="mt-12">
+    <ul slot="get">
+      <li>Fewer stocks, or cash: a smaller worst fall, for free.</li>
+      <li>TIPS at 2.4% above inflation, the best guaranteed real return since 2008.</li>
+    </ul>
+    <ul slot="give">
+      <li>About half a point a year of growth for each 10% moved out of stocks.</li>
+      <li>Nothing, from tail funds and buffer funds, except the fee and a loss in 2022.</li>
+    </ul>
+  </Compare>
+</Base>
