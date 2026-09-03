@@ -43,20 +43,16 @@ export interface OgPage {
  */
 export const OG_PAGES = {
   "/": {
-    title: "Four portfolios, from plain to ambitious",
-    alt: `${SITE_NAME}: four portfolios built from cheap funds, what each one costs, how far it has fallen, and how sure the evidence is.`,
+    title: "Three portfolios, from plain to ambitious",
+    alt: `${SITE_NAME}: three portfolios built from cheap funds, what each one costs, how far it has fallen, and how sure the evidence is.`,
   },
   "/portfolios/": {
-    title: "The four portfolios, side by side",
-    alt: `${SITE_NAME}: all four side by side, with what each costs, what it adds, the worst thing that has happened to it, and which one is yours.`,
+    title: "The three portfolios, side by side",
+    alt: `${SITE_NAME}: all three side by side, with what each costs, what it adds, the worst thing that has happened to it, and which one is yours.`,
   },
   "/portfolios/one-fund/": {
-    title: "The whole world in one fund",
-    alt: `${SITE_NAME}: one fund that owns every listed company in the world, and why 90% of professionals could not beat it.`,
-  },
-  "/portfolios/held-well/": {
-    title: "The same fund, held well",
-    alt: `${SITE_NAME}: the same holding as portfolio one, with four habits that are arithmetic rather than forecast.`,
+    title: "One fund, held well",
+    alt: `${SITE_NAME}: one fund that owns every listed company in the world, why 90% of professionals could not beat it, and four habits that are arithmetic rather than forecast.`,
   },
   "/portfolios/value-lean/": {
     title: "A lean toward cheaper companies",

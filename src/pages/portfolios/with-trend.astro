@@ -1,6 +1,6 @@
 ---
 /**
- * Portfolio four: the value lean plus one fund that adds a trend-following program on
+ * Portfolio three: the value lean plus one fund that adds a trend-following program on
  * top of its stocks. The largest bet on the site and the least settled, so the page
  * carries the 96-year result, its decay, the fund's youth and the ladder together.
  */
@@ -11,7 +11,7 @@ import Hero from "~/components/Hero.astro";
 import HoldingsTable from "~/components/HoldingsTable.astro";
 import KeyNumbers from "~/components/KeyNumbers.astro";
 import Ladder from "~/components/Ladder.astro";
-import { portfolio } from "~/content/portfolios";
+import { TODAY_HOLDINGS, portfolio } from "~/content/portfolios";
 import { figureValue } from "~/lib/figures";
 import Base from "~/layouts/Base.astro";
 
@@ -51,6 +51,22 @@ const HOLDINGS = [
   { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "5%", fee: "0.36%" },
 ];
 
+const TODAY = [
+  { ticker: "RSST", what: "The same fund, five points less of it", weight: "25%", fee: "0.99%" },
+  { ticker: "VTI", what: "The whole US market", weight: "19%", fee: "0.03%" },
+  { ticker: "VXUS", what: "Every market outside the US", weight: "16%", fee: "0.05%" },
+  { ticker: "VTV", what: "Large, cheap US companies", weight: "15%", fee: "0.03%" },
+  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "10%", fee: "0.36%" },
+  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "5%", fee: "0.25%" },
+  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "5%", fee: "0.36%" },
+  {
+    ticker: "SCHP",
+    what: "Schwab U.S. TIPS ETF: Treasury bonds whose value rises with inflation. The cheapest TIPS fund I priced. Held in a traditional IRA or 401(k).",
+    weight: "5%",
+    fee: "0.03%",
+  },
+];
+
 const LADDER = [
   { worstFall: "−30%", rsst: "11%" },
   { worstFall: "−40%", rsst: "15%", extra: "Plus 10 points in inflation-protected Treasuries (TIPS)" },
@@ -65,9 +81,9 @@ const LADDER = [
   description="The value lean plus one fund that adds a trend-following program on top of its stocks. What that is, why it can help a whole portfolio, what 96 years of data say, and how much of it to hold."
 >
   <Hero
-    eyebrow="Portfolio 4 of 4"
+    eyebrow="Portfolio 3 of 3"
     title="The same, plus trend"
-    lede="Portfolio three, with 30% moved into a fund that holds US stocks and a trend-following program at the same time. The one holding on this site that adds an idea on top of stocks instead of swapping stocks for it."
+    lede="Portfolio two, with 30% moved into a fund that holds US stocks and a trend-following program at the same time. The one holding on this site that adds an idea on top of stocks instead of swapping stocks for it."
   >
     <KeyNumbers items={NUMBERS} />
   </Hero>
@@ -81,9 +97,29 @@ const LADDER = [
 
   <div class="prose">
     <p>The fee is 0.38% a year, or $38 on $10,000, and almost all of it is RSST's 0.99%. Because RSST holds a dollar
-    of stocks for every dollar you put in, the portfolio still owns about as much US stock as portfolio three; the
-    30% buys a trend-following program of the same size on top. There are no bonds. The ladder below is where they
-    come back in.</p>
+    of stocks for every dollar you put in, the portfolio still owns about as much US stock as portfolio two; the
+    30% buys a trend-following program of the same size on top. There are no bonds in this version.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="the-version-for-todays-prices">The version for today's prices</h2>
+
+    <p>This is the version I would hold today. US stocks are priced at 41 times their ten-year average earnings, a
+    level reached only once before, in 1999 and 2000, and ten-year TIPS, Treasury bonds whose value rises with
+    inflation, pay 2.44% a year above inflation, the highest since 2008. So five points move from RSST into TIPS,
+    held in a traditional IRA or 401(k), and nothing else changes.</p>
+  </div>
+
+  <HoldingsTable rows={TODAY} class="my-4" />
+  <AllocationBar holdings={TODAY_HOLDINGS} name="The version for today's prices" class="my-6" />
+
+  <div class="prose">
+    <p>Over the past 96 years this version would have trailed the 30% version by about
+    <Figure id="working-default-gap" inline showUnit={false} /> a year. At the returns I would expect from here it
+    trails by 0 to 0.2 points, and it comes out ahead only if stocks beat bonds by less than about 1.5 points a
+    year. In exchange, its worst fall is 1.8 points shallower and its year-to-year swings are about one point
+    smaller. That is the price of betting that today's high prices matter, and I think they do. The two versions
+    are close enough that the choice between them is about the fall you can sit through, not the return.</p>
   </div>
 
   <div class="prose mt-14">
@@ -144,7 +180,7 @@ const LADDER = [
     years stocks lose, and there have not been any yet. How closely its program tracks the long-run series rests on
     31 months of filings, and no issuer discloses the cost of the borrowing inside the fund. Of the managed-futures
     ETFs filing reports in mid-2019, <Figure id="managed-futures-attrition" inline showUnit={false} /> had stopped
-    by the end of 2025. If RSST closes, the fallback is <a href="/portfolios/value-lean/">portfolio three</a>, with
+    by the end of 2025. If RSST closes, the fallback is <a href="/portfolios/value-lean/">portfolio two</a>, with
     the 30% going back into VTI.</p>
 
     <p>Funds running the same idea differ far more than index funds do, so I chose RSST over the alternatives on
@@ -170,16 +206,8 @@ const LADDER = [
     the typical worst fall after inflation over the following 15 years was about
     <Figure id="worst-fall-above-cape-30" inline showUnit={false} />, against 37% from cheaper starting points.
     Two episodes are a warning, not a forecast, so I let that concern in only through the fall you plan for, never
-    as a prediction of returns. Ten-year TIPS pay 2.44% a year above inflation, the highest since 2008, which makes
-    them the natural home for the money that leaves RSST.</p>
-
-    <p><strong>The version for someone worried about today's prices.</strong> Hold RSST at 25% and put 5 points
-    into ten-year TIPS, inside a traditional IRA or 401(k). It sits between the −50% and −60% rows. Over the past
-    96 years it would have trailed the 30% version by about
-    <Figure id="working-default-gap" inline showUnit={false} /> a year. At the returns I would expect from here it
-    trails by 0 to 0.2 points, and it comes out ahead only if stocks beat bonds by less than about 1.5 points a
-    year. In exchange, its worst fall is 1.8 points shallower. That is the price of betting that today's high prices
-    matter.</p>
+    as a prediction of returns. TIPS are the natural home for the money that leaves RSST. The version for today's
+    prices above, RSST at 25% with 5 points in TIPS, sits between the −50% and −60% rows.</p>
   </div>
 
   <div class="prose mt-14">

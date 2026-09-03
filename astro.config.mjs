@@ -68,7 +68,8 @@ export default defineConfig({
   // an old bookmark, an old search result and an old inbound link working, and search
   // engines follow it. The alternative was several hundred 404s on the day of the switch.
   redirects: {
-    "/start/": "/portfolios/held-well/",
+    "/start/": "/portfolios/one-fund/",
+    "/portfolios/held-well/": "/portfolios/one-fund/",
     "/portfolio/": "/portfolios/with-trend/",
     "/stacking/": "/strategies/value-and-momentum/",
     "/how-many-bets/": "/strategies/value-and-momentum/",

@@ -1,7 +1,8 @@
 ---
 /**
- * The four portfolios side by side, a short test for which one is yours, and the ladder
- * that sets how much of the trend fund to hold.
+ * The three portfolios side by side, with the with-trend portfolio's version for today's
+ * prices as a fourth column, a short test for which one is yours, and the ladder that
+ * sets how much of the trend fund to hold.
  *
  * The comparison table types its cells because a table is where a reader scans; the
  * measured numbers in the prose beneath render from figure records.
@@ -13,33 +14,63 @@ import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
 import Ladder from "~/components/Ladder.astro";
 import Verdict from "~/components/Verdict.astro";
-import { PORTFOLIOS } from "~/content/portfolios";
+import { PORTFOLIOS, TODAY_HOLDINGS, type Holding } from "~/content/portfolios";
+import type { Confidence } from "~/lib/rungs";
 import Base from "~/layouts/Base.astro";
 
-const holdingsText = (p: (typeof PORTFOLIOS)[number]) => p.holdings.map((h) => `${h.ticker} ${h.weight}%`).join(", ");
+interface Column {
+  readonly heading: string;
+  readonly href: string;
+  readonly holdings: readonly Holding[];
+  readonly fee: string;
+  readonly feeOn10k: string;
+  readonly adds: string;
+  readonly worst: string;
+  readonly confidence: Confidence;
+}
 
-const ROWS = [
-  { label: "Holdings", cells: PORTFOLIOS.map(holdingsText) },
-  { label: "Fee a year", cells: PORTFOLIOS.map((p) => p.fee) },
-  { label: "Fee on $10,000", cells: PORTFOLIOS.map((p) => p.feeOn10k) },
-  {
-    label: "What it adds over the one before",
-    cells: [
-      "Nothing to add. This is the market.",
-      "Fees and tax: 0.04 to 2.70 points a year, depending on what you hold now",
+const withTrend = PORTFOLIOS[2];
+if (withTrend === undefined) throw new Error("The with-trend portfolio is missing from PORTFOLIOS");
+
+const COLUMNS: readonly Column[] = [
+  ...PORTFOLIOS.map((p, i) => ({
+    heading: `${p.number}. ${p.name}`,
+    href: p.href,
+    holdings: p.holdings,
+    fee: p.fee,
+    feeOn10k: p.feeOn10k,
+    adds: [
+      "Fees and tax against whatever you hold now: 0.04 to 2.70 points a year",
       "About 0.8 points a year over a cheap index mix, 1990 to 2026",
       "About 2.0 points a year over an all-stock fund, 1929 to 2025, fading to 0.4 since 2009",
-    ],
-  },
-  {
-    label: "Worst stretch",
-    cells: [
+    ][i] as string,
+    worst: [
       "Fell 52.7% and took 63 months to recover, 1990 to 2026",
-      "Same as portfolio one",
       "Cheap US stocks 54.3% behind the market over 17.7 years, still not recovered",
       "Fell 50.3% and took 42 months to recover, 1990 to 2026, with RSST at 25%",
-    ],
+    ][i] as string,
+    confidence: p.confidence,
+  })),
+  {
+    heading: "3, for today's prices",
+    href: `${withTrend.href}#the-version-for-todays-prices`,
+    holdings: TODAY_HOLDINGS,
+    fee: "0.33%",
+    feeOn10k: "$33",
+    adds: "About 0.6 points a year less than the 30% version over 1929 to 2025; 0 to 0.2 less at today's likely returns",
+    worst: "1.8 points shallower than the 30% version, 1929 to 2025",
+    confidence: "Too close to call",
   },
+];
+
+const holdingsText = (holdings: readonly Holding[]) => holdings.map((h) => `${h.ticker} ${h.weight}%`).join(", ");
+
+const ROWS = [
+  { label: "Holdings", cells: COLUMNS.map((c) => holdingsText(c.holdings)) },
+  { label: "Fee a year", cells: COLUMNS.map((c) => c.fee) },
+  { label: "Fee on $10,000", cells: COLUMNS.map((c) => c.feeOn10k) },
+  { label: "What it adds over the one before", cells: COLUMNS.map((c) => c.adds) },
+  { label: "Worst stretch", cells: COLUMNS.map((c) => c.worst) },
 ] as const;
 
 const LADDER = [
@@ -52,25 +83,25 @@ const LADDER = [
 ---
 
 <Base
-  title="The four portfolios, side by side"
+  title="The three portfolios, side by side"
   wide
   description="Holdings, fees, what each portfolio adds, how far each has fallen, and a short test for which one is yours."
 >
   <Hero
-    title="Four portfolios, side by side"
+    title="Three portfolios, side by side"
     lede="Each one contains the one before it. The question is how much of the clever stuff you can hold through a bad decade."
   />
 
   <Breakout scroll class="mt-8" heading="The comparison" maxWidth="64rem">
     <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[58rem]">
-      <caption class="sr-only">The four portfolios compared on holdings, fees, what each adds, worst stretch and confidence</caption>
+      <caption class="sr-only">The three portfolios and the today's-prices version compared on holdings, fees, what each adds, worst stretch and confidence</caption>
       <thead role="rowgroup">
         <tr role="row" class="border-b border-rule-strong text-left align-bottom">
           <td role="cell" class="py-2 pr-4"></td>
           {
-            PORTFOLIOS.map((p) => (
+            COLUMNS.map((c) => (
               <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">
-                <a href={p.href} class="link">{`${p.number}. ${p.name}`}</a>
+                <a href={c.href} class="link">{c.heading}</a>
               </th>
             ))
           }
@@ -84,7 +115,7 @@ const LADDER = [
                 {row.label}
               </th>
               {row.cells.map((cell, i) => (
-                <td role="cell" data-label={`${PORTFOLIOS[i]?.number}. ${PORTFOLIOS[i]?.name}`} class="py-2 pr-4">
+                <td role="cell" data-label={COLUMNS[i]?.heading} class="py-2 pr-4">
                   {cell}
                 </td>
               ))}
@@ -94,9 +125,9 @@ const LADDER = [
         <tr role="row" class="align-top">
           <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-medium text-ink">How sure I am</th>
           {
-            PORTFOLIOS.map((p) => (
-              <td role="cell" data-label={`${p.number}. ${p.name}`} class="py-2 pr-4">
-                <Verdict word={p.confidence} />
+            COLUMNS.map((c) => (
+              <td role="cell" data-label={c.heading} class="py-2 pr-4">
+                <Verdict word={c.confidence} />
               </td>
             ))
           }
@@ -107,31 +138,30 @@ const LADDER = [
 
   <div class="mt-8 flex flex-col gap-5">
     {
-      PORTFOLIOS.map((p) => (
+      COLUMNS.map((c) => (
         <div>
-          <p class="eyebrow mb-1">{`${p.number}. ${p.name}`}</p>
-          <AllocationBar holdings={p.holdings} name={`${p.number}. ${p.name}`} />
+          <p class="eyebrow mb-1">{c.heading}</p>
+          <AllocationBar holdings={c.holdings} name={c.heading} />
         </div>
       ))
     }
   </div>
 
   <Callout kind="caveat" label="Three comparisons, not one" class="mt-8">
-    <p>The "what it adds" row compares each portfolio with a different thing, on purpose. Portfolio two is compared
-    with whatever you hold today, because that is where its saving comes from. Portfolios three and four are
-    compared with a cheap index mix holding the same split of US and international stocks. The three figures do
-    not add up to one number, and I have not added them.</p>
+    <p>The "what it adds" row compares each portfolio with a different thing, on purpose. Portfolio one is compared
+    with whatever you hold today, because that is where its saving comes from. Portfolios two and three are
+    compared with a cheap index mix holding the same split of US and international stocks. The today's-prices
+    version is compared with the 30% version beside it. The figures do not add up to one number, and I have not
+    added them.</p>
   </Callout>
 
   <div class="prose mt-14">
     <h2>What each is for</h2>
 
-    <p><strong>One fund</strong> is the market. Over ten years to mid-2025, 90.3% of US stock funds run by
-    professionals did worse than it.</p>
-
-    <p><strong>Held well</strong> is the same fund with four habits: the cheapest version of it, the right account
-    for each piece, an ETF rather than a mutual fund, and no trading. Worth between 0.04 and 2.70
-    points a year depending on what you hold now, and all of it arithmetic rather than forecast.</p>
+    <p><strong>One fund, held well</strong> is the market. Over ten years to mid-2025, 90.3% of US stock funds run
+    by professionals did worse than it. The four habits that go with it, the cheapest version of the fund, the
+    right account for each piece, an ETF rather than a mutual fund, and no trading, are worth between 0.04 and
+    2.70 points a year depending on what you hold now, and all of it is arithmetic rather than forecast.</p>
 
     <p><strong>Value lean</strong> replaces the one fund with six, and leans toward companies that are cheaper,
     smaller and more profitable than average. Over 1990 to 2026 that lean earned about
@@ -139,9 +169,11 @@ const LADDER = [
     1.3.</p>
 
     <p><strong>With trend</strong> adds one fund, RSST, that holds US stocks and a trend-following program at the
-    same time, adding an idea on top of stocks rather than swapping stocks for it. On 96 years of data it added about <Figure id="trend-96-year-gap" inline /> over an all-stock
-    fund. Since 2009 the gap has been <Figure id="trend-gap-since-2009" inline showUnit={false} />,
-    which is too small to tell from luck.</p>
+    same time, adding an idea on top of stocks rather than swapping stocks for it. On 96 years of data it added
+    about <Figure id="trend-96-year-gap" inline /> over an all-stock fund. Since 2009 the gap has been
+    <Figure id="trend-gap-since-2009" inline showUnit={false} />, which is too small to tell from luck. The version
+    for today's prices moves five points from RSST into TIPS, Treasury bonds whose value rises with inflation, and
+    is the version I would hold now.</p>
   </div>
 
   <div class="prose mt-14">
@@ -151,33 +183,32 @@ const LADDER = [
 
     <ul>
       <li>If the answer is less than 30%, none of these as written. Hold fewer stocks and more bonds.</li>
-      <li>If it is 30% to 50%, hold portfolio two with some bonds beside it, or portfolio four at the row of the
-      ladder below that matches your number. The cheap mix and the trend version both fell by about half at some point
-      since 1990.</li>
+      <li>If it is 30% to 50%, hold portfolio one with some bonds beside it, or portfolio three at the row of the
+      ladder below that matches your number. The cheap mix and the trend version both fell by about half at some
+      point since 1990.</li>
       <li>If it is 50% or more and you would rather match the market than risk trailing it for a decade, hold
-      portfolio two.</li>
-      <li>If it is 50% or more and you want a lean with a long record, hold portfolio three.</li>
-      <li>If it is 50% or more and you want a real chance of beating the market, hold portfolio four, with the RSST
-      share the ladder gives for your number.</li>
+      portfolio one.</li>
+      <li>If it is 50% or more and you want a lean with a long record, hold portfolio two.</li>
+      <li>If it is 50% or more and you want a real chance of beating the market, hold portfolio three, with the
+      RSST share the ladder gives for your number.</li>
     </ul>
   </div>
 
   <div class="prose mt-14">
     <h2>The ladder</h2>
 
-    <p>The share of portfolio four in RSST is set by the worst fall you would sit through. The published 30% assumes
-    a tolerance near 70%, which is more than most people mean when they say they can hold on.</p>
+    <p>The share of portfolio three in RSST is set by the worst fall you would sit through. The published 30%
+    assumes a tolerance near 70%, which is more than most people mean when they say they can hold on. The version
+    for today's prices, RSST at 25% with 5 points in TIPS, sits between the −50% and −60% rows.</p>
   </div>
 
   <Ladder rows={LADDER} class="my-6" />
 
   <div class="prose">
-    <p>There is one more row that is not on the ladder. Someone who looks at today's stock prices and wants to act on
-    that concern, without cutting stocks outright, can hold RSST at 25% and put 5 points into ten-year TIPS. That
-    version sits between the −50% and −60% rows. Over the past 96 years it would have trailed the 30% version by
-    about <Figure id="working-default-gap" inline showUnit={false} /> a year, and at today's more modest expected
-    returns by 0 to 0.2 points, in exchange for a worst fall 1.8 points shallower. The
-    <a href="/portfolios/with-trend/">with-trend page</a> explains the choice.</p>
+    <p>The TIPS rows come from today's stock prices. Over the past 96 years the today's-prices version would have
+    trailed the 30% version by about <Figure id="working-default-gap" inline showUnit={false} /> a year, and at
+    today's more modest expected returns by 0 to 0.2 points, in exchange for a worst fall 1.8 points shallower.
+    The <a href="/portfolios/with-trend/">with-trend page</a> explains the choice.</p>
   </div>
 
   <div class="prose mt-14">

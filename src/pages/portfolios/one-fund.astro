@@ -1,9 +1,10 @@
 ---
 /**
- * Portfolio one: the whole world in one fund. The comparison every other page is
- * measured against.
+ * Portfolio one: the whole world in one fund, held well. The comparison every other
+ * page is measured against, plus the four habits that are arithmetic rather than a bet.
  */
 import AllocationBar from "~/components/AllocationBar.astro";
+import Compare from "~/components/Compare.astro";
 import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
 import HoldingsTable from "~/components/HoldingsTable.astro";
@@ -18,7 +19,11 @@ const NUMBERS = [
   { value: p.fee, label: "Fee a year", note: "$6 on every $10,000" },
   { value: "90.3%", label: "of US stock funds did worse over ten years", note: "To mid-2025" },
   { value: await figureValue("cheap-mix-worst-fall"), label: "Worst fall", note: "Cheap US and international mix, 1990 to 2026" },
-  { value: "63 months", label: "Longest wait to recover", note: "Same mix, same window" },
+  {
+    value: await figureValue("fee-gap"),
+    label: "saved a year by leaving a typical active fund",
+    note: "Zero if you already hold index funds",
+  },
 ];
 
 const HOLDINGS = [
@@ -32,13 +37,13 @@ const HOLDINGS = [
 ---
 
 <Base
-  title="One fund"
-  description="The whole world's stock market in a single fund. What it costs, what beats it, how far it falls, and the flat decade nobody warns you about."
+  title="One fund, held well"
+  description="The whole world's stock market in a single fund, in its cheapest form, in the right account, and never traded. What it costs, what beats it, how far it falls, and the only part of investing that is arithmetic rather than a bet."
 >
   <Hero
-    eyebrow="Portfolio 1 of 4"
-    title="The whole market in one fund"
-    lede="Buy every listed company in the world, in proportion to its size, and stop. This is the portfolio every other page on this site is measured against."
+    eyebrow="Portfolio 1 of 3"
+    title="One fund, held well"
+    lede="Buy every listed company in the world, in proportion to its size, and keep four habits. This is the portfolio I would point most people to, and the one every other page on this site is measured against."
   >
     <KeyNumbers items={NUMBERS} />
   </Hero>
@@ -84,24 +89,80 @@ const HOLDINGS = [
   </div>
 
   <div class="prose mt-14">
-    <h2>What it does not do</h2>
+    <h2>The four habits</h2>
 
-    <p>It does not protect you in a crash. It does not lean toward anything. It holds the world as it is, which today
-    means 34% of the S&P 500 in seven companies and US stocks priced at 41 times their ten-year
-    average earnings, a level seen only once before, in 1999 and 2000. If those facts worry you, a cleverer stock fund
-    will not help. The answers are fewer stocks, or the <a href="/portfolios/with-trend/">with-trend
-    portfolio</a>, which is the one construction on this site that adds something different on top of them.</p>
+    <p>The fund is the easy part. What you keep of its return depends on four habits, and each of them is
+    arithmetic rather than a forecast.</p>
+
+    <p><strong>Hold the cheapest version.</strong> Two funds holding the same stocks can charge different fees, and
+    the fee is not always the whole cost. Funds lend their shares out and pass some of the income back, which can
+    more than cover the fee. SPY, the oldest S&amp;P 500 fund, cannot lend and costs about
+    <Figure id="spy-net-cost" inline /> a year all in, while every other S&amp;P 500 fund costs 0.02% to 0.03%.
+    IEMG charges 0.09% and VWO charges 0.06% for the same emerging markets, but IEMG earns enough from lending that
+    it is the cheaper one to own. The <a href="/funds/">funds page</a> lists the real cost of every fund I
+    priced.</p>
+
+    <p><strong>Put each piece in the right account.</strong> A fund's tax bill depends on where it sits. Bonds
+    belong in a retirement account before anything else, by a wide margin. International funds should be
+    sheltered before US funds. Done well, this is worth a few hundredths of a point a year against a sensible
+    default, and more if you are starting from a bad arrangement. The
+    <a href="/tools/which-account/">which-account tool</a> works it out for your mix of accounts.</p>
+
+    <p><strong>Hold an ETF, not a mutual fund.</strong> An ETF is a fund that trades on the exchange like a share; a
+    mutual fund is bought and sold through the fund company once a day. In 2025, 7% of ETFs paid out a taxable
+    capital gain to their holders. Among mutual funds it was 52%. Vanguard's own S&amp;P 500 and total-market ETFs
+    paid none across 44 fund-years, while two of the largest active mutual funds paid out 6.62% and 7.01% of their
+    value in a single year, all taxable to anyone holding them outside a retirement account. In a taxable account,
+    the average US stock fund costs its owner 1.12% a year in tax, which varies three times as much between funds
+    as the fees do.</p>
+
+    <p><strong>Do not trade.</strong> Every sale in a taxable account brings forward a tax bill you could have
+    deferred for decades. Never selling is worth about <Figure id="never-selling" inline showUnit={false} /> a
+    year over thirty years compared with realising a tenth of your gains each year. Rebalancing to keep your mix
+    is fine, and best done with new money or inside a retirement account. Expect it to keep the mix, not to add
+    return: on this site's own tests, rebalancing rules earned nothing extra and sometimes a little less than
+    leaving the portfolio alone.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What the habits are worth</h2>
+
+    <p>Between 0.04 and 2.70 points a year. The range is that wide because it depends on where you start. Someone
+    already in a cheap index ETF in one account gains almost nothing. Someone leaving an active mutual fund in a
+    taxable account gains more. The average active fund charges 0.57% a year, so the fee gap alone is about
+    <Figure id="fee-gap" inline showUnit={false} />, and the tax the old fund was costing comes on top. Two
+    questions set your number: what do you pay now, and do you hold anything outside a retirement account.</p>
+  </div>
+
+  <Compare class="my-8">
+    <p slot="get">The market's return at almost no cost, and a saving that arrives every year without depending on
+    any forecast. Nothing to second-guess.</p>
+    <p slot="give">No protection in a crash and no lean toward anything. Moving out of an old fund in a taxable
+    account can trigger a tax bill on the gains, so the switch may have to be done with new money or over several
+    years.</p>
+  </Compare>
+
+  <div class="prose mt-14">
+    <h2>One thing to check before you buy</h2>
+
+    <p>From June 2026, Fidelity charges $100 to buy any of 84 listed ETFs, and Schwab has said it will follow. None
+    of the funds on this site is on the list as of mid-August 2026. Check before your first purchase, because a
+    $100 fee twelve times a year on a $200,000 account is 0.6% a year, more than any fee on this site.</p>
   </div>
 
   <div class="prose mt-14">
     <h2>Should you stop here</h2>
 
-    <p>Yes, if you want a portfolio you never have to think about and you hold it in one account. If you have more
-    than one kind of account, or you are moving from a fund that costs more than this one, the
-    <a href="/portfolios/held-well/">next portfolio</a> holds the same fund and adds the habits that keep more of
-    what it earns. That step is worth between 0.04 and 2.70 points a year, depending entirely on what you hold
-    now, and it is the only part of investing I am sure about.</p>
+    <p>Most people should. This fund holds the world as it is, which today means 34% of the S&amp;P 500 in seven
+    companies and US stocks priced at 41 times their ten-year average earnings, a level seen only once before, in
+    1999 and 2000. If those facts worry you, a cleverer stock fund will not help; the answers are fewer stocks, or
+    the <a href="/portfolios/with-trend/">with-trend portfolio</a>, which is the one construction on this site
+    that adds something different on top of them.</p>
 
-    <p>Figures on this page are before tax and after fund costs.</p>
+    <p>The next two portfolios add ideas that have earned less than the fee gap above and take twenty to thirty
+    years of results to confirm. They are for someone who accepts trailing the market for long stretches in
+    exchange for a chance of beating it. If that does not describe you, this is the portfolio.</p>
+
+    <p>Figures on this page are before tax and after fund costs unless the sentence says otherwise.</p>
   </div>
 </Base>

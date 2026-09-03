@@ -13,7 +13,7 @@
 export const SITE_NAME = "Kelly Portfolios";
 
 export const SITE_DESCRIPTION =
-  "Four portfolios built from cheap funds, from plain to ambitious, with what each one costs, how far it has fallen, and how sure the evidence is. Plus a verdict on every idea people bolt onto a portfolio.";
+  "Three portfolios built from cheap funds, from plain to ambitious, with what each one costs, how far it has fallen, and how sure the evidence is. Plus a verdict on every idea people bolt onto a portfolio.";
 
 export const REPO_URL = "https://github.com/FlanaganSe/kelly-portfolios";
 

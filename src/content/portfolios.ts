@@ -1,6 +1,8 @@
 /**
- * The four portfolios, as data: one place for the holdings, the fee and the one-line
+ * The three portfolios, as data: one place for the holdings, the fee and the one-line
  * description, read by the home page, the comparison page and each portfolio's own page.
+ * The with-trend portfolio has a second version for today's prices, which the comparison
+ * page shows as a fourth column and the with-trend page shows in full.
  *
  * Fees are each fund's published expense ratio weighted by the holdings, so they are
  * plain text. Anything measured carries a figure record; the worst-fall text here names
@@ -16,8 +18,8 @@ export interface Holding {
 }
 
 export interface Portfolio {
-  readonly number: 1 | 2 | 3 | 4;
-  readonly slug: "one-fund" | "held-well" | "value-lean" | "with-trend";
+  readonly number: 1 | 2 | 3;
+  readonly slug: "one-fund" | "value-lean" | "with-trend";
   readonly name: string;
   readonly href: string;
   readonly tagline: string;
@@ -50,13 +52,29 @@ export const WITH_TREND_HOLDINGS: readonly Holding[] = [
   { ticker: "AVES", weight: 5 },
 ];
 
+/**
+ * The with-trend portfolio, priced for today's market: 5 points move from RSST into
+ * ten-year TIPS, held in a traditional account. SCHP is the cheapest TIPS fund priced.
+ */
+export const TODAY_HOLDINGS: readonly Holding[] = [
+  { ticker: "RSST", weight: 25 },
+  { ticker: "VTI", weight: 19 },
+  { ticker: "VXUS", weight: 16 },
+  { ticker: "VTV", weight: 15 },
+  { ticker: "AVDV", weight: 10 },
+  { ticker: "IDMO", weight: 5 },
+  { ticker: "AVES", weight: 5 },
+  { ticker: "SCHP", weight: 5, label: "Ten-year TIPS" },
+];
+
 export const PORTFOLIOS: readonly Portfolio[] = [
   {
     number: 1,
     slug: "one-fund",
-    name: "One fund",
+    name: "One fund, held well",
     href: "/portfolios/one-fund/",
-    tagline: "The whole world's stock market in a single fund.",
+    tagline:
+      "The whole world's stock market in a single fund, in its cheapest form, in the right account, and never traded.",
     holdings: [{ ticker: "VT", weight: 100 }],
     fee: "0.06%",
     feeOn10k: "$6",
@@ -66,19 +84,6 @@ export const PORTFOLIOS: readonly Portfolio[] = [
   },
   {
     number: 2,
-    slug: "held-well",
-    name: "One fund, held well",
-    href: "/portfolios/held-well/",
-    tagline: "The same fund, in its cheapest form, in the right account, and never traded.",
-    holdings: [{ ticker: "VT", weight: 100 }],
-    fee: "0.06%",
-    feeOn10k: "$6",
-    worstFall: "−52.7%",
-    worstFallNote: "Same holdings, same fall",
-    confidence: "Settled",
-  },
-  {
-    number: 3,
     slug: "value-lean",
     name: "A lean toward value",
     href: "/portfolios/value-lean/",
@@ -86,12 +91,12 @@ export const PORTFOLIOS: readonly Portfolio[] = [
     holdings: VALUE_LEAN_HOLDINGS,
     fee: "0.09%",
     feeOn10k: "$9",
-    worstFall: "17.7 years behind",
-    worstFallNote: "Cheap US stocks against the whole market, 54.3% behind since 2008",
+    worstFall: "−54.3%",
+    worstFallNote: "Cheap US stocks against the whole market, over 17.7 years since 2008 and still behind",
     confidence: "Probably",
   },
   {
-    number: 4,
+    number: 3,
     slug: "with-trend",
     name: "The same, plus trend",
     href: "/portfolios/with-trend/",

@@ -190,7 +190,7 @@ jobs:
           fail=0
           # One path from each family that has its own route generator, so a broken
           # collection shows up here rather than in a search console six weeks later.
-          for path in / /portfolios/ /portfolios/one-fund/ /portfolios/held-well/ \
+          for path in / /portfolios/ /portfolios/one-fund/ \
                       /portfolios/value-lean/ /portfolios/with-trend/ \
                       /strategies/ /strategies/trend-following/ /strategies/market-timing/ \
                       /strategies/gold-and-bitcoin/ /strategies/crash-insurance/ \
