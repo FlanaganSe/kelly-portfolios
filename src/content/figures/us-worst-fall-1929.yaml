@@ -1,0 +1,10 @@
+label: Worst fall in US stocks
+value: −83.7%
+unit: from the 1929 peak
+status: source-reproduced
+asOf: '2026-09-02'
+source:
+  label: The portfolio for one investor
+  docPath: docs/research/portfolio-for-one-investor.md
+  anchor: what-losing-looks-like
+note: The number to keep in mind when anyone says stocks are safe over the long run.

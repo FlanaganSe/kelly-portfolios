@@ -1,0 +1,13 @@
+label: Worst real fall over the next fifteen years, starting when US stocks cost more than 30 times ten-year earnings
+value: −51.8%
+unit: against −36.7% from cheaper starts
+status: exploratory
+asOf: '2026-09-02'
+period: 1881 to 2026
+source:
+  label: Valuation and the allocation
+  docPath: docs/research/valuation-and-the-allocation.md
+  anchor: 4-valuation-as-a-risk-statement-rather-than-a-forecast
+note: >-
+  Median across the months that qualified, which come from only two episodes, 1929 and 1997 to
+  2002. Two episodes are a warning about how far a fall can go, not a forecast of returns.

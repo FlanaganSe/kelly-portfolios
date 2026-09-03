@@ -1,0 +1,10 @@
+label: Never selling in a taxable account, against realising a tenth of your gains each year
+value: +0.14 points
+unit: a year over thirty years
+status: source-reproduced
+asOf: '2026-09-02'
+source:
+  label: The portfolio for one investor
+  docPath: docs/research/portfolio-for-one-investor.md
+  anchor: 35-what-the-plan-is-worth
+note: Tax deferred is not tax avoided, but thirty years of deferral is most of the benefit.

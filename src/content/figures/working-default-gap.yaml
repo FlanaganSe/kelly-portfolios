@@ -1,0 +1,16 @@
+label: RSST at 25% plus 5 points of TIPS, against RSST at 30%
+value: 0.64 points
+unit: a year behind the 30% version
+interval: 0.41 to 0.86
+status: exploratory
+asOf: '2026-09-02'
+period: 1929-01 to 2025-05
+source:
+  label: The portfolio for one investor
+  docPath: docs/research/portfolio-for-one-investor.md
+  anchor: the-working-default-scored-as-one-object
+note: >-
+  What the past 96 years paid, with a nominal ten-year Treasury standing in for TIPS, which did
+  not exist before 2003. At the more modest returns expected from here the gap is 0 to 0.2 points,
+  and the 25% version comes out ahead only if stocks beat bonds by less than about 1.5 points a
+  year. Its worst fall is 1.8 points shallower.

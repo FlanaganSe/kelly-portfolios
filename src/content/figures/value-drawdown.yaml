@@ -1,10 +1,10 @@
-label: Worst run of cheap US stocks behind the US market
+label: Worst run of cheap US stocks behind the whole US market
 value: 54.3% behind
-unit: percent, cumulative
+unit: over 17.7 years
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: The recommended portfolio, what this construction will feel like
+  label: Current portfolio position
   docPath: docs/research/portfolio-recommendation.md
   anchor: what-this-construction-will-feel-like
-note: Over 17.7 years, and it did not recover inside the window.
+note: Since September 2008, and they had not caught up by the end of the window.

@@ -1,4 +1,4 @@
-label: Fee saved by moving, against the fund you would otherwise have held
+label: Fee saved by moving from a typical active fund to an index fund
 value: 0.49%
 unit: a year
 interval: 0.40% to 0.59%
@@ -9,6 +9,5 @@ source:
   docPath: docs/research/expected-edge-decomposition.md
   anchor: 1-the-budget
 note: >-
-  The only large line in the whole budget that applies without a condition attached. It is
-  measured against the fund the investor would otherwise have owned, never against an index, and
-  it is zero for someone already holding cheap index funds.
+  Measured against the fund you would otherwise have owned, never against an index. It is zero
+  for someone already holding cheap index funds, and it arrives every year without a forecast.

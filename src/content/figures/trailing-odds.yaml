@@ -1,0 +1,12 @@
+label: Chance the with-trend portfolio trails a cheap index fund, over ten, twenty and thirty years
+value: 25.3% / 16.7% / 11.5%
+status: exploratory
+asOf: '2026-09-02'
+source:
+  label: The trend weight under acknowledged ignorance
+  docPath: docs/research/trend-weight-under-uncertainty.md
+  anchor: 6-the-outcome-distribution-and-the-sized-answer
+note: >-
+  At the middle of the range of what trend following might pay from here, which is well below
+  what it paid over 1990 to 2026. At what it actually paid over those years the figures are
+  15.6%, 7.1% and 3.4%.

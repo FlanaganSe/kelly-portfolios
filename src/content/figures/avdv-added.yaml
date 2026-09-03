@@ -1,0 +1,14 @@
+label: Adding AVDV at 10%, against the same portfolio without it
+value: +0.28 points
+unit: a year
+interval: +0.05 to +0.56
+status: exploratory
+asOf: '2026-09-02'
+period: 1990-11 to 2026-05
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: the-three-head-to-heads-which-are-what-the-recommendation-actually-claims
+note: >-
+  Positive in all seven stretches the data was cut into, and a hair short of the smallest gap the
+  test could have told from luck. The most supported single holding in the lean.

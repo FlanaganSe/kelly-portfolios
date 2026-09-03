@@ -1,0 +1,14 @@
+label: Worst fall of the with-trend portfolio, measured with RSST at 25%
+value: −50.3%
+unit: 42 months to recover
+status: exploratory
+asOf: '2026-09-02'
+period: 1990-11 to 2026-05
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: risk-and-what-it-will-feel-like
+note: >-
+  The tested version held RSST at 25% with the other five points in VTI. The published 30% version
+  has not been scored on this window and would have fallen slightly further. Built from the funds'
+  measured behaviour rather than their price histories, which do not reach back to 1990.

@@ -1,10 +1,10 @@
-label: Worst run of a borrowed trend holding behind the stocks it displaces
+label: Worst run of trend following behind the stocks it replaced
 value: 59.9% behind
-unit: percent, cumulative
+unit: over 11.2 years
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: The recommended portfolio, what this construction will feel like
+  label: Current portfolio position
   docPath: docs/research/portfolio-recommendation.md
   anchor: what-this-construction-will-feel-like
-note: Over 11.2 years, counting the stocks it displaces, and it did not recover.
+note: Counting the stocks that money would otherwise have held, and it did not recover inside the window.

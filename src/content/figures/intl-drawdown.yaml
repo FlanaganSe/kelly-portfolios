@@ -1,10 +1,10 @@
 label: Worst run of international stocks behind US stocks
 value: 69.0% behind
-unit: percent, cumulative
+unit: over 18.2 years
 status: source-reproduced
 asOf: '2026-08-23'
 source:
-  label: The recommended portfolio, what this construction will feel like
+  label: Current portfolio position
   docPath: docs/research/portfolio-recommendation.md
   anchor: what-this-construction-will-feel-like
-note: Over 18.2 years, and it did not recover inside the window.
+note: And they had not caught up by the end of the window.

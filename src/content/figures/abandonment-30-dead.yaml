@@ -1,11 +1,11 @@
-label: Chance a 30% trend holding is sold within thirty years if trend has stopped paying
+label: Chance a holder of the 30% version gives up on it within thirty years, if trend following has stopped paying
 value: 66.7%
-unit: percent of simulated thirty-year paths
+unit: of simulated thirty-year histories
 status: exploratory
 asOf: '2026-08-22'
 source:
   label: The trend weight under acknowledged ignorance
   docPath: docs/research/trend-weight-under-uncertainty.md
 note: >-
-  At the bottom of our range, −1.17% a year after costs. Whether you can hold it and whether it
-  pays are a bet on the same unknown, which is one risk counted twice rather than two that cancel.
+  At the bottom of the range, where trend loses a little each year after costs. Whether you can
+  hold it and whether it pays are one bet, not two that cancel.

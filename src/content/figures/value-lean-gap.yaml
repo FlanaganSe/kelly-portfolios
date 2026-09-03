@@ -1,0 +1,15 @@
+label: The value lean against a cheap index mix holding the same US and international split
+value: +0.80 points
+unit: a year
+interval: +0.36 to +1.31
+status: exploratory
+asOf: '2026-09-02'
+period: 1990-11 to 2026-05
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: the-tilt-component-on-its-own
+note: >-
+  VTI 49, VXUS 16, VTV 15, AVDV 10, IDMO 5, AVES 5, with fund fees and trading costs charged.
+  Positive in each of the five periods the data was cut into. A gap this small against a
+  portfolio this similar takes about thirty years of results to separate from luck.

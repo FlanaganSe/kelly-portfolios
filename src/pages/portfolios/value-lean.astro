@@ -1,205 +1,140 @@
 ---
 /**
- * Portfolio three: six funds that lean the stock holdings toward cheap and profitable
- * companies.
- *
- * The verdict is "probably" and the page has to earn that word twice over: once by
- * quoting the gap with its interval, and once by putting the counterweight — what real
- * funds delivered against what the strategy paid on paper — in the body rather than in
- * a footnote. The weights shown are the ones the test used, which is why the page says
- * so before the numbers.
+ * Portfolio three: six funds that lean the stock holdings toward cheap, small and
+ * profitable companies. The verdict is "probably", and the page carries both the gap
+ * and the losing stretch inside it.
  */
-import Breakout from "~/components/Breakout.astro";
+import AllocationBar from "~/components/AllocationBar.astro";
 import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import HoldingsTable from "~/components/HoldingsTable.astro";
+import KeyNumbers from "~/components/KeyNumbers.astro";
+import { portfolio } from "~/content/portfolios";
+import { figureValue } from "~/lib/figures";
 import Base from "~/layouts/Base.astro";
 
-const HOLDING_COLUMNS = ["Ticker", "Fund", "Weight", "Fee", "Cost after lending income"] as const;
+const p = portfolio("value-lean");
+
+const NUMBERS = [
+  {
+    value: await figureValue("value-lean-gap"),
+    label: "a year over a cheap index mix",
+    note: "1990 to 2026. Range 0.4 to 1.3.",
+  },
+  {
+    value: await figureValue("value-lean-gap-out-of-sample"),
+    label: "a year on data the choice was not made from",
+    note: "1981 to 1990. Range 0.4 to 1.3.",
+  },
+  { value: "30 years", label: "of results to be confident it is not luck" },
+  {
+    value: await figureValue("value-drawdown"),
+    label: "Cheap US stocks against the whole market",
+    note: "Since September 2008, 17.7 years, still not recovered",
+  },
+];
 
 const HOLDINGS = [
-  {
-    ticker: "VTI",
-    name: "Vanguard Morningstar Total Stock Market ETF",
-    weight: "49%",
-    fee: "0.03%",
-    net: "0.012%",
-  },
-  { ticker: "VXUS", name: "Vanguard Total International Stock ETF", weight: "16%", fee: "0.05%", net: "0.014%" },
-  { ticker: "VTV", name: "Vanguard Value ETF", weight: "15%", fee: "0.03%", net: "0.027%" },
-  { ticker: "AVDV", name: "Avantis International Small Cap Value ETF", weight: "10%", fee: "0.36%", net: "0.300%" },
-  {
-    ticker: "IDMO",
-    name: "Invesco S&P International Developed Momentum ETF",
-    weight: "5%",
-    fee: "0.25%",
-    net: "0.226%",
-  },
-  { ticker: "AVES", name: "Avantis Emerging Markets Value ETF", weight: "5%", fee: "0.36%", net: "0.292%" },
-] as const;
+  { ticker: "VTI", what: "The whole US market", weight: "49%", fee: "0.03%" },
+  { ticker: "VXUS", what: "Every market outside the US", weight: "16%", fee: "0.05%" },
+  { ticker: "VTV", what: "Large US companies that are cheap relative to their earnings and assets", weight: "15%", fee: "0.03%" },
+  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "10%", fee: "0.36%" },
+  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "5%", fee: "0.25%" },
+  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "5%", fee: "0.36%" },
+];
 ---
 
 <Base
-  title="A lean toward cheaper, smaller, more profitable companies"
-  description="Six funds that shift the stock holdings toward cheap and profitable companies, what that was worth, and the decade it can cost you."
+  title="A lean toward value"
+  description="Six funds that lean toward cheaper, smaller and more profitable companies. What the lean has added, how long it can lose for, and which fund to drop first."
 >
-  <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">
-      Three. A lean toward cheaper, smaller, more profitable companies
-    </h1>
+  <Hero
+    eyebrow="Portfolio 3 of 4"
+    title="A lean toward value"
+    lede="The market, with a thumb on the scale toward companies that are cheap, small and profitable. A bet with a long record and a long losing stretch inside it."
+  >
+    <KeyNumbers items={NUMBERS} />
+  </Hero>
 
-    <p class="lead">What this lean is, what it was worth against a cheap index fund, and the long stretch of
-    looking wrong that is the price of holding it.</p>
-
-    <h2>What it holds</h2>
+  <div class="prose mt-10">
+    <h2>What you hold</h2>
   </div>
 
-  <Breakout scroll class="my-8" label="The six holdings, their fees and their costs" maxWidth="50rem">
-    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[46rem]">
-      <caption class="sr-only">
-        The six funds this portfolio holds, each with its weight, its fee and what it costs after lending income
-      </caption>
-      <thead role="rowgroup">
-        <tr role="row" class="border-b border-rule-strong text-left">
-          {
-            HOLDING_COLUMNS.map((heading, i) => (
-              <th role="columnheader" scope="col" class:list={["eyebrow py-2 pr-4", i >= 2 && "text-right"]}>
-                {heading}
-              </th>
-            ))
-          }
-        </tr>
-      </thead>
-      <tbody role="rowgroup" class="text-ink-muted">
-        {
-          HOLDINGS.map((holding) => (
-            <tr role="row" class="border-b border-rule last:border-0">
-              <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
-                {holding.ticker}
-              </th>
-              <td role="cell" data-label={HOLDING_COLUMNS[1]} class="py-2 pr-4">
-                {holding.name}
-              </td>
-              <td role="cell" data-label={HOLDING_COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
-                {holding.weight}
-              </td>
-              <td role="cell" data-label={HOLDING_COLUMNS[3]} data-numeric class="py-2 pr-4 text-right">
-                {holding.fee}
-              </td>
-              <td role="cell" data-label={HOLDING_COLUMNS[4]} data-numeric class="py-2 pr-4 text-right">
-                {holding.net}
-              </td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </Breakout>
+  <HoldingsTable rows={HOLDINGS} class="my-4" />
+  <AllocationBar holdings={p.holdings} name={p.name} class="my-6" />
 
   <div class="prose">
-    <p>Weighted, that is about 0.09% a year in fees and about 0.07% after lending income. On $10,000, as an
-    illustration, roughly $9 and $7. Fund facts were read from filings on 17 August 2026.</p>
-
-    <p>These are the weights the test actually used, so the figures below need no rescaling. Change them and the
-    numbers have to be recomputed.</p>
+    <p>The fee works out to 0.09% a year, or $9 on $10,000. Roughly two thirds of the money is still the plain
+    market. The other third is the lean.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>Why each piece is there</h2>
+    <h2>Why cheap, small and profitable</h2>
 
-    <p>VTI is the bulk of the portfolio and holds the whole US market at market weight. It is what the lean is
-    measured against.</p>
+    <p>Companies that are cheap relative to what they earn have, over long stretches and in most countries,
+    returned more than expensive ones. Since 1994, after the idea was published and the easy money was gone,
+    cheap stocks earned about <Figure id="value-premium-pooled" inline showUnit={false} /> a year more than
+    expensive ones across the US, other rich countries and emerging markets together. Almost all of that came
+    from outside the US. In the US alone the gap was 1.6 points, too small to tell from luck on its own.</p>
 
-    <p>VXUS holds developed and emerging markets outside the US in a single line.</p>
-
-    <p>VTV holds <a href="/evidence/value-and-factors/">the cheaper half of large US companies</a> for 0.03% a
-    year, the least expensive way we found to shift the US holdings at all.</p>
-
-    <p>AVDV holds small, cheap companies in developed markets outside the US, and is the only fund we found that
-    reaches that corner of the market.</p>
-
-    <p>IDMO is the odd one out, and deliberate: it holds developed-market shares outside the US that have been
-    going up, which is a different idea from cheapness, and different ideas are what help.
-    <a href="/evidence/how-many-bets/">Five ideas inside one region buy you about five independent bets</a>; one
-    idea spread across three regions buys about one and a half.</p>
-
-    <p>IDMO is also the weakest holding here, and the first one to drop if you want a simpler portfolio. Momentum
-    has the widest gap on this site between what an idea pays on paper and what anyone has actually collected:
-    9.48% a year on paper against 1.86% delivered by real funds, before their fees. Its advantage over the market
-    falls from 2.43 points before tax to 0.60 after tax at today&rsquo;s rates. And it turns over 105% of itself
-    a year, against 4% for the international value fund beside it.</p>
-
-    <p>AVES holds cheap shares in emerging markets, the region where cheapness has paid most in our data.</p>
+    <p>That is why most of the lean here is international. AVDV is the one fund that buys small, cheap, profitable
+    companies in developed markets, the corner where the record is strongest. Adding it at 10% was worth about
+    <Figure id="avdv-added" inline showUnit={false} /> a year, and it was positive in every stretch I split the
+    data into. AVES does the same in emerging markets, where cheapness has paid the most, although the fund is
+    only five years old.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What it is compared against, and what the comparison showed</h2>
+    <h2>What the lean has added</h2>
 
-    <p>The comparison is <a href="/portfolios/whole-market/">a cheap global index fund</a> holding roughly 65% US
-    and 35% international, borrowing nothing. Against it, this lean came to <Figure id="tilt-gap" inline />,
-    plausibly 0.30% to 1.32%, over 427 months to May 2026, and was positive in all five sub-periods declared
-    before the test ran.</p>
+    <p>Over 1990 to 2026 these six funds would have earned about <Figure id="value-lean-gap" inline showUnit={false} />
+    a year over a cheap index mix holding the same split of US and international stocks. The plausible range
+    is 0.4 to 1.3. The gap was positive in each of the five periods I cut the data into. On a separate set of
+    data covering 1981 to 1990 that was not used to choose the funds, the same lean earned
+    <Figure id="value-lean-gap-out-of-sample" inline showUnit={false} /> a year, with a range of 0.4 to 1.3.</p>
 
-    <p>Three things go with that number. About 86% of it rests on data beginning in November 1990, and nobody has
-    run the idea on years it had not already seen. Charging each fund the shortfall measured for it moves the
-    result to 0.60% or 0.30%, depending on the method. And a study would need about thirty years of data to tell
-    the gap from zero. An earlier version of this site printed thirteen years, computed on a looser method than
-    the range beside it.</p>
+    <p>Two cautions. Funds deliver less of an idea than the paper series does: funds chasing cheap stocks earned
+    2.84% a year against 7.76% on paper, in one study of live funds. If the funds here fall short the same way,
+    the 0.8 becomes about 0.6, or 0.3 in the harshest reading. And a gap this small against a portfolio this
+    similar takes about thirty years of results to separate from luck. Nobody holding this will know it worked
+    for a long time.</p>
 
-    <p>The counterweight belongs on this page rather than in a footnote. Patton and Weller measured
-    <a href="/evidence/value-and-factors/">what US mutual funds delivered per unit of exposure</a> against what
-    the strategy earned on paper. Value on paper paid 7.76% a year; funds delivered 2.84% before their own fees.
-    Momentum on paper paid 9.48%; funds delivered 1.86%. Plain market exposure came through at 6.93% against
-    6.72% on paper. The thing that costs nothing to hold is the thing that survives.</p>
-
-    <p>For perspective: putting in 3.08% more of your starting balance each year than you do now gets you, over
-    36 years, roughly where this entire lean would if it worked exactly as measured. Over 30 years the equivalent
-    contribution is 2.57%.</p>
+    <p>Over thirty years, 0.8 points a year is worth about as much as saving an extra 2.6% of your starting balance
+    every year.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>How sure we are</h2>
+    <h2>What losing looks like</h2>
 
-    <p>Probably. It clears the smallest gap the test could detect, but only just, only at thirty years, and only
-    on the stricter method. Nothing here has been checked on data the idea had not already seen.</p>
+    <p>Cheap US stocks have run <Figure id="value-drawdown" inline showUnit={false} /> the whole US market
+    since September 2008. That is 17.7 years, and they have not caught up. International stocks ran
+    <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over 18.2 years. Anyone holding this portfolio
+    through those stretches watched a plain US index fund pull ahead, year after year, with no way to know
+    whether the lean was broken or just out of favour.</p>
+
+    <p>Do not hold this because you think you could sit through that. Hold it only if you have already sat through
+    something like it and know how you behaved.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What it feels like when it is losing</h2>
+    <h2>The fund to drop first</h2>
 
-    <p>Cheap US stocks have spent 17.7 years running
-    <Figure id="value-drawdown" inline showUnit={false} /> the US market since September 2008, and had not caught
-    up when we measured them. That is the record, not a simulated worst case. Someone who started in 2008 has
-    watched most of their adult investing life go by while the simple thing beat the clever thing, every year,
-    with no signal at any point that the wait would end.</p>
-
-    <p>The international side has been worse: international stocks have run
-    <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over 18.2 years and had not recovered either.
-    Hold this portfolio and you hold both positions at once. They have been losing together.</p>
-
-    <p>Day to day it is undramatic, which is what makes it hard. This portfolio drifts about one percentage point
-    a year from a cheap index fund, or about $100 a year on $10,000 as an illustration. Small enough to be
-    invisible in any single year, and large enough to add up to a decade of regret.</p>
-
-    <p>Do not hold this because you think you could sit through that. Hold it only if you have already sat
-    through something like it and know how you behaved.</p>
+    <p>IDMO is the weakest holding. It buys shares that have been rising, which is a different idea from cheapness,
+    and that is why it is here: one more idea in the mix. But funds chasing rising stocks have delivered the least
+    of any idea on paper, 1.86% a year against 9.48%, and IDMO turns over its whole portfolio about once a year to
+    do it. If you want a simpler portfolio, drop IDMO and put its 5% into VXUS. If you want a simpler one still,
+    drop AVES the same way. VTV, AVDV and VXUS are the ones to keep.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What would make us drop it</h2>
+    <h2>Should you stop here</h2>
 
-    <p>Sub-periods turning negative, which none has yet. The funds delivering less exposure than they claim,
-    checked against filings rather than marketing. Costs rising. And a proper test on years the idea had not
-    already seen coming back flat. That last check is the one nobody has run, and the reason the verdict is
-    probably rather than settled.</p>
-  </div>
+    <p>Yes, if you want a lean with a long record and no borrowed money. The
+    <a href="/portfolios/with-trend/">next portfolio</a> keeps all six of these funds and adds one that does
+    something none of them do. It is the only holding on this site that adds an idea on top of stocks rather than
+    swapping stocks for it, and it is also the youngest and the least certain.</p>
 
-  <div class="prose mt-14">
-    <h2>The decision that matters more than this page</h2>
-
-    <p>How much of your money is in stocks at all outweighs everything above. Moving a portfolio from 60% stocks
-    to 90% was worth 1.27 points a year, against 4.85 points of variation from one year to the next. That is more
-    than every lean on this site combined. Choosing 60/40 is itself a forecast: it says stocks will do better
-    than bonds by only about 1.2 points a year. One country, 1963 to 2025, with a modelled ten-year government
-    bond, and about <Figure id="equity-step-horizon" inline /> of your own results before you could be 90%
-    confident about the step.</p>
+    <p>Figures on this page are before tax and after fund costs. What the lean is worth to you depends on your
+    accounts, since IDMO, AVES and AVDV cost the most in tax outside a retirement account.</p>
   </div>
 </Base>

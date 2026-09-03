@@ -1,4 +1,4 @@
-label: Time to 90% confidence on that step
+label: Years of results to be 90% confident that a higher stock share paid
 value: 24 years
 status: exploratory
 asOf: '2026-08-18'
@@ -7,5 +7,5 @@ source:
   docPath: docs/research/setting-the-equity-share.md
   anchor: 1-the-part-that-is-arithmetic
 note: >-
-  Every step of the ladder takes 21 to 26 years, so the size of the step you choose barely
-  changes how long the decision takes to prove.
+  Every step up in the stock share takes 21 to 26 years to prove, so the size of the step you
+  choose barely changes how long the decision takes to confirm.

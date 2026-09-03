@@ -1,0 +1,107 @@
+---
+/**
+ * Portfolio one: the whole world in one fund. The comparison every other page is
+ * measured against.
+ */
+import AllocationBar from "~/components/AllocationBar.astro";
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import HoldingsTable from "~/components/HoldingsTable.astro";
+import KeyNumbers from "~/components/KeyNumbers.astro";
+import { portfolio } from "~/content/portfolios";
+import { figureValue } from "~/lib/figures";
+import Base from "~/layouts/Base.astro";
+
+const p = portfolio("one-fund");
+
+const NUMBERS = [
+  { value: p.fee, label: "Fee a year", note: "$6 on every $10,000" },
+  { value: "90.3%", label: "of US stock funds did worse over ten years", note: "To mid-2025" },
+  { value: await figureValue("cheap-mix-worst-fall"), label: "Worst fall", note: "Cheap US and international mix, 1990 to 2026" },
+  { value: "63 months", label: "Longest wait to recover", note: "Same mix, same window" },
+];
+
+const HOLDINGS = [
+  {
+    ticker: "VT",
+    what: "Vanguard Total World Stock ETF. About 64% US companies and 36% from the rest of the world, matching the size of each market.",
+    weight: "100%",
+    fee: "0.06%",
+  },
+];
+---
+
+<Base
+  title="One fund"
+  description="The whole world's stock market in a single fund. What it costs, what beats it, how far it falls, and the flat decade nobody warns you about."
+>
+  <Hero
+    eyebrow="Portfolio 1 of 4"
+    title="The whole market in one fund"
+    lede="Buy every listed company in the world, in proportion to its size, and stop. This is the portfolio every other page on this site is measured against."
+  >
+    <KeyNumbers items={NUMBERS} />
+  </Hero>
+
+  <div class="prose mt-10">
+    <h2>What you hold</h2>
+  </div>
+
+  <HoldingsTable rows={HOLDINGS} class="my-4" />
+  <AllocationBar holdings={p.holdings} name={p.name} class="my-6" />
+
+  <div class="prose">
+    <p>If you would rather set the US and international split yourself, two funds do the same job: VTI for the US
+    market at 0.03% and VXUS for everything else at 0.05%. The rest of this site uses those two, because the other
+    portfolios are built from them.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What beats it</h2>
+
+    <p>Almost nothing, reliably. Over the ten years to mid-2025, 90.3% of US stock funds run by professional
+    managers returned less than the index they were trying to beat. Over twenty years, 93.8% did. Of the 2,373 US
+    stock funds that existed in 2005, only 37.3% were still around in 2025. The rest were closed or merged away,
+    usually after doing badly.</p>
+
+    <p>Index funds are the one kind of fund that delivers what the paper says. Across the funds one study followed,
+    the market earned 6.72% a year on paper and the funds that tracked it earned 6.93%. Funds chasing cheap stocks
+    earned 2.84% against 7.76% on paper, and funds chasing rising stocks earned 1.86% against 9.48%. A one-fund
+    portfolio does not have that problem.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>How far it falls</h2>
+
+    <p>US stocks fell <Figure id="us-worst-fall-1929" inline showUnit={false} /> from their 1929 peak, the number
+    to keep in mind when anyone says stocks are safe over the long run. Since 1990, a cheap mix of US and
+    international stocks fell <Figure id="cheap-mix-worst-fall" inline showUnit={false} /> at worst and took 63
+    months to get back to where it was.</p>
+
+    <p>Falls are not the hard part. The hard part is the flat stretch afterwards. In the ten years to February 2009,
+    US stocks returned <Figure id="flat-decade" inline />. Ten thousand dollars put in at the start of that decade was
+    worth about $7,700 at the end. Nobody had done anything wrong. The market simply gave back a decade.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What it does not do</h2>
+
+    <p>It does not protect you in a crash. It does not lean toward anything. It holds the world as it is, which today
+    means 34% of the US index in seven technology companies and US stocks priced at 41 times their ten-year
+    average earnings, a level seen only once before, in 1999 and 2000. If those facts worry you, the answer is not
+    a cleverer stock fund. It is either fewer stocks, or the <a href="/portfolios/with-trend/">with-trend
+    portfolio</a>, which is the one construction on this site that adds something different on top of them.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Should you stop here</h2>
+
+    <p>Yes, if you want a portfolio you never have to think about and you hold it in one account. If you have more
+    than one kind of account, or you are moving from a fund that costs more than this one, the
+    <a href="/portfolios/held-well/">next portfolio</a> holds the same fund and adds the habits that keep more of
+    what it earns. That step is worth between 0.04 and 2.70 points a year, depending entirely on what you hold
+    now, and it is the only part of investing I am sure about.</p>
+
+    <p>Figures on this page are before tax and after fund costs.</p>
+  </div>
+</Base>

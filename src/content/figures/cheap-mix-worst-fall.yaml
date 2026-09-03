@@ -1,0 +1,13 @@
+label: Worst fall of a cheap 65/35 US and international index mix
+value: −52.7%
+unit: 63 months to recover
+status: exploratory
+asOf: '2026-09-02'
+period: 1990-11 to 2026-05
+source:
+  label: The whole portfolio, tested as one object
+  docPath: docs/research/final-construction-test.md
+  anchor: 1-the-tournament-on-the-seven-fund-construction-at-a-25-trend-weight
+note: >-
+  The comparison every portfolio on this site is measured against on this window. US stocks alone
+  fell 83.7% from their 1929 peak, which the 1990 start cannot show.

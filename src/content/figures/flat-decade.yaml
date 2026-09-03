@@ -1,0 +1,13 @@
+label: US stocks over the ten years to February 2009
+value: −2.55%
+unit: a year
+status: source-reproduced
+asOf: '2026-09-02'
+period: 1999-03 to 2009-02
+source:
+  label: Current portfolio position
+  docPath: docs/research/portfolio-recommendation.md
+  anchor: what-this-construction-will-feel-like
+note: >-
+  A 30% trend holding on top of the stocks would have turned that decade into about +0.05% a
+  year. It is the decade the holding exists for.

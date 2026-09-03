@@ -1,0 +1,13 @@
+label: Adding trend on top of stocks, against selling stocks to buy the same amount of it
+value: +1.72 points
+unit: a year of growth
+status: exploratory
+asOf: '2026-09-02'
+period: 1990-11 to 2026-05
+source:
+  label: The construction tournament
+  docPath: docs/research/construction-tournament.md
+  anchor: verified-findings
+note: >-
+  The same 30% trend holding, paid for two ways. Selling stocks to buy it gives up the stock
+  return on the money moved. Borrowing inside the fund keeps it.

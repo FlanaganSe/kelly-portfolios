@@ -1,185 +1,90 @@
 ---
 /**
- * The front door: four portfolios, what each costs, and what is certain about each.
- *
- * The page is an index of the four constructions rather than an argument for one. It
- * states the fee, which is contractual, before it states anything that depends on a
- * measurement, and it names the one number the site cannot sign.
+ * The front door: the idea in one screen, four portfolio cards, and one answer.
  *
  * Fees are each fund's published expense ratio, so they are plain text. Every number
- * this project measured itself carries a `<Figure>` record where one exists.
+ * this site measured itself renders from a figure record.
  */
-import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import PortfolioCard from "~/components/PortfolioCard.astro";
+import { PORTFOLIOS } from "~/content/portfolios";
 import Base from "~/layouts/Base.astro";
-
-/**
- * The four rows, as data. Each column heading is written once and read twice: into
- * `<thead>` and into the `data-label` a cell carries. The first heading names the
- * number column for a screen reader and is not drawn, because the numbers label
- * themselves.
- */
-const SUMMARY_COLUMNS = ["Number", "Portfolio", "Holdings", "Fees a year"] as const;
-
-const SUMMARY = [
-  {
-    number: "1",
-    name: "The whole market",
-    href: "/portfolios/whole-market/",
-    holdings: "VT 100%",
-    fee: "0.06%",
-  },
-  {
-    number: "2",
-    name: "The same fund, held in the cheapest form, in the account where it is taxed least, and never traded",
-    href: "/portfolios/held-well/",
-    holdings: "VT 100%",
-    fee: "0.06%",
-  },
-  {
-    number: "3",
-    name: "A lean toward cheaper, smaller, more profitable companies",
-    href: "/portfolios/value-lean/",
-    holdings: "VTI 49%, VXUS 16%, VTV 15%, AVDV 10%, IDMO 5%, AVES 5%",
-    fee: "0.09%",
-  },
-  {
-    number: "4",
-    name: "The same, plus a holding that does not move with stocks",
-    href: "/portfolios/with-trend/",
-    holdings: "RSST 30%, VTI 19%, VXUS 16%, VTV 15%, AVDV 10%, IDMO 5%, AVES 5%",
-    fee: "0.38%",
-  },
-] as const;
 ---
 
 <Base
   title="Kelly Portfolios"
   bareTitle
-  description="Four portfolios you could hold, what each piece is for, and how much of the clever stuff is worth the trouble."
+  wide
+  description="Four portfolios you could hold, one fund up to a stack of ideas, with what each costs, how far each has fallen, and how sure I am about each."
 >
-  <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">What to hold</h1>
+  <Hero
+    title="A portfolio is a stack of ideas. Most of them are not worth holding."
+    lede="I measured the ideas people bolt onto a portfolio, inside a whole portfolio rather than on their own. Here are the four I would hold, from plain to ambitious. Each one contains the one before it. You choose where to stop."
+  />
 
-    <p class="lead">Four portfolios you could actually hold, what each piece is for, and how much of the clever
-    stuff holds up against a cheap index fund.</p>
+  <div class="card-grid mt-8">
+    {
+      PORTFOLIOS.map((p) => (
+        <PortfolioCard
+          number={p.number}
+          name={p.name}
+          href={p.href}
+          tagline={p.tagline}
+          holdings={p.holdings}
+          fee={`${p.fee} a year`}
+          worstFall={p.worstFall}
+          worstFallNote={p.worstFallNote}
+          confidence={p.confidence}
+        />
+      ))
+    }
   </div>
 
-  <Breakout scroll class="my-8" label="The four portfolios, their holdings and their fees" maxWidth="48rem">
-    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[44rem]">
-      <caption class="sr-only">The four portfolios, what each one holds and what it charges each year</caption>
-      <thead role="rowgroup">
-        <tr role="row" class="border-b border-rule-strong text-left">
-          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">
-            <span class="sr-only">{SUMMARY_COLUMNS[0]}</span>
-          </th>
-          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{SUMMARY_COLUMNS[1]}</th>
-          <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{SUMMARY_COLUMNS[2]}</th>
-          <th role="columnheader" scope="col" class="eyebrow py-2 text-right">{SUMMARY_COLUMNS[3]}</th>
-        </tr>
-      </thead>
-      <tbody role="rowgroup" class="text-ink-muted">
-        {
-          SUMMARY.map((row) => (
-            <tr role="row" class="border-b border-rule align-top last:border-0">
-              <th role="rowheader" scope="row" data-numeric class="py-2 pr-4 text-left font-medium text-ink">
-                {row.number}
-              </th>
-              <td role="cell" data-label={SUMMARY_COLUMNS[1]} class="py-2 pr-4">
-                <a href={row.href} class="link">{row.name}</a>
-              </td>
-              <td role="cell" data-label={SUMMARY_COLUMNS[2]} data-numeric class="py-2 pr-4">
-                {row.holdings}
-              </td>
-              <td role="cell" data-label={SUMMARY_COLUMNS[3]} data-numeric class="py-2 text-right">
-                {row.fee}
-              </td>
-            </tr>
-          ))
-        }
-      </tbody>
-    </table>
-  </Breakout>
-
-  <div class="prose">
-    <p>Rows one and two hold the same fund. What separates them is how it is held, and how much that is worth
-    depends entirely on what you hold now.</p>
-
-    <p>Fees are each fund&rsquo;s published expense ratio, read from filings on 17 August 2026, weighted by the
-    holdings above. On $10,000 that is $6 a year at the top and $38 at the bottom.</p>
+  <div class="prose mt-14">
+    <h2>If you want one answer</h2>
   </div>
 
-  <Callout kind="do-this">
-    <p>If you want one answer, it is <a href="/portfolios/held-well/" class="link">number two</a>.</p>
+  <Callout kind="do-this" label="The short version">
+    <p>Most people should hold <a href="/portfolios/held-well/" class="link">portfolio two</a>. It costs $6 a
+    year on every $10,000, nothing has beaten it reliably, and the habits it adds are the only part of investing
+    I can call settled. Hold <a href="/portfolios/with-trend/" class="link">portfolio four</a> if you want a real
+    chance of beating the market and can sit through a fall of half your money without selling.</p>
   </Callout>
 
   <div class="prose">
-    <p>Whatever share of your money you keep in bonds or cash sits outside all four. That choice is yours, and it
-    matters more than the difference between any two rows above.</p>
+    <p>Portfolio three is for someone who wants a lean with a long record and can accept trailing the market for a
+    decade or more. Portfolio four is the ambitious one. Its extra fund is under three years old, and I cannot yet
+    tell whether it will earn its fee. The case for it rests on 96 years of a trend-following series that did not
+    exist as a fund for most of that time.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What is certain</h2>
+    <h2>Why fees and accounts come first</h2>
 
-    <p><a href="/evidence/fees-and-accounts/">Fees are contractual</a>. Which account a fund sits in is statute.
-    Whether a fund is exchange-traded or an old-style mutual fund largely decides whether it hands you a tax bill
-    you did not ask for: in 2025, 7% of exchange-traded funds paid out a capital gain against 52% of mutual
-    funds. None of it is a forecast, and all of it shows up within months.</p>
+    <p>The cheapest fund with the same holdings beats the dearer one by exactly the fee gap, every year, with no luck
+    involved. Moving from a typical active fund to an index fund saves about
+    <Figure id="fee-gap" inline showUnit={false} /> a year, and nothing else on this site is that certain. Where you
+    hold a fund matters almost as much as which fund: an index fund in a taxable account can cost its owner more in
+    tax each year than it charges in fees.</p>
 
-    <p>As a package, <a href="/portfolios/held-well/">holding well</a> runs from about 0.04% to about 2.70% a
-    year. Two things decide where you land inside that: how expensive the funds you own now are, and whether you
-    have more than one kind of account. One account already full of cheap index funds puts you at the bottom of
-    the range.</p>
-
-    <p>The fee is the part that is certain and applies to everyone. Cutting it is contractual, it is the largest
-    single line, and it arrives in months. Someone leaving a typical active fund saves about
-    <Figure id="fee-gap" inline />, plausibly 0.40% to 0.59%. Someone already in cheap index funds saves
-    nothing.</p>
+    <p>That is why portfolios one and two come before any clever idea. The ideas in portfolios three and four are
+    worth less than the fee gap and take decades to confirm. They are bets, sized and priced, not free money.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What is a bet, and how big</h2>
+    <h2>What I measured</h2>
 
-    <p><a href="/portfolios/value-lean/">Portfolio three</a> leans the stock holdings toward
-    <a href="/evidence/value-and-factors/">companies that are cheap relative to what they own and earn</a>.
-    Against a cheap global index fund that lean came to <Figure id="tilt-gap" inline />, plausibly 0.30% to
-    1.32%. Telling the gap from zero would take about thirty years of data, and cheap US stocks have spent 17.7
-    years trailing the US market by 54.3% without catching up.</p>
+    <p>Every idea people add to a portfolio, cheaper funds, gold, bitcoin, the 200-day rule, crash insurance and
+    more, gets a verdict on the <a href="/strategies/">strategies page</a>. The verdict is about the idea
+    inside a whole portfolio, because some ideas that look poor on their own help when added on top of stocks, and
+    some that look good on their own make the whole thing worse. Every fund I priced is on the
+    <a href="/funds/">funds page</a>, and the <a href="/tools/which-account/">which-account tool</a> says where
+    each fund belongs.</p>
 
-    <p><a href="/portfolios/with-trend/">Portfolio four</a> adds a fund that borrows inside itself to hold
-    <a href="/evidence/trend-following/">managed futures</a> on top of stocks. It is the largest bet here and the
-    least settled. Read its page before you touch it.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2>What we could not tell</h2>
-
-    <p>Against a cheap index fund, everything clever here nets out to somewhere around zero. The central figure is
-    <Figure id="edge-vs-cheap-index" inline />, with a range from −0.92% to +0.83%, and it crosses zero, so
-    we cannot pin down even the sign.</p>
-
-    <p>That is smaller than the lean above it, and the reason is worth knowing rather than hiding. The 0.79% is
-    the lean on its own. The near-zero total is what remains after netting it against everything else we
-    measured, and those other lines are small, point both ways, and change sign depending on how far back you
-    look. Read the total as around zero rather than as a precise number.</p>
-
-    <p>Some things failed outright, and we say so: <a href="/evidence/bitcoin/">bitcoin as ballast</a>, funds that
-    promise to rise when stocks fall, and <a href="/evidence/crash-insurance/">crash insurance</a>.
-    <a href="/evidence/rebalancing/">Rebalancing</a> is its own case. It keeps your mix from drifting, which is
-    the reason to do it, and whether it costs or earns you a little depends on the period you measure. Other
-    things we could not measure at all. <a href="/evidence/market-timing/">A 200-day timing rule</a> on US stock
-    data came out 0.74% a year ahead of a fixed blend holding the same average amount in shares, against a test
-    that could only have seen a gap of 3.03% or wider. Measured against simply holding, the same rule lost 0.73% a
-    year. Those are two different questions and the answers point opposite ways.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2>Where to go next</h2>
-
-    <p><a href="/portfolios/">The portfolios page</a> puts all four side by side with questions to help you pick.
-    <a href="/funds/">The funds page</a> lists every fund we priced and what each costs after the income it earns
-    lending its shares out. <a href="/evidence/">The evidence page</a> has every idea we tested and how it
-    went.</p>
+    <p>Numbers on this site are before tax and after fund costs unless a page says otherwise. What any of them are
+    worth to you depends on what you hold today, so where a result changes with your situation, the page says so
+    and gives the range.</p>
   </div>
 </Base>
