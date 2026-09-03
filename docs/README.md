@@ -113,6 +113,12 @@ For the major decisions:
   [Experiment 023](../research/experiments/exp_023_tilts_out_of_sample.yaml) adds the tilt
   complex's first out-of-sample window, 1981–1990 on AQR's Value and Momentum Everywhere
   basis, where the sign reproduces and clears its floor.
+- [Cautious constructions](research/cautious-constructions.md): the bond-heavy books for a
+  reader whose tolerable fall is about −30% or −40%, scored as objects for the first time on
+  96 years, on the fund-list panel and on a 2003 TIPS check window; what each fell on each
+  history, the trend line at matched equity (+0.7 to +0.9 pp/yr, not resolvable since 2009),
+  the price of the drawdown at realised and forward premia, and the publication rule's
+  outcome ([decision 0014](decisions/0014-cautious-constructions-are-labelled-by-the-history-they-held.md)).
 - [Defensive engines inside the construction](research/defensive-engines-in-the-construction.md):
   the first experiment to hold a stacked Treasury, gold or TIPS leg, or a cash or
   long-Treasury substitution, *inside* the leveraged construction rather than beside an

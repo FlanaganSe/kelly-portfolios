@@ -58,6 +58,7 @@ SPEC_NAMES = (
     "exp_022_ecy_rule",
     "exp_023_tilts_out_of_sample",
     "exp_024_working_default",
+    "exp_025_cautious_constructions",
     "phase1_ff_reproduction",
 )
 

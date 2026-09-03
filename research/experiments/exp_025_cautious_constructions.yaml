@@ -1,0 +1,955 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    The site's self-test on /portfolios/ tells a reader who could not sit
+#    through a fall of about 30% that none of the published constructions is for
+#    them and that they should hold fewer stocks and more bonds. The repository
+#    can say what that means in equity share (setting-the-equity-share.md §5,
+#    1963-07..2025-12, constant mix, modelled ten-year bond: 60% equity drew down
+#    -30.6%, 80% equity -40.2%), what the notional ladder supports at a stated
+#    tolerance (leverage-and-the-notional-budget.md §3.1-3.2: base equity 0.540 /
+#    0.750 at -30% / -40% on 1934-2025, 0.376 / 0.508 under the CAPE-conditioned
+#    assumption, with 11.0% / 14.9% of capital in an RSST-like wrapper at the
+#    candidate's 0.294 trend-to-equity ratio), and what a 10-point equity-to-bond
+#    substitution costs beside a 30% wrapper (defensive-engines §4: -0.55 to
+#    -0.77 pp/yr for 4-5 pp of 1929/2008 drawdown). NO CONSTRUCTION WITH A BOND
+#    LINE LARGER THAN 10 POINTS, AND NO CONSTRUCTION THAT COMBINES A LARGE BOND
+#    LINE WITH A SMALL FINANCED TREND LINE, HAS EVER BEEN SCORED AS ONE OBJECT.
+#    Every figure a page could quote for such a book is an interpolation across
+#    three pages built on three different panels. This file scores the cautious
+#    constructions as objects, on 024's machinery and panels, so that a
+#    bond-heavy portfolio the site publishes rests on a measurement of the thing
+#    published, with its drawdown read off the same history as the published
+#    vector's.
+#
+# 2. THIS SCORES CONSTRUCTIONS ON PUBLIC SERIES, NOT FUNDS. Exactly as 024: on
+#    the primary panel every holding is a per-dollar exposure vector and a fee;
+#    on the tournament panel every ticker is 016f's basis expression plus the
+#    ten-year leg 024 added. A growth figure here is a property of a
+#    construction and never of a fund.
+#
+# 3. THE BOND LINE IS A NOMINAL TEN-YEAR TREASURY ON BOTH SCORED PANELS. No TIPS
+#    series exists before 2003 (024 freeze note 3; 018 open question 2). Reading
+#    the nominal ten-year as TIPS assumes the real bond's excess return,
+#    volatility and equity correlation resemble the nominal bond's over the
+#    window. In 1970-81 that is false in the direction that OVERSTATES the bond
+#    line's losses, and here the bond line is 40 to 63 points of capital, so the
+#    1973-74 and 1977-81 episodes will read worse than a TIPS book would have.
+#    The 2003-02 onward check panel carries 018's modelled TIPS leg (FRED FII10
+#    par bond grossed up by lagged CPI-U) beside the nominal ten-year so the
+#    difference between the two can at least be described on the one window
+#    that has both. That panel is a CHECK, not a test: 275 months, one era of
+#    negative-then-positive bond-equity correlation.
+#
+# 4. THE TREND LEG IS THIS REPOSITORY'S OWN 4-ASSET BOOK, AS IN 018 AND 024,
+#    scaled by one full-window constant that must reproduce 1.9771. The
+#    tournament panel's trend leg is AQR's TSMOM, gross of the vendor's trading
+#    costs by omission, exactly as 016f and 024 used it.
+#
+# 5. WHAT THIS FILE PREDICTS BEFORE IT IS RUN. Arithmetic on the panel lengths,
+#    the notional deltas and the premia the earlier runs reported; no look at
+#    any new statistic.
+#    (i) DRAWDOWN, the reason the file exists, is descriptive and carries no
+#    status. On the 1929-01..2025-05 primary panel the cheap 100%-equity control
+#    fell -83.67% (018). A monthly-rebalanced 60/40 with the modelled ten-year
+#    bond is predicted to fall between -50% and -58% across 1929-32, because the
+#    bond leg was positive but the equity leg lost five sixths; a 40/60 between
+#    -35% and -42%; the ladder's -30% row (0.376 equity) between -33% and -40%.
+#    NO CONSTRUCTION ON THE 96-YEAR PANEL IS PREDICTED TO HOLD A -30% WORST FALL
+#    WITH MORE THAN ABOUT 35 POINTS OF EQUITY. On the 1990-11..2026-05
+#    tournament panel (cheap 65/35 fell -52.7%) the 60% equity arms are
+#    predicted between -28% and -34% (2008-09), the 0.508 arms between -24% and
+#    -30%, the 0.376 arms between -18% and -24%. On the 2003-02 check panel the
+#    same ordering, a few points shallower. The trend arm at matched equity is
+#    predicted to draw down within 2 pp of its plain twin on every panel, in
+#    either direction: at 11-15 points the overlay's drawdown benefit was
+#    measured at one to three points of equity notional (notional budget §3.1),
+#    which is inside 2 pp of drawdown.
+#    (ii) THE PRIMARY PAIRS, each trend arm against its plain twin at the same
+#    equity notional, differ by `w x (trend_excess - 1.1952) + w x 0.072 x
+#    (equity_excess - bond_excess)`, w the wrapper weight. At the primary
+#    panel's realised premia (trend 7.22, equity 7.75, ten-year about 1.8 over
+#    cash) that is about +0.95 pp/yr at w = 0.15, +0.93 at 0.149, +0.69 at
+#    0.110, against floors of about 0.50, 0.50 and 0.37 (paired tracking error
+#    about 1.75, 1.74 and 1.29 points at 0.285 per point): PREDICTED
+#    `exploratory` on the full window at realised premia, positive in the
+#    1934, 1946 and 1970 sub-windows, and NOT resolvable post-2009 where the
+#    own book's excess fell to about 1 pp/yr. At the 4.07 forward trend premium
+#    the same pairs read about +0.43, +0.43 and +0.32, each INSIDE its floor, so
+#    the forward reading is `unresolved` by construction and the regret table is
+#    where the reader sees it. On the tournament panel (floor about 0.85 per
+#    1.8 points of tracking error) the same pairs at AQR TSMOM's realised 10.98
+#    are predicted about +1.4 / +1.4 / +1.0 and `exploratory`; since 2009,
+#    inside the floor.
+#    (iii) EVERY CAUTIOUS ARM AGAINST THE CHEAP 100%-EQUITY CONTROL is predicted
+#    `rejected` on the mean on both panels, by about -2 to -4 pp/yr, because
+#    it holds 40 to 62 points less equity on a panel where equity paid 7.75
+#    (primary) and 9.83 (tournament) over cash. That is the price of the
+#    drawdown and it is the number the site must print beside the drawdown.
+#    Against the leverage-matched and volatility-matched controls the sign is
+#    not predicted; against the published 30% vector every cautious arm is
+#    predicted `rejected` on the mean by -2.5 to -5 pp/yr.
+#    (iv) THE PLAIN 60/40 AGAINST ITS OWN VOLATILITY-MATCHED CONTROL (equity plus
+#    bills at the same volatility) is predicted positive and `unresolved`: the
+#    bond leg's term premium over bills was about 1.8 on this panel against a
+#    floor near 0.5, but the pair's tracking error is set by the bond-equity
+#    correlation regime and the sub-windows are predicted to disagree in sign
+#    (positive 1981-2020, negative or flat outside it, as 018 §3 found).
+#
+# 6. WHAT RESULT CHANGES THE SITE. The site publishes a cautious construction
+#    for the reader who names a tolerance of about -30% or -40% IF, on every
+#    scored panel, some arm's worst fall lands within 5 pp of the stated
+#    tolerance on that panel, AND the arm's growth cost against the cheap
+#    control and against the published vector is printed beside it. Whether
+#    the published cautious arm carries the 11-15 point trend line or is the
+#    plain twin is decided by clause (ii): the trend arm is published only if
+#    its pair against the plain twin is not `rejected` on the primary panel AND
+#    its worst fall is not deeper than the twin's by more than 2 pp on any
+#    panel; otherwise the plain twin is published and the trend line is offered
+#    as the reader's option with its regret row. A construction whose 96-year
+#    worst fall is deeper than -45% may not be labelled "for a -30% tolerance"
+#    on any page; it may be labelled for the tolerance its 1990-11 panel fall
+#    supports only with the 96-year figure printed in the same sentence.
+#
+# 7. THE DECISION-RELEVANT DESCRIPTIVES CARRY NO SIGNIFICANCE CLAIM. Drawdown,
+#    months under water, worst-decile offsets, crisis episodes and
+#    contribution-weighted terminal wealth are one order statistic of one path
+#    each and are reported with no status, as in 018 and 024.
+#
+experiment_family: exp_025_cautious_constructions
+title: >
+  Cautious constructions scored as objects: for a reader whose tolerable worst
+  fall is about -30% or -40%, what does a bond-heavy book built from the same
+  funds plus an unlevered ten-year Treasury (TIPS proxy) draw down, what does it
+  cost against the cheap index and the published vector, and does an 11-15
+  point financed trend line on top of it help at matched equity, on 1157
+  months from 1929, on 016f's 427-month fund-list panel, and on the 2003-02
+  TIPS check window?
+entry_point: exp_025_cautious_constructions
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260903
+
+hypothesis: >
+  Six cautious arms on the primary panel, in capital weights, with the modelled
+  ten-year Treasury `TSY10` standing in for TIPS. Two plain mixes:
+  `plain60_40` (CORE 0.60 / TSY10 0.40, equity 0.600) and `plain40_60` (CORE
+  0.40 / TSY10 0.60, equity 0.400). Two trend arms at matched equity:
+  `trend15_eq60` (RSST_LIKE 0.15 / CORE 0.44 / TSY10 0.41, equity 0.601, trend
+  0.150, bond 0.410, gross 1.161) and `trend11_eq40` (RSST_LIKE 0.11 / CORE
+  0.28 / TSY10 0.61, equity 0.398, trend 0.110, bond 0.610, gross 1.118). Two
+  ladder rows applied whole under the CAPE-conditioned assumption
+  (notional-budget §3.2): `ladder40` (RSST_LIKE 0.149 / CORE 0.348 / TSY10
+  0.503, equity 0.508, trend 0.149) and `ladder30` (RSST_LIKE 0.110 / CORE
+  0.258 / TSY10 0.632, equity 0.376, trend 0.110), each with a plain twin at the
+  same equity notional (`ladder40_plain` CORE 0.508 / TSY10 0.492;
+  `ladder30_plain` CORE 0.376 / TSY10 0.624). The published construction
+  `published_trend30` (CORE 0.70 / RSST_LIKE 0.30) is the reference arm. THE
+  PRIMARY COMPARISONS, DECLARED HERE, are the three paired differences
+  trend-arm-minus-plain-twin at matched equity (`trend15_eq60 - plain60_40`,
+  `ladder40 - ladder40_plain`, `ladder30 - ladder30_plain`) on the 1929-01..
+  2025-05 primary panel, arithmetic mean monthly total-return gap after every
+  cost charged inside the rule; they are predicted `exploratory` at realised
+  premia and `unresolved` at the 4.07 forward premium (freeze note 5 ii). Every
+  arm is also scored against the cheap 100%-equity control, the equity core
+  levered or scaled to the arm's gross notional, the core scaled to the arm's
+  volatility, the published reference, and its own plain twin where one exists,
+  each a separate family. The same arms with 016f's tilted equity book scaled
+  to the arm's equity notional run on the 1990-11 fund-list panel, and the
+  primary arms re-run from 2003-02 with 018's modelled TIPS leg in place of the
+  nominal ten-year as a check. Drawdown by panel is the reason the file exists
+  and is descriptive.
+
+mechanism: >
+  Four mechanisms, all inherited from `portfolio_edge.studies.overlay_growth`
+  and those of 018 and 024. SUBSTITUTION: each point of capital moved from the
+  equity core to the ten-year line forgoes the equity premium over the term
+  premium, about 6 pp/yr on the primary panel and 0 to 1.5 pp/yr at today's
+  pricing over TIPS (defensive-engines §9), and buys drawdown in proportion to
+  the equity share, which setting-the-equity-share §5 measured at about 4.8 pp
+  of worst fall per 10 points of equity on 1963-2025. STACKING: a financed
+  trend line of w points carries w of trend notional and 0.072 w of extra
+  equity per dollar of capital and costs 119.52 bp on that capital; its
+  expected value against a plain twin at matched equity is `w x (trend_excess
+  - 1.1952)` plus a second-order equity term, a sum and not an average, which
+  is why it can help a bond-heavy book that a substituted managed-futures fund
+  would dilute. VARIANCE: the cautious arms carry a third to a half of the
+  reference's variance, so their log-growth gaps exceed their arithmetic gaps
+  by half the variance difference, reported as one constant per arm. COST:
+  the wrapper's fee and financing on 11 to 15 points of capital, the bond
+  line's 5 bp, the core's 3 bp, and 0.55 bp of round-trip spread on monthly
+  rebalancing turnover, all inside the rule.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each arm, against
+  each named control separately, on the primary metric:
+  (a) `rejected` if the arithmetic mean gap point estimate is at or below zero;
+  (b) `unresolved` if the gap is positive but smaller than the minimum
+  detectable effect at 80% power computed from that comparison's own paired
+  difference series, reported in the same row;
+  (c) `unresolved` if the gap exceeds its MDE but its Benjamini-Hochberg
+  adjusted p-value within the declared family (one family per control per
+  panel) exceeds 0.10;
+  (d) `unresolved` if the gap survives (b) and (c) but changes sign anywhere on
+  the declared equity-financing band;
+  (e) `exploratory` otherwise. Under no outcome may this specification produce
+  a status above `exploratory`.
+  For the THREE PRIMARY PAIRS a `rejected` under clause (a) means the trend
+  line subtracted from the plain twin's mean on this panel at realised premia,
+  and freeze note 6 then publishes the plain twin. The drawdown, months-under-
+  water, worst-decile, crisis-episode and terminal-wealth tables are
+  descriptive and receive NO status; the publication rule in freeze note 6
+  reads them as descriptions and prints them beside the growth cost. The
+  whole-experiment status is `exploratory` when any comparison on either
+  scored panel reaches (e) and `unresolved` otherwise.
+
+universe:
+  description: >
+    Five monthly excess-of-cash legs plus the cash rate on the primary panel,
+    US-only equity throughout because the drawdown question needs 1929-32,
+    1937, 1973-74 and 1977-81. Cash is the Ken French one-month bill. On the
+    tournament panel the sixteen basis series and the mapping are 016f's,
+    loaded from its frozen specification, plus the ten-year leg 024 added. On
+    the check panel 018's modelled TIPS leg is added from 2003-02.
+  legs:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published, 1926-07 onward.
+    - id: treasury
+      source: Goyal-Welch `PredictorData2025.xlsx`, monthly, `ltr`, less French `RF`
+      basis: >
+        Long-term US government bond total return, roughly a 20-year bond, used
+        inside the trend book and by the `LTBOND` duration-sensitivity arm.
+    - id: tsy10
+      source: >
+        FRED `GS10` from 1953-04, Shiller `ie_data.xls`
+        `Long_Interest_Rate_GS10` before that, priced as a rolled ten-year par
+        bond by `studies/fixed_income_shelf.par_bond_total_returns`, less
+        French `RF`; 024's splice, its cross-check reproduced.
+      basis: MODELLED. The ten-year Treasury that stands in for the TIPS line; freeze note 3.
+    - id: tips
+      source: >
+        FRED `FII10` ten-year real par yield, priced as a rolled par bond and
+        grossed up by CPI-U with the three-month reference-CPI lag by
+        `studies/fixed_income_shelf.tips_nominal_total_return`, less French
+        `RF`, exactly as 018's `tips` leg. MODELLED; check panel only, 2003-02 onward.
+      basis: The only real-yield line the repository holds; freeze note 3.
+    - id: trend
+      source: >
+        This repository's own 4-asset time-series-momentum book (French
+        Mkt-RF, Goyal-Welch ltr and corpr less Rfree, AQR equal-weight
+        commodity excess), `studies/time_series_momentum` defaults, minimum
+        three live instruments, scaled to 12.38% volatility by one
+        full-window constant.
+      basis: Excess of cash, no trading cost charged.
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `RF`
+  excluded:
+    - Any claim that a wrapper's or a ticker's simulated path is that fund's return.
+    - Any weight search. Every arm's weights are declared here and nothing optimises them; the equity notionals 0.600, 0.400, 0.508 and 0.376 are the equity-share table's 60/40 and 40/60 rows and the notional ladder's -40% and -30% rows, read before this file was written.
+    - A TIPS series before 2003; freeze note 3.
+    - A financed bond stack, gold, or any arm 018 or 024 already scored.
+    - Withdrawals. Every arm is scored for a contributing or static investor; setting-the-equity-share §5.1 is the withdrawal reading and it is not re-run here.
+
+sample_policy:
+  start: "1926-01"
+  end: "2026-05"
+  held_out: >
+    Nothing is held out. The primary panel is the intersection of what its
+    sources publish and neither boundary was chosen: 1929-01 when the 4-asset
+    book has three live instruments, 2025-05 when the AQR commodity leg ends,
+    expected 1157 months, identical to 018's and 024's. The tournament panel is
+    016f's 427 months, 1990-11..2026-05. The check panel begins 2003-02 when
+    FII10 exists and ends with the primary panel. The data has been searched by
+    twenty-four earlier specifications and the arms were chosen by people who
+    read them; that look-ahead is recorded and no freezing removes it.
+  embargo: >
+    None. The constant-weight arms estimate nothing. The trend book uses only
+    data before each month; its volatility scalar is the one look-ahead and it
+    is a Sharpe-preserving constant.
+  eras:
+    - name: from_1934
+      start: "1934-01"
+      end: "2025-05"
+      rationale: Drops the 1929-33 crash and its recovery; the drawdown table is re-read without the one episode that sets every 96-year worst fall.
+    - name: from_1946
+      start: "1946-01"
+      end: "2025-05"
+      rationale: Post-war; drops the Depression and the wartime rate peg.
+    - name: from_1963_07
+      start: "1963-07"
+      end: "2025-05"
+      rationale: The window setting-the-equity-share §5 built its drawdown ladder on, so the 60/40 and 40/60 arms can be checked against that table's -30.6% and -21.3%.
+    - name: from_1970
+      start: "1970-01"
+      end: "2025-05"
+      rationale: From the first inflation decade; contains every episode a 40-63 point bond line is expected to lose in.
+    - name: from_1990_11
+      start: "1990-11"
+      end: "2025-05"
+      rationale: The tournament window on the primary panel's US-only legs, so the two panels can be read side by side.
+    - name: from_2003_02
+      start: "2003-02"
+      end: "2025-05"
+      rationale: The check panel's window on the primary legs, so the nominal ten-year and the modelled TIPS line can be read as a difference on one window.
+    - name: post_2009
+      start: "2009-01"
+      end: "2025-05"
+      rationale: The era in which the trend overlay's contribution decayed; declared so it cannot be omitted.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: The one flat-to-negative equity decade in the modern panel, with the boundaries 016e, 018 and 024 froze.
+    - name: bond_bull_market
+      start: "1981-10"
+      end: "2020-07"
+      rationale: Peak ten-year yield to trough; the era that made every bond line's record.
+    - name: before_bond_bull
+      start: "1929-01"
+      end: "1981-09"
+      rationale: The complement, first part; rising or flat yields, the era a bond-heavy book is expected to lose in.
+    - name: after_bond_bull
+      start: "2020-08"
+      end: "2025-05"
+      rationale: The complement, second part; 58 months of rising yields including 2022, when a 60/40 with a ten-year bond fell with its equity.
+
+benchmark:
+  primary:
+    id: plain_twin
+    definition: >
+      For each trend arm, the plain arm at the same equity notional and no
+      trend line: `plain60_40` for `trend15_eq60`, `ladder40_plain` for
+      `ladder40`, `ladder30_plain` for `ladder30`. For a plain arm the twin is
+      itself and the comparison is skipped.
+    rationale: >
+      The decision is whether a cautious book should carry the financed trend
+      line at all, and the like-for-like control for that is the same book
+      without it. THESE THREE PAIRS ARE THE PRIMARY COMPARISONS.
+  secondary:
+    id: cheap
+    definition: 100% equity core at 3 bp, unlevered, rebalanced on the same clock.
+    rationale: Decision 0003, charter question 1; the price of the drawdown is read here.
+  tertiary:
+    id: reference
+    definition: The `published_trend30` arm, 70% core and 30% RSST-like wrapper.
+    rationale: What the reader gives up against the vector the site publishes for a looser tolerance.
+  quaternary:
+    id: leverage_matched
+    definition: >
+      The equity core levered to the arm's own gross notional where the gross
+      exceeds one, financed at cash plus the equity-futures basis, debt
+      accruing monthly as in exp_016; where the arm's gross is at or below
+      one, the core scaled to the arm's gross with the remainder in bills.
+    rationale: Is it a construction effect or is it beta.
+  quinary:
+    id: volatility_matched
+    definition: >
+      Equity core plus T-bills scaled so that full-window volatility matches
+      the arm's (ex post), and separately so that trailing 36-month volatility
+      matches (ex ante, from month 37).
+    rationale: A bond-heavy book changes the risk dimension; match on it. For the plain arms this is the control that isolates the bond leg's term premium and diversification from the equity share.
+  aggregation_rule: >
+    SIX CONTROLS ARE SIX FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED OR
+    PLACED IN ONE COLUMN. Every reported gap names its control and its panel.
+    Benjamini-Hochberg is applied within one control on one panel and never
+    across.
+
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` over monthly funded total returns net of
+    every cost charged inside the simulation, 018's and 024's metric so the
+    three experiments read on one basis. The annualised log-growth gap is
+    reported beside it because the charter's objective is expected log
+    terminal wealth and the arms differ in gross notional and variance by a
+    factor of up to three; the two are never mixed in one column.
+  units: percentage points per year
+  uncertainty: >
+    Two intervals beside every gap: a Newey-West HAC interval on the paired
+    monthly difference with the automatic bandwidth, and a stationary block
+    bootstrap over the joint monthly panel, whole rows, mean block 12 months,
+    10000 resamples, 95% percentile; plus the minimum detectable effect at 80%
+    power from each comparison's own paired series.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+  - name: annualised log-growth gap
+    units: percentage points per year
+  - name: tracking error against the control
+    units: percent per year
+  - name: maximum drawdown of the funded wealth path, per arm and per panel and per declared era
+    units: percent
+    note: THE REASON THE FILE EXISTS. Reported for every arm on every panel and on the from_1934, from_1963_07, from_1990_11 and from_2003_02 eras so a reader can pick the history they believe. Descriptive; no status.
+  - name: longest run of months below the running peak
+    units: months
+  - name: worst-decile-of-equity-months mean offset against the reference arm and against the cheap control
+    units: percentage points per month
+  - name: cumulative return in each predeclared crisis episode, and the offset against the cheap control
+    units: percent; percentage points
+  - name: sub-window gaps with HAC intervals and floors
+    units: percentage points per year
+    note: The declared eras and the panel's mechanical halves, for every comparison.
+  - name: contribution-weighted terminal wealth ratio
+    units: ratio
+  - name: bond-equity correlation and bond excess return by era
+    units: correlation; percentage points per year
+  - name: gross, equity, trend, bond and cash notional per arm
+    units: multiple of net asset value
+  - name: regret at forward premia
+    units: percentage points per year
+    note: "`parameters.regret`; arithmetic and log, one table per primary pair and one per plain arm against cheap."
+  - name: nominal ten-year minus modelled TIPS, same arm, 2003-02 onward
+    units: percentage points per year; percent of drawdown
+    note: The check panel's only estimand; descriptive.
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    (1) each holding's expense ratio on the capital allocated to it; (2)
+    financing on the notional a wrapper holds beyond its physical capital, at
+    the equity rate; (3) the equity-futures basis on the debt of any control
+    whose capital weights exceed one; (4) a 0.55 bp round-trip US equity
+    spread, half-crossed on one-sided monthly rebalancing turnover, on every
+    line. On the tournament panel 016f's cost model applies unchanged, with
+    the ten-year leg at 5 bp as in 024.
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    TSY10: 5
+    TIPS: 5
+    LTBOND: 5
+    CASH: 0
+  tsy10_fee_note: >
+    5 bp is an assumption between a 3 bp broad TIPS index fund (SCHP, 2.99 bp
+    net) and an 18 bp one (TIP, 17.92 bp net); at a 40 to 63 point weight the
+    range is 6 to 9 bp/yr of the portfolio and the artifact prints the
+    sensitivity.
+  financing_basis_points_over_cash:
+    equity: 62
+    treasury: 15
+    gold: 30
+    tips: 15
+  financing_sources: >
+    Equity 62 bp: `docs/research/structural-and-tax-edges.md` section 3, the
+    figure 016, 018 and 024 charge. Treasury, gold and TIPS rates are carried
+    for 018's `FinancingRates` type and charged on nothing: no arm here
+    finances a bond.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  not_charged:
+    - The 4-asset trend book's own trading (262% one-way turnover; 20 bp one-way takes its Sharpe from 0.58 to 0.50).
+    - The vendor's trading costs inside AQR's TSMOM on the tournament panel, by omission.
+    - Any tax. No arm holds tax lots; the comparison is pre-tax throughout. A 40 to 63 point TIPS line is ordinary income on coupon and inflation accrual in a taxable account (part A §7); the placement cost of each arm is priced on the page, not here.
+    - Bid/ask on the initial purchase; every arm starts from a common portfolio.
+
+rebalance_rule:
+  frequency: >
+    Primary and check panels: MONTHLY, back to the arm's capital weights,
+    018's clock, because the leverage-matched and ex-ante volatility-matched
+    controls are defined month by month. Tournament panel: ANNUALLY, 016f's
+    clock, so the reproduction of 016f's wrapper-weight pair is exact.
+  drift: Weights drift within the period and the drifted weights earn the return.
+  overlay_legs: >
+    A wrapper's internal notional is a property of the wrapper and is never
+    rebalanced by the investor.
+  debt: >
+    Positions and debt are carried in absolute terms, exp_016's `_simulate`,
+    reused by import. Debt accrues at cash plus the equity-futures basis.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, 018's and 024's, not tuned on the
+    data. A Newey-West interval at the automatic bandwidth is printed beside
+    every bootstrap interval; where they disagree by more than 0.05 pp/yr the
+    artifact says so.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each control family on each panel,
+    never across. The family omits the sub-windows, the financing band, the
+    regret grid and the twenty-four earlier specifications that searched this
+    data; the adjusted p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval containing zero is reported as unresolved. The MDE is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per control, per panel, and
+  record which clause fired. The three primary pairs are predicted
+  `exploratory` at realised premia (freeze note 5 ii) and the regret table is
+  the forward reading. Under no outcome may this specification produce a
+  status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    statement: >
+      Every holding is an assumed per-dollar exposure vector and a fee, or
+      016f's basis expression. No fund's returns were used. The experiment
+      scores CONSTRUCTIONS; a result transfers to a fund only to the extent
+      the fund delivers the mapped exposure at the mapped cost.
+    order_of_operations: >
+      This file was written and frozen before any experiment module for it
+      existed and before any statistic was produced. The arms were chosen by
+      people who had read the equity-share table, the notional ladder, 018 and
+      024; that look-ahead is recorded and no freezing removes it.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired monthly difference."
+    computed_before_freezing: >
+      Primary 1157 months: 0.285 pp/yr per point of tracking error. Tournament
+      427 months: 0.470. Check 268 months: 0.593. A primary pair moves w
+      points of capital between a wrapper at about 24% volatility and a
+      ten-year bond at about 7%, with 0.072 w of extra equity: paired tracking
+      error about 11.7 points per unit of w, so about 1.75 (w = 0.15), 1.74
+      (0.149) and 1.29 (0.110); floors about 0.50, 0.50 and 0.37 (primary),
+      0.82, 0.82 and 0.61 (tournament). Against the cheap control every
+      cautious arm tracks at 6 to 10 points, floor 1.7 to 2.9 (primary); a
+      plain arm against its volatility-matched control tracks at 3 to 5
+      points, floor about 0.9 to 1.4.
+    floor_at_assumed_tracking_error_primary:
+      "1.0": 0.29
+      "1.3": 0.37
+      "1.75": 0.50
+      "4.0": 1.14
+      "6.0": 1.71
+      "10.0": 2.85
+    floor_at_assumed_tracking_error_tournament:
+      "1.3": 0.61
+      "1.75": 0.82
+      "4.0": 1.88
+      "6.0": 2.82
+      "10.0": 4.70
+    predicted_primary_pairs: >
+      About +0.95, +0.93 and +0.69 pp/yr arithmetic at realised premia against
+      floors of about 0.50, 0.50 and 0.37: `exploratory`, sub-windows positive
+      before 2009 and inside the floor after. About +0.43, +0.43 and +0.32 at
+      the 4.07 forward premium, each inside its floor. Freeze note 5.
+
+  trend_book:
+    instruments: [equity, treasury, credit, commodity]
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.10
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    expected_scalar_from_exp_018: 1.9771
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of the book on
+      the primary intersection of book, equity, cash and ltr`, 018's
+      construction; printed in the artifact and checked against 018's figure
+      to three places.
+
+  ten_year_leg:
+    yield_source: >
+      FRED GS10 (decimal) wherever it exists, from 1953-04; shiller_ie_data
+      `Long_Interest_Rate_GS10` (percent per year, divided by 100) before that.
+    maturity_years: 10.0
+    cross_check: >
+      Shiller against FRED on the overlap from 1953-04; largest absolute yield
+      difference printed in basis points; 024 found 43 bp in 2019-07 alone and
+      every other month within 1 bp, and this run must reproduce that.
+    caveat: >
+      Before 1953-04 the Shiller long rate is his long-term government yield
+      series and not a ten-year constant-maturity yield. With 40 to 63 points
+      in this leg the pre-1953 months matter more than they did at 5 points,
+      which is why from_1946 and from_1963_07 are declared eras and the
+      drawdown table is printed for each.
+
+  tips_leg:
+    yield_source: FRED FII10, ten-year real par yield, from 2003-01
+    cpi_lag_months: 3
+    maturity_years: 10.0
+    check_window_start: "2003-02"
+    caveat: >
+      MODELLED; 018's construction reused by import. The check panel's only
+      job is to print each primary arm twice, once with `TSY10` and once with
+      `TIPS` in the bond line, so the two can be read as a difference on the
+      one window that has both. No status.
+
+  wrappers:
+    CORE:
+      exposures: {equity: 1.0}
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures: {equity: 1.072, trend: 1.0}
+      financed: {equity: 0.331}
+      note: >
+        RSST's N-PORT of 2026-04-30 as exp_016, 018 and 024 map it. Financing
+        on the 0.331 of equity futures at the equity rate; the long/short trend
+        book is charged no signed basis.
+    TSY10:
+      exposures: {tsy10: 1.0}
+      financed: {}
+      note: An unlevered modelled ten-year Treasury at 5 bp; the TIPS line's proxy, freeze note 3.
+    TIPS:
+      exposures: {tips: 1.0}
+      financed: {}
+      note: 018's modelled TIPS leg at 5 bp; check panel only.
+    LTBOND:
+      exposures: {treasury: 1.0}
+      financed: {}
+      note: An unlevered ~20-year Treasury index fund at 5 bp; the duration sensitivity for the largest bond line only.
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+
+  contestants:
+    published_trend30:
+      role: reference arm; the published construction
+      weights: {CORE: 0.70, RSST_LIKE: 0.30}
+      note: 1.0216 equity, 0.300 trend, 1.3216 gross. Identically 018's `base_trend30` and 024's reference.
+    plain60_40:
+      role: candidate; the plain 60/40, and the plain twin of trend15_eq60
+      weights: {CORE: 0.60, TSY10: 0.40}
+      note: 0.600 equity, 0.400 bond, 1.000 gross. Setting-the-equity-share §5's 60% row, which fell -30.6% on 1963-07..2025-12.
+    trend15_eq60:
+      role: candidate; a 60/40 book with a 15-point financed trend line at matched equity
+      weights: {CORE: 0.44, RSST_LIKE: 0.15, TSY10: 0.41}
+      note: 0.6008 equity, 0.150 trend, 0.410 bond, 1.161 gross. Differs from plain60_40 by the trend line and 0.0008 of equity.
+    plain40_60:
+      role: candidate; the plain 40/60, and the plain twin of trend11_eq40
+      weights: {CORE: 0.40, TSY10: 0.60}
+      note: 0.400 equity, 0.600 bond, 1.000 gross. The §5 table's 40% row, -21.3% on 1963-07..2025-12.
+    trend11_eq40:
+      role: candidate; a 40/60 book with an 11-point financed trend line at matched equity
+      weights: {CORE: 0.28, RSST_LIKE: 0.11, TSY10: 0.61}
+      note: 0.3979 equity, 0.110 trend, 0.610 bond, 1.118 gross.
+    ladder40:
+      role: candidate; the notional ladder's -40% row applied whole under the CAPE-conditioned assumption
+      weights: {CORE: 0.348, RSST_LIKE: 0.149, TSY10: 0.503}
+      note: 0.5077 equity, 0.149 trend, 0.503 bond, 1.160 gross. Notional-budget §3.2, base 0.508, wrapper 14.9%; the core is `0.508 - 0.149 x 1.072`.
+    ladder40_plain:
+      role: candidate; ladder40's plain twin
+      weights: {CORE: 0.508, TSY10: 0.492}
+      note: 0.508 equity, 0.492 bond, 1.000 gross.
+    ladder30:
+      role: candidate; the ladder's -30% row applied whole
+      weights: {CORE: 0.258, RSST_LIKE: 0.110, TSY10: 0.632}
+      note: 0.3759 equity, 0.110 trend, 0.632 bond, 1.118 gross. Notional-budget §3.2, base 0.376, wrapper 11.0%.
+    ladder30_plain:
+      role: candidate; ladder30's plain twin
+      weights: {CORE: 0.376, TSY10: 0.624}
+      note: 0.376 equity, 0.624 bond, 1.000 gross.
+    plain60_40_ltbond:
+      role: sensitivity; the 60/40 with the ~20-year bond in place of the ten-year
+      weights: {CORE: 0.60, LTBOND: 0.40}
+      note: The duration sensitivity for the largest bond line, so 2022 and 1977-81 can be read as a difference on one arm. Scored against cheap and plain60_40 only.
+
+  primary_pairs:
+    - {arm: trend15_eq60, twin: plain60_40}
+    - {arm: ladder40, twin: ladder40_plain}
+    - {arm: ladder30, twin: ladder30_plain}
+  secondary_pairs:
+    - {arm: trend11_eq40, twin: plain40_60}
+    - {arm: plain60_40_ltbond, twin: plain60_40}
+
+  reference_arm: published_trend30
+  controls: [plain_twin, cheap, reference, leverage_matched, volatility_matched_expost, volatility_matched_exante]
+  controls_in_estimates: [plain_twin, cheap, reference, leverage_matched, volatility_matched_expost]
+  volatility_match_window_months: 36
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.10
+  multiple_testing_q: 0.10
+  bootstrap_block_months: 12
+  hac_lags: automatic
+
+  drawdown_reporting:
+    eras_for_drawdown_table: [full, from_1934, from_1946, from_1963_07, from_1990_11, from_2003_02]
+    tolerance_rows_pct: [-30, -40, -50]
+    rule: >
+      For each panel and era, print every arm's worst fall and months under
+      water in one table, and beside it the arm whose worst fall is closest
+      to each tolerance row without exceeding it. Freeze note 6 reads this
+      table; it carries no status.
+
+  crisis_episodes:
+    deflationary_or_growth:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: recession_1937, start: "1937-03", end: "1938-03"}
+      - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+      - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    inflation_or_rate:
+      - {name: oil_1973, start: "1973-01", end: "1974-09"}
+      - {name: inflation_1977, start: "1977-01", end: "1981-09"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+    note: 018's eight episodes, frozen there and copied here unchanged. The inflation episodes are where a 40-63 point nominal bond line is expected to lose most, and where the TIPS proxy is weakest; freeze note 3.
+
+  financing_sensitivity:
+    equity_basis_points: [62, 98, 130, 165, 200, 231]
+    reporting: >
+      Every trend arm's gap against its plain twin and the cheap control at
+      every point, and whether the arm ordering survives. No arm finances a
+      bond, so no Treasury band is run.
+
+  tournament_panel:
+    specification_path: experiments/exp_016f_matched_pairs.yaml
+    expected_specification_hash: 68323191bca66ea857826bf29869a00fbed16028af2b104878b84c40c4497888
+    abort_on_hash_change: true
+    what: >
+      016f's panel, basis mapping and cost model, loaded from its frozen file
+      and checked against the hash its run `36f14b39...` recorded, with the
+      ten-year leg added as 024 added it (`TSY10` mapped 1.000 to the Shiller
+      GS10 par bond less French `RF` at 5 bp). Annual rebalancing, 016f's
+      clock. The tilted equity book is 016f's `rec30` equity lines (VTI 19 /
+      VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5, which is 70 points) scaled
+      whole to each arm's unlevered equity capital, so the tilt complex keeps
+      its proportions at every equity share.
+    reproduction:
+      pair: rec30 against rec25, log-growth gap
+      expected_pp_yr: 0.5101
+      tolerance_pp_yr: 0.005
+      note: 016f run `36f14b39...`; a shared pair that moves is a defect in this file. The `published` and `rec25` arms exist for this check and as the reference.
+    arms:
+      published:
+        weights: {RSST: 0.30, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+        note: 016f's `rec30`. Gross 1.3216. The reference arm.
+      rec25:
+        weights: {RSST: 0.25, VTI: 0.24, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+        note: 016f's `rec25`; the reproduction check only.
+      plain60_40:
+        weights: {VTI: 0.163, VTV: 0.129, VXUS: 0.137, AVDV: 0.086, IDMO: 0.043, AVES: 0.042, TSY10: 0.40}
+        note: The 70-point tilt book scaled by 0.60 / 0.70; 0.600 unlevered equity capital, 0.400 bond. The plain twin of trend15_eq60.
+      trend15_eq60:
+        weights: {RSST: 0.15, VTI: 0.120, VTV: 0.095, VXUS: 0.101, AVDV: 0.063, IDMO: 0.032, AVES: 0.031, TSY10: 0.408}
+        note: 0.442 of unlevered equity capital (the tilt book scaled by 0.442 / 0.70) plus 0.15 x 1.050 of wrapper equity = 0.600 equity notional at 016f's 1.050 leg; 0.150 trend; 0.408 bond.
+      plain40_60:
+        weights: {VTI: 0.109, VTV: 0.086, VXUS: 0.091, AVDV: 0.057, IDMO: 0.029, AVES: 0.028, TSY10: 0.60}
+        note: The tilt book scaled by 0.40 / 0.70; 0.400 equity, 0.600 bond.
+      trend11_eq40:
+        weights: {RSST: 0.11, VTI: 0.077, VTV: 0.061, VXUS: 0.065, AVDV: 0.040, IDMO: 0.020, AVES: 0.021, TSY10: 0.606}
+        note: 0.284 of unlevered equity capital plus 0.11 x 1.050 = 0.400 equity notional; 0.110 trend; 0.606 bond.
+      ladder40:
+        weights: {RSST: 0.149, VTI: 0.096, VTV: 0.075, VXUS: 0.080, AVDV: 0.050, IDMO: 0.025, AVES: 0.025, TSY10: 0.500}
+        note: 0.351 of unlevered equity capital plus 0.149 x 1.050 = 0.508 equity notional; 0.149 trend; 0.500 bond.
+      ladder40_plain:
+        weights: {VTI: 0.138, VTV: 0.109, VXUS: 0.116, AVDV: 0.073, IDMO: 0.036, AVES: 0.036, TSY10: 0.492}
+        note: The tilt book scaled by 0.508 / 0.70; 0.508 equity, 0.492 bond.
+      ladder30:
+        weights: {RSST: 0.110, VTI: 0.071, VTV: 0.056, VXUS: 0.059, AVDV: 0.037, IDMO: 0.019, AVES: 0.018, TSY10: 0.630}
+        note: 0.260 of unlevered equity capital plus 0.110 x 1.050 = 0.376 equity notional; 0.110 trend; 0.630 bond.
+      ladder30_plain:
+        weights: {VTI: 0.102, VTV: 0.081, VXUS: 0.086, AVDV: 0.054, IDMO: 0.027, AVES: 0.026, TSY10: 0.624}
+        note: The tilt book scaled by 0.376 / 0.70; 0.376 equity, 0.624 bond.
+    reference_arm: published
+    controls:
+      cheap: {VTI: 0.65, VXUS: 0.35}
+      cheap60_40: {VTI: 0.39, VXUS: 0.21, TSY10: 0.40}
+      leverage_matched: the cheap control levered to each arm's gross notional at 016f's 62 bp basis, or scaled below one with bills
+    eras: [flat_equity_decade, post_2009]
+    weights_note: >
+      Tournament weights are rounded to three places and must sum to one;
+      rounding moves equity notional by under 0.003 and the artifact prints
+      each arm's exact notional. cheap60_40 is a second control on this panel
+      only, so the plain arms can be read against a cheap untilted 60/40 as
+      well as against the cheap 65/35.
+
+  check_panel:
+    start: "2003-02"
+    legs: [equity, treasury, tsy10, tips, trend, cash]
+    arms: [published_trend30, plain60_40, trend15_eq60, plain40_60, trend11_eq40, ladder40, ladder40_plain, ladder30, ladder30_plain]
+    substitution: >
+      Every arm is simulated twice, once as declared with `TSY10` and once
+      with `TIPS` in place of `TSY10` at the same weight. The artifact prints,
+      per arm, the two worst falls, the two mean returns, and the paired
+      difference with its HAC interval. Descriptive; no status; freeze note 3.
+
+  regret:
+    what: >
+      Each primary pair's expected gap at forward premia, arithmetic on the
+      paired capital-weight difference and no simulation:
+      `w x (t - 1.1952) + 0.072 w x (E + b) - 0.072 w x b` pp/yr, i.e.
+      `w x (t - 1.1952 + 0.072 E)`, where `w` is the wrapper weight of the
+      trend arm, `t` the gross trend premium per unit of notional at 12.38%
+      volatility, `E` the equity premium over bonds and `b` the bond's excess
+      over cash (the plain twin holds `0.072 w` more of the bond line, which
+      cancels the wrapper's extra equity against `b` and leaves `E`). The
+      log-growth cell adds one constant per pair, half the difference of the
+      two arms' realised variances on the primary panel, printed beside the
+      table. A positive cell means the trend arm wins. A SECOND TABLE prices
+      each plain arm against the cheap 100%-equity control at forward premia:
+      `-(1 - e) x E - fee_delta` pp/yr with `e` the arm's equity notional, so
+      the reader sees what the drawdown costs if equities beat bonds by 0, 1.5,
+      3 or 5 points a year, which is the reading decision 0012 clause 1(a)
+      asks for.
+    trend_gross_premium_grid_pp_yr: [0.0, 1.74, 3.90, 4.07, 5.32, 7.18, 10.98]
+    trend_central_pp_yr: 4.07
+    trend_grid_source: >
+      docs/research/trend-weight-under-uncertainty.md section 1, as 024 used it.
+    equity_premium_over_bonds_grid_pp_yr: [0.0, 1.5, 3.0, 5.0]
+    bond_excess_over_cash_pp_yr: 0.8
+    bond_excess_source: >
+      Kim-Wright +0.84 and ACM about +0.80 in August 2026,
+      docs/research/market-scan-2026.md, as 018 and 024 use them.
+    wrapper_equity_per_dollar: 1.072
+    wrapper_cost_pp_yr: 1.1952
+    bond_line_fee_pp_yr: 0.05
+    core_fee_pp_yr: 0.03
+    reporting: >
+      One table per primary pair, rows the trend grid, columns the equity
+      grid, each cell the arithmetic and the log gap, with the break-even
+      trend premium at each equity premium beside it; one table for the plain
+      arms against cheap, rows the arms, columns the equity grid.
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic. Every file is read from
+      the local raw cache by its pinned digest; this experiment never
+      downloads.
+    files:
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "corpr", "Rfree"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - id: aqr_commodities_long_run
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+      - id: shiller_ie_data
+        source: shiller
+        dataset_id: shiller_ie_data
+        table_id: monthly
+        columns: ["Long_Interest_Rate_GS10"]
+        expected_sha256_raw: 71c3636da5269b074489db41ecf0dcf0caef6275d1f3ecaf753ddaca2b81db2f
+        committed_manifest: data-manifests/shiller_ie_data_monthly.json
+      - id: fred_gs10
+        source: fred
+        dataset_id: GS10
+        table_id: monthly
+        columns: ["GS10"]
+        expected_sha256_raw: a875d88b7ed6a413f697ddb6332f13e61ac58ac7ae0ef52d66a62174995ec6f7
+        committed_manifest: data-manifests/fred_gs10.json
+        note: The ten-year yield from 1953-04; the pinned blob is read by digest.
+      - id: fred_fii10
+        source: fred
+        dataset_id: FII10
+        table_id: monthly
+        columns: ["FII10"]
+        expected_sha256_raw: fa8082c519714fda5de4cf207464fcd0cf4ee652007a1aad3caf8d5686d4a897
+        committed_manifest: data-manifests/fred_fii10.json
+        note: The ten-year real yield from 2003-01, check panel only; 018's pin, copied.
+      - id: fred_cpiaucns
+        source: fred
+        dataset_id: CPIAUCNS
+        table_id: monthly
+        columns: ["CPIAUCNS"]
+        expected_sha256_raw: ff0e1a1bb2af9364c1975f373cbac514f4f537fea9515c83c8b6994e8aa9a8a1
+        committed_manifest: data-manifests/fred_cpiaucns.json
+        note: CPI-U for the TIPS leg's inflation accrual; 018's pin, copied.
+
+data_sources:
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr less French RF as the long bond leg; ltr, corpr less Rfree inside the trend book
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end sets the primary panel's end
+  - id: shiller_ie_data
+    url: https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/e27e58c1-8ae0-488c-a976-a298708c7175/ie_data.xls?ver=1785857394436
+    manifest: data-manifests/shiller_ie_data_monthly.json
+    construction: Long_Interest_Rate_GS10 before 1953-04, a ten-year par bond modelled on it; both scored panels' ten-year leg
+  - id: fred_gs10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10
+    manifest: data-manifests/fred_gs10.json
+    construction: the ten-year yield from 1953-04, and the cross-check of the Shiller long rate on the overlap
+  - id: fred_fii10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=FII10
+    manifest: data-manifests/fred_fii10.json
+    construction: the ten-year real yield from 2003-01, the check panel's TIPS leg, as 018 built it
+  - id: fred_cpiaucns
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=CPIAUCNS
+    manifest: data-manifests/fred_cpiaucns.json
+    construction: CPI-U, not seasonally adjusted, for the TIPS leg's inflation accrual with the three-month reference lag
+  - id: exp_016f_matched_pairs
+    url: experiments/exp_016f_matched_pairs.yaml
+    manifest: research/artifacts/36f14b395e53407f8fdfaee3b4e8e37a/manifest.json
+    construction: the tournament panel's six pinned files, mapping and costs, loaded through that specification and hash-checked
+  - id: exp_024_working_default
+    url: experiments/exp_024_working_default.yaml
+    manifest: research/artifacts/5f3c2db962fe420881d3aaba3e44df55/manifest.json
+    construction: the primary-panel machinery, the ten-year leg splice and the tournament ten-year leg, reused by import
+
+hostile_tests:
+  - Charge financing to every levered control on the same terms as the arms, and scale sub-unity controls with bills rather than leaving the remainder idle.
+  - Sweep the equity-futures basis 62-231 bp and report whether each trend arm's ordering against its plain twin survives.
+  - Report every primary pair on every declared sub-window with its own HAC interval and floor, so a full-window sign cannot be quoted without the windows that made it; post_2009 in particular.
+  - Print the drawdown table on the full panel AND on from_1934, from_1946, from_1963_07, from_1990_11 and from_2003_02, so a -30% claim cannot be made on the window that flatters it; reproduce setting-the-equity-share §5's -30.6% for plain60_40 and -21.3% for plain40_60 on from_1963_07 within 1 pp, or explain the difference.
+  - Report both inflation episodes for every arm with the bond line's own loss beside the arm's, and the check panel's TIPS-versus-nominal difference on 2022.
+  - Report the ten-year leg's excess return and correlation to equity in every era beside each plain arm's gap against its volatility-matched control.
+  - Reproduce 016f's rec30-against-rec25 log gap on the tournament panel to 0.005 pp/yr before scoring any cautious arm, and 024's working-default-minus-published pair if the arm set is extended to include it.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Report the ex-ante volatility-matched control beside the ex-post one.
+  - Price every pair at forward premia on one grid for both premia; a forward substitution applied to one leg and not the other is a thumb.
+  - Print the 5 bp bond-fee sensitivity (3 bp and 18 bp) on the largest bond line.
+
+reporting_requirements:
+  - The freeze note with every table, including that the bond line is a nominal ten-year proxy for TIPS and what that assumes at 40 to 63 points of capital.
+  - The MDE and the control named beside every gap, in the same row; never a figure combining two controls.
+  - The HAC interval and the block-bootstrap interval beside every full-window gap.
+  - Gross, equity, trend, bond and cash notional beside every arm.
+  - The drawdown table per panel and per declared era, with months under water, and the tolerance-row reading of parameters.drawdown_reporting, labelled descriptive.
+  - Worst-decile offsets, both episode-type means, the flat-decade gap and the contribution-weighted terminal-wealth ratio for every arm, labelled descriptive.
+  - Both regret tables with their variance-drag constants and break-even premia.
+  - The check panel's TSY10-versus-TIPS table per arm.
+  - The trend-book volatility scalar beside 018's, the 016f specification hash read, and the sha256 of every source file read.
+
+notes: >
+  Exploratory in the strongest sense: the arms were chosen after the
+  equity-share table, the notional ladder, 018 and 024 were read, and the
+  specification records that. It can rank constructions on public series and
+  cannot rank funds. Retain `unresolved` wherever the instrument cannot
+  separate an arm from its control, read the drawdown and crisis tables as
+  descriptions of one history, and read a `rejected` against the cheap control
+  as the price of a drawdown constraint and not as a verdict on the reader who
+  holds it. No sleeve, fund or portfolio is promoted by this specification.
+  RUNNER: no module exists yet. Write
+  `src/portfolio_edge/experiments/exp_025_cautious_constructions.py` by
+  importing from exp_024_working_default `load_series`, `build_legs`,
+  `build_primary_panel`, `read_wrappers`, `read_arms`, `read_rates`,
+  `score_primary`, `load_tournament_inputs`, `score_tournament` and
+  `window_statistics`, and from exp_018_defensive_engines the TIPS leg
+  builder; generalise 024's `mix85` control to the `plain_twin` control read
+  from `parameters.primary_pairs` and `secondary_pairs`, extend
+  `leverage_matched` to scale below one with bills, add the check panel loop
+  and the drawdown-by-era table, replace 024's five-point regret closed form
+  with the two formulas in `parameters.regret`, register ENTRY_POINT
+  `exp_025_cautious_constructions`, and run
+  `uv run python -m portfolio_edge.experiments.exp_025_cautious_constructions --view-results`
+  from `research/`.

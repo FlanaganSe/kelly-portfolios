@@ -447,6 +447,11 @@ Holding the overlay at a constant share of the equity exposure — the candidate
 | **−50%** | 0.651 | 0.191 | **19.1%** | 0.842 |
 | −60% | 0.808 | 0.237 | **23.7%** | 1.045 |
 
+The −30% and −40% rows were applied whole and scored as objects in
+[cautious constructions](cautious-constructions.md) (Experiment 025): the row's base
+notional held on 1934 onward and on the fund-list panel, and fell 42% and 54% across
+1929–32, which is why the site prints the 96-year figure beside each row.
+
 **Every row is below the 30% proposed**, and the −50% row — a tolerance most people who say
 they can hold through a bear market would give — lands at **19.1%**. This is an *independent*
 route to the same answer §9 reaches from tracking error, and the two agreeing is worth more

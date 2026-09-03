@@ -32,6 +32,11 @@ retested; the current interpretation lives in the relevant synthesis.
   same book at a looser tolerance, the international share stops at 60/40 unless a
   tracking-error tolerance is stated, nothing from the September 2026 round is added, and a
   supplied tolerance is a review trigger rather than an open question.
+- [0014](0014-cautious-constructions-are-labelled-by-the-history-they-held.md): two
+  cautious constructions (RSST 11 / tilts 26 / SCHP 63 and RSST 15 / tilts 35 / SCHP 50) are
+  published for a tolerance of about −30% and −40% with the 96-year fall they actually held
+  in the same sentence, the trend line kept on registered evidence, the plain twins printed
+  beside them, and nothing labelled "for −30%" on the 96-year history.
 
 ## Scoped findings and historical corrections
 
