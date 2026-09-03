@@ -82,7 +82,7 @@ export default defineConfig({
     // A redirect that names a route a page still occupies replaces that page with a
     // stub, silently. These come on in wave 2, one per page deleted. Uncomment each line
     // with the page it retires.
-    // "/tools/placement/": "/tools/which-account/",
+    "/tools/placement/": "/tools/which-account/",
     "/research/": "/strategies/",
     // The evidence pages became the strategies pages.
     "/evidence/": "/strategies/",

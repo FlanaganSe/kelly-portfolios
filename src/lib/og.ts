@@ -131,12 +131,6 @@ export const OG_PAGES = {
     alt: `${SITE_NAME}: the page you asked for does not exist on this site.`,
   },
 
-  // Old routes, kept until wave 2 deletes the pages that render them. Delete each entry
-  // with its page.
-  "/tools/placement/": {
-    title: "Where to hold each fund",
-    alt: `${SITE_NAME}: the account-placement calculator, ranking the fund list by what a sheltered dollar of it saves.`,
-  },
 } as const satisfies Readonly<Record<string, OgPage>>;
 
 /** Indexable by an arbitrary path, without losing the literal keys above. */

@@ -6,7 +6,7 @@
  * the value as the source printed it, plus the interval, the window, the evidence
  * status, an `as of` date and a link back to the file that owns the fact.
  *
- *     <Figure id="sleeve-correlation" />
+ *     <Figure id="fee-gap" />
  *
  * Two renderings. The block is the label, the value, its interval, its note and one
  * source line — five things, where it used to be seven pieces of metadata around a
@@ -24,7 +24,7 @@
  */
 import { getCollection, getEntry } from "astro:content";
 import { citationHref } from "~/lib/citation";
-import { statusMeta } from "~/content/types";
+import { toConfidence } from "~/lib/rungs";
 
 interface Props {
   id: string;
@@ -53,7 +53,7 @@ if (!entry) {
 
 const figure = entry.data;
 const valueSize = { sm: "text-xl", md: "text-2xl", lg: "text-stat" }[size];
-const status = statusMeta[figure.status];
+const confidence = toConfidence(figure.status);
 
 // `citationHref` hands back nothing for a record whose only provenance is an internal
 // working note. That is deliberate: `docPath` names where a number came from, it is not
@@ -66,7 +66,7 @@ const href = citationHref(figure.source);
 const inlineTitle = [
   figure.label,
   figure.interval ? `Interval ${figure.interval}` : undefined,
-  `${status.label}, as of ${figure.asOf}`,
+  `${confidence}, as of ${figure.asOf}`,
   figure.source.label,
 ]
   .filter(Boolean)
