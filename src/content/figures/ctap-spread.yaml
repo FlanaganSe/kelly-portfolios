@@ -7,6 +7,6 @@ source:
   label: Market scan 2026, bid-ask spreads
   docPath: docs/research/market-scan-2026.md
 note: >-
-  3.3 times its displayed net fee, and a round trip of about 0.66%. Against RSST's 0.09% it is a
-  0.24% a year difference on a one-year hold, on a fund list where the entire fee spread among
-  the three candidate funds is 0.18%.
+  About three times its fee, and a round trip of about 0.66%. Against RSST's 0.09% it is a 0.24%
+  difference on a one-year hold, on a group of three stacked funds whose all-in charges differ by
+  less than that.

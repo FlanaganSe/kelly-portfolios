@@ -4,147 +4,105 @@
  *
  * NOT LEGAL ADVICE. Nothing here has been reviewed by a lawyer. The structure follows
  * the publisher's exclusion from the Investment Advisers Act as read in Lowe v. SEC,
- * 472 U.S. 181 (1985), which turns on three conditions: general and impersonal,
- * regular in cadence rather than timed to market events, and disinterested. The
- * footer sentence is the least important of the three. The impersonal condition is the
- * one that actually breaks, so it is stated on the page and on `/about/`.
- *
- * Securities counsel should review this page, and the whole site, before anything here
- * is monetised in any way — advertising, affiliate links, sponsorship, subscription or
- * paid consultation. Adding revenue changes which exclusion applies, and this wording
- * was not written for that case.
+ * 472 U.S. 181 (1985): general and impersonal, regular in cadence rather than timed to
+ * market events, and disinterested. Securities counsel should review this page before
+ * anything here is monetised in any way; adding revenue changes which exclusion applies.
  */
-import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
 import Base from "~/layouts/Base.astro";
 ---
 
 <Base
   title="Disclaimer"
-  description="General information about investing, published impersonally and on a schedule. Not advice, not a recommendation to buy or sell anything, and never an answer to an individual reader's question about their own portfolio."
+  description="General information about investing, published impersonally and on a schedule. Not advice, not a recommendation to buy or sell anything, and never an answer to a reader's question about their own portfolio."
+  asOf={null}
 >
+  <Hero
+    title="Disclaimer"
+    lede="Everything here is general information about how investing works. None of it is advice, and none of it takes any account of your situation."
+  />
+
   <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Disclaimer</h1>
-
-    <p>Everything here is general information about how investing works. None of it is advice, and none of it
-    takes any account of your situation. Three of the sections below are the conditions the site lives under, and
-    breaking one would change what the site is.</p>
-
-  </div>
-
-  <div class="prose mt-14">
-
     <h2 id="general">It is general, and it is impersonal</h2>
 
-    <p>The research here was measured against reference cases: a US federal individual investor, particular tax
-    brackets, particular account types, particular windows of history. You are not that person. Nothing here knows
+    <p>The results here were measured for a US federal individual investor at particular tax brackets, with
+    particular account types, over particular stretches of history. You are not that person. Nothing here knows
     your income, your tax bracket, your state, your debts, when you plan to stop working, or how you behaved the
-    last time your account fell by a third. Every one of those changes the answer, and several change it more than
-    anything this site has measured.</p>
+    last time your account fell by a third. Every one of those changes the answer.</p>
 
-    <p>None of it is a recommendation to buy or sell any security. Naming a fund is a measurement, never a
-    suggestion that you own it. No offer and no solicitation of any kind is being made.</p>
-
+    <p>Naming a fund is a measurement, never a suggestion that you own it. No offer and no solicitation of any
+    kind is being made.</p>
   </div>
 
   <div class="prose mt-14">
+    <h2 id="impersonal">I will never look at your portfolio</h2>
 
-    <h2 id="impersonal">This site never answers your question about your portfolio</h2>
+    <p>Not by email, not in an issue, not privately, and not with the names changed. A writer who reads your
+    holdings and tells you what to do with them is giving personal investment advice, whatever the page says at
+    the bottom, and a publisher stays outside the Investment Advisers Act only as long as the writing stays
+    entirely impersonal.</p>
 
-    <p>Not by email, not in an issue, not privately, not as a favour, and not with the names changed.</p>
-
-    <Callout kind="caveat" label="Why this one is on the page">
-      <p>
-        A publisher stays outside the Investment Advisers Act as long as the writing stays "entirely impersonal".
-        Reading someone's actual portfolio is where that stops, and no footer text repairs it.
-      </p>
-    </Callout>
-
-    <p>An author who reads your holdings and tells you what to do with them is giving personal investment advice,
-    whatever the page says at the bottom.</p>
-
-    <p>Questions about the method, an error in a number, or a source that does not say what a page claims are all
-    welcome. The answer will be a correction rather than a recommendation.</p>
-
-    <Callout kind="do-this">
-      <p>
-        If you want somebody to look at your own portfolio and tell you what to do, hire a fee-only fiduciary
-        adviser who is paid by you and by nobody else. That is a different service from this one, and it is the
-        right one for that question.
-      </p>
-    </Callout>
-
+    <p>If you want somebody to look at your own portfolio and tell you what to do, hire a fee-only fiduciary
+    adviser who is paid by you and by nobody else. Questions about the method, an error in a number, or a source
+    that does not say what a page claims are welcome. The answer will be a correction, not a recommendation.</p>
   </div>
 
   <div class="prose mt-14">
+    <h2 id="cadence">It is published on a schedule, never because the market moved</h2>
 
-    <h2 id="cadence">It is published on a schedule, and never because the market moved</h2>
-
-    <p>Pages are revised when new evidence lands, or on a date written into the page in advance. Where a fund's own
-    filings will answer a question at a known future date, the page says when it will be read again, and it is read
-    then whether or not anything exciting has happened by then.</p>
-
-    <p>Nothing here will ever be published because the market moved. That is partly the legal condition and partly
-    the project's own finding: a rule reviewed on price cannot be told apart from a rule abandoned in a fall.
-    Reviewing on the calendar is the only review that means anything.</p>
-
+    <p>Pages are revised when new evidence lands or on a date written into the page in advance. Nothing here will
+    ever be published because the market moved. That is partly a legal condition and partly a finding: a rule
+    reviewed on price cannot be told apart from a rule abandoned in a fall.</p>
   </div>
 
   <div class="prose mt-14">
-
     <h2 id="risk">Investing can lose you everything</h2>
 
-    <p>All investing carries risk, including the total loss of the money you put in. Past performance tells you
-    what happened. It does not tell you what will happen, and the gap between those two sentences is where most of
-    the damage in this field gets done.</p>
-
-    <p>Diversification reduces some risks and creates others. Every portfolio here has spent long stretches behind
-    a plain index fund, and the site says by how much. Cheap US companies ran
-    <Figure id="value-drawdown" inline showUnit={false} /> the US market across nearly eighteen years and never
-    caught up. International stocks ran <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over a
-    similar stretch. That is the record, not a simulation.</p>
+    <p>All investing carries risk, including the loss of everything you put in. Past performance tells you what
+    happened, not what will happen. Every portfolio here has spent long stretches behind a plain index fund, and
+    the site says by how much: cheap US companies ran <Figure id="value-drawdown" inline showUnit={false} /> the
+    US market across nearly eighteen years and never caught up, and international stocks ran
+    <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over a similar stretch. That is the record,
+    not a simulation.</p>
 
     <h3 id="backtests">Backtested results are hypothetical</h3>
 
     <p>A backtest is what a rule would have produced if somebody had run it, on data chosen after the fact, by
-    someone who already knows how the story ends. It is hindsight with a chart attached. Nobody earned those
-    returns, no fee was paid, no trade was filled, and no investor sat through the fall in the middle without
-    knowing how it ended. Read every backtested number here down for that, on top of the range printed beside it.</p>
+    someone who already knows how the story ends. Nobody earned those returns, no fee was paid, and nobody sat
+    through the fall in the middle without knowing how it ended. Read every backtested number here down for
+    that, on top of the range printed beside it.</p>
 
     <h3 id="kelly">Position sizing assumes numbers nobody has</h3>
 
     <p>This site is named after the Kelly criterion, which works out the bet size that grows your money fastest
-    over the long run when you know the odds. You do not know the odds, nobody does, and the arithmetic does not
-    fail gently when you are wrong. Overestimate your advantage by a factor of two and the formula that maximised
-    growth now destroys it, with falls along the way most people cannot sit through. So every probability printed
-    here is a best case, and the real chance is lower by an amount nobody can state.</p>
-
+    when you know the odds. You do not know the odds, nobody does, and the arithmetic does not fail gently when
+    you are wrong. Overestimate your advantage by a factor of two and the formula that maximised growth now
+    destroys it. Every probability printed here is a best case, and the real chance is lower by an amount nobody
+    can state.</p>
   </div>
 
   <div class="prose mt-14">
-
     <h2 id="scope">Tax, jurisdiction and accuracy</h2>
 
-    <p>The tax arithmetic here assumes a US federal individual investor at particular brackets, and it ignores
-    every state and every local tax. It is not tax advice, and a result that holds in a US taxable account is
-    sometimes exactly backwards elsewhere. Talk to somebody licensed before acting on it.</p>
+    <p>The tax arithmetic assumes a US federal individual investor and ignores every state and local tax. It is
+    not tax advice, and a result that holds in a US taxable account is sometimes exactly backwards elsewhere.
+    Talk to somebody licensed before acting on it.</p>
 
-    <p>No warranty is given on any of this: not on the accuracy of a number, not on a source still saying what it
-    said when it was read, and not on the site being available. Data providers restate their own history without
-    notice, and this project has been caught by that. The author accepts no liability for any loss arising from
-    anything on this site, to the fullest extent the law allows.</p>
+    <p>No warranty is given on any of this: not on the accuracy of a number, not on a source still saying what
+    it said when it was read, and not on the site being available. I accept no liability for any loss arising
+    from anything on this site, to the fullest extent the law allows.</p>
 
     <h3 id="uk">United Kingdom</h3>
 
     <p>This site is not directed at retail consumers in the United Kingdom, and nothing on it is a financial
-    promotion under section 21 of the Financial Services and Markets Act 2000. The author is not authorised or
-    regulated by the Financial Conduct Authority.</p>
+    promotion under section 21 of the Financial Services and Markets Act 2000. I am not authorised or regulated
+    by the Financial Conduct Authority.</p>
 
-    <h3 id="not-legal-advice">And this page is not legal advice either</h3>
+    <h3 id="not-legal-advice">This page is not legal advice either</h3>
 
-    <p>The same non-lawyer wrote it, and it describes the conditions this project intends to keep rather than a
-    legal opinion that it has kept them. Do not copy it for your own site. <a href="/about/">Who writes this</a>
-    and <a href="/disclosures/">what it is paid for</a> are the context.</p>
-
+    <p>The same non-lawyer wrote it. It describes the conditions this site intends to keep, not a legal opinion
+    that it has kept them. <a href="/about/">The about page</a> and
+    <a href="/disclosures/">the disclosures page</a> are the context.</p>
   </div>
 </Base>

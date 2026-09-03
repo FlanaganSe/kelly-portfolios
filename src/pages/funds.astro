@@ -5,7 +5,7 @@
  * `src/content/shelf.ts` is the canonical record for a ticker and this page prints the
  * three fields that need no window attached to be read: the published fee, the fee less
  * securities-lending income, and the verdict. Delivered exposures and beat-the-market
- * figures are deliberately absent — each names a panel and a window, they were fitted on
+ * figures are deliberately absent: each names a panel and a window, they were fitted on
  * different months, and a column of them side by side would be the comparison
  * `rankLoadings` refuses to make.
  *
@@ -33,8 +33,9 @@
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
 import Base from "~/layouts/Base.astro";
-import { fundByTicker, shelf, shelfAsOf, shelfAudit } from "~/content/shelf";
+import { fundByTicker, shelf, shelfAsOf } from "~/content/shelf";
 import type { ShelfCategory, ShelfFund } from "~/content/shelf";
 import type { EvidenceStatus } from "~/content/types";
 
@@ -56,8 +57,8 @@ const CATEGORY_LABEL = {
   "emerging-core": "Emerging markets, the whole market",
   "emerging-value": "Emerging markets, cheaper companies",
   bonds: "Bonds",
-  "managed-futures": "Funds that follow price trends",
-  "capital-efficient": "Funds that hold two things for every dollar you put in",
+  "managed-futures": "Trend-following funds (managed futures)",
+  "capital-efficient": "Stacked funds: two holdings for every dollar you put in",
   alternative: "Everything else",
 } as const satisfies Readonly<Record<ShelfCategory, string>>;
 
@@ -131,30 +132,40 @@ const nothingMeasured = (fund: ShelfFund) =>
 
 /** The research word for a verdict, in the words a reader would use for it. */
 const VERDICT_LABEL = {
-  exploratory: "Still a candidate",
-  "source-reproduced": "Still a candidate",
-  "independently-reproduced": "Still a candidate",
-  "walk-forward-tested": "Still a candidate",
-  "shadow-live": "Still a candidate",
-  "production-eligible": "Still a candidate",
-  rejected: "Didn’t earn a place",
-  unresolved: "We can’t tell",
+  exploratory: "Still in the running",
+  "source-reproduced": "Still in the running",
+  "independently-reproduced": "Still in the running",
+  "walk-forward-tested": "Still in the running",
+  "shadow-live": "Still in the running",
+  "production-eligible": "Still in the running",
+  rejected: "Didn’t make the cut",
+  unresolved: "Too close to call",
 } as const satisfies Readonly<Record<EvidenceStatus, string>>;
 
 const verdictOf = (fund: ShelfFund): string => {
   if (fund.status) return VERDICT_LABEL[fund.status];
-  return nothingMeasured(fund) ? "Nothing measured" : "Priced, not scored";
+  return nothingMeasured(fund) ? "Too new to say" : "Priced only";
+};
+
+/**
+ * Which of the four portfolios hold a fund. Derived from the published holdings, kept
+ * separate from the verdict: a fund can be still in the running and held by none of them.
+ */
+const IN_PORTFOLIOS: Readonly<Record<string, string>> = {
+  VT: "Portfolios 1 and 2",
+  VTI: "Portfolios 3 and 4",
+  VTV: "Portfolios 3 and 4",
+  VXUS: "Portfolios 3 and 4",
+  AVDV: "Portfolios 3 and 4",
+  IDMO: "Portfolios 3 and 4",
+  AVES: "Portfolios 3 and 4",
+  RSST: "Portfolio 4",
 };
 
 const unmeasured = shelf.filter(nothingMeasured);
 
-const spy = fundByTicker("SPY");
-const voo = fundByTicker("VOO");
-const bnd = fundByTicker("BND");
-const spab = fundByTicker("SPAB");
 const iemg = fundByTicker("IEMG");
 const vwo = fundByTicker("VWO");
-const spdw = fundByTicker("SPDW");
 const ctap = fundByTicker("CTAP");
 const rsst = fundByTicker("RSST");
 const dfev = fundByTicker("DFEV");
@@ -184,45 +195,38 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const
 ---
 
 <Base
-  title="Every fund we priced, and what each one really costs"
-  description="Sixty-six funds read from their own filings to the SEC: what each charges, what it actually costs once the income it earns lending its shares is counted, and the verdict attached to it."
+  title="Every fund, and what it really costs"
+  description={`${shelf.length} funds read from their own filings. What each one charges, what it costs once the income from lending its shares is counted, and the verdict attached to it.`}
+  wide
 >
+  <Hero
+    title="Every fund, and what it really costs"
+    lede="A fund’s real cost is its published fee minus what it earns by lending out the shares it holds, and that second number reorders the list."
+  />
+
   <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Every fund we priced, and what each one really costs</h1>
+    <p>Funds lend their shares to other investors, mostly to people betting a price will fall, and keep part of
+    the payment. That income comes back to you inside the fund, so the fee on the label overstates what you hand
+    over. Almost nobody publishes the second number. The <span data-numeric>{shelf.length}</span> funds below were
+    read from their own filings on or before <span data-numeric>{shelfAsOf}</span>, and the Cost column is the fee
+    minus that lending income.</p>
 
-    <p class="lead">A fund&rsquo;s real cost is its published fee less what it earns lending its shares out, and
-    that reorders the list. Read this before you pick between two funds that look the same.</p>
+    <p>Two examples show why the column matters. IEMG charges <span data-numeric>{pct(feeOf(iemg))}</span> a year
+    and VWO charges <span data-numeric>{pct(feeOf(vwo))}</span>, and both hold the same emerging-market stocks.
+    Lending covers IEMG&rsquo;s whole fee and pays you
+    <span data-numeric>{perTenThousand(-costOf(iemg))}</span> on every $10,000 on top, so the fund with the higher
+    fee is the cheaper one to own. SPY goes the other way: it costs <Figure id="spy-net-cost" inline /> a year,
+    three to five times as much as every other fund tracking the same 500 companies, because a trust set up in
+    1993 cannot lend its holdings at all.</p>
 
-    <p>Funds lend the shares they hold to other investors, mostly to people betting the price will fall, and keep
-    part of the payment. That income comes back to you inside the fund, so the fee on the label overstates what
-    you hand over. Almost nobody publishes the second number. <span data-numeric>{shelf.length}</span> funds are
-    below, read from their own filings on or before <span data-numeric>{shelfAsOf}</span>, and the Cost column is
-    the fee less that income. It does not put the funds in the same order the fee does.</p>
+    <p>If you are buying to hold for years, compare the Cost column. A cost of
+    <span data-numeric>0.10%</span> a year is $10 on every $10,000, every year.</p>
 
-    <p>IEMG charges <span data-numeric>{pct(feeOf(iemg))}</span> a year against VWO&rsquo;s
-    <span data-numeric>{pct(feeOf(vwo))}</span>, half as much again, and both are sold as the same emerging-market
-    exposure. Lending covers IEMG&rsquo;s whole fee and
-    <span data-numeric>{perTenThousand(-costOf(iemg))}</span> on every $10,000 besides, so owning it pays you a
-    little. VWO costs <span data-numeric>{perTenThousand(costOf(vwo))}</span> on the same $10,000. The dearer fund
-    is the cheaper one to hold.</p>
-
-    <p>SPY is the other direction. It costs <Figure id="spy-net-cost" inline /> a year, three to five times what
-    every other fund tracking the same 500 companies costs, because a 1993 trust of its kind cannot lend its
-    holdings at all and holds dividends in a non-interest-bearing account until it pays them out. On $100,000 that
-    is about
-    <span data-numeric>${(costOf(spy) * 10).toFixed(0)}</span> a year against about
-    <span data-numeric>${(costOf(voo) * 10).toFixed(0)}</span> for VOO, which owns the same companies.</p>
-
-    <p>The same thing happens on an identical sticker price. BND and SPAB both charge
-    <span data-numeric>{pct(feeOf(bnd))}</span>. BND lends nothing at all, so it costs the whole
-    <span data-numeric>{pct(costOf(bnd))}</span>; SPAB lends, so it costs <span data-numeric>{pct(costOf(spab))}</span>.
-    Same fee, and BND is the dearest broad bond fund here. Three funds cost less than nothing to own once lending
-    is counted, of which SPDW is the largest at <span data-numeric>{pct(costOf(spdw))}</span>.</p>
-
-    <Callout kind="do-this">
+    <Callout kind="caveat" label="How to read the table">
       <p>
-        Compare the Cost column rather than the Fee column. If you are buying to hold for years, cost is what you
-        actually pay. A cost of <span data-numeric>0.10%</span> a year is $10 on every $10,000, every year.
+        Fee is what the fund publishes. Cost is the fee minus lending income, and it is what you actually pay. A
+        dash in the Cost column means nobody has read that fund&rsquo;s lending income yet, not that the fund
+        lends nothing.
       </p>
     </Callout>
   </div>
@@ -274,7 +278,10 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const
                   {pct(fund.netCostBp)}
                 </td>
                 <td role="cell" data-label={COLUMNS[3]} class="py-2 text-xs sm:whitespace-nowrap">
-                  {verdictOf(fund)}
+                  <span class="block">{verdictOf(fund)}</span>
+                  {IN_PORTFOLIOS[fund.ticker] && (
+                    <span class="held-in block text-ink-3">{IN_PORTFOLIOS[fund.ticker]}</span>
+                  )}
                 </td>
               </tr>
             ))}
@@ -285,75 +292,54 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const
   </Breakout>
 
   <div class="prose mt-12">
-    <p>A dash in the Cost column means nobody has read that fund&rsquo;s lending income, which is a gap in the
-    work rather than a fund that lends nothing. Where a fund lends nothing, the number is printed and it equals
-    the fee.</p>
+    <h2>What the verdict words mean</h2>
 
-    <h2>What the four verdicts mean</h2>
+    <p>Every fund carries one of five words. The portfolio pages say which funds each of the four portfolios
+    holds; a fund can be still in the running and held by none of them.</p>
 
-    <p><strong>Didn&rsquo;t earn a place</strong> means the fund was measured against a cheap combination that
-    does much the same job, and it lost. <strong>We can&rsquo;t tell</strong> means the run of months available
-    was too short to answer the question either way, which is a statement about the evidence rather than about
-    the fund. <strong>Still a candidate</strong> means it delivers what it sells and nothing has ruled it out.
-    <strong>Priced, not scored</strong> means the cost was read and no comparison was run.</p>
+    <ul>
+      <li><strong>Still in the running.</strong> The fund delivers what it sells, and nothing has ruled it
+      out.</li>
+      <li><strong>Didn&rsquo;t make the cut.</strong> The fund was measured against a cheap combination that
+      does much the same job, and it lost.</li>
+      <li><strong>Too close to call.</strong> The fund has too few months of history for the data to say either
+      way. That is a statement about the evidence, not about the fund.</li>
+      <li><strong>Too new to say.</strong> The filings that would show what the fund holds do not exist yet. You
+      get a fee, because a fee is printed in a prospectus. You do not get a cost or a verdict. Today that is
+      <span data-numeric>{unmeasured.map((fund) => fund.ticker).join(", ")}</span>.</li>
+      <li><strong>Priced only.</strong> The cost was read and no comparison was run.</li>
+    </ul>
+
+    <p>There is no beat-the-market column. Whether a fund beat what its holdings alone would have paid is a
+    question the data almost never answers, and a column of those answers would read as a finding when it is
+    mostly noise.</p>
   </div>
 
-  <Callout kind="caveat" label={`${unmeasured.length} funds here have nothing measured behind them`}>
-    <p>
-      <span data-numeric>{unmeasured.map((fund) => fund.ticker).join(", ")}</span> are new enough that the filings
-      showing what they hold do not exist yet. You get a fee, because a fee is printed in a prospectus. You do not
-      get a cost or a verdict, because neither has been produced. That is a statement about the evidence rather
-      than about the funds.
-    </p>
-  </Callout>
-
   <div class="prose mt-12">
-    <h2>You pay the spread once. You pay the fee every year.</h2>
+    <h2>Two things that matter besides the fee</h2>
 
-    <p>The spread is the gap between the price you buy at and the price you could sell at, and you pay it on the
-    way in. Over a long hold the yearly fee wins: SPY has the tightest spread of any fund here and still costs the
-    most to own. Shorten the hold and it turns around.</p>
+    <p><strong>The spread.</strong> The spread is the gap between the price you buy at and the price you could
+    sell at, and you pay it once, on the way in. Over a long hold the yearly fee wins: SPY has the tightest
+    spread of any fund here and still costs the most to own. Over a short hold the spread can decide.
+    CTAP&rsquo;s spread is <Figure id="ctap-spread" inline showUnit={false} /> of its price against RSST&rsquo;s
+    <Figure id="rsst-spread" inline showUnit={false} />. Hold either for one year and that gap is worth about
+    <span data-numeric>{pct(spreadGapBp)}</span>, on a group of three funds whose all-in charges differ by only
+    <span data-numeric>{pct(stackedAllInRangeBp)}</span>.</p>
 
-    <p>CTAP&rsquo;s spread is <Figure id="ctap-spread" inline showUnit={false} /> of the price against RSST&rsquo;s
-    <Figure id="rsst-spread" inline showUnit={false} />. Hold either for a year and that gap is worth about
-    <span data-numeric>{pct(spreadGapBp)}</span> a year, on a group of three funds whose all-in charges — the fee,
-    plus what the funds inside them charge — differ by only <span data-numeric>{pct(stackedAllInRangeBp)}</span>.
-    Count the entry cost and CTAP is the dearest of the three rather than the cheapest. The two never add up,
-    because one is paid once and the other every year, and which of them decides is a question about how long you
-    hold.</p>
-
-    <h2>Some fees have an end date</h2>
-
-    <p>DFEV&rsquo;s <span data-numeric>{pct(feeOf(dfev))}</span> holds only while a waiver runs, through
-    <span data-numeric>{recheckOn(dfev)}</span>. FFUT&rsquo;s <span data-numeric>{pct(feeOf(ffut))}</span> is a cap
-    its board can let lapse after <span data-numeric>{recheckOn(ffut)}</span>. CTAP charges less than the
-    <span data-numeric>{pct(feeOf(ctap))}</span> shown until its own waiver ends on
-    <span data-numeric>{recheckOn(ctap)}</span>, and the full figure afterwards. If you still hold any of the three
-    past those dates, read the fee again.</p>
-
-    <h2>There is no beat-the-market column</h2>
-
-    <p>That is deliberate. We ran <span data-numeric>{shelfAudit.alphaTests}</span> tests of whether a fund beat
-    what its exposures alone would have paid. <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> survived
-    the correction for having run so many, and all
-    <span data-numeric>{shelfAudit.alphaTestsSurviving}</span> came out negative. The smallest gap a test like this
-    can usually see is about <span data-numeric>{shelfAudit.medianDetectableAlphaUsPpYr}</span> percentage points a
-    year, against roughly <span data-numeric>{shelfAudit.trueAlphaDispersionPpYr}</span> points of real difference
-    between funds. So the test mostly reports noise, and a column of it would read as a finding.</p>
-
-    <p>How much of a thing each fund delivers is missing for a plainer reason. Each of those figures was fitted on
-    the months that fund had filed, and the runs of months do not match. VTV carries 72 of them and DFLV 36. On
-    the 36 they share, VTV&rsquo;s exposure to cheap companies rises from +0.337 to +0.520, which takes the
-    published order of the US value funds apart. Two such figures side by side would compare answers to two
-    different questions.</p>
+    <p><strong>Fees with an end date.</strong> Some published fees hold only while a waiver runs. DFEV&rsquo;s
+    <span data-numeric>{pct(feeOf(dfev))}</span> holds through <span data-numeric>{recheckOn(dfev)}</span>.
+    FFUT&rsquo;s <span data-numeric>{pct(feeOf(ffut))}</span> is a cap its board can let lapse after
+    <span data-numeric>{recheckOn(ffut)}</span>. CTAP charges less than the
+    <span data-numeric>{pct(feeOf(ctap))}</span> shown until <span data-numeric>{recheckOn(ctap)}</span>. If you
+    still hold any of these past those dates, read the fee again.</p>
   </div>
 
   <Callout kind="caveat" label="Where this comes from">
     <p>
-      Fees and lending income are read from each fund&rsquo;s own annual filings to the SEC. Spreads are read from
-      the 30-day median disclosure every exchange-traded fund has to publish. Everything here was read on or
-      before <span data-numeric>{shelfAsOf}</span>. Fund facts go stale, so a year from now the right move is to
-      read them again rather than to quote this page.
+      Fees and lending income come from each fund&rsquo;s own annual filings. Spreads come from the 30-day
+      figure every exchange-traded fund has to publish. Everything here was read on or before
+      <span data-numeric>{shelfAsOf}</span>. Fund facts go stale, so a year from now the right move is to read
+      them again rather than to quote this page.
     </p>
   </Callout>
 </Base>

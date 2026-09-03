@@ -1,177 +1,145 @@
 ---
 /**
- * Who writes this, how the work is done, how sure the site says it is, and what stands
- * in place of a credential.
- *
- * This page absorbed two that used to exist beside it: a methodology page and a
- * confidence page. The reason they went is that a reader deciding whether to trust a
- * site does it once, on one page, and three pages arguing the same case let each one
- * grow a slightly different version of the AI disclosure. There is now exactly one.
- *
- * The argument is deliberate. A page about retirement money with no named author is
- * worth nothing, and a page that invents a credential, a review board or a "reviewed by"
- * line is worth less than nothing, because a reader who catches one invention has to
- * throw out everything else too.
- *
- * Keep it short. Every count that meant something only inside the project — how many
- * experiments ran, how many entries a ledger holds, how many specifications were frozen
- * — was cut, because none of it tells a reader anything they can use.
+ * Who writes this, how each idea is measured, what the four confidence words mean, and
+ * what AI did and did not do. One page, because a reader deciding whether to trust a
+ * site does it once.
  */
-import Callout from "~/components/Callout.astro";
+import Hero from "~/components/Hero.astro";
+import Verdict from "~/components/Verdict.astro";
 import Base from "~/layouts/Base.astro";
+import { REPO_URL } from "~/lib/site";
+
+const WORDS = [
+  {
+    word: "Settled",
+    gloss: "Arithmetic, a contract, or a tax rule. The only question left is whether you do it.",
+  },
+  {
+    word: "Probably",
+    gloss:
+      "Measured, larger than the smallest thing the test could have seen, and it held up when I tried to break it. The size is a range, not a point.",
+  },
+  {
+    word: "Too close to call",
+    gloss: "The range covers real help and real harm. Not a yes and not a no.",
+  },
+  {
+    word: "No",
+    gloss: "Measured, and it cost more than it earned, or it failed a test set in advance.",
+  },
+] as const;
 ---
 
 <Base
-  title="About this site and the person who writes it"
-  description="Sean Flanagan writes this. He holds no financial licence and no professional credential, the site sells nothing, and what stands in place of a credential is public data, published sources, a stated way of being wrong, and a corrections log."
+  title="About this site"
+  description="Who writes it, how each idea is measured, what the four confidence words mean, and what AI did and did not do."
+  asOf={null}
 >
+  <Hero
+    title="About this site"
+    lede="One person writes this. I am Sean Flanagan, a software engineer in the United States, and I do this in my own time."
+  />
+
   <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">About this site and the person who writes it</h1>
-
-    <p class="lead">Who writes this, how the measuring is done, how sure each page says it is, and what stands in
-    place of a credential nobody here holds.</p>
-
-    <p>One person writes this. Sean Flanagan, a software engineer in the United States, working in his own time.
-    He holds no financial licence and no credential of any kind, and you should know that before the first
-    number.</p>
-
-    <p>He is not a registered investment adviser. He does not work for a broker or an advisory firm, he is not a
-    financial planner, and he holds no CFA, CFP, CPA, Series 7 or Series 65. No licence, no firm, no professional
-    body, no review board, and nobody reviews a page before it goes up. No employer and no client is anywhere near
-    this work.</p>
+    <p>I hold no financial licence and no credential of any kind, and nobody reviews a page before it goes up.
+    Nothing pays for the site: no advertising, no affiliate links, no sponsors, and no money from any fund
+    company, broker or data provider. Whatever I own of the funds named here is stated on
+    <a href="/disclosures/">the disclosures page</a>, and I will not hold anything I would not disclose there.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>How the measuring is done</h2>
+    <h2>How the measuring works</h2>
 
-    <p>The order matters more than the machinery. Before anything is run, what is being measured gets written
-    down: which years, which funds, what it will be compared against, what would count as a pass and what would
-    count as a failure. Then it runs, with the real costs of trading and the real tax charged inside it. Then the
-    answer goes up whether or not it is the one we hoped for.</p>
+    <p>Every idea on this site is tested inside a whole portfolio, not on its own. The question is never
+    &ldquo;did gold go up&rdquo; but &ldquo;did adding gold to this portfolio, paid for by selling some of this
+    portfolio, leave you better off than a cheap index fund holding the same mix&rdquo;. Fund fees and trading
+    costs are charged inside every test, because an idea that only works before costs does not work.</p>
 
-    <p>Writing the test down first is the whole trick, and it is there for an unflattering reason. A bar you can
-    move after seeing the number stops being a bar. Nobody moves one on purpose; what people do is notice,
-    entirely sincerely, that the original bar was badly chosen, and that thought only ever arrives in one
-    direction.</p>
+    <p>A result is only trusted when the data could actually have told the difference. Returns bounce around,
+    and before running a test you can work out how large an effect would have to be for the history to show it.
+    If the measured gap is smaller than that, the test proves nothing in either direction, and the page says
+    so.</p>
 
-    <p>Everything is measured against something a person could actually have held instead, usually a cheap index
-    fund. A number with no comparison attached is not a finding. The data is free and public: funds&rsquo; own
-    annual filings to the SEC, and the long return series that academics and central banks publish. Every number
-    on the site carries the date it was read, because fund facts go stale.</p>
+    <p>The test is written down before it runs: which years, which funds, what it is compared against, and what
+    counts as a pass. Then it runs, and the answer goes up whether or not it is the one I hoped for.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>How sure we are</h2>
+    <h2>The four confidence words</h2>
 
-    <p>Every claim here carries one of four words.</p>
+    <p>Every claim here carries one of these.</p>
 
-    <p class="confidence" data-level="settled">
-      <span class="confidence-word">Settled</span>
-      <span class="confidence-gloss">Arithmetic, a contract or a tax rule. The only question left is whether you
-      do it.</span>
-    </p>
+    <ul class="word-list">
+      {
+        WORDS.map(({ word, gloss }) => (
+          <li>
+            <Verdict word={word} />
+            <span>{gloss}</span>
+          </li>
+        ))
+      }
+    </ul>
 
-    <p class="confidence" data-level="probably">
-      <span class="confidence-word">Probably</span>
-      <span class="confidence-gloss">Measured, larger than the smallest thing the test could have seen, and it
-      held up when we tried to break it. The size is a range rather than a point.</span>
-    </p>
-
-    <p class="confidence" data-level="might">
-      <span class="confidence-word">Might work</span>
-      <span class="confidence-gloss">The reason it should work is real and the measurement is thin. Something
-      about the test is wrong, and the page says what.</span>
-    </p>
-
-    <p class="confidence" data-level="cant-tell">
-      <span class="confidence-word">We can&rsquo;t tell</span>
-      <span class="confidence-gloss">The range covers real help and real harm. Neither a yes nor a no.</span>
-    </p>
-
-    <p>The last of those is the most common verdict on the site, and it is the one most likely to be misread.
-    &ldquo;We can&rsquo;t tell&rdquo; and &ldquo;no&rdquo; are different findings. Returns bounce around, and
-    before running a test you can work out how large a difference would have to be before the data could pull it
-    back out of that bouncing. Under that size, a real effect and no effect produce the same-looking answer, so
-    the test proves nothing in either direction.</p>
-
-    <p>The rule for selling out of stocks when the market falls below its 200-day average is the cleanest example.
-    Against a fair comparison it came out ahead by a small amount, and the smallest gap that test could have
-    detected was several times larger. The measurement is real and the arithmetic is right, and the honest reading
-    is still that <a href="/evidence/market-timing/">we cannot see</a>. Printing the gap as a finding would report
-    the width of our own ignorance.</p>
-
-    <p>Nothing here is ever coloured green for good news. A coloured badge answers two questions with one mark, how
-    sure we are and whether the news is welcome, and those are different questions. A settled claim can be settled
-    bad news, and the best idea on the site might be one nobody can measure yet.</p>
-
-    <p>One rule cuts across all four words. Every probability printed here is a best case, because the arithmetic
-    behind it assumes we know exactly how large the advantage is. We do not. The real chance is lower, by an
-    amount nobody can state.</p>
+    <p>&ldquo;Too close to call&rdquo; is the most common verdict here and the one most likely to be misread. It
+    is not a polite no. It means the history is too short or too noisy to answer, and the page says what would
+    change that.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>AI wrote most of this, and here is what that means</h2>
+    <h2>What AI did</h2>
 
-    <p>Almost every line of code, analysis and prose behind this site was drafted by a large language model, then
-    cut and rearranged by a person who is responsible for what it says. Saying so is more useful than the
-    alternative, which you would work out anyway.</p>
-
-    <p>The checking is deliberately mechanical, because a model that wrote a number is the wrong reviewer for it.
-    No number is typed into a paragraph: a sentence names a record, the record carries the value, its range, its
-    date and the source it came from, and the site fails to build if that source has moved. A word list fails the
-    build on the vocabulary language models reach for. Every page is read line by line by a person before it goes
-    up.</p>
-
-    <p>What none of that catches is the main risk. A model produces a plausible wrong number far more readily than
-    an implausible one, and plausible wrong numbers survive review by other models.</p>
-
-    <Callout kind="caveat">
-      <p>
-        Nine of these models, sharing one set of data and one house style, agreed on a portfolio recommendation in
-        August 2026. A hostile review of that session found two of its five conclusions unsafe as stated and one
-        wrong by a factor of ten. Agreement between models proves nothing, and this project has the receipt: four
-        entries on <a href="/corrections/">the corrections log</a> came out of that review, including the largest
-        one.
-      </p>
-    </Callout>
+    <p>AI models did most of the calculating and most of the first drafting. I check every number against its
+    source and rewrite the words. No number is typed into a paragraph: each points at a record carrying its
+    value, its range, the date it was read, and where it came from, and the site refuses to build if that source
+    has moved. The models have been wrong here, sometimes by a lot, and every error that changed a conclusion is
+    on <a href="/corrections/">the corrections page</a> with its date and what caught it.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What stands in place of a credential</h2>
+    <h2>What this site will never do</h2>
 
-    <p>Shown work, and a great deal of it. Every number names the source it came from and the day that source was
-    read. Every claim that would be worth acting on carries the thing that would prove it wrong, printed beside
-    it. Every error found so far is on <a href="/corrections/">the corrections log</a> with its date and what
-    caught it. The code and the data behind the site are public, including the commits that undo the previous
-    week, and the link is at the foot of every page.</p>
-
-    <p>None of that makes a conclusion correct. It makes each one checkable, which is the only offer anybody
-    without a licence can honestly make. If you find an error, the fastest way to report it is an issue on that
-    public repository. A number, its source, and the sentence you think it contradicts is enough, and you do not
-    need to be polite about it.</p>
-
-    <p>Nothing pays for the site. No advertising, no affiliate links, no sponsors, no paid placement and no money
-    from any fund company, broker or data provider. Nothing to subscribe to and nothing to buy. Hosting costs a
-    few dollars a month and comes out of the author&rsquo;s own pocket, and
-    <a href="/disclosures/">the disclosures page</a> lists the interests that do exist. A site with nothing to
-    sell can still be wrong; having no advertiser removes one way of being wrong out of many.</p>
-
-    <Callout kind="caveat">
-      <p>
-        Nothing here has been checked by a securities lawyer, a tax adviser or an accountant. The tax arithmetic
-        assumes a US federal individual investor and ignores every state, and a US-specific tax result is
-        sometimes exactly backwards somewhere else.
-      </p>
-    </Callout>
+    <p>It will never answer a question about your money, not by email, not privately, and not with the names
+    changed. I do not know your tax bracket, your job, or how you behaved the last time your account fell by a
+    third, and a general answer dressed as a personal one is worse than none.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>The one thing this site will never do</h2>
+    <h2>Checking the work</h2>
 
-    <p>It will never answer a question about your portfolio. Not by email, not privately, and not with the names
-    changed. Nobody here knows your tax bracket, your job security, what you owe or when you stop working, and a
-    general answer dressed as a personal one is worse than no answer, because you would act on it.
-    <a href="/disclaimer/">The disclaimer</a> says the rest. Questions about the method, the data or an error in a
-    number are welcome.</p>
+    <p>The code and the data behind every page are public at
+    <a href={REPO_URL} rel="noopener noreferrer">the source</a>, including the history of what changed. If you
+    find an error, open an issue there with the number, its source, and the sentence you think it contradicts.
+    You do not need to be polite about it.</p>
+
+    <p>Nothing here has been checked by a securities lawyer, a tax adviser or an accountant. The tax arithmetic
+    assumes a US federal individual investor and ignores every state. <a href="/disclaimer/">The disclaimer</a>
+    says the rest.</p>
   </div>
 </Base>
+
+<style>
+  .word-list {
+    list-style: none;
+    padding: 0;
+  }
+
+  .word-list > li {
+    display: grid;
+    grid-template-columns: 9.5rem 1fr;
+    gap: 0.5rem 1rem;
+    align-items: baseline;
+    padding: 0.6rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .word-list > li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  @media (width < 32rem) {
+    .word-list > li {
+      grid-template-columns: 1fr;
+      gap: 0.25rem;
+    }
+  }
+</style>

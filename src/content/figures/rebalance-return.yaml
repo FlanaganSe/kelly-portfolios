@@ -1,4 +1,4 @@
-label: An annual review acting on a 25% band, against never trading at all
+label: A yearly review acting on a 25% band, against never trading at all
 value: −0.09%
 unit: a year
 status: unresolved
@@ -8,11 +8,7 @@ source:
   docPath: docs/research/rebalancing-policy.md
   anchor: conclusion-part-a-rebalancing-as-a-source-of-return
 note: >-
-  The published portfolio's own policy over 427 months. The test could only have seen a
-  difference of 1.81 percentage points or wider, so this is too small to read either way. It is
-  not a measurement of zero. A separate experiment on a different universe, a 60/30/10 mix of
-  three regional stock indexes over 420 months to 2025, put monthly rebalancing 0.44 points a
-  year behind never trading; that same difference measured on log growth and before costs is
-  the −0.387% that the total of everything measured here carries. Two portfolios and two policies, never quoted
-  as one figure. Rebalance to control how much risk you hold, which is settled, and expect
-  nothing else from it.
+  The portfolio's own policy, an annual review acting when a holding is a quarter off target,
+  over 427 months to May 2026. The test could only have seen a gap of about 1.8 points a year
+  or wider, so this is too small to read either way and is not a measurement of zero. Rebalance
+  to control how much risk you hold, and expect nothing else from it.

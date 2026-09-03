@@ -11,6 +11,7 @@
  */
 import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
+import Hero from "~/components/Hero.astro";
 import PlacementTool from "~/components/islands/PlacementTool";
 import { fill, forfeitedCreditBp, percentOfBp, queue, ratePercent, shelf } from "~/components/islands/placement-model";
 import Base from "~/layouts/Base.astro";
@@ -41,50 +42,71 @@ const COLUMNS = ["#", "Fund", "Share", "Saved per dollar sheltered", "Goes in"] 
 ---
 
 <Base
-  title="Which account for each fund"
-  description="Enter your tax bracket and roughly how your money splits across a Roth, a 401(k) and a taxable account. It tells you which of the seven funds to shelter first, and why the usual advice about foreign funds is backwards."
+  title="Which account should each fund go in?"
+  description="A calculator for the seven funds in the most ambitious portfolio here. Tell it your tax bracket and how your money is split between account types, and it says which fund goes in a Roth, a traditional account, or a taxable account, and why."
 >
+  <Hero
+    title="Which account should each fund go in?"
+    lede="The same seven funds cost you different amounts of tax depending on which account holds them. This calculator ranks them."
+  />
+
   <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Which account for each fund</h1>
+    <h2>What it answers</h2>
 
-    <p>Most people have some money in a Roth, some in a traditional IRA or 401(k), and some in an ordinary
-    brokerage account. The first two shelter your investments from tax; the third does not. There is usually
-    not enough shelter for everything, so the question is which funds to put inside it first.</p>
+    <p>You have some money in a Roth, some in a traditional IRA or 401(k), and some in an ordinary taxable
+    brokerage account. The funds that throw off the most taxable income each year belong in the sheltered
+    accounts; the ones that throw off the least belong in the taxable account, where the shelter would be wasted
+    on them. The calculator works out that ranking for the seven funds in
+    <a href="/portfolios/with-trend/">the portfolio with trend</a>: RSST, VTI, VTV, VXUS, AVDV, IDMO and AVES.
+    For each one it says where it goes and why in one line.</p>
 
-    <p>{priorityRule.plain}</p>
+    <p>The short version is stable across every tax bracket I ran: every international fund goes into a
+    sheltered account before any US fund, RSST and IDMO go first, and VTI goes last, so it is the fund that lives
+    in the taxable account.</p>
 
-    <p>{priorityRule.whyForeignIsDifferent}</p>
+    <h2>What it needs from you</h2>
 
-    <p>Nothing you type goes anywhere. The page does the arithmetic in your browser and forgets it when you
-    close the tab. The button underneath writes your setup into the address bar, if you want to send it to
-    someone.</p>
+    <p>Two things. Your federal tax bracket, or your own rates if you know them, and roughly what share of your
+    investments sits in each type of account. It does not ask your income, your balance, or anything that
+    identifies you, and nothing you type leaves your browser. The button underneath writes your setup into the
+    address bar, if you want to send it to someone.</p>
   </div>
 
-  <Breakout class="mt-6">
+<Breakout class="mt-6">
     <PlacementTool client:visible />
   </Breakout>
 
   <div class="prose mt-12">
-    <h2>Foreign funds go in first</h2>
+    <h2>Why foreign funds go in first</h2>
 
     <p>You have probably read the opposite: hold international funds in the taxable account so you can claim
     the foreign tax credit. Sheltering all four of them here does give up
     <span data-numeric>{percentOfBp(forfeited)}</span> a year of credit, permanently. It saves several times
-    that, because foreign funds pay bigger dividends, and a bigger dividend in a taxable account is a bigger
-    tax bill.</p>
-
-    <p>At <span data-numeric>{ratePercent(rates.qualifiedDividend)}%</span> on qualified dividends, the weakest
-    foreign case is {weakestForeign?.ticker} at
+    that, because foreign funds pay bigger dividends, and a bigger dividend in a taxable account is a bigger tax
+    bill. At <span data-numeric>{ratePercent(rates.qualifiedDividend)}%</span> on qualified dividends, the
+    weakest foreign case is {weakestForeign?.ticker} at
     <span data-numeric>{percentOfBp(weakestForeign?.priorityBp ?? 0)}</span> saved a year per dollar sheltered,
     against {strongestDomestic?.ticker} at
-    <span data-numeric>{percentOfBp(strongestDomestic?.priorityBp ?? 0)}</span> for the strongest US case. The
-    gap holds at every bracket except the 0% one, where there is no credit to lose and little to save.</p>
+    <span data-numeric>{percentOfBp(strongestDomestic?.priorityBp ?? 0)}</span> for the strongest US case.</p>
 
     <p>{last?.ticker} comes last, at <span data-numeric>{percentOfBp(last?.priorityBp ?? 0)}</span>. It is the
     cheapest, broadest, calmest fund on the list, which is exactly why it belongs in the account with no
-    protection. Its dividend is the smallest tax bill you can put on a scarce sheltered dollar.</p>
+    protection.</p>
 
     <p>{rothVersusTraditionalNote}</p>
+
+    <h2>What it does not know</h2>
+
+    <p>State tax, which it ignores entirely. The menu of funds your employer&rsquo;s plan actually offers, which
+    may not include most of these. Gains already built up in a taxable account, which can make moving a fund
+    cost more than the shelter saves. And how RSST&rsquo;s income will be taxed, which its own filings leave
+    open; the calculator lets you choose either reading, and the ranking barely changes.</p>
+
+    <h2>What it is worth</h2>
+
+    <p>Against a sensible default, putting each fund in its best account saves about 2 to 7 hundredths of a
+    percent a year. It is worth considerably more if you would otherwise have held the international funds in a
+    taxable account, and it is worth nothing if all your money is in one type of account.</p>
   </div>
 
   <div class="prose mt-10">

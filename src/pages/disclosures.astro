@@ -1,32 +1,16 @@
 ---
 // What the author personally owns is the one fact on this page that cannot be checked
-// against anything in the repository, and it has not been stated yet.
-//
-// It was filled in twice by inference — once as "holds a portfolio resembling this one",
-// once as "holds none of these funds" — and both were guesses, in opposite directions.
-// Nothing here can settle it. An account split says where money sits, not what it is
-// invested in, and a portfolio derived *for* someone is not a record of what they hold.
-//
-// So the page says that it has not been stated, which is true, and publishes the rest,
-// which is also true. An earlier version threw at build time instead. That was the wrong
-// trade: it stopped sixty-one honest pages from shipping over one open question.
-//
-// To set it: replace the empty string with the true sentence, in the owner's own words.
-// Nothing else needs changing. If it later stops being true, change it in the same commit
-// as the trade — a stale disclosure is worse than none, because a reader trusts it.
+// against anything in the repository, and it has not been stated yet. To set it, replace
+// the empty string with the true sentence. If it later stops being true, change it in the
+// same commit as the trade: a stale disclosure is worse than none.
 const AUTHOR_HOLDINGS = "";
 
 /**
- * The conflict-of-interest statement, written as a verifiable negative.
- *
- * A site that says nothing about how it makes money has answered the question badly.
- * Everything claimed here can be checked against the repository or the served HTML,
- * which is the point: "no affiliate links" is worth something because you can grep for
- * one. The positive interests are on the same page and given the same weight.
- *
- * The fund count comes from the shelf so it cannot drift out of date in prose.
+ * The conflict-of-interest statement, written as a verifiable negative. Everything
+ * claimed here can be checked against the repository or the served HTML. The fund count
+ * comes from the shelf so it cannot drift out of date in prose.
  */
-import Callout from "~/components/Callout.astro";
+import Hero from "~/components/Hero.astro";
 import { shelf } from "~/content/shelf";
 import Base from "~/layouts/Base.astro";
 import { REPO_URL } from "~/lib/site";
@@ -34,105 +18,68 @@ import { REPO_URL } from "~/lib/site";
 
 <Base
   title="Disclosures"
-  description="No advertising, no affiliate links, no sponsors, no paid placement and no compensation from any fund company, broker or data provider. The interests that do exist, including the author's own holdings, are stated here too."
+  description="Nobody pays for this site and nobody is paid for it. The interests that do exist, including what the author owns, are stated here."
+  asOf={null}
 >
+  <Hero title="Disclosures" lede="Nobody pays for this site and nobody is paid for it." />
+
   <div class="prose">
-    <h1 class="font-serif text-4xl tracking-[-0.02em] text-ink">Disclosures</h1>
-
-    <Callout kind="caveat" label="The question">
-      <p>
-        Who is paying for this, and what do they want? As of <span data-numeric>2026-08-23</span>. Every negative
-        below can be checked against <a href={REPO_URL} rel="noopener noreferrer">the repository</a>.
-      </p>
-    </Callout>
-
-    <p>Nobody pays for this site and nobody is paid for it.</p>
-
-    <p>That beats a paragraph of assurance, because you can check it. The site is a few hundred kilobytes of
-    static HTML in a public repository, and an affiliate link is a thing you can search for.</p>
-
+    <p>That beats a paragraph of reassurance, because you can check it: the site is a few hundred kilobytes of
+    plain HTML in <a href={REPO_URL} rel="noopener noreferrer">a public repository</a>, and an affiliate link is a
+    thing you can search for.</p>
   </div>
 
   <div class="prose mt-14">
-
-    <h2 id="no-money">The negatives, in full</h2>
-
-    <p>None of the following exists anywhere on this site or behind it.</p>
+    <h2 id="no-money">What does not exist here</h2>
 
     <ul>
-      <li>Advertising, of any kind, in any position.</li>
-      <li>Affiliate links, referral links, broker sign-up bonuses, and tracking codes on an outbound link. A
-      link out of here carries nothing that says where you came from.</li>
-      <li>Sponsors, underwriters, grants, and anyone with a right to see a page before it is published.</li>
-      <li>Compensation, in cash or in kind, from any fund company, index provider, broker, custodian, adviser or
-      data vendor. Nothing was placed here for money and nothing as a favour.</li>
-      <li>Anything for sale. No subscription, no newsletter, no course, no book, no consulting, no software, and
-      no waiting list.</li>
-      <li>Analytics. No measurement JavaScript, no cookie, no fingerprinting. What traffic data exists is public
-      and aggregate, and never touches the page.</li>
+      <li>Advertising, in any form.</li>
+      <li>Affiliate links, referral links, broker sign-up bonuses, or tracking codes on an outgoing link. A link
+      out of here carries nothing that says where you came from.</li>
+      <li>Sponsors, grants, or anyone with a right to see a page before it is published.</li>
+      <li>Payment, in cash or in kind, from any fund company, index provider, broker, adviser or data vendor.
+      Nothing was placed here for money and nothing as a favour.</li>
+      <li>Anything for sale. No subscription, no newsletter, no course, no consulting, no waiting list.</li>
+      <li>Analytics. No tracking script, no cookie, no fingerprinting.</li>
     </ul>
 
-    <Callout kind="caveat" label="The one thing stored">
-      <p>
-        Your light or dark preference is kept in the browser under <code>pe-theme</code>. It never leaves the
-        browser and there is nothing on the other end to send it to.
-      </p>
-    </Callout>
+    <p>Your light or dark preference is kept in your browser under the name <code>pe-theme</code>. It never
+    leaves the browser, and there is nothing on the other end to send it to.</p>
 
-    <p>The site names <span data-numeric>{shelf.length}</span> funds by ticker, which is worth something to the
-    companies that run them. They are named because somebody read their filings, several are named unkindly, and
-    none of those companies knows this site exists.</p>
-
+    <p>The site names <a href="/funds/"><span data-numeric>{shelf.length}</span> funds</a> by ticker. Several are
+    named unkindly, and none of the companies that run them knows this site exists.</p>
   </div>
 
   <div class="prose mt-14">
-
     <h2 id="interests">The interests that do exist</h2>
 
-    <p>Having no revenue removes one way of being wrong and leaves every other way alone. These are the ones
-    that apply here.</p>
-
-    <h3 id="holdings">What the author owns</h3>
+    <h3 id="holdings">What I own</h3>
 
     <p>
       {AUTHOR_HOLDINGS ||
-        "Not stated yet. The author has not published whether he holds any of the funds named on this site, and nothing here should be read as saying that he does or that he does not."}
+        "Not stated yet. I have not published whether I hold any of the funds named here, and nothing on the site should be read as saying that I do or that I do not."}
+      When I state it, it will be stated on this page, because a person who owns what he argues for has money
+      riding on the argument being right. Amounts stay private.
     </p>
 
-    <p>Whatever the answer turns out to be, it belongs here, because a person who owns what he argues for has
-    money riding on the argument being right. Amounts and balances stay private.</p>
+    <h3 id="reputation">I would like the work to be right</h3>
 
-    <h3 id="reputation">The author would like the work to be right</h3>
-
-    <p>Months went into this, and nobody who spends months on an argument is neutral about it afterwards. No
-    disclosure fixes that. What the project does instead is make disagreement cheap:
-    <a href="/corrections/">the corrections log</a> records it working, and an
-    <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue</a> is how you add to it.</p>
+    <p>Months went into it, and nobody who spends months on an argument is neutral about it afterwards. No
+    disclosure fixes that. What the site does instead is make disagreement cheap:
+    <a href="/corrections/">the corrections page</a> records it working, and an
+    <a href={`${REPO_URL}/issues`} rel="noopener noreferrer">issue on the public repository</a> is how you add
+    to it.</p>
 
     <h3 id="tools">Tools and data</h3>
 
-    <Callout kind="caveat" label="Sources">
-      <p>
-        Ken French's data library, FRED, SEC EDGAR, AQR's public data sets, Robert Shiller's series, Goyal and
-        Welch, the Jordà-Schularick-Taylor macrohistory database, LBMA and the World Bank. Free, public, and used
-        under their own published terms.
-      </p>
-    </Callout>
+    <p>Every data source is free and public, used under its own published terms: Ken French&rsquo;s data library,
+    FRED, SEC filings, AQR&rsquo;s public data sets, Robert Shiller&rsquo;s series, the Jordà-Schularick-Taylor
+    macrohistory database, LBMA and the World Bank. Each download is recorded with a fingerprint of the exact
+    bytes used, so a provider quietly restating its history shows up as a mismatch. The AI tools used to build
+    the site were bought at retail; no vendor has seen a page before publication or has any say in what it
+    claims.</p>
 
-    <p>The AI tools used to build this were bought at retail. No vendor was consulted, none has seen a page
-    before publication, and none has any say in what the pages claim.</p>
-
-    <p>Every data source here is free and public, and each download is recorded with a hash of the exact bytes
-    used, so a provider quietly restating its own history shows up as a mismatch. There is no paid feed and no
-    commercial arrangement with any provider, which is a limitation as much as a virtue.
-    <a href="/about/">How the measuring is done</a> says what that leaves unanswerable.</p>
-
-    <Callout kind="caveat">
-      <p>
-        If any of this changes, it changes here first and on the same day, with the old wording left visible in
-        the commit history. A disclosure that quietly acquires an exception is worse than no disclosure.
-      </p>
-    </Callout>
-
+    <p>If any of this changes, it changes here first and on the same day, with the old wording left visible in
+    the public history.</p>
   </div>
 </Base>

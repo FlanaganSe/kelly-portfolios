@@ -1,6 +1,6 @@
-label: The 200-day rule's gain over a matched control
+label: The 200-day rule against a blend holding the same average amount in stocks
 value: '+0.74'
-unit: percentage points a year against a control taking the same average market risk
+unit: percentage points a year against a blend taking the same average market risk
 interval: '[−1.38, +2.87]'
 status: unresolved
 asOf: '2026-08-23'
@@ -9,7 +9,5 @@ source:
   docPath: docs/research/timing-rules-on-the-equity-sleeve.md
   anchor: conclusion
 note: >-
-  1,190 months of US data; the signal is 0.69 times the noise around it. The range covers zero,
-  so even the direction is not settled.
-  Unresolved, not rejected: the rule is not shown to fail, it is shown to be unreadable on this
-  instrument.
+  A century of US data, 1926 to 2026. The range covers zero, so even the direction is not
+  settled. Against simply holding, the same rule was 0.73 points a year behind.
