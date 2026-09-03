@@ -15,7 +15,7 @@ import Hero from "~/components/Hero.astro";
 import PlacementTool from "~/components/islands/PlacementTool";
 import { fill, forfeitedCreditBp, percentOfBp, queue, ratePercent, shelf } from "~/components/islands/placement-model";
 import Base from "~/layouts/Base.astro";
-import { defaultTaxRegime, placementAsOf, priorityRule, rothVersusTraditionalNote } from "~/content/placement";
+import { defaultTaxRegime, placementAsOf } from "~/content/placement";
 import { derivedRates } from "~/lib/placement";
 
 /** Equal thirds in a Roth, a traditional account and a taxable one. */
@@ -92,8 +92,6 @@ const COLUMNS = ["#", "Fund", "Share", "Saved per dollar sheltered", "Goes in"] 
     <p>{last?.ticker} comes last, at <span data-numeric>{percentOfBp(last?.priorityBp ?? 0)}</span>. It is the
     cheapest, broadest, calmest fund on the list, which is exactly why it belongs in the account with no
     protection.</p>
-
-    <p>{rothVersusTraditionalNote}</p>
 
     <h2>What it does not know</h2>
 
