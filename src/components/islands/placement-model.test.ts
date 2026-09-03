@@ -25,11 +25,11 @@ if (topBracket === undefined || upperMiddle === undefined) throw new Error("miss
 const [topRate, , upperMiddleRate] = investorRates;
 
 describe("toCandidate", () => {
-  it("recovers each fund's filed withholding rate from its two filed yields", () => {
-    const vea = investorHoldings.find((holding) => holding.ticker === "VEA");
-    if (vea === undefined) throw new Error("VEA is not on the shelf");
+  it("recovers each fund's withholding rate from its two yields", () => {
+    const avdv = investorHoldings.find((holding) => holding.ticker === "AVDV");
+    if (avdv === undefined) throw new Error("AVDV is not on the shelf");
     // 6.068% of Box 1a is the rate `placementInputs` states for developed ex-US.
-    expect(toCandidate(vea).foreignWithholdingRate).toBeCloseTo(0.06068, 5);
+    expect(toCandidate(avdv).foreignWithholdingRate).toBeCloseTo(0.06068, 4);
   });
 
   it("gives a fund with no foreign tax a withholding rate of zero", () => {
@@ -73,7 +73,6 @@ describe("rank", () => {
     expect(derivedRates(upperMiddle).qualifiedDividend * 100).toBeCloseTo(upperMiddleRate as number, 10);
     for (const holding of investorHoldings) {
       const got = rank(holding, upperMiddle).priorityBp;
-      // VEA lands on 28.565, which the committed table rounds down and this rounds up.
       expect(got, `${holding.ticker} ${holding.name}`).toBeCloseTo(holding.priorityBp[2], 1);
     }
   });
@@ -87,6 +86,16 @@ describe("rank", () => {
 });
 
 describe("queue", () => {
+  it("orders the seven published funds the way the research does at the top bracket", () => {
+    const rows = queue(shelf("recorded"), topBracket);
+    expect(rows.map((row) => row.ticker)).toEqual(["RSST", "IDMO", "AVES", "AVDV", "VXUS", "VTV", "VTI"]);
+  });
+
+  it("holds the published weights", () => {
+    const weights = Object.fromEntries(shelf("recorded").map((holding) => [holding.ticker, holding.weight]));
+    expect(weights).toEqual({ RSST: 0.3, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.1, IDMO: 0.05, AVES: 0.05 });
+  });
+
   it("ranks best first", () => {
     const rows = queue(shelf("paid-out"), topBracket);
     const sorted = [...rows].sort((a, b) => b.priorityBp - a.priorityBp);

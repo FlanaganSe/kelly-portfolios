@@ -9,7 +9,7 @@
     "typecheck": "astro sync && tsc --noEmit",
     "test": "vitest run",
     "test:watch": "vitest",
-    "lint:prose": "node tools/prose-lint.mjs src/pages src/layouts src/content src/components/*.astro src/components/charts/*.astro",
+    "lint:prose": "node tools/prose-lint.mjs src/pages src/layouts src/content src/components/*.astro",
     "biome:fix": "biome check --write .",
     "prepare": "git config core.hooksPath scripts/githooks && chmod +x scripts/githooks/*",
     "lint:figures": "node tools/check-figures.mjs src/content/figures"

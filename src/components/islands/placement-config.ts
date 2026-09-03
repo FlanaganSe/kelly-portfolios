@@ -1,10 +1,7 @@
 /**
  * The placement tool's whole state, encoded into the query string.
  *
- * `~/lib/lab/config` does this job for the pair of numbers the horizon tool takes, and
- * the horizon tool uses it. It has no field for a tax bracket or an account split, so
- * rather than bend `LabConfig` into carrying something it does not describe, this is the
- * same two rules applied to the fields this tool actually has:
+ * Two rules, the same ones the site uses for any state it puts in a link:
  *
  * 1. Round-tripping is lossless for anything the parser accepts.
  * 2. A malformed field falls back to its default and the rest of the link still loads.

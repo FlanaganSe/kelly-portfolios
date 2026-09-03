@@ -1,5 +1,5 @@
 // biome-ignore-all lint/a11y/noRedundantRoles: the roles on the table below are not redundant. `.stack-table` in src/styles.css sets `display: block` under 40rem to lay each row out as a card, and any `display` other than a `table-*` value drops the implicit table roles from the accessibility tree in every engine. Above the breakpoint the attributes restate what the elements already mean; below it they are the only thing relating a cell to its row. The lint rule reads the markup and cannot see the stylesheet.
-// biome-ignore-all lint/a11y/useSemanticElements: the semantic elements are already in use — `table`, `thead`, `tr`, `th`, `td`. This rule fires on the same attributes as the one above, for the same reason, and has the same answer.
+// biome-ignore-all lint/a11y/useSemanticElements: the semantic elements are already in use. `table`, `thead`, `tr`, `th`, `td`. This rule fires on the same attributes as the one above, for the same reason, and has the same answer.
 import { type Component, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import { NumberField, RangeField, SelectField } from "~/components/islands/controls";
 import {
@@ -20,40 +20,39 @@ import {
   shelf,
   verdict,
 } from "~/components/islands/placement-model";
-import { placementAsOf, taxRegimes } from "~/content/placement";
+import { placementAsOf, rothVersusTraditionalNote, taxRegimes } from "~/content/placement";
 import { derivedRates, type TaxRegime } from "~/lib/placement";
 
 /**
- * Where each fund on the shelf belongs, computed at the reader's own rates.
+ * Which account each of the seven funds belongs in, computed at the reader's own rates.
  *
- * Nothing here is read out of the pre-ranked tables in `~/content/placement`. The whole
- * point of the finding is that the ranking moves with the bracket, so the page that
- * shows it has to run the arithmetic rather than print one bracket's answer.
+ * Nothing here is read out of a pre-ranked table. The ranking moves with the bracket,
+ * so the page that shows it has to run the arithmetic rather than print one bracket's
+ * answer.
  */
 
 const BASIS_OPTIONS = [
-  { value: "paid-out", label: "Only what the stacked fund has paid out" },
-  { value: "recorded", label: "Everything the stacked fund has recorded" },
+  { value: "paid-out", label: "Count only what RSST has paid out so far" },
+  { value: "recorded", label: "Count everything RSST has recorded, paid out or not" },
 ] as const;
 
 const WHERE_TEXT: Readonly<Record<PlacedRow["where"], string>> = {
-  shelter: "Sheltered",
-  split: "Partly sheltered",
-  taxable: "Taxable account",
+  shelter: "Roth or traditional IRA",
+  split: "Partly sheltered, the rest taxable",
+  taxable: "Taxable brokerage account",
 };
 
 /**
  * Written once, read twice: into `<thead>`, and into the label each cell shows when
- * the table becomes a list of cards below 40rem. Seven columns is the widest table
- * the site renders, and a phone cannot usefully scroll it.
+ * the table becomes a list of cards below 40rem.
  */
 const COLUMNS = [
   "#",
   "Fund",
-  "Weight",
-  "Tax if taxable",
-  "Credit lost if sheltered",
-  "Saved per sheltered dollar",
+  "Share of portfolio",
+  "Tax you'd pay each year in a taxable account",
+  "Foreign tax credit you'd lose if sheltered",
+  "Saved per dollar sheltered",
   "Goes in",
 ] as const;
 
@@ -99,16 +98,16 @@ export const PlacementTool: Component = () => {
   const headline = createMemo(() => {
     const found = call();
     if (creditIsWorthless()) {
-      return "At a 0% rate on dividends there is no credit to lose and almost no tax to save, so the ranking has nothing to say about the foreign funds. Section 904 caps the credit at the US tax on foreign income, and there is none.";
+      return "At a 0% rate on dividends there is almost no tax to save and no credit to lose, so where the foreign funds sit barely matters. Shelter RSST and IDMO first, because their payouts are taxed as income even at your rate.";
     }
     const low = found.lowestInternational;
     const high = found.highestDomestic;
     const last = found.last;
     if (found.everyInternationalAhead && low !== null && high !== null && last !== null) {
-      return `Every fund with foreign tax withheld outranks every fund without it. The weakest of them, ${low.ticker}, saves ${percentOfBp(low.priorityBp)} a year per sheltered dollar against the strongest US line, ${high.ticker}, at ${percentOfBp(high.priorityBp)}. ${last.ticker} comes last at ${percentOfBp(last.priorityBp)}.`;
+      return `Every foreign fund goes in a sheltered account before any US fund. The weakest case among them, ${low.ticker}, still saves ${percentOfBp(low.priorityBp)} a year for every dollar sheltered, against ${percentOfBp(high.priorityBp)} for ${high.ticker}, the strongest US case. ${last.ticker} comes last at ${percentOfBp(last.priorityBp)}, so it is the one to leave in the taxable account.`;
     }
     if (low !== null && high !== null && last !== null) {
-      return `${high.ticker} breaks the pattern: it saves ${percentOfBp(high.priorityBp)} a year per sheltered dollar against ${percentOfBp(low.priorityBp)} for ${low.ticker}, the weakest foreign line. ${last.ticker} still comes last at ${percentOfBp(last.priorityBp)}.`;
+      return `${high.ticker} goes first: it saves ${percentOfBp(high.priorityBp)} a year per dollar sheltered, against ${percentOfBp(low.priorityBp)} for ${low.ticker}, the weakest foreign case. ${last.ticker} still comes last at ${percentOfBp(last.priorityBp)}.`;
     }
     return "There is nothing on the fund list to rank.";
   });
@@ -129,16 +128,22 @@ export const PlacementTool: Component = () => {
     { value: OWN_RATES, label: "My own rates" },
   ];
 
+  const placeText = (row: PlacedRow) => {
+    if (row.where === "shelter") return `Sheltered, because ${row.holding.reason}.`;
+    if (row.where === "taxable") return `Taxable, because ${row.holding.reason}.`;
+    return `${ratePercent(row.shelteredWeight, 1)}% of your money fits in shelter and the rest goes taxable. The shelter runs out here.`;
+  };
+
   return (
     <div class="not-prose">
       <div class="grid gap-6 rounded-[3px] border border-rule bg-raised p-5 sm:grid-cols-2">
         <SelectField
           class="sm:col-span-2"
-          label="Your marginal tax rates"
+          label="Your tax bracket"
           value={config().bracketId}
           options={bracketOptions}
           onChange={(value) => update({ bracketId: value })}
-          hint="US federal, with the 3.8% surtax on investment income already inside both figures where it applies. State tax is left out and adds to every line."
+          hint="US federal rates, with the 3.8% surtax on investment income already included where it applies. State tax is left out and adds to every line."
         />
 
         <Show when={named() === undefined}>
@@ -175,7 +180,7 @@ export const PlacementTool: Component = () => {
         />
 
         <RangeField
-          label="Share in a traditional 401(k) or IRA"
+          label="Share in a traditional IRA or 401(k)"
           value={config().deferredPercent}
           onInput={setDeferred}
           min={0}
@@ -183,21 +188,21 @@ export const PlacementTool: Component = () => {
           step={1}
           unit="%"
           showBounds
-          hint="The two shelters behave identically here. Foreign tax is lost inside both."
+          hint="The two kinds of shelter treat these funds the same way. Foreign tax is lost inside both."
         />
 
         <SelectField
           class="sm:col-span-2"
-          label="How to read the stacked fund"
+          label="How to treat RSST's income"
           value={config().basis}
           options={[...BASIS_OPTIONS]}
           onChange={(value) => update({ basis: value as Basis })}
-          hint="It books income inside itself that it has not distributed. Counting that puts it first in the queue; counting only what shareholders were taxed on puts it seventh. Its account does not change either way."
+          hint="RSST records income inside itself that it has not paid out yet. Counting it puts RSST first in the queue; counting only what has been paid out puts it near the bottom. It belongs in a sheltered account either way."
         />
       </div>
 
       <p data-numeric class="mt-4 text-sm text-ink-muted">
-        That leaves {taxablePercent()}% of your money in a taxable brokerage account, and {shelterPercent()}% of it
+        That leaves {taxablePercent()}% of your money in a taxable brokerage account and {shelterPercent()}% of it
         sheltered.
       </p>
 
@@ -206,11 +211,27 @@ export const PlacementTool: Component = () => {
       <div aria-live="polite">
         <p class="mt-8 max-w-measure text-lg text-ink">{headline()}</p>
 
+        <h3 class="mt-8 font-serif text-xl text-ink">Put this here</h3>
+        <ol class="mt-3 grid gap-3">
+          <For each={placed()}>
+            {(row) => (
+              <li class="grid gap-1 rounded-[3px] border border-rule p-3 sm:grid-cols-[6rem_1fr]">
+                <span class="font-semibold text-ink">{row.ticker}</span>
+                <span class="text-ink-muted">
+                  <span class="text-ink">{WHERE_TEXT[row.where]}.</span> {placeText(row)}
+                </span>
+              </li>
+            )}
+          </For>
+        </ol>
+        <p class="mt-3 max-w-measure text-sm text-ink-muted">{rothVersusTraditionalNote}</p>
+
+        <h3 class="mt-10 font-serif text-xl text-ink">The numbers behind it</h3>
         <div
-          class="scroller mt-6"
+          class="scroller mt-3"
           tabindex="0"
           role="region"
-          aria-label="The fund list, ranked by what a sheltered dollar saves"
+          aria-label="The seven funds, ranked by what a sheltered dollar saves"
         >
           <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[42rem]">
             <caption class="sr-only">
@@ -283,8 +304,8 @@ export const PlacementTool: Component = () => {
 
         <p data-numeric class="mt-4 max-w-measure text-sm text-ink-muted">
           Computed at {bracketNote()}, on yields and withheld rates as of {placementAsOf}. Sheltering the foreign funds
-          destroys {percentOfBp(forfeited())} a year of foreign tax credit, permanently and in a Roth and a traditional
-          account alike. The last column has already subtracted it.
+          gives up {percentOfBp(forfeited())} a year of foreign tax credit, permanently, in a Roth and a traditional
+          account alike. The saved-per-dollar column has already subtracted it.
         </p>
       </div>
 
