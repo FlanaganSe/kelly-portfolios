@@ -1,0 +1,13 @@
+label: The most a family can put into a health savings account
+value: $8,750
+unit: in 2026
+status: source-reproduced
+asOf: '2026-08-17'
+source:
+  label: Structural and tax edges
+  docPath: docs/research/structural-and-tax-edges.md
+  anchor: 7-smaller-levers-sized-so-they-can-be-dismissed-with-a-number
+  href: https://www.irs.gov/publications/p969
+note: >-
+  $4,400 for one person, plus $1,000 a year from age 55. It needs a high-deductible health plan,
+  and California taxes the account's earnings as if it were an ordinary brokerage account.

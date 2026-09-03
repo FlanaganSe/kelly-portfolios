@@ -28,7 +28,7 @@ const COLUMNS = ["Holding", "Share of the worst stock months it rose"] as const;
 
 <Base
   title="Crash insurance"
-  description="Tail funds, buffer funds, bonds, TIPS and cash. Which ones actually rose in the worst stock months, and which cost more than they ever paid back."
+  description="Tail funds, buffer funds, bonds, TIPS, cash, corporate and foreign bonds, catastrophe bonds. Which ones actually rose in the worst stock months, which bond to hold, and which cost more than they ever paid back."
   asOf="2026-09-02"
 >
   <Hero
@@ -124,23 +124,105 @@ const COLUMNS = ["Holding", "Share of the worst stock months it rose"] as const;
     to 1981 it cost 22 points. Since 2020 stocks and bonds have mostly fallen together: their three-year link
     stood at plus 0.51 at the end of 2025, against about minus 0.4 through the 2010s. I do not hold it.</p>
 
+    <h3>Which bond</h3>
+
     <p>TIPS are Treasury bonds whose payments rise with inflation. Today a ten-year TIPS pays
     <Figure id="tips-real-yield" inline showUnit={false} /> a year above inflation, the highest since October
     2008, and a thirty-year pays 2.99%. That is the best contractual real return on offer anywhere, and it is
-    the reason <a href="/portfolios/with-trend/">the cautious version of the portfolio on this site</a> holds
-    some. Two things to know. TIPS move with ordinary bonds and slightly with stocks, so they are a worse
-    diversifier than plain Treasuries, not a better one. And SCHP and TIP hold the same bonds; SCHP charges
-    0.03% and TIP 0.18%, so the fee is the whole decision.</p>
+    the reason <a href="/portfolios/with-trend/">the version of portfolio three priced for today</a> holds
+    some.</p>
+
+    <p>TIPS and ordinary Treasury bonds are one idea, not two. Across eighteen bond funds' own monthly returns
+    since 2019 the two kinds moved together at <Figure id="tips-nominal-link" inline showUnit={false} /> out
+    of 1, so holding both does not spread your bets. They differ in one way that matters. TIPS moved slightly
+    with stocks and ordinary Treasuries slightly against them, so TIPS are the marginally worse crash
+    diversifier and the better match for spending that rises with prices. Hold TIPS because your future
+    spending is real, and take any crash protection from cash.</p>
+
+    <p>SCHP and TIP hold the same bonds; SCHP charges 0.03% and TIP 0.18%, so the fee is the whole decision.
+    Short TIPS funds such as VTIP and STIP follow inflation with little swing from interest rates. A long one
+    such as LTPZ locks in today's thirty-year real yield and swings far more. The cautious version on this
+    site uses a ten-year fund.</p>
+
+    <p>Maturity matters, in the opposite direction from the usual advice. Long Treasury bonds are sold as the
+    crash hedge, and over a century they added 0.94% back in the average worst stock month for a 10% swap out
+    of stocks, against 0.92% for Treasury bills. Two hundredths of a point a month is the whole case for long
+    bonds, and it is bought with swings of 8.4% a year and a worst fall of
+    <Figure id="long-treasury-worst-fall" inline showUnit={false} /> of their own, including a 40% loss
+    through the late 1970s that cash never had. Cash and short Treasuries do the crash job. Long bonds are a
+    bet that interest rates fall.</p>
+
+    <p>Whichever you hold, hold it in a traditional IRA or 401(k) first. Bond interest is taxed as ordinary
+    income, so bonds belong in the sheltered account ahead of stocks by a factor of about four at every tax
+    rate. <a href="/strategies/fees-and-taxes/">The fees and taxes page</a> covers municipal bonds, which
+    only make sense once your bonds overflow the sheltered accounts.</p>
+
+    <h3>Corporate and high-yield bonds</h3>
+
+    <p>Corporate bonds are Treasuries plus a slice of stock risk. An investment-grade corporate bond fund such
+    as LQD or VCIT tracks Treasuries at +0.83 out of 1, so it is the same bet with a small extra payment for
+    lending to companies. High-yield bonds, the loans to shakier companies in HYG and JNK, rose in 3% of the
+    worst stock months since 2000. In a fall they are stocks by another name.</p>
+
+    <p>There is one version of the idea worth knowing about. Strip the interest-rate risk out of corporate
+    bonds and what remains, the extra payment for lending to companies, moved with long Treasuries at only
+    <Figure id="credit-spread-link" inline showUnit={false} /> out of 1 between 1926 and 2014. It earned the
+    same return as long Treasuries at half the swings and a third of the worst fall, and it lost 13% in 2008
+    while Treasuries gained 13%. That last number is the point: it is a way to earn a little more inside a bond
+    allocation, never protection. The funds that do this, LQDH and IGBH, or the AAA-rated loan funds such as
+    JAAA at 0.20%, are cheap, and none has lived through a March 2020. With investment-grade bonds paying only
+    0.82% over Treasuries in August 2026, near the bottom of their range, I hold none.</p>
+
+    <h3>Foreign and emerging-market bonds</h3>
+
+    <p>I have not measured foreign bond funds, so this is reasoning rather than a result. A hedged fund such as
+    BNDX or IAGG removes the currency and leaves foreign government and corporate bonds, which move with US
+    bonds for the same reasons US bonds move. Until it is tested, treat it as BND with a currency hedge
+    attached and a slightly higher fee. Unhedged foreign bond funds carry the currency itself, which adds
+    swings and no expected return, the same point <a href="/strategies/international/">the international
+    page</a> makes about foreign stocks. Emerging-market bond funds such as EMB and VWOB pay more because they
+    carry the currencies that fall hardest in a crisis. That is the insurance this page says not to sell, in
+    bond form.</p>
+
+    <h3>Catastrophe bonds</h3>
+
+    <p class="flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="Too close to call" /> <span>The one asset whose losses come from hurricanes. Priced too thin to bother with today.</span></p>
+
+    <p>A catastrophe bond is a loan to an insurer that is written off if a named disaster, usually a hurricane
+    or an earthquake, is bad enough. Its return has nothing to do with stock markets, which makes it the only
+    true black-swan asset I looked at. The funds that hold them returned
+    <Figure id="cat-bond-fund-return" inline showUnit={false} /> a year between 2017 and 2025 after fees,
+    about one point over Treasury bills, across nine years that included the three best the market has had.
+    They can lose 10% in a week, as they did when Hurricane Ian landed in September 2022.</p>
+
+    <p>The price is the problem. These bonds pay a spread above their expected loss, and in mid-2026 that
+    spread was <Figure id="cat-bond-spread-multiple" inline showUnit={false} /> the expected loss, against
+    4.9 times at the start of 2023. At today's multiple, after the 1.6% to 2.4% the retail funds charge, about
+    one point a year is left for a risk that can remove a tenth of the position at once. The fund that made
+    this reachable, ILS, launched in April 2025 at a 1.58% fee, though its own report shows 2.00% actually
+    paid. If the multiple returns to about 3.5 times, a number published weekly, the arithmetic changes and a
+    small position, held only in a retirement account, becomes reasonable.</p>
+
+    <h3>Cash</h3>
+
+    <p>When this page says cash it means a Treasury-bill fund such as SGOV or BIL, which paid 3.88% in August
+    2026 with no swings. In a taxable account BOXX does the same job differently. It holds option contracts
+    that pay the Treasury rate, has returned 4.70% a year since December 2022 at a 0.19% fee, and pays it as a
+    rise in price rather than as interest, so you owe tax when you sell rather than every year. Of everything
+    on this page, a 10% move from stocks into cash is the one that added protection in the worst months, cost
+    no fee, and never had a bad year.</p>
   </div>
 
   <Compare class="mt-12">
     <ul slot="get">
       <li>Fewer stocks, or cash: a smaller worst fall, for free.</li>
       <li>TIPS at 2.4% above inflation, the best guaranteed real return since 2008.</li>
+      <li>Cash or short Treasuries: the crash job done for no fee.</li>
     </ul>
     <ul slot="give">
       <li>About half a point a year of growth for each 10% moved out of stocks.</li>
       <li>Nothing, from tail funds and buffer funds, except the fee and a loss in 2022.</li>
+      <li>Long bonds: two hundredths of a point a month more than cash, for a 59% worst fall of their own.</li>
     </ul>
   </Compare>
 </Base>

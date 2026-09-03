@@ -1,0 +1,14 @@
+label: The worst fall of long Treasury bonds
+value: −59.1%
+unit: from a peak, 1926 to 2025
+status: exploratory
+asOf: '2026-08-22'
+period: 1926 to 2025
+source:
+  label: The alternatives, audited
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 13-in-the-lower-tail-almost-every-candidate-is-a-worse-cash
+note: >-
+  Long Treasuries swing about 8.4% a year and lost 40.5% through the late 1970s. In the worst
+  tenth of stock months since 1926 they put back 0.94% for a 10% swap out of stocks, against
+  0.92% for Treasury bills.

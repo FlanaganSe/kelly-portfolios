@@ -1,0 +1,14 @@
+label: How closely corporate bond spreads track long Treasuries
+value: '+0.02'
+unit: out of 1, 1926 to 2014
+status: exploratory
+asOf: '2026-08-22'
+period: 1926 to 2014
+source:
+  label: The alternatives, audited
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 6-duration-hedged-credit-the-rejection-was-about-the-instrument-not-the-mechanism
+note: >-
+  This is the extra return corporate bonds pay over Treasuries of the same maturity, with the
+  interest-rate risk removed. The same corporate bonds with their rate risk left in track
+  Treasuries at +0.83. The series ends in 2014 and never saw March 2020.

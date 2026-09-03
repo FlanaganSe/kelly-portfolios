@@ -97,6 +97,36 @@ const ROWS: readonly Row[] = [
     href: "/strategies/crash-insurance/",
   },
   {
+    idea: "Cash",
+    verdict: "Settled",
+    line: "A 10% move from stocks into Treasury bills added 0.92% back in the average worst stock month since 1926, as much as gold and within two hundredths of long bonds, for no fee.",
+    href: "/strategies/crash-insurance/",
+  },
+  {
+    idea: "Corporate and high-yield bonds",
+    verdict: "No",
+    line: "Investment-grade corporate bonds track Treasuries at 0.83 out of 1, and high-yield rose in 3% of the worst stock months. A little extra return inside a bond allocation, never protection.",
+    href: "/strategies/crash-insurance/",
+  },
+  {
+    idea: "Foreign and emerging-market bonds",
+    verdict: "Too close to call",
+    line: "Not tested here. A hedged foreign bond fund is close to BND with a currency hedge attached; emerging-market bonds carry the currencies that fall hardest in a crisis.",
+    href: "/strategies/crash-insurance/",
+  },
+  {
+    idea: "Catastrophe bonds",
+    verdict: "Too close to call",
+    line: "The one asset whose losses come from hurricanes. The funds returned about one point a year over cash after fees, and the price is the thinnest on record. Wait.",
+    href: "/strategies/crash-insurance/",
+  },
+  {
+    idea: "Commodities",
+    verdict: "No",
+    line: "Gained 144% across 1973 and 1974 and fell with stocks in most crashes, rising in 28% of the worst stock months since 2000. An inflation hedge, not a crash hedge.",
+    href: "/strategies/gold-and-bitcoin/",
+  },
+  {
     idea: "Carry",
     verdict: "Too close to call",
     line: "A second strategy run with futures contracts, which moves independently of trend. Positive on paper, negative since 2013, and the fund is two years old.",
@@ -117,8 +147,14 @@ const ROWS: readonly Row[] = [
   {
     idea: "Dividend and property funds",
     verdict: "No",
-    line: "A dividend fund is the stock market with a screen and a tax bill. Property funds fell 41% in 2020 and rose in 3% of the worst stock months.",
+    line: "A dividend fund is the stock market with a screen and a tax bill. Property funds fell 41% in 2020 and rose in 3% of the worst stock months. Quality funds lost more than the market in 2022.",
     href: "/strategies/crash-insurance/",
+  },
+  {
+    idea: "Paying off debt, and the HSA",
+    verdict: "Settled",
+    line: "A loan above the after-tax Treasury rate is the best risk-free return a household can get, and the health savings account is the only account untaxed at every point.",
+    href: "/strategies/fees-and-taxes/",
   },
 ];
 
@@ -127,7 +163,7 @@ const COLUMNS = ["Idea", "Verdict", "In one line"] as const;
 
 <Base
   title="Strategies"
-  description="Seventeen things people add to a portfolio, and whether each one earns its place once you look at the whole portfolio rather than the idea on its own."
+  description="Twenty-three things people add to a portfolio, and whether each one earns its place once you look at the whole portfolio rather than the idea on its own."
   asOf="2026-09-02"
   wide
 >
@@ -152,7 +188,7 @@ const COLUMNS = ["Idea", "Verdict", "In one line"] as const;
 
   <Breakout scroll heading="The verdicts" class="mt-10">
     <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[40rem]">
-      <caption class="sr-only">Seventeen ideas, each with a verdict word, a one-line reason and a link to the page that argues it</caption>
+      <caption class="sr-only">Twenty-three ideas, each with a verdict word, a one-line reason and a link to the page that argues it</caption>
       <thead role="rowgroup">
         <tr role="row" class="border-b border-rule-strong text-left">
           {COLUMNS.map((heading) => (

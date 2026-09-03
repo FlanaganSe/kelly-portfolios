@@ -1,0 +1,14 @@
+label: What catastrophe bonds pay above their expected loss
+value: 2.2 times
+unit: the expected loss, mid-2026
+status: source-reproduced
+asOf: '2026-08-22'
+source:
+  label: The alternatives, audited
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 5-catastrophe-bonds-the-vehicle-problem-is-solved-and-a-price-problem-has-replaced-it
+  href: https://www.artemis.bm/
+note: >-
+  The risk spread was 5.53% against an expected loss of about 2.5% at the end of July 2026. At
+  the January 2023 peak the multiple was 4.9 times. The research reopens the question at 3.5
+  times, a number published weekly.

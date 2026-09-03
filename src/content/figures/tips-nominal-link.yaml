@@ -1,0 +1,14 @@
+label: How closely TIPS funds track ordinary Treasury bond funds
+value: +0.76 to +0.85
+unit: out of 1, across eighteen funds
+status: exploratory
+asOf: '2026-08-22'
+period: 2019 to 2025
+source:
+  label: The alternatives, audited
+  docPath: docs/research/alternative-sleeves-audit.md
+  anchor: 6c-tips-and-nominal-bonds-are-one-engine-and-that-is-not-an-argument-against-holding-tips
+note: >-
+  Month by month, on the funds' own filed returns. TIPS moved with stocks at +0.13 and ordinary
+  Treasuries at −0.08 on the same months, so TIPS are the slightly worse crash diversifier and
+  the better match for spending that rises with prices.
