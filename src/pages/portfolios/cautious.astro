@@ -29,12 +29,12 @@ const NUMBERS = [
   },
   {
     value: "0 to 0.75 points",
-    label: "a year given up at today's likely returns",
+    label: "Given up a year at today's likely returns",
     note: "Against all stocks, if stocks beat TIPS by 0 to 1.5 points a year",
   },
   {
     value: `${await figureValue("cautious-40-trend-line")} points`,
-    label: "a year from the trend line, 1929 to 2025",
+    label: "From the trend line a year, 1929 to 2025",
     note: "Against the same mix without it. Too close to call since 2009.",
   },
 ];
@@ -96,7 +96,7 @@ const THIRTY = [
   </div>
 
   <div class="prose mt-14">
-    <h2>For a fall of about 40%</h2>
+    <h2 id="for-a-fall-of-about-40">For a fall of about 40%</h2>
   </div>
 
   <HoldingsTable rows={FORTY} class="my-4" />
@@ -109,7 +109,7 @@ const THIRTY = [
   </div>
 
   <div class="prose mt-14">
-    <h2>For a fall of about 30%</h2>
+    <h2 id="for-a-fall-of-about-30">For a fall of about 30%</h2>
   </div>
 
   <HoldingsTable rows={THIRTY} class="my-4" />
@@ -123,21 +123,21 @@ const THIRTY = [
   <div class="prose mt-14">
     <h2>How far each fell</h2>
 
-    <p>On the fund-based history from 1990 to 2026 the −40% version fell
-    <Figure id="cautious-40-worst-fall" inline /> at worst and took 26 months to recover; across 1929 to 1932 it
-    fell <Figure id="cautious-40-worst-fall-96" inline /> and took 74 months. The −30% version fell
-    <Figure id="cautious-30-worst-fall" inline /> since 1990, with 31 months under water, and
+    <p>On the fund-based history from 1990 to 2026 the −40% version's worst fall was
+    <Figure id="cautious-40-worst-fall" inline />, and it took 26 months to recover; across 1929 to 1932 its worst
+    fall was <Figure id="cautious-40-worst-fall-96" inline />, with 74 months under water. The −30% version's worst
+    fall was <Figure id="cautious-30-worst-fall" inline /> since 1990, with 31 months under water, and
     <Figure id="cautious-30-worst-fall-96" inline /> across 1929 to 1932. On every history that starts in 1934 or
     later the two fell 27% and 19% at worst. Portfolio three fell 50% since 1990 and 83% from 1929.</p>
 
-    <p>So the labels are honest only about the past sixty years. The 1929 crash put every mix of stocks and bonds
+    <p>So the labels describe the past sixty years only. The 1929 crash put every mix of stocks and bonds
     between 12 and 33 points deeper than any modern fall. A reader who wants to be safe against that year needs
     fewer than 38 points of stocks, which is less than either version holds, and I have not scored a mix that
     small.</p>
 
-    <p>In 2022, the year stocks and bonds fell together, the −40% version lost
-    <Figure id="cautious-40-2022" inline showUnit={false} /> and the −30% version 18.2%. Bonds did not protect
-    anyone that year: a portfolio holding only Treasuries fell <Figure id="all-bond-worst-fall" inline />. Hold
+    <p>In 2022, the year stocks and bonds fell together, the −40% version returned
+    <Figure id="cautious-40-2022" inline showUnit={false} /> and the −30% version −18.2%. Bonds did not protect
+    anyone that year: a portfolio holding only Treasuries returned <Figure id="all-bond-worst-fall" inline />. Hold
     them for the smaller fall over a whole cycle, not as insurance against any one year.</p>
   </div>
 
@@ -156,7 +156,7 @@ const THIRTY = [
     At 1.5 points it costs the −40% version about 0.75 points a year and the −30% version about 0.9. At 3 points
     it costs about 1.5 and 1.9. You pick the row you believe. The one decade the cautious versions won outright
     was 1999 to 2009, when the −40% version ran <Figure id="cautious-40-flat-decade" inline showUnit={false} />
-    a year ahead of portfolio three and the −30% version 3.1.</p>
+    points a year ahead of portfolio three and the −30% version 3.1.</p>
 
     <p>Against a plain mix of 60% stocks and 40% Treasuries with no lean and no trend, the −40% version earned
     <Figure id="cautious-40-vs-sixty-forty" inline showUnit={false} /> points a year more over 1990 to 2026 with
@@ -205,7 +205,7 @@ const THIRTY = [
   </div>
 
   <Compare class="my-8">
-    <p slot="get">A worst fall of about 18% since 1990 instead of about 50%, and recovery in two to three years
+    <p slot="get">A worst fall of 16% to 18% since 1990 instead of about 50%, and recovery in two to three years
     instead of four to five. Growth of 8.3% or 7.4% a year over 96 years. A trend line that fell less than the
     same mix without it on every history.</p>
     <p slot="give">About 2 to 3 points a year against all stocks at the returns of the past century, and 0 to
