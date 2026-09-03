@@ -1029,13 +1029,6 @@ table,
   }
 }
 
-/* Three portfolios sit in one row once the wide canvas has room for them. */
-@media (min-width: 64rem) {
-  .card-grid {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-  }
-}
-
 .portfolio-card {
   display: flex;
   flex-direction: column;

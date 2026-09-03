@@ -175,18 +175,19 @@ const verdictOf = (fund: ShelfFund): string => {
 };
 
 /**
- * Which of the three portfolios hold a fund. Derived from the published holdings, kept
+ * Which of the four portfolios hold a fund. Derived from the published holdings, kept
  * separate from the verdict: a fund can be still in the running and held by none of them.
  */
 const IN_PORTFOLIOS: Readonly<Record<string, string>> = {
   VT: "Portfolio 1",
-  VTI: "Portfolios 2 and 3",
-  VTV: "Portfolios 2 and 3",
-  VXUS: "Portfolios 2 and 3",
-  AVDV: "Portfolios 2 and 3",
-  IDMO: "Portfolios 2 and 3",
-  AVES: "Portfolios 2 and 3",
-  RSST: "Portfolio 3",
+  VTI: "Portfolios 2, 3 and 4",
+  VTV: "Portfolios 2, 3 and 4",
+  VXUS: "Portfolios 2, 3 and 4",
+  AVDV: "Portfolios 2, 3 and 4",
+  IDMO: "Portfolios 2, 3 and 4",
+  AVES: "Portfolios 2, 3 and 4",
+  RSST: "Portfolios 3 and 4",
+  SCHP: "Portfolio 4",
 };
 
 const unmeasured = shelf.filter(tooNew);
@@ -324,12 +325,12 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const
     <p>Every fund carries one of six words.</p>
 
     <ul>
-      <li><strong>Held here.</strong> One of the eight funds the <a href="/portfolios/">three portfolios</a> hold,
+      <li><strong>Held here.</strong> One of the nine funds the <a href="/portfolios/">four portfolios</a> hold,
       with the portfolios it belongs to underneath. VTV is held even though, measured on its own, a cheap mix of
       VTI and a small-company fund does much the same job; the
       <a href="/portfolios/value-lean/">value-lean page</a> says why it stays.</li>
       <li><strong>Still in the running.</strong> The fund delivers what it sells, and nothing has ruled it
-      out. It can be still in the running and held by none of the three portfolios.</li>
+      out. It can be still in the running and held by none of the four portfolios.</li>
       <li><strong>Didn&rsquo;t make the cut.</strong> The fund was measured against a cheap combination that
       does much the same job, and it lost.</li>
       <li><strong>Too close to call.</strong> The fund has too few months of history for the data to say either

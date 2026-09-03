@@ -43,12 +43,12 @@ export interface OgPage {
  */
 export const OG_PAGES = {
   "/": {
-    title: "Three portfolios, from plain to ambitious",
-    alt: `${SITE_NAME}: three portfolios built from cheap funds, what each one costs, how far it has fallen, and how sure the evidence is.`,
+    title: "Four portfolios, from plain to ambitious",
+    alt: `${SITE_NAME}: four portfolios built from cheap funds, what each one costs, how far it has fallen, and how sure the evidence is.`,
   },
   "/portfolios/": {
-    title: "The three portfolios, side by side",
-    alt: `${SITE_NAME}: all three side by side, with what each costs, what it adds, the worst thing that has happened to it, and which one is yours.`,
+    title: "The four portfolios, side by side",
+    alt: `${SITE_NAME}: all four side by side, with what each costs, what it adds, the worst thing that has happened to it, and which one is yours.`,
   },
   "/portfolios/one-fund/": {
     title: "One fund, held well",
@@ -57,6 +57,10 @@ export const OG_PAGES = {
   "/portfolios/value-lean/": {
     title: "A lean toward cheaper companies",
     alt: `${SITE_NAME}: six funds that shift the stock holdings toward cheap and profitable companies, what that was worth, and the decade it can cost you.`,
+  },
+  "/portfolios/cautious/": {
+    title: "The cautious version: fewer stocks, the rest in TIPS",
+    alt: `${SITE_NAME}: portfolio three with the stock share cut and the rest in inflation-protected Treasuries, for someone who would sell after a fall of about 30% or 40%.`,
   },
   "/portfolios/with-trend/": {
     title: "The same, plus a fund that can rise when stocks fall",

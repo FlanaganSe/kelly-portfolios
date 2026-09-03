@@ -1,0 +1,14 @@
+label: The cautious version for about −30%, against all stocks
+value: '−3.2'
+unit: points a year
+interval: '[−5.6, −0.6]'
+status: rejected
+asOf: '2026-09-03'
+period: 1929-01 to 2025-05
+source:
+  label: Cautious constructions scored as objects
+  docPath: docs/research/cautious-constructions.md
+  anchor: 4-the-price-of-the-drawdown
+note: >-
+  Average yearly gap against a cheap all-stock fund at the returns stocks actually paid. Against
+  portfolio three the gap is 5.2 points. The price of a 62% smaller worst fall on that history.

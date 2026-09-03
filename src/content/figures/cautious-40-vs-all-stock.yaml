@@ -1,0 +1,15 @@
+label: The cautious version for about −40%, against all stocks
+value: '−2.1'
+unit: points a year
+interval: '[−4.1, −0.1]'
+status: rejected
+asOf: '2026-09-03'
+period: 1929-01 to 2025-05
+source:
+  label: Cautious constructions scored as objects
+  docPath: docs/research/cautious-constructions.md
+  anchor: 4-the-price-of-the-drawdown
+note: >-
+  Average yearly gap against a cheap all-stock fund at the returns stocks actually paid, which were
+  about 7.75 points a year over bonds. Against portfolio three the gap is 4.1 points. Rejected means
+  the shortfall is real on that history, not that the mix is wrong for someone who needs it.

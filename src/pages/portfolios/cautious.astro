@@ -1,0 +1,220 @@
+---
+/**
+ * Portfolio four: portfolio three with the stock share cut and the rest in TIPS, for a
+ * reader who would sell after a fall of about 30% or 40%. Two versions, each scored as
+ * one object on 96 years and on the fund-based history (Experiment 025, decision 0014).
+ * Every worst fall since 1990 travels with the 1929 to 1932 figure in the same sentence.
+ */
+import AllocationBar from "~/components/AllocationBar.astro";
+import Compare from "~/components/Compare.astro";
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import HoldingsTable from "~/components/HoldingsTable.astro";
+import KeyNumbers from "~/components/KeyNumbers.astro";
+import Verdict from "~/components/Verdict.astro";
+import { CAUTIOUS_30_HOLDINGS, CAUTIOUS_40_HOLDINGS } from "~/content/portfolios";
+import { figureValue } from "~/lib/figures";
+import Base from "~/layouts/Base.astro";
+
+const NUMBERS = [
+  {
+    value: await figureValue("cautious-40-worst-fall"),
+    label: "Worst fall, 1990 to 2026",
+    note: "The −40% version. 54% across 1929 to 1932.",
+  },
+  {
+    value: await figureValue("cautious-40-growth"),
+    label: "Growth a year, 1929 to 2025",
+    note: "Against 10.2% for all stocks and 11.1% for portfolio three",
+  },
+  {
+    value: "0 to 0.75 points",
+    label: "a year given up at today's likely returns",
+    note: "Against all stocks, if stocks beat TIPS by 0 to 1.5 points a year",
+  },
+  {
+    value: `${await figureValue("cautious-40-trend-line")} points`,
+    label: "a year from the trend line, 1929 to 2025",
+    note: "Against the same mix without it. Too close to call since 2009.",
+  },
+];
+
+const SCHP =
+  "Schwab U.S. TIPS ETF: Treasury bonds whose value rises with inflation. The cheapest TIPS fund I priced. Held in a traditional IRA or 401(k) first.";
+
+const FORTY = [
+  { ticker: "SCHP", what: SCHP, weight: "50%", fee: "0.03%" },
+  {
+    ticker: "RSST",
+    what: "For every dollar, about a dollar of large US stocks and a dollar of a trend-following futures program, borrowed inside the fund.",
+    weight: "15%",
+    fee: "0.99%",
+  },
+  { ticker: "VTI", what: "The whole US market", weight: "9.6%", fee: "0.03%" },
+  { ticker: "VXUS", what: "Every market outside the US", weight: "8%", fee: "0.05%" },
+  { ticker: "VTV", what: "Large, cheap US companies", weight: "7.5%", fee: "0.03%" },
+  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "5%", fee: "0.36%" },
+  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "2.5%", fee: "0.25%" },
+  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "2.5%", fee: "0.36%" },
+];
+
+const THIRTY = [
+  { ticker: "SCHP", what: SCHP, weight: "63%", fee: "0.03%" },
+  { ticker: "RSST", what: "The same fund, four points less of it", weight: "11%", fee: "0.99%" },
+  { ticker: "VTI", what: "The whole US market", weight: "7.1%", fee: "0.03%" },
+  { ticker: "VXUS", what: "Every market outside the US", weight: "5.9%", fee: "0.05%" },
+  { ticker: "VTV", what: "Large, cheap US companies", weight: "5.6%", fee: "0.03%" },
+  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "3.7%", fee: "0.36%" },
+  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "1.9%", fee: "0.25%" },
+  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "1.8%", fee: "0.36%" },
+];
+---
+
+<Base
+  title="The cautious version"
+  description="Portfolio three with the stock share cut and the rest in inflation-protected Treasuries, for someone who would sell after a fall of about 30% or 40%. What each version held, how far it fell on two histories, and what it gives up."
+>
+  <Hero
+    eyebrow="Portfolio 4 of 4"
+    title="The cautious version"
+    lede="Portfolio three with the stock share cut and the rest in TIPS, Treasury bonds whose value rises with inflation. The same funds, less of them, for someone who would sell after a fall of about 30% or 40%."
+  >
+    <KeyNumbers items={NUMBERS} />
+  </Hero>
+
+  <div class="prose mt-10">
+    <h2>Who this is for</h2>
+
+    <p>Every other portfolio on this site fell by about half at some point since 1990. If you would have sold
+    partway through that, you need a smaller fall, and the only way to buy one is to hold fewer stocks. This page
+    gives two versions, one for a fall of about 40% and one for about 30%, each measured as a whole rather than
+    assembled from rules of thumb. The labels come from what each version did since 1990. What each did across
+    1929 to 1932 is printed beside it every time, because on that history nothing on this site falls less than
+    about 42% unless it holds under 38 points of stocks.</p>
+
+    <p><Verdict word="Too close to call" gloss="The smaller fall is measured. Whether the trend line and the lean earn their fees inside it is not." /></p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>For a fall of about 40%</h2>
+  </div>
+
+  <HoldingsTable rows={FORTY} class="my-4" />
+  <AllocationBar holdings={CAUTIOUS_40_HOLDINGS} name="The cautious version for about −40%" class="my-6" />
+
+  <div class="prose">
+    <p>The fee is about 0.20% a year, or $20 on $10,000, most of it RSST's 0.99% on 15% of the money. Half is in
+    TIPS. The stock funds hold 35 points together, in the same proportions as portfolio three, and RSST adds its
+    trend program on top of another 15 points of US stocks, so the stock exposure is about half the portfolio.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>For a fall of about 30%</h2>
+  </div>
+
+  <HoldingsTable rows={THIRTY} class="my-4" />
+  <AllocationBar holdings={CAUTIOUS_30_HOLDINGS} name="The cautious version for about −30%" class="my-6" />
+
+  <div class="prose">
+    <p>The fee is about 0.16% a year, or $16 on $10,000. Nearly two thirds is in TIPS and the stock exposure is
+    about 38% of the portfolio.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>How far each fell</h2>
+
+    <p>On the fund-based history from 1990 to 2026 the −40% version fell
+    <Figure id="cautious-40-worst-fall" inline /> at worst and took 26 months to recover; across 1929 to 1932 it
+    fell <Figure id="cautious-40-worst-fall-96" inline /> and took 74 months. The −30% version fell
+    <Figure id="cautious-30-worst-fall" inline /> since 1990, with 31 months under water, and
+    <Figure id="cautious-30-worst-fall-96" inline /> across 1929 to 1932. On every history that starts in 1934 or
+    later the two fell 27% and 19% at worst. Portfolio three fell 50% since 1990 and 83% from 1929.</p>
+
+    <p>So the labels are honest only about the past sixty years. The 1929 crash put every mix of stocks and bonds
+    between 12 and 33 points deeper than any modern fall. A reader who wants to be safe against that year needs
+    fewer than 38 points of stocks, which is less than either version holds, and I have not scored a mix that
+    small.</p>
+
+    <p>In 2022, the year stocks and bonds fell together, the −40% version lost
+    <Figure id="cautious-40-2022" inline showUnit={false} /> and the −30% version 18.2%. Bonds did not protect
+    anyone that year: a portfolio holding only Treasuries fell <Figure id="all-bond-worst-fall" inline />. Hold
+    them for the smaller fall over a whole cycle, not as insurance against any one year.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What you give up</h2>
+
+    <p>Return. Over 1929 to 2025 the −40% version grew <Figure id="cautious-40-growth" inline /> and the −30%
+    version <Figure id="cautious-30-growth" inline />, against 10.2% for an all-stock fund and 11.1% for
+    portfolio three. Measured as a yearly gap against the all-stock fund, that is
+    <Figure id="cautious-40-vs-all-stock" inline showUnit={false} /> and
+    <Figure id="cautious-30-vs-all-stock" inline showUnit={false} /> points a year at the returns stocks actually
+    paid, which were about 7.75 points a year over bonds.</p>
+
+    <p>Today the gap is smaller. Ten-year TIPS pay 2.44% above inflation, and most forecasters expect stocks to
+    beat that by between nothing and 1.5 points a year. At nothing, holding half your money in TIPS costs nothing.
+    At 1.5 points it costs the −40% version about 0.75 points a year and the −30% version about 0.9. At 3 points
+    it costs about 1.5 and 1.9. You pick the row you believe. The one decade the cautious versions won outright
+    was 1999 to 2009, when the −40% version ran <Figure id="cautious-40-flat-decade" inline showUnit={false} />
+    a year ahead of portfolio three and the −30% version 3.1.</p>
+
+    <p>Against a plain mix of 60% stocks and 40% Treasuries with no lean and no trend, the −40% version earned
+    <Figure id="cautious-40-vs-sixty-forty" inline showUnit={false} /> points a year more over 1990 to 2026 with
+    a shallower worst fall. The −30% version's gap against the same mix is too small to tell from luck.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Whether the trend line earns its place here</h2>
+
+    <p>Holding the stock share fixed and swapping RSST for plain stock funds, the trend line added
+    <Figure id="cautious-40-trend-line" inline showUnit={false} /> points a year to the −40% version and
+    <Figure id="cautious-30-trend-line" inline showUnit={false} /> to the −30% version over 96 years, and both
+    versions fell less than their plain twins on every history. Since 2009 the gap has been too small to tell
+    from zero, as it has been for portfolio three. At the trend returns I would expect from here it is worth
+    about 0.3 to 0.4 points a year, and it stops paying for itself if trend following earns less than about 1.2
+    points a year before costs.</p>
+
+    <p>If you want none of it, the plain twins are the same stock funds and SCHP with no RSST: 51% stocks and 49%
+    TIPS fell <Figure id="cautious-40-plain-twin-worst-fall" inline /> since 1990 and 55.8% across 1929 to 1932;
+    38% stocks and 62% TIPS fell 18.4% and 43.6%.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>Where to hold it</h2>
+
+    <p>SCHP goes in a traditional IRA or 401(k) first, then a Roth, and in a taxable account last. Bond income is
+    taxed as ordinary income, and TIPS are taxed each year on inflation you have not been paid yet. Half or more
+    of the portfolio in TIPS is more than most people's sheltered accounts can hold, so some of it will sit in a
+    taxable account. The <a href="/tools/which-account/">which-account tool</a> ranks the rest of the funds, and
+    RSST still goes in a sheltered account before any of them.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>What is not known</h2>
+
+    <p>No TIPS existed before 2003, so on both long histories a plain ten-year Treasury stands in for them. That
+    makes 1973 to 1974 and 1977 to 1981 read worse than a TIPS portfolio would have done, by an amount no data can
+    measure; across 1977 to 1981 the two versions gained 36% and 24% while portfolio three gained 86%. On the
+    years since 2003 where both can be run, TIPS earned 0.3 to 0.4 points a year more and fell a little deeper at
+    the worst, and nothing in that window separates the two. The case for TIPS over plain Treasuries is the 2.44%
+    real yield you can lock in today, not the history.</p>
+
+    <p>These are constructions built from index and futures series, not fund records. The trend line's measured
+    help predates 2009. Every figure is before tax, and a large bond line in a taxable account is taxed harder
+    than stocks.</p>
+  </div>
+
+  <Compare class="my-8">
+    <p slot="get">A worst fall of about 18% since 1990 instead of about 50%, and recovery in two to three years
+    instead of four to five. Growth of 8.3% or 7.4% a year over 96 years. A trend line that fell less than the
+    same mix without it on every history.</p>
+    <p slot="give">About 2 to 3 points a year against all stocks at the returns of the past century, and 0 to
+    0.9 at today's likely returns. A fall of 42% to 54% across 1929 to 1932. Half or more of the money in one
+    bond fund that fell 19% in 2022 alongside stocks.</p>
+  </Compare>
+
+  <div class="prose">
+    <p>The <a href="/portfolios/">comparison page</a> puts this beside the other three. If your tolerable fall is
+    50% or more, <a href="/portfolios/with-trend/">portfolio three</a> and its ladder are the place to start.</p>
+  </div>
+</Base>

@@ -1,0 +1,12 @@
+label: The same mix as the cautious version for about −40%, with no RSST, worst fall since 1990
+value: '−21.6%'
+status: exploratory
+asOf: '2026-09-03'
+period: 1990-11 to 2026-05
+source:
+  label: Cautious constructions scored as objects
+  docPath: docs/research/cautious-constructions.md
+  anchor: 2-what-fell-how-far
+note: >-
+  About 51% in the six stock funds and 49% in SCHP. It fell 55.8% across 1929 to 1932. The −30%
+  version without RSST, 38% stocks and 62% SCHP, fell 18.4% since 1990 and 43.6% across 1929 to 1932.

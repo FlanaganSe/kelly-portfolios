@@ -191,7 +191,7 @@ jobs:
           # One path from each family that has its own route generator, so a broken
           # collection shows up here rather than in a search console six weeks later.
           for path in / /portfolios/ /portfolios/one-fund/ \
-                      /portfolios/value-lean/ /portfolios/with-trend/ \
+                      /portfolios/value-lean/ /portfolios/with-trend/ /portfolios/cautious/ \
                       /strategies/ /strategies/trend-following/ /strategies/market-timing/ \
                       /strategies/gold-and-bitcoin/ /strategies/crash-insurance/ \
                       /strategies/value-and-momentum/ /strategies/international/ \

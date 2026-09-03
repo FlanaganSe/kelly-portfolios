@@ -1,0 +1,15 @@
+label: What the trend line adds to the cautious version for about −40%
+value: '+0.92'
+unit: points a year
+interval: '[+0.54, +1.27]'
+status: exploratory
+asOf: '2026-09-03'
+period: 1929-01 to 2025-05
+source:
+  label: Cautious constructions scored as objects
+  docPath: docs/research/cautious-constructions.md
+  anchor: 3-the-primary-pairs-the-trend-line-at-matched-equity
+note: >-
+  Against the same mix of stocks and bonds with no RSST, holding the stock share fixed. Positive in
+  every period before 2009; since 2009 it reads 0.04 against a test that could only see 1.1, so it
+  cannot be told from zero. About 0.4 points at the trend returns I would expect from here.

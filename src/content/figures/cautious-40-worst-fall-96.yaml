@@ -1,0 +1,12 @@
+label: The cautious version for about −40%, worst fall from 1929
+value: '−53.8%'
+status: exploratory
+asOf: '2026-09-03'
+period: 1929-01 to 2025-05
+source:
+  label: Cautious constructions scored as objects
+  docPath: docs/research/cautious-constructions.md
+  anchor: 2-what-fell-how-far
+note: >-
+  The 1929 to 1932 crash, with a nominal ten-year Treasury standing in for TIPS. Seventy-four months
+  under water. All stocks fell 83.7% over the same years.
