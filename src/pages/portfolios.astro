@@ -182,7 +182,7 @@ const LADDER = [
     <p>Answer one question: how far could your portfolio fall before you sold?</p>
 
     <ul>
-      <li>If the answer is less than 30%, none of these as written. Hold fewer stocks and more bonds.</li>
+      <li>If the answer is less than 30%, hold fewer stocks and more bonds. The next section says how many.</li>
       <li>If it is 30% to 50%, hold portfolio one with some bonds beside it, or portfolio three at the row of the
       ladder below that matches your number. The cheap mix and the trend version both fell by about half at some
       point since 1990.</li>
@@ -192,6 +192,36 @@ const LADDER = [
       <li>If it is 50% or more and you want a real chance of beating the market, hold portfolio three, with the
       RSST share the ladder gives for your number.</li>
     </ul>
+  </div>
+
+  <div class="prose mt-14">
+    <h2>If you would sell after a fall of 30% or 40%</h2>
+
+    <p>Then hold fewer stocks, and hold the rest in Treasury bonds or inflation-protected Treasury bonds. Over
+    1963 to 2025 a mix of 60% US stocks and 40% ten-year Treasuries, rebalanced monthly, fell at worst
+    <Figure id="sixty-forty-worst-fall" inline /> and took 40 months to recover. With 40% stocks and 60% bonds
+    the worst fall was <Figure id="forty-sixty-worst-fall" inline />. All stocks fell 50.3% on the same history
+    and took six years to recover, and 83.7% from 1929. No bond-heavy mix has been measured on the longer
+    history yet, so read these as what the last sixty years did, not as a floor.</p>
+
+    <p>The price is return. Holding 60% stocks instead of 90% gave up about
+    <Figure id="equity-share-step" inline showUnit={false} /> a year over those years. Today a ten-year
+    inflation-protected Treasury pays <Figure id="tips-real-yield" inline />, the most since 2008, and most
+    forecasters expect stocks to beat that by between nothing and 1.5 points a year, so holding bonds costs less
+    now than in most of the record. Moving 10% of stocks into Treasury bonds cost about
+    <Figure id="bonds-instead-of-stocks-cost" inline showUnit={false} /> a year over 96 years; at today's
+    expected returns it costs about 0 to 0.2 points. If stocks beat bonds by 3 points a year instead, a 15-point
+    cut in stocks costs about 13% of your wealth over 30 years.</p>
+
+    <p>Which bond: a cheap inflation-protected Treasury fund such as SCHP, held in a traditional IRA or 401(k)
+    first, because bond income is taxed as ordinary income and inflation-protected bonds are taxed on inflation
+    you have not been paid yet. Bonds did not protect anyone in 2022, when a portfolio holding only Treasuries
+    fell <Figure id="all-bond-worst-fall" inline />, so hold them for the smaller fall, not as insurance.</p>
+
+    <p>I have not yet scored a bond-heavy version of these portfolios as one object. Until I have, the cautious
+    version is portfolio two at 60% or 40% of your money with the rest in SCHP. Whether a small trend fund earns
+    its place beside it is the measurement running now, and this page will carry its numbers when it is done.
+    The −30% and −40% rows of the ladder below give the trend share only for now.</p>
   </div>
 
   <div class="prose mt-14">

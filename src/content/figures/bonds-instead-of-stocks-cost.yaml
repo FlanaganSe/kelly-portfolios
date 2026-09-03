@@ -1,0 +1,16 @@
+label: What moving 10% of stocks into Treasury bonds cost each year
+value: 0.55 points
+unit: a year
+status: rejected
+asOf: '2026-09-02'
+period: 1929-01 to 2025-05
+interval: 0.15 to 0.94
+source:
+  label: Bonds, gold and cash inside the trend portfolio
+  docPath: docs/research/defensive-engines-in-the-construction.md
+  anchor: 4-substitution-the-trade-the-experiment-can-measure
+note: >-
+  Measured inside the trend portfolio on 96 years, when stocks beat cash by about 7.75 points a
+  year. Moving the same 10% into cash cost 0.77. Either cut the 1929 and 2008 falls by 4 to 5
+  points. At today's expected gap between stocks and TIPS of nothing to 1.5 points the same move
+  costs about 0 to 0.2 points a year.
