@@ -3,9 +3,11 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import math
 from collections.abc import Mapping
 from dataclasses import replace
+from pathlib import Path
 
 import numpy as np
 from numpy.typing import NDArray
@@ -401,6 +403,15 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
     )
 
 
+def write_provenance(directory: Path, diagnostics: Mapping[str, JsonValue]) -> None:
+    """Commit-sized source identities, separate from the ignored bulk result."""
+    root = directory
+    keys = ("source_artifacts", "panel_provenance", "manifest_hashes")
+    (root / "provenance.json").write_text(
+        json.dumps({key: diagnostics[key] for key in keys}, indent=2) + "\n"
+    )
+
+
 def main() -> None:
     spec = load_specification(workspace_root() / "experiments" / f"{ENTRY_POINT}.yaml")
     ledger = Ledger()
@@ -408,6 +419,7 @@ def main() -> None:
     assert outcome.result is not None
     path = workspace_root() / "artifacts" / outcome.run_id / "tables.md"
     path.write_text(str(outcome.result.diagnostics["markdown_tables"]))
+    write_provenance(path.parent, outcome.result.diagnostics)
     ledger.record_results_viewed(outcome.run_id, notes="Full portfolio scenarios inspected")
     print(f"run {outcome.run_id}: {outcome.result.summary}\n{path}")
 
