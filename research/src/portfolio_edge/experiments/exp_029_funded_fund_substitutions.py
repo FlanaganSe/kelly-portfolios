@@ -31,7 +31,11 @@ from portfolio_edge.experiments.result import ExperimentResult, ResultStatus
 from portfolio_edge.experiments.runner import run_experiment
 from portfolio_edge.experiments.specification import JsonValue, Specification, load_specification
 from portfolio_edge.inference.bootstrap import stationary_bootstrap_indices
-from portfolio_edge.reporting.site_series import SITE_PORTFOLIOS, load_panels
+from portfolio_edge.reporting.site_series import (
+    SITE_PORTFOLIOS,
+    load_panels,
+    tournament_targets,
+)
 from portfolio_edge.studies._loading_windows_tables import fund_returns, load_french_panel
 from portfolio_edge.studies._untested_tilts_tables import COSTS, FACTORS, FUNDS, PREMIA, regress
 
@@ -155,12 +159,15 @@ def simulate(
     costs: CostSettings,
     weights: Mapping[str, float],
 ) -> FloatArray:
+    tickers, targets = tournament_targets(
+        weights, mappings=mappings, vt_proxy={"VTI": 0.65, "VXUS": 0.35}
+    )
     return constant_weight_path(
         panel,
         mappings,
         costs,
-        tickers=tuple(weights),
-        targets=np.array(list(weights.values())) / 100,
+        tickers=tickers,
+        targets=targets,
     ).total
 
 

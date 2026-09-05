@@ -57,7 +57,7 @@ parameters:
     six_year: {start: '2020-01', end: '2025-12'}
     three_year: {start: '2023-01', end: '2025-12'}
   turnover_cost_coefficients: [0, 1, 1.7]
-  premium_scenarios: [historical, own-panel, half, null]
+  premium_scenarios: [historical, own-panel, half, 'null']
   scenario_market_premium_pp_yr: 5
   scenario_trend_gross_premium_pp_yr: 1
 notes: >
