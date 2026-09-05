@@ -38,6 +38,10 @@ its interval includes zero. SPMO's case weakens with halved premiums and can rev
 null style premiums plus high assumed trading costs. The combination adds little beyond
 the separate effects. Higher fitted market exposure explains part of the historical gains.
 
+Experiment 029 uses the inherited anniversary-rebalance cost approximation and waives
+initial purchase costs. Experiment 030 charges the initial purchase and solves the
+self-financing execution equation exactly; the two cost conventions are not identical.
+
 These projected paths omit fund residual return and risk, and their intervals omit loading
 and assumed-premium uncertainty. They use nominal Treasuries as the SCHP proxy and a gross
 trend series for RSST's trend leg. They cannot replace the actual fund-history test.
