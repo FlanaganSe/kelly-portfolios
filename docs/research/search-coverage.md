@@ -13,6 +13,30 @@ they do not imply that a candidate will succeed.
 This is a ranked agenda, not a permission boundary. Cheap exploratory work can enter from
 outside it when the mechanism and decision relevance are stated.
 
+## Next construction comparisons
+
+After the funded equity grids, prioritize changes large enough to alter the portfolio's
+purpose. Keep the current conditional choices reviewable while these proceed; repeating
+short-window fund rankings is not a prerequisite for choosing an allocation.
+
+- **Rebuild the defensive half of Cautious.** Compare SCHP with short TIPS, Treasury/cash
+  mixtures and a small duration-hedged credit holding, keeping the stock/trend allocation
+  fixed initially. Include real wealth, withdrawal shortfall and rate/inflation shocks.
+  The [existing cautious tests](cautious-constructions.md) use nominal or modelled bond
+  legs; they do not choose the best actual defensive fund or duration.
+- **Compare actual trend implementations and funding.** Test a stacked wrapper against
+  separate stock, bond and trend funds, including a limited two-manager blend. Match
+  intended stock and duration exposure where feasible and state the remaining differences.
+  [Modelled bond funding](trend-from-the-bond-line.md) and
+  [measured wrapper delivery](loading-comparability-and-wrapper-exposure.md) are different
+  evidence; sharing the label trend does not rule out useful implementation diversification.
+- **Test a small crash-hedge budget inside a portfolio.** Predeclare funding, a premium
+  budget and a monetisation/rebalance rule, with stock/duration-matched and cash controls.
+  The [tail-hedge audit](alternative-sleeves-audit.md#4-tail-hedging-the-bleed-is-measured-and-the-cheaper-substitutes-win)
+  compares defensive products with stocks. That opportunity cost is not by itself the
+  incremental option cost or the growth effect of a small funded hedge. Distinguish
+  TAIL's duration exposure and CAOS's inherited record before interpreting either.
+
 ## 1. Compare portfolios as portfolios
 
 Run a common construction tournament across feasible combinations of the core, bonds,

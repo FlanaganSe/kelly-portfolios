@@ -71,8 +71,8 @@ and [fund comparison](untested-tilt-candidates.md) separate these layers.
 
 VTV remains in the published examples; its presence does not establish that it is the best
 value fund. AVUV adds a different size exposure. SPMO changes momentum exposure. Their
-combinations need testing as complete funded portfolios, including the VTI or VTV sold to
-buy them. The [current comparisons](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
+combinations have been tested as complete funded portfolios, including the VTI or VTV sold
+to buy them. The [current comparisons](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
 separate assumptions about future premiums from actual filed fund returns. They support
 reconsideration, not a reliable forward ranking from a short recent window.
 
