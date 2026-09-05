@@ -310,8 +310,8 @@ def test_a_candidate_uncorrelated_with_what_is_held_keeps_its_whole_edge() -> No
     assert verdict.appraisal_ratio == pytest.approx(0.5)
 
 
-def test_a_duplicate_of_what_is_held_adds_nothing_however_good_alone() -> None:
-    """The investor's own objection, made exact: overlap can take the whole case away."""
+def test_zero_residual_alpha_can_still_add_funded_arithmetic_return() -> None:
+    """Shared exposure has positive funded return even with zero appraisal alpha."""
     held_edge, held_error = 1.0, 2.0
     correlation, candidate_error = 0.8, 5.0
     beta = correlation * candidate_error / held_error
@@ -327,6 +327,11 @@ def test_a_duplicate_of_what_is_held_adds_nothing_however_good_alone() -> None:
     assert verdict.alpha == pytest.approx(0.0)
     assert verdict.appraisal_ratio == pytest.approx(0.0)
     assert not verdict.earns_its_place
+    # The candidate buys twice the held exposure plus zero-mean residual risk.
+    # At 5%, its 2 pp/year edge adds 0.10 pp/year over its funding asset.
+    assert portfolio_return_change(weight=0.05, edge=beta * held_edge) == pytest.approx(0.10)
+    # Applying the residual alpha would erase that funded contribution.
+    assert portfolio_return_change(weight=0.05, edge=verdict.alpha) == pytest.approx(0.0)
 
 
 def test_a_hand_computed_marginal_fixture() -> None:

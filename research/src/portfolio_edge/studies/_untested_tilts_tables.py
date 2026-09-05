@@ -699,7 +699,9 @@ def main() -> None:  # pragma: no cover - a reporting entry point
             edges[case.label][scenario] = (worst, best)
             print(f"    {scenario:<10} {worst:+6.3f} to {best:+6.3f} pp/yr per dollar of sleeve")
 
-    _rule("5. What each adds given what the portfolio already owns")
+    _rule("5. Residual appraisal against the held active-position proxy")
+    print("  Residual alpha removes exposure explained by this proxy; it is not funded return.")
+    print("  Its uncertainty is not estimated here. The proxy is not the complete portfolio.")
     held_edges = {
         "VTV": edges["VTV over VTI (held)"]["own-panel"][0],
         "IDMO": edges["IDMO over VXUS (held)"]["own-panel"][0],
@@ -711,7 +713,6 @@ def main() -> None:  # pragma: no cover - a reporting entry point
         + ", ".join(f"{k} {v:+.3f}" for k, v in held_edges.items())
         + "  (AVES and the trend leg are carried, not fitted here)"
     )
-    marginals: dict[str, dict[str, float]] = {}
     for label, members, first, last in (
         ("with the trend wrapper", tuple(HELD), "2023-10", "2026-03"),
         ("without it, on more months", ("VTV", "IDMO", "AVES"), "2021-10", "2026-03"),
@@ -739,11 +740,10 @@ def main() -> None:  # pragma: no cover - a reporting entry point
                 held_tracking_error=held_error,
                 correlation_to_held=correlation,
             )
-            marginals.setdefault(label, {})[case.label] = verdict.alpha
             print(
                 f"  {case.label:<22} n={len(months):>3} own tracking error "
-                f"{candidate_error:5.2f} rho to held {correlation:+.3f} standalone "
-                f"{edges[case.label]['own-panel'][0]:+6.3f} marginal {verdict.alpha:+6.3f} "
+                f"{candidate_error:5.2f} rho to held {correlation:+.3f} funded edge "
+                f"{edges[case.label]['own-panel'][0]:+6.3f} residual alpha {verdict.alpha:+6.3f} "
                 f"({verdict.appraisal_ratio:+.3f} per unit of residual risk)"
             )
 
@@ -774,21 +774,24 @@ def main() -> None:  # pragma: no cover - a reporting entry point
             cells.append(f"{float(pair[0, 1]):>+10.3f}")
         print(f"  {row:<6}" + "".join(cells))
     print(
-        "  A candidate near zero against everything held keeps its whole standalone case; "
-        "one\n  correlated with a line already owned is buying a position twice."
+        "  Overlap describes shared exposure. It does not by itself determine funded return "
+        "or log growth."
     )
 
-    _rule("7. The headline: what each does to the portfolio's return, per year")
+    _rule("7. Funded factor-tilt arithmetic contribution, percentage points per year")
     print("  Centre is the own-panel premia at the worse end of the cost bracket. The")
-    print("  range carries the premia's own standard error at 95%, and the null column")
+    print("  range is a +/-1.96 premium-error sensitivity, not a full confidence interval.")
+    print("  It excludes loading, cost and residual-appraisal uncertainty. The null column")
     print("  is what the candidate costs if every premium turns out to be zero.")
+    print("  Excludes incremental market beta times market premium, intercept and taxes.")
+    print("  Growth and allocation value require the complete portfolio return path.")
     for case in CANDIDATE_CASES:
-        marginal = marginals["without it, on more months"][case.label]
+        funded_edge = edges[case.label]["own-panel"][0]
         error = errors[case.label]
         for weight in sorted({case.weight, 0.05, 0.10}):
-            centre = portfolio_return_change(weight=weight, edge=marginal)
-            low = portfolio_return_change(weight=weight, edge=marginal - 1.96 * error)
-            high = portfolio_return_change(weight=weight, edge=marginal + 1.96 * error)
+            centre = portfolio_return_change(weight=weight, edge=funded_edge)
+            low = portfolio_return_change(weight=weight, edge=funded_edge - 1.96 * error)
+            high = portfolio_return_change(weight=weight, edge=funded_edge + 1.96 * error)
             null = portfolio_return_change(
                 weight=weight, edge=edges[case.label]["null"][0]
             )

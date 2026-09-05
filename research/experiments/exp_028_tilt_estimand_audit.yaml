@@ -1,0 +1,45 @@
+experiment_family: exp_028_tilt_estimand_audit
+title: Correct the tilt shelf's funded-return versus residual-appraisal estimand
+entry_point: exp_028_tilt_estimand_audit
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260905
+hypothesis: >
+  Using candidate factor edge over its funding asset changes the reported contribution
+  compared with using residual appraisal alpha. Existing reports conflate these estimands.
+mechanism: >
+  Arithmetic contribution is weight times candidate-minus-funding priced edge; removing
+  exposure explained by an active-position proxy answers a different question.
+falsifier: >
+  Report both diagnostics without allocating or ranking. Zero differences would show
+  that this error has no numerical effect for that case; nonzero differences reopen it.
+universe: Existing CASES and CANDIDATE_CASES frozen by emitter source hash.
+sample_policy:
+  start: '2019-07'
+  end: '2026-05'
+  held_out: None; existing study data already inspected.
+  embargo: No strategy or predictive fit; correction of a historical diagnostic.
+  eras:
+    - name: existing_case_windows
+      start: '2019-07'
+      end: '2026-05'
+      rationale: Each case retains its emitter-defined contiguous common window.
+benchmark: Each candidate's named funding ETF, separately; held proxy only for appraisal.
+primary_metric: Weight times priced factor-tilt edge, percentage points per year.
+secondary_metrics: [Residual appraisal alpha, Premium-error sensitivity]
+cost_model: Existing fee less lending plus turnover bracket; market beta/intercept/taxes omitted.
+rebalance_rule: No portfolio path; algebraic funded substitution at 5%, 10%, and existing case weight.
+inference:
+  bootstrap: Existing regression bootstrap only; no new choices.
+  block_length_policy: Existing emitter design retained.
+  multiple_testing_correction: None; arithmetic correction cannot promote a fund.
+  confidence_level: 0.95
+  resamples: 10000
+rejection_rule: Always exploratory; this is an estimand correction, not an investment decision.
+parameters:
+  emitter_sha256: 73550c60d298015b247bf8afc873e983f2cc8895d0e673448a520d2f8becdb43
+notes: >
+  Frozen before this registered reread. Source hash locks all study constants and windows.
+  Full stdout is hashed in summary and result artifacts. Do not read contribution as full
+  portfolio return: incremental beta times market premium, intercept and taxes are missing.

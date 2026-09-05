@@ -4,9 +4,9 @@ Why this module exists
 ----------------------
 A fund shelf invites the wrong question. It lists products side by side with a loading
 and a fee, and the reader picks the best-looking row. But a portfolio is not a shelf: a
-tilt that duplicates an exposure already held adds nothing however good it looks alone,
-and a tilt whose cost is paid in turnover rather than in fee looks cheap on the row and
-is not. This module is the arithmetic for the question the shelf cannot ask — *what does
+tilt that duplicates an exposure already held changes its size, even if it adds no new
+return source. A tilt whose cost is paid in turnover rather than in fee can look cheap
+on the row. This module is the arithmetic for the question the shelf cannot ask — *what does
 this candidate add, given what is already owned, after everything it actually costs?*
 
 Three guards, and they are the reason this is a module rather than four lines in a table
@@ -295,11 +295,16 @@ def edge_standard_error(
 
 
 def portfolio_return_change(*, weight: float, edge: float) -> float:
-    """``weight * edge``: what a sleeve at ``weight`` does to the whole portfolio's return.
+    """``weight * edge``: the funded change in arithmetic expected return.
 
     The one conversion between "per dollar of sleeve" and "per year of portfolio", kept as
     a named function because every headline number in the owning page is this product and
     quoting a sleeve edge as a portfolio figure overstates it by ``1 / weight``.
+    ``edge`` must be the candidate return minus its funding asset return after costs,
+    in percentage points per year. A residual appraisal alpha is a different estimand.
+    With ``sleeve_edge`` as input this is only the priced factor-tilt contribution:
+    incremental market beta, intercept and taxes are omitted by that model.
+    This is not log growth: it contains no covariance or finite-weight variance term.
     """
     if not 0.0 <= weight <= 1.0:
         raise ValueError(f"weight must lie in [0, 1], got {weight}")
@@ -316,14 +321,16 @@ def marginal_tilt(
     held_tracking_error: float,
     correlation_to_held: float,
 ) -> MarginalVerdict:
-    """What the candidate adds *given what is already owned*.
+    """Residual appraisal diagnostic relative to the active position already held.
 
     Delegates to :func:`stacking.marginal_contribution` so the repository keeps one
     definition of ``alpha_k / omega_k``. ``candidate_edge`` and
     ``candidate_tracking_error`` are per dollar of the candidate sleeve; ``held_edge`` and
     ``held_tracking_error`` describe the *whole* existing active position at its actual
     weights. ``MarginalVerdict.alpha`` is then the candidate's edge net of what the
-    portfolio already supplies, and it is the number a weight should be sized from.
+    active position explains. It is not the return change from buying the candidate
+    with its stated funding asset, nor a log-growth derivative. It cannot decide a
+    funded allocation without the full portfolio and its risk constraints.
     """
     return marginal_contribution(
         label=ticker,
