@@ -14,7 +14,9 @@ import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
 import Ladder from "~/components/Ladder.astro";
 import Verdict from "~/components/Verdict.astro";
-import { CAUTIOUS_30_HOLDINGS, PORTFOLIOS, TODAY_HOLDINGS, type Holding } from "~/content/portfolios";
+import { CAUTIOUS_30_HOLDINGS, PORTFOLIOS, type Holding } from "~/content/portfolios";
+import { portfolio } from "~/content/portfolios";
+const TODAY_HOLDINGS = portfolio("with-trend").holdings;
 import type { Confidence } from "~/lib/rungs";
 import Base from "~/layouts/Base.astro";
 

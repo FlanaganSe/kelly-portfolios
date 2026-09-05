@@ -11,7 +11,8 @@ import Hero from "~/components/Hero.astro";
 import HoldingsTable from "~/components/HoldingsTable.astro";
 import KeyNumbers from "~/components/KeyNumbers.astro";
 import Ladder from "~/components/Ladder.astro";
-import { TODAY_HOLDINGS, portfolio } from "~/content/portfolios";
+import { portfolio } from "~/content/portfolios";
+const TODAY_HOLDINGS = portfolio("with-trend").holdings;
 import { figureValue } from "~/lib/figures";
 import Base from "~/layouts/Base.astro";
 
