@@ -22,9 +22,10 @@ correlation to trend reopens the long/short commodity screen below.
 Two answers the investor asked for directly. **Crypto: at most 1–2%, and only as a
 declared speculation, never as a diversifier** — in the worst decile of equity months
 since 2015 bitcoin's mean return was **−7.51%** and it was positive in **1 of 13** of them.
-**Explicit tail hedges: no.** The bleed is measured at roughly 12 percentage points a year
-against the index, and the convexity it buys is not statistically resolvable in any asset
-on this panel.
+**Explicit tail hedges: not established as a portfolio improvement.** The standalone
+fund returns below measure a substantial opportunity cost against stocks, not isolated
+option-premium losses. Their value at a small weight remains a whole-portfolio question
+with explicit funding, duration controls and a rebalancing rule (§4).
 
 **Decision it informs.** What to add to the construction, at what weight, in which
 account, and what evidence would move each weight.
@@ -234,7 +235,7 @@ vehicle is an implementation finding, not proof that the return source is absent
 | **Commodities, long-only** | Hedgers who want price certainty, when the curve is in backwardation and not otherwise | Inflation-shock payoff; loses in growth shocks | Yes, but negative in the equity lower tail | **Reject as a diversifier; consider only as an inflation hedge.** §8 |
 | **Long/short commodities (carry, momentum)** | Hedging demand and futures-curve differences; momentum instead follows past price changes | Depends on the trading signal | Commodity carry has little measured correlation to trend; momentum may overlap | **Carry reopened for portfolio testing.** §8 |
 | **Spot bitcoin** | Nobody. No cash-flow claim exists; expected return is entirely a claim about future adoption | Levered equity beta with an idiosyncratic regulatory and custody tail | **No.** β 1.53/1.62, ρ 0.342, worse than cash in the lower tail | **≤2%, as declared speculation.** §3 |
-| **Explicit tail hedges (long puts)** | The buyer pays the variance risk premium to the seller, every month, forever | Convex when it works, and it must be sized and monetised to work | It is the *opposite* side of a premium, so it is negative expected return by construction | **Reject.** §4 |
+| **Explicit tail hedges (long puts)** | The buyer pays for downside protection | Convex option payoffs; realised portfolio protection depends on strike, maturity, collateral and monetisation | A distinct payoff can improve portfolio utility despite a negative standalone premium | **Whole-portfolio value unresolved.** §4 |
 | **Long volatility (VIX futures)** | Same, plus a roll paid into a persistently contangoed curve | Spike payoff destroyed by roll | Same | **Reject.** §4 |
 | **Volatility selling / put writing** | The investor is paid the premium above, and takes the crash | Negative skew; the crash *is* the product | Duplicates equity's own left tail | **Reject on overlap.** §9 |
 | **Buffered / defined-outcome** | The investor sells upside to buy a bounded downside, and pays a fee on top | Bounded both ways over a reset period | Replicable from a bond and two options | **Reject on price.** §4 |
@@ -516,88 +517,76 @@ question with a real estimand, not a reason to raise a bitcoin weight.
 
 ## 4. Tail hedging: the bleed is measured, and the cheaper substitutes win
 
-**Verdict. Reject explicit tail hedges. The investor's stated requirement — "assets that
-perform better in black swan events without excessive long-term drawdowns" — is best met
-on this evidence by (a) a larger short-Treasury and cash allocation, (b) the trend overlay
-already held, and (c) not holding the levered and concave things in §1.4. An option-based
-hedge converts a diffuse long-term drawdown into a certain annual bleed, which is a
-different risk, not less of it.**
+The heading is retained for existing links; its earlier blanket conclusion is superseded.
+**Current conclusion, reviewed 2026-09-05: no general allocation promotion, but the small
+funded portfolio experiment is open.** Standalone underperformance of stocks does not
+measure option-premium bleed or rule out a useful hedge. The tests in §1 did not include
+an executable TAIL or CAOS portfolio. Neither their convexity resolution nor their cash
+comparison establishes that these funds cannot improve the investor's downside or log
+wealth under a stated allocation and rebalancing rule.
 
-**The mechanism, stated honestly.** A long put is the short side of the variance risk
-premium. Index options have been persistently rich relative to subsequent realised
-volatility because someone is being paid to bear crash risk — and a tail-hedge fund's
-investor is the one paying. The strategy is therefore **negative expected return by
-construction**, and the case for it can only ever be that a convex payoff at the right
-moment is worth more than the premium. That is a claim about the *path*, and it requires
-the holder to monetise the hedge at the bottom, which is the moment they are least likely
-to.
+**What the historical figures establish.** The previously recorded issuer snapshots are
+kept with their original windows; they are not updated returns or matched portfolio tests.
 
-**The bleed, from issuer-published standardised returns.**
+| Fund | Historical annualised NAV return | Comparator and limitation |
+| --- | ---: | --- |
+| TAIL | −7.15%/yr from 2017-04-06 to 2026-06-30 | SPY 15.35%/yr over ten years to the same date; different starting dates |
+| CAOS | +3.00%/yr over ten years to 2026-07-31 | SPY +14.93%/yr over the same window; CAOS includes predecessor mutual-fund history |
 
-| Fund | Structure | Fee | Window | Annualised NAV return | Same-issuer benchmark |
-| --- | --- | ---: | --- | ---: | --- |
-| **TAIL** (Cambria Tail Risk) | 1940-Act ETF; ~91% 10-year Treasuries, ~5% long OTM SPX puts | 0.59% | since inception 2017-04-06, as of 2026-06-30 | **−7.15%/yr, −49.59% cumulative** | SPY 10-yr 15.35%/yr (SSGA factsheet, same date; the windows differ by 0.77 yr) |
-| **CAOS** (Alpha Architect Tail Risk) | 1940-Act ETF; protective SPX/SPY puts, put spreads, box-spread collateral | 0.63% gross = net | 10 years to 2026-07-31 | **+3.00%/yr** | SPY +14.93%/yr, identical window, both issuer-published |
+Recorded 2026-08-22 from the [TAIL factsheet](https://cambriafunds.com/assets/docs/TAIL-FactSheet.pdf),
+[CAOS issuer page](https://funds.alphaarchitect.com/caos/) and
+[SPY issuer page](https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy).
+The TAIL product page's hydrated output was inconsistent with its PDF, so it is not a
+return-series source. Subtracting these annualised figures cannot identify option P&L.
+Multiplying their difference by a proposed weight also does not produce a compounded,
+rebalanced portfolio result. The former 2.2 pp/yr portfolio-growth estimate is withdrawn.
 
-Read 2026-08-22 from the [TAIL factsheet PDF](https://cambriafunds.com/assets/docs/TAIL-FactSheet.pdf),
-the [Alpha Architect CAOS page](https://funds.alphaarchitect.com/caos/) and the
-[SSGA SPY page](https://www.ssga.com/us/en/intermediary/etfs/spdr-sp-500-etf-trust-spy).
-Two cautions that belong with the numbers: **do not use the figures rendered on
-`cambriafunds.com/tail`** — that page is JavaScript-hydrated and returns numbers
-irreconcilable with the issuer's own PDF; and **CAOS's ten-year record is inherited** from
-the Arin Large Cap Theta mutual fund, a differently-mandated, higher-turnover predecessor,
-with only about 3.4 years of it as the current ETF
-([497K](https://www.sec.gov/Archives/edgar/data/1592900/000182912623001899/easeries-caos_497k.htm)).
+**TAIL combines duration with purchased protection.** Its September 1, 2026 summary
+prospectus reports **0.60% total annual expenses: 0.59% management plus 0.01% other
+expenses**. The adviser intends to purchase puts costing approximately 1% of fund assets
+monthly, generally 0–30% out of the money. It reinvests option gains into Treasuries or
+TIPS and may monetise positions within the month.
+([Current summary prospectus](https://www.cambriafunds.com/assets/docs/Cambria_TAIL_Summary.pdf),
+read 2026-09-05.) That gross purchase outlay is not net option loss: options retain value
+and can pay off. At a constant 5% portfolio allocation it would represent approximately
+0.6% of portfolio assets annually in purchases, before recoveries. Actual net NAV returns
+already include fund expenses and trading results; do not subtract that outlay again.
+Collateral duration varies, so a single holdings snapshot is not a historical control.
 
-**The bleed is roughly 12 pp/yr against the index on the honest comparison (CAOS, identical
-window, both figures issuer-published) and worse on the pure hedge.** To first order a 10%
-TAIL sleeve funded pro rata would have cost about **2.2 pp/yr** of portfolio growth over its
-life — `0.10 × (−7.15 − 15.35)` — which is roughly four times the entire measured marginal
-value of the trend overlay at the same weight in §1.5. That is arithmetic on two annualised
-returns over slightly different windows, not a backtest.
+The earlier calendar-year snapshot recorded TAIL +6.98% in 2020 and −13.15% in 2022.
+Those figures distinguish a fast crash from a sustained stock-and-bond decline, but annual
+returns cannot measure peak crash protection, investor monetisation or option-leg losses.
+The 2022 fund loss does not establish that each underlying leg lost money. A stock crash
+hedge is not necessarily protection against rising yields or every bear-market path.
 
-**The calendar years say something the annualised figure cannot, and it is the decisive
-thing.** From TAIL's own prospectus bar chart and the issuer's return feed, read 2026-08-23:
+**CAOS is not a pure put sleeve.** Its February 1, 2026 prospectus describes variable
+index exposure using about 20% of capital, protective options using 1–10%, and collateral
+for the remainder. Typical equity exposure ranges from +120% to −40% before protective
+options; those capital weights therefore cannot be treated as equity beta. The strategy
+also sells options and may realise protective-option gains during dislocations. Its
+annual expense ratio is 0.63%.
+([Current summary prospectus](https://etfarchitect.com/wp-content/uploads/compliance/etf/summary_prospectus/CAOS_Summary_Prospectus.pdf),
+read 2026-09-05.) A CAOS-minus-SPY return gap combines variable market participation,
+collateral, options and costs. It does not isolate the price of insurance.
 
-| 2018 | 2019 | 2020 | 2021 | 2022 | 2023 | 2024 | 2026 YTD |
-| ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| +2.33 | −13.99 | **+6.98** | −12.81 | **−13.15** | −12.98 | −9.98 | −8.33 |
+CAOS converted from Arin Large Cap Theta on March 6, 2023 and reverse-split 1:8 on
+March 22. The issuer's SEC-filed report says the predecessor had the **same investment
+objective**; the earlier description here of a proven different mandate is withdrawn.
+That does not establish unchanged implementation through the entire inherited record.
+Use the ETF's first full month onward for a current-wrapper test and label any predecessor
+comparison separately. ([SEC shareholder report](https://www.sec.gov/Archives/edgar/data/1592900/000159290024000935/alphaarchitect_sarx03312024.htm).)
 
-**TAIL made 6.98% in 2020, the year of a 33.9% peak-to-trough fall in the S&P 500. And it
-lost 13.15% in 2022, a year the S&P 500 returned −18.11%.** A put-buying programme
-collateralised with Treasuries loses on both legs when a bear market is a slow grind with
-rising rates rather than a volatility spike, and 2022 was the second kind.
-**A crash hedge that loses money in a bear market is a bet on the shape of the decline
-rather than a hedge.** On the same feed the fund's since-inception return to 2026-07-31 is
-**−7.30%/yr, −50.64% cumulative**, its trailing five years **−9.06%/yr**, and its assets
-**$147.6M** at 2026-08-21. *(TAIL's 2025 calendar return is deliberately absent: no primary
-source publishes it yet — the issuer shows trailing periods only and the next prospectus
-bar chart has not been filed. Cambria's own two sources also disagree by one day on the
-inception date, 2017-04-05 in the SEC 485BPOS against 2017-04-06 on the fund page.)*
+**What would change the decision.** Freeze a small, fully funded allocation and compare
+whole-portfolio net log growth, shortfall and drawdown with both the unchanged portfolio
+and cash/duration controls. Specify calendar rebalancing in advance; the investor need not
+identify a market bottom. The fund managers already make option-monetisation decisions.
+Monthly N-PORT returns can support month-end outcomes and scheduled rebalancing, but not
+intramonth maximum drawdowns or a daily harvest rule. Daily claims require a complete,
+distribution-adjusted source and executable trading costs. Investigating a mechanism does
+not require its standalone premium to turn positive. Product closure and predecessor
+history must remain visible if the comparison is used to generalise about a fund family.
 
-**And the distribution has the other tail too.** Simplify's **CYA**, launched
-**2021-09-14**, reported **−99.16% since inception** on the issuer's own site at
-2023-12-31, took a **1-for-20 reverse split effective after the close on 2024-02-09**
-([SEC 497](https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=CYA&type=497),
-filed 2024-01-23) and was liquidated **"on or about March 14, 2024"** (SEC 497 filed
-2024-02-20). Its last filed net assets, in the Form N-PORT for 2023-12-29, were about
-**$2.16M**; no filing covers the final quarter, so the frequently repeated "$1.7M at
-liquidation" is unconfirmed and is not used here. **A total loss on a product sold as crash
-protection, over a period that contained a bear market.** CYA is also the seventh ticker in
-Simplify's run of alternative-strategy closures — SCY, SPQ, FIG, NXTV, EQLS and WUSA all
-last traded 2025-05-23, about fourteen and a half months after CYA — which is the
-survivorship point: **a shelf screened today shows the products that lived.**
-
-One point in TAIL's favour, because it changes what the number means without changing the
-verdict: **TAIL is about 91% ten-year Treasuries and only about 5% options**, so its
-−7.15%/yr is not all option bleed — a large part of it is the worst bond market in forty
-years, and §1.2 already shows that Treasuries lost 13.6% through 2022. The option leg's own
-cost is nearer the adviser's stated spend of roughly 1% of assets a month on puts. That
-makes TAIL a *worse* proposition rather than a better one for this investor: the Treasury
-part they can buy for 3 bp, and the part they are paying 59 bp to obtain is the part with
-negative expected return.
-
-**Long volatility is worse, and the reason is arithmetic.** VIX futures were in steep
+**VIX-futures products require their own assessment.** VIX futures were in steep
 contango across the whole visible curve on the last settlement before this page was
 written: spot VIX 15.13 against 17.50 for September and 19.15 for October
 ([Cboe VIX futures](https://www.cboe.com/tradable_products/vix/vix_futures/), read
@@ -610,9 +599,10 @@ years and UVXY −71.37%/yr**, NAV as of 2026-07-31
 Barclays note** maturing 2048, callable by the issuer at its sole discretion, and subject
 to UK bail-in powers, with a tax treatment its own prospectus calls uncertain
 ([424B2](https://www.sec.gov/Archives/edgar/data/312070/000095010324010593/dp215108_424b2-vxxvxzps.htm),
-read 2026-08-22). None of this belongs in a long-horizon portfolio.
+read 2026-08-22). These records weigh against an unqualified long-term allocation; they do not price an
+explicitly sized and rebalanced insurance sleeve.
 
-**Buffered and defined-outcome funds are the same trade at a worse price.** This repository
+**Buffered and defined-outcome funds cap upside to fund protection.** This repository
 has already priced the cap-and-buffer package from 1,183 overlapping twelve-month price
 returns and found it worth **−2.4 to −4.1 pp/yr**, with the funds' realised −4.1 landing
 inside that range from disjoint data ([evidence base](evidence-base.md)). Current shelf
@@ -628,15 +618,13 @@ Goldman Sachs subsidiary since 2026-04-01
 ([497](https://www.sec.gov/Archives/edgar/data/1415726/000121390026038588/ea0284508-01_497.htm)),
 which is a counterparty-and-continuity fact rather than a pricing one.
 
-**What the investor should hold instead, and why it is not a compromise.** §1.3 measures
-it: in the worst decile of equity months, swapping 10% of equity into T-bills adds back
-**+0.92%** in the average month, at zero fee, zero drawdown and zero path risk. Long
-Treasuries add +0.94% — two basis points more — and charge 8.42% of volatility and a −59%
-drawdown for the privilege. Trend adds +1.08%. No option structure on the current shelf
-offers a lower-tail offset larger than those *net of its bleed*, and the two that come
-closest do it by holding Treasuries and spending 1% of assets a month on options.
+**Cash and trend are necessary controls.** In §1.3's worst-decile equity months, shifting
+10% of equity into bills improves the average month by +0.92%; long Treasuries add +0.94%
+and trend +1.08%. These are conditional monthly comparisons on that panel, not full-path
+utility estimates or a net-of-cost ranking against an option-fund portfolio. They motivate
+cheap controls before attributing improvement to purchased convexity.
 
-**One structural defensive worth naming so it is not re-screened.** BTAL (AGF U.S. Market
+**BTAL is a separate equity construction.** BTAL (AGF U.S. Market
 Neutral Anti-Beta) is the non-option version of the same idea, and it is BAB's short side.
 Its **gross expense ratio is 1.65% and its net is 1.40%** — the 0.45% "adjusted" figure
 excludes dividend and brokerage expense on short positions, which is where the cost
@@ -644,7 +632,8 @@ actually is — and its since-inception NAV return is **−3.63%/yr against the 
 +15.41%** ([AGF factsheet](https://www.agf.com/agf-files/us/regulatory-documents/fact-sheets/agf-btal-ann-en.pdf),
 as of 2026-07-31, read 2026-08-22). It also changed from index-tracking to active in
 2022-02. §1.4 explains the shape: the anti-beta leg is BAB's mirror, and BAB's measured
-concavity is *t* = 3.49. Reject.
+concavity is *t* = 3.49. That research-factor result is not a measured BTAL
+portfolio outcome, especially across its implementation change.
 
 ---
 
@@ -1186,7 +1175,7 @@ the construction and window actually tested.
 
 | Rejected | Grounds | Reopens when |
 | --- | --- | --- |
-| Explicit tail hedges, long volatility, buffered products | **Measured cost against measured benefit.** ~12 pp/yr of bleed; no engine on the panel shows resolvable convexity; VIX roll cost is arithmetic | Never on this design. Only a structural change in the variance risk premium's sign |
+| Explicit tail hedges, long volatility, buffered products | Standalone fund and package comparisons show opportunity costs; they do not establish the whole-portfolio value of a small hedge | A specified funded portfolio with cash/duration controls, net costs and scheduled monetisation; no positive standalone-premium requirement |
 | Volatility selling and put writing | **Overlap.** It duplicates equity's own left tail | Never |
 | Long/short commodities | Earlier overlap rejection used the wrong return series | **Reopened:** commodity carry has low measured correlation to trend; test funded portfolio outcomes after costs |
 | Long-only commodities as a diversifier | **Measured tail behaviour.** −1.84% mean and 36% hit rate in the worst equity decile, ρ low +0.326 | Never as a crash hedge. It remains a valid *inflation* hedge and is admitted as one |
