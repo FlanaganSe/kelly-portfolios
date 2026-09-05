@@ -109,7 +109,8 @@ For the major decisions:
   what it is worth against a leverage-matched cheap index and against the three constructions
   it was chosen over, why only one of those comparisons is resolvable and why that one is
   measuring leverage, what every fund on the tilt shelf actually costs once Form N-CEN's
-  securities-lending income is netted off the fee, and why RPV and SPMO are both rejected.
+  securities-lending income is netted off the fee, and why the RPV cost case remains
+  negative while SPMO needs a funded whole-portfolio comparison.
   [Experiment 023](../research/experiments/exp_023_tilts_out_of_sample.yaml) adds the tilt
   complex's first out-of-sample window, 1981–1990 on AQR's Value and Momentum Everywhere
   basis, where the sign reproduces and clears its floor.

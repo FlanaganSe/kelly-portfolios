@@ -87,21 +87,16 @@ improve it.
    slightly stronger. VTV's own lending is **0.30 bp**, so its net cost is **2.70 bp**
    against AVUV's **24.54**: the gap the VTV call rests on was 22 bp on fee and is 21.8 bp
    on cost.
-7. **RPV is rejected, and not on its exposure.** It delivers the deepest US value exposure
-   on the shelf, but over VTV it also delivers **RMW −0.204 and UMD −0.173** — it pays for
-   value partly by selling momentum — and it trades **42%/yr against VTV's 8%**. At a 15%
-   weight replacing VTV it changes portfolio return by about **−0.10% a year, plausibly
-   −0.63% to +0.42%**, and it is **negative under all four of this repository's premium
-   scenarios including the pooled one**. The +0.18%/yr it was hoped to be worth is not
-   there.
-8. **SPMO is the better US momentum product and still is not worth adding.** 13 bp against
-   MTUM's 15, **44%/yr of turnover against MTUM's 116%**, 12.93 bp net cost, and a
-   distribution tax drag *below* VTI's. Over VTI it delivers **UMD +0.395 [+0.281,
-   +0.508]** on 78 months. At a 5% weight it is **+0.02% a year, plausibly −0.14% to
-   +0.18%** — better than MTUM's −0.03% and still not distinguishable from zero. Two
-   things sink it: the US momentum premium it buys is **+4.19 pp/yr against a 7.27 pp/yr
-   floor**, and its active leg is **+0.626 correlated with IDMO's**, a tighter overlap
-   than MTUM's +0.554.
+7. **RPV has a negative priced-factor contribution under all four declared premium
+   scenarios.** Its deeper value loading also comes with negative profitability and
+   momentum loadings and higher modelled trading costs than VTV. This is a conditional
+   factor-and-cost finding, not a whole-portfolio growth comparison (§3).
+8. **SPMO's portfolio role is unresolved.** Its filed fee and turnover are lower than
+   MTUM's on the dated comparison. The earlier +0.02% portfolio-return headline was a
+   residual appraisal statistic multiplied by weight, not the return from replacing VTI.
+   The corrected [tilt calculation](untested-tilt-candidates.md) separates the two.
+   Correlation with IDMO affects diversification; it does not subtract expected return
+   from a funded purchase (§4).
 9. **The tilt complex holds out of sample, and it is the first result on this page that
    does.** On AQR's Value and Momentum Everywhere stock-selection factors, 1981-07 to
    1990-10, before any French ex-US panel exists, the same complex at the same loadings and
@@ -476,22 +471,22 @@ cost.
 | half | −0.94 to −0.69 |
 | null | −0.90 to −0.65 |
 
-**Negative in all four.** That is a stronger statement than the confidence interval,
-because it does not depend on the sample: there is no premium assumption in this
-repository under which RPV replacing VTV pays.
+**Negative in all four declared scenarios.** This depends on the sample-fitted loadings,
+chosen premia and trading-cost model. It is not a claim about every plausible premium
+assumption or the effect on the whole portfolio's compounded growth.
 
 Conditioned on what the portfolio already owns, RPV's active leg is **−0.086 correlated
 with the held active position** and **−0.370 with IDMO's** — it is the anti-momentum
-position, which is the same finding read from the other side. Its marginal edge is −0.69
+position, which is the same finding read from the other side. Its residual appraisal alpha is −0.69
 pp/yr per dollar of sleeve, and its own tracking error is 7.9%.
 
-| Weight | Expected change in portfolio return | Range | If every premium is zero |
-| ---: | ---: | :---: | ---: |
-| 5% | −0.03% a year | −0.21% to +0.14% | −0.05% |
-| 10% | −0.07% a year | −0.42% to +0.28% | −0.09% |
-| **15%** | **−0.10% a year** | **−0.63% to +0.42%** | −0.14% |
+The former weight table multiplied this residual alpha by the purchase weight and
+mislabelled it portfolio return. It is withdrawn. The corrected funded factor contribution
+and its assumption range live in [the tilt calculation](untested-tilt-candidates.md).
+Neither figure includes a forecast for the incremental market beta, unexplained return
+or investor taxes, and neither measures the change in compounded portfolio growth.
 
-**Verdict: do not hold it, and the reason is momentum and turnover rather than fee.**
+**Working decision: do not add RPV on this factor-and-cost model.**
 Two objections that were expected to decide it do not. Its tracking error is 7.9%, not
 wild. And its tax drag is **0.62 pp/yr against VTV's 0.67 over the same five years** — RPV
 is the *more* tax-efficient of the two on distributions, despite five times the turnover,
@@ -529,30 +524,29 @@ stated window, exactly as every other candidate is.
 | Distribution tax drag vs VTI | **−0.05 pp/yr** | −0.11 pp/yr |
 | Correlation of active leg with IDMO's | **+0.626** | +0.554 |
 | Sleeve edge, own-panel | +0.70 to +1.01 | −0.28 to +0.53 |
-| Marginal edge given what is held | +0.37 | −0.53 |
-| **At a 5% weight** | **+0.02% a year, −0.14% to +0.18%** | −0.03% a year, −0.18% to +0.13% |
+| Residual appraisal alpha, not funded return | +0.37 | −0.53 |
 
 From its summary prospectus dated 2025-12-19: 0.13% management fee, no other expenses, 44%
 portfolio turnover in the most recent fiscal year, approximately 100 S&P 500 constituents
 weighted by capitalisation times momentum score, non-diversified. Its five-year return to
 2024-12 was 19.23% before taxes and 18.86% after taxes on distributions.
 
-**SPMO beats MTUM on every knowable dimension and the sleeve still does not earn its
-place.** Turnover falls from 116% to 44%, which was the whole of MTUM's problem, and the
-portfolio effect moves from −0.03% to +0.02% a year. It does not clear zero by anything the
-data can see, and two facts explain why:
+**The fee and turnover comparison favours SPMO; its portfolio role is still open.**
+The earlier return claim subtracted exposure already held before multiplying by the
+purchase weight. That is appropriate for asking whether a return can be explained by
+other positions. It is not the arithmetic of selling VTI and buying SPMO. The corrected
+[tilt calculation](untested-tilt-candidates.md) keeps the funded factor contribution
+separate from this residual diagnostic.
 
-- **The premium it buys cannot be signed.** US UMD is +4.19 pp/yr against a 7.27 pp/yr
-  detection floor on this repository's own panel. A gross exposure gain of `0.395 × 4.19 =
-  +1.66 pp/yr` is computed from a number smaller than its own measurement error.
-- **The overlap with IDMO is worse than MTUM's, not better.** SPMO's active leg correlates
-  **+0.626** with the international momentum line already held, against MTUM's +0.554.
-  Two momentum tickers at that correlation are worth about 1.23 independent bets out of 2.
-  The portfolio already owns the momentum region whose premium *does* clear its floor.
+Two uncertainties remain. The assumed US momentum premium has substantial estimation
+error. SPMO's active leg also correlates +0.626 with IDMO's, so the two provide less
+independent diversification than unrelated strategies would. Neither observation
+establishes that adding SPMO lowers portfolio growth. That requires the full portfolio,
+its funding asset, covariance, costs and drawdown outcomes in one test.
 
-**Verdict: SPMO replaces MTUM as the shelf's US momentum reference and is not added.** If
-US momentum is ever wanted on non-evidential grounds, this is the fund and 5% is the size;
-it is not an improvement this page can demonstrate.
+**Working decision: keep SPMO available for a whole-portfolio comparison.** This screen
+provides no demonstrated reason to replace the current allocation, and its former
+residual-return argument provides no demonstrated reason to reject SPMO either.
 
 ---
 
@@ -631,8 +625,9 @@ carry. The contestants, cost model and inference blocks are this file's own.
   panel with a 9.83% realised equity premium that is what the −0.50 measures.
 - **Not** that VTV is the right US value fund. It is the cheapest one whose exposure is
   delivered, and the comparison against AVUV is unresolved on both admissible windows.
-- **Not** that RPV or SPMO are bad funds. Each is scored against *this* portfolio at *this*
-  moment; SPMO against a portfolio holding no momentum at all would read differently.
+- **Not** that RPV or SPMO are bad funds. Their residual appraisal changes with the
+  held portfolio; the mean contribution of a fixed funded purchase does not. Its effect
+  on portfolio growth and risk still depends on the other holdings.
 - **Not** that the tilt complex is worth +0.80 pp/yr going forward. Out of sample it is
   +0.89 on a basis that reads +0.40 in sample, with AVDV's size leg unmapped on both; the
   sign is established on two disjoint windows and the size is not.

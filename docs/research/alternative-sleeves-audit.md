@@ -15,8 +15,9 @@ months, at the same return as long Treasuries for half the volatility and a thir
 drawdown. **Catastrophe risk** is the only mechanism screened whose payer is not a financial
 market and whose trigger is a hurricane; its access problem has been solved and a pricing
 problem has replaced it. And **a larger cash and short-Treasury allocation is the cheapest
-tail hedge on this panel** — it beats almost everything sold as one. Everything else is
-already owned, an expensive form of cash, or an equity beta with a different name.
+tail hedge on this panel** — it beats almost everything sold as one. Cross-asset carry
+was measured subsequently in [Experiment 019](carry-as-a-second-engine.md); its low
+correlation to trend reopens the long/short commodity screen below.
 
 Two answers the investor asked for directly. **Crypto: at most 1–2%, and only as a
 declared speculation, never as a diversifier** — in the worst decile of equity months
@@ -231,7 +232,7 @@ vehicle is an implementation finding, not proof that the return source is absent
 | **Trend / managed futures** | Slow-moving capital, hedgers rolling risk, and behavioural under-reaction | Positive mean with near-zero beta; not measurably convex | Already held | **Held. Do not add a second.** §7 |
 | **Gold** | Nobody. It has no cash flow and no counterparty obligation; its return is a change in what others will pay | Fat-tailed real asset; hedges currency and inflation regimes, not equity crashes | Yes, but buys 12 bp/month over cash | **Optional, ≤5%, and only in place of cash.** §8 |
 | **Commodities, long-only** | Hedgers who want price certainty, when the curve is in backwardation and not otherwise | Inflation-shock payoff; loses in growth shocks | Yes, but negative in the equity lower tail | **Reject as a diversifier; consider only as an inflation hedge.** §8 |
-| **Long/short commodities (carry, momentum)** | Same hedgers, but the long-only version pays the roll instead of collecting it | Closer to trend than to spot commodities | Substantially overlaps the trend sleeve | **Reject on overlap.** §8 |
+| **Long/short commodities (carry, momentum)** | Hedging demand and futures-curve differences; momentum instead follows past price changes | Depends on the trading signal | Commodity carry has little measured correlation to trend; momentum may overlap | **Carry reopened for portfolio testing.** §8 |
 | **Spot bitcoin** | Nobody. No cash-flow claim exists; expected return is entirely a claim about future adoption | Levered equity beta with an idiosyncratic regulatory and custody tail | **No.** β 1.53/1.62, ρ 0.342, worse than cash in the lower tail | **≤2%, as declared speculation.** §3 |
 | **Explicit tail hedges (long puts)** | The buyer pays the variance risk premium to the seller, every month, forever | Convex when it works, and it must be sized and monetised to work | It is the *opposite* side of a premium, so it is negative expected return by construction | **Reject.** §4 |
 | **Long volatility (VIX futures)** | Same, plus a roll paid into a persistently contangoed curve | Spike payoff destroyed by roll | Same | **Reject.** §4 |
@@ -1059,12 +1060,19 @@ fee difference between them for most investors, and it decides which account can
 position at all. Confirm the current form on the issuer's page before transacting; the
 category has changed structure repeatedly.
 
-**The long/short version is not a separate idea.** A carry- and momentum-aware long/short
-commodity strategy is, mechanically, the commodity leg of a diversified trend programme —
-which the investor already owns inside the managed-futures overlay. **Reject on overlap,
-not on the premium.** The measured evidence agrees: the AQR long-only commodity series
-correlates −0.064 with TSMOM, which is exactly what you would expect if the trend programme
-is trading the same markets from both sides.
+**Commodity carry and commodity trend require separate tests.** Carry selects contracts
+using their prospective holding return; trend follows past price changes. Trading the
+same markets does not establish that the positions or payoffs duplicate each other.
+The earlier overlap rejection used long-only commodity returns to draw a conclusion
+about a long/short carry strategy. That comparator cannot answer the question.
+
+As of 2026-09-05, [Experiment 019](carry-as-a-second-engine.md) §2 supplies the relevant
+first measurement: commodity carry correlates about +0.04 with the repository's trend
+book. This reopens carry for whole-portfolio testing, including its behaviour in bad
+stock-market months and its costs. It does not establish a positive net premium or a
+fund that delivers it. The [carry paper](https://www.aqr.com/Insights/Research/Journal-Article/Carry)
+also finds shared carry losses during global recessions, despite low unconditional
+correlations. A momentum-based commodity strategy needs its own overlap measurement.
 
 ---
 
@@ -1172,14 +1180,15 @@ inflation-state hedge. Counting them as engines would be the error the charter n
 
 ### What was rejected, and on what grounds
 
-Grounds matter more than verdicts, because a rejection on cost reopens when the cost
-changes and a rejection on overlap never reopens at all.
+Grounds matter more than verdicts. A cost finding can change with implementation; an
+overlap finding can change with the signal, portfolio or measurement. Each applies to
+the construction and window actually tested.
 
 | Rejected | Grounds | Reopens when |
 | --- | --- | --- |
 | Explicit tail hedges, long volatility, buffered products | **Measured cost against measured benefit.** ~12 pp/yr of bleed; no engine on the panel shows resolvable convexity; VIX roll cost is arithmetic | Never on this design. Only a structural change in the variance risk premium's sign |
 | Volatility selling and put writing | **Overlap.** It duplicates equity's own left tail | Never |
-| Long/short commodities | **Overlap** with the commodity leg of the trend programme already held | If the trend sleeve is removed |
+| Long/short commodities | Earlier overlap rejection used the wrong return series | **Reopened:** commodity carry has low measured correlation to trend; test funded portfolio outcomes after costs |
 | Long-only commodities as a diversifier | **Measured tail behaviour.** −1.84% mean and 36% hit rate in the worst equity decile, ρ low +0.326 | Never as a crash hedge. It remains a valid *inflation* hedge and is admitted as one |
 | BAB, low-volatility and anti-beta tilts as defensives | **Measured concavity**, *t* = +3.49: β −0.264 up, **+0.118 down** | Never. This is a property of the mechanism |
 | Merger arbitrage, alternative-risk-premia funds | **Scale and cost stack.** 2.9–4.3%/yr total over ten years, inside the detection floor at any holdable weight | If a stacked wrapper makes the premium additive rather than competitive with equity |

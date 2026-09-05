@@ -157,16 +157,19 @@ fund on the tilt shelf has negative net cost**: VTV 2.70 bp, SPMO 12.93, AVLV 14
 cost against 22 bp on fee, so the fee-based conclusion stands. The one correction favours the
 strongest recommendation: AVDV costs 30.03 bp, not its 36 bp headline.
 
-**RPV and SPMO are both rejected on measurement rather than on principle.** RPV reads −0.10
-pp/yr at a 15% weight [−0.63, +0.42], negative under all four premium scenarios: it delivers
-HML +0.369 over VTV but also **RMW −0.204 and UMD −0.173 — it pays for value by selling
-profitability and momentum** — at 42%/yr turnover. SPMO is the better momentum vehicle than
-MTUM (13 bp, 44% turnover against 116%) and still reads +0.02 pp/yr at 5% [−0.14, +0.18], with
-an active leg +0.626 correlated with IDMO's. **ITAN, the intangible-adjusted value fund the
-September sweep raised, is rejected the same way**: over VTV it loads RMW −0.381 and UMD −0.221
-with both intervals excluding zero and HML −0.154 unresolved, so VTV 15 → VTV 10 + ITAN 5 reads
-−0.10 pp/yr [−0.28, +0.07] on its own panel and negative under all four premium scenarios, at
-50 bp against VTV's 2.70 ([tilts](untested-tilt-candidates.md) §7).
+**RPV remains unattractive under the declared factor-and-cost scenarios; SPMO's role is
+unresolved.** The earlier return figures for these funds multiplied residual appraisal
+alpha by purchase weight, which does not measure a funded change in portfolio return.
+The corrected [tilt calculation](untested-tilt-candidates.md) separates those quantities.
+RPV's deeper value loading comes with negative profitability and momentum loadings and
+higher modelled trading costs. SPMO's lower filed fee and turnover than MTUM make it a
+candidate for a whole-portfolio comparison; correlation with IDMO is a diversification
+input, not a deduction from a fixed purchase's expected return.
+
+**ITAN's factor-and-cost case also remains negative under the four declared scenarios.**
+Its −0.10 pp/yr headline was a weighted residual appraisal diagnostic, not a funded
+portfolio-return estimate. Its negative profitability and momentum exposures and its fee
+remain relevant, but a growth claim requires the whole funded portfolio to be tested.
 
 ## Optional financed trend
 

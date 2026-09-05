@@ -952,11 +952,11 @@ export const shelf: readonly ShelfFund[] = [
     alphaPpYr: null,
     alphaDetectionFloorPpYr: null,
     pedestalPpYr: US_PEDESTAL,
-    status: "rejected",
+    status: "unresolved",
     verdict:
-      "Its facts are now read and they favour it over MTUM on every knowable dimension — 13 bp against 15, 44%/yr of turnover against 116%, 12.93 bp of net cost, and a distribution tax drag of 0.37 pp/yr against VTI\u2019s 0.42. Over VTI it delivers UMD +0.395 [+0.281, +0.508] on 78 months (2019-10\u20262026-03). At a 5% weight it still changes portfolio return by about +0.02% a year, plausibly \u22120.14% to +0.18%.",
+      "Its fee and reported trading are lower than MTUM's on the dated comparison below. Whether it improves a portfolio already holding international momentum remains unresolved. The earlier portfolio-return figure removed shared exposure before multiplying by the purchase weight; that does not measure the return from replacing VTI.",
     caution:
-      "The published +0.414 carries NO WINDOW and must not be compared with any other fund\u2019s exposure figure; the +0.395 above is fitted here on a stated window and is the exposure delivered over VTI rather than the fund\u2019s own measured exposure. The exposure it buys sits on a US momentum premium of +4.19 pp/yr, against 7.27 pp/yr as the smallest premium that window could have found, and its active leg is +0.626 correlated with IDMO\u2019s — a tighter overlap than MTUM\u2019s +0.554, so a portfolio already holding international momentum buys less than it looks.",
+      "The published +0.414 has no window and cannot be compared with another fund's loading. A separate fit over VTI found momentum exposure of +0.395 on October 2019 to March 2026. Its returns overlap with IDMO's, which matters for diversification. A portfolio comparison still needs to account for that overlap, the source of the money, costs and possible losses.",
     issuer: {
       notes: [
         "0.13% management fee, no other expenses, and 44% portfolio turnover in the most recent fiscal year, per its summary prospectus dated 2025-12-19.",

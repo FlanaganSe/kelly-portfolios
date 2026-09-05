@@ -14,8 +14,8 @@ vector RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5, or to sp
 **Out of scope.** Whether the trend overlay itself earns its place
 ([defensive engines](defensive-engines-in-the-construction.md) §2,
 [trend weight](trend-weight-under-uncertainty.md)); long/short commodity carry alone,
-which [the sleeves audit](alternative-sleeves-audit.md) §8 rejected on overlap with trend
-and which this page does not reopen; currency carry as a hedging decision
+whose earlier overlap rejection in [the sleeves audit](alternative-sleeves-audit.md) §8
+is withdrawn because this experiment measures little correlation to trend; currency carry as a hedging decision
 ([currency](currency-and-the-international-sleeve.md)).
 
 `as of 2026-09-02`. **`exploratory`.** [Experiment 019](../../research/experiments/exp_019_carry_engine.yaml),
@@ -37,8 +37,8 @@ delivered loading. Both halves came in.
    measured that is nearly uncorrelated with the trend overlay: **+0.063** on 1,157 months
    from 1929, **+0.066** in the worst decile of equity months, +0.069 and −0.02 on the
    four-asset-class window from 1974, +0.101 and −0.036 against AQR's TSMOM from 1985. The
-   commodity-carry overlap the sleeves audit rejected is not in the composite: the
-   commodity carry leg correlates +0.04 with the trend book. Carry is not equity-neutral,
+   commodity carry leg itself correlates +0.04 with the trend book, contradicting the
+   sleeves audit's earlier overlap claim. Carry is not equity-neutral,
    though: +0.119 to equity over the full window and **+0.219 in equity's worst decile**,
    rising to +0.25 after 2009 and +0.61 in the tail after 2013, and the equity-index and
    currency legs are where that comes from. §2.
