@@ -517,13 +517,11 @@ question with a real estimand, not a reason to raise a bitcoin weight.
 
 ## 4. Tail hedging: the bleed is measured, and the cheaper substitutes win
 
-The heading is retained for existing links; its earlier blanket conclusion is superseded.
-**Current conclusion, reviewed 2026-09-05: no general allocation promotion, but the small
-funded portfolio experiment is open.** Standalone underperformance of stocks does not
+**Current conclusion, reviewed 2026-09-05: no default allocation to TAIL or CAOS follows
+from the measured small funded portfolios.** Standalone underperformance of stocks does not
 measure option-premium bleed or rule out a useful hedge. The tests in §1 did not include
-an executable TAIL or CAOS portfolio. Neither their convexity resolution nor their cash
-comparison establishes that these funds cannot improve the investor's downside or log
-wealth under a stated allocation and rebalancing rule.
+an executable TAIL or CAOS portfolio. The direct funded comparison below addresses that gap for fixed five-percent allocations.
+It does not establish a universal insurance cost or rule out other executable constructions.
 
 **What the historical figures establish.** The dated issuer snapshots below are
 kept with their original windows; they are not updated returns or matched portfolio tests.
@@ -576,15 +574,47 @@ That does not establish unchanged implementation through the entire inherited re
 Use the ETF's first full month onward for a current-wrapper test and label any predecessor
 comparison separately. ([SEC shareholder report](https://www.sec.gov/Archives/edgar/data/1592900/000159290024000935/alphaarchitect_sarx03312024.htm).)
 
-**What would change the decision.** Freeze a small, fully funded allocation and compare
-whole-portfolio net log growth, shortfall and drawdown with both the unchanged portfolio
-and cash/duration controls. Specify calendar rebalancing in advance; the investor need not
-identify a market bottom. The fund managers already make option-monetisation decisions.
-Monthly N-PORT returns can support month-end outcomes and scheduled rebalancing, but not
-intramonth maximum drawdowns or a daily harvest rule. Daily claims require a complete,
-distribution-adjusted source and executable trading costs. Investigating a mechanism does
-not require its standalone premium to turn positive. Product closure and predecessor
-history must remain visible if the comparison is used to generalise about a fund family.
+### Funded crash-hedge comparison
+
+[Experiment 035](../../research/experiments/exp_035_funded_crash_hedges.yaml), run
+[`c9c0b898…`](../../research/artifacts/c9c0b898cf644ca0a2723d7ea0b02255/summary.md), tests
+five-percent allocations inside equity and current Cautious portfolios. The
+[generated tables](../../research/artifacts/c9c0b898cf644ca0a2723d7ea0b02255/tables.md)
+report annual and quarterly scheduled resets at 5/25 bp roundtrip investor execution.
+NAV already includes expenses, option purchases and recoveries. No investor taxes or
+terminal sale are charged. No weight or crash-timing rule is selected.
+
+For the equity portfolio over February 2020–March 2026, TAIL lowered growth and ending
+wealth versus both the unchanged portfolio and the identically funded bill control. Bills
+also had a slightly shallower maximum month-end drawdown over the whole period. TAIL
+did reduce the February–March 2020 loss versus bills: protection in that episode was real
+even though bills did better on the full-period growth and worst-drawdown measures.
+The TAIL-versus-bills interval
+allows a small positive growth difference, so this is a dated preference for the simpler
+control, not proof that TAIL can never help. Quarterly rebalancing did not reverse it.
+The public ending-wealth figure transforms the paired log-gap interval over the same
+74 months and verifies the point against the stored terminal wealth ratio.
+
+Over April 2023–March 2026, CAOS was close to bills in the equity portfolio. In Cautious,
+over October 2023–March 2026, it was also close to the funded bill control; TAIL gave up
+more growth. Small reductions in drawdown versus unchanged Cautious do not establish a
+valuable tail hedge. These recent windows include neither the 2020 crash nor the 2022
+inflation shock. CAOS's ETF record also spans a change in its disclosed upper stock
+exposure, from 100% in 2023 to 120% by 2025; it is not a constant-strategy experiment.
+
+TAIL's N-PORT window includes February–March 2020 but lacks January, so full calendar 2020
+is explicitly unavailable. A [SEC annual-report wealth table](https://www.sec.gov/Archives/edgar/data/1529390/000199937125008871/cambria_ncsr-043025.htm)
+extends TAIL to 2017; its rounded observations require overlap and rounding checks before
+use and are not spliced here. The IEF/BIL control approximates duration; it does not recreate
+historical collateral or match CAOS beta. Monthly NAV supports month-end outcomes, not
+intramonth crash peaks or exchange fills.
+
+**What would change the decision.** A longer verified history, a different prespecified
+funding or monetisation rule, or an investor objective valuing a particular shortfall
+could change the choice. Such a test should retain cheap controls and the return given
+up to pay for protection. Daily claims need a complete distribution-adjusted source and
+executable trading costs. The current result supports leaving dedicated insurance out of
+the default portfolios, while retaining the research question.
 
 **VIX-futures products require their own assessment.** VIX futures were in steep
 contango across the whole visible curve on the last settlement before this page was
