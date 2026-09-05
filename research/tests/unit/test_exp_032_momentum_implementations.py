@@ -13,11 +13,11 @@ from portfolio_edge.experiments.specification import load_specification
 def test_frozen_windows_weights_and_equal_funding_match_030() -> None:
     original = load_specification(Path("experiments/exp_030_live_fund_portfolios.yaml"))
     spec = load_specification(Path("experiments/exp_032_momentum_implementations.yaml"))
-    definitions = mapping(spec.parameters["portfolios"])
+    definitions = mapping(mapping(spec.parameters)["portfolios"])
     assert spec.inference == original.inference
     for name, raw in definitions.items():
         definition = mapping(raw)
-        old = mapping(mapping(original.parameters["portfolios"])[name])
+        old = mapping(mapping(mapping(original.parameters)["portfolios"])[name])
         assert definition["weights"] == old["weights"]
         assert (definition["first"], definition["last"]) == (old["first"], old["last"])
         base = numbers(definition["weights"])
