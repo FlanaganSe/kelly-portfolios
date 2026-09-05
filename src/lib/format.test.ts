@@ -1,5 +1,15 @@
 import { describe, expect, it } from "vitest";
-import { clamp, decimalsOf, formatNumber, formatYears, parseNumber, roundTo, snapToStep } from "~/lib/format";
+import {
+  clamp,
+  decimalsOf,
+  formatDollars,
+  formatNumber,
+  formatSignedPercent,
+  formatYears,
+  parseNumber,
+  roundTo,
+  snapToStep,
+} from "~/lib/format";
 
 describe("clamp", () => {
   it("passes a value already inside the range through untouched", () => {
@@ -94,5 +104,31 @@ describe("formatYears", () => {
   it("refuses a negative or non-finite wait", () => {
     expect(() => formatYears(-1)).toThrow(RangeError);
     expect(() => formatYears(Number.NaN)).toThrow(RangeError);
+  });
+});
+
+describe("formatDollars", () => {
+  it("groups thousands and rounds to whole dollars", () => {
+    expect(formatDollars(350671)).toBe("$350,671");
+    expect(formatDollars(4731.4)).toBe("$4,731");
+    expect(formatDollars(10000)).toBe("$10,000");
+  });
+
+  it("carries a typographic minus on a loss and none on a rounded zero", () => {
+    expect(formatDollars(-1234.6)).toBe("\u2212$1,235");
+    expect(formatDollars(-0.2)).toBe("$0");
+  });
+});
+
+describe("formatSignedPercent", () => {
+  it("signs both directions with one decimal by default", () => {
+    expect(formatSignedPercent(19.4)).toBe("+19.4%");
+    expect(formatSignedPercent(-17.8)).toBe("\u221217.8%");
+    expect(formatSignedPercent(0)).toBe("0.0%");
+  });
+
+  it("honours the decimals asked for and rounds before choosing the sign", () => {
+    expect(formatSignedPercent(10.51, 2)).toBe("+10.51%");
+    expect(formatSignedPercent(-0.04)).toBe("0.0%");
   });
 });

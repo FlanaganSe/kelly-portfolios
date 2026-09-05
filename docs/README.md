@@ -119,6 +119,11 @@ For the major decisions:
   history, the trend line at matched equity (+0.7 to +0.9 pp/yr, not resolvable since 2009),
   the price of the drawdown at realised and forward premia, and the publication rule's
   outcome ([decision 0014](decisions/0014-cautious-constructions-are-labelled-by-the-history-they-held.md)).
+- [The numbers the site prints](research/site-numbers.md): every headline figure a
+  portfolio page shows, computed for exactly the printed weights on the 1990 to 2026 and
+  1929 to 2025 histories by a research emitter that first reproduces the artifact tables;
+  what is simulated and what is not, and how a page's months-to-recover differs from the
+  experiments' months under water.
 - [Defensive engines inside the construction](research/defensive-engines-in-the-construction.md):
   the first experiment to hold a stacked Treasury, gold or TIPS leg, or a cash or
   long-Treasury substitution, *inside* the leveraged construction rather than beside an

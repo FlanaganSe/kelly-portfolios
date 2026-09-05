@@ -1,9 +1,12 @@
 /**
- * Number handling for the interactive controls.
+ * Number handling for the interactive controls and the computed series.
  *
- * Figures that come out of `src/content/` are already strings, deliberately, and
- * must not pass through a formatter — rounding one is a misquote. These helpers
- * are for numbers the reader types or drags, which have no source to misquote.
+ * Figures that come out of `src/content/figures/` are already strings, deliberately, and
+ * must not pass through a formatter — rounding one is a misquote. These helpers are for
+ * numbers the reader types or drags, which have no source to misquote, and for the series
+ * under `src/content/series/`, which the research emitter writes as numbers it has already
+ * rounded, so `formatDollars` and `formatSignedPercent` add separators and a sign and
+ * nothing else.
  */
 
 /** Constrain to a range. Returns `min` when the bounds are crossed. */
@@ -93,4 +96,24 @@ export function formatYears(years: number): string {
 /** Thousands separators, en-US, without pulling in `Intl` for one call site. */
 function grouped(value: number): string {
   return String(value).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+const MINUS = "\u2212";
+
+/** Whole dollars with separators: `350671` is `$350,671`; a negative carries a typographic minus. */
+export function formatDollars(value: number): string {
+  if (!Number.isFinite(value)) return "—";
+  const rounded = Math.round(Math.abs(value));
+  const sign = value < 0 && rounded !== 0 ? MINUS : "";
+  return `${sign}$${grouped(rounded)}`;
+}
+
+/** A percent with its sign: `19.4` is `+19.4%`, `-17.8` is `−17.8%`, `0` is `0.0%`. */
+export function formatSignedPercent(value: number, decimals = 1): string {
+  if (!Number.isFinite(value)) return "—";
+  const rounded = roundTo(value, decimals);
+  const digits = Math.abs(rounded).toFixed(Math.max(0, Math.trunc(decimals)));
+  if (rounded > 0) return `+${digits}%`;
+  if (rounded < 0) return `${MINUS}${digits}%`;
+  return `${digits}%`;
 }

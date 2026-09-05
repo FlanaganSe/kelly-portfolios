@@ -1,16 +1,21 @@
 /**
  * The four portfolios, as data: one place for the holdings, the fee and the one-line
  * description, read by the home page, the comparison page and each portfolio's own page.
- * The with-trend portfolio has a second version for today's prices, which the comparison
- * page shows as its own column and the with-trend page shows in full. The cautious
- * portfolio has two versions, for a fall of about 40% and about 30%; the card shows the
- * first and its page shows both.
  *
- * Fees are each fund's published expense ratio weighted by the holdings, so they are
- * plain text. Anything measured carries a figure record; the worst-fall text here names
- * the record it repeats so the two cannot drift apart unnoticed.
+ * Nothing numeric here is typed. The fee is each fund's published expense ratio from
+ * `src/content/shelf.ts`, weighted by the holdings. The worst fall is read from the series
+ * the research emitter writes to `src/content/series/`, computed for exactly these weights
+ * on the 1990 to 2026 history (`src/lib/series.ts`), and a vitest asserts that the weights
+ * below equal the weights the emitter scored, so the two cannot drift apart unnoticed.
+ *
+ * One version of each portfolio. The 30% cautious version is kept only as data for the
+ * one sentence the cautious page spends on it.
  */
+import { fundByTicker } from "~/content/shelf";
+import { feeOn10kText, feePercentText, weightedExpenseRatioBp } from "~/lib/fees";
+import { formatSignedPercent } from "~/lib/format";
 import type { Confidence } from "~/lib/rungs";
+import { portfolioSummary } from "~/lib/series";
 
 /** One line of a portfolio: a ticker and its share of the money, in percent. */
 export interface Holding {
@@ -30,10 +35,13 @@ export interface Portfolio {
   readonly fee: string;
   /** The fee on $10,000, as text. */
   readonly feeOn10k: string;
+  /** The deepest fall of a simulated $10,000, 1990 to 2026, as signed text. */
   readonly worstFall: string;
   readonly worstFallNote: string;
   readonly confidence: Confidence;
 }
+
+const BOND_LABEL = "Inflation-protected government bonds";
 
 export const VALUE_LEAN_HOLDINGS: readonly Holding[] = [
   { ticker: "VTI", weight: 49 },
@@ -44,21 +52,8 @@ export const VALUE_LEAN_HOLDINGS: readonly Holding[] = [
   { ticker: "AVES", weight: 5 },
 ];
 
+/** The value lean plus a trend-following fund, with five points in ten-year TIPS. */
 export const WITH_TREND_HOLDINGS: readonly Holding[] = [
-  { ticker: "RSST", weight: 30 },
-  { ticker: "VTI", weight: 19 },
-  { ticker: "VXUS", weight: 16 },
-  { ticker: "VTV", weight: 15 },
-  { ticker: "AVDV", weight: 10 },
-  { ticker: "IDMO", weight: 5 },
-  { ticker: "AVES", weight: 5 },
-];
-
-/**
- * The with-trend portfolio, priced for today's market: 5 points move from RSST into
- * ten-year TIPS, held in a traditional account. SCHP is the cheapest TIPS fund priced.
- */
-export const TODAY_HOLDINGS: readonly Holding[] = [
   { ticker: "RSST", weight: 25 },
   { ticker: "VTI", weight: 19 },
   { ticker: "VXUS", weight: 16 },
@@ -66,18 +61,17 @@ export const TODAY_HOLDINGS: readonly Holding[] = [
   { ticker: "AVDV", weight: 10 },
   { ticker: "IDMO", weight: 5 },
   { ticker: "AVES", weight: 5 },
-  { ticker: "SCHP", weight: 5, label: "Ten-year TIPS" },
+  { ticker: "SCHP", weight: 5, label: BOND_LABEL },
 ];
 
 /**
- * The cautious version for a fall of about 40%: portfolio three's funds scaled to 35
- * points of stocks and 15 of RSST, the rest in TIPS. Fell 18.1% since 1990 and 53.8%
- * across 1929 to 1932 (Experiment 025, decision 0014).
+ * The cautious portfolio, for a fall of about 40%: portfolio three's funds scaled to 35
+ * points of stocks and 15 of RSST, the rest in TIPS. Sums to 100.
  */
 export const CAUTIOUS_40_HOLDINGS: readonly Holding[] = [
-  { ticker: "SCHP", weight: 50, label: "TIPS" },
+  { ticker: "SCHP", weight: 50, label: BOND_LABEL },
   { ticker: "RSST", weight: 15 },
-  { ticker: "VTI", weight: 9.6 },
+  { ticker: "VTI", weight: 9.5 },
   { ticker: "VXUS", weight: 8 },
   { ticker: "VTV", weight: 7.5 },
   { ticker: "AVDV", weight: 5 },
@@ -86,11 +80,11 @@ export const CAUTIOUS_40_HOLDINGS: readonly Holding[] = [
 ];
 
 /**
- * The cautious version for a fall of about 30%: 26 points of stocks, 11 of RSST, 63 of
- * TIPS. Fell 15.8% since 1990 and 41.7% across 1929 to 1932.
+ * The retired version for a fall of about 30%: 26 points of stocks, 11 of RSST, 63 of TIPS.
+ * Data for one sentence on the cautious page; its own series is `cautious-30`.
  */
 export const CAUTIOUS_30_HOLDINGS: readonly Holding[] = [
-  { ticker: "SCHP", weight: 63, label: "TIPS" },
+  { ticker: "SCHP", weight: 63, label: BOND_LABEL },
   { ticker: "RSST", weight: 11 },
   { ticker: "VTI", weight: 7.1 },
   { ticker: "VXUS", weight: 5.9 },
@@ -100,6 +94,24 @@ export const CAUTIOUS_30_HOLDINGS: readonly Holding[] = [
   { ticker: "AVES", weight: 1.8 },
 ];
 
+function fee(holdings: readonly Holding[]): Pick<Portfolio, "fee" | "feeOn10k"> {
+  const bp = weightedExpenseRatioBp(holdings, (ticker) => {
+    const ratio = fundByTicker(ticker).expenseRatioBp;
+    if (ratio === null) throw new Error(`${ticker} has no expense ratio on the shelf`);
+    return ratio;
+  });
+  return { fee: feePercentText(bp), feeOn10k: feeOn10kText(bp) };
+}
+
+function worstFall(slug: Portfolio["slug"]): Pick<Portfolio, "worstFall" | "worstFallNote"> {
+  return {
+    worstFall: formatSignedPercent(portfolioSummary(slug).worstFall.pct),
+    worstFallNote: "1990 to 2026, simulated",
+  };
+}
+
+const ONE_FUND_HOLDINGS: readonly Holding[] = [{ ticker: "VT", weight: 100 }];
+
 export const PORTFOLIOS: readonly Portfolio[] = [
   {
     number: 1,
@@ -108,11 +120,9 @@ export const PORTFOLIOS: readonly Portfolio[] = [
     href: "/portfolios/one-fund/",
     tagline:
       "The whole world's stock market in a single fund, in its cheapest form, in the right account, and never traded.",
-    holdings: [{ ticker: "VT", weight: 100 }],
-    fee: "0.06%",
-    feeOn10k: "$6",
-    worstFall: "−52.7%",
-    worstFallNote: "Cheap US and international mix, 1990 to 2026",
+    holdings: ONE_FUND_HOLDINGS,
+    ...fee(ONE_FUND_HOLDINGS),
+    ...worstFall("one-fund"),
     confidence: "Settled",
   },
   {
@@ -122,10 +132,8 @@ export const PORTFOLIOS: readonly Portfolio[] = [
     href: "/portfolios/value-lean/",
     tagline: "Six funds that lean toward cheaper, smaller, more profitable companies.",
     holdings: VALUE_LEAN_HOLDINGS,
-    fee: "0.09%",
-    feeOn10k: "$9",
-    worstFall: "−54.3%",
-    worstFallNote: "Cheap US stocks against the whole market, over 17.7 years since 2008 and still behind",
+    ...fee(VALUE_LEAN_HOLDINGS),
+    ...worstFall("value-lean"),
     confidence: "Probably",
   },
   {
@@ -135,10 +143,8 @@ export const PORTFOLIOS: readonly Portfolio[] = [
     href: "/portfolios/with-trend/",
     tagline: "The value lean, plus a fund that adds a trend-following program on top of its stocks.",
     holdings: WITH_TREND_HOLDINGS,
-    fee: "0.38%",
-    feeOn10k: "$38",
-    worstFall: "−50.3%",
-    worstFallNote: "1990 to 2026, with RSST at 25%",
+    ...fee(WITH_TREND_HOLDINGS),
+    ...worstFall("with-trend"),
     confidence: "Too close to call",
   },
   {
@@ -149,10 +155,8 @@ export const PORTFOLIOS: readonly Portfolio[] = [
     tagline:
       "Portfolio three with the stock share cut and the rest in TIPS, for someone who would sell after a fall of about 30% or 40%.",
     holdings: CAUTIOUS_40_HOLDINGS,
-    fee: "0.20%",
-    feeOn10k: "$20",
-    worstFall: "−18.1%",
-    worstFallNote: "1990 to 2026; 54% across 1929 to 1932",
+    ...fee(CAUTIOUS_40_HOLDINGS),
+    ...worstFall("cautious"),
     confidence: "Too close to call",
   },
 ];
