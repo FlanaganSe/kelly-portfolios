@@ -150,10 +150,9 @@ const STATS = [
     <h2 id="what-you-buy">What you buy</h2>
     <p>The same eight funds as Plus trend, in different amounts. Half is SCHP, a fund of inflation-protected US
     government bonds, whose value rises with prices. The six stock funds hold 35% together, in the same
-    proportions as Plus trend. RSST holds another 15% and gives a dollar of US stocks plus a dollar of a
+    proportions as Plus trend. RSST holds 15% and gives a dollar of US stocks plus a dollar of a
     trend-following strategy, one that buys what is rising and bets against what is falling, for each dollar in
-    it. So about half the portfolio is stocks, 15% is trend, and half is bonds. It costs {p.fee} a year,
-    {p.feeOn10k} on $10,000.</p>
+    it. So about half the portfolio is stocks, 15% is trend, and half is bonds.</p>
   </div>
 
   <div class="wide mt-8 grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_12rem]">
@@ -196,8 +195,7 @@ const STATS = [
   <div class="prose">
     <Callout kind="do-this">
       <p>Hold RSST in a pre-tax retirement account, a traditional IRA or 401(k), or do not hold it. Its trend
-      profits are taxed like wages, and most of them have not been paid out yet, so in a taxable account a
-      large bill is possible in any year.</p>
+      profits are taxed like wages, and most of them have not been paid out yet.</p>
     </Callout>
   </div>
 
@@ -216,10 +214,10 @@ const STATS = [
   </GrowthChart>
 
   <div class="prose mt-8">
-    <p>Over {file.window.label}, $10,000 became {formatDollars(s.final)} here against {formatDollars(m.final)} in the plain index and {formatDollars(sixtyForty.summary.final)} in a
-    60/40 mix, 60% stocks and 40% US government bonds. Since 2009 it grew {formatPct(s.since2009?.cagrPct ?? Number.NaN)} a
-    year against {formatPct(m.since2009?.cagrPct ?? Number.NaN)} for the index: a bond-heavy mix lags badly through
-    a long stock bull market.</p>
+    <p>A 60/40 mix, 60% stocks and 40% US government bonds, became {formatDollars(sixtyForty.summary.final)} over
+    the same years. Since 2009 this portfolio grew {formatPct(s.since2009?.cagrPct ?? Number.NaN)} a year against
+    {formatPct(m.since2009?.cagrPct ?? Number.NaN)} for the index: a bond-heavy mix lags through a long stock bull
+    market.</p>
   </div>
 
   <div class="prose w-full mt-14">
@@ -231,9 +229,8 @@ const STATS = [
   </DrawdownChart>
 
   <div class="prose mt-8">
-    <p>From {monthName(fall.peak)} to {monthName(fall.trough)}, $10,000 fell to {formatDollars(fall.dollarsAtTrough)},
-    a fall of {pct(fall.pct)}, and it was back above $10,000 in {fall.recovered ? monthName(fall.recovered) : "no month yet"},
-    {formatMonths(fall.monthsToRecover)} after the peak. The plain world stock index fell to
+    <p>It was back above $10,000 in {fall.recovered ? monthName(fall.recovered) : "no month yet"},
+    {formatMonths(fall.monthsToRecover)} after the {monthName(fall.peak)} peak. The plain world stock index fell to
     {formatDollars(m.worstFall.dollarsAtTrough)} and took {formatMonths(m.worstFall.monthsToRecover)}. In calendar
     2008 the portfolio lost {pct(s.calendarYears["2008"] ?? Number.NaN)} against {pct(m.calendarYears["2008"] ?? Number.NaN)} for
     the index. In 2022, when stocks and bonds fell together, it lost {pct(s.calendarYears["2022"] ?? Number.NaN)}, its
@@ -247,23 +244,20 @@ const STATS = [
 
   <div class="prose mt-14">
     <h2 id="what-it-beat">What it beat, and by how much</h2>
-    <p>Over {file.window.label} it grew {formatPct(s.cagrPct)} a year against {formatPct(m.cagrPct)} for a plain world
-    stock index and {formatPct(sixtyForty.summary.cagrPct)} for a 60/40 mix, so on that history the smaller fall
-    cost almost nothing, and the difference from the index is far too small to tell from luck. Over 96 years,
-    1929 to 2025, it gave up about {formatPct(longMarket.summary.cagrPct - long.summary.cagrPct)} a year of growth
-    against all US stocks. At today's likely returns, if stocks beat inflation-protected bonds by 0%, 1.5% or
-    3% a year from here, holding half your money in bonds costs about 0%, 0.75% or 1.5% a year against all
-    stocks.</p>
+    <p>On the history since 1990 the smaller fall cost almost nothing: the 60/40 mix grew
+    {formatPct(sixtyForty.summary.cagrPct)} a year, and this portfolio's difference from the index is far too small
+    to tell from luck. Over 96 years, 1929 to 2025, it gave up about
+    {formatPct(longMarket.summary.cagrPct - long.summary.cagrPct)} a year of growth against all US stocks. From
+    here, if stocks beat inflation-protected bonds by 0%, 1.5% or 3% a year, holding half your money in bonds
+    costs about 0%, 0.75% or 1.5% a year against all stocks.</p>
   </div>
 
   <div class="prose mt-14">
     <h2 id="who-it-is-for">Who it is for</h2>
     <p>Someone who would sell after a fall of about 40%. Every other portfolio on this site fell by about half
     at some point since 1990. If you would have sold partway through that, you need a smaller fall, and the
-    only way to buy one is to hold fewer stocks. Pick the fall you would actually have held through for as
-    many months as it lasted, not the one you could tolerate in the abstract. The label rests on the history
-    since 1990; on the long simulated history, across 1929 to 1932, this mix fell {pct(long.summary.worstFall.pct)}. If you are drawing on the
-    money at more than about 4% a year, too few stocks is the larger risk.</p>
+    only way to buy one is to hold fewer stocks. If you are drawing on the money at more than about 4% a year,
+    too few stocks is the larger risk.</p>
   </div>
 
   <div class="prose mt-14">
@@ -273,26 +267,22 @@ const STATS = [
       and its inflation adjustment are taxed like wages, the adjustment before it is paid. RSST goes in before
       SCHP. At half the money, SCHP overflows most retirement accounts, so some of it will sit in a taxable
       account.</p>
-      <p>Once a year, on a fixed date, send new money to whatever is furthest below its target. Trade only
-      inside retirement accounts, and never sell in a taxable account to rebalance.</p>
+      <p>Once a year, on a fixed date, send new money to whatever is furthest below its target; never sell in a
+      taxable account to rebalance.</p>
       <p>If RSST announces it is closing, sell it before its last trading day and buy VTI in the same account.
       That mix, 51% stocks and 49% bonds, fell 21.6% since 1990 and 55.8% across 1929 to 1932. Replacement
-      funds are reviewed in the order CTAP, MATE, JPFP, RSIT, and none passes its test yet. The details are on
-      <a href="/how-to-hold/">how to hold it</a>.</p>
+      funds, and the rest of the routine, are on <a href="/how-to-hold/">how to hold it</a>.</p>
     </Callout>
   </div>
 
   <div class="prose mt-14">
     <h2 id="what-could-go-wrong">What could go wrong</h2>
-    <p>Half the money is in one bond fund, and bonds did not protect anyone in 2022: this portfolio lost
-    {pct(s.calendarYears["2022"] ?? Number.NaN)} that year and the 60/40 mix lost {pct(sixtyForty.summary.calendarYears["2022"] ?? Number.NaN)}.
-    A portfolio holding only ten-year US government bonds fell 25.1% from August 2020 to October 2023 and spent
-    65 months below its old high. Hold bonds for the smaller fall over a whole cycle, not as insurance against
-    any one year. The 1929 to 1932 fall was {pct(long.summary.worstFall.pct)} even for this portfolio; being
-    safe against those years needs fewer than 38% in stocks, a mix not tested here. The long history also runs
-    a plain government bond through the inflation of the late 1970s, because inflation-protected bonds did not
-    exist before 2003; across 1977 to 1981 this mix gained 36% while Plus trend gained 86%, and inflation-protected bonds
-    would have done better by an amount no data can measure.</p>
+    <p>Half the money is in one bond fund, and bonds did not protect anyone in 2022. A portfolio holding only
+    ten-year US government bonds fell 25.1% from August 2020 to October 2023 and spent 65 months below its old
+    high. Being safe against the 1929 to 1932 fall, below, would need fewer than 38% in stocks, a mix not
+    tested here. The long history also runs a plain government bond through the inflation of the late 1970s:
+    across 1977 to 1981 this mix gained 36% while Plus trend gained 86%, and inflation-protected bonds would have
+    done better by an amount no data can measure.</p>
   </div>
 
   <div class="prose mt-14">

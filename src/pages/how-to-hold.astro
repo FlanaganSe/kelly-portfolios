@@ -61,7 +61,7 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
 >
   <Hero
     title="How to hold it"
-    lede="Pick one of the four portfolios, then hold it the same way whatever the market does. This page is the whole routine: which account, how to buy, once-a-year upkeep, and what to do when it falls."
+    lede="Pick one of the four portfolios, then hold it the same way whatever the market does."
   />
 
   <div class="prose">
@@ -73,11 +73,10 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
     <h2 id="before-you-invest">Before you invest</h2>
 
     <p>If you have debt at a rate above what a US government bond pays after tax, pay it down first. Repaying it
-    is a return with no risk, and very likely the best one available to you. The one cost: a cheap fixed-rate
-    mortgage, once repaid, cannot be borrowed again at that rate.</p>
+    is a return with no risk, and very likely the best one available to you.</p>
 
     <p>If your employer matches part of what you put into its retirement plan, put in at least enough to get the
-    whole match. A dollar matched is a dollar earned on the day you deposit it.</p>
+    whole match.</p>
 
     <p>If you have a high-deductible health plan, fill the health savings account before a taxable account. It is
     the only US account taxed at none of the three points: money in, growth, and money out for medical costs.
@@ -100,8 +99,7 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
     a retirement account you pay none, so the fund with the biggest yearly bill goes there first. Bond interest
     is taxed like wages, so the bond fund's bill is the largest: about $190 a year on every $10,000 of it at the
     top bracket. RSST's trend profits are taxed like wages too. Foreign funds pay bigger dividends than US funds,
-    and fewer of them are dividends taxed at the lower rate. VTI pays the smallest dividend, all of it at the
-    lower rate, so it costs the least to leave in the taxable account.</p>
+    and fewer of them are taxed at the lower rate. VTI pays the smallest dividend, all of it at the lower rate.</p>
 
     <p>You may have read that foreign funds belong in a taxable account, to keep the foreign tax you can claim
     back. Holding all four in a retirement account does lose that claim, about $7 a year on every $10,000 of the
@@ -111,9 +109,8 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
     foreign funds in the Roth: the Roth is never taxed again, so give it what you expect to grow most. That
     choice is worth about $2 a year per $10,000; taxable against retirement is worth ten times that.</p>
 
-    <p>RSST records income inside itself that it has not paid out. I count all of it, which puts RSST first in
-    the queue; it belongs in a retirement account either way. The calculator ranks the eight funds of the Plus
-    trend portfolio at your bracket and says where each one lands. Nothing you set leaves your browser.</p>
+    <p>The calculator ranks the eight funds of the Plus trend portfolio at your bracket and says where each one
+    lands. Nothing you set leaves your browser.</p>
   </div>
 
   <div class="mt-6">
@@ -132,10 +129,8 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
 
     <p>Open a brokerage account; Fidelity, Schwab and Vanguard charge nothing to trade ETFs online. Buy each fund
     by its ticker in the weights shown. As a worked example, $10,000 in Plus trend is
-    <span data-numeric>{exampleText}</span>. Whether to buy all at once or a bit each month, and whether to buy
-    whole or fractional shares, has not been measured here; do whichever you will keep doing. New money goes to
-    the accounts with yearly limits first, a 401(k) or an IRA, then to the taxable account, into whatever
-    holding is furthest below its target.</p>
+    <span data-numeric>{exampleText}</span>. New money goes to the accounts with yearly limits first, a 401(k) or
+    an IRA, then to the taxable account, into whatever holding is furthest below its target.</p>
   </div>
 
   <div class="prose mt-14">
@@ -148,9 +143,8 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
       rebalance.</p>
     </Callout>
 
-    <p>Rebalancing keeps your mix, and that is all it does. Do not expect it to add return or soften the worst
-    fall: on this portfolio the yearly rule came out 0.09% a year behind never trading over
-    {file.window.label}, a difference the test cannot tell from zero. The quarter-away trigger fires about once
+    <p>Do not expect rebalancing to add return or soften the worst fall: on this portfolio the yearly rule came
+    out 0.09% a year behind never trading over {file.window.label}, a difference the test cannot tell from zero. The quarter-away trigger fires about once
     every two and a half years. Never selling in the taxable account is worth about $42 a year on $10,000
     against selling a tenth of your holdings each year, because tax on a gain waits until you sell.</p>
   </div>
@@ -158,8 +152,7 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
   <div class="prose mt-14">
     <h2 id="when-it-falls">When it falls</h2>
 
-    <p>The whole site rests on one choice: pick the fall you can sit through, then sit through it. Sitting
-    through it looks like this. In 2008 the four portfolios fell between
+    <p>Sitting through a fall looks like this. In 2008 the four portfolios fell between
     <span data-numeric>{least2008}</span> and <span data-numeric>{most2008}</span> in one year, and in 2022
     between <span data-numeric>{least2022}</span> and <span data-numeric>{most2022}</span>. At the worst point,
     $10,000 in the plain world stock index was worth <span data-numeric>{plain.trough}</span> and took
@@ -196,11 +189,8 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
   <div class="prose mt-8">
     <Callout kind="do-this">
       <p>Do not sell. Keep adding on the same schedule. Before you buy, write down the fall you could sit through
-      and how many years behind a plain index fund you could stand, and hold yourself to the note. A price never
-      reopens the choice; only a change in the evidence or a change in you does.</p>
+      and how many years behind a plain index fund you could stand, and hold yourself to the note.</p>
     </Callout>
-
-    <p>Falling behind a plain US index fund for years is also inside what these portfolios have done.</p>
   </div>
 
   <div class="prose mt-14">
@@ -212,9 +202,9 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
       Do not replace it with a standalone trend-following fund bought by selling stocks.</p>
     </Callout>
 
-    <p>Closing is a real possibility: of the 25 trend-following ETFs filing reports in mid-2019, 13 had stopped
-    by the end of 2025. Four possible replacements (CTAP, MATE, JPFP, RSIT) are reviewed in that order, and each
-    currently fails a test; the <a href="/portfolios/with-trend/">Plus trend page</a> will say when one passes.</p>
+    <p>Of the 25 trend-following ETFs filing reports in mid-2019, 13 had stopped by the end of 2025. Four possible
+    replacements (CTAP, MATE, JPFP, RSIT) are reviewed in that order, and each currently fails a test; the
+    <a href="/portfolios/with-trend/">Plus trend page</a> will say when one passes.</p>
   </div>
 
   <div class="prose mt-14">
@@ -223,7 +213,7 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
     <p>Since 1 June 2026 Fidelity charges 5% of the trade, capped at $100, to buy ETFs from issuers that refuse
     to pay its platform fee. Its list as of 15 August 2026 names 84 tickers and none of the funds on this site,
     but it can change without notice, and Schwab has announced a similar programme for late 2026 to early 2027.
-    Small issuers, Return Stacked among them, are the ones plausibly at risk.</p>
+    Small issuers, Return Stacked among them, are the ones at risk.</p>
 
     <Callout kind="do-this">
       <p>Before a first purchase, search your broker's site for its list of ETFs that carry a purchase fee and

@@ -128,7 +128,7 @@ const STATS = [
   <Hero
     eyebrow="Portfolio 3 of 4"
     title="Plus trend"
-    lede="The value lean, with a quarter of the money in a fund that holds US stocks and a trend-following strategy at once. For someone who wants more than the market and could sit through a fall of about half."
+    lede="The value lean, with a quarter of the money in a fund that holds US stocks and a trend-following strategy at once."
   >
     <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
       <Verdict word="Too close to call" gloss="The 96-year record is strong. The fund is under three years old and the last fifteen years say little." />
@@ -138,10 +138,9 @@ const STATS = [
   <div class="prose mt-10">
     <h2 id="what-you-buy">What you buy</h2>
     <p>Eight funds: the value lean's six stock funds, a small line of inflation-protected US government bonds,
-    and RSST. RSST is what makes this portfolio different. For every dollar you put in, it holds about a dollar
-    of US stocks and a dollar of a trend-following strategy, borrowing inside the fund to hold both. So you
-    still own about as much stock as the value lean, and the 25% in RSST buys a trend strategy of the same size
-    on top.</p>
+    and RSST. For every dollar you put in, RSST holds about a dollar of US stocks and a dollar of a
+    trend-following strategy, borrowing inside the fund to hold both. So you still own about as much stock as
+    the value lean, and the 25% in RSST buys a trend strategy of the same size on top.</p>
   </div>
 
   <div class="wide mt-8 grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_12rem]">
@@ -184,8 +183,7 @@ const STATS = [
   <div class="prose">
     <Callout kind="do-this">
       <p>Hold RSST in a pre-tax retirement account, a traditional IRA or 401(k), or do not hold it. Its trend
-      profits are taxed like wages, and most have not been paid out yet, so a taxable account could face a large
-      bill in any year.</p>
+      profits are taxed like wages, and most have not been paid out yet.</p>
     </Callout>
     <p>An earlier version of this portfolio held 30% RSST and no SCHP; on paper it grew a little faster and
     fell a little further.</p>
@@ -195,11 +193,9 @@ const STATS = [
     <h2 id="what-trend-following-is">What trend following is</h2>
     <p>Trend following is a rule: buy what has been rising over the past several months, bet against what has
     been falling, and hold no opinion about why. It trades futures, contracts that bet on a price, on stock
-    indexes, government bonds, currencies and commodities. Its value shows in slow, grinding stock falls.
-    Through the 2022 stock fall of 25%, real trend-following funds made 26% after fees; in a sudden crash it has
-    no time to switch sides and does little. RSST packages it so you need not sell stocks to
-    buy it: for each $1 you invest, the fund holds about $1 of US stocks and $1 of a trend strategy, borrowing
-    inside the fund to hold both.</p>
+    indexes, government bonds, currencies and commodities. Its value shows in slow, grinding stock falls:
+    through the 2022 stock fall of 25%, real trend-following funds made 26% after fees. In a sudden crash it
+    has no time to switch sides and does little.</p>
   </div>
 
   <div class="prose w-full mt-14">
@@ -233,9 +229,8 @@ const STATS = [
   </DrawdownChart>
 
   <div class="prose mt-8">
-    <p>From {monthName(fall.peak)} to {monthName(fall.trough)}, $10,000 fell to {formatDollars(fall.dollarsAtTrough)},
-    a fall of {pct(fall.pct)}, and it was back above $10,000 in {fall.recovered ? monthName(fall.recovered) : "no month yet"},
-    {formatMonths(fall.monthsToRecover)} after the peak. The plain world stock index fell to
+    <p>It was back above $10,000 in {fall.recovered ? monthName(fall.recovered) : "no month yet"},
+    {formatMonths(fall.monthsToRecover)} after the {monthName(fall.peak)} peak. The plain world stock index fell to
     {formatDollars(m.worstFall.dollarsAtTrough)} and took {formatMonths(m.worstFall.monthsToRecover)}. In calendar
     2008 the portfolio lost {pct(s.calendarYears["2008"] ?? Number.NaN)} against {pct(m.calendarYears["2008"] ?? Number.NaN)} for
     the index; in 2022 it lost {pct(s.calendarYears["2022"] ?? Number.NaN)} against {pct(m.calendarYears["2022"] ?? Number.NaN)}.</p>
@@ -244,9 +239,9 @@ const STATS = [
   <div class="prose mt-14">
     <h2 id="what-it-beat">What it beat, and by how much</h2>
     <p>Over 96 years of simulated history, 1929 to 2025, a 30% trend strategy on top of US stocks beat all US
-    stocks by about 2% a year, with a plausible range of 1.3% to 2.7%. Most of that came before 2009; since
-    2009 the gap is about 0.4% a year, which sixteen years cannot tell from luck. At the middle estimate of what
-    trend pays from here, a portfolio like this trails a plain index fund in about 25% of ten-year periods, 16%
+    stocks by about 2% a year, with a plausible range of 1.3% to 2.7%. Most of that came before 2009: the gap
+    since then is about 0.4% a year, after 0.5% to 3.6% a year in every decade before. At the middle estimate of
+    what trend pays from here, a portfolio like this trails a plain index fund in about 25% of ten-year periods, 16%
     to 17% of twenty-year periods and 11% to 12% of thirty-year periods (measured at 20% and 30% RSST, not
     25%). Against a plain index fund borrowing the same amount RSST does, it trails 70% to 80% of
     the time, because that comparison is mostly a bet on stocks.</p>
@@ -254,10 +249,11 @@ const STATS = [
 
   <div class="prose mt-14">
     <h2 id="who-it-is-for">Who it is for</h2>
-    <p>Someone who wants to do better than a plain index fund and could watch $10,000 fall to about {formatDollars(fall.dollarsAtTrough)} without selling. Losing
-    here looks like a decade of quietly trailing a plain US index fund, not a crash. If you would sell after RSST fell 20% behind the
-    market, you would end up doing so in about 8% of thirty-year histories when trend pays its middle estimate,
-    and about half of them if trend has stopped paying.</p>
+    <p>Someone who wants to do better than a plain index fund and could watch $10,000 fall to about
+    {formatDollars(fall.dollarsAtTrough)} without selling. Losing here looks like a decade of quietly trailing a
+    plain US index fund. If you would sell after RSST fell 20% behind the market, you would do so in about 8% of
+    thirty-year histories when trend pays its middle estimate, and about half of them if trend has stopped
+    paying.</p>
   </div>
 
   <div class="prose mt-14">
@@ -265,14 +261,12 @@ const STATS = [
     <Callout kind="do-this">
       <p>Put RSST and SCHP in a pre-tax retirement account, the foreign funds in whatever retirement room is
       left, and VTV and VTI in a taxable account. Once a year, on a fixed date, send new money to whatever is
-      furthest below its target. Trade only inside retirement accounts, and never sell in a taxable account to
-      rebalance.</p>
+      furthest below its target; never sell in a taxable account to rebalance.</p>
       <p>Do not review RSST on price: it trails a plain index in 44% of ten-year periods even when trend is
       paying. Once a year, check what real trend-following funds earned after fees, and halve the position only
       if that has sat below RSST's all-in cost for three years running.</p>
       <p>If RSST announces it is closing, sell it before its last trading day and buy VTI in the same account;
-      you then hold the value lean. Replacements are reviewed in the order CTAP, MATE, JPFP, RSIT, and each
-      currently fails a test. A standalone trend fund such as DBMF is not a replacement if you must sell stocks to buy it. More on
+      you then hold the value lean. Replacement funds, and the rest of the routine, are on
       <a href="/how-to-hold/">how to hold it</a>.</p>
     </Callout>
   </div>
@@ -281,12 +275,10 @@ const STATS = [
     <h2 id="what-could-go-wrong">What could go wrong</h2>
     <p>RSST is young. It began trading in September 2023, and its 31 months of filed holdings show it
     delivering its stock dollar in full but only about seven tenths of a dollar of trend; 31 months cannot tell
-    seven tenths from a whole. Its fee is 0.99% a year, $99 on every $10,000 in it, and what it pays to borrow
-    its second dollar is a cost no issuer discloses. Of 25 trend-following ETFs
-    filing reports in mid-2019, 13 had closed by the end of 2025. Trend following itself has had a flat fifteen
-    years: about 0.4% a year since 2009, after 0.5% to 3.6% a year in every decade before. A decade of trailing
-    a plain index fund is likely at some point. Since 2009 this portfolio has stayed ahead of the plain index but
-    trailed a plain index fund borrowing the same amount by 1.2% a year.</p>
+    seven tenths from a whole. Its fee is $99 a year on every $10,000 in it, and what it pays to borrow its
+    second dollar is a cost no issuer discloses. Of 25 trend-following ETFs filing reports in mid-2019, 13 had
+    closed by the end of 2025. Since 2009 this portfolio has stayed ahead of the plain index but trailed a plain
+    index fund borrowing the same amount by 1.2% a year.</p>
   </div>
 
   <div class="prose mt-14">
@@ -296,7 +288,7 @@ const STATS = [
     fell to {formatDollars(long.summary.worstFall.dollarsAtTrough)} by {monthName(long.summary.worstFall.trough)}, a fall
     of {pct(long.summary.worstFall.pct)}, and took {formatMonths(long.summary.worstFall.monthsToRecover)} to get back; all
     US stocks fell {pct(longMarket.summary.worstFall.pct)} and took {formatMonths(longMarket.summary.worstFall.monthsToRecover)}.
-    Trend protects against the slow decade, not the crash. Over the whole 96 years the portfolio grew
+    Over the whole 96 years the portfolio grew
     {formatPct(long.summary.cagrPct)} a year against {formatPct(longMarket.summary.cagrPct)} for all US stocks. Nobody
     earned these returns, and nobody sat through those falls knowing how they would end.</p>
   </div>
