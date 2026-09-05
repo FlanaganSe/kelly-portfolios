@@ -28,10 +28,6 @@ or publication gates must state their scope and what evidence would change the d
 - `compressHTML: true` is pinned. Astro 7's `'jsx'` default strips whitespace between
   inline elements, which deletes the space after a closing `</code>` or `</em>` that a
   newline follows. Reproduced on this repository, not inherited from a changelog.
-- `sst.config.ts` imports `./infra/*` and deploys handlers from `functions/`; neither is in
-  Git. Do not make the build green by deleting those imports.
-- `scripts/mean-variance.py` is an unwired reference implementation, not shipped behavior.
-- `scripts/seed-database.ts` emits an unseeded synthetic random walk, not market data.
 - A client research figure belongs in `src/content/` and carries status, date or period,
   interval where applicable, and source ([decision 0007](docs/decisions/0007-application-may-render-research.md)).
   Its `docPath` is provenance the build checks and never renders; what a reader sees is
@@ -57,7 +53,7 @@ pnpm typecheck
 pnpm test
 pnpm lint:prose   # the house voice, on pages and on the prose inside src/content/
 pnpm lint:figures # every figure record's id, status, source and date
-pnpm build
+pnpm build          # also runs scripts/check-links.mjs against dist/
 ```
 
 Research: Python 3.12 and `uv`.

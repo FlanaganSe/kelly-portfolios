@@ -96,9 +96,7 @@ files; syntheses link them instead of duplicating full tables.
 - `src/lib/`: ported arithmetic and generated fixtures.
 - `src/components/`: application UI.
 
-`sst.config.ts` references `./infra/*` and `functions/`, which are not in version control.
-Do not “repair” deployment by deleting those imports. The client itself builds as a static
-site and needs no environment variables. `scripts/seed-database.ts` creates an unseeded
-synthetic random walk; its output is not market data.
+The client builds as a static site and needs no environment variables. Deployment is the
+`Deploy` workflow and `scripts/cloudfront/`; there is no infrastructure-as-code.
 
 The deployed site is <https://kellyportfolios.com/>.

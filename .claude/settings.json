@@ -15,14 +15,6 @@
       "NotebookEdit"
     ],
     "deny": [
-      "Bash(pnpm sst deploy:*)",
-      "Bash(pnpm sst remove:*)",
-      "Bash(pnpm exec sst deploy:*)",
-      "Bash(pnpm exec sst remove:*)",
-      "Bash(npx sst deploy:*)",
-      "Bash(npx sst remove:*)",
-      "Bash(sst deploy:*)",
-      "Bash(sst remove:*)",
       "Bash(git push --force:*)",
       "Bash(git push -f:*)",
       "Read(./.env)",

@@ -8,11 +8,12 @@ The build runs in CI and publishes into the S3 bucket that already sits behind
 
 ## What is live now
 
-`kellyportfolios.com` is served by CloudFront in front of an S3 bucket. That bundle was
-written on 2025-10-10 and cannot be rebuilt from a clone: `sst.config.ts` imports
-`./infra/*` and deploys handlers from `functions/`, and neither directory has ever been
-committed in any ref. The workflow that ran it, `deploy-prod.yaml`, has been deleted
-because it could only ever fail.
+`kellyportfolios.com` is served by CloudFront in front of an S3 bucket. SST created both
+on 2025-10-10, from an `sst.config.ts` that imported `./infra/*` and `functions/`, and
+neither directory was ever committed in any ref. The config, the `sst` and `@pulumi/aws`
+packages, and the `deploy-prod.yaml` workflow that ran it have all been removed: none of
+them could run from a clone. Nothing declarative describes the distribution now; if it is
+ever deleted, the recovery path is this document and the console.
 
 What replaces it is [`deploy.yml`](../.github/workflows/deploy.yml), which builds the
 static bundle and syncs it into the same bucket. Because the distribution and the DNS
@@ -175,5 +176,3 @@ pnpm install
 pnpm build      # astro build, then pagefind indexes dist/
 pnpm preview    # serves dist/ on http://localhost:4321
 ```
-
-It is kept as a reference while pages are ported and is deployed nowhere.

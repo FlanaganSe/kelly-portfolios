@@ -1,6 +1,5 @@
 import { readdirSync } from "node:fs";
 import path from "node:path";
-import mdx from "@astrojs/mdx";
 import sitemap from "@astrojs/sitemap";
 import solid from "@astrojs/solid-js";
 import tailwindcss from "@tailwindcss/vite";
@@ -10,12 +9,6 @@ import pagefind from "astro-pagefind";
 // The site is a static bundle. Every page is HTML on disk, readable and indexable
 // with JavaScript switched off; interactivity arrives as Solid islands only where a
 // reader can actually type something.
-//
-// The markdown pipeline is left on Astro 7's default (`satteri()`, the Rust processor).
-// Nothing here needs a remark or rehype plugin, and the default already carries GFM,
-// smart punctuation and heading IDs. If a plugin ever becomes necessary, import
-// `unified` from `@astrojs/markdown-remark`, set it as `markdown.processor`, and MDX
-// inherits it — `@astrojs/mdx` reads `config.markdown.processor` on its own.
 /**
  * Every route the rendered research corpus used to occupy, pointing at `/strategies/`.
  *
@@ -114,7 +107,6 @@ export default defineConfig({
   },
 
   integrations: [
-    mdx(),
     solid(),
     sitemap({
       // Google documents that it ignores `changefreq` and `priority`, so emitting them

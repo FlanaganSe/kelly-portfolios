@@ -12,10 +12,6 @@ dist-legacy
 .vscode/settings.json
 .idea/
 
-# sst
-.sst
-sst-env.d.ts
-
 # AI
 CLAUDE.local.md
 .claude/settings.local.json
