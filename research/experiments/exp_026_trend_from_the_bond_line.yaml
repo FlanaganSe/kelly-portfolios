@@ -1,0 +1,1016 @@
+# FREEZE NOTE. READ THIS BEFORE READING ANY NUMBER THIS SPECIFICATION PRODUCES.
+#
+# 1. WHY THIS FILE EXISTS.
+#    Decision 0014 publishes a cautious construction for a reader whose
+#    tolerable fall is about -40%: SCHP 50 / RSST 15 / stocks 35 (VTI 9.5, VXUS
+#    8, VTV 7.5, AVDV 5, IDMO 2.5, AVES 2.5), scored as `ladder40` in Experiment
+#    025. Its bond line is 50 points of an unlevered ten-year Treasury standing
+#    in for TIPS, and its worst measured episode is 1977-81, where the cautious
+#    arms returned +16% to +42% against +86% for the published 30% construction.
+#    The programme's one repeated positive result is that THE FUNDING RULE
+#    DECIDES THE SIGN of a diversifier: trend financed on top of equity adds as a
+#    sum (018, 024, 025); trend bought by selling equity is too close to call at
+#    best (timing-rules, 019 substitution). EVERY TREND TEST SO FAR FUNDED TREND
+#    FROM STOCKS, whose expected excess on the primary panel is 7.75 pp/yr. No
+#    test has funded trend, or gold, from the BOND line, whose expected excess is
+#    1.61 pp/yr (025's ten-year leg, 1929-2025) and 0.8 pp/yr forward. That is a
+#    different and cheaper hurdle, and the bond line is exactly the half of the
+#    cautious book that loses in the inflation episodes where trend and gold paid.
+#    This file scores three ways of putting an engine on the bond line of the
+#    published cautious portfolio, as whole objects, on 025's panels and
+#    machinery, against the published cautious portfolio itself.
+#
+# 2. THIS SCORES CONSTRUCTIONS ON PUBLIC SERIES, NOT FUNDS. Exactly as 018, 024
+#    and 025: on the primary panels every holding is a per-dollar exposure vector
+#    and a fee; on the tournament panel every ticker is 016f's basis expression
+#    plus the ten-year leg 024 added and the three wrappers this file adds. A
+#    growth figure here is a property of a construction and never of a fund.
+#    RSBT's live record is -0.38%/yr since 2023-02 against the Agg's +3.16% to
+#    mid-2026 and +22.48% in the trailing year; DBMF delivers 0.671 of the SG/AQR
+#    index; GDE is four years old. None of that enters a simulated path.
+#
+# 3. THE THREE ARMS AND THEIR FUNDING RULES, STATED.
+#    A1 `rsbtX`: X points of the ten-year line become an RSBT-like wrapper, 1.0
+#    ten-year Treasury (financed at cash plus the 15 bp Treasury basis) plus 1.0
+#    trend, at 97 bp. BOND NOTIONAL UNCHANGED at 0.50; trend rises from 0.15 to
+#    0.15 + X. Funding rule: ON TOP, financed. The wrapper's bond leg is the SAME
+#    ten-year series as the line it replaces, so the pair differs by the trend
+#    leg and its costs alone. (018's RSBT_LIKE carried the ~20-year `ltr` leg;
+#    RSBT's own ladder is 2-30 years, nearer a ten-year in duration.)
+#    A2 `trendfundX`: X points of the ten-year line become a standalone
+#    unlevered trend fund, 1.0 trend at 85 bp. BOND NOTIONAL FALLS to 0.50 - X.
+#    Funding rule: SOLD FROM BONDS. The wrapper delivers 1.0 trend by
+#    assumption, as RSST_LIKE and RSBT_LIKE do; the measured 0.671 delivered
+#    loading enters the regret table as a row, never the simulation.
+#    A3 `gdeX`: 0.9 X points of the stock line and 0.1 X of the ten-year line
+#    become X of a GDE-like wrapper, 0.9 equity plus 0.9 gold futures financed at
+#    the 30 bp gold basis, at 20 bp. EQUITY NOTIONAL UNCHANGED at 0.5108; gold
+#    rises from 0 to 0.9 X; the bond line falls by 0.1 X (the wrapper's
+#    collateral). Funding rule: ON TOP, financed. Gold exists from 1968-05, so A3
+#    runs on the gold sub-window and the tournament panel only.
+#    X is 10, 20 and 30 points for every arm. Nothing was searched; the ladder is
+#    the one the request named and the sketch in the working notes used 15 and
+#    25, which this file does not run.
+#
+# 4. THE BOND LINE IS A NOMINAL TEN-YEAR TREASURY ON EVERY SCORED PANEL, exactly
+#    025 freeze note 3: no TIPS series exists before 2003, and at 47 to 50
+#    points of capital the 1973-74 and 1977-81 episodes overstate what a TIPS
+#    book would have lost. The reading of the inflation episodes here is a
+#    reading of a nominal-bond book. THE TREND LEG IS THIS REPOSITORY'S OWN
+#    4-ASSET BOOK, scaled by one full-window constant that must reproduce
+#    1.9771, charged no trading; AQR's TSMOM on the tournament panel is gross of
+#    the vendor's costs by omission. THE GOLD LEG IS THE LBMA PM FIX, spot excess
+#    of cash, 018's construction; the gold sub-window includes 1971-08..1974-12
+#    when the dollar price was an administered peg being abandoned (018 freeze
+#    note 5). The gold financing rate is an assumption swept 0-60 bp.
+#
+# 5. WHAT THIS FILE PREDICTS BEFORE IT IS RUN. Arithmetic on 025's realised
+#    premia (ten-year 1.61, trend 7.22, equity 7.75 pp/yr over cash on
+#    1929-2025; TSMOM 10.98 on the tournament panel; 018's gold 5.2 on 1968-2025,
+#    backed out of `trend30_goldstack10`'s +0.35) and 025's floor per point of
+#    tracking error (0.285 primary, 0.470 tournament, about 0.37 on 685 gold
+#    months); no look at any new statistic.
+#    (i) A1 against `cautious`: `X x (trend - 0.97 - 0.15 + 0.05)` = `X x (trend
+#    - 1.07)`, the 5 bp being the ten-year line's own fee the wrapper displaces.
+#    At realised premia +0.62 / +1.23 / +1.85 pp/yr for X = 10 / 20 / 30 against
+#    floors of about 0.35 / 0.71 / 1.06 (tracking error 12.4 points per unit of
+#    trend): PREDICTED `exploratory` at every X on the primary panel, +0.99 /
+#    +1.98 / +2.97 against about 0.7 / 1.4 / 2.1 on the tournament panel,
+#    `exploratory`. Since 2009 the own book's excess was 1.41: `X x 0.34`,
+#    inside a floor near 0.86 X / 0.1, `unresolved`. At the 4.07 forward
+#    premium `X x 3.00` against a floor of `X x 3.53`: INSIDE THE FLOOR AT EVERY
+#    X BY CONSTRUCTION, the ratio 0.85 being independent of X. The forward gap
+#    clears the floor only above a gross trend premium of about 4.6 pp/yr.
+#    (ii) A2 against `cautious`: `X x (trend - 0.85 + 0.05 - tenyear)` = `X x
+#    (trend - 0.80 - tenyear)`. At realised premia +0.48 / +0.96 / +1.44
+#    against floors of about 0.41 / 0.83 / 1.24 (tracking error about 14.5 per
+#    unit, the trend and the bond it replaces being nearly uncorrelated):
+#    PREDICTED marginal, `exploratory` or `unresolved` within a tenth of the
+#    floor, and the Benjamini-Hochberg clause may decide it. Forward at 4.07 and
+#    0.8 of bond excess, `X x 2.47`, inside the floor; at the 0.671 delivered
+#    loading `X x 1.13`. The substitution arm is predicted to win 2022 and to
+#    lose ground in 1929-32 relative to A1, because the bond it sells was
+#    positive in the deflation.
+#    (iii) A3 against `cautious` on 1968-05..2025-05: `X x (0.9 gold - 0.20 -
+#    0.27 + 0.027 + 0.005 - 0.1 tenyear)` = `X x (0.9 gold - 0.438 - 0.1
+#    tenyear)`. At realised premia +0.39 / +0.79 / +1.18 against floors of
+#    about 0.61 / 1.22 / 1.84 (gold at 18-19% volatility): PREDICTED `unresolved`
+#    at every X, as 018 found at 10 points beside the 30% wrapper. The
+#    descriptive interest is the 1973-74 and 1977-81 episodes, where gold's
+#    dollar price rose eightfold, and the 1980-82 fall, where 0.27 of gold at
+#    -60% costs about 16 points while equities also fell.
+#    (iv) DRAWDOWN, descriptive, no status. A1 is predicted to fall LESS than
+#    `cautious` by 1 to 4 points on 96 years and on the tournament panel,
+#    because the trend book was positive in 1929-32 and 2008 (025: every trend
+#    arm fell less than its plain twin). A2 is predicted within 3 points of
+#    `cautious` in either direction on 96 years (it sells a bond that was
+#    positive in 1929-32 for a trend book that was also positive) and shallower
+#    in 2022. A3 is predicted within 3 points of `cautious` at X = 10 and 20 and
+#    possibly deeper at 30 on the 1968 window (1980-82). Months under water are
+#    predicted to shorten for A1 and A2 (the inflation-era recovery) and are not
+#    predicted for A3.
+#    (v) EVERY ARM AGAINST THE CHEAP 100%-EQUITY CONTROL is predicted `rejected`
+#    on the mean on both panels, as every cautious arm was in 025, by 1 to 3
+#    pp/yr. Against the cheap 60/40 the sign is not predicted. Against the
+#    leverage-matched control (the core levered to the arm's 1.16-1.46 gross)
+#    A1 is predicted `rejected`, as every stacked arm has been against that
+#    control on this panel (025: `published_trend30` -0.30 vs leverage_matched).
+#
+# 6. WHAT RESULT CHANGES DECISION 0014, AND WHAT DOES NOT. Read after the run.
+#    (a) An arm is PROPOSED to REPLACE the published cautious vector (a draft
+#    decision 0015, status PROPOSED, the site owner decides) only if ALL of:
+#    (a1) its gap against `cautious` is `exploratory` on BOTH the primary panel
+#    (or, for A3, the gold sub-window) AND the tournament panel; (a2) its worst
+#    fall is not deeper than `cautious`'s by more than 2 pp on the primary full
+#    window, on from_1934, and on the tournament full window; (a3) its 1977-81
+#    and its 2022 Jan-Sep episode returns on the primary panel are not below
+#    `cautious`'s (the mechanism claimed is an inflation-episode engine, and an
+#    arm that loses both inflation episodes has not delivered it); (a4) its
+#    closed-form gap at the central forward premium (trend 4.07 gross, ten-year
+#    0.8 over cash, gold 0.0 over cash, the repository holding no gold premium
+#    estimate) exceeds its own primary-panel floor. Clause (a4) is predicted to
+#    FAIL for every arm at every X (freeze note 5 i-iii), so this file predicts
+#    that no arm replaces the vector.
+#    (b) An arm meeting (a1)-(a3) but not (a4) is PROPOSED as a PRINTED OPTION
+#    beside the published cautious vector, with its regret row and its 96-year
+#    fall in the same sentence: the treatment 0014 clause 2 gives the plain
+#    twins. That changes the cautious page, not the vector, and it is what this
+#    file predicts for A1 at every X.
+#    (c) An arm that is `unresolved` or `rejected` against `cautious` on either
+#    panel, or deeper than `cautious` by more than 2 pp on any scored window,
+#    leaves 0014 as it stands and is recorded as a scoped result with its floor:
+#    predicted for A3 at every X and possible for A2.
+#    Under no outcome does this file produce a status above `exploratory`,
+#    promote a fund, or read a drawdown, episode or terminal-wealth figure as
+#    anything but one order statistic of one path.
+#
+# 7. WHAT WOULD REOPEN A (c) OUTCOME. A gold arm reopens on a measured gold
+#    forward premium the repository does not hold, or on a gold series before
+#    1968. A trend-fund arm reopens on a delivered loading above 0.9 at 85 bp or
+#    on a fee below 50 bp for an unlevered trend fund. Every trend arm's forward
+#    reading reopens on a registered forward trend premium above 4.6 pp/yr gross
+#    (freeze note 5 i), which is the number the site owner would have to believe.
+#
+experiment_family: exp_026_trend_from_the_bond_line
+title: >
+  Engines on the bond line of the published cautious portfolio: does funding
+  trend from the ten-year line (stacked, RSBT-like; or sold from bonds,
+  standalone trend fund) or stacking gold on the stock line (GDE-like) improve
+  SCHP 50 / RSST 15 / stocks 35 as a whole, at 10, 20 and 30 points, on 1157
+  months from 1929, on the 685-month gold sub-window from 1968-05, and on 016f's
+  427-month fund-list panel, against the cautious portfolio itself, the cheap
+  100%-equity and 60/40 controls and a leverage-matched control?
+entry_point: exp_026_trend_from_the_bond_line
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260904
+
+hypothesis: >
+  The reference arm `cautious` is the published cautious construction in
+  capital weights on the primary panel: CORE 0.35 / RSST_LIKE 0.15 / TSY10 0.50
+  (equity 0.5108, trend 0.150, bond 0.500, gross 1.1608), 025's `ladder40`
+  rounded to the fund weights the site prints. Nine candidate arms differ from
+  it by one engine on one line: `rsbt10/20/30` (RSBT_LIKE X in place of TSY10
+  X; bond unchanged, trend 0.25 / 0.35 / 0.45, gross 1.2608 / 1.3608 / 1.4608),
+  `trendfund10/20/30` (TREND_FUND X in place of TSY10 X; bond 0.40 / 0.30 /
+  0.20, trend 0.25 / 0.35 / 0.45, gross 1.1608), and `gde10/20/30` (GDE_LIKE X
+  in place of CORE 0.9 X and TSY10 0.1 X; equity 0.5108, gold 0.09 / 0.18 /
+  0.27, bond 0.49 / 0.48 / 0.47, gross 1.2408 / 1.3208 / 1.4008). THE PRIMARY
+  COMPARISON, DECLARED HERE, is each candidate arm minus `cautious`, arithmetic
+  mean monthly total-return gap after every cost charged inside the rule, on the
+  1929-01..2025-05 primary panel for the trend arms and on the 1968-05..2025-05
+  gold sub-window for the gold arms, with the tournament panel as the second
+  scored panel for every arm. The trend-stacked arms are predicted
+  `exploratory` at realised premia and inside their floors at the forward
+  premium (freeze note 5 i); the sold-from-bonds arms marginal (5 ii); the gold
+  arms `unresolved` (5 iii). Every arm is also scored against the cheap
+  100%-equity control, a cheap 60/40, and the equity core levered or scaled to
+  the arm's gross notional, each a separate family. Drawdown, months under
+  water and the nine crisis episodes are descriptive and are the reason the
+  inflation episodes are in the title.
+
+mechanism: >
+  Three mechanisms, all inherited from `portfolio_edge.studies.overlay_growth`
+  and from 018, 024 and 025. STACKING ON THE BOND LINE (A1, A3): a financed leg
+  of w points adds w of the engine's notional per dollar of capital and costs
+  its fee plus financing on that capital; its expected value against the
+  reference is `w x (engine_excess - cost)`, a sum, exactly the mechanism that
+  made the RSST line add against its plain twin in 025, except that here the
+  displaced holding is a 5 bp bond and not a 3 bp equity core, so the pair is
+  clean of any equity term. SUBSTITUTION FROM THE BOND LINE (A2): each point
+  moved from the ten-year to an unlevered trend fund forgoes the term premium
+  (1.61 realised, 0.8 forward) rather than the equity premium (7.75 realised),
+  which is why a substitution that failed from equity may not fail from bonds;
+  it also removes the bond's deflation-hedge from the book, which is where the
+  drawdown table reads it. VARIANCE: the stacked arms carry 1.26 to 1.46 of
+  gross notional and more variance than the reference, so their log-growth gaps
+  fall short of their arithmetic gaps by half the variance difference,
+  reported as one constant per arm. COST: 97 bp plus 15 bp financing on the
+  RSBT-like line, 85 bp on the trend fund, 20 bp plus 27 bp financing on the
+  GDE-like line, 5 bp on the ten-year, 3 bp on the core, 99 bp plus 20.5 bp on
+  the RSST-like line, 0.55 bp of round-trip spread on monthly rebalancing
+  turnover, all inside the rule.
+
+falsifier: >
+  There is no fixed pp/yr bar; the operative bar is each comparison's own
+  resolution (decisions 0009 clause 1 and 0010 clause 4). For each arm, against
+  each named control separately, on the primary metric:
+  (a) `rejected` if the arithmetic mean gap point estimate is at or below zero;
+  (b) `unresolved` if the gap is positive but smaller than the minimum
+  detectable effect at 80% power computed from that comparison's own paired
+  difference series, reported in the same row;
+  (c) `unresolved` if the gap exceeds its MDE but its Benjamini-Hochberg
+  adjusted p-value within the declared family (one family per control per
+  panel) exceeds 0.10;
+  (d) `unresolved` if the gap survives (b) and (c) but changes sign anywhere on
+  the declared financing bands (equity 62-231 bp for every arm; Treasury 0-50
+  bp for the RSBT-like arms; gold 0-60 bp for the GDE-like arms);
+  (e) `exploratory` otherwise. Under no outcome may this specification produce
+  a status above `exploratory`.
+  For the NINE PRIMARY COMPARISONS (each candidate against `cautious`) the
+  status on the primary panel or the gold sub-window AND on the tournament
+  panel feeds freeze note 6, which decides whether a draft decision 0015 is
+  written and what it may propose. The drawdown, months-under-water,
+  worst-decile, crisis-episode and terminal-wealth tables are descriptive and
+  receive NO status; freeze note 6 reads them as descriptions. The
+  whole-experiment status is `exploratory` when any comparison on any scored
+  panel reaches (e) and `unresolved` otherwise.
+
+universe:
+  description: >
+    Six monthly excess-of-cash legs plus the cash rate on the primary panels,
+    US-only equity throughout because the drawdown question needs 1929-32,
+    1937, 1973-74 and 1977-81. Cash is the Ken French one-month bill. On the
+    tournament panel the sixteen basis series and the mapping are 016f's,
+    loaded from its frozen specification, plus the ten-year leg 024 added and
+    the LBMA gold leg this file adds.
+  legs:
+    - id: equity
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `Mkt-RF`
+      basis: US market excess of the one-month bill, as published, 1926-07 onward.
+    - id: treasury
+      source: Goyal-Welch `PredictorData2025.xlsx`, monthly, `ltr`, less French `RF`
+      basis: Long-term US government bond total return, roughly a 20-year bond, used inside the trend book only.
+    - id: tsy10
+      source: >
+        FRED `GS10` from 1953-04, Shiller `ie_data.xls`
+        `Long_Interest_Rate_GS10` before that, priced as a rolled ten-year par
+        bond by `studies/fixed_income_shelf.par_bond_total_returns`, less
+        French `RF`; 024's splice, its cross-check reproduced.
+      basis: MODELLED. The cautious portfolio's bond line and the RSBT-like wrapper's bond leg; freeze note 4.
+    - id: trend
+      source: >
+        This repository's own 4-asset time-series-momentum book (French
+        Mkt-RF, Goyal-Welch ltr and corpr less Rfree, AQR equal-weight
+        commodity excess), `studies/time_series_momentum` defaults, minimum
+        three live instruments, scaled to 12.38% volatility by one
+        full-window constant.
+      basis: Excess of cash, no trading cost charged.
+    - id: gold
+      source: LBMA PM fix, USD per troy ounce, last published fix in each month, from 1968-04
+      basis: >
+        Spot excess return, 1968-05 onward: month-end level change less the
+        one-month bill, 018's construction. A gold futures position earns the
+        spot change less the basis, which the GDE-like wrapper is charged.
+    - id: cash
+      source: Ken French `F-F_Research_Data_Factors`, monthly, `RF`
+  excluded:
+    - Any claim that a wrapper's or a ticker's simulated path is that fund's return.
+    - Any weight search. Every arm's weights are declared here and nothing optimises them; X is 10, 20 and 30 by declaration.
+    - A TIPS bond line or check panel; 025 §5 did that and nothing here changes it.
+    - Carry on the bond line (RSBY-like); the vendor series is -2.96 pp/yr since publication and the fund is the worst record in its family, and 019 scored carry beside trend.
+    - Moving the RSST line to an RSBT line at equal trend notional; at 15 points the two wrappers' costs differ by about 1 bp/yr of the portfolio (RSST 0.15 x (0.99 + 0.331 x 0.62) = 0.179 against RSBT 0.15 x (0.97 + 0.15) = 0.168) and the bond notional by 0.011, which is arithmetic and not a measurement.
+    - Withdrawals, taxes, and account placement; the cautious page prices placement.
+
+sample_policy:
+  start: "1926-01"
+  end: "2026-05"
+  held_out: >
+    Nothing is held out. The primary panel is the intersection of what its
+    sources publish and neither boundary was chosen: 1929-01 when the 4-asset
+    book has three live instruments, 2025-05 when the AQR commodity leg ends,
+    expected 1157 months, identical to 018's, 024's and 025's. The gold
+    sub-window begins 1968-05 at the first LBMA month-end return and ends with
+    the primary panel, expected 685 months, identical to 018's. The tournament
+    panel is 016f's 427 months, 1990-11..2026-05. The data has been searched
+    by twenty-five earlier specifications and the arms were chosen by people
+    who read them; that look-ahead is recorded and no freezing removes it.
+  embargo: >
+    None. The constant-weight arms estimate nothing. The trend book uses only
+    data before each month; its volatility scalar is the one look-ahead and it
+    is a Sharpe-preserving constant.
+  eras:
+    - name: from_1934
+      start: "1934-01"
+      end: "2025-05"
+      rationale: Drops the 1929-33 crash and its recovery; freeze note 6 (a2) reads the drawdown table here as well as on the full window.
+    - name: from_1946
+      start: "1946-01"
+      end: "2025-05"
+      rationale: Post-war; drops the Depression and the wartime rate peg.
+    - name: from_1968_05
+      start: "1968-05"
+      end: "2025-05"
+      rationale: The gold sub-window on the primary legs, so the trend arms can be read on the same months as the gold arms.
+    - name: from_1970
+      start: "1970-01"
+      end: "2025-05"
+      rationale: From the first inflation decade; contains every episode a 47-50 point nominal bond line is expected to lose in.
+    - name: from_1990_11
+      start: "1990-11"
+      end: "2025-05"
+      rationale: The tournament window on the primary panel's US-only legs, so the two panels can be read side by side.
+    - name: post_2009
+      start: "2009-01"
+      end: "2025-05"
+      rationale: The era in which the trend overlay's contribution decayed to 1.41 pp/yr; declared so it cannot be omitted.
+    - name: flat_equity_decade
+      start: "1999-03"
+      end: "2009-02"
+      rationale: The one flat-to-negative equity decade in the modern panel, with the boundaries 016e, 018, 024 and 025 froze.
+    - name: bond_bull_market
+      start: "1981-10"
+      end: "2020-07"
+      rationale: Peak ten-year yield to trough; the era that made every bond line's record and in which a sold-from-bonds arm gives the most up.
+    - name: before_bond_bull
+      start: "1929-01"
+      end: "1981-09"
+      rationale: The complement, first part; rising or flat yields, where the bond line earned 0.04 pp/yr over cash and trend 8.03.
+    - name: after_bond_bull
+      start: "2020-08"
+      end: "2025-05"
+      rationale: The complement, second part; 58 months of rising yields including 2022, when the ten-year lost 6.5 pp/yr to cash and the trend book -0.4.
+
+benchmark:
+  primary:
+    id: reference
+    definition: >
+      The `cautious` arm, CORE 0.35 / RSST_LIKE 0.15 / TSY10 0.50 on the
+      primary panels; RSST 0.15 / tilt book 0.35 / TSY10 0.50 on the tournament
+      panel. The published cautious construction of decision 0014.
+    rationale: >
+      The decision is whether the published cautious portfolio should carry an
+      engine on its bond line, and the like-for-like control for that is the
+      published cautious portfolio. THE NINE PAIRS AGAINST IT ARE THE PRIMARY
+      COMPARISONS.
+  secondary:
+    id: cheap
+    definition: 100% equity core at 3 bp, unlevered, rebalanced on the same clock; 65% VTI / 35% VXUS on the tournament panel.
+    rationale: Decision 0003, charter question 1; the price of the drawdown is read here.
+  tertiary:
+    id: cheap60_40
+    definition: CORE 0.60 / TSY10 0.40 at 3 and 5 bp, unlevered; 39% VTI / 21% VXUS / 40% TSY10 on the tournament panel.
+    rationale: The cheap untilted balanced fund a cautious reader would otherwise hold.
+  quaternary:
+    id: leverage_matched
+    definition: >
+      The equity core levered to the arm's own gross notional where the gross
+      exceeds one, financed at cash plus the equity-futures basis, debt
+      accruing monthly as in exp_016; where the arm's gross is at or below
+      one, the core scaled to the arm's gross with the remainder in bills.
+    rationale: Is it a construction effect or is it beta. Decision 0003 and the funding-rule lesson require it wherever an arm adds notional.
+  aggregation_rule: >
+    FOUR CONTROLS ARE FOUR FAMILIES AND THEIR GAPS ARE NEVER ADDED, AVERAGED OR
+    PLACED IN ONE COLUMN. Every reported gap names its control and its panel.
+    Benjamini-Hochberg is applied within one control on one panel and never
+    across.
+
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: >
+    `1200 * mean(r_arm - r_control)` over monthly funded total returns net of
+    every cost charged inside the simulation, 018's, 024's and 025's metric so
+    the four experiments read on one basis. The annualised log-growth gap is
+    reported beside it because the charter's objective is expected log
+    terminal wealth and the arms differ in gross notional; the two are never
+    mixed in one column.
+  units: percentage points per year
+  uncertainty: >
+    Two intervals beside every gap: a Newey-West HAC interval on the paired
+    monthly difference with the automatic bandwidth, and a stationary block
+    bootstrap over the joint monthly panel, whole rows, mean block 12 months,
+    10000 resamples, 95% percentile; plus the minimum detectable effect at 80%
+    power from each comparison's own paired series.
+
+secondary_metrics:
+  - name: minimum detectable effect at 80% power
+    units: percentage points per year
+    note: "`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception."
+  - name: years to distinguish
+    units: years
+  - name: annualised log-growth gap
+    units: percentage points per year
+  - name: tracking error against the control
+    units: percent per year
+  - name: maximum drawdown of the funded wealth path, per arm and per panel and per declared era
+    units: percent
+    note: Reported for every arm on every panel and on from_1934, from_1946, from_1968_05, from_1990_11; descriptive, no status; read by freeze note 6 (a2).
+  - name: longest run of months below the running peak
+    units: months
+  - name: worst-decile-of-equity-months mean offset against the reference arm and against the cheap control
+    units: percentage points per month
+  - name: cumulative return in each predeclared crisis episode, and the offset against the reference and the cheap control
+    units: percent; percentage points
+    note: Nine episodes; 1977-81 and 2022 Jan-Sep are read by freeze note 6 (a3).
+  - name: sub-window gaps with HAC intervals and floors
+    units: percentage points per year
+    note: The declared eras and the panel's mechanical halves, for every comparison; post_2009 in particular.
+  - name: contribution-weighted terminal wealth ratio
+    units: ratio
+  - name: bond-equity correlation and bond, trend, gold excess return by era
+    units: correlation; percentage points per year
+  - name: gross, equity, trend, bond, gold and cash notional per arm
+    units: multiple of net asset value
+  - name: regret at forward premia
+    units: percentage points per year
+    note: "`parameters.regret`; one closed form per arm family, arithmetic and log, with the break-even engine premium."
+  - name: reproduction of 025's `ladder40` on both panels and of 016f's rec30-minus-rec25 pair
+    units: percentage points per year; percent of drawdown
+    note: Run before any candidate arm is scored; a pair that moves is a defect in this file.
+
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: >
+    (1) each holding's expense ratio on the capital allocated to it; (2)
+    financing on the notional a wrapper holds beyond its physical capital, at
+    the rate for that asset (equity futures at the equity rate, Treasury
+    futures at the Treasury rate, gold futures at the gold rate); (3) the
+    equity-futures basis on the debt of any control whose capital weights
+    exceed one; (4) a 0.55 bp round-trip US equity spread, half-crossed on
+    one-sided monthly rebalancing turnover, on every line. On the tournament
+    panel 016f's cost model applies unchanged, with the ten-year leg at 5 bp as
+    in 024 and 025, and with each new wrapper's financing folded into its
+    expense ratio (RSBT_LIKE 97 + 15 = 112 bp, GDE_LIKE 20 + 0.9 x 30 = 47 bp,
+    TREND_FUND 85 bp) because 016f's simulator charges one basis on one
+    futures-notional field; the arithmetic is identical to charging them apart.
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    RSBT_LIKE: 97
+    TREND_FUND: 85
+    GDE_LIKE: 20
+    TSY10: 5
+    CASH: 0
+  fee_sources: >
+    RSBT 0.97% (issuer page and etfdb, read 2026-09-04; the repository's
+    live-stacked-fund-records page); DBMF 0.85% (iMGP, read 2026-09-04); GDE
+    0.20% (WisdomTree, read 2026-09-04); RSST 0.99% and the 3 / 5 bp lines as
+    025 charged them.
+  financing_basis_points_over_cash:
+    equity: 62
+    treasury: 15
+    gold: 30
+    tips: 15
+  financing_sources: >
+    Equity 62 bp: `docs/research/structural-and-tax-edges.md` section 3, the
+    figure 016, 018, 024 and 025 charge. Treasury 15 bp:
+    `docs/research/leverage-and-the-notional-budget.md` section 4, Treasury
+    futures over OIS, borrowed there and not measured; charged on the
+    RSBT-like wrapper's bond leg and swept 0-50. Gold 30 bp: AN ASSUMPTION
+    inherited from 018, no gold-futures basis is measured anywhere in this
+    repository; charged on the GDE-like wrapper's gold leg and swept 0-60. TIPS:
+    carried for 018's `FinancingRates` type and charged on nothing.
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  not_charged:
+    - The 4-asset trend book's own trading (262% one-way turnover; 20 bp one-way takes its Sharpe from 0.58 to 0.50, about a seventh of its premium, which the regret grid's 5.32 row approximates).
+    - The vendor's trading costs inside AQR's TSMOM on the tournament panel, by omission.
+    - Any tax. No arm holds tax lots. The RSBT-like and GDE-like wrappers distribute ordinary income (GDE's measured drag 1.53 pp/yr in taxable, live-stacked-fund-records); every arm here is priced for the sheltered account the cautious page already sends the bond line to.
+    - Bid/ask on the initial purchase; every arm starts from a common portfolio.
+
+rebalance_rule:
+  frequency: >
+    Primary panels: MONTHLY, back to the arm's capital weights, 018's and
+    025's clock, because the leverage-matched control is defined month by
+    month. Tournament panel: ANNUALLY, 016f's clock, so the reproduction of
+    016f's wrapper-weight pair is exact.
+  drift: Weights drift within the period and the drifted weights earn the return.
+  overlay_legs: >
+    A wrapper's internal notional is a property of the wrapper and is never
+    rebalanced by the investor.
+  debt: >
+    Positions and debt are carried in absolute terms, exp_016's `_simulate`,
+    reused by import. Debt accrues at cash plus the equity-futures basis.
+
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: >
+    Mean block length frozen at 12 months, 018's, 024's and 025's, not tuned
+    on the data. A Newey-West interval at the automatic bandwidth is printed
+    beside every bootstrap interval; where they disagree by more than 0.05
+    pp/yr the artifact says so.
+  multiple_testing_correction: >
+    Benjamini-Hochberg at q = 0.10 within each control family on each panel,
+    never across. The family omits the sub-windows, the financing bands, the
+    regret grid and the twenty-five earlier specifications that searched this
+    data; the adjusted p-values are an upper bound on significance.
+  confidence_level: 0.95
+  resamples: 10000
+  notes: >
+    An interval containing zero is reported as unresolved. The MDE is beside
+    every gap so that a null can be told from an absence.
+
+rejection_rule: >
+  Apply the falsifier clauses in order per arm, per control, per panel, and
+  record which clause fired. Then apply freeze note 6 mechanically to the nine
+  primary comparisons and print which of (a), (b), (c) each arm reaches, with
+  the sub-clause that decided it. Under no outcome may this specification
+  produce a status above `exploratory`.
+
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    statement: >
+      Every holding is an assumed per-dollar exposure vector and a fee, or
+      016f's basis expression. No fund's returns were used. The experiment
+      scores CONSTRUCTIONS; a result transfers to a fund only to the extent
+      the fund delivers the mapped exposure at the mapped cost.
+    order_of_operations: >
+      This file was written and frozen before any experiment module for it
+      existed and before any statistic was produced. The arms were chosen by
+      people who had read 018, 024, 025 and the candidates note of 2026-09-04;
+      that look-ahead is recorded and no freezing removes it.
+
+  minimum_detectable_effect:
+    power: 0.80
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    definition: "`2.801585 * sigma_gap / sqrt(years)`, sigma_gap the annualised sd of the paired monthly difference."
+    computed_before_freezing: >
+      Primary 1157 months: 0.285 pp/yr per point of tracking error. Gold
+      sub-window 685 months: 0.371. Tournament 427 months: 0.470. An RSBT-like
+      pair adds X of a 12.4%-volatility leg: tracking error about 12.4 X,
+      floors about 0.35 / 0.71 / 1.06 (primary), 0.7 / 1.4 / 2.1 (tournament
+      at TSMOM's higher volatility). A trend-fund pair swaps X of a 7%
+      ten-year for X of the trend book, nearly uncorrelated: about 14.5 X,
+      floors 0.41 / 0.83 / 1.24. A GDE-like pair adds 0.9 X of an 18-19%
+      leg: about 16.5 X, floors 0.61 / 1.22 / 1.84 on 685 months.
+    floor_at_assumed_tracking_error_primary:
+      "1.24": 0.35
+      "1.45": 0.41
+      "2.48": 0.71
+      "2.90": 0.83
+      "3.72": 1.06
+      "4.35": 1.24
+    floor_at_assumed_tracking_error_gold_subwindow:
+      "1.65": 0.61
+      "3.30": 1.22
+      "4.95": 1.84
+    predicted_primary_pairs: >
+      Freeze note 5: A1 +0.62 / +1.23 / +1.85 `exploratory`; A2 +0.48 / +0.96
+      / +1.44 marginal; A3 +0.39 / +0.79 / +1.18 `unresolved`; all inside the
+      floor at forward premia.
+
+  trend_book:
+    instruments: [equity, treasury, credit, commodity]
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.10
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    expected_scalar_from_exp_018: 1.9771
+    scaling: >
+      One constant, `12.38 / realised full-window volatility of the book on
+      the primary intersection of book, equity, cash and ltr`, 018's
+      construction; printed in the artifact and checked against 018's figure
+      to three places.
+
+  ten_year_leg:
+    yield_source: >
+      FRED GS10 (decimal) wherever it exists, from 1953-04; shiller_ie_data
+      `Long_Interest_Rate_GS10` (percent per year, divided by 100) before that.
+    maturity_years: 10.0
+    cross_check: >
+      Shiller against FRED on the overlap from 1953-04; largest absolute yield
+      difference printed in basis points; 024 and 025 found 43 bp in 2019-07
+      alone, and this run must reproduce that.
+
+  gold_leg:
+    source: lbma_gold_pm
+    first_return_month: "1968-05"
+    caveat: >
+      Spot excess of cash; the gold sub-window includes 1971-08..1974-12 when
+      the dollar price was an administered peg being abandoned. Gold's real
+      price stood at the 98.5th percentile of its 1975- record in September
+      2026 (alternative-sleeves audit); the regret table carries a 0.0 central.
+
+  wrappers:
+    CORE:
+      exposures: {equity: 1.0}
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures: {equity: 1.072, trend: 1.0}
+      financed: {equity: 0.331}
+      note: >
+        RSST's N-PORT of 2026-04-30 as exp_016, 018, 024 and 025 map it.
+        Financing on the 0.331 of equity futures at the equity rate.
+    RSBT_LIKE:
+      exposures: {tsy10: 1.0, trend: 1.0}
+      financed: {treasury: 1.0}
+      note: >
+        Assumed: 100% Treasury futures over T-bill collateral plus a 100%
+        trend book, at 97 bp. The bond leg is THE SAME modelled ten-year as the
+        cautious portfolio's bond line, financed at the Treasury rate, so the
+        pair against `cautious` differs by the trend leg and its costs alone.
+        018's RSBT_LIKE carried the ~20-year `ltr` leg; freeze note 3.
+    TREND_FUND:
+      exposures: {trend: 1.0}
+      financed: {}
+      note: >
+        Assumed: an unlevered managed-futures fund delivering 1.0 of the trend
+        book at 85 bp (DBMF's fee). The 0.671 delivered loading measured in
+        trend-marginal-value enters the regret table, not the path.
+    GDE_LIKE:
+      exposures: {equity: 0.9, gold: 0.9}
+      financed: {gold: 0.9}
+      note: >
+        Assumed: 90% physical equity plus 90% gold futures, financed at the
+        gold rate, at 20 bp; 018's wrapper unchanged. Gold panels only.
+    TSY10:
+      exposures: {tsy10: 1.0}
+      financed: {}
+      note: An unlevered modelled ten-year Treasury at 5 bp; the TIPS line's proxy, freeze note 4.
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+
+  contestants:
+    cautious:
+      role: reference arm; the published cautious construction, decision 0014
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.50}
+      note: 0.5108 equity, 0.150 trend, 0.500 bond, 1.1608 gross. 025's `ladder40` rounded to the printed fund weights.
+    rsbt10:
+      role: candidate; A1, trend stacked on the bond line, 10 points
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.40, RSBT_LIKE: 0.10}
+      note: 0.5108 equity, 0.250 trend, 0.500 bond, 1.2608 gross. Bond notional unchanged.
+    rsbt20:
+      role: candidate; A1, 20 points
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.30, RSBT_LIKE: 0.20}
+      note: 0.5108 equity, 0.350 trend, 0.500 bond, 1.3608 gross.
+    rsbt30:
+      role: candidate; A1, 30 points
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.20, RSBT_LIKE: 0.30}
+      note: 0.5108 equity, 0.450 trend, 0.500 bond, 1.4608 gross.
+    trendfund10:
+      role: candidate; A2, trend sold from the bond line, 10 points
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.40, TREND_FUND: 0.10}
+      note: 0.5108 equity, 0.250 trend, 0.400 bond, 1.1608 gross. Bond notional falls.
+    trendfund20:
+      role: candidate; A2, 20 points
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.30, TREND_FUND: 0.20}
+      note: 0.5108 equity, 0.350 trend, 0.300 bond, 1.1608 gross.
+    trendfund30:
+      role: candidate; A2, 30 points
+      weights: {CORE: 0.35, RSST_LIKE: 0.15, TSY10: 0.20, TREND_FUND: 0.30}
+      note: 0.5108 equity, 0.450 trend, 0.200 bond, 1.1608 gross.
+    gde10:
+      role: candidate; A3, gold stacked on the stock line, 10 points; gold panels only
+      weights: {CORE: 0.26, GDE_LIKE: 0.10, RSST_LIKE: 0.15, TSY10: 0.49}
+      note: 0.5108 equity, 0.150 trend, 0.490 bond, 0.090 gold, 1.2408 gross. Equity notional unchanged; the wrapper's 0.1 collateral comes off the bond line.
+    gde20:
+      role: candidate; A3, 20 points; gold panels only
+      weights: {CORE: 0.17, GDE_LIKE: 0.20, RSST_LIKE: 0.15, TSY10: 0.48}
+      note: 0.5108 equity, 0.150 trend, 0.480 bond, 0.180 gold, 1.3208 gross.
+    gde30:
+      role: candidate; A3, 30 points; gold panels only
+      weights: {CORE: 0.08, GDE_LIKE: 0.30, RSST_LIKE: 0.15, TSY10: 0.47}
+      note: 0.5108 equity, 0.150 trend, 0.470 bond, 0.270 gold, 1.4008 gross.
+
+  arm_families:
+    rsbt: [rsbt10, rsbt20, rsbt30]
+    trendfund: [trendfund10, trendfund20, trendfund30]
+    gde: [gde10, gde20, gde30]
+
+  reference_arm: cautious
+  controls: [reference, cheap, cheap60_40, leverage_matched]
+  controls_in_estimates: [reference, cheap, cheap60_40, leverage_matched]
+  cheap60_40_weights: {CORE: 0.60, TSY10: 0.40}
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.10
+  multiple_testing_q: 0.10
+  bootstrap_block_months: 12
+  hac_lags: automatic
+
+  panels:
+    primary:
+      legs: [equity, treasury, tsy10, trend]
+      start: null
+      arms: [cautious, rsbt10, rsbt20, rsbt30, trendfund10, trendfund20, trendfund30]
+      note: 1929-01..2025-05 expected, 1157 months; the trend arms' scored panel.
+    primary_gold:
+      legs: [equity, treasury, tsy10, trend, gold]
+      start: "1968-05"
+      arms: [cautious, rsbt10, rsbt20, rsbt30, trendfund10, trendfund20, trendfund30, gde10, gde20, gde30]
+      note: 1968-05..2025-05 expected, 685 months; the gold arms' scored panel, with every trend arm re-run so all nine can be read on one window.
+
+  drawdown_reporting:
+    eras_for_drawdown_table: [full, from_1934, from_1946, from_1968_05, from_1990_11]
+    deeper_than_reference_tolerance_pp: 2.0
+    rule: >
+      For each panel and era, print every arm's worst fall and months under
+      water in one table beside `cautious`'s, and the difference arm minus
+      reference. Freeze note 6 (a2) reads the full window, from_1934 and the
+      tournament full window; it carries no status.
+
+  crisis_episodes:
+    deflationary_or_growth:
+      - {name: crash_1929, start: "1929-09", end: "1932-06"}
+      - {name: recession_1937, start: "1937-03", end: "1938-03"}
+      - {name: dotcom_2000, start: "2000-09", end: "2002-09"}
+      - {name: gfc_2008, start: "2007-11", end: "2009-02"}
+      - {name: covid_2020, start: "2020-02", end: "2020-03"}
+    inflation_or_rate:
+      - {name: oil_1973, start: "1973-01", end: "1974-09"}
+      - {name: inflation_1977, start: "1977-01", end: "1981-09"}
+      - {name: rate_shock_2022, start: "2022-01", end: "2022-09"}
+      - {name: calendar_2022, start: "2022-01", end: "2022-12"}
+    decision_episodes: [inflation_1977, rate_shock_2022]
+    note: >
+      018's eight episodes, frozen there and copied unchanged, plus calendar
+      2022 so the rate shock can be read both to the trough and to the year
+      end. Freeze note 6 (a3) reads `decision_episodes` on the primary panel.
+
+  financing_sensitivity:
+    equity_basis_points: [62, 98, 130, 165, 200, 231]
+    treasury_basis_points: [0, 15, 30, 50]
+    gold_basis_points: [0, 15, 30, 45, 60]
+    reporting: >
+      Every arm's gap against `cautious` and against the cheap control at
+      every point of every band that touches one of its legs, and whether the
+      sign against `cautious` survives; clause (d) reads the union of the
+      bands.
+
+  tournament_panel:
+    specification_path: experiments/exp_016f_matched_pairs.yaml
+    expected_specification_hash: 68323191bca66ea857826bf29869a00fbed16028af2b104878b84c40c4497888
+    abort_on_hash_change: true
+    what: >
+      016f's panel, basis mapping and cost model, loaded from its frozen file
+      and checked against the hash its run `36f14b39...` recorded, with the
+      ten-year leg added as 024 and 025 added it (`TSY10` mapped 1.000 to the
+      Shiller/FRED GS10 par bond less French `RF` at 5 bp), the LBMA gold leg
+      added as `gold` (spot excess of the panel's cash), and three wrappers
+      mapped: `RSBT_LIKE` = 1.000 treasury + 1.000 trend at 112 bp,
+      `TREND_FUND` = 1.000 trend at 85 bp, `GDE_LIKE` = 0.900 us_mkt + 0.900
+      gold at 47 bp. Annual rebalancing, 016f's clock. The tilt book is 016f's
+      `rec30` equity lines (VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES
+      5) scaled whole to each arm's unlevered equity capital, so the tilt
+      complex keeps its proportions; the GDE-like arms therefore shift the
+      equity mix toward US large-cap as gold grows, which is what the fund does.
+    gold_coverage: >
+      The LBMA leg must cover every tournament month; a panel cut by the gold
+      leg aborts, because a shortened panel would move the reproduction pair.
+    reproduction:
+      pair: rec30 against rec25, log-growth gap
+      expected_pp_yr: 0.5101
+      tolerance_pp_yr: 0.005
+      note: 016f run `36f14b39...`, reproduced by 024 and 025; a shared pair that moves is a defect in this file.
+      published_weights: {RSST: 0.30, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+      rec25_weights: {RSST: 0.25, VTI: 0.24, VTV: 0.15, VXUS: 0.16, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+    arms:
+      cautious:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.50}
+        note: The published fund weights exactly. 0.35 of tilt book plus 0.15 x 1.072 of wrapper equity = 0.5108 equity; 0.150 trend; 0.500 bond.
+      rsbt10:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.40, RSBT_LIKE: 0.10}
+        note: 0.5108 equity, 0.250 trend, 0.500 bond.
+      rsbt20:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.30, RSBT_LIKE: 0.20}
+        note: 0.5108 equity, 0.350 trend, 0.500 bond.
+      rsbt30:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.20, RSBT_LIKE: 0.30}
+        note: 0.5108 equity, 0.450 trend, 0.500 bond.
+      trendfund10:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.40, TREND_FUND: 0.10}
+        note: 0.5108 equity, 0.250 trend, 0.400 bond.
+      trendfund20:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.30, TREND_FUND: 0.20}
+        note: 0.5108 equity, 0.350 trend, 0.300 bond.
+      trendfund30:
+        weights: {RSST: 0.15, VTI: 0.095, VTV: 0.075, VXUS: 0.08, AVDV: 0.05, IDMO: 0.025, AVES: 0.025, TSY10: 0.20, TREND_FUND: 0.30}
+        note: 0.5108 equity, 0.450 trend, 0.200 bond.
+      gde10:
+        weights: {RSST: 0.15, VTI: 0.07, VTV: 0.056, VXUS: 0.059, AVDV: 0.037, IDMO: 0.019, AVES: 0.019, TSY10: 0.49, GDE_LIKE: 0.10}
+        note: Tilt book scaled to 0.26 plus 0.09 of wrapper equity plus 0.1608 = 0.5108 equity; 0.150 trend; 0.490 bond; 0.090 gold.
+      gde20:
+        weights: {RSST: 0.15, VTI: 0.047, VTV: 0.036, VXUS: 0.039, AVDV: 0.024, IDMO: 0.012, AVES: 0.012, TSY10: 0.48, GDE_LIKE: 0.20}
+        note: Tilt book scaled to 0.17; 0.5108 equity; 0.480 bond; 0.180 gold.
+      gde30:
+        weights: {RSST: 0.15, VTI: 0.022, VTV: 0.017, VXUS: 0.018, AVDV: 0.011, IDMO: 0.006, AVES: 0.006, TSY10: 0.47, GDE_LIKE: 0.30}
+        note: Tilt book scaled to 0.08; 0.5108 equity; 0.470 bond; 0.270 gold.
+    reference_arm: cautious
+    controls:
+      cheap: {VTI: 0.65, VXUS: 0.35}
+      cheap60_40: {VTI: 0.39, VXUS: 0.21, TSY10: 0.40}
+      leverage_matched: the cheap control levered to each arm's gross notional at 016f's 62 bp basis, or scaled below one with bills
+    eras: [flat_equity_decade, post_2009]
+    weights_note: >
+      Tournament weights are rounded to three places and must sum to one;
+      rounding moves equity notional by under 0.004 and the artifact prints
+      each arm's exact notional.
+
+  reproduction_of_exp_025:
+    what: >
+      025's `ladder40` (CORE 0.348 / RSST_LIKE 0.149 / TSY10 0.503; tournament
+      RSST 0.149 / VTI 0.096 / VTV 0.075 / VXUS 0.080 / AVDV 0.050 / IDMO 0.025
+      / AVES 0.025 / TSY10 0.500) simulated on both panels before any
+      candidate arm is scored, against the figures run `00c0b8b0...` recorded.
+    primary_weights: {CORE: 0.348, RSST_LIKE: 0.149, TSY10: 0.503}
+    primary_expected:
+      arithmetic_mean_pp_yr: 8.8377
+      growth_log_pp_yr: 8.3061
+      max_drawdown_pct: -53.77
+    tournament_weights: {RSST: 0.149, VTI: 0.096, VTV: 0.075, VXUS: 0.080, AVDV: 0.050, IDMO: 0.025, AVES: 0.025, TSY10: 0.500}
+    tournament_expected:
+      growth_log_pp_yr: 9.9168
+      max_drawdown_pct: -18.08
+    tolerance_pp_yr: 0.005
+    tolerance_drawdown_pp: 0.05
+
+  regret:
+    what: >
+      Each candidate's expected gap against `cautious` at forward premia,
+      arithmetic on the capital-weight difference and no simulation. A1:
+      `X x (t - 0.97 - f_T + 0.05)`, t the gross trend premium per unit of
+      notional at 12.38% volatility, f_T the Treasury financing in pp. A2:
+      `X x (lambda t - 0.85 + 0.05 - b)`, lambda the delivered trend loading
+      (1.0 and 0.671), b the ten-year's excess over cash. A3: `X x (0.9 g -
+      0.20 - 0.9 f_G + 0.9 x 0.03 + 0.1 x 0.05 - 0.1 b)`, g the gold excess
+      over cash, f_G the gold financing. The log cell adds one constant per
+      arm, half the difference of the arm's and the reference's realised
+      variances on the arm's scored primary panel. A positive cell means the
+      candidate wins. The break-even engine premium is printed beside each
+      table. Freeze note 6 (a4) reads the cell at the central premia.
+    trend_gross_premium_grid_pp_yr: [0.0, 1.74, 3.90, 4.07, 5.32, 7.18, 10.98]
+    trend_central_pp_yr: 4.07
+    trend_grid_source: >
+      docs/research/trend-weight-under-uncertainty.md section 1, as 024 and
+      025 used it; 5.32 approximates the realised own-book premium less a 20 bp
+      one-way trading cost.
+    delivered_trend_loadings: [1.0, 0.671]
+    delivered_loading_source: docs/research/trend-marginal-value.md, DBMF against the SG/AQR index.
+    gold_excess_grid_pp_yr: [-2.0, 0.0, 2.0, 4.0, 5.2]
+    gold_central_pp_yr: 0.0
+    gold_grid_source: >
+      The repository holds no forward gold premium estimate; the
+      alternative-sleeves audit reads gold as cash with swings, and 5.2 is the
+      1968-2025 realised figure backed out of 018. 0.0 is the central by
+      declaration and is the conservative reading.
+    bond_excess_over_cash_pp_yr: 0.8
+    bond_excess_source: >
+      Kim-Wright +0.84 and ACM about +0.80 in August 2026,
+      docs/research/market-scan-2026.md, as 018, 024 and 025 use them.
+    treasury_financing_pp_yr: 0.15
+    gold_financing_pp_yr: 0.30
+    rsbt_fee_pp_yr: 0.97
+    trend_fund_fee_pp_yr: 0.85
+    gde_fee_pp_yr: 0.20
+    bond_line_fee_pp_yr: 0.05
+    core_fee_pp_yr: 0.03
+
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: >
+      A raw-hash mismatch aborts before any statistic, except the LBMA file,
+      whose committed manifest records an earlier vintage than the cached
+      bytes (018's note, copied); that mismatch is recorded as a finding. Every
+      file is read from the local raw cache by its pinned digest; this
+      experiment never downloads.
+    files:
+      - id: french_us_ff3
+        source: french
+        dataset_id: french_us_ff3
+        table_id: monthly
+        columns: ["Mkt-RF", "RF"]
+        expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+        committed_manifest: data-manifests/french_us_ff3_monthly.json
+      - id: goyal_welch_predictors
+        source: goyal_welch
+        dataset_id: goyal_welch_predictors
+        table_id: monthly
+        columns: ["ltr", "corpr", "Rfree"]
+        expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+        committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+      - id: aqr_commodities_long_run
+        source: aqr
+        dataset_id: aqr_commodities_long_run
+        table_id: monthly
+        columns: ["Excess return of equal-weight commodities portfolio"]
+        expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+        committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+      - id: shiller_ie_data
+        source: shiller
+        dataset_id: shiller_ie_data
+        table_id: monthly
+        columns: ["Long_Interest_Rate_GS10"]
+        expected_sha256_raw: 71c3636da5269b074489db41ecf0dcf0caef6275d1f3ecaf753ddaca2b81db2f
+        committed_manifest: data-manifests/shiller_ie_data_monthly.json
+      - id: fred_gs10
+        source: fred
+        dataset_id: GS10
+        table_id: monthly
+        columns: ["GS10"]
+        expected_sha256_raw: a875d88b7ed6a413f697ddb6332f13e61ac58ac7ae0ef52d66a62174995ec6f7
+        committed_manifest: data-manifests/fred_gs10.json
+        note: The ten-year yield from 1953-04; the pinned blob is read by digest.
+      - id: lbma_gold_pm
+        source: lbma
+        dataset_id: lbma_gold_pm
+        table_id: daily
+        columns: ["USD"]
+        expected_sha256_raw: cbc6b2a70a2d2ba4d66c799fb08c2ae661d4f00013ada426ab7d61b5130f9b0b
+        manifest_note: >
+          The cached file (retrieved 2026-08-23) is a LATER vintage than the one
+          the committed manifest records (fa986c0a..., retrieved 2026-08-17).
+          LBMA republishes one history and the licence forbids committing bytes,
+          so the pin is the cached digest 018 pinned and the manifest mismatch is
+          recorded in the artifact as a finding rather than treated as an abort.
+        committed_manifest: data-manifests/lbma_gold_pm.json
+
+data_sources:
+  - id: french_us_ff3
+    url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+    manifest: data-manifests/french_us_ff3_monthly.json
+    construction: Mkt-RF and RF, used as published
+  - id: goyal_welch_predictors
+    url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+    manifest: data-manifests/goyal_welch_predictors_monthly.json
+    construction: ltr less French RF as the long bond leg; ltr, corpr less Rfree inside the trend book
+  - id: aqr_commodities_long_run
+    url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+    manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end sets the primary panel's end
+  - id: shiller_ie_data
+    url: https://img1.wsimg.com/blobby/go/e5e77e0b-59d1-44d9-ab25-4763ac982e53/downloads/e27e58c1-8ae0-488c-a976-a298708c7175/ie_data.xls?ver=1785857394436
+    manifest: data-manifests/shiller_ie_data_monthly.json
+    construction: Long_Interest_Rate_GS10 before 1953-04, a ten-year par bond modelled on it; every panel's ten-year leg
+  - id: fred_gs10
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=GS10
+    manifest: data-manifests/fred_gs10.json
+    construction: the ten-year yield from 1953-04, and the cross-check of the Shiller long rate on the overlap
+  - id: lbma_gold_pm
+    url: https://prices.lbma.org.uk/json/gold_pm.json
+    manifest: data-manifests/lbma_gold_pm.json
+    construction: month-end USD PM fix, spot excess of cash from 1968-05; the gold sub-window's and the tournament panel's gold leg
+  - id: exp_016f_matched_pairs
+    url: experiments/exp_016f_matched_pairs.yaml
+    manifest: research/artifacts/36f14b395e53407f8fdfaee3b4e8e37a/manifest.json
+    construction: the tournament panel's six pinned files, mapping and costs, loaded through that specification and hash-checked
+  - id: exp_025_cautious_constructions
+    url: experiments/exp_025_cautious_constructions.yaml
+    manifest: research/artifacts/00c0b8b0b1894993afdc07236e402451/manifest.json
+    construction: the primary-panel machinery, the ten-year leg splice, the tournament ten-year leg and the `ladder40` figures reproduced here, reused by import
+
+hostile_tests:
+  - Reproduce 025's `ladder40` on both panels to 0.005 pp/yr of mean and log growth and 0.05 pp of worst fall, and 016f's rec30-against-rec25 log gap to 0.005 pp/yr, before scoring any candidate arm; a pair that moves is a defect in this file.
+  - Charge financing to every levered control on the same terms as the arms, and scale sub-unity controls with bills rather than leaving the remainder idle.
+  - Sweep the equity-futures basis 62-231 bp on every arm, the Treasury basis 0-50 bp on the RSBT-like arms and the gold basis 0-60 bp on the GDE-like arms, and report whether each arm's sign against `cautious` survives.
+  - Report every primary comparison on every declared sub-window with its own HAC interval and floor, so a full-window sign cannot be quoted without the windows that made it; post_2009 and after_bond_bull in particular.
+  - Print the drawdown table on the full panel AND on from_1934, from_1946, from_1968_05 and from_1990_11 for every arm beside `cautious`, with the difference, so a shallower fall cannot be claimed on the window that flatters it.
+  - Report all nine episodes for every arm with `cautious`'s return beside the arm's, and read 1977-81 and 2022 Jan-Sep mechanically for freeze note 6 (a3).
+  - Report the ten-year leg's, the trend book's and (where present) gold's excess return and correlation to equity in every era beside the gaps.
+  - Report the minimum detectable effect and years-to-distinguish beside every gap and mark any gap inside its floor unresolved rather than positive.
+  - Price every arm at forward premia on one grid, with the delivered-loading row for the trend-fund arms and the 0.0 gold central, and print the break-even premium; a forward substitution applied to one leg and not the other is a thumb.
+  - Apply freeze note 6 mechanically and print which clause each arm reached, so the decision reading cannot be re-argued from the tables.
+
+reporting_requirements:
+  - The freeze note with every table, including that the bond line is a nominal ten-year proxy for TIPS and that the wrappers are assumed exposure vectors.
+  - The MDE and the control named beside every gap, in the same row; never a figure combining two controls.
+  - The HAC interval and the block-bootstrap interval beside every full-window gap.
+  - Gross, equity, trend, bond, gold and cash notional beside every arm.
+  - The drawdown table per panel and per declared era with months under water and the difference against `cautious`, labelled descriptive.
+  - Worst-decile offsets, both episode-type means, all nine episodes, the flat-decade gap and the contribution-weighted terminal-wealth ratio for every arm, labelled descriptive.
+  - The three regret tables with their variance-drag constants and break-even premia.
+  - The freeze-note-6 reading per arm with the sub-clause that decided it.
+  - The trend-book volatility scalar beside 018's, the 016f specification hash read, the 025 reproduction figures, and the sha256 of every source file read.
+
+notes: >
+  Exploratory in the strongest sense: the arms were chosen after 018, 024, 025
+  and the candidates note were read, and the specification records that. It
+  can rank constructions on public series and cannot rank funds. Retain
+  `unresolved` wherever the instrument cannot separate an arm from its
+  control, read the drawdown and crisis tables as descriptions of one history,
+  and read a `rejected` against the cheap control as the price of a drawdown
+  constraint and not as a verdict on the reader who holds it. No sleeve, fund
+  or portfolio is promoted by this specification; a draft decision 0015 it
+  licenses is PROPOSED and the site owner decides.
+  RUNNER: no module exists yet. Write
+  `src/portfolio_edge/experiments/exp_026_trend_from_the_bond_line.py` by
+  importing from exp_025 `read_pairs`-style readers, `drawdown_by_era`,
+  `leverage_matched_targets`, `load_tournament_inputs`-style loading with the
+  gold leg and three mappings added, from exp_024 `load_series`, `build_legs`,
+  `read_arms`, `_compare`, `_describe`, `_apply_falsifier` and the table
+  helpers, from exp_018 the LBMA gold leg, `simulate_arm`, `read_rates`,
+  `read_episodes` and `_era_windows`; add the gold panel, the three financing
+  bands, the three regret closed forms, the 025 reproduction check and the
+  freeze-note-6 reading; register ENTRY_POINT
+  `exp_026_trend_from_the_bond_line`, and run
+  `uv run python -m portfolio_edge.experiments.exp_026_trend_from_the_bond_line --view-results`
+  from `research/`.

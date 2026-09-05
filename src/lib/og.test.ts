@@ -19,8 +19,8 @@ describe("every route the site emits has a card of its own", () => {
   });
 
   it("reads a path with or without its trailing slash", () => {
-    expect(ogCard("/tools/which-account").src).toBe("/og/tools/which-account.png");
-    expect(ogCard("/tools/which-account/").src).toBe("/og/tools/which-account.png");
+    expect(ogCard("/how-to-hold").src).toBe("/og/how-to-hold.png");
+    expect(ogCard("/how-to-hold/").src).toBe("/og/how-to-hold.png");
   });
 });
 

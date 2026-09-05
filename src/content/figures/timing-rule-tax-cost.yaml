@@ -1,6 +1,6 @@
 label: The rule's own tax cost in a top-bracket taxable account
 value: '1.92'
-unit: percentage points a year, taxable third against the same rule in a Roth
+unit: "% a year, taxable account against the same rule in a Roth"
 status: source-reproduced
 asOf: '2026-08-23'
 source:
@@ -8,6 +8,6 @@ source:
   docPath: docs/research/timing-rules-on-the-equity-sleeve.md
   anchor: taxes-by-account-third
 note: >-
-  In a Roth the rule trails simply holding by 1.04 percentage points a year; in a top-bracket
+  In a Roth the rule trails simply holding by 1.04% a year; in a top-bracket
   taxable account held until death, by 2.96. The 1.92 difference is the tax the rule itself
   creates, two and a half times the entire pre-tax gap.

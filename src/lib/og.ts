@@ -98,21 +98,9 @@ export const OG_PAGES = {
     title: "What every fund really costs",
     alt: `${SITE_NAME}: the funds the four portfolios hold, the cheaper alternatives, and the funds rejected, with the fee and what each costs once lending income is counted.`,
   },
-  "/tools/which-account/": {
-    title: "Which account should each fund go in?",
-    alt: `${SITE_NAME}: the account calculator, ranking the seven funds by what putting each in a sheltered account saves.`,
-  },
   "/about/": {
     title: "About this site and the person who writes it",
     alt: `${SITE_NAME}: who writes this, how the measuring works, and what stands in place of a credential.`,
-  },
-  "/corrections/": {
-    title: "What I published that turned out to be wrong",
-    alt: `${SITE_NAME}: the corrections log, dated, one line each.`,
-  },
-  "/disclosures/": {
-    title: "Nobody pays for this site",
-    alt: `${SITE_NAME}: no advertising, no affiliate links and no sponsors, and the interests that do exist.`,
   },
   "/disclaimer/": {
     title: "General information, and never advice",
