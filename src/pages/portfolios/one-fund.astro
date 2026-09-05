@@ -1,169 +1,254 @@
 ---
 /**
- * Portfolio one: the whole world in one fund, held well. The comparison every other
- * page is measured against, plus the four habits that are arithmetic rather than a bet.
+ * Portfolio one: the whole world in one fund, held well. Every number that describes
+ * what the portfolio did is read from the series the research emitter wrote; the
+ * one-fund series is a 65/35 US and international index mix standing in for VT, which
+ * is also the plain world stock index every other page is compared with.
  */
-import AllocationBar from "~/components/AllocationBar.astro";
-import Compare from "~/components/Compare.astro";
+import Callout from "~/components/Callout.astro";
+import Donut from "~/components/Donut.astro";
+import DrawdownChart from "~/components/DrawdownChart.astro";
 import Figure from "~/components/Figure.astro";
+import GrowthChart from "~/components/GrowthChart.astro";
 import Hero from "~/components/Hero.astro";
-import HoldingsTable from "~/components/HoldingsTable.astro";
-import KeyNumbers from "~/components/KeyNumbers.astro";
+import StatGrid from "~/components/StatGrid.astro";
 import { portfolio } from "~/content/portfolios";
-import { figureValue } from "~/lib/figures";
+import { formatDollars, formatMonths, formatPct } from "~/lib/charts";
+import { fundColour } from "~/lib/palette";
+import { seriesFor } from "~/lib/series";
 import Base from "~/layouts/Base.astro";
 
 const p = portfolio("one-fund");
 
-const NUMBERS = [
-  { value: p.fee, label: "Fee a year", note: "$6 on every $10,000" },
-  { value: "90.3%", label: "of US stock funds did worse over ten years", note: "To mid-2025" },
-  { value: await figureValue("cheap-mix-worst-fall"), label: "Worst fall", note: "Cheap US and international mix, 1990 to 2026" },
+const oneFund = seriesFor("one-fund");
+const sixtyForty = seriesFor("sixty-forty");
+const longRun = seriesFor("market", "1929");
+
+const s = oneFund.summary;
+const fall = s.worstFall;
+const b = sixtyForty.summary;
+const long = longRun.summary;
+
+/** "2007-10" as "October 2007". */
+function monthName(date: string): string {
+  const [year, month] = date.split("-").map(Number);
+  return new Date(year ?? 1970, (month ?? 1) - 1, 1).toLocaleString("en-US", { month: "long", year: "numeric" });
+}
+
+const dollars = (value: number) => formatDollars(value, "label");
+const pct = (value: number, decimals = 1) => formatPct(value, decimals);
+const year = (key: string) => s.calendarYears[key] ?? Number.NaN;
+const firstMonth = oneFund.dates[1] ?? "1990-11";
+const lastMonth = oneFund.dates[oneFund.dates.length - 1] ?? "2026-05";
+
+const STATS = [
+  { value: dollars(s.final), label: "$10,000 became", note: "November 1990 to May 2026, before tax" },
+  { value: pct(s.cagrPct), label: "Grew a year", note: "After fund fees" },
   {
-    value: await figureValue("fee-gap"),
-    label: "saved a year by leaving a typical active fund",
-    note: "Zero if you already hold index funds",
+    value: pct(fall.pct),
+    unit: dollars(fall.dollarsAtTrough),
+    label: "Worst fall",
+    note: `${monthName(fall.peak)} to ${monthName(fall.trough)}; back to even in ${formatMonths(fall.monthsToRecover)}`,
   },
+  { value: p.feeOn10k, label: "Costs a year on $10,000", note: `${p.fee} fee` },
 ];
 
+const COLUMNS = ["Fund", "What it holds", "Share", "Fee on $10,000", "Account"] as const;
 const HOLDINGS = [
   {
     ticker: "VT",
-    what: "Vanguard Total World Stock ETF. About 64% US companies and 36% from the rest of the world, matching the size of each market.",
-    weight: "100%",
-    fee: "0.06%",
+    name: "Vanguard Total World Stock ETF",
+    holds: "Every listed company in the world",
+    share: "100%",
+    fee: "$6",
+    account: "Any account",
   },
 ];
 ---
 
 <Base
   title="One fund, held well"
-  description="The whole world's stock market in a single fund, in its cheapest form, in the right account, and never traded. What it costs, what beats it, how far it falls, and the only part of investing that is arithmetic rather than a bet."
+  xl
+  description="The whole world's stock market in a single fund, in its cheapest form, in the right account, and never sold. What $10,000 did since 1990, how far it fell, what it beats, and the four habits that are arithmetic."
 >
   <Hero
     eyebrow="Portfolio 1 of 4"
     title="One fund, held well"
-    lede="Buy every listed company in the world, in proportion to its size, and keep four habits. This is the portfolio I would point most people to, and the one every other page on this site is measured against."
-  >
-    <KeyNumbers items={NUMBERS} />
-  </Hero>
+    lede="Buy every listed company in the world in one fund, in its cheapest form, in the right account, and never sell. This is the portfolio I would point most people to, and the one every other page here is measured against."
+  />
 
-  <div class="prose mt-10">
-    <h2>What you hold</h2>
+  <div class="prose w-full mt-10">
+    <h2>What you buy</h2>
   </div>
 
-  <HoldingsTable rows={HOLDINGS} class="my-4" />
-  <AllocationBar holdings={p.holdings} name={p.name} class="my-6" />
-
-  <div class="prose">
-    <p>If you would rather set the US and international split yourself, two funds do the same job: VTI for the US
-    market at 0.03% and VXUS for everything else at 0.05%. The rest of this site uses those two, because the other
-    portfolios are built from them.</p>
+  <div class="wide mt-4 grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_12rem]">
+    <table role="table" class="stack-table w-full border-collapse text-base">
+      <caption class="sr-only">The one fund, what it holds, its share, its fee on $10,000 and which account to hold it in</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left align-bottom">
+          {COLUMNS.map((c) => <th role="columnheader" scope="col" class="label py-2 pr-3 font-semibold">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-2">
+        {
+          HOLDINGS.map((h) => (
+            <tr role="row" class="border-b border-rule align-top last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-3 text-left font-medium text-ink">
+                <span class="inline-flex items-baseline gap-2">
+                  <span class="donut-swatch" style={`background:${fundColour(h.ticker)}`} aria-hidden="true" />
+                  <span data-numeric>{h.ticker}</span>
+                </span>
+                <span class="block text-sm font-normal text-ink-2">{h.name}</span>
+              </th>
+              <td role="cell" data-label={COLUMNS[1]} class="py-2 pr-3">{h.holds}</td>
+              <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-3">{h.share}</td>
+              <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-3">{h.fee}</td>
+              <td role="cell" data-label={COLUMNS[4]} class="py-2">{h.account}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <Donut
+      holdings={[{ ticker: "VT", weight: 100, label: "Every listed company in the world" }]}
+      center={{ value: p.fee, label: "a year" }}
+      legend={false}
+      name="One fund"
+      class="justify-center md:justify-end"
+    />
   </div>
 
-  <div class="prose mt-14">
-    <h2>What beats it</h2>
-
-    <p>Almost nothing, reliably. Over the ten years to mid-2025, 90.3% of US stock funds run by professional
-    managers returned less than the index they were trying to beat. Over twenty years, 93.8% did. Of the 2,373 US
-    stock funds that existed in 2005, only 37.3% were still around in 2025. The rest were closed or merged away,
-    usually after doing badly.</p>
-
-    <p>Index funds are the one kind of fund that delivers what the paper says. Across the funds one study followed,
-    the market earned 6.72% a year on paper and the funds that tracked it earned 6.93%. Funds chasing cheap stocks
-    earned 2.84% against 7.76% on paper, and funds chasing rising stocks earned 1.86% against 9.48%. A one-fund
-    portfolio does not have that problem.</p>
+  <div class="prose w-full mt-6">
+    <p>One fund, so which fund goes in which account is never a question. Roughly three fifths of VT is the US
+    market; hold it beside a US fund such as VTI and you own the US twice. If you would rather set the split
+    yourself, VTI at 0.03% and VXUS at 0.05% do the same job for half the fee.</p>
   </div>
 
-  <div class="prose mt-14">
-    <h2>How far it falls</h2>
-
-    <p>US stocks fell <Figure id="us-worst-fall-1929" inline showUnit={false} /> from their 1929 peak, the number
-    to keep in mind when anyone says stocks are safe over the long run. Since 1990, a cheap mix of US and
-    international stocks fell <Figure id="cheap-mix-worst-fall" inline showUnit={false} /> at worst and took 63
-    months to get back to where it was.</p>
-
-    <p>Falls are not the hard part. The hard part is the flat stretch afterwards. In the ten years to February 2009,
-    US stocks returned <Figure id="flat-decade" inline />. Ten thousand dollars put in at the start of that decade was
-    worth about $7,700 at the end. Nobody had done anything wrong.</p>
+  <div class="prose w-full mt-14">
+    <h2>What $10,000 did</h2>
   </div>
 
-  <div class="prose mt-14">
+  <StatGrid items={STATS} class="wide mt-4" />
+
+  <GrowthChart series={[oneFund, sixtyForty]} highlight="one-fund" class="wide mt-8" title="What $10,000 became">
+    One fund against a plain 60/40 mix (60% stocks, 40% US government bonds), 1990 to 2026. Simulated from index
+    data, not fund records: a 65/35 mix of US and international index funds stands in for VT, and that mix is also
+    the plain world stock index the other portfolios are compared with.
+  </GrowthChart>
+
+  <div class="prose w-full mt-6">
+    <p>$10,000 put in in {monthName(firstMonth)} became {dollars(s.final)} by {monthName(lastMonth)}, growing
+    {pct(s.cagrPct)} a year before tax. This portfolio is the plain world stock index, so the comparison line here is
+    a plain 60/40 mix, which became {dollars(b.final)} and never fell below {dollars(b.worstFall.dollarsAtTrough)}.
+    Best calendar year: {s.bestYear?.year}, up {pct(s.bestYear?.pct ?? Number.NaN)}. Worst: {s.worstYear?.year}, down
+    {pct(Math.abs(s.worstYear?.pct ?? Number.NaN))}. In 2020 it made {pct(year("2020"))}; in 2022 it lost
+    {pct(Math.abs(year("2022")))}.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>The worst fall</h2>
+  </div>
+
+  <DrawdownChart series={[oneFund, sixtyForty]} highlight="one-fund" worst={fall} class="wide mt-4" title="Falls from the last high">
+    How far below its last high $10,000 sat, month by month, against a plain 60/40 mix. Zero is the last high;
+    every dip is a fall from it.
+  </DrawdownChart>
+
+  <div class="prose w-full mt-6">
+    <p>From {monthName(fall.peak)} to {monthName(fall.trough)}, $10,000 fell to {dollars(fall.dollarsAtTrough)}, a
+    fall of {pct(Math.abs(fall.pct))}. It was back above $10,000 in {monthName(fall.recovered ?? fall.trough)},
+    {formatMonths(fall.monthsToRecover)} after the peak. The 60/40 mix fell to {dollars(b.worstFall.dollarsAtTrough)}
+    over the same months and was back in {formatMonths(b.worstFall.monthsToRecover)}. The long history at the foot of
+    this page says it has been worse.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>What it beat, and by how much</h2>
+
+    <p>Almost nothing beats a cheap world index fund reliably. Against it, the whole edge this site's research could
+    find is about a coin flip: a 54% chance of being ahead after thirty years. Professional managers deliver the
+    exposure they advertise, not extra skill: of 327 tests for extra return, five survived, all five negative.</p>
+
+    <p>What this portfolio beats is the fund you would otherwise own. The average active fund charges 0.57% a year
+    and the average index fund 0.09%, so moving saves about <Figure id="fee-gap" inline showUnit={false} /> a year:
+    $49 a year on every $10,000, range $40 to $59, without a forecast. If you already hold index funds
+    the saving is zero.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>Who it is for</h2>
+
+    <p>Anyone. It is the default. It suits someone who wants one thing to buy and
+    never think about, and who can sit through a fall of about half without selling.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>How to hold it</h2>
+  </div>
+
+  <div class="measure">
+    <Callout kind="do-this" class="mt-4">
+      <p>Buy VT. Add money when you have it, in whatever account you have. Do nothing when it falls. There is nothing
+      to rebalance. Before your first purchase, check your broker's list of ETFs that carry a purchase fee: none of
+      the funds on this site was on Fidelity's list in August 2026. The details are on
+      <a href="/how-to-hold/">how to hold it</a>.</p>
+    </Callout>
+  </div>
+
+  <div class="prose w-full mt-14">
     <h2>The four habits</h2>
 
-    <p>The fund is the easy part. What you keep of its return depends on four habits, and each of them is
-    arithmetic rather than a forecast.</p>
+    <p>What you keep of the fund's return rests on four habits, each of them arithmetic.</p>
 
-    <p><strong>Hold the cheapest version.</strong> Two funds holding the same stocks can charge different fees, and
-    the fee is not always the whole cost. Funds lend their shares out and pass some of the income back, which can
-    more than cover the fee. SPY, the oldest S&amp;P 500 fund, cannot lend and costs about
-    <Figure id="spy-net-cost" inline /> a year all in, while every other S&amp;P 500 fund costs 0.02% to 0.03%.
-    IEMG charges 0.09% and VWO charges 0.06% for the same emerging markets, but IEMG earns enough from lending that
-    it is the cheaper one to own. The <a href="/funds/">funds page</a> lists the real cost of every fund I
-    priced.</p>
+    <p><strong>Hold the cheapest version.</strong> Judge a fund by its cost after the income it earns lending its
+    shares, not by the fee on the label. VTI charges 0.03% and costs about $1.16 a year on $10,000, while SPY, the
+    oldest S&amp;P 500 fund, costs <Figure id="spy-net-cost" inline />, or $9.45 on $10,000, because its 1993
+    structure cannot lend shares.</p>
 
-    <p><strong>Put each piece in the right account.</strong> A fund's tax bill depends on where it sits. Bonds
-    belong in a retirement account before anything else, by a wide margin. International funds should be
-    sheltered before US funds. Done well, this is worth a few hundredths of a point a year against a sensible
-    default, and more if you are starting from a bad arrangement. The
-    <a href="/tools/which-account/">which-account tool</a> works it out for your mix of accounts.</p>
+    <p><strong>Put each fund in the right account.</strong> With one fund there is nothing to place. With several,
+    putting each in its best account is worth about $2 to $7 a year on every $10,000 against a sensible default, and
+    nothing if all your money is in one account.</p>
 
-    <p><strong>Hold an ETF, not a mutual fund.</strong> An ETF is a fund that trades on the exchange like a share; a
-    mutual fund is bought and sold through the fund company once a day. In 2025, 7% of ETFs paid out a taxable
-    capital gain to their holders. Among mutual funds it was 52%. Vanguard's own S&amp;P 500 and total-market ETFs
-    paid none across 44 fund-years, while two of the largest active mutual funds paid out 6.62% and 7.01% of their
-    value in a single year, all taxable to anyone holding them outside a retirement account. In a taxable account,
-    the average US stock fund costs its owner 1.12% a year in tax, which varies three times as much between funds
-    as the fees do.</p>
+    <p><strong>Hold an ETF, not a mutual fund.</strong> In 2025, 7% of ETFs paid out a taxable capital gain to their
+    holders, against 52% of mutual funds. A payout of 3% of the fund's value each year costs a top-bracket holder
+    about $38 a year on $10,000 over thirty years.</p>
 
-    <p><strong>Do not trade.</strong> Every sale in a taxable account brings forward a tax bill you could have
-    deferred for decades. Never selling is worth about <Figure id="never-selling" inline showUnit={false} /> a
-    year over thirty years compared with realising a tenth of your gains each year. Rebalancing to keep your mix
-    is fine, and best done with new money or inside a retirement account. Expect it to keep the mix, not to add
-    return: on this site's own tests, rebalancing rules earned nothing extra and sometimes a little less than
-    leaving the portfolio alone.</p>
+    <p><strong>Never sell.</strong> In a taxable account, leaving gains untouched for thirty years is worth about $84 a
+    year on every $10,000 at 7% growth and top rates, and selling a tenth of your gains each year gives up $42 of it.</p>
+
+    <p>The four together are worth close to nothing to someone already in cheap index funds in one retirement account,
+    and about 1.1% a year to a top-bracket investor leaving an expensive active fund in a taxable account.</p>
   </div>
 
-  <div class="prose mt-14">
-    <h2>What the habits are worth</h2>
+  <div class="prose w-full mt-14">
+    <h2>What could go wrong</h2>
 
-    <p>Between 0.04 and 2.70 points a year. The range is that wide because it depends on where you start. Someone
-    already in a cheap index ETF in one account gains almost nothing. Someone leaving an active mutual fund in a
-    taxable account gains more. The average active fund charges 0.57% a year, so the fee gap alone is about
-    <Figure id="fee-gap" inline showUnit={false} />, and the tax the old fund was costing comes on top. Two
-    questions set your number: what do you pay now, and do you hold anything outside a retirement account.</p>
+    <p>In the ten years to February 2009 US stocks returned <Figure id="flat-decade" inline />, so $10,000 put in at
+    the start of that decade was worth about $7,700 at the end. Today the seven largest US companies are 34% of the
+    S&amp;P 500 (July 2026), and US stocks cost about 41 years of average profits, a level seen in only 19 of 1,748
+    months since 1881, almost all of them in 1999 and 2000. That price has
+    predicted deeper falls, not lower returns. And index-fund investors as a group earned about 1.1% a year less than
+    the funds they held.</p>
   </div>
 
-  <Compare class="my-8">
-    <p slot="get">The market's return at almost no cost, and a saving that arrives every year without depending on
-    any forecast. Nothing to second-guess.</p>
-    <p slot="give">No protection in a crash and no lean toward anything. Moving out of an old fund in a taxable
-    account can trigger a tax bill on the gains, so the switch may have to be done with new money or over several
-    years.</p>
-  </Compare>
-
-  <div class="prose mt-14">
-    <h2>One thing to check before you buy</h2>
-
-    <p>From June 2026, Fidelity charges $100 to buy any of 84 listed ETFs, and Schwab has said it will follow. None
-    of the funds on this site is on the list as of mid-August 2026. Check before your first purchase, because a
-    $100 fee twelve times a year on a $200,000 account is 0.6% a year, more than any fee on this site.</p>
-  </div>
-
-  <div class="prose mt-14">
+  <div class="prose w-full mt-14">
     <h2>Should you stop here</h2>
 
-    <p>Most people should. This fund holds the world as it is, which today means 34% of the S&amp;P 500 in seven
-    companies and US stocks priced at 41 times their ten-year average earnings, a level seen only once before, in
-    1999 and 2000. If those facts worry you, a cleverer stock fund will not help; the answers are fewer stocks, which is
-    the <a href="/portfolios/cautious/">cautious version</a>, or the
-    <a href="/portfolios/with-trend/">with-trend portfolio</a>, which is the one construction on this site that
-    adds something different on top of them.</p>
+    <p>Most people should. <a href="/portfolios/value-lean/">Portfolio 2</a> keeps the whole market and leans a third
+    of it toward cheaper companies, a bet that has paid a little more over decades and has trailed for seventeen
+    years at a time. <a href="/portfolios/with-trend/">Portfolio 3</a> adds a trend-following fund on top of the
+    stocks, the one holding here that can rise when stocks fall, and the least certain.
+    <a href="/portfolios/cautious/">Portfolio 4</a> cuts the stock share and puts the rest in inflation-protected
+    government bonds, for someone who would sell after a fall of about 40%.</p>
+  </div>
 
-    <p>The next two portfolios add ideas that have earned less than the fee gap above and take twenty to thirty
-    years of results to confirm. They are for someone who accepts trailing the market for long stretches in
-    exchange for a chance of beating it. If that does not describe you, this is the portfolio.</p>
+  <div class="prose w-full mt-14">
+    <h2>The long history</h2>
 
-    <p>Figures on this page are before tax and after fund costs unless the sentence says otherwise.</p>
+    <p>Simulated, from US stock index data. Over 1929 to 2025 a US all-stock index grew {pct(long.cagrPct, 2)} a year,
+    and $10,000 at the {monthName(long.worstFall.peak)} peak fell to {dollars(long.worstFall.dollarsAtTrough)} by
+    {monthName(long.worstFall.trough)}, a fall of {pct(Math.abs(long.worstFall.pct))}. It was not back above $10,000
+    until {monthName(long.worstFall.recovered ?? long.worstFall.trough)}, {formatMonths(long.worstFall.monthsToRecover)}
+    later. That history is US stocks only, and nobody who lived it knew how it would end.</p>
   </div>
 </Base>
