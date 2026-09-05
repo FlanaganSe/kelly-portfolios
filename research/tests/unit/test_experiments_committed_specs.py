@@ -67,6 +67,8 @@ SPEC_NAMES = (
     "exp_030_live_fund_portfolios",
     "exp_031_live_equity_allocation_grid",
     "exp_032_momentum_implementations",
+    "exp_033_cautious_defensive_budget",
+    "exp_034_live_trend_funding",
     "phase1_ff_reproduction",
 )
 

@@ -1,0 +1,106 @@
+experiment_family: exp_033_cautious_defensive_budget
+title: Rebuild Cautious's defensive half using actual fund NAV and observed inflation
+entry_point: exp_033_cautious_defensive_budget
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 2026090533
+hypothesis: >
+  Short TIPS, Treasury bills, intermediate nominal Treasuries or fixed mixtures can
+  improve the complete Cautious portfolio's growth or real-capital downside compared
+  with its present 50% SCHP holding. Shorter duration can protect real wealth differently
+  from nominal-duration exposure; no defensive fund is presumed optimal.
+mechanism: >
+  Replace only the defensive 50% while leaving the remaining holdings unchanged.
+  A separately labelled no-trend portfolio replaces RSST with VTI in every arm and
+  permits a longer history including 2022. Deflate observed wealth by CPI-U for realised
+  purchasing power; fund NAV already includes TIPS principal accrual and internal costs.
+falsifier: >
+  Report paired growth-gap intervals and nominal/real downside for all fixed arms.
+  Reversals across the two differently constructed histories expose scope dependence.
+  No selected historical winner, retirement claim or long-run shortfall probability.
+universe: >
+  SCHP, STIP, SGOV, IEF; six defensive choices including equal STIP/bills and equal
+  SCHP/bills. STIP selected before returns because its share-class source is already
+  audited and its 3bp headline fee matches VTIP; no claim it is the best short-TIPS fund.
+sample_policy:
+  start: '2021-10'
+  end: '2026-03'
+  held_out: None; current funds and overlapping returns already examined.
+  embargo: No predictive trading signal; realised CPI is used only to report purchasing power.
+  eras:
+    - {name: actual_cautious, start: '2023-10', end: '2026-03', rationale: First complete RSST month through frozen 030 endpoint.}
+    - {name: no_trend_diagnostic, start: '2021-10', end: '2026-03', rationale: Different portfolio; RSST capital becomes VTI to include 2022.}
+benchmark: >
+  Primary unchanged SCHP version of each construction, separately. Cheap control is
+  32.5% VTI,17.5% VXUS,50% SCHP in each window; not beta-, risk- or leverage-matched.
+primary_metric: Annual paired log-growth gap after investor execution, percentage points per year.
+secondary_metrics:
+  - Nominal CAGR, arithmetic return, month-end drawdown and trading cost
+  - Relative terminal wealth, tracking error and realised rolling twelve-month underperformance
+  - Real terminal wealth and annualised real growth from CPI endpoints
+  - Drawdown and maximum real-principal shortfall on dates with observed CPI only
+cost_model: >
+  Reuse 030 exact self-financing execution. NAV includes fund fees and internal trading;
+  add only 5/25bp roundtrip investor execution, half per dollar on each side, paid at
+  initial purchase and annual rebalance. No investor taxes, withdrawals or exit sale.
+rebalance_rule: >
+  Each construction invests at its own first month, drifts and resets targets on each
+  twelve-month anniversary. Non-defensive weights stay identical across its six arms.
+inference:
+  bootstrap: Joint stationary bootstrap of fund rows, rerunning every complete execution path.
+  block_length_policy: Fixed six-month mean blocks.
+  multiple_testing_correction: None; fixed descriptive family without selection or promotion.
+  confidence_level: 0.95
+  resamples: 2000
+  notes: >
+    Paired log-gap percentile intervals use the same fund rows for each arm/control.
+    Common endpoint inflation cancels from paired nominal versus real log-growth gaps.
+    CPI is not resampled; real downside is descriptive on observed dates, not an inflation-risk model.
+rejection_rule: Always exploratory; short histories cannot validate long-horizon defensive adequacy.
+parameters:
+  base_specification: experiments/exp_030_live_fund_portfolios.yaml
+  base_specification_sha256: a6e1ea341ca978a5d12daf5f24bebe35eb5eac7ccc67cd8a4fb12cd0b58b4dda
+  engine_path: src/portfolio_edge/experiments/exp_030_live_fund_portfolios.py
+  engine_sha256: f5e5449bf577276c414b3952c7cf3b0047af0cf13d694c0f30592f8a4fbc523f
+  defensive_weight: 0.5
+  defensive_arms:
+    schp: {SCHP: 1}
+    short_tips: {STIP: 1}
+    bills: {SGOV: 1}
+    intermediate_treasury: {IEF: 1}
+    short_tips_bills: {STIP: 0.5, SGOV: 0.5}
+    schp_bills: {SCHP: 0.5, SGOV: 0.5}
+  additional_funds:
+    STIP: [S000030481, C000093655]
+    SGOV: [S000068768, C000219740]
+    IEF: [S000004358, C000012088]
+  ticker_map_url: https://www.sec.gov/files/company_tickers_mf.json
+  ticker_map_sha256: d062addcc391bf33825477bec87705be2a823ce16950d10cc494cb289bfabdd4
+  cpi_manifest: data-manifests/fred_cpiaucns.json
+  cpi_manifest_file_sha256: 54968bd115b695a1501ceb8bc84706840187d656305c5af10dd7b7a75095214b
+  cpi_source_pin:
+    id: fred_cpiaucns
+    source: fred
+    dataset_id: CPIAUCNS
+    expected_sha256_raw: ff0e1a1bb2af9364c1975f373cbac514f4f537fea9515c83c8b6994e8aa9a8a1
+    committed_manifest: data-manifests/fred_cpiaucns.json
+  known_missing_cpi_months: ['2025-10']
+hostile_tests:
+  - Separate longer no-trend diagnostic includes 2022; never splice it into RSST history.
+  - Fivefold investor execution cost, with NAV fees not charged again.
+  - Require all declared fund months and CPI start/end levels; never fill CPI or returns.
+  - Known CPI gap2025-10 means real downside is only an observed-date lower bound on severity.
+reporting_requirements:
+  - Exact weights, windows, excluded CPI months, source identities and readable artifacts.
+  - Distinguish actual Cautious from the longer no-trend diagnostic in every table.
+  - Realwealth uses previous-month CPI as initial deflator and month CPI for observed month-end wealth.
+  - Report that CPI is a monthly price index, not an exact trading-date consumption deflator.
+  - Omit optional indexed-withdrawal scenario because the pinned monthly CPI series is incomplete.
+notes: >
+  Frozen before any defensive portfolio returns are inspected under this design. SGOV/IEF
+  IDs were resolved from the existing SEC ticker-map bytes; STIP from the fixed-income shelf.
+  Duration-hedged credit is left for a separate hypothesis rather than broadening this bounded
+  first defensive comparison. Actual NAV includes inflation accrual; do not add CPI as a second
+  return component. Realwealth is nominal wealth divided by the realised CPI ratio, not a TIPS
+  principal-accrual simulation. Both histories contain the same known missing CPI month.
