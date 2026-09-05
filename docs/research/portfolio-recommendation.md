@@ -113,7 +113,8 @@ TIPS fund with interest-rate risk, not a promise to return the initial investmen
 reader's spending date. A short-duration fund, cash reserve or maturity-matched bonds may
 fit a different purpose. The long historical tests often substitute nominal Treasuries
 for TIPS; their inflation episodes cannot establish SCHP's behaviour. See
-[cautious constructions](cautious-constructions.md) and
+[the current defensive-fund comparison](cautious-constructions.md#current-defensive-fund-comparison),
+which separates the current short history from a longer portfolio without RSST, and
 [setting the equity share](setting-the-equity-share.md).
 
 Gold, commodities, duration-hedged credit, catastrophe risk and crypto remain candidates

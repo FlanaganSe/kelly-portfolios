@@ -1,20 +1,52 @@
 # Cautious constructions scored as objects
 
-**Question.** The site tells a reader who could not sit through a fall of about 30% or
-40% to hold fewer stocks and more bonds, and names no construction. What does a bond-heavy
-book built from the same funds plus an unlevered ten-year Treasury (the TIPS proxy) draw
-down on each history the repository holds, what does it cost against the cheap index and
-against the published 30% construction, and does an 11 to 15 point financed trend line on
-top of it help at matched equity?
+**Current conclusion, as of 2026-09-05.** The defensive half is a choice about purchasing
+power, interest-rate exposure and spending needs. SCHP is the current allocation, not a
+proven best fund. Short TIPS and Treasury bills are credible alternatives for a reader who
+places more weight on limiting bond-price swings. Neither the recent fund comparison nor
+the longer modelled histories establish a universal allocation or a maximum possible loss.
 
-**Decision it informs.** Which construction, if any, the site may publish for a stated
-tolerance of about −30% or −40%; whether that construction carries the trend line; and
-what the reader gives up for the shallower fall.
+## Current defensive-fund comparison
 
-**Out of scope.** The equity share for a withdrawing investor
-([equity share](setting-the-equity-share.md) §5.1), duration beyond one sensitivity arm,
-TIPS before 2003 (no series exists), account placement of a 50 to 63 point bond line
-([portfolio for one investor](portfolio-for-one-investor.md) §7), and any weight search.
+[Experiment 033](../../research/experiments/exp_033_cautious_defensive_budget.yaml) replaces
+only the current portfolio's 50% SCHP allocation with STIP, SGOV, IEF, an equal STIP/SGOV
+mix, or an equal SCHP/SGOV mix. The remaining holdings stay fixed. The
+[generated results](../../research/artifacts/8cd38a96768345719054948fc4a220c0/tables.md)
+and [full run](../../research/artifacts/8cd38a96768345719054948fc4a220c0/summary.md)
+record actual fund NAV returns, annual rebalancing, and 5/25 bp roundtrip investor costs.
+Fund expenses and internal trading are already in NAV. Taxes and withdrawals are excluded.
+
+On October 2023–March 2026, STIP modestly improved growth and reduced the worst monthly
+drawdown measured at month ends; bills reduced the fall but gave up growth. Every alternative's growth-gap
+interval against SCHP spans zero. These intervals allow economically meaningful gains and
+losses, so they do not establish equivalence. The comparison is exploratory and covers no
+2022 inflation shock.
+
+A separate October 2021–March 2026 diagnostic replaces RSST with VTI in **every** arm to
+obtain a longer common history. It is a different portfolio, not a backfilled current
+Cautious return. Short TIPS and bills show substantially shallower losses and higher ending
+purchasing power than SCHP in that window. This is evidence about the trade-off in a period
+including rising rates, not an enduring return ranking. The intermediate nominal Treasury
+arm lost more and grew less than SCHP; maturity and inflation linkage both matter.
+
+Purchasing-power endpoints use observed CPI endpoints. The pinned CPI source lacks
+October 2025, so real drawdown and principal shortfall use only observed CPI dates and may
+understate complete-month losses. No value is filled. Nominal drawdown uses every fund
+month. No indexed-spending test ran, and ending above initial purchasing power does not
+establish retirement adequacy. The next decision-relevant extension is a stated spending
+path with complete inflation observations and rate/reinvestment scenarios, not choosing
+the recent return winner.
+
+The current trend-funding alternatives are compared separately in
+[trend from the bond line](trend-from-the-bond-line.md#current-actual-fund-comparison).
+Neither comparison should be added to the other as an independent gain.
+
+## Longer modelled constructions
+
+Experiment 025 asks how bond-heavy constructions behave across the repository's longer
+research histories and whether financed trend helps at matched equity. Its historical
+weights and nominal-bond stand-ins are not the current fund portfolio. The sections below
+retain its scoped model results; they do not set a reader's equity share or loss limit.
 
 `as of 2026-09-03`. **`exploratory`.**
 [Experiment 025](../../research/experiments/exp_025_cautious_constructions.yaml), spec
@@ -145,9 +177,9 @@ matters less than any gap here: 3 bp instead of 5 on the largest line is +1.3 bp
 is −8.2.
 
 The 1977–81 episode is where the nominal stand-in is weakest: the cautious arms returned
-+16% to +42% across it against +86% for the published construction, 44 to 70 points behind,
-and a TIPS book would have done better by an amount no series can measure. The 1973–74
-episode shows the same direction at a third of the size.
++16% to +42% across it against +86% for the published construction, 44 to 70 points behind.
+The missing TIPS history prevents a measured comparison for those years. Inflation
+indexation alone does not establish the return of a fund exposed to changing real yields.
 
 ## 6. What the publication rule licenses
 
@@ -183,9 +215,9 @@ In fund weights, with the tilt book scaled and SCHP as the ten-year line (weight
 | for about −30% (`ladder30`) | 11 | 7.1 | 5.6 | 5.9 | 3.7 | 1.9 | 1.8 | 63 | ~16 bp |
 | for about −40% (`ladder40`) | 15 | 9.6 | 7.5 | 8.0 | 5.0 | 2.5 | 2.5 | 50 | ~20 bp |
 
-The bond line belongs in the traditional third first, then the Roth, and in taxable last,
-and at 50 to 63 points it overflows every shelter an equal-thirds investor has; the
-placement cost of that is priced on the page, not here.
+Account placement depends on actual account capacity, tax rates and withdrawals. The
+equal-thirds account scenario in [portfolio for one investor](portfolio-for-one-investor.md)
+is a worked assumption, not a priority rule for every investor.
 
 ## 7. Scope and limits
 
@@ -193,8 +225,8 @@ placement cost of that is priced on the page, not here.
   trend vector at 99 bp; the trend book is a construction charged no trading cost; AQR's
   TSMOM is gross of the vendor's costs.
 - The bond line is a nominal ten-year on both scored panels. At 40 to 63 points of capital
-  the 1973–74 and 1977–81 losses overstate what a TIPS book would have lost; the 2003
-  check panel is one era of correlation and separates nothing.
+  the 1973–74 and 1977–81 losses cannot establish what a TIPS fund would have lost; the
+  2003 check panel does not resolve the choice.
 - Before 1953-04 the Shiller long rate is not a ten-year constant-maturity yield.
 - The arms were chosen after the equity-share table, the ladder, 018 and 024 were read;
   `run_kind: exploratory` records that. No arm's weights were searched.

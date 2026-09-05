@@ -525,7 +525,7 @@ an executable TAIL or CAOS portfolio. Neither their convexity resolution nor the
 comparison establishes that these funds cannot improve the investor's downside or log
 wealth under a stated allocation and rebalancing rule.
 
-**What the historical figures establish.** The previously recorded issuer snapshots are
+**What the historical figures establish.** The dated issuer snapshots below are
 kept with their original windows; they are not updated returns or matched portfolio tests.
 
 | Fund | Historical annualised NAV return | Comparator and limitation |
