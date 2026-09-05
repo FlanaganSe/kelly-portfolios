@@ -498,7 +498,7 @@ against a 5.70 pp/yr floor, and no verdict above uses it.
 
 ---
 
-## 4. SPMO: right product, wrong sleeve
+## 4. SPMO: portfolio role unresolved
 
 [The tilt audit](untested-tilt-candidates.md) rejected MTUM on 116%/yr of turnover and
 named SPMO as the way to revisit US momentum properly, noting that the shelf carried a UMD

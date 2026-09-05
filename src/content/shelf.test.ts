@@ -326,8 +326,8 @@ describe("wrappers report structure and cost, never a sleeve", () => {
 });
 
 /**
- * The funds page prints one of four words per fund. The mapping lives in `shelf.ts` so the
- * page cannot invent a fifth, and these pin the cases where the research status and the
+ * The funds page uses the shared vocabulary in `shelf.ts`. These pin cases where
+ * researched but unresolved funds differ from unassessed funds, and where the
  * reader's word disagree on purpose.
  */
 describe("the reader's verdict on a fund", () => {
@@ -366,14 +366,15 @@ describe("the reader's verdict on a fund", () => {
     expect(fundVerdict(fundByTicker("SPY"), held)).toBe("Not assessed");
   });
 
-  it("says Not assessed for a fund still under test that no portfolio holds, and for a priced-only fund", () => {
+  it("separates researched funds with an unresolved decision from unassessed funds", () => {
     expect(fundByTicker("AVUV").status).toBe("exploratory");
-    expect(fundVerdict(fundByTicker("AVUV"), held)).toBe("Not assessed");
+    expect(fundVerdict(fundByTicker("AVUV"), held)).toBe("Unresolved");
+    expect(fundVerdict(fundByTicker("SPMO"), held)).toBe("Unresolved");
     expect(fundByTicker("IBIT").status).toBeNull();
     expect(fundVerdict(fundByTicker("IBIT"), held)).toBe("Not assessed");
   });
 
-  it("never produces a fifth word", () => {
+  it("uses only the shared verdict vocabulary", () => {
     for (const fund of shelf) {
       expect(FUND_VERDICTS).toContain(fundVerdict(fund, held));
     }

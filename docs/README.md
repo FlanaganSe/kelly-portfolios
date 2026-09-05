@@ -161,8 +161,9 @@ For the major decisions:
   [Experiment 019](../research/experiments/exp_019_carry_engine.yaml) — the sum rule holds
   to the fourth decimal, the gross vendor series clears its floor at full loading and
   falls back inside it once a trading-cost haircut and a delivered loading are charged,
-  substitution for trend fails, and the one live fund is 27 months old and behind. Not
-  added; sized for an investor who wants it anyway.
+  substitution for trend fails, and the one live fund is 27 months old and behind.
+  Experiment 027 removes stock and currency carry: the long-window funded result improves,
+  but recent losses and shared stock-tail risk remain. No selective-carry fund is established.
 - [Leveraged ETFs and the 200-day rule](research/leveraged-etfs-and-timing-rules.md):
   Gayed's 2x and 3x rule and the UPRO/TMF mix on a century of daily data under
   [Experiment 021](../research/experiments/exp_021_leveraged_etf_rules.yaml) — the timing

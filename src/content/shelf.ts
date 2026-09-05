@@ -3988,7 +3988,7 @@ export function findFund(ticker: string): ShelfFund | undefined {
 }
 
 /**
- * The four words the funds page prints. They are a reader's vocabulary, not the
+ * The verdicts the funds page prints. They are a reader's vocabulary, not the
  * research's: `status` says how a fund was tested, and these say what to do with it.
  *
  * - **Held**: one of the four portfolios holds it. Wins over everything else, because VTV
@@ -3998,10 +3998,10 @@ export function findFund(ticker: string): ShelfFund | undefined {
  *   whole idea and the fund is that idea ({@link REJECTED_ON_A_STRATEGY_PAGE}).
  * - **Fine alternative**: the same holding as a held fund, at an equal or lower fee, and
  *   never tested because it did not need to be ({@link FINE_ALTERNATIVE_TO}).
- * - **Not assessed**: priced, and nothing else. Includes a fund still under test
- *   (`exploratory`, `unresolved`) that no portfolio holds.
+ * - **Unresolved**: researched, but without a settled allocation decision.
+ * - **Not assessed**: no research status or stated alternative relationship.
  */
-export const FUND_VERDICTS = ["Held", "Fine alternative", "Rejected", "Not assessed"] as const;
+export const FUND_VERDICTS = ["Held", "Fine alternative", "Rejected", "Unresolved", "Not assessed"] as const;
 
 export type FundVerdict = (typeof FUND_VERDICTS)[number];
 
@@ -4036,6 +4036,7 @@ export function fundVerdict(fund: ShelfFund, held: ReadonlySet<string>): FundVer
   if (held.has(fund.ticker)) return "Held";
   if (fund.status === "rejected" || REJECTED_ON_A_STRATEGY_PAGE.has(fund.ticker)) return "Rejected";
   if (fund.status === null && fund.ticker in FINE_ALTERNATIVE_TO) return "Fine alternative";
+  if (fund.status !== null) return "Unresolved";
   return "Not assessed";
 }
 

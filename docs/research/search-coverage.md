@@ -44,8 +44,10 @@ What remains: a **TIPS series before 2003**, without which the leg the valuation
 points at cannot be scored on a panel containing 1970–81; a **term-premium-conditioned
 stack**, since the correlation rule cannot see carry and needs a point-in-time term-premium
 series before 1990; a **costed cross-asset carry series** or a repository-built carry book on
-public yields, to replace the 1–2 pp/yr haircut band; and whether dropping carry's
-equity-index and currency legs, which hold its equity tail risk, leaves a usable engine.
+public yields, to replace the 1–2 pp/yr haircut band; and implementable selective carry. [Experiment 027](carry-as-a-second-engine.md#8-does-removing-stock-and-currency-carry-solve-the-tail-problem)
+removes the stock and currency legs: long-window financed growth improves, but recent
+returns turn negative and stock-tail dependence remains. Costs and adaptive risk scaling
+are now the next informative tests; the selective blend is not an equal-realised-risk winner.
 
 ## 2. Measure crisis-conditional dependence
 

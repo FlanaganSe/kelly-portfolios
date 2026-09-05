@@ -13,9 +13,7 @@ vector RSST 30 / VTI 19 / VTV 15 / VXUS 16 / AVDV 10 / IDMO 5 / AVES 5, or to sp
 
 **Out of scope.** Whether the trend overlay itself earns its place
 ([defensive engines](defensive-engines-in-the-construction.md) §2,
-[trend weight](trend-weight-under-uncertainty.md)); long/short commodity carry alone,
-whose earlier overlap rejection in [the sleeves audit](alternative-sleeves-audit.md) §8
-is withdrawn because this experiment measures little correlation to trend; currency carry as a hedging decision
+[trend weight](trend-weight-under-uncertainty.md)); currency carry as a hedging decision
 ([currency](currency-and-the-international-sleeve.md)).
 
 `as of 2026-09-02`. **`exploratory`.** [Experiment 019](../../research/experiments/exp_019_carry_engine.yaml),
@@ -41,7 +39,8 @@ delivered loading. Both halves came in.
    sleeves audit's earlier overlap claim. Carry is not equity-neutral,
    though: +0.119 to equity over the full window and **+0.219 in equity's worst decile**,
    rising to +0.25 after 2009 and +0.61 in the tail after 2013, and the equity-index and
-   currency legs are where that comes from. §2.
+   currency legs contribute to it. They are not its only source: the selective-carry
+   follow-up below finds recent tail exposure without either leg. §2 and §8.
 2. **The stack adds as a sum, and the sum clears its floor at the top of the bracket.** A
    10-point RSSY-like stack beats the reference construction by **+0.58 pp/yr [+0.28, +0.86]
    against a 0.35 floor** on 96 years, +0.56 [+0.24, +0.87] against 0.40 from 1974, and
@@ -58,7 +57,7 @@ delivered loading. Both halves came in.
    (1985) against the reference. The candidate is a second engine, not a replacement. §3.
 4. **The last twelve and a half years are negative.** On the vendor's own series carry
    earned +0.77 pp/yr gross from 2009 and **−2.96 pp/yr from 2013-09**, the month after the
-   carry paper circulated; the 10-point stack reads −0.03 and −0.41 against the reference on
+   carry paper circulated (still inside the vendor's later reconstruction); the 10-point stack reads −0.03 and −0.41 against the reference on
    those windows, against floors of 0.9 and 1.0. The same post-2009 decay Experiment 018
    found on trend is here on carry, unresolvable on the same windows. §4.
 5. **Consequence.** Not added to the vector by default. It is the best-supported second
@@ -222,7 +221,7 @@ The prediction said 0.30 for the bottom; the realised gross mean was 6.89 rather
 
 ---
 
-## 4. The eras the paper could not have fitted
+## 4. Later eras within the vendor reconstruction
 
 Gap of the 10-point stack against the reference, pp/yr, and the carry leg's gross mean:
 
@@ -322,6 +321,65 @@ direction.
 
 ---
 
+## 8. Does removing stock and currency carry solve the tail problem?
+
+**No reliable improvement is established.** As of 2026-09-05,
+[Experiment 027](../../research/experiments/exp_027_selective_carry.yaml) tests broad
+carry, bond-and-commodity carry, and commodity carry alone inside the same portfolio.
+The selective blend helps over the long window, but its recent returns are negative
+and it still loses alongside stocks in their worst months. This replaces the earlier
+suggestion that stock-index and currency positions alone explain carry's equity-tail risk.
+
+Run [516783a7](../../research/artifacts/516783a759174471b809a0f472ec26b2/summary.md)
+contains the source pins and limitations; the
+[detailed tables](../../research/artifacts/516783a759174471b809a0f472ec26b2/tables.md)
+contain every funding rule, cost scenario, comparison and episode. Status: `exploratory`.
+The initial parser failure is retained in the ledger; it produced no scored portfolio.
+
+**What was compared.** The reference is Experiment 019's 70% equity core plus 30%
+hypothetical stocks-and-trend wrapper. It is not the current published fund list.
+The candidate either adds ten points of carry while keeping stock exposure, buys ten
+points by selling stocks, or replaces fifteen points of trend. Fees and financing enter
+the monthly trading rule. Internal carry costs of 2 percentage points a year and a
+0.681 delivered exposure are assumptions, not measurements of a selective-carry ETF.
+Trend's internal trading costs and investor taxes remain omitted.
+
+**Funding changes the answer.** Against that reference, on February 1974 to May 2025,
+the bond-and-commodity blend's annual log-growth changes under the joint cost/loading
+assumption are:
+
+| Funding | Log-growth change, pp/year | Paired bootstrap 95% interval |
+| --- | ---: | ---: |
+| Add carry, retain stocks | +0.395 | +0.077 to +0.726 |
+| Sell stocks to buy carry | −0.123 | −0.678 to +0.457 |
+| Replace part of trend | −0.276 | −0.940 to +0.411 |
+
+These are modelled growth rates, not forecasts or ETF returns. The financed arm's worst
+fall is about 46%, essentially the reference's fall. Its arithmetic-return detection
+floor is a separate diagnostic; it neither erases the positive log-growth interval nor
+establishes an investment rule.
+
+**The recent tail problem remains.** From September 2013 to February 2026, the selective
+carry blend's overall stock correlation is −0.005, but it is +0.656 in the fifteen worst
+stock months. Its mean return in those months is −1.33%. The cost/loading-adjusted
+financed arm's log-growth change is −0.341 pp/year, with a −1.033 to +0.251 interval.
+This small tail sample does not estimate stable crash odds. It does contradict the claim
+that removing the stock and currency positions reliably removes the shared loss.
+
+**The selective blend is not an established winner over broad carry.** Before internal
+costs, its long-window log-growth advantage over the identically funded broad-carry arm
+is +0.188 pp/year, interval −0.178 to +0.554. Both use risk coefficients fitted on
+1969–1973 and frozen before scoring; realised carry volatility subsequently differs
+materially: 17.92% for the selective blend and 11.85% for broad carry. This is not an
+equal-realised-risk comparison. The vendor reconstructed the history later, so the
+post-2013 window is not independent forward evidence either.
+
+**Decision.** Reopen commodity carry as a distinct candidate, with no new ETF allocation.
+The next useful test needs implementable exposures and measured trading costs, plus
+risk scaling that can adapt using only information available at the time. It must retain
+the recent bad-stock-month check and compare whole funded portfolios. Repeating the
+long-run mean alone would miss what changed this decision.
+
 ## Verified, assumed, open
 
 **Verified.** Every gap, interval, floor, drawdown, correlation, era and episode figure in
@@ -344,8 +402,9 @@ portfolio-for-one-investor page's yields and ranking.
 1. RSSY's delivered loading on any carry index, and its 2025 attribution by asset class.
 2. A carry series with costs, or a repository-built cross-asset carry book on public
    yields, which would put the trading cost inside the rule instead of in a band.
-3. Whether the equity-index and currency carry legs can be dropped without losing the
-   composite's mean, since they carry the equity tail risk and 4.5 pp/yr of the 6.9.
+3. Whether selective carry can retain its long-window benefit under implementable costs
+   and adaptive risk scaling. §8 tests dropping stock and currency carry; recent tail
+   exposure survives that change.
 4. The correlation-regime question Experiment 018 left open applies here too: carry's
    worst-decile correlation to equity has risen in every era since 1977.
 

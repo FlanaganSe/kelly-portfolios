@@ -167,9 +167,10 @@ candidate for a whole-portfolio comparison; correlation with IDMO is a diversifi
 input, not a deduction from a fixed purchase's expected return.
 
 **ITAN's factor-and-cost case also remains negative under the four declared scenarios.**
-Its −0.10 pp/yr headline was a weighted residual appraisal diagnostic, not a funded
-portfolio-return estimate. Its negative profitability and momentum exposures and its fee
-remain relevant, but a growth claim requires the whole funded portfolio to be tested.
+Its −0.10 pp/yr at a five-point replacement of VTV is already a funded priced-factor
+contribution, computed directly from ITAN minus VTV. It excludes incremental market
+beta, unexplained return and taxes. Its negative profitability and momentum exposures
+and its fee remain relevant, but a growth claim requires the whole portfolio to be tested.
 
 ## Optional financed trend
 
