@@ -543,8 +543,8 @@ def _print_regression(report: Regression, factors: Sequence[str] = PRICED) -> No
     print(f"{'':<21}{body}")
 
 
-def main() -> None:  # pragma: no cover - a reporting entry point
-    cache = RawCache()
+def main(*, cache: RawCache | None = None) -> None:  # pragma: no cover
+    cache = RawCache() if cache is None else cache
     panels = {
         "us": load_french_panel(cache, "us"),
         "exus": load_french_panel(cache, "developed_ex_us"),

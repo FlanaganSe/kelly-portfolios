@@ -38,8 +38,10 @@ inference:
   resamples: 10000
 rejection_rule: Always exploratory; this is an estimand correction, not an investment decision.
 parameters:
-  emitter_sha256: 73550c60d298015b247bf8afc873e983f2cc8895d0e673448a520d2f8becdb43
+  emitter_sha256: 00494acd445b84ada6c65e7ab318133f3a1843b358c187b859b87559b4039140
 notes: >
   Frozen before this registered reread. Source hash locks all study constants and windows.
-  Full stdout is hashed in summary and result artifacts. Do not read contribution as full
+  Full stdout is hashed in summary and result artifacts. Exact URL and byte hashes of
+  every cache artifact read are recorded in result diagnostics; these establish identity,
+  not historical availability. Do not read contribution as full
   portfolio return: incremental beta times market premium, intercept and taxes are missing.
