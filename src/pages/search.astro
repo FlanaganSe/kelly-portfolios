@@ -13,16 +13,14 @@ import Base from "~/layouts/Base.astro";
 
 <Base
   title="Search"
-  description="Search everything on this site: the portfolios, the funds, the strategies and the corrections."
+  description="Search every page on this site: the portfolios, the strategies, the funds and how to hold them."
   indexable={false}
   asOf={null}
 >
   <PagefindConfig />
 
   <h1 class="font-serif text-3xl tracking-[-0.02em] text-ink">Search</h1>
-  <p class="mt-3 max-w-measure text-ink-muted">
-    Every page on the site, including the ones about what did not work.
-  </p>
+  <p class="mt-3 max-w-measure text-ink-muted">Every page on the site, including the ideas that did not work.</p>
 
   <div class="mt-8" data-pagefind-ignore>
     <pagefind-searchbox></pagefind-searchbox>
@@ -30,8 +28,8 @@ import Base from "~/layouts/Base.astro";
 
   <noscript>
     <p class="mt-8 max-w-measure text-ink-muted">
-      Search needs JavaScript, and this is the only thing on the site that does. Everything else is on disk as HTML,
-      so the <a class="link" href="/">front page</a> and the navigation above still work without it.
+      Search needs JavaScript, and it is the only page here that does. Every other page is plain HTML, so the
+      <a class="link" href="/">home page</a> and the links above work without it.
     </p>
   </noscript>
 </Base>

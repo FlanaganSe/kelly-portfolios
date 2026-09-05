@@ -43,12 +43,16 @@ export interface OgPage {
  */
 export const OG_PAGES = {
   "/": {
-    title: "Four portfolios, from plain to ambitious",
-    alt: `${SITE_NAME}: four portfolios built from cheap funds, what each one costs, how far it has fallen, and how sure the evidence is.`,
+    title: "Four portfolios you can actually buy",
+    alt: `${SITE_NAME}: four portfolios built from cheap funds and tested as whole portfolios, with what $10,000 became, the worst fall in dollars, the cost a year, and how sure the evidence is.`,
   },
   "/portfolios/": {
-    title: "The four portfolios, side by side",
-    alt: `${SITE_NAME}: all four side by side, with what each costs, what it adds, the worst thing that has happened to it, and which one is yours.`,
+    title: "Four portfolios, side by side",
+    alt: `${SITE_NAME}: the four portfolios in one table, with the funds, the cost a year, what $10,000 became, the worst fall, and whom each is for.`,
+  },
+  "/how-to-hold/": {
+    title: "How to hold it",
+    alt: `${SITE_NAME}: which account, how to buy, when to rebalance, and what to do when it falls.`,
   },
   "/portfolios/one-fund/": {
     title: "One fund, held well",

@@ -53,45 +53,57 @@ export default defineConfig({
   // build log: the difference is invisible in the HTML unless you go looking for it.
   compressHTML: true,
 
-  // Every route the rewrite retired, pointed at whatever now answers the same question.
+  // Every route the two rewrites retired, pointed at whatever now answers the same
+  // question. Each old route points straight at a page that exists, never at another
+  // redirect, so a reader following an old link pays one hop.
   //
   // On a static build Astro emits a small meta-refresh page per entry rather than a 301,
   // which is what this host can serve: the CloudFront function in front of the bucket
   // resolves directory indexes and does not read a redirect table. A meta refresh keeps
   // an old bookmark, an old search result and an old inbound link working, and search
   // engines follow it. The alternative was several hundred 404s on the day of the switch.
+  //
+  // A redirect that names a route a page still occupies replaces that page with a stub,
+  // so an entry goes in here in the same change that deletes the page.
   redirects: {
+    // The first rewrite (August 2026).
     "/start/": "/portfolios/one-fund/",
     "/portfolios/held-well/": "/portfolios/one-fund/",
     "/portfolio/": "/portfolios/with-trend/",
-    "/stacking/": "/strategies/value-and-momentum/",
-    "/how-many-bets/": "/strategies/value-and-momentum/",
+    "/stacking/": "/strategies/stacking/",
+    "/how-many-bets/": "/strategies/stacking/",
     "/doesnt-work/": "/strategies/",
     "/how-sure/": "/about/",
     "/methodology/": "/about/",
     "/lessons/": "/strategies/",
     "/glossary/": "/strategies/",
-    "/tools/": "/tools/which-account/",
+    "/tools/": "/how-to-hold/",
     "/tools/how-long/": "/strategies/",
-    // A redirect that names a route a page still occupies replaces that page with a
-    // stub, silently. These come on in wave 2, one per page deleted. Uncomment each line
-    // with the page it retires.
-    "/tools/placement/": "/tools/which-account/",
+    "/tools/placement/": "/how-to-hold/",
     "/research/": "/strategies/",
-    // The evidence pages became the strategies pages.
     "/evidence/": "/strategies/",
-    "/evidence/how-many-bets/": "/strategies/value-and-momentum/",
-    "/evidence/value-and-factors/": "/strategies/value-and-momentum/",
-    "/evidence/what-actually-diversifies/": "/strategies/crash-insurance/",
-    "/evidence/crash-insurance/": "/strategies/crash-insurance/",
+    "/evidence/how-many-bets/": "/strategies/stacking/",
+    "/evidence/value-and-factors/": "/portfolios/value-lean/",
+    "/evidence/what-actually-diversifies/": "/strategies/crash-protection/",
+    "/evidence/crash-insurance/": "/strategies/crash-protection/",
     "/evidence/bitcoin/": "/strategies/gold-and-bitcoin/",
     "/evidence/gold/": "/strategies/gold-and-bitcoin/",
     "/evidence/market-timing/": "/strategies/market-timing/",
-    "/evidence/trend-following/": "/strategies/trend-following/",
-    "/evidence/rebalancing/": "/strategies/fees-and-taxes/",
-    "/evidence/direct-indexing/": "/strategies/fees-and-taxes/",
-    "/evidence/fees-and-accounts/": "/strategies/fees-and-taxes/",
+    "/evidence/trend-following/": "/portfolios/with-trend/",
+    "/evidence/rebalancing/": "/how-to-hold/",
+    "/evidence/direct-indexing/": "/how-to-hold/",
+    "/evidence/fees-and-accounts/": "/how-to-hold/",
     "/portfolios/whole-market/": "/portfolios/one-fund/",
+    // The second rewrite (September 2026): four strategy pages folded into the portfolio
+    // pages and the holding guide, the account calculator into the holding guide, and
+    // the pages about the site into one.
+    "/strategies/trend-following/": "/portfolios/with-trend/",
+    "/strategies/value-and-momentum/": "/portfolios/value-lean/",
+    "/strategies/fees-and-taxes/": "/how-to-hold/",
+    "/strategies/crash-insurance/": "/strategies/crash-protection/",
+    "/tools/which-account/": "/how-to-hold/",
+    "/disclosures/": "/about/",
+    "/corrections/": "/about/",
     // The 45 corpus routes, enumerated from the files they were built from. A dynamic
     // redirect may not drop its parameter, and these all collapse to one destination,
     // so they are listed rather than matched.

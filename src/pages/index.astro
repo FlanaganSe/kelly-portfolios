@@ -1,94 +1,147 @@
 ---
 /**
- * The front door: the idea in one screen, four portfolio cards, and one answer.
+ * The front door: what the site offers, what $10,000 did in each portfolio, four cards,
+ * which one is for you, and how it was tested.
  *
- * Fees are each fund's published expense ratio, so they are plain text. Every number
- * this site measured itself renders from a figure record.
+ * Every number on this page is read from the series the research emitter writes to
+ * `src/content/series/` and formatted here; none is typed.
  */
-import Callout from "~/components/Callout.astro";
-import Figure from "~/components/Figure.astro";
+import Button from "~/components/Button.astro";
+import GrowthChart from "~/components/GrowthChart.astro";
 import Hero from "~/components/Hero.astro";
 import PortfolioCard from "~/components/PortfolioCard.astro";
-import { PORTFOLIOS } from "~/content/portfolios";
+import { PORTFOLIOS, type Portfolio } from "~/content/portfolios";
 import Base from "~/layouts/Base.astro";
+import { formatDollars, formatMonths, formatPct } from "~/lib/charts";
+import { loadSeries, seriesFor } from "~/lib/series";
+
+const file = loadSeries();
+const window = file.window.label;
+const market = seriesFor("market");
+const lines = [market, ...PORTFOLIOS.map((p) => seriesFor(p.slug))];
+
+const cards = PORTFOLIOS.map((p) => ({ ...p, summary: seriesFor(p.slug).summary }));
+const byId = (slug: Portfolio["slug"]) => {
+  const found = cards.find((c) => c.slug === slug);
+  if (found === undefined) throw new Error(`No card for ${slug}`);
+  return found;
+};
+const oneFund = byId("one-fund");
+const valueLean = byId("value-lean");
+const withTrend = byId("with-trend");
+const cautious = byId("cautious");
+
+/** How sure, and of what, in the reader's words. The word itself is in `portfolios.ts`. */
+const GLOSS: Readonly<Record<Portfolio["slug"], string>> = {
+  "one-fund": "That it is the market at the lowest cost.",
+  "value-lean": "That it beats a plain world index by a little, over decades.",
+  "with-trend": "Whether it beats a plain world index.",
+  cautious: "Whether its trend part earns its fee. That it falls less is settled.",
+};
+
+const year = (month: string) => month.slice(0, 4);
+const fallOf = (c: (typeof cards)[number]) =>
+  `${formatDollars(c.summary.worstFall.dollarsAtTrough)} (${formatPct(c.summary.worstFall.pct)})`;
+
+const cautiousLong = seriesFor("cautious", "1929").summary.worstFall;
 ---
 
-<Base
-  title="Kelly Portfolios"
-  bareTitle
-  wide
-  description="Four portfolios you could hold, one fund up to a stack of ideas and a cautious version, with what each costs, how far each has fallen, and how sure I am about each."
->
-  <Hero
-    title="A portfolio is a stack of ideas. Most of them are not worth holding."
-    lede="I measured the ideas people bolt onto a portfolio, inside a whole portfolio rather than on their own. Here are the four I would hold. Each one contains the one before it; the fourth takes the third and cuts the stock share. You choose where to stop."
-  />
+<Base title="Kelly Portfolios" bareTitle xl>
+  <section class="wide">
+    <Hero
+      title="Four portfolios you can actually buy, tested as whole portfolios."
+      lede="Each is a handful of cheap funds, scored on what $10,000 became since 1990, how far it fell in dollars, what it costs a year, and how sure the evidence is."
+    >
+      <p class="mt-3 flex flex-wrap gap-3">
+        <Button href="/portfolios/">See the four portfolios</Button>
+        <Button href="#choose" variant="outline">How to choose</Button>
+      </p>
+    </Hero>
+  </section>
 
-  <div class="card-grid mt-8">
+  <div class="wide mt-10">
+    <GrowthChart series={lines} title="What $10,000 became">
+      Four portfolios and a plain world stock index (65% US stocks, 35% the rest of the world), {window}; each
+      gridline is a bigger step than the last. Simulated from index data, not fund records: the trend part is an
+      index before trading costs, and its fund has existed only since September 2023. One fund and the plain index
+      are the same mix on this history, so their lines overlap.
+    </GrowthChart>
+  </div>
+
+  <div class="card-grid-4 wide mt-10">
     {
-      PORTFOLIOS.map((p) => (
+      cards.map((p) => (
         <PortfolioCard
           number={p.number}
           name={p.name}
           href={p.href}
           tagline={p.tagline}
           holdings={p.holdings}
-          fee={p.fee}
-          worstFall={p.worstFall}
-          worstFallNote={p.worstFallNote}
+          became={formatDollars(p.summary.final)}
+          fell={formatDollars(p.summary.worstFall.dollarsAtTrough)}
+          fellPct={formatPct(p.summary.worstFall.pct)}
+          costs={p.feeOn10k}
+          period={`${window}, simulated`}
           confidence={p.confidence}
+          gloss={GLOSS[p.slug]}
         />
       ))
     }
   </div>
 
-  <div class="prose mt-14">
-    <h2>If you want one answer</h2>
+  <div class="prose mt-14" id="choose">
+    <h2>Which one is for you</h2>
+
+    <p>
+      Ask one question: how far could your money fall before you would sell? Three of the four fell by about half
+      at some point since 1990. Cautious fell about a fifth. Each fall below is on $10,000 held at the top,{" "}
+      {window}.
+    </p>
+
+    <ul>
+      <li>
+        If a fall of about half would not make you sell, and you want the simplest thing, hold{" "}
+        <a href={oneFund.href}>{oneFund.name}</a>. Its worst fall took $10,000 down to {fallOf(oneFund)} between{" "}
+        {year(oneFund.summary.worstFall.peak)} and {year(oneFund.summary.worstFall.trough)}; it was back above
+        $10,000 after {formatMonths(oneFund.summary.worstFall.monthsToRecover)}.
+      </li>
+      <li>
+        If you could sit through the same fall and also watch a plain US index fund pull ahead for fifteen years
+        without selling, hold <a href={valueLean.href}>{valueLean.name}</a>. Its worst fall took $10,000 down to{" "}
+        {fallOf(valueLean)}, back above $10,000 after {formatMonths(valueLean.summary.worstFall.monthsToRecover)}.
+      </li>
+      <li>
+        If you could sit through a fall of about half and a decade in which the trend fund adds nothing, hold{" "}
+        <a href={withTrend.href}>{withTrend.name}</a>. Its worst fall took $10,000 down to {fallOf(withTrend)}, back
+        above $10,000 after {formatMonths(withTrend.summary.worstFall.monthsToRecover)}.
+      </li>
+      <li>
+        If you would sell after a fall of about 40%, hold <a href={cautious.href}>{cautious.name}</a>. Its worst
+        fall took $10,000 down to {fallOf(cautious)}, back above $10,000 after{" "}
+        {formatMonths(cautious.summary.worstFall.monthsToRecover)}. That label describes the past sixty years: across{" "}
+        {year(cautiousLong.peak)} to {year(cautiousLong.trough)} the same mix would have fallen{" "}
+        {formatPct(Math.abs(cautiousLong.pct))}.
+      </li>
+    </ul>
+
+    <p>
+      If you cannot decide, hold One fund. Against a plain index fund, everything else on this site added up to
+      about a coin flip: a 54% chance of being ahead after thirty years.
+    </p>
   </div>
 
-  <Callout kind="do-this" label="The short version">
-    <p>Most people should hold <a href="/portfolios/one-fund/" class="link">portfolio one</a>. It costs $6 a
-    year on every $10,000, nothing has beaten it reliably, and the four habits that go with it are the only part
-    of investing I can call settled. Hold <a href="/portfolios/with-trend/" class="link">portfolio three</a>, in
-    the version priced for today's market, if you want a real chance of beating the market and can sit through a
-    fall of half your money without selling. Hold <a href="/portfolios/cautious/" class="link">portfolio four</a> if
-    you would sell after a fall of 30% or 40%.</p>
-  </Callout>
-
-  <div class="prose">
-    <p>Portfolio two is for someone who wants a lean with a long record and can accept trailing the market for a
-    decade or more. Portfolio three is the ambitious one. Its extra fund is under three years old, and I cannot yet
-    tell whether it will earn its fee. The case for it rests on 96 years of a trend-following series that did not
-    exist as a fund for most of that time. Portfolio four is portfolio three with half or more of the money in
-    inflation-protected Treasury bonds, and it is measured on the same histories: a fall of 16% to 18% since 1990,
-    and 42% to 54% across 1929 to 1932.</p>
-  </div>
-
   <div class="prose mt-14">
-    <h2>Why fees and accounts come first</h2>
+    <h2>How this was tested</h2>
 
-    <p>The cheapest fund with the same holdings beats the dearer one by exactly the fee gap, every year, with no luck
-    involved. Moving from a typical active fund to an index fund saves about
-    <Figure id="fee-gap" inline showUnit={false} /> a year, and nothing else on this site is that certain. Where you
-    hold a fund matters almost as much as which fund: the average US stock fund in a taxable account costs its owner
-    about 1.12% a year in tax, more than most funds charge in fees.</p>
-
-    <p>That is why portfolio one comes before any clever idea. The ideas in portfolios two, three and four are
-    worth less than the fee gap and take decades to confirm. They are bets, and each page says how big and how sure.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2>What I measured</h2>
-
-    <p>Every idea people add to a portfolio, cheaper funds, gold, bitcoin, the 200-day rule, crash insurance and
-    more, gets a verdict on the <a href="/strategies/">strategies page</a>. The verdict is about the idea
-    inside a whole portfolio, because some ideas that look poor on their own help when added on top of stocks, and
-    some that look good on their own make the whole thing worse. Every fund I priced is on the
-    <a href="/funds/">funds page</a>, and the <a href="/tools/which-account/">which-account tool</a> says where
-    each fund belongs.</p>
-
-    <p>Numbers on this site are before tax and after fund costs unless a page says otherwise. What any of them are
-    worth to you depends on what you hold today, so where a result changes with your situation, the page says so
-    and gives the range.</p>
+    <p>
+      Every idea here was tested inside a whole portfolio. The test asks whether adding the idea to this portfolio,
+      paid for in a stated way, left you better off than a cheap index fund holding the same mix, with fund fees
+      and trading costs charged inside the test, and never whether the idea went up on its own. The portfolios are
+      simulated from index data rather than fund records, so nobody earned these returns and nobody sat through
+      these falls without knowing how they ended. Every dollar figure is before tax. Each result carries one of
+      four words, <a href="/about/">Settled</a>,{" "}
+      <a href="/about/">Probably</a>, <a href="/about/">Too close to call</a> or <a href="/about/">No</a>, and the
+      About page says what each one means and what would change it.
+    </p>
   </div>
 </Base>

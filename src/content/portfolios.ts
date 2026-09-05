@@ -1,6 +1,7 @@
 /**
- * The four portfolios, as data: one place for the holdings, the fee and the one-line
- * description, read by the home page, the comparison page and each portfolio's own page.
+ * The four portfolios, as data: One fund, Value lean, Plus trend and Cautious, one
+ * version of each. One place for the holdings, the fee and the one-line description,
+ * read by the home page, the comparison page and each portfolio's own page.
  *
  * Nothing numeric here is typed. The fee is each fund's published expense ratio from
  * `src/content/shelf.ts`, weighted by the holdings. The worst fall is read from the series
@@ -8,8 +9,9 @@
  * on the 1990 to 2026 history (`src/lib/series.ts`), and a vitest asserts that the weights
  * below equal the weights the emitter scored, so the two cannot drift apart unnoticed.
  *
- * One version of each portfolio. The 30% cautious version is kept only as data for the
- * one sentence the cautious page spends on it.
+ * The tagline is one sentence saying whom the portfolio is for. The holdings for a fall
+ * of about 30% are kept only as data for the one sentence the cautious page spends on
+ * them; they are not a fifth portfolio.
  */
 import { fundByTicker } from "~/content/shelf";
 import { feeOn10kText, feePercentText, weightedExpenseRatioBp } from "~/lib/fees";
@@ -116,10 +118,9 @@ export const PORTFOLIOS: readonly Portfolio[] = [
   {
     number: 1,
     slug: "one-fund",
-    name: "One fund, held well",
+    name: "One fund",
     href: "/portfolios/one-fund/",
-    tagline:
-      "The whole world's stock market in a single fund, in its cheapest form, in the right account, and never traded.",
+    tagline: "For anyone, and the default here: one fund that owns the whole world's stock market.",
     holdings: ONE_FUND_HOLDINGS,
     ...fee(ONE_FUND_HOLDINGS),
     ...worstFall("one-fund"),
@@ -128,9 +129,9 @@ export const PORTFOLIOS: readonly Portfolio[] = [
   {
     number: 2,
     slug: "value-lean",
-    name: "A lean toward value",
+    name: "Value lean",
     href: "/portfolios/value-lean/",
-    tagline: "Six funds that lean toward cheaper, smaller, more profitable companies.",
+    tagline: "For someone who can watch a plain US index fund pull ahead for fifteen years without selling.",
     holdings: VALUE_LEAN_HOLDINGS,
     ...fee(VALUE_LEAN_HOLDINGS),
     ...worstFall("value-lean"),
@@ -139,9 +140,9 @@ export const PORTFOLIOS: readonly Portfolio[] = [
   {
     number: 3,
     slug: "with-trend",
-    name: "The same, plus trend",
+    name: "Plus trend",
     href: "/portfolios/with-trend/",
-    tagline: "The value lean, plus a fund that adds a trend-following program on top of its stocks.",
+    tagline: "For someone who can sit through a fall of about half, and a decade in which the trend fund adds nothing.",
     holdings: WITH_TREND_HOLDINGS,
     ...fee(WITH_TREND_HOLDINGS),
     ...worstFall("with-trend"),
@@ -150,10 +151,9 @@ export const PORTFOLIOS: readonly Portfolio[] = [
   {
     number: 4,
     slug: "cautious",
-    name: "The cautious version",
+    name: "Cautious",
     href: "/portfolios/cautious/",
-    tagline:
-      "Portfolio three with the stock share cut and the rest in TIPS, for someone who would sell after a fall of about 30% or 40%.",
+    tagline: "For someone who would sell after a fall of about 40%, so half of the money is in government bonds.",
     holdings: CAUTIOUS_40_HOLDINGS,
     ...fee(CAUTIOUS_40_HOLDINGS),
     ...worstFall("cautious"),

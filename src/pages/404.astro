@@ -2,9 +2,9 @@
 /**
  * The not-found page.
  *
- * GitHub Pages serves `dist/404.html` for any path it cannot resolve, and so does every
- * other static host worth using, so this file is the whole mechanism. It stays out of
- * the search index and out of search results: a 404 that ranks is worse than no 404.
+ * The host serves `dist/404.html` for any path it cannot resolve, so this file is the
+ * whole mechanism. It stays out of the search index and out of search results: a 404
+ * that ranks is worse than no 404.
  */
 import Base from "~/layouts/Base.astro";
 import { NAV_ITEMS } from "~/lib/site";
@@ -21,15 +21,13 @@ import { NAV_ITEMS } from "~/lib/site";
   <h1 class="mt-2 font-serif text-4xl tracking-[-0.02em] text-ink">That page is not here</h1>
 
   <div class="prose mt-6">
-    <p>
-      Either the address has a typo in it, or something moved and I failed to leave a forwarding note. The second
-      one is my fault, and it is worth telling me about.
-    </p>
+    <p>The address may have a typo in it, or the page has moved. Everything on the site is one click from here.</p>
   </div>
 
   <nav aria-label="Everything on the site" class="mt-8">
-    <p class="eyebrow">Try one of these</p>
+    <p class="label">Try one of these</p>
     <ul class="mt-3 flex flex-wrap gap-x-5 gap-y-2">
+      <li><a href="/" class="link">Home</a></li>
       {
         NAV_ITEMS.map((item) => (
           <li>
@@ -39,7 +37,7 @@ import { NAV_ITEMS } from "~/lib/site";
           </li>
         ))
       }
-      <li><a href="/search/" class="link">Search the whole site</a></li>
+      <li><a href="/search/" class="link">Search</a></li>
     </ul>
   </nav>
 </Base>

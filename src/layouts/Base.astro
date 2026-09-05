@@ -7,9 +7,10 @@
  */
 import ThemeToggle from "~/components/ThemeToggle.astro";
 import { ogCard, OG_HEIGHT, OG_WIDTH } from "~/lib/og";
+import { loadSeries } from "~/lib/series";
 import {
+  asOfLabel,
   canonicalPath,
-  CORPUS_AS_OF,
   FOOTER_ITEMS,
   isCurrent,
   NAV_ITEMS,
@@ -32,8 +33,9 @@ interface Props {
   /** Keep the page out of search-engine results. Used by the 404. */
   noindex?: boolean;
   /**
-   * The date the numbers on this page were last checked, printed in the page footer as
-   * "Numbers as of". Defaults to the site-wide date; pass `null` to print none.
+   * The date the numbers on this page were computed, printed in the footer as "Numbers
+   * as of". Defaults to the date the research emitter wrote the series the site reads;
+   * pass `null` for a page with no numbers.
    */
   asOf?: string | null;
   /** A 48rem measure for pages that are mostly cards and tables; prose keeps 42rem. */
@@ -51,7 +53,7 @@ const {
   bareTitle = false,
   indexable = true,
   noindex = false,
-  asOf = CORPUS_AS_OF,
+  asOf = loadSeries().generatedAt,
   wide = false,
   xl = false,
 } = Astro.props;
@@ -91,8 +93,6 @@ const structuredData = {
     url: origin.href,
   },
 };
-
-
 ---
 
 <html lang="en">
@@ -154,8 +154,8 @@ const structuredData = {
         Skip to content
       </a>
 
-      {/* Four items, and the masthead is the whole of the site's first-level structure.
-          The wordmark is the fifth destination and goes home. */}
+      {/* Five items, and the masthead is the whole of the site's first-level structure.
+          The wordmark is the sixth destination and goes home. */}
       <header class="masthead">
         <div class="page-rail masthead-row">
           <a href="/" class="wordmark">{SITE_NAME}</a>
@@ -187,25 +187,14 @@ const structuredData = {
           matches everything. */}
       <main id="main" data-pagefind-body={indexable ? true : undefined} class="canvas flex-1 py-10 sm:py-14">
         <slot />
-        {
-          asOf && (
-            <p class="page-asof" data-numeric>
-              Numbers as of {asOf}. <a href="/corrections/" class="link">Corrections</a> lists anything that changed.
-            </p>
-          )
-        }
       </main>
 
-      {/* The two-line disclaimer sits on every page because the condition it states is a
-          condition of the whole site, not of one essay. `/disclaimer/` carries the full
-          text and the reasoning; these two sentences are the part a reader has to see
-          without clicking. */}
+      {/* One sentence of disclaimer on every page, because the condition it states is a
+          condition of the whole site. `/disclaimer/` carries the full text. */}
       <footer class="mt-20 border-t border-rule bg-sunken">
         <div class="page-rail flex flex-col gap-5 pt-8 pb-11 text-sm text-ink-2">
           <p class="max-w-measure">
-            General information about investing, and no part of it is personalised advice. This site does not
-            answer questions about an individual reader&rsquo;s portfolio.{" "}
-            <a href="/disclaimer/" class="link font-semibold">Read the full disclaimer</a>.
+            General information about how investing works, and none of it is advice about your money.
           </p>
 
           <nav aria-label="About this site">
@@ -219,15 +208,15 @@ const structuredData = {
                   </li>
                 ))
               }
+              <li>
+                <a href={REPO_URL} rel="noopener noreferrer" class="link">
+                  Source on GitHub
+                </a>
+              </li>
             </ul>
           </nav>
 
-          {/* The repository is the last thing on the page on purpose. It is where a
-              reader goes to audit the work, which is an errand almost nobody is on. */}
-          <p class="flex flex-wrap items-baseline gap-x-4 gap-y-1 text-xs text-ink-3">
-            <span>Written by one person, with no sponsor and no advertising.</span>
-            <a href={REPO_URL} rel="noopener noreferrer" class="link">Source on GitHub</a>
-          </p>
+          {asOf && <p class="text-xs text-ink-3" data-numeric>Numbers as of {asOfLabel(asOf)}.</p>}
         </div>
       </footer>
     </div>

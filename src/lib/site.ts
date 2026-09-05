@@ -1,10 +1,10 @@
 /**
  * Site-wide constants and the primary navigation, in reading order.
  *
- * Four items, and the order is the argument: what to hold, the ideas people add to it
- * and whether each earns its place, what the funds cost, and who is saying all this. The
- * calculator and the pages about the site live in the footer, which is where an errand
- * belongs.
+ * Five items, and the order is the argument: the four portfolios, the ideas people add
+ * to one and whether each earns its place, what the funds cost, how to hold the
+ * portfolio you pick, and who is saying all this. The pages about the site itself live
+ * in the footer, which is where an errand belongs.
  *
  * The site's own origin is not here. It is `site` in `astro.config.mjs`, which the
  * sitemap also reads, and a page reaches it through `Astro.site`.
@@ -13,12 +13,9 @@
 export const SITE_NAME = "Kelly Portfolios";
 
 export const SITE_DESCRIPTION =
-  "Four portfolios built from cheap funds, from plain to ambitious and one cautious, with what each one costs, how far it has fallen, and how sure the evidence is. Plus a verdict on every idea people bolt onto a portfolio.";
+  "Four portfolios you can actually buy, tested as whole portfolios: what $10,000 became, the worst fall in dollars, the cost a year, and how sure the evidence is.";
 
 export const REPO_URL = "https://github.com/FlanaganSe/kelly-portfolios";
-
-/** The date the numbers on the site were last checked against the research. */
-export const CORPUS_AS_OF = "2026-09-02";
 
 export interface NavItem {
   readonly href: string;
@@ -33,20 +30,51 @@ export const NAV_ITEMS = [
   { href: "/portfolios/", label: "Portfolios" },
   { href: "/strategies/", label: "Strategies" },
   { href: "/funds/", label: "Funds" },
+  { href: "/how-to-hold/", label: "How to hold" },
   { href: "/about/", label: "About" },
 ] as const satisfies readonly NavItem[];
 
-/**
- * The footer's own links: the calculator, then the pages about the site itself. None of
- * these belongs in the masthead; a reader reaches them on a different errand.
- */
+/** The footer's own links. A reader reaches these on a different errand. */
 export const FOOTER_ITEMS = [
-  { href: "/tools/which-account/", label: "Which account" },
-  { href: "/corrections/", label: "Corrections" },
-  { href: "/disclosures/", label: "Disclosures" },
   { href: "/disclaimer/", label: "Disclaimer" },
   { href: "/search/", label: "Search" },
 ] as const satisfies readonly NavItem[];
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
+] as const;
+
+/**
+ * A `YYYY-MM-DD` date as a reader writes one: `"2026-09-05"` is "September 5, 2026".
+ * Anything else is handed back untouched, so a page that passes its own text still prints.
+ */
+export function asOfLabel(iso: string): string {
+  const match = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (match === null) return iso;
+  const month = MONTHS[Number(match[2]) - 1];
+  if (month === undefined) return iso;
+  return `${month} ${Number(match[3])}, ${match[1]}`;
+}
+
+/** A `YYYY-MM` month as a reader writes one: `"2007-10"` is "October 2007". */
+export function monthLabel(yearMonth: string): string {
+  const match = /^(\d{4})-(\d{2})$/.exec(yearMonth);
+  if (match === null) return yearMonth;
+  const month = MONTHS[Number(match[2]) - 1];
+  if (month === undefined) return yearMonth;
+  return `${month} ${match[1]}`;
+}
 
 /** Drops any trailing slash, so the two URL forms compare equal. */
 function bare(pathname: string): string {
