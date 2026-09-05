@@ -31,7 +31,7 @@ const FOR: Readonly<Record<Portfolio["slug"], string>> = {
   cautious: "Someone who would sell after a fall of about 40%",
 };
 
-const dollars = (value: number) => formatDollars(value, "exact");
+const dollars = (value: number) => formatDollars(value);
 const yearCell = (y: YearReturn | null) => (y === null ? "—" : `${formatPct(y.pct, 1, true)} in ${y.year}`);
 const episodeCell = (s: PortfolioSeries, id: EpisodeId) => {
   const value = s.summary.episodes[id];
@@ -186,7 +186,7 @@ const longFallText = (id: LongId) => {
       plain 60/40 mix, 60% stocks and 40% US government bonds, fell to {longFallText("sixty-forty")} and took{" "}
       {formatMonths(sixtyFortyLong.monthsToRecover)}. Cautious fell to {longFallText("cautious")} and took{" "}
       {formatMonths(cautiousLong.monthsToRecover)}. Nothing on this site would have held a 30% fall through those
-      years, so the labels above describe the past sixty years. All of it is simulated: nobody earned these returns,
+      years, so the labels above rest on the history since 1990, not on that one. All of it is simulated: nobody earned these returns,
       and nobody sat through the falls without knowing how they ended.
     </p>
   </div>

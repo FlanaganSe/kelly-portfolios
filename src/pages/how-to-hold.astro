@@ -31,7 +31,7 @@ const FALLS = [...PORTFOLIOS.map((p) => seriesFor(p.slug)), market].map((s) => {
     y2022,
     y2008Text: formatPct(y2008),
     y2022Text: formatPct(y2022),
-    trough: formatDollars(s.summary.worstFall.dollarsAtTrough, "exact"),
+    trough: formatDollars(s.summary.worstFall.dollarsAtTrough),
     months: months === null ? "not yet" : String(months),
   };
 });
@@ -92,9 +92,9 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
       <a href="#rebalancing">Rebalancing</a>.</p>
     </Callout>
 
-    <p>If you have a retirement account and a taxable brokerage account, the rule is two lines. Foreign stock
-    funds and RSST go in the retirement account; plain US stock funds, VTI and VTV, go in the taxable account.
-    The bond fund goes in the retirement account before anything else.</p>
+    <p>If you have a retirement account and a taxable brokerage account, the rule is two lines. RSST, the
+    bond fund and the foreign stock funds go in the retirement account, in that order; plain US stock funds, VTI
+    and VTV, go in the taxable account.</p>
 
     <p>The reason is the yearly tax bill. In a taxable account you pay tax every year on what a fund pays out; in
     a retirement account you pay none, so the fund with the biggest yearly bill goes there first. Bond interest

@@ -50,7 +50,7 @@ const cautiousLong = seriesFor("cautious", "1929").summary.worstFall;
   <section class="wide">
     <Hero
       title="Four portfolios you can actually buy, tested as whole portfolios."
-      lede="Each is a handful of cheap funds, scored on what $10,000 became since 1990, how far it fell in dollars, what it costs a year, and how sure the evidence is."
+      lede="Each is a handful of cheap funds, judged on what $10,000 became since 1990, how far it fell in dollars, what it costs a year, and how sure the evidence is."
     >
       <p class="mt-3 flex flex-wrap gap-3">
         <Button href="/portfolios/">See the four portfolios</Button>
@@ -118,8 +118,8 @@ const cautiousLong = seriesFor("cautious", "1929").summary.worstFall;
       <li>
         If you would sell after a fall of about 40%, hold <a href={cautious.href}>{cautious.name}</a>. Its worst
         fall took $10,000 down to {fallOf(cautious)}, back above $10,000 after{" "}
-        {formatMonths(cautious.summary.worstFall.monthsToRecover)}. That label describes the past sixty years: across{" "}
-        {year(cautiousLong.peak)} to {year(cautiousLong.trough)} the same mix would have fallen{" "}
+        {formatMonths(cautious.summary.worstFall.monthsToRecover)}. That label rests on the history since 1990; on the long simulated history, across{" "}
+        {year(cautiousLong.peak)} to {year(cautiousLong.trough)}, the same mix fell{" "}
         {formatPct(Math.abs(cautiousLong.pct))}.
       </li>
     </ul>
@@ -134,14 +134,12 @@ const cautiousLong = seriesFor("cautious", "1929").summary.worstFall;
     <h2>How this was tested</h2>
 
     <p>
-      Every idea here was tested inside a whole portfolio. The test asks whether adding the idea to this portfolio,
-      paid for in a stated way, left you better off than a cheap index fund holding the same mix, with fund fees
-      and trading costs charged inside the test, and never whether the idea went up on its own. The portfolios are
-      simulated from index data rather than fund records, so nobody earned these returns and nobody sat through
-      these falls without knowing how they ended. Every dollar figure is before tax. Each result carries one of
-      four words, <a href="/about/">Settled</a>,{" "}
-      <a href="/about/">Probably</a>, <a href="/about/">Too close to call</a> or <a href="/about/">No</a>, and the
-      About page says what each one means and what would change it.
+      Every idea here was tested inside a whole portfolio, with fund fees and trading costs charged, against a
+      cheap index fund holding the same mix. The portfolios are simulated from index data, not fund records, and
+      every dollar figure is before tax. Each result carries one of five words, <a href="/about/">Settled</a>,{" "}
+      <a href="/about/">Probably</a>, <a href="/about/">Too close to call</a>, <a href="/about/">No</a> or{" "}
+      <a href="/about/">Not measured yet</a>; the <a href="/about/">About page</a> says what each one means and how
+      the testing works.
     </p>
   </div>
 </Base>

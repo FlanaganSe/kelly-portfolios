@@ -245,7 +245,7 @@ const HOLDINGS = [
   <div class="prose w-full mt-14">
     <h2>The long history</h2>
 
-    <p>Simulated, from US stock index data. Over 1929 to 2025 a US all-stock index grew {pct(long.cagrPct, 2)} a year,
+    <p>Simulated, from US stock index data. Over 1929 to 2025 a US all-stock index grew {pct(long.cagrPct)} a year,
     and $10,000 at the {monthName(long.worstFall.peak)} peak fell to {dollars(long.worstFall.dollarsAtTrough)} by
     {monthName(long.worstFall.trough)}, a fall of {pct(Math.abs(long.worstFall.pct))}. It was not back above $10,000
     until {monthName(long.worstFall.recovered ?? long.worstFall.trough)}, {formatMonths(long.worstFall.monthsToRecover)}
