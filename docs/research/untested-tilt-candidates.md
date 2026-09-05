@@ -204,9 +204,9 @@ uses any of them**, and that is deliberate: across dozens of funds the best-look
 is luck, and AVDV's headline +2.47 on the shelf sits inside a ±3.96 band on a window chosen
 by nobody.
 
-### Cost, from each fund's own filing
+### Fees and turnover from filings; trading costs assumed
 
-| | Fee | Turnover | Incumbent's turnover | Incremental cost, pp/yr |
+| | Fee | Turnover | Incumbent's turnover | Assumed incremental cost, pp/yr |
 | --- | ---: | ---: | ---: | ---: |
 | AVDV | 36 bp | **4%/yr** | VXUS 4% | **0.25 to 0.35** |
 | AVUV over VTI | 25 bp | 6%/yr | VTI 3% | 0.25 to 0.29 |
@@ -217,8 +217,18 @@ by nobody.
 Fees and turnover are from each fund's own Form 497K: iShares 2025-11-28 for MTUM (fiscal
 year to 2025-07-31), Avantis 2025-12-31 for AVDV and AVUV, Alpha Architect 2026-02-01 for
 QVAL, Vanguard 2026-04-28 for VTI and VTV and 2026-02-27 for VXUS. The cost range carries
-two widths at once: the trading-cost coefficient's own 1.0-to-1.7 calibration, and the fee
-against the net cost.
+two widths at once: a trading-cost coefficient of 1.0 to 1.7 borrowed from factor-portfolio
+research, and the fee against the net cost. Neither coefficient is a validated minimum
+or maximum for these ETFs. Annual reported turnover also excludes in-kind transfers in
+AVUV's financial highlights; it does not measure every change in the holdings.
+
+As of 2026-09-05, SPMO's [December 2025 summary prospectus](https://www.sec.gov/Archives/edgar/data/1378872/000119312525325661/d54028d497k.htm)
+reports five-year annual returns of 19.23% for the fund and 19.38% for its momentum index,
+to December 2024. This small tracking difference challenges the model's assumed cost
+floor. It does not isolate transaction costs: replication, lending and valuation effects
+also enter the gap. A fee-only scenario is a useful optimistic sensitivity, not a claim
+that trading is free. Actual filed fund-return paths already include internal fees and
+trading costs; adding the model's cost charge to those returns would count them twice.
 
 > **Net cost has since been read, and it moved nothing.** Form N-CEN securities-lending
 > income is now on the shelf for AVDV (5.97 bp, so 30.03 bp net), AVUV (0.46, so 24.54),

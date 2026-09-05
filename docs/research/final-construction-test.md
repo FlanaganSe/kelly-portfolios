@@ -520,7 +520,7 @@ stated window, exactly as every other candidate is.
 | Fee | **13 bp** | 15 bp |
 | Net cost | **12.93 bp** | not read |
 | Turnover | **44%/yr** | 116%/yr |
-| Incremental cost over VTI | **0.51 to 0.82 pp/yr** | 1.25 to 2.06 pp/yr |
+| Assumed incremental cost over VTI | **0.51 to 0.82 pp/yr** | 1.25 to 2.06 pp/yr |
 | Distribution tax drag vs VTI | **−0.05 pp/yr** | −0.11 pp/yr |
 | Correlation of active leg with IDMO's | **+0.626** | +0.554 |
 | Sleeve edge, own-panel | +0.70 to +1.01 | −0.28 to +0.53 |
@@ -573,7 +573,9 @@ that subtracts against the others.
 - **Trading cost is `k × turnover` basis points at `k` from 1.0 to 1.7.** For RPV and SPMO,
   which turn over 42% and 44%, the choice between the two ends is 0.25 and 0.31 pp/yr —
   smaller than the whole verdict in RPV's case and comparable to it in SPMO's. Both ends are
-  reported.
+  reported. These are sensitivity assumptions, not validated ETF cost bounds; the
+  [tilt audit](untested-tilt-candidates.md#fees-and-turnover-from-filings-trading-costs-assumed)
+  compares the premise with SPMO's filed index-tracking figures.
 - **AQR's TSMOM is gross of the vendor's own trading costs by omission**, so every
   trend-bearing figure in §1 inherits that.
 - **Securities lending is not credited inside the tournament.** The specification omits it
