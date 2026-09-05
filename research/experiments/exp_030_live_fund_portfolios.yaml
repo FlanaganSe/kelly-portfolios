@@ -1,0 +1,122 @@
+experiment_family: exp_030_live_fund_portfolios
+title: Actual filed fund returns for complete published portfolios and fixed VTV/SPMO substitutions
+entry_point: exp_030_live_fund_portfolios
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 2026090530
+hypothesis: >
+  Replacing VTV with AVUV, replacing part of VTI with SPMO, or both can change
+  complete-portfolio growth and downside differently from residual factor appraisal.
+  Evaluate these fixed substitutions on the actual fund histories available together.
+mechanism: >
+  Total fund returns retain market beta, realised factor payoffs, fund implementation
+  and covariance. Portfolio weights drift and are restored annually, with execution
+  costs paid inside the self-financing rule. No fitted alpha is subtracted.
+falsifier: >
+  Report signed paired growth gaps and intervals for each fixed comparison. A zero
+  or negative realised gap contradicts improvement on that window; intervals spanning
+  zero leave the historical estimate unresolved. No outcome promotes or permanently
+  rejects a fund, forecasts outperformance odds, or identifies an optimal allocation.
+universe: >
+  VTI VXUS VTV AVDV IDMO AVES RSST SCHP AVUV SPMO. ETF NAV total returns from the
+  named share class' SEC N-PORT Item B.5 filings, via existing fund_returns parser.
+sample_policy:
+  start: '2021-10'
+  end: '2026-03'
+  held_out: None. Overlapping historical data were inspected in earlier studies.
+  embargo: No predictive fitting; fixed allocations and anniversary rebalancing only.
+  eras:
+    - name: value_lean
+      start: '2021-10'
+      end: '2026-03'
+      rationale: First whole month of AVES through the frozen common endpoint.
+    - name: with_trend_and_cautious
+      start: '2023-10'
+      end: '2026-03'
+      rationale: First whole month of RSST through the same frozen endpoint.
+benchmark: >
+  Primary per portfolio: unchanged published weights. Secondary: 65/35 VTI/VXUS
+  split of the non-SCHP fraction, SCHP at 0%/5%/50% for value/trend/cautious.
+  These cheap controls are not risk-, beta- or leverage-matched and are never pooled.
+primary_metric: Annualised paired log-growth difference in percentage points per year.
+secondary_metrics:
+  - CAGR and arithmetic return, percentage points per year
+  - Month-end maximum drawdown including initial wealth, percent
+  - Relative terminal wealth and annualised tracking error
+  - Realised rolling twelve-month underperformance fraction and worst wealth ratio
+  - Initial and annual execution cost and realised turnover
+cost_model: >
+  Filed NAV returns already incorporate internal management and trading costs; no
+  expense ratio, turnover haircut or fitted alpha is subtracted again. Investor
+  execution is 5 bp roundtrip baseline and 25 bp sensitivity, half on each dollar
+  bought or sold. Initial cash purchase and annual rebalancing pay costs. Trades
+  solve q + c sum(abs(q target - drifted_weights)) = 1 exactly; initial q=1/(1+c).
+  Sheltered/no investor tax; no terminal liquidation. No bid/ask source is estimated.
+rebalance_rule: >
+  Invest before the first monthly return, restore fixed target weights before month
+  13,25,37,49 (October anniversary), otherwise drift. Self-financing fully invested
+  long-only weights. Initial cost is in first monthly return and initial wealth=1.
+inference:
+  bootstrap: stationary-block on whole joint fund rows, rerun every execution path
+  block_length_policy: Fixed mean block length 6 months, not tuned.
+  multiple_testing_correction: None; descriptive exploratory family, no promoted winner.
+  confidence_level: 0.95
+  resamples: 2000
+  notes: >
+    Paired percentile intervals for growth gaps. Joint resampling preserves fund
+    dependence and reexecutes drift/rebalancing/costs. Short and overlapping histories
+    give few independent regimes. Bootstrap frequencies are not forecast probabilities.
+rejection_rule: Always exploratory. No weight search, selection, or promotion.
+parameters:
+  portfolio_source_sha256: b7578ab25c9d40c36c39a2d177f3e7576181a8d97afce9d3d502377fd812698f
+  rebalance_every_months: 12
+  execution_roundtrip_bp: [5, 25]
+  portfolios:
+    value-lean:
+      first: '2021-10'
+      last: '2026-03'
+      weights: {VTI: 0.49, VXUS: 0.16, VTV: 0.15, AVDV: 0.10, IDMO: 0.05, AVES: 0.05}
+      spmo_weight: 0.05
+      bond_weight: 0.0
+    with-trend:
+      first: '2023-10'
+      last: '2026-03'
+      weights: {RSST: 0.25, VTI: 0.19, VXUS: 0.16, VTV: 0.15, AVDV: 0.10, IDMO: 0.05, AVES: 0.05, SCHP: 0.05}
+      spmo_weight: 0.05
+      bond_weight: 0.05
+    cautious:
+      first: '2023-10'
+      last: '2026-03'
+      weights: {SCHP: 0.50, RSST: 0.15, VTI: 0.095, VXUS: 0.08, VTV: 0.075, AVDV: 0.05, IDMO: 0.025, AVES: 0.025}
+      spmo_weight: 0.025
+      bond_weight: 0.50
+  arms: [unchanged, avuv, spmo, both]
+  cheap_equity_us_share: 0.65
+  fund_ids:
+    VTI: [S000002848, C000007808]
+    VXUS: [S000002932, C000094038]
+    VTV: [S000002840, C000007778]
+    AVDV: [S000066457, C000214352, '2019-09-24']
+    IDMO: [S000034746, C000106969]
+    AVES: [S000072996, C000229745, '2021-09-28']
+    RSST: [S000081720, C000244698, '2023-09-05']
+    SCHP: [S000029407, C000090317]
+    AVUV: [S000066459, C000214354, '2019-09-24']
+    SPMO: [S000050154, C000158243]
+hostile_tests:
+  - Same fixed constructions at five times the execution cost.
+  - Compare each construction separately with the cheap non-leverage-matched control.
+  - Require every declared month for every needed share class; no shortening or filling.
+  - Independently test fully funded drift, funding substitutions and exact execution costs.
+reporting_requirements:
+  - Include exact weights, windows, source URLs and SHA256 byte identities in result.json.
+  - Commit readable comparison tables backed by hashed diagnostics.
+  - State few regimes, monthly drawdown resolution and absence of taxes/forward evidence.
+  - Keep initial purchase in full wealth and flag its inclusion in first rolling window.
+notes: >
+  Frozen before this experiment's first execution. Weights were independently compared
+  with src/content/portfolios.ts at its recorded SHA256. Tests preserve that snapshot;
+  later site edits require a successor experiment, not edits to this frozen specification. This is a current-survivor
+  product comparison, not a point-in-time fund selection rule. A hash identifies bytes;
+  it does not establish contemporaneous availability of revised filings.
