@@ -9,13 +9,16 @@ import pytest
 from portfolio_edge.experiments import exp_028_tilt_estimand_audit as audit
 from portfolio_edge.experiments.registry import RunContext
 from portfolio_edge.experiments.specification import load_specification
+from portfolio_edge.studies import _untested_tilts_tables
 
 
-def test_audit_refuses_changed_emitter_before_data_access(monkeypatch, tmp_path) -> None:
-    specification = load_specification(Path("experiments/exp_028_tilt_estimand_audit.yaml"))
+def test_audit_refuses_changed_emitter_before_data_access(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path
+) -> None:
+    specification = load_specification(Path("experiments/exp_028b_tilt_estimand_source_audit.yaml"))
     specification = replace(specification, parameters={"emitter_sha256": "wrong"})
 
-    def forbidden():
+    def forbidden() -> None:
         pytest.fail("a source mismatch must fail before constructing a cache")
 
     monkeypatch.setattr(audit, "RecordingCache", forbidden)
@@ -24,14 +27,16 @@ def test_audit_refuses_changed_emitter_before_data_access(monkeypatch, tmp_path)
         audit.run(specification, context)
 
 
-def test_audit_captures_output_and_read_sources(monkeypatch, tmp_path, capsys):
-    specification = load_specification(Path("experiments/exp_028_tilt_estimand_audit.yaml"))
+def test_audit_captures_output_and_read_sources(
+    monkeypatch: pytest.MonkeyPatch, tmp_path: Path, capsys: pytest.CaptureFixture[str]
+) -> None:
+    specification = load_specification(Path("experiments/exp_028b_tilt_estimand_source_audit.yaml"))
 
-    def emit(*, cache):
+    def emit(*, cache: audit.RecordingCache) -> None:
         cache.sources[("source", "abc")] = {"url": "source", "sha256": "abc"}
         print("priced edge differs from residual alpha")
 
-    monkeypatch.setattr(audit._untested_tilts_tables, "main", emit)
+    monkeypatch.setattr(_untested_tilts_tables, "main", emit)
     context = RunContext(run_id="test", seed=1, rng=np.random.default_rng(1), artifact_dir=tmp_path)
     result = audit.run(specification, context)
     assert capsys.readouterr().out == ""

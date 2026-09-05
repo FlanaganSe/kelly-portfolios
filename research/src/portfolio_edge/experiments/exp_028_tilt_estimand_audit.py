@@ -72,9 +72,13 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--parent-run-id", default=None)
+    parser.add_argument("--specification", type=Path, default=None)
     arguments = parser.parse_args()
     root = Path(__file__).resolve().parents[3]
-    specification = load_specification(root / "experiments" / f"{ENTRY_POINT}.yaml")
+    specification = load_specification(
+        arguments.specification
+        or root / "experiments" / "exp_028b_tilt_estimand_source_audit.yaml"
+    )
     registry = ExperimentRegistry()
     registry.add(ENTRY_POINT, run)
     ledger = Ledger()

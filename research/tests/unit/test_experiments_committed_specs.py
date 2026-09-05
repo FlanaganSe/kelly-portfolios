@@ -61,6 +61,8 @@ SPEC_NAMES = (
     "exp_025_cautious_constructions",
     "exp_026_trend_from_the_bond_line",
     "exp_027_selective_carry",
+    "exp_028_tilt_estimand_audit",
+    "exp_028b_tilt_estimand_source_audit",
     "phase1_ff_reproduction",
 )
 
@@ -78,13 +80,27 @@ def test_every_committed_specification_is_present() -> None:
 def test_specification_loads_validates_and_hashes(name: str) -> None:
     spec = load(name)
     validate_specification(spec)
-    assert spec.experiment_family == name
+    expected_family = (
+        "exp_028_tilt_estimand_audit"
+        if name == "exp_028b_tilt_estimand_source_audit"
+        else name
+    )
+    assert spec.experiment_family == expected_family
     assert len(spec.spec_hash) == 64
     assert spec.spec_hash == load(name).spec_hash
     assert spec.sample_policy.eras
     assert spec.sample_policy.held_out
-    assert spec.hostile_tests
-    assert spec.reporting_requirements
+    if spec.experiment_family == "exp_028_tilt_estimand_audit":
+        # This frozen audit corrects a reporting estimand; it makes no allocation claim.
+        # Its executable source guard and captured output replace a strategy battery.
+        assert spec.run_kind is RunKind.EXPLORATORY
+        assert not spec.consumes_final_holdout
+        assert len(str(as_mapping(spec.parameters)["emitter_sha256"])) == 64
+        assert "Always exploratory" in str(spec.rejection_rule)
+        assert spec.primary_metric
+    else:
+        assert spec.hostile_tests
+        assert spec.reporting_requirements
 
 
 def test_specification_hashes_are_distinct() -> None:

@@ -13,8 +13,8 @@ after everything it actually costs?
 written — RSST 25%, VTI 25%, VTV 15%, VXUS 25%, IDMO 5%, AVES 5% — and by how much. **AVDV
 has since been adopted at 10%** and the resulting portfolio has been tested as one object in
 [the final construction test](final-construction-test.md); every figure below is still
-measured against the pre-AVDV portfolio, which is what makes it a marginal figure. It also settles the question that
-decides whether international value re-enters the portfolio at all: two *large*-cap
+measured using the pre-AVDV active-position proxy. It also investigates a question relevant
+to international value: two *large*-cap
 international value funds were dropped for delivering measurably negative returns, and
 AVDV is small-cap. Is that distinction real?
 
@@ -23,66 +23,46 @@ AVDV is small-cap. Is that distinction real?
 ([trend](trend-marginal-value.md)), and the weights themselves
 ([the recommendation](portfolio-recommendation.md), which this page does not edit).
 
-`as of 2026-08-23`. **`exploratory`.** No specification was frozen before these numbers were
-seen and no experiment is registered for them. Reproduce with
-`cd research && uv run python -m portfolio_edge.studies.untested_tilts`; the arithmetic is
-in [`untested_tilts.py`](../../research/src/portfolio_edge/studies/untested_tilts.py) and
-the filing reads in
-[`_untested_tilts_tables.py`](../../research/src/portfolio_edge/studies/_untested_tilts_tables.py).
-
----
+`as of 2026-09-05`. **`exploratory`.** The original study was unregistered. Experiment
+028 now records a correction to its arithmetic: residual appraisal alpha had been labelled
+as the return from a funded substitution. The source-traced reread is specified in
+[`exp_028b`](../../research/experiments/exp_028b_tilt_estimand_source_audit.yaml).
+Its [generated tables](../../research/artifacts/f1fc338610924a4e959833097cabfda8/tables.md) contain the corrected outputs.
+The reread records 460 source byte identities, including four French files. Its loaded
+specification was initially at the original filename; the exact loaded hash is preserved
+in `exp_028b`, and the first specification is restored unchanged. Both runs remain in the
+ledger. The first audit did not record source-byte identities; the source-traced reread
+supersedes it for evidence use. The arithmetic is in
+[`untested_tilts.py`](../../research/src/portfolio_edge/studies/untested_tilts.py).
 
 ## Conclusion
 
-1. **AVDV is worth adding, and it is the only one of the four that is.** Funded out of
-   VXUS at 5% of capital it changes expected portfolio return by about **+0.16% a year,
-   plausibly −0.06% to +0.38%**; at 10%, **+0.32% a year, −0.12% to +0.77%**. That rests on
-   exposure, cost and overlap, none of which involves its measured extra return — which is
-   not distinguishable from zero and is not used here.
-2. **The small-versus-large distinction in international value is not established, and
-   AVDV must not be recommended on it.** On the 55 months DFIV and AVIV impose, all four
-   large-cap international value funds read −2.3 to −2.9 with intervals excluding zero
-   while AVDV reads +1.8. On the 78 months the two *older* large-cap funds also cover, the
-   same two funds read −1.0 and −1.7 and neither excludes zero. **The negative result is
-   substantially a property of the window, not of the funds' capitalisation.** And over the
-   months AVDV and DFIV both existed, their plain returns differed by **−0.30 ± 5.16
-   pp/yr** — AVDV did not out-return DFIV at all; it out-returned the *model's prediction*
-   for it.
-3. **AVUV is not worth adding to this portfolio.** Against VTI it is worth about
-   **−0.01% a year** once the US value line already held is accounted for: its active leg
-   is +0.430 correlated with VTV's own and +0.455 with the whole active position, and the
-   exposure it adds beyond VTV is 87% size, on a premium of +0.33 pp/yr against a floor of
-   2.47. Replacing VTV with it outright is
-   **+0.09% a year at 15%, range −0.42% to +0.60%** — a coin flip dressed as a decision.
-4. **MTUM is not worth adding, and turnover rather than overlap is what kills it.** It
-   delivers **UMD +0.437 [+0.316, +0.559]** over VTI, which is real. It also files
-   **116%/yr of portfolio turnover** against VTI's 3%, costing 1.13 to 1.92 pp/yr — more
-   than the entire gross exposure gain of +1.78 pp/yr on the US momentum premium, which is
-   itself +4.19 against a detection floor of 7.27. Net: **−0.03% a year at a 5% weight,
-   range −0.18% to +0.13%.** The overlap with IDMO is real but secondary: the two funds'
-   active legs correlate **+0.554**, so two momentum tickers are worth **1.29 independent
-   bets out of 2**.
-5. **QVAL is the clearest verdict on the page and it is negative.** Its facts are
-   established from its own filing: 28 bp, and **332%/yr of portfolio turnover**. That is
-   3.29 to 5.59 pp/yr of trading cost against a gross factor gain of +1.1 pp/yr. At a 5%
-   weight it is **−0.30% a year, range −0.50% to −0.10%** — the only one of the four whose
-   portfolio effect the data can resolve, and it is resolved in the wrong direction.
-6. **The tax objection to momentum is false on the filed evidence, and it is the surprise
-   of this page.** MTUM's own SEC-standardised after-tax table shows a distribution drag of
-   **0.31 pp/yr against VTI's 0.42** over the same five years — the momentum fund is
-   **11 bp/yr more tax-efficient than the total-market fund** despite turning over its
-   whole portfolio each year, because the ETF in-kind redemption shield does the work.
-   AVDV against VXUS is **−0.01 pp/yr**: parity. Tax does not decide any of these four.
-7. **ITAN in place of five points of VTV is not worth making, and the sign does not depend
-   on the sample.** Over VTV it delivers **UMD −0.221 [−0.328, −0.114]** and **RMW −0.381
-   [−0.521, −0.241]**, both resolved, and HML −0.154 against a floor of 0.338, unresolved;
-   it costs 50 bp against VTV's 3 and turns over 31% against 8%. The move reads
-   **−0.10% a year at 5%, range −0.28% to +0.07%**, and is negative in all four premium
-   scenarios including the null. Its overlap with VTV's active leg is +0.009 over the full
-   sample, which is what the sweep hoped for, and +0.80 in the five worst equity months,
-   which is not. §7.
+**This study does not establish a best fund or a portfolio allocation.** It prices five
+non-market factor exposures under stated premium and trading-cost assumptions. It omits
+incremental market beta times the market premium, fund intercepts and taxes. Its priced
+contribution is therefore only one part of a funded return comparison; it is not log growth.
 
----
+- **AVDV remains a candidate worth testing in a complete portfolio.** Its priced exposure
+  over VXUS and low filed turnover support that investigation. The former claim that this
+  calculation alone justified adding 5% or 10% was too strong.
+- **AVUV's overlap with VTV does not settle their ranking.** Residual appraisal subtracts
+  exposure explained by holdings. Buying more of an existing exposure can still increase
+  return relative to the funding asset. A separate basis-mapped construction test finds
+  the AVUV/VTV log-growth difference unresolved; it does not rank actual funds.
+- **Momentum remains open.** MTUM's high turnover weakens its priced case under the
+  assumed cost coefficient. SPMO's lower filed turnover improves that case. Neither
+  correlation with IDMO nor an uncertain standalone premium resolves portfolio value.
+- **QVAL's priced contribution is negative in this cost model.** Its premium-error range
+  excludes zero, but this is not a complete uncertainty interval or a full return estimate.
+- **International small value has not been shown superior to large value.** The historical
+  residual ranking changes with the common window, and residual return is not fund return.
+- **ITAN's existing five-point substitution calculation remains negative under its four
+  priced scenarios.** Its own intangible-value mechanism and portfolio growth benefits
+  remain unmeasured; §7 records what the historical study actually priced.
+
+The next informative comparison uses complete portfolio paths, explicit funding, costs
+inside the trading rule, matched windows, and log growth plus downside and underperformance.
+The existing active-position proxy is insufficient for that comparison.
 
 ## 1. The method, proved before it was used
 
@@ -288,7 +268,8 @@ assumes the top federal bracket throughout. And no after-tax table was read for 
 ## 4. The sleeve edge, and what survives what is already owned
 
 The line is the repository's: `sum_k (h_fund,k − h_incumbent,k) × premium_k − cost`, with
-**no capture fraction anywhere in it** — the code refuses the argument. Four premium
+**no capture fraction anywhere in it** — the code refuses the argument. The sum excludes
+market beta, intercept and taxes; it is the priced factor-tilt contribution, not full return. Four premium
 scenarios, none of them a forecast, all carried from
 [stacking](stacking-and-effective-breadth.md) §2.
 
@@ -306,51 +287,20 @@ Per dollar of sleeve, pp/yr, the range spanning the cost bracket:
 mostly developed-ex-US HML, **+5.07 pp/yr against a 3.67 floor** — one of the two premia
 this repository can sign on its own panel. MTUM's is entirely US UMD, **+4.19 against a
 7.27 floor** — the premium is smaller than the smallest effect its own test could see.
-AVUV's marginal exposure over VTV is 87% SMB, **+0.33 against a 2.47 floor**. Two of the
-three candidates are buying an exposure to something the evidence cannot establish exists.
+AVUV's marginal exposure over VTV is 87% SMB, **+0.33 against a 2.47 floor**. These estimates leave material uncertainty about the premium; they do not establish its absence.
 
 ### Conditioning on what is already held
 
-The held active position is `0.25(RSST − VTI) + 0.15(VTV − VTI) + 0.05(IDMO − VXUS) +
-0.05(AVES − VXUS)`, built from the funds' own filed returns. Correlations are measured, not
-modelled. `marginal edge = candidate edge − beta × held edge`, delegating to the same
-`alpha_k / omega_k` [stacking](stacking-and-effective-breadth.md) §3 defines.
+The historical proxy is `0.25(RSST − VTI) + 0.15(VTV − VTI) + 0.05(IDMO − VXUS) +
+0.05(AVES − VXUS)`. It contains active differences rather than the complete portfolio.
+The table reports `residual alpha = candidate priced edge − beta × held priced edge`.
+This is an appraisal diagnostic about exposure explained by that proxy. Multiplying it by
+a weight does not give the return from replacing VTI or VTV with a fund.
 
-| Candidate | Own tracking error | ρ to held | Standalone edge | **Marginal edge** |
-| --- | ---: | ---: | ---: | ---: |
-| **AVDV over VXUS** | 5.59 | +0.396 | +3.60 | **+3.23** |
-| AVUV over VTI | 13.38 | +0.455 | +0.82 | **−0.20** |
-| AVUV replacing VTV | 11.85 | −0.041 | +0.40 | **+0.60** |
-| MTUM over VTI | 8.98 | +0.164 | −0.28 | **−0.53** |
-| QVAL over VTI | 11.93 | +0.505 | −4.98 | **−5.99** |
-
-54 months, 2021-10…2026-03, own-panel premia at the worse end of each cost bracket. On the
-30 months that include the trend wrapper the ordering is unchanged.
-
-Pairwise, each candidate's active leg against each held one, on the longest run of months
-each pair shares:
-
-| | VTV | IDMO | AVES | RSST |
-| --- | ---: | ---: | ---: | ---: |
-| **AVDV** | +0.333 | **−0.124** | **−0.104** | +0.140 |
-| AVUV | **+0.430** | −0.305 | −0.001 | −0.017 |
-| MTUM | −0.094 | **+0.554** | −0.177 | −0.021 |
-| QVAL | **+0.524** | +0.089 | −0.042 | +0.214 |
-
-**AVDV keeps about nine tenths of its standalone case.** It is +0.333 correlated with the
-US value line and **negatively** correlated with both international positions already held.
-It is not the same bet as anything in the portfolio.
-
-**AVUV loses its whole case to VTV.** Its active leg is +0.455 correlated with the held
-position, most of that with VTV's own +0.430, and once that is netted off its marginal edge
-is *negative*. This is the investor's own objection made exact: a sleeve that looks
-acceptable alone can add nothing in a portfolio. **Replacing** VTV instead of sitting beside
-it is a different and slightly better proposition, and it is still small.
-
-**QVAL is worse conditioned than standalone**, because it is +0.505 correlated with what is
-already owned and its standalone edge is already negative.
-
----
+The [generated tables](../../research/artifacts/f1fc338610924a4e959833097cabfda8/tables.md) preserve both proxy windows and all pairwise
+correlations. Residual-alpha uncertainty is not estimated. For example, AVUV over VTI has
+positive priced edge and negative residual alpha in the longer proxy window. Those signs
+answer different questions; the latter does not erase the former or reject AVUV.
 
 ## 5. Momentum in two regions
 
@@ -367,100 +317,51 @@ different style buys more than a whole one. That is [stacking](stacking-and-effe
 "geography is nearly free breadth, style is real breadth" reproduced on live funds rather
 than on research factors.
 
-**But overlap is not what decides MTUM.** At a 5% weight the portfolio-level cost of the
-+0.554 correlation is small — the marginal edge falls from −0.28 to −0.53 pp/yr per dollar
-of sleeve. The turnover charge alone is 1.13 to 1.92 pp/yr. **MTUM would fail on cost even
-if IDMO were not held.**
+Correlation identifies shared exposure. Its effect on portfolio growth depends on the
+candidate's covariance with the full portfolio, its funding asset and its weight. The
+MTUM/IDMO correlation cannot be converted into a return penalty by subtracting a fitted
+active-position beta times the held edge.
 
----
+## 6. The corrected contribution, in plain percentages
 
-## 6. The recommendation, in plain percentages
+The [registered output](../../research/artifacts/f1fc338610924a4e959833097cabfda8/tables.md) is the canonical numerical table. It multiplies
+candidate-minus-funding **priced factor edge** by weight. It no longer multiplies residual
+appraisal alpha. The range moves the premium inputs by ±1.96 estimated standard errors;
+it omits loading, trading-cost and model uncertainty. It is a sensitivity, not a complete
+95% confidence interval.
 
-Centre is the marginal edge on the own-panel premia at the worse end of the cost bracket.
-The range carries the premia's own standard error at 95%. The null column is what the
-candidate costs if every premium turns out to be zero.
+### AVDV: compare the complete construction
 
-| Candidate | Weight | Expected change in portfolio return | Range | If every premium is zero |
-| --- | ---: | ---: | :---: | ---: |
-| **AVDV** | **5%** | **+0.16% a year** | −0.06% to +0.38% | −0.02% |
-| **AVDV** | 10% | +0.32% a year | −0.12% to +0.77% | −0.03% |
-| AVUV over VTI | 5% | −0.01% a year | −0.23% to +0.21% | −0.01% |
-| AVUV replacing VTV | 15% | +0.09% a year | −0.42% to +0.60% | −0.03% |
-| MTUM | 5% | −0.03% a year | −0.18% to +0.13% | −0.10% |
-| QVAL | 5% | **−0.30% a year** | −0.50% to −0.10% | −0.29% |
+Its developed-ex-US value, size and profitability loadings and low filed turnover make it
+worth evaluating. The VXUS comparison also carries panel mismatch: VXUS includes emerging
+markets while the factor panel does not. A funding change to VEA changes the loading delta.
+No 5% or 10% allocation follows from the priced edge alone. Account placement depends on
+the investor's actual tax and account constraints.
 
-### AVDV: add it
+### AVUV: VTV is a candidate, not a protected incumbent
 
-**Take 5% of capital out of VXUS and put it in AVDV.** Ten percent is defensible and is not
-what this page recommends, for two reasons stated below.
+Both an addition funded from VTI and replacement of VTV deserve comparison. The correction
+removes the negative return attributed to overlap in the former case. The latter remains
+uncertain under the stated premium scenarios. Compare complete portfolios and fund-return
+paths before making a fund ranking; do not require AVUV to represent a wholly new return
+source to have value.
 
-- **Why it earns its place.** It delivers **HML +0.464, SMB +0.639 and RMW +0.703** over
-  VXUS, all three with intervals excluding zero on 78 months, and its HML sits on the
-  developed-ex-US premium that clears its own floor. It files **4%/yr of turnover, the
-  lowest of any factor product in either audit**, so essentially none of its cost is
-  trading. Its distribution tax drag is a hair *below* VXUS's. And it is uncorrelated with
-  — slightly negatively correlated with — both international positions already held.
-- **Which account.** **A sheltered one: the Roth, or the rollover IRA.**
-  [Structural and tax edges](structural-and-tax-edges.md) finds that every international
-  fund outranks every US equity fund in the shelter queue for an investor of this shape,
-  and AVDV's 0.78 pp/yr distribution drag is the highest of any candidate here. It is not
-  disqualifying in taxable — it is at parity with the VXUS it replaces — but shelter is
-  strictly better, and a 5% line fits inside a third of the portfolio easily. If the
-  employer plan is part of the tax-deferred third, AVDV will not be on its menu; that is
-  the captive-menu problem [the recommendation](portfolio-recommendation.md) records, and
-  the answer is the Roth or the rollover.
-- **Why not 10%.** Two reasons and neither is a measurement. Nearly half of AVDV's gross
-  edge is the RMW and SMB legs, whose premia are **+1.68 against a 2.62 floor** and
-  **+0.49 against a 2.83 floor** — unsignable. And its +0.703 RMW over VXUS is partly an
-  artefact of VXUS's own −0.275 RMW on a developed-ex-US panel, which is emerging markets
-  read through a developed lens; priced against VEA instead, the RMW delta is +0.416 and
-  the sleeve edge falls from +3.60 to +2.99 pp/yr. Five percent is the size at which the
-  unsignable half of the case does not matter.
+### MTUM and SPMO: keep cost and portfolio value separate
 
-### AVUV: do not add it
+MTUM's filed turnover is 116% versus SPMO's 44% in the dated source readings. Under the
+study's cost model this favours SPMO. The coefficient has not been validated on these funds'
+trades, so it remains an assumption. Their overlap with IDMO is a separate diagnostic.
+The [final construction discussion](final-construction-test.md#4-spmo-portfolio-role-unresolved)
+records the SPMO evidence and its limits. Neither fund has been rejected by a complete
+portfolio-growth comparison here.
 
-Not because it is a bad fund — its delivered exposure is the largest on the US shelf — but
-because **this portfolio already holds VTV at 15% and 87% of what AVUV adds beyond VTV is
-size**, on a premium of +0.33 pp/yr against a 2.47 floor. Its active leg is +0.455
-correlated with what is held, and conditioning on that turns +0.82 into −0.20. Replacing
-VTV outright is worth about +0.09% a year on a range from −0.42% to +0.60%, at 11.9 pp/yr of
-tracking error against 7.6 for VTV. **That is more risk for a number the data cannot
-resolve.** If the investor wants US small value on non-evidential grounds, replacing VTV is
-the right way to buy it and 15% is the right size; it is not an improvement this page can
-demonstrate.
+### QVAL: negative priced contribution under assumed trading costs
 
-### MTUM: do not add it
-
-**116%/yr of turnover against VTI's 3% costs 1.13 to 1.92 pp/yr, and the exposure it buys
-is worth +1.78 pp/yr gross on a premium of +4.19 against a 7.27 detection floor.** The
-turnover charge alone can exceed the entire gain. Add the +0.554 correlation with IDMO and
-the case is −0.03% a year at a 5% weight. The tax objection turns out to be wrong — MTUM is
-the most tax-efficient fund on this page — and it does not rescue the trading cost.
-
-**If US momentum is wanted anyway, SPMO is the fund and it is also not worth adding.** Its
-facts have since been read: 13 bp, **44%/yr of turnover** against MTUM's 116%, 12.93 bp of
-net cost, a distribution tax drag below VTI's, and UMD **+0.395 [+0.281, +0.508]** delivered
-over VTI on 78 months — fitted on a stated window, because the shelf's published +0.414
-carries none and therefore cannot be compared with anything. At a 5% weight it is **+0.02% a
-year, plausibly −0.14% to +0.18%**. It beats MTUM on every knowable dimension and still
-cannot be told from zero, because the premium it buys is +4.19 pp/yr against a 7.27 pp/yr
-floor and its active leg is **+0.626 correlated with IDMO's** — a tighter overlap than
-MTUM's. See [the final construction test](final-construction-test.md) §4.
-
-### QVAL: do not add it, and the facts are established
-
-QVAL is Alpha Architect's U.S. Quantitative Value ETF, CIK 1592900, series S000046016,
-inception 2014-10-21, benchmarked to the Solactive GBS United States 1000 Index. From its
-summary prospectus dated **2026-02-01**: total annual fund operating expenses **0.28%**
-(management fee restated to current), and **portfolio turnover 332% of average portfolio
-value** in the most recent fiscal year. On its longest gapless run of filings it delivers
-**HML +0.503, SMB +0.409, RMW +0.396** over VTI — a genuinely deep value tilt — for a gross
-factor gain of about +1.1 pp/yr on the own-panel premia against **3.29 to 5.59 pp/yr of
-trading cost**. At a 5% weight that is −0.30% a year on the whole portfolio, and it is the
-only figure on this page whose sign the data can resolve. It also duplicates what is held:
-+0.505 correlated with the existing active position, +0.754 with AVUV's active leg.
-
-**It should be added to the shelf as `rejected`, which is done.**
+Its 2026-02-01 prospectus supplies the 28 bp fee and 332% turnover used here. The assumed
+trading cost overwhelms its priced factor contribution in the own-panel scenario.
+Reopening conditions include measured execution costs, a changed implementation, or a
+complete portfolio comparison that credits its relevant return and covariance effects.
+The historical `rejected` label applies to this model and window, not to every role for QVAL.
 
 ---
 
@@ -485,29 +386,21 @@ measured extra return, which at 54 months is not a number.
 
 ### Conclusion
 
-**Do not make the substitution.** Moving five points of capital from VTV to ITAN changes
-expected portfolio return by about **−0.10% a year, range −0.28% to +0.07%**, and the sign
-holds under **every premium scenario the repository carries**: own-panel, pooled, half and
-null. It holds because the exposures the move buys are *short* the two priced US factors
-that decide it. Over VTV, ITAN delivers **UMD −0.221 [−0.328, −0.114]** against a floor of
-0.153 and **RMW −0.381 [−0.521, −0.241]** against 0.200, both resolved. Its value
-exposure over VTV is **−0.154 [−0.390, +0.083]** against a floor of 0.338, unresolved,
-which is the polite way of saying the window cannot tell whether it has less value
-exposure than VTV or the same. On its own ITAN is a mild value fund on the French
-definition, **HML +0.133 [+0.050, +0.215]**, about a third of VTV's on the same months,
-with a beta of 1.05, short profitability and short momentum: value in the label, growth
-in the loadings. The sweep's hoped-for overlap is real and irrelevant. Its active leg is
-**+0.009** correlated with VTV's over the full sample, and a negative edge does not
-become positive by being uncorrelated with what is held. In the five worst VTI months of
-the window the same correlation is **+0.80 [−0.29, +0.99]**.
+**The priced factor contribution is negative under all four scenarios; portfolio value
+remains unmeasured.** ITAN over VTV delivers negative momentum and profitability loadings
+on the 54-month sample, while its incremental value loading is unresolved. These findings
+price the factors this study includes, not ITAN's intangible-value thesis.
 
-**Sized implication for the published vector.** RSST 30 / VTI 19 / VTV 15 / VXUS 16 /
-AVDV 10 / IDMO 5 / AVES 5 stands. The proposed RSST 30 / VTI 19 / VTV 10 / VXUS 16 /
-AVDV 10 / IDMO 5 / AVES 5 / ITAN 5 would give up about 0.10% a year of expected return and
-cut the active position's tracking error by 0.13 to 0.38 pp/yr, because it removes a
-third of the value tilt and replaces it with a leg that is nearly uncorrelated with the
-rest. That is a smaller tilt, not a broader one. At 10 and 15 points the loss scales:
-−0.21% and −0.31% a year.
+Its active-leg correlation with VTV is +0.009 over the full window and +0.80 in the five
+worst VTI months, with a wide interval. Low average correlation can matter to portfolio
+growth even when arithmetic contribution is negative. Five stressed observations do not
+resolve that possibility. A complete funded path is needed before deciding whether the
+trade-off improves a portfolio.
+
+The five-point move has a priced contribution of about −0.10 pp/year with a −0.28 to +0.07
+premium-error sensitivity. It omits incremental market beta, intercept and taxes. The
+reported reduction in active tracking error is a separate outcome. Neither fixes the
+published vector or establishes an allocation recommendation.
 
 ### What was filed
 
@@ -632,25 +525,24 @@ set first, so the five points of ITAN are scored against RSST 30 / VTV 10 / AVDV
 IDMO 5 / AVES 5, from the funds' own filed returns. A position scored against a held set
 that still contains it reads as pure overlap, which is an artefact and not a finding.
 
-| Held set | Months | Held tracking error | ρ(ITAN over VTI, held) | Standalone edge | Marginal edge | Active tracking error, published to proposed |
+| Held set | Months | Held tracking error | ρ(ITAN over VTI, held) | Priced edge | Residual appraisal alpha | Active tracking error, published to proposed |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | with the trend wrapper | 31, 2023-10 to 2026-04 | 3.59 | +0.128 | −1.61 | **−1.74** | 3.76 to 3.63 |
 | without it | 53, 2021-12 to 2026-04 | 1.29 | −0.088 | −1.61 | **−1.43** | 1.67 to 1.29 |
 
-Conditioning changes nothing that matters: a sleeve whose standalone edge is negative in
-every scenario stays negative once what is held is netted off. The tracking-error column is
-the one number in ITAN's favour, and it is not a diversification gain. The active position
-gets smaller because a third of the value tilt is removed, which is what selling VTV for a
-fund with a third of its value loading does.
+These residual appraisal figures do not measure funded return or portfolio growth. Lower
+active tracking error can reflect removing an exposure and may still matter for portfolio
+constraints; it should not be dismissed or called a growth benefit without the full path.
 
 ### The headline, in plain percentages
 
 Centre is the own-panel premia at the worse end of the cost bracket, fitted on the ITAN
-less VTV series directly. The range carries the premia's own standard error at 95%, summed
+less VTV series directly. The range is a ±1.96 premium-error sensitivity, summed
 rather than added in quadrature as everywhere on this page; the loadings' own sampling error
-is in the tables above and is not folded in.
+is in the tables above and is not folded in. Incremental market beta, intercept and taxes
+are omitted. These are not full return or log-growth estimates.
 
-| Capital moved from VTV to ITAN | Expected change in portfolio return | Range | If every premium is zero |
+| Capital moved from VTV to ITAN | Priced factor contribution | Premium sensitivity | If every premium is zero |
 | ---: | ---: | :---: | ---: |
 | **5%** | **−0.10% a year** | −0.28% to +0.07% | −0.04% |
 | 10% | −0.21% a year | −0.55% to +0.14% | −0.09% |
@@ -682,8 +574,8 @@ premium is worth +4.19 pp/yr is an input carried from [stacking](stacking-and-ef
    be charging the fund for its exposures without crediting its thesis. Nothing here
    measures that; a long intangible-value factor series is the data it would take.
 2. **54 months.** Shorter than one value cycle, and §2 of this page is a demonstration of
-   what twenty-three extra months can do to a conclusion. The sign of the substitution
-   does not rest on the sample, but the resolved RMW and UMD loadings do.
+   what twenty-three extra months can do to a conclusion. The priced sign is shared by four assumed premium scenarios, all of which use these
+   sample-dependent loadings. It is not a sample-independent finding.
 3. **The five worst months.** A worst-decile correlation on five observations is a
    direction, not a number; the next reading is at 80 filed months, when the decile holds
    eight.
@@ -699,11 +591,9 @@ correlation, from the funds' own filed returns. Fee, turnover and standardised a
 returns for AVDV, AVUV, MTUM, QVAL, VTI, VTV and VXUS from their own Form 497K filings,
 each dated above. QVAL's missing 2021-Q3 filing.
 
-**Since closed.** A 10% AVDV line has been through the construction tournament, at
-[the final construction test](final-construction-test.md) §1: two whole portfolios at
-identical gross notional differing only in AVDV give **+0.28 pp/yr [+0.05, +0.56] against a
-0.29 floor**, and the unlevered tilt-only pair gives +0.29. Two independent routes to the
-same number as this page's +0.32% at a 10% weight.
+**Separate portfolio evidence.** The [final construction test](final-construction-test.md)
+compares whole basis-mapped portfolios using log growth. It is a different estimand with
+mapping assumptions, not an independent replication of the arithmetic table here.
 
 **Assumed.**
 
@@ -748,5 +638,5 @@ same number as this page's +0.32% at a 10% weight.
 - **Not** that intangible-adjusted value is not a premium. §7 prices ITAN on the factors
   this repository can price and finds it short two of them; it does not measure the factor
   the fund is built on.
-- **Not** a promotion. Nothing here is `production-eligible`, no specification was frozen,
-  and no experiment is registered; the ITAN runs are ledgered as a study.
+- **Not** a promotion. Nothing here is `production-eligible`, the original data were inspected before registration. Experiment 028 records the
+  reporting correction and its source-traced reread; the ITAN runs remain ledgered as a study.
