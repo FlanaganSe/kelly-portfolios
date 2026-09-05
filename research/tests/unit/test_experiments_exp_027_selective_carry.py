@@ -12,6 +12,7 @@ from portfolio_edge.experiments.exp_027_selective_carry import (
     costed_carry,
     default_specification_path,
     paired_metrics,
+    read_panels,
     rolling_underperformance,
 )
 from portfolio_edge.experiments.specification import load_specification
@@ -123,3 +124,12 @@ def test_paired_log_growth_not_arithmetic_return() -> None:
     assert isinstance(metrics["log_growth"], dict)
     assert metrics["arithmetic"]["gap_pp_yr"] == pytest.approx(0.0)
     assert metrics["log_growth"]["gap_pp_yr"] == pytest.approx(600 * np.log(0.99))
+
+
+def test_selective_panel_sources_and_common_start() -> None:
+    spec = load_specification(default_specification_path())
+    panels = read_panels(spec)
+    assert len(panels) == 27
+    assert len({p.carry_source for p in panels}) == 9
+    assert all(p.start is not None and p.start > "1973-12" for p in panels)
+    assert {p.trend_source for p in panels} == {"own_4_asset_book", "aqr_tsmom"}

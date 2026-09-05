@@ -134,6 +134,35 @@ def build_selective_legs(
     return replace(legs, carry=results), records
 
 
+def read_panels(specification: Specification) -> tuple[carry.PanelSpec, ...]:
+    """Read selective source names without 019's closed legacy-variant whitelist."""
+    parameters = _mapping(specification.parameters, where="parameters")
+    calibration = _mapping(parameters["carry_calibration"], where="calibration")
+    variants = _mapping(calibration["variants"], where="variants")
+    scenarios = _mapping(parameters["carry_scenarios"], where="scenarios")
+    allowed = {f"{v}_{s}" for v in variants for s in scenarios}
+    out: list[carry.PanelSpec] = []
+    for value in _sequence(parameters["panels"], where="panels"):
+        entry = _mapping(value, where="panel")
+        source = _text(entry, "carry_source", where="panel")
+        if source not in allowed:
+            raise ValueError(f"unknown selective carry source {source!r}")
+        out.append(
+            carry.PanelSpec(
+                id=_text(entry, "id", where="panel"),
+                role=_text(entry, "role", where="panel"),
+                trend_source=_text(entry, "trend_source", where="panel"),
+                carry_source=source,
+                legs=tuple(str(v) for v in _sequence(entry["legs"], where="legs")),
+                arms=tuple(str(v) for v in _sequence(entry["arms"], where="arms")),
+                start=str(entry["start"]) if entry.get("start") is not None else None,
+                end=str(entry["end"]) if entry.get("end") is not None else None,
+                note=str(entry.get("note") or ""),
+            )
+        )
+    return tuple(out)
+
+
 def rolling_underperformance(
     arm: FloatArray, control: FloatArray, *, window: int = 120
 ) -> dict[str, JsonValue]:
@@ -233,7 +262,7 @@ def run(specification: Specification, context: RunContext) -> ExperimentResult:
     parameters = _mapping(specification.parameters, where="parameters")
     calibration_settings = _mapping(parameters["carry_calibration"], where="calibration")
     calibration_end = _text(calibration_settings, "end", where="calibration")
-    for panel_spec in carry.read_panels(specification):
+    for panel_spec in read_panels(specification):
         panel = carry.build_panel(legs, panel_spec)
         if panel.periods[0] <= calibration_end:
             raise ValueError("evaluation overlaps carry calibration")
