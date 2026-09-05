@@ -67,7 +67,7 @@ export const PlacementTool: Component = () => {
     if (row.where === "split") {
       return `${WHERE_TEXT.split}: ${ratePercent(row.shelteredWeight, 1)}% of your money fits, and the retirement account is full here.`;
     }
-    return `${WHERE_TEXT[row.where]}, because ${row.holding.reason}.`;
+    return `${WHERE_TEXT[row.where]}: ${row.holding.reason}.`;
   };
 
   return (

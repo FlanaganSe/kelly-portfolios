@@ -37,7 +37,7 @@ const FieldShell: Component<FieldShellProps> = (props) => (
         </Show>
       </label>
       <Show when={props.readout}>
-        <output for={props.id} data-numeric class="text-sm font-semibold text-ink">
+        <output for={props.id} data-numeric class="whitespace-nowrap text-sm font-semibold text-ink">
           {props.readout}
         </output>
       </Show>
