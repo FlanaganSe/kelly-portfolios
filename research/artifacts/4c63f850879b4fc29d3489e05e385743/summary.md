@@ -1,0 +1,87 @@
+### Actual NAV momentum implementations inside complete published portfolios
+
+- **Status:** `exploratory` — a search, not a finding; it may not be quoted as evidence that anything works
+- **Run:** `4c63f850879b4fc29d3489e05e385743`
+- **Experiment family:** `exp_032_momentum_implementations`
+- **Specification hash:** `b21d55fde97e1d3084e7d275ba9e37e03cc8fe59411bf73e2847a28f73878016`
+- **Run kind:** `exploratory`
+- **Evidence class:** `policy-simulation`
+- **Falsifier:** A nonpositive paired growth gap contradicts improvement within the named window; intervals spanning zero leave it unresolved. No fund is promoted or permanently rejected. The mixture must improve whole-portfolio outcomes, not just fund correlation.
+
+Fixed momentum implementations evaluated inside complete published portfolios using filed NAV total returns, drifting weights and paid annual execution. Short common histories and descriptive intervals cannot establish a future winner.
+
+Gross, net-optimistic and net-pessimistic are separate columns and are never collapsed; the spread between them is the cost-model uncertainty.
+
+| Statistic | Units | Gross | Net-optimistic | Net-pessimistic | Interval method |
+| --- | --- | --- | --- | --- | --- |
+| log_growth_gap[value-lean\|5bp\|unchanged vs cheap] | percentage points per year | not reported | 1.037 [-0.4435, 2.591] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|spmo vs unchanged] | percentage points per year | not reported | 0.3034 [-0.1391, 0.7581] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|spmo vs cheap] | percentage points per year | not reported | 1.341 [-0.2664, 2.793] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|mtum vs unchanged] | percentage points per year | not reported | -0.05313 [-0.4188, 0.3444] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|mtum vs cheap] | percentage points per year | not reported | 0.9841 [-0.602, 2.456] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|mtum vs spmo] | percentage points per year | not reported | -0.3565 [-0.5559, -0.1602] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|equal_mix vs unchanged] | percentage points per year | not reported | 0.1253 [-0.2651, 0.5358] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|equal_mix vs cheap] | percentage points per year | not reported | 1.163 [-0.4245, 2.6] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|equal_mix vs spmo] | percentage points per year | not reported | -0.178 [-0.2776, -0.08001] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|5bp\|equal_mix vs mtum] | percentage points per year | not reported | 0.1784 [0.08016, 0.2783] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|unchanged vs cheap] | percentage points per year | not reported | not reported | 1.036 [-0.4436, 2.589] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|spmo vs unchanged] | percentage points per year | not reported | not reported | 0.3029 [-0.1392, 0.7577] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|spmo vs cheap] | percentage points per year | not reported | not reported | 1.339 [-0.2674, 2.791] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|mtum vs unchanged] | percentage points per year | not reported | not reported | -0.05362 [-0.419, 0.3442] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|mtum vs cheap] | percentage points per year | not reported | not reported | 0.9824 [-0.6033, 2.455] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|mtum vs spmo] | percentage points per year | not reported | not reported | -0.3565 [-0.5556, -0.1602] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|equal_mix vs unchanged] | percentage points per year | not reported | not reported | 0.1248 [-0.2654, 0.5352] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|equal_mix vs cheap] | percentage points per year | not reported | not reported | 1.161 [-0.425, 2.599] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|equal_mix vs spmo] | percentage points per year | not reported | not reported | -0.178 [-0.2774, -0.08004] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[value-lean\|25bp\|equal_mix vs mtum] | percentage points per year | not reported | not reported | 0.1784 [0.0802, 0.2782] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|unchanged vs cheap] | percentage points per year | not reported | 0.2701 [-3.724, 4.692] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|spmo vs unchanged] | percentage points per year | not reported | 0.5713 [0.04457, 1.05] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|spmo vs cheap] | percentage points per year | not reported | 0.8413 [-3.109, 4.939] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|mtum vs unchanged] | percentage points per year | not reported | 0.2688 [-0.1177, 0.6317] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|mtum vs cheap] | percentage points per year | not reported | 0.5388 [-3.412, 4.841] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|mtum vs spmo] | percentage points per year | not reported | -0.3025 [-0.5582, -0.03769] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|equal_mix vs unchanged] | percentage points per year | not reported | 0.4202 [-0.03073, 0.8191] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|equal_mix vs cheap] | percentage points per year | not reported | 0.6903 [-3.272, 4.89] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|equal_mix vs spmo] | percentage points per year | not reported | -0.1511 [-0.2788, -0.01882] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|5bp\|equal_mix vs mtum] | percentage points per year | not reported | 0.1514 [0.01886, 0.2795] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|unchanged vs cheap] | percentage points per year | not reported | not reported | 0.2689 [-3.729, 4.691] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|spmo vs unchanged] | percentage points per year | not reported | not reported | 0.5706 [0.04444, 1.048] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|spmo vs cheap] | percentage points per year | not reported | not reported | 0.8394 [-3.112, 4.936] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|mtum vs unchanged] | percentage points per year | not reported | not reported | 0.2684 [-0.1177, 0.6313] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|mtum vs cheap] | percentage points per year | not reported | not reported | 0.5373 [-3.412, 4.838] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|mtum vs spmo] | percentage points per year | not reported | not reported | -0.3022 [-0.5578, -0.03762] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|equal_mix vs unchanged] | percentage points per year | not reported | not reported | 0.4197 [-0.03084, 0.8185] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|equal_mix vs cheap] | percentage points per year | not reported | not reported | 0.6885 [-3.277, 4.89] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|equal_mix vs spmo] | percentage points per year | not reported | not reported | -0.1509 [-0.2785, -0.01879] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[with-trend\|25bp\|equal_mix vs mtum] | percentage points per year | not reported | not reported | 0.1512 [0.01883, 0.2792] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|unchanged vs cheap] | percentage points per year | not reported | 0.03895 [-2.142, 2.851] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|spmo vs unchanged] | percentage points per year | not reported | 0.3061 [0.0307, 0.55] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|spmo vs cheap] | percentage points per year | not reported | 0.345 [-1.766, 2.994] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|mtum vs unchanged] | percentage points per year | not reported | 0.1443 [-0.0572, 0.3415] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|mtum vs cheap] | percentage points per year | not reported | 0.1832 [-1.917, 2.881] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|mtum vs spmo] | percentage points per year | not reported | -0.1618 [-0.3005, -0.01476] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|equal_mix vs unchanged] | percentage points per year | not reported | 0.2252 [-0.01055, 0.4367] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|equal_mix vs cheap] | percentage points per year | not reported | 0.2642 [-1.843, 2.943] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|equal_mix vs spmo] | percentage points per year | not reported | -0.08085 [-0.1501, -0.007376] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|5bp\|equal_mix vs mtum] | percentage points per year | not reported | 0.08095 [0.007388, 0.1504] | not reported | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|unchanged vs cheap] | percentage points per year | not reported | not reported | 0.03962 [-2.143, 2.849] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|spmo vs unchanged] | percentage points per year | not reported | not reported | 0.3057 [0.03067, 0.5495] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|spmo vs cheap] | percentage points per year | not reported | not reported | 0.3453 [-1.766, 2.991] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|mtum vs unchanged] | percentage points per year | not reported | not reported | 0.1441 [-0.05713, 0.3413] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|mtum vs cheap] | percentage points per year | not reported | not reported | 0.1837 [-1.916, 2.878] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|mtum vs spmo] | percentage points per year | not reported | not reported | -0.1616 [-0.3002, -0.0147] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|equal_mix vs unchanged] | percentage points per year | not reported | not reported | 0.2249 [-0.01059, 0.4362] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|equal_mix vs cheap] | percentage points per year | not reported | not reported | 0.2645 [-1.843, 2.94] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|equal_mix vs spmo] | percentage points per year | not reported | not reported | -0.08076 [-0.15, -0.007345] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+| log_growth_gap[cautious\|25bp\|equal_mix vs mtum] | percentage points per year | not reported | not reported | 0.08086 [0.007356, 0.1502] | paired stationary bootstrap, joint fund rows; reexecuted paths; mean block 6 months, 2000 draws, percentile 95% |
+
+**Caveats.**
+- MTUM follows MSCI USA Momentum SR Variant, not the generic MSCI Momentum index. The August 2024 variant document already specifies quarterly and conditional reviews; generic August 2025 announcements do not establish an MTUM change then. Historical windows can span method changes; this experiment does not date or isolate their effects.
+- Current surviving products selected after inspecting overlapping history; no holdout.
+- Broad 65/35 controls preserve SCHP capital weights, not risk, beta or leverage.
+- Returns include fund internal costs; investor execution is assumed, taxes omitted.
+- Roundtrip 5/25 bp means 2.5/12.5 bp per dollar on each side; no exit sale.
+- Initial purchase cost enters first return and first rolling twelve-month window.
+- Month-end drawdown misses intramonth lows; only 30 or 54 months cover few regimes.
+- Rolling underperformance describes overlapping realised windows, not forecast odds.
+- Source hashes identify exact bytes, not historical availability of revised filings.
