@@ -122,3 +122,30 @@ T\s*=\s*\(?z
 [ΦΣρσαβ]\s*[=(]
 √\(?[a-zA-Z0-9]
 \bz₁?\s*=\s*Φ
+
+# Rewrite vocabulary (2026-09-04). A return is "% a year" and then dollars; one portfolio
+# per name; the plain word for the thing.
+(?i)\b\d+(\.\d+)?\s*(points?|pts?)\s+a\s+year\b
+(?i)\bpercentage points?\b
+(?i)\bhundredths? of a point\b
+(?i)\bthe ladder\b
+(?i)\bplain twins?\b
+(?i)\bfor today'?s prices\b
+(?i)\bthe (30|25|−30|−40|-30|-40)% version\b
+(?i)\bdrawdowns?\b
+(?i)\bpremiums?\b
+(?i)\bshelter(ed|ing)?\b
+(?i)\bmanaged.futures\b
+(?i)\bordinary income\b
+(?i)\breal (yield|return)s?\b
+(?i)\bwhipsaws?\b
+(?i)\bcompounded at\b
+(?i)\bCAPE\b
+(?i)\bTreasur(y|ies) bills?\b
+(?i)\bT-bills?\b
+(?i)\bworst stretch\b
+(?i)\bunder water\b
+(?i)\bscored as one object\b
+(?i)\bthe record\b
+(?i)\bexperiment \d+\b
+(?i)\bdecision \d+\b
