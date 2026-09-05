@@ -25,10 +25,10 @@ const cautious = seriesFor("cautious");
 
 /** One clause each, in the same words as the card taglines' subjects. */
 const FOR: Readonly<Record<Portfolio["slug"], string>> = {
-  "one-fund": "Anyone; the default",
-  "value-lean": "Someone who can watch a plain US index fund pull ahead for fifteen years",
-  "with-trend": "Someone who can sit through a fall of about half and a decade of the trend fund adding nothing",
-  cautious: "Someone who would sell after a fall of about 40%",
+  "one-fund": "Long-term stock investing with minimal upkeep",
+  "value-lean": "Someone accepting long periods behind the market for a possible value advantage",
+  "with-trend": "Someone accepting the costs, extra market exposure and uncertainty of adding trend",
+  cautious: "Someone seeking less stock exposure and accepting bond-price risk",
 };
 
 const dollars = (value: number) => formatDollars(value);
@@ -78,7 +78,7 @@ const longFallText = (id: LongId) => {
   <section class="wide">
     <Hero
       title="Four portfolios, side by side"
-      lede={`Every number here is measured the same way: ${window}, against a plain world stock index. Pick by the fall you could sit through, then read the column.`}
+      lede={`Historical outcomes use the same simulated window: ${window}. Compare the trade-offs, then choose an allocation that fits your spending needs and capacity for loss.`}
     />
   </section>
 
@@ -138,7 +138,7 @@ const longFallText = (id: LongId) => {
       worst={cautious.summary.worstFall}
       title="How far each fell from its last high"
     >
-      Cautious against Plus trend, {window}: percent below the last high. Cautious never fell more than{" "}
+      Cautious against Plus trend, {window}: percent below the last high. In this simulation, Cautious fell as much as{" "}
       {formatPct(Math.abs(cautious.summary.worstFall.pct), 1)}; Plus trend fell{" "}
       {formatPct(Math.abs(withTrend.summary.worstFall.pct), 1)} between {monthLabel(withTrend.summary.worstFall.peak)}{" "}
       and {monthLabel(withTrend.summary.worstFall.trough)} and took{" "}
@@ -150,15 +150,14 @@ const longFallText = (id: LongId) => {
     <h2>How to choose</h2>
 
     <p>
-      Ask how far your money could fall before you would sell. One fund, Value lean and Plus trend each fell by
+      Consider when you need the money and how much loss you could afford. In this simulation, One fund, Value lean and Plus trend each fell by
       about half at some point since 1990: $10,000 held at the top became{" "}
       {formatDollars(columns[0]?.series.summary.worstFall.dollarsAtTrough ?? 0)},{" "}
       {formatDollars(columns[1]?.series.summary.worstFall.dollarsAtTrough ?? 0)} and{" "}
       {formatDollars(columns[2]?.series.summary.worstFall.dollarsAtTrough ?? 0)}. Cautious fell to{" "}
-      {formatDollars(cautious.summary.worstFall.dollarsAtTrough)}. If a fall of about half is more than you would
-      hold through, Cautious is the one for you; the price is a slower climb, and its page says how much slower. If
-      you could hold through it, the <a href="/#choose">home page</a> walks through the other three, and the
-      simplest answer is One fund.
+      {formatDollars(cautious.summary.worstFall.dollarsAtTrough)}. Cautious reduces the stock allocation but still takes substantial risk.
+      None of these past losses is a future limit. The <a href="/#choose">home page</a> explains each choice,
+      and the <a href="/how-to-hold/">holding guide</a> covers cash needs and accounts.
     </p>
   </div>
 
@@ -185,8 +184,8 @@ const longFallText = (id: LongId) => {
       $10,000. Plus trend fell to {longFallText("with-trend")} and took {formatMonths(trendLong.monthsToRecover)}. A
       plain 60/40 mix, 60% stocks and 40% US government bonds, fell to {longFallText("sixty-forty")} and took{" "}
       {formatMonths(sixtyFortyLong.monthsToRecover)}. Cautious fell to {longFallText("cautious")} and took{" "}
-      {formatMonths(cautiousLong.monthsToRecover)}. Nothing on this site would have held a 30% fall through those
-      years, so the labels above rest on the history since 1990, not on that one. All of it is simulated: nobody earned these returns,
+      {formatMonths(cautiousLong.monthsToRecover)}. Each of these simulated mixes lost more than 30% through those
+      years. Choosing by the milder recent history alone would miss that risk. All of it is simulated: nobody earned these returns,
       and nobody sat through the falls without knowing how they ended.
     </p>
   </div>

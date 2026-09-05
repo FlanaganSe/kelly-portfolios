@@ -24,52 +24,36 @@ repository cannot sign most of the premia involved.
 
 ## Conclusion
 
-**The thesis is arithmetically correct and its premise is false on this portfolio.** More
-55% bets do raise the odds — but by an amount governed by the sleeves' *effective* breadth,
-which converges to `1/rho`, so the whole gain is bounded before the second sleeve is
-bought. Stacking an unlimited number of 55% sleeves at the correlation this repository
-measures between the candidate's own value tilts, **0.435**, reaches **0.576** and stops.
-Not 0.9, not 1.
+**As of 2026-09-05: useful diversification is possible; no universal success ceiling or
+best fund count is established.** A 55% probability of outperforming does not by itself
+establish positive expected excess return. Payoff magnitudes, dependence, costs, funding
+and uncertainty in the estimated edge all matter. The normal-return examples below add
+assumptions that a win rate alone does not supply.
 
-Six results, in the order they bind.
+The equal-edge, equal-risk, constant-equicorrelation model gives a 57.6% limiting
+probability when its common correlation is set to the historical value-tilt estimate of
+0.435. This is a conditional illustration, not a bound on all feasible strategies. The
+correlation of one group of value tilts cannot stand in for every future return engine.
+Likewise, the three-position optimum in Experiment 017 applies to its assumed candidate
+edges and constraints, not to every long-only portfolio.
 
-1. **`P = Phi(z_1 sqrt(k / (1 + (k-1) rho)))`, and the ceiling is `Phi(z_1 / sqrt(rho))`.**
-   Correlation of *excess* returns, not sleeve count, is the whole quantity being bought.
-2. **The candidate's eight tickers are five active positions worth `1'R^-1 1 = 3.71`
-   effective bets.** Its own weights realise an information ratio of **0.230**, against
-   **0.564** for DFIV held alone — so on the no-alpha reading the stack is *less* likely to
-   beat the benchmark than one of its own components, which is dilution rather than
-   diversification. **Charge DFIV's alpha and that comparison inverts**: DFIV alone becomes
-   a losing bet at 0.398 and the stack's spread is what saves it. Both readings are in
-   [§4](#4-the-candidates-true-breadth-and-the-joint-probability); neither is quotable
-   without the other.
-3. **Joint P(ahead of a same-split cheap-core benchmark) is 0.75–0.77 at 10 years,
-   0.81–0.85 at 20, and 0.84–0.90 at 30** on the premium set most favourable to the
-   candidate with no fund alpha charged. **That is not the primary reading.** Charging the
-   one fitted alpha on this shelf that clears its own detection floor — DFIV's, at
-   −3.80 pp/yr — takes the 30-year figure to **0.72**. Across every premium scenario the
-   range is **0.40 to 0.91**, and the spread is larger than any construction change
-   available.
-4. **The construction change that survives the alpha charge is not the one this page first
-   proposed.** Moving AVLV's 15% into **DFIV** raises the odds only if DFIV's measured
-   alpha is ignored; charge it and the same move *lowers* them, 0.722 → 0.666. **That
-   recommendation is withdrawn.** What survives all three alpha settings is moving the
-   AVLV weight into **IDMO**, and the version this page recommends is the partial one —
-   see [the recommendation](#the-construction-change-that-survives-its-own-worst-case).
-5. **On a stated shelf of twelve candidates at that correlation, the best equal-weighted
-   portfolio holds two and the exact long-only optimum holds three — and it does not
-   improve past three however many further candidates are offered**
-   ([§5](#5-how-many-candidates-a-long-only-optimiser-actually-holds), Experiment 017).
-   The unconstrained optimum keeps rising, to 0.727 against long-only 0.463, and the whole
-   difference is a short leg of seven positions. **Every edge in that ladder is an
-   assumption, and the count depends on their dispersion**: give all eight candidates the
-   same edge and the optimiser holds all eight.
-6. **Geography is nearly free breadth; style is real breadth.** One factor spread across
-   three regions is worth **1.35 to 1.55 of 3**; five factors inside one region are worth
-   **5.52 of 5**. The candidate's 35% international allocation may be right for currency,
-   valuation, home-bias or regret reasons — **it should not be defended as
-   diversification**, because the measurement says a regional split of the same tilt buys
-   about half a bet.
+The detailed candidate calculations below use a historical fund list including AVLV and
+DFIV. They are sensitivity analyses, not current allocation advice or odds for today's
+four portfolios. Current choices and actual-fund comparisons are in
+[the recommendation](portfolio-recommendation.md). Regional diversification can reduce
+concentration even when regional value returns are correlated; partial breadth is still
+breadth, and correlations can change in a crisis.
+
+Funding remains part of the decision. A fully funded portfolio has weighted-average
+one-period arithmetic return, but its compounded growth also depends on joint risk and
+rebalancing. It can improve compounded growth without borrowing. A financed overlay
+preserves capital exposure but adds financing, leverage and implementation risk. Compare
+both constructions with what they actually replace; their gains do not add across
+incompatible benchmarks.
+
+The next informative measurements are whole-portfolio substitutions with explicit costs,
+and tests of distinct failure modes. The number of tickers and the significance of each
+standalone return are insufficient selection rules.
 
 ---
 
@@ -82,7 +66,7 @@ the covariance of the sleeves' **excess** returns. Then
 IR = w'e / sqrt(w' Sigma w)          P(ahead after T years) = Phi(IR sqrt(T))
 ```
 
-which is [the horizon module](expected-edge-decomposition.md#3-what-probability-is-actually-attainable)
+under the normal relative-return approximation with fixed moments and independent time increments. This is [the horizon module](expected-edge-decomposition.md#3-what-probability-is-actually-attainable)
 with `e/s` renamed. For `k` sleeves of identical edge, identical tracking error and mutual
 correlation `rho`,
 
@@ -92,8 +76,9 @@ IR_k = IR_1 sqrt(k / (1 + (k-1) rho))        P_k = Phi(z_1 sqrt(k / (1 + (k-1) r
 
 and the breadth factor is the same `k / (1 + (k-1) rho)` that
 [`overlay_growth.effective_breadth`](../../research/src/portfolio_edge/studies/overlay_growth.py)
-already defines. **`z_1` is the only place the single-sleeve probability enters, and the
-horizon cancels**, so the table below holds at every horizon at once.
+already defines. **`z_1` is the only place the single-sleeve probability enters.** The table compares
+strategies at the same horizon with that single-strategy probability held fixed; it does
+not imply that a strategy has a 55% win probability at every horizon.
 
 | `rho` | k=1 | 2 | 3 | 5 | 10 | 25 | 100 | k → ∞ |
 | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
@@ -134,10 +119,9 @@ The 90% row is worth reading twice: **104 independent 55% bets reach 0.89997** a
 hundred-and-fifth is what clears the target, so "about a hundred" is the right size and the
 exact integer depends on which side of the threshold is being asked for.
 
-"Stack a ton and you will beat the market" is arithmetically true at roughly **170 to 340
-truly uncorrelated bets**, which is a description of a market maker, not a portfolio of
-eight ETFs — and the table above says those bets have to be uncorrelated, which the next
-section says these are not.
+Under these assumptions, roughly **170 to 340 uncorrelated bets** reach the table’s
+high probabilities. They do not establish certainty, actual strategy availability, or a
+forecast for a portfolio of ETFs.
 
 **The edge is estimated, and that error never averages away.** Path noise accumulates as
 `s**2 T` and washes out; an error in the *mean* accumulates as `tau**2 T**2` and does not.
@@ -147,10 +131,10 @@ Writing the cumulative relative log return as `N(eT, tau**2 T**2 + s**2 T)`,
 P(T) = Phi( e sqrt(T) / sqrt(tau**2 T + s**2) )     ->    Phi(e / tau)   as T -> inf
 ```
 
-**`Phi(e/tau)` is a hard ceiling on any horizon**: the probability of being ahead cannot
-exceed the probability that the edge is positive at all. Thirty years does not convert an
-unsignable premium into a likely outcome; it converts it into a longer wait for the same
-coin flip.
+For positive `e`, **`Phi(e/tau)` is the limiting probability in this fixed-uncertainty
+model**. It is not a universal finite-horizon bound: with negative `e`, the probability
+approaches the limit from above. New information may also change `e` or `tau`; the formula
+does not model learning or changing market opportunities.
 
 ### Correlation, measured
 
@@ -201,13 +185,15 @@ momentum are negatively correlated.
 computes it without a cap. It is also an **upper bound on anything realisable**: it prices
 the sleeves at optimal weights and equal edges, which the candidate does not have.
 
-### Funding: the thesis is a statement about overlays
+### Funding: substitution and overlays
 
-Under **substitution** — a fixed capital base, weights summing to at most one — portfolio
-edge is a weighted **average** of sleeve edges, so it is bounded above by the single best
-sleeve. Adding a sleeve raises effective breadth and lowers mean edge in the same motion.
-Under a **financed overlay** — notional weights, unconstrained — portfolio edge is a
-**sum**, and "stack a ton" is exactly the right instruction.
+Under **substitution** with nonnegative weights summing to one, expected one-period
+arithmetic excess return is a weighted average of sleeve edges against the same benchmark.
+It cannot exceed the largest component edge, but adding a sleeve need not lower the
+existing portfolio’s mean. Compounded growth also depends on covariance and the trading
+rule. Under a **financed overlay**, contributions add across notional exposures, with
+financing costs, joint risk and solvency constraints. Neither identity establishes the
+best portfolio weight or makes unlimited additions desirable.
 
 On the candidate's own tilts, at the premia most favourable to it and 35% of capital
 available to tilt:
@@ -224,11 +210,11 @@ investor is applying overlay intuition to a portfolio whose arithmetic is an ave
 identity itself and measures the gap at `a_p − sigma_p**2 = 2.44 pp/yr`; this page adds
 only that the gap changes the *shape* of the stacking arithmetic and not merely its size.
 
-**Dilution does not change the odds, only the prize.** Scaling every weight by a constant
-moves edge and tracking error together, so `IR` and every probability are unchanged. A
-5% tilt and a 20% tilt are equally likely to be ahead; one is four times as large. That is
-why the candidate's low probability is not caused by small weights — it is caused by
-*relative* weights, which is a different failure.
+**Linear scaling preserves the arithmetic information ratio in this model.** Scaling
+every active exposure by the same positive constant moves its arithmetic edge and
+tracking error together when costs also scale proportionally. This does not establish
+weight-invariant probabilities for compounded, rebalanced portfolios with nonlinear
+costs, changing exposures or taxes. Those require an executable path comparison.
 
 ---
 
@@ -285,8 +271,8 @@ part of it.** Read the two rightmost columns together.
 **The tracking error the investor is accepting is about 400 bp a year** against a
 same-split cheap-core benchmark, of which **372 bp is the trend overlay** and 102 bp
 the AVLV line. For scale, the thirty-year detection floor at 400 bp of tracking error is
-**93 bp/yr at 90% confidence**, against a central edge of 92 bp. **The portfolio is
-designed so that thirty years of holding it cannot establish whether it worked.**
+**93 bp/yr at 90% confidence**, against a central edge of 92 bp. The central effect lies near this design’s resolution; the detection calculation does
+not guarantee what a future sample would establish.
 
 ---
 
@@ -300,7 +286,8 @@ beta_k  = rho_kp s_k / s_p      alpha_k = e_k − beta_k e_p     omega_k = s_k s
 IR_new**2 = IR_old**2 + (alpha_k / omega_k)**2
 ```
 
-The appraisal ratio `alpha_k / omega_k` is exactly what an optimiser would have found —
+For unconstrained mean-variance optimisation with fixed moments and nonsingular covariance,
+the appraisal ratio `alpha_k / omega_k` gives the additional attainable squared IR —
 [the test suite](../../research/tests/unit/test_studies_stacking.py) checks it against
 `sqrt(e' Sigma^-1 e)` computed by an independent matrix solve. Two consequences, and both
 are the investor's own objection made exact:

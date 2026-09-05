@@ -1,106 +1,75 @@
 ---
-/**
- * The idea the whole site started from: stack many ideas that each have a modest chance
- * of beating the market, and beat it. The honest answer, in plain words and no formulas.
- * Every number here is arithmetic on a measured correlation or a count from the research.
- */
 import Button from "~/components/Button.astro";
 import Hero from "~/components/Hero.astro";
-import StatGrid from "~/components/StatGrid.astro";
 import Verdict from "~/components/Verdict.astro";
 import Base from "~/layouts/Base.astro";
-
-const STATS = [
-  { value: "55%", label: "One idea's chance of beating the market", note: "The assumption the thesis starts from" },
-  {
-    value: "58%",
-    label: "The ceiling, however many you add",
-    note: "When the ideas move together as much as this portfolio's leans do, 0.43 out of 1",
-  },
-  { value: "3 or 4", label: "Truly separate bets available", note: "Stocks, cheap companies, trend, bonds" },
-  { value: "30 years", label: "To know an edge of about 0.7% a year is real", note: "Smaller edges take longer" },
-];
 ---
 
 <Base
   title="Stacking many small edges"
-  description="If you stack many ideas that each have a 55% chance of beating the market, you should beat it. The arithmetic is right if the ideas are unrelated; the ideas an ordinary investor can buy move together, so stacking tops out near a 58% chance however many you add."
-  xl
+  description="Combining useful strategies can improve a portfolio. The gains depend on their size, shared risks, costs and what you sell to buy them."
 >
   <Hero
     title="Can you beat the market by stacking many small edges?"
-    lede="If you stack many ideas that each have a 55% chance of beating the market, you should beat it. That is the thesis this site was built to test. The arithmetic says yes. The funds you can actually buy say no."
+    lede="It can help. But a fund count and a win rate cannot tell you whether the combined portfolio is better. You need to know how much each idea gains or loses, when it fails, and what pays for it."
   >
-    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
-      <Verdict word="Settled" gloss="The ceiling is arithmetic on a correlation measured over 422 months." />
+    <p class="mt-4 text-ink-2">
+      <Verdict word="Too close to call" gloss="Useful diversification is possible; the advantage of a particular combination has to be tested." />
     </p>
   </Hero>
 
-  <StatGrid items={STATS} class="wide mt-10" />
-
   <div class="prose mt-10">
-    <h2 id="the-arithmetic">The arithmetic is right</h2>
-    <p>Take an idea with a 55% chance of beating a plain world stock index in a given year: a coin with a slight
-    bend. Stack several such ideas that have nothing to do with each other and the odds improve, because their
-    bad years do not line up. With perfectly unrelated ideas you would need five for a 60% chance, 18 for 70%,
-    45 for 80%, 105 for 90% and 172 for 95%. "Stack a ton" is true at roughly 170 to 340 unrelated bets, which
-    describes a market maker with a floor of traders. It does not describe eight funds.</p>
+    <h2 id="the-arithmetic">A 55% win rate is only a start</h2>
+    <p>An idea can win slightly more often than it loses and still lose money overall if its bad outcomes are
+    much larger. The same applies to beating an index: the size of the lead and the size of the shortfall matter.
+    A backtest's win rate is also an estimate, not a known probability for the future.</p>
+    <p>Combining ideas with positive expected returns can make the outcome more dependable when their losses
+    do not arrive together. That is the useful part of the stacking idea. It does not require a huge number of
+    funds, and adding another fund does not guarantee another source of return.</p>
 
-    <h2 id="why-it-stops">Why it stops working</h2>
-    <p>The ideas an ordinary investor can buy are related. The three leans in the value-lean portfolio, toward
-    cheap US companies, cheap small foreign companies and cheap emerging-market companies, move together at
-    about 0.43 out of 1, measured over 422 months. Stack an unlimited number of 55% ideas that are related to
-    that degree and the chance of beating the market climbs to 57.6% and stops. Not 90%, and not 100%. Five
-    such ideas capture two thirds of everything an infinite pile could deliver, ten capture four fifths, and the
-    hundredth adds nothing.</p>
-    <p>A second way to see it: twenty genuinely unrelated bets of that size, with no fees, still lose to the
-    index 29 years in a hundred, and given a modest relationship to each other, 0.2 out of 1, they are worth
-    about four bets with 60% odds.</p>
+    <h2 id="why-it-stops">Shared risks limit the benefit</h2>
+    <p>Two value funds may own different companies but suffer when investors avoid cheap stocks. Two trend
+    funds may trade many of the same markets. Different names and different managers can still leave you with
+    much the same bet.</p>
+    <p>A model that gives every idea the same expected gain, the same risk and the same positive correlation
+    produces a ceiling on the benefit of adding more. That ceiling belongs to those assumptions. It does not
+    establish a maximum chance of success for every portfolio, or rule out a new strategy with different risks.</p>
 
-    <h2 id="how-many-bets">How many separate bets exist</h2>
-    <p>Counted honestly, about four or five genuinely distinct sources of return exist for a US investor buying
-    funds: stocks, a lean toward cheap companies, trend following, bonds, and perhaps one more. In a typical
-    eight-holding institutional portfolio, stocks alone are 81% of the risk. The eight funds in the Plus trend
-    portfolio are five active positions worth about 3.7 separate bets, and in the worst tenth of stock months
-    that falls to about 2.8, because the three cheap-company leans merge in a crisis. They merge; they do not
-    fail together.</p>
-    <p>Geography adds little: one idea spread across three regions is worth about one and a half bets out of
-    three, because the regions fall together. Style adds more: five different ideas inside one country count as
-    five and a half bets, because cheapness and rising prices move opposite ways. Hold
-    <a href="/strategies/international/">foreign stocks</a> for their price, and not for diversification.</p>
-    <p>The best real-world test of stacking is a multi-strategy fund run by the people who invented the
-    approach. Over 2013 to 2026 it delivered about a quarter of its forecast, returning 7.6% a year against
-    about 13.5% for the S&amp;P 500, with genuine independence from stocks. Done well, the honest prize is a
-    manager's forecast of about 1.5% to 2% a year against what an investor would otherwise hold, and never a
-    claim to beat the index.</p>
+    <h2 id="how-many-bets">Look for different reasons to earn a return</h2>
+    <p>Broad stocks, cheaper companies, momentum, trend following and government bonds have different roles,
+    but they can overlap. Geography can diversify company, country and currency exposure even when markets
+    fall together. The useful question is how much a holding changes the whole portfolio, especially during
+    the kinds of loss you need to withstand.</p>
+    <p>A hedge can be useful even if it trails stocks on its own. It may reduce a deep loss or provide money
+    to rebalance. That benefit must be weighed against what the hedge costs and the return of the investment
+    sold to buy it. See <a href="/strategies/crash-protection/">crash protection</a>.</p>
 
-    <h2 id="the-four-portfolios">What this means for the four portfolios</h2>
-    <p>How you pay for an idea decides whether it adds. When you buy an idea by selling part of your portfolio,
-    the portfolio's edge is a weighted average of its ideas and can never beat the best one. Only an idea added
-    on top, with money borrowed inside a fund, adds its edge as a sum. In the Plus trend portfolio only the
-    trend fund is added on top; the value leans are bought by selling other stocks. Making a weight smaller
-    does not change the odds, only the size of the prize.</p>
-    <p>Against a cheap index fund, the whole edge the research could find comes to about 0.05% a year against
-    3.1% a year of wobble: a 54% chance of being ahead after thirty years, a coin flip, so
-    <a href="/portfolios/one-fund/">the one-fund portfolio</a> is the default. The one edge the data can
-    resolve, about 0.8% a year from the cheap-company leans, is worth over a career about the same as saving an
-    extra 3% of what you started with every year. The <a href="/portfolios/value-lean/">value-lean
-    portfolio</a> takes that bet; <a href="/portfolios/with-trend/">Plus trend</a> adds the one idea that is
-    financed on top.</p>
+    <h2 id="the-four-portfolios">What pays for the new idea?</h2>
+    <p>Selling stocks to buy a strategy gives up some stock return. Selling bonds changes a different part of
+    the portfolio. Borrowing inside a fund can preserve the stock allocation, but adds financing costs and
+    extra market exposure. These are different choices and need different comparisons.</p>
+    <p>A fully funded mix can improve compounded growth by reducing the damage from volatility. It does not
+    need borrowing to be useful. Nor does financing turn an uncertain strategy into free extra return.
+    We compare both the growth and the losses of the resulting portfolio after costs.</p>
+    <p>The <a href="/portfolios/value-lean/#fund-alternatives">fund comparison</a> shows how replacing a holding
+    changes the entire Value lean portfolio. Its results apply to those funds and that period. They are not
+    independent gains that can simply be added to a trend or bond result.</p>
 
-    <h2 id="how-long">How long it takes to know</h2>
-    <p>Thirty years of holding can demonstrate an edge of about 0.73% a year and nothing smaller. An idea whose
-    edge cannot be shown positive does not become provable with patience; thirty years turns an unreadable edge
-    into a longer wait for the same coin flip.</p>
+    <h2 id="how-long">How to judge the evidence</h2>
+    <p>More observations can improve an estimate. They cannot guarantee that a strategy will keep working,
+    or that a simulated index can be bought at the assumed cost. Evidence from different markets, periods and
+    implementations helps distinguish a durable mechanism from a fortunate sample.</p>
+    <p>Uncertainty does not require holding nothing until a result becomes statistically clear. It calls for
+    a weight you can live with if the idea disappoints, an explicit alternative, and a reason to revisit the choice.</p>
 
-    <h2 id="more-funds">Why "stack more funds" stops helping</h2>
-    <p>Offered twelve candidate ideas, the best buy-only portfolio holds three and does not improve past three.
-    Most of the benefit of more ideas lives in betting against some of them, which a buy-only investor cannot
-    reach. Past that point each fund you add brings a certain fee and an uncertain edge.</p>
+    <h2 id="more-funds">Each addition should earn its place</h2>
+    <p>Keep an addition when it improves a goal that matters to you after accounting for costs, shared risks
+    and the investment it replaces. Remove it when a simpler holding serves that goal as well. There is no
+    universal best number of funds.</p>
   </div>
 
   <div class="prose mt-10 flex flex-wrap gap-3">
-    <Button href="/portfolios/">Compare the four portfolios</Button>
-    <Button href="/strategies/" variant="outline">Every other idea</Button>
+    <Button href="/portfolios/">Compare the portfolios</Button>
+    <Button href="/strategies/" variant="outline">Other strategies</Button>
   </div>
 </Base>
