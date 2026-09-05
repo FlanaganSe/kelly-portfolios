@@ -5,6 +5,7 @@
  * the seventeen-year stretch cheap stocks spent behind the market. Every number that
  * describes what the portfolio did is read from the series the research emitter wrote.
  */
+import { getEntry } from "astro:content";
 import Callout from "~/components/Callout.astro";
 import Donut from "~/components/Donut.astro";
 import DrawdownChart from "~/components/DrawdownChart.astro";
@@ -20,6 +21,14 @@ import { seriesFor } from "~/lib/series";
 import Base from "~/layouts/Base.astro";
 
 const p = portfolio("value-lean");
+const liveComparisons = await Promise.all(
+  ["live-value-avuv-wealth", "live-value-spmo-wealth", "live-value-both-wealth"].map(async (id) => {
+    const entry = await getEntry("figures", id);
+    if (!entry) throw new Error(`Missing funded portfolio comparison: ${id}`);
+    return entry;
+  })
+);
+const liveSource = liveComparisons[0]?.data;
 
 const valueLean = seriesFor("value-lean");
 const market = seriesFor("market");
@@ -106,7 +115,7 @@ const HOLDINGS = [
 <Base
   title="A lean toward value"
   xl
-  description="Six funds that lean a third of the money toward cheaper, smaller companies. What $10,000 did since 1990, the seventeen years cheap stocks spent behind the market, what the lean added over a plain index, and which fund to drop first."
+  description="Six funds that lean a third of the money toward cheaper, smaller companies. What $10,000 did since 1990, the seventeen years cheap stocks spent behind the market, what the lean added over a plain index, and the tradeoffs when changing funds."
 >
   <Hero
     eyebrow="Portfolio 2 of 4"
@@ -172,6 +181,52 @@ const HOLDINGS = [
     but neither change guarantees a better return. Frequent trading inside an ETF does not by itself tell you
     how much taxable income it will pay out.</p>
   </div>
+
+  <section class="mt-14" aria-labelledby="fund-alternatives">
+    <div class="prose">
+      <h2 id="fund-alternatives">Would different funds help?</h2>
+      <p>We tested three changes using the actual funds' returns from {liveSource?.period}.
+      Each row compares the money left at the end with keeping the portfolio above. A positive number
+      means more money; these are differences over the whole period, not yearly returns.</p>
+    </div>
+    <div class="wide mt-4">
+      <table role="table" class="stack-table w-full border-collapse text-base">
+        <caption class="sr-only">Exploratory fund comparisons against the unchanged value portfolio</caption>
+        <thead role="rowgroup">
+          <tr role="row" class="border-b border-rule-strong text-left align-bottom">
+            <th role="columnheader" scope="col" class="label py-2 pr-3">Change</th>
+            <th role="columnheader" scope="col" class="label py-2 pr-3">Ending wealth difference</th>
+            <th role="columnheader" scope="col" class="label py-2">95% uncertainty range</th>
+          </tr>
+        </thead>
+        <tbody role="rowgroup">
+          {liveComparisons.map(({ id, data }) => (
+            <tr role="row" class="border-b border-rule align-top last:border-0">
+              <th role="rowheader" scope="row" class="py-3 pr-3 text-left font-normal">{data.label}</th>
+              <td role="cell" data-label="Ending wealth difference" class="py-3 pr-3">
+                <Figure id={id} inline showUnit={false} />
+              </td>
+              <td role="cell" data-label="95% uncertainty range" data-numeric class="py-3">{data.interval}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="prose mt-4">
+      <p class="text-sm text-ink-3">Exploratory · {liveSource?.source.label} · as of {liveSource?.asOf}</p>
+      <p>SPMO helped in this short history. AVUV slightly raised the portfolio's average return,
+      but its larger swings left less money at the end. Combining both changes finished behind SPMO alone.
+      Every range includes no improvement, so this comparison does not settle which choice will work best.</p>
+      <details class="mt-4">
+        <summary class="cursor-pointer text-ink-2">What this comparison includes</summary>
+        <p>{liveSource?.note}</p>
+        <p>The ranges come from resampling stretches of the same history and rerunning the portfolios.
+        They describe uncertainty in this short sample, not a range of future outcomes. These funds and
+        this period were already known when the comparison was designed. The longer simulation below
+        uses index and factor data, so it answers a different question.</p>
+      </details>
+    </div>
+  </section>
 
   <div class="prose w-full mt-14">
     <h2>What $10,000 did</h2>

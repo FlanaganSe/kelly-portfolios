@@ -19,6 +19,13 @@ The [generated comparisons](../../research/artifacts/785ca563fc554fbd862b2cc1b41
 and [committed paths and source identities](../../research/artifacts/785ca563fc554fbd862b2cc1b41bbc9f/result.json)
 contain the exact outcomes and intervals.
 
+The client renders these comparisons as cumulative relative ending wealth, rather than an
+annual log-growth difference. The reporting-only emitter
+`uv run python -m portfolio_edge.reporting.live_fund_figures` reads the committed result:
+`100 × (wealth_ratio − 1)`, with interval endpoints transformed by
+`100 × expm1(log_gap_pp_yr / 100 × months / 12)`. This monotone conversion preserves the
+paired interval and the unchanged-portfolio benchmark; it does not create forecast odds.
+
 The value portfolio demonstrates why average return alone cannot choose the fund:
 AVUV slightly raises arithmetic return but lowers compounded growth. In the two shorter
 portfolios it lowers both growth and the worst drawdown. SPMO improves observed growth;
