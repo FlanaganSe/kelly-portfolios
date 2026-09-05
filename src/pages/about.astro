@@ -1,18 +1,24 @@
 ---
 /**
- * Who writes this, how each idea is measured, what the four confidence words mean, and
- * what AI did and did not do. One page, because a reader deciding whether to trust a
- * site does it once.
+ * Who writes this, how the portfolios were tested, what the five confidence words mean
+ * (the one legend on the site), the idea the site started from, why it is called Kelly,
+ * the corrections log, and the short disclaimer. One page, because a reader deciding
+ * whether to trust a site does it once.
  */
 import Hero from "~/components/Hero.astro";
 import Verdict from "~/components/Verdict.astro";
+import { portfolio } from "~/content/portfolios";
 import Base from "~/layouts/Base.astro";
 import { REPO_URL } from "~/lib/site";
 
+const cautious = portfolio("cautious");
+
+/** The one confidence legend. Every other page prints the word and links here. */
 const WORDS = [
   {
     word: "Settled",
-    gloss: "Arithmetic, a contract, or a tax rule. The only question left is whether you do it.",
+    gloss:
+      "Arithmetic, a contract, or a tax rule. The sign is known before you start; the only question left is whether you do it.",
   },
   {
     word: "Probably",
@@ -21,53 +27,111 @@ const WORDS = [
   },
   {
     word: "Too close to call",
-    gloss: "The range covers real help and real harm. Not a yes and not a no.",
+    gloss:
+      "The test could not tell this effect from zero. The range covers real help and real harm. Not a yes and not a no, and not a polite no: the history is too short or too noisy, and the page says what would change that.",
   },
   {
     word: "No",
-    gloss: "Measured, and it cost more than it earned, or it failed a test set in advance.",
+    gloss: "A test written down in advance, and it failed: it cost more than it earned.",
+  },
+  {
+    word: "Not measured yet",
+    gloss: "Named and priced, but no test has been run. Nothing is known either way.",
+  },
+] as const;
+
+/**
+ * Newest first. An entry is here only if the error changed what a reader would have
+ * done; decimals and wording are fixed in silence beside the number they belong to. Each
+ * date is the day the corrected figure went live.
+ */
+const CORRECTIONS = [
+  {
+    date: "2026-09-04",
+    text: `The rewrite fixed five numbers a reader would have acted on: the cautious portfolio's weights summed to 100.1% and now sum to 100, and its fee reads ${cautious.fee}; the Plus trend portfolio is the one holding 25% in the trend fund and 5% in inflation-protected bonds, with every number measured on those weights; every worst fall now belongs to the portfolio shown; the 2022 figures are calendar years, where −19.3% had been January to September; and growth figures are compound, where 10.2% a year for all stocks since 1929 had belonged to a comparison that borrowed to hold more stock.`,
+  },
+  {
+    date: "2026-08-24",
+    text: "A gap between what funds earn and what their investors earn was credited to Morningstar; it was the site's own simulation. A reader would have trusted a number at the wrong size under the wrong name.",
+  },
+  {
+    date: "2026-08-24",
+    text: "The 200-day rule was said to beat holding by 0.74% a year; that was against a blend holding the same average amount in stocks, and against simply holding the rule was 0.73% a year behind. A reader might have adopted the rule expecting to earn more.",
+  },
+  {
+    date: "2026-08-24",
+    text: "A rebalancing cost of 0.387% a year was quoted; it was a return shortfall on a different three-region portfolio, and no cost at all. A reader would have budgeted for a cost that does not exist here.",
+  },
+  {
+    date: "2026-08-24",
+    text: "The site described one portfolio and quoted numbers measured on another with five points less in the trend fund. A reader would have expected the wrong worst fall.",
+  },
+  {
+    date: "2026-08-22",
+    text: "A forward return of 1.80% a year for trend following sized the position and then argued against holding it; it was a past average with a fee subtracted twice. A reader would have been told to cut the trend fund on a number that was never measured.",
+  },
+  {
+    date: "2026-08-22",
+    text: "A portfolio holding $1.32 of investments per dollar was compared with an index holding $1.00. A reader would have credited the trend fund for what borrowing alone did in good years.",
+  },
+  {
+    date: "2026-08-22",
+    text: "Putting each fund in its best account was said to be worth $38 to $55 a year on every $10,000; lines that exclude each other were both counted. A reader would have expected ten times the real saving of $2 to $7.",
+  },
+  {
+    date: "2026-08-22",
+    text: "Every fund dividend was assumed to be taxed at the lower rate; the funds' filings show most foreign dividends are not. A reader would have put the emerging-market funds in the taxable account.",
   },
 ] as const;
 ---
 
 <Base
   title="About this site"
-  description="Who writes it, how each idea is measured, what the four confidence words mean, and what AI did and did not do."
+  description="Who writes it, how the portfolios were tested, what the confidence words mean, the idea the site started from, why it is called Kelly, and the corrections log."
   asOf={null}
 >
   <Hero
     title="About this site"
-    lede="One person writes this. I am Sean Flanagan, a software engineer in the United States, and I do this in my own time."
+    lede="One person writes this, in his own time, and nobody pays for it. Here is how the portfolios were tested, what the confidence words mean, and what the site has got wrong so far."
   />
 
   <div class="prose">
-    <p>I hold no financial licence and no credential of any kind, and nobody reviews a page before it goes up.
-    Nothing pays for the site: no advertising, no affiliate links, no sponsors, and no money from any fund
-    company, broker or data provider. Whatever I own of the funds named here is stated on
-    <a href="/disclosures/">the disclosures page</a>, and I will not hold anything I would not disclose there.</p>
+    <h2 id="who">Who writes this</h2>
+
+    <p>I am Sean Flanagan, a software engineer in the United States. I hold no financial licence and no
+    credential of any kind, and nobody reviews a page before it goes up. Nothing pays for the site: no
+    advertising, no affiliate links, no sponsors, and no money or favour from any fund company, broker or data
+    provider. None of the companies whose funds are named here knows the site exists.</p>
+
+    <p>AI models did most of the calculating and most of the first drafting; I check every number against its
+    source and rewrite the words. Every data source is free and public, and the code and data behind every page
+    are at <a href={REPO_URL} rel="noopener noreferrer">the source repository</a>. If you find an error, open an
+    issue there with the number, its source, and the sentence you think it contradicts.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>How the measuring works</h2>
+    <h2 id="how-tested">How the portfolios were tested</h2>
 
-    <p>Every idea on this site is tested inside a whole portfolio, not on its own. The question is never
-    &ldquo;did gold go up&rdquo; but &ldquo;did adding gold to this portfolio, paid for by selling some of this
-    portfolio, leave you better off than a cheap index fund holding the same mix&rdquo;. Fund fees and trading
-    costs are charged inside every test, because an idea that only works before costs does not work.</p>
+    <p>Every idea is tested inside a whole portfolio, never on its own. The question is never &ldquo;did gold
+    go up&rdquo;. It is &ldquo;did adding gold to this portfolio, paid for in a stated way, leave you better off
+    than a cheap index fund holding the same mix&rdquo;, with fund fees and trading costs charged inside the
+    test.</p>
 
-    <p>A result is only trusted when the data could actually have told the difference. Returns bounce around,
-    and before running a test you can work out how large an effect would have to be for the history to show it.
-    If the measured gap is smaller than that, the test proves nothing in either direction, and the page says
-    so.</p>
+    <p>The histories are simulated. The funds themselves are too young to test (RSST began trading in
+    September 2023), so each fund is stood in for by the market and style indexes it tracks, less its fee and a
+    trading charge. Two windows are used: 1990 to 2026, the headline on every page, and 1929 to 2025, US
+    stocks only. Before a test runs it is written down: which years, which funds, what it is compared against,
+    what counts as a pass, and the smallest effect the history could have shown. A gap smaller than that is
+    &ldquo;too close to call&rdquo;.</p>
 
-    <p>The test is written down before it runs: which years, which funds, what it is compared against, and what
-    counts as a pass. Then it runs, and the answer goes up whether or not it is the one I hoped for.</p>
+    <p>Nothing here is a forecast. A simulated history says what a mix of indexes did; nobody earned those
+    returns, and nobody sat through the falls without knowing how they ended.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>The four confidence words</h2>
+    <h2 id="how-sure">What the confidence words mean</h2>
 
-    <p>Every claim here carries one of these.</p>
+    <p>Every claim on the site carries one of these five words. This is the only place they are defined.</p>
 
     <ul class="word-list">
       {
@@ -80,40 +144,56 @@ const WORDS = [
       }
     </ul>
 
-    <p>&ldquo;Too close to call&rdquo; is the most common verdict here and the one most likely to be misread. It
-    is not a polite no. It means the history is too short or too noisy to answer, and the page says what would
-    change that.</p>
+    <p>&ldquo;Settled&rdquo; is never used for a measured return.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What AI did</h2>
+    <h2 id="the-idea">The idea behind the site</h2>
 
-    <p>AI models did most of the calculating and most of the first drafting. I check every number against its
-    source and rewrite the words. Every measured result points at a record carrying its
-    value, its range, the date it was read, and where it came from, and the site refuses to build if that source
-    has moved. The models have been wrong here, sometimes by a lot, and every error that changed a conclusion is
-    on <a href="/corrections/">the corrections page</a> with its date and what caught it.</p>
+    <p>The site started from a thesis: stack many ideas that are each a little more likely than not, say 55%,
+    to beat the market, and the stack beats the market. The arithmetic is right and the ingredients fall short.
+    This portfolio&rsquo;s own ideas move together with a correlation of 0.435 over 422 months, and an unlimited
+    stack of 55% ideas that move together that much tops out at a 57.6% chance of beating the market. The eight
+    funds here are worth about 3.7 independent bets, and the honest result beats a plain index fund about as
+    often as a coin flip. <a href="/strategies/stacking/">The stacking page</a> has the whole argument.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What this site will never do</h2>
+    <h2 id="why-kelly">Why Kelly</h2>
 
-    <p>It will never answer a question about your money, not by email, not privately, and not with the names
-    changed. I do not know your tax bracket, your job, or how you behaved the last time your account fell by a
-    third, and a general answer dressed as a personal one is worse than none.</p>
+    <p>The site is named after the Kelly criterion, the rule that works out the bet size that grows your money
+    fastest when you know the odds; the research scores every portfolio by that growth rate subject to a loss
+    limit, because a smoother ride is no edge in itself, since anyone gets it free by holding less stock. You do
+    not know the odds, and the formula does not fail gently: hold half the growth-optimal amount and you keep
+    75% of the extra growth, hold twice it and you keep none, which is why every probability printed here is a
+    best case and why the loss you can sit through, and never the return, sets each portfolio.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>Checking the work</h2>
+    <h2 id="corrections">Corrections</h2>
 
-    <p>The code and the data behind every page are public at
-    <a href={REPO_URL} rel="noopener noreferrer">the source</a>, including the history of what changed. If you
-    find an error, open an issue there with the number, its source, and the sentence you think it contradicts.
-    You do not need to be polite about it.</p>
+    <p>When a number turns out to be wrong it is corrected everywhere it appears and an entry lands here, saying
+    what a reader would have done differently. Newest first.</p>
 
-    <p>Nothing here has been checked by a securities lawyer, a tax adviser or an accountant. The tax arithmetic
-    assumes a US federal individual investor and ignores every state. <a href="/disclaimer/">The disclaimer</a>
-    says the rest.</p>
+    <ol class="corrections">
+      {
+        CORRECTIONS.map(({ date, text }) => (
+          <li>
+            <p class="label" data-numeric>{date}</p>
+            <p>{text}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="disclaimer">Disclaimer</h2>
+
+    <p>Everything here is general information about how investing works; none of it is advice, and none of it
+    takes account of your situation. The site will never answer a question about your money, by email or
+    otherwise; a fee-only fiduciary adviser paid by you and nobody else is the person for that.
+    <a href="/disclaimer/">The full disclaimer</a> says the rest.</p>
   </div>
 </Base>
 
@@ -125,7 +205,7 @@ const WORDS = [
 
   .word-list > li {
     display: grid;
-    grid-template-columns: 9.5rem 1fr;
+    grid-template-columns: 10.5rem 1fr;
     gap: 0.5rem 1rem;
     align-items: baseline;
     padding: 0.6rem 0;
@@ -134,6 +214,24 @@ const WORDS = [
 
   .word-list > li:last-child {
     border-bottom: 1px solid var(--rule);
+  }
+
+  .corrections {
+    list-style: none;
+    padding: 0;
+  }
+
+  .corrections > li {
+    padding: 0.75rem 0;
+    border-top: 1px solid var(--rule);
+  }
+
+  .corrections > li:last-child {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .corrections > li > p + p {
+    margin-top: 0.3rem;
   }
 
   @media (width < 32rem) {

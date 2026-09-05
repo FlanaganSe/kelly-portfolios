@@ -9,6 +9,7 @@ import {
   verdict,
 } from "~/components/islands/placement-model";
 import { creditForfeitedByPlanBp, investorHoldings, investorRates, taxRegimes } from "~/content/placement";
+import { WITH_TREND_HOLDINGS } from "~/content/portfolios";
 import { derivedRates } from "~/lib/placement";
 
 /**
@@ -51,7 +52,7 @@ describe("shelf", () => {
     if (paidOut === undefined || recorded === undefined) throw new Error("RSST is not on the shelf");
     expect(paidOut.boxOneAYield).toBeLessThan(recorded.boxOneAYield);
     expect(paidOut.account).toBe("split");
-    expect(recorded.account).toBe("shelter");
+    expect(recorded.account).toBe("retirement");
   });
 
   it("weights sum to the whole portfolio once the duplicate is dropped", () => {
@@ -86,14 +87,16 @@ describe("rank", () => {
 });
 
 describe("queue", () => {
-  it("orders the seven published funds the way the research does at the top bracket", () => {
+  it("orders the eight funds the way the research does at the top bracket", () => {
     const rows = queue(shelf("recorded"), topBracket);
-    expect(rows.map((row) => row.ticker)).toEqual(["RSST", "IDMO", "AVES", "AVDV", "VXUS", "VTV", "VTI"]);
+    expect(rows.map((row) => row.ticker)).toEqual(["RSST", "SCHP", "IDMO", "AVES", "AVDV", "VXUS", "VTV", "VTI"]);
   });
 
-  it("holds the published weights", () => {
+  it("holds the printed weights of the Plus trend portfolio", () => {
     const weights = Object.fromEntries(shelf("recorded").map((holding) => [holding.ticker, holding.weight]));
-    expect(weights).toEqual({ RSST: 0.3, VTI: 0.19, VTV: 0.15, VXUS: 0.16, AVDV: 0.1, IDMO: 0.05, AVES: 0.05 });
+    const printed = Object.fromEntries(WITH_TREND_HOLDINGS.map((holding) => [holding.ticker, holding.weight / 100]));
+    for (const ticker of Object.keys(printed)) expect(weights[ticker]).toBeCloseTo(printed[ticker] as number, 10);
+    expect(Object.keys(weights).sort()).toEqual(Object.keys(printed).sort());
   });
 
   it("ranks best first", () => {
@@ -108,6 +111,15 @@ describe("queue", () => {
 });
 
 describe("verdict, on the audited reading", () => {
+  it("leaves the bond fund out of the stock-fund comparison", () => {
+    const rows = queue(shelf("paid-out"), topBracket);
+    const call = verdict(rows);
+    expect(call.highestDomestic?.ticker).not.toBe("SCHP");
+    expect(rows.find((row) => row.ticker === "SCHP")?.priorityBp).toBeGreaterThan(
+      call.highestDomestic?.priorityBp ?? 0
+    );
+  });
+
   for (const [name, regime] of [
     ["the top bracket", topBracket],
     ["the upper-middle bracket", upperMiddle],
@@ -145,7 +157,7 @@ describe("fill", () => {
 
   it("shelters everything when the shelter covers the portfolio", () => {
     const placed = fill(rows, 1);
-    expect(placed.every((row) => row.where === "shelter")).toBe(true);
+    expect(placed.every((row) => row.where === "retirement")).toBe(true);
   });
 
   it("never places more than the capacity", () => {

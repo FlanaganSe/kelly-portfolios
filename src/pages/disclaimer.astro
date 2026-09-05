@@ -1,6 +1,6 @@
 ---
 /**
- * The full disclaimer. The two-line version lives in the footer of every page.
+ * The full disclaimer, short. The two-line version lives in the footer of every page.
  *
  * NOT LEGAL ADVICE. Nothing here has been reviewed by a lawyer. The structure follows
  * the publisher's exclusion from the Investment Advisers Act as read in Lowe v. SEC,
@@ -8,101 +8,40 @@
  * market events, and disinterested. Securities counsel should review this page before
  * anything here is monetised in any way; adding revenue changes which exclusion applies.
  */
-import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
 import Base from "~/layouts/Base.astro";
 ---
 
 <Base
   title="Disclaimer"
-  description="General information about investing, published impersonally and on a schedule. Not advice, not a recommendation to buy or sell anything, and never an answer to a reader's question about their own portfolio."
+  description="General information about investing, published impersonally. Not advice, not a recommendation to buy or sell anything, and never an answer to a reader's question about their own portfolio."
   asOf={null}
 >
   <Hero
     title="Disclaimer"
-    lede="Everything here is general information about how investing works. None of it is advice, and none of it takes any account of your situation."
+    lede="Everything here is general information about how investing works. None of it is advice, and none of it takes account of your situation."
   />
 
   <div class="prose">
-    <h2 id="general">It is general, and it is impersonal</h2>
-
     <p>The results here were measured for a US federal individual investor at particular tax brackets, with
-    particular account types, over particular stretches of history. You are not that person. Nothing here knows
-    your income, your tax bracket, your state, your debts, when you plan to stop working, or how you behaved the
-    last time your account fell by a third. Every one of those changes the answer.</p>
+    particular account types, over particular stretches of history. Nothing here knows your income, your debts,
+    or how you behaved the last time your account fell by a third. Naming a fund is a measurement, never a
+    suggestion that you own it, and no offer or solicitation of any kind is being made.</p>
 
-    <p>Naming a fund is a measurement, never a suggestion that you own it. No offer and no solicitation of any
-    kind is being made.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2 id="impersonal">I will never look at your portfolio</h2>
-
-    <p>Not by email, not in an issue, not privately, and not with the names changed. A writer who reads your
-    holdings and tells you what to do with them is giving personal investment advice, whatever the page says at
-    the bottom, and a publisher stays outside the Investment Advisers Act only as long as the writing stays
-    entirely impersonal.</p>
-
-    <p>If you want somebody to look at your own portfolio and tell you what to do, hire a fee-only fiduciary
-    adviser who is paid by you and by nobody else. Questions about the method, an error in a number, or a source
-    that does not say what a page claims are welcome. The answer will be a correction, not a recommendation.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2 id="cadence">It is published on a schedule, never because the market moved</h2>
-
-    <p>Pages are revised when new evidence lands or on a date written into the page in advance. Nothing here will
-    ever be published because the market moved. That is partly a legal condition and partly a finding: a rule
-    reviewed on price cannot be told apart from a rule abandoned in a fall.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2 id="risk">Investing can lose you everything</h2>
+    <p>I hold no financial licence and no credential. I will never look at your portfolio, by email or otherwise;
+    for that, hire a fee-only fiduciary adviser who is paid by you and by nobody else. Questions about the method
+    or an error in a number are welcome; the answer will be a correction, never a recommendation.</p>
 
     <p>All investing carries risk, including the loss of everything you put in. Past performance tells you what
-    happened, not what will happen. Every portfolio here has spent long stretches behind a plain index fund, and
-    the site says by how much: cheap US companies ran <Figure id="value-drawdown" inline showUnit={false} /> the
-    US market across nearly eighteen years and never caught up, and international stocks ran
-    <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over a similar stretch. Both figures are
-    measured history, not simulations.</p>
+    happened and says nothing about what will happen. The dollar figures here are simulations built from index
+    data: nobody earned those returns, and nobody sat through the falls without knowing how they ended. Any fund
+    named here can close, change what it does, or raise its fee.</p>
 
-    <h3 id="backtests">Backtested results are hypothetical</h3>
-
-    <p>A backtest is what a rule would have produced if somebody had run it, on data chosen after the fact, by
-    someone who already knows how the story ends. Nobody earned those returns, no fee was paid, and nobody sat
-    through the fall in the middle without knowing how it ended. Read every backtested number here down for
-    that, on top of the range printed beside it.</p>
-
-    <h3 id="kelly">Position sizing assumes numbers nobody has</h3>
-
-    <p>This site is named after the Kelly criterion, which works out the bet size that grows your money fastest
-    when you know the odds. You do not know the odds, nobody does, and the arithmetic does not fail gently when
-    you are wrong. Overestimate your advantage by a factor of two and the formula that maximised growth now
-    destroys it. Every probability printed here is a best case, and the real chance is lower by an amount nobody
-    can state.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2 id="scope">Tax, jurisdiction and accuracy</h2>
-
-    <p>The tax arithmetic assumes a US federal individual investor and ignores every state and local tax. It is
-    not tax advice, and a result that holds in a US taxable account is sometimes exactly backwards elsewhere.
-    Talk to somebody licensed before acting on it.</p>
-
-    <p>No warranty is given on any of this: not on the accuracy of a number, not on a source still saying what
-    it said when it was read, and not on the site being available. I accept no liability for any loss arising
-    from anything on this site, to the fullest extent the law allows.</p>
-
-    <h3 id="uk">United Kingdom</h3>
-
-    <p>This site is not directed at retail consumers in the United Kingdom, and nothing on it is a financial
-    promotion under section 21 of the Financial Services and Markets Act 2000. I am not authorised or regulated
-    by the Financial Conduct Authority.</p>
-
-    <h3 id="not-legal-advice">This page is not legal advice either</h3>
-
-    <p>The same non-lawyer wrote it. It describes the conditions this site intends to keep, not a legal opinion
-    that it has kept them. <a href="/about/">The about page</a> and
-    <a href="/disclosures/">the disclosures page</a> are the context.</p>
+    <p>The tax arithmetic assumes a US federal individual investor and ignores state and local tax; it is not
+    tax advice. No warranty is given on any of this, and I accept no liability for any loss arising from anything
+    on this site, to the fullest extent the law allows. This site is not directed at retail consumers in the
+    United Kingdom, nothing on it is a financial promotion under section 21 of the Financial Services and
+    Markets Act 2000, and I am not authorised or regulated by the Financial Conduct Authority. Nor is this page
+    legal advice; the same non-lawyer wrote it.</p>
   </div>
 </Base>

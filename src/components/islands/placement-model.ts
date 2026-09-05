@@ -1,10 +1,11 @@
 /**
- * The shelf, ranked for one reader, and where each line lands once the shelter runs out.
+ * The funds, ranked for one reader, and where each lands once the retirement account is
+ * full.
  *
  * All of the arithmetic is `~/lib/placement`, run over `~/content/placement`. Nothing
  * here computes a tax; it maps a filed fund into the shape the library takes, fills a
- * shelter of the reader's size from the top of the ranking, and reads back what that
- * costs in foreign tax credit.
+ * retirement account of the reader's size from the top of the ranking, and reads back
+ * what that costs in foreign tax credit.
  *
  * The mapping is worth stating, because a fund files three numbers where the library
  * takes three different ones:
@@ -34,8 +35,8 @@ const BASIS_POINT = 1e-4;
  *
  * The stacked fund recognises income inside itself that it has not paid out. Counting it
  * puts that fund at the top of the queue; counting only what shareholders were taxed on
- * puts it seventh. The repository's own position is that the placement is the same under
- * either reading, so the tool shows the audited one and offers the other.
+ * puts it near the bottom. The site's own position is that the placement is the same
+ * under either reading, and the page shows the "recorded" one and says so.
  */
 export type Basis = "paid-out" | "recorded";
 
@@ -44,11 +45,11 @@ export interface ShelfRow {
   readonly name: string;
   /** Fraction of the whole portfolio. */
   readonly weight: number;
-  /** What a dollar of shelter capacity saves a year, in basis points. */
+  /** What a dollar of retirement-account room saves a year, in basis points. */
   readonly priorityBp: number;
   /** Recurring tax a year if this line sits in the taxable account, in basis points. */
   readonly taxableBp: number;
-  /** Foreign tax forfeited a year if this line sits in a shelter, in basis points. */
+  /** Foreign tax forfeited a year if this line sits in a retirement account, in basis points. */
   readonly shelteredBp: number;
   /** True where a foreign government withholds tax on the dividend before it arrives. */
   readonly international: boolean;
@@ -56,9 +57,9 @@ export interface ShelfRow {
 }
 
 export interface PlacedRow extends ShelfRow {
-  /** Fraction of the whole portfolio this line puts inside the shelter. */
+  /** Fraction of the whole portfolio this line puts inside the retirement account. */
   readonly shelteredWeight: number;
-  readonly where: "shelter" | "split" | "taxable";
+  readonly where: "retirement" | "split" | "taxable";
 }
 
 /** A fund's filed distribution, in the shape `~/lib/placement` takes. */
@@ -97,12 +98,13 @@ export function shelf(
 }
 
 /**
- * One fund's place in the queue: what a sheltered dollar of it saves a year, in basis
- * points, at the stated rates.
+ * One fund's place in the queue: what a dollar of it saves a year when held in a
+ * retirement account rather than a taxable one, in basis points, at the stated rates.
  *
  * The whole of the asset-location finding is in the subtraction. For a US fund the
  * second term is zero and this collapses to the familiar rule; for a fund that pays
- * foreign tax it does not, and the correction is exactly the credit a shelter forfeits.
+ * foreign tax it does not, and the correction is exactly the credit the retirement
+ * account forfeits.
  */
 export function rank(holding: InvestorHolding, regime: TaxRegime): ShelfRow {
   const candidate = toCandidate(holding);
@@ -121,7 +123,7 @@ export function rank(holding: InvestorHolding, regime: TaxRegime): ShelfRow {
 }
 
 /**
- * The shelf ranked by what a sheltered dollar of it saves, best first.
+ * The funds ranked by what a dollar of retirement-account room saves, best first.
  *
  * The order comes from `shelterPriorityBp`, so the ordering and its tie-break stay the
  * library's rather than this file's. That needs one row per ticker, which is what
@@ -141,7 +143,7 @@ export function queue(holdings: readonly InvestorHolding[], regime: TaxRegime): 
 }
 
 /**
- * Fill a shelter of size `capacity` from the top of the queue.
+ * Fill a retirement account of size `capacity` from the top of the queue.
  *
  * `capacity` and every weight are fractions of the same base, so a line that only partly
  * fits is split rather than dropped: splitting a fund across two accounts costs nothing,
@@ -151,15 +153,15 @@ export function fill(rows: readonly ShelfRow[], capacity: number): readonly Plac
   if (!(capacity >= 0)) {
     throw new RangeError(`capacity must be non-negative, got ${capacity}`);
   }
-  // Weights are decimals that do not sum to exactly one in binary, so a shelter the
-  // size of the whole portfolio would otherwise leave the last line a hair short and
-  // report it as split. The tolerance is a hundredth of a basis point of weight.
+  // Weights are decimals that do not sum to exactly one in binary, so a retirement
+  // account the size of the whole portfolio would otherwise leave the last line a hair
+  // short and report it as split. The tolerance is a hundredth of a basis point of weight.
   const DUST = 1e-9;
   let remaining = capacity;
   return rows.map((row) => {
     const placed = Math.min(row.weight, Math.max(remaining, 0));
     remaining -= placed;
-    const where = placed <= DUST ? "taxable" : placed >= row.weight - DUST ? "shelter" : "split";
+    const where = placed <= DUST ? "taxable" : placed >= row.weight - DUST ? "retirement" : "split";
     return { ...row, shelteredWeight: placed, where };
   });
 }
@@ -168,10 +170,10 @@ export function fill(rows: readonly ShelfRow[], capacity: number): readonly Plac
  * Foreign tax credit destroyed by this plan, in basis points a year of the whole
  * portfolio.
  *
- * A credit offsets a US tax and a sheltered account owes none, so every sheltered dollar
- * of a fund that pays foreign tax loses that tax outright, in a traditional account and
- * a Roth alike. The ranking has already subtracted it; this is the same quantity printed
- * on its own so a reader can see what the plan is spending.
+ * A credit offsets a US tax and a retirement account owes none, so every dollar of a
+ * fund that pays foreign tax held there loses that tax outright, in a traditional
+ * account and a Roth alike. The ranking has already subtracted it; this is the same
+ * quantity on its own so a reader can see what the plan is spending.
  */
 export function forfeitedCreditBp(placed: readonly PlacedRow[]): number {
   let total = 0;
@@ -182,17 +184,22 @@ export function forfeitedCreditBp(placed: readonly PlacedRow[]): number {
 }
 
 export interface Verdict {
-  /** True when the worst international line still beats the best domestic one. */
+  /** True when the weakest foreign stock fund still beats the strongest US stock fund. */
   readonly everyInternationalAhead: boolean;
   readonly lowestInternational: ShelfRow | null;
   readonly highestDomestic: ShelfRow | null;
   readonly last: ShelfRow | null;
 }
 
-/** What the ranking actually says, read off the ranking rather than asserted. */
+/**
+ * What the ranking says about the stock funds, read off the ranking rather than
+ * asserted. The bond fund is left out of both sides: the claim under test is about
+ * foreign stock funds against US stock funds.
+ */
 export function verdict(rows: readonly ShelfRow[]): Verdict {
-  const international = rows.filter((row) => row.international);
-  const domestic = rows.filter((row) => row.international === false);
+  const stocks = rows.filter((row) => row.holding.assetClass === "stock");
+  const international = stocks.filter((row) => row.international);
+  const domestic = stocks.filter((row) => row.international === false);
   const lowestInternational = international.length > 0 ? (international[international.length - 1] as ShelfRow) : null;
   const highestDomestic = domestic.length > 0 ? (domestic[0] as ShelfRow) : null;
   return {
@@ -207,11 +214,11 @@ export function verdict(rows: readonly ShelfRow[]): Verdict {
 }
 
 /**
- * A hundredth-of-a-percent figure as the percentage a reader reads: 43.1 becomes "0.431%".
- * Everything on the page is quoted this way, so nothing has to be converted in the head.
+ * Basis points a year as the dollars a reader pays on $10,000: one basis point of
+ * $10,000 is one dollar, so 43.08 becomes "$43".
  */
-export function percentOfBp(value: number): string {
-  return `${(value / 100).toFixed(3)}%`;
+export function dollarsOn10k(bp: number): string {
+  return `$${Math.round(bp).toLocaleString("en-US")}`;
 }
 
 /** A rate as a percentage with its trailing zeros trimmed: 0.238 becomes "23.8". */

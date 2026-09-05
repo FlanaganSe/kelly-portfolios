@@ -1,0 +1,235 @@
+---
+/**
+ * How to hold any of the four portfolios: what to do before investing, which account
+ * each fund goes in (with the calculator), how to buy, when to rebalance, what to do
+ * when it falls, what to do if RSST closes, and the broker fee to check for.
+ *
+ * Every number that describes what a portfolio did is read from the research emitter's
+ * series at build time. The worked purchase example is the Plus trend weights on $10,000.
+ */
+import Callout from "~/components/Callout.astro";
+import Hero from "~/components/Hero.astro";
+import PlacementTool from "~/components/islands/PlacementTool";
+import { PORTFOLIOS, WITH_TREND_HOLDINGS } from "~/content/portfolios";
+import Base from "~/layouts/Base.astro";
+import { formatDollars, formatPct } from "~/lib/charts";
+import { loadSeries, seriesFor } from "~/lib/series";
+
+const file = loadSeries("1990");
+const market = seriesFor("market");
+
+/** What each portfolio, and the plain index, did in 2008 and 2022, and its worst fall. */
+const FALLS = [...PORTFOLIOS.map((p) => seriesFor(p.slug)), market].map((s) => {
+  const y2008 = s.summary.calendarYears["2008"];
+  const y2022 = s.summary.calendarYears["2022"];
+  if (y2008 === undefined || y2022 === undefined) throw new Error(`${s.id} is missing a calendar year`);
+  const months = s.summary.worstFall.monthsToRecover;
+  return {
+    id: s.id,
+    label: s.id === "market" ? "A plain world stock index" : s.label,
+    y2008,
+    y2022,
+    y2008Text: formatPct(y2008),
+    y2022Text: formatPct(y2022),
+    trough: formatDollars(s.summary.worstFall.dollarsAtTrough, "exact"),
+    months: months === null ? "not yet" : String(months),
+  };
+});
+
+const plain = FALLS[FALLS.length - 1];
+if (plain === undefined) throw new Error("no series to print");
+const four = FALLS.filter((row) => row.id !== "market");
+/** The smallest and largest fall among the four portfolios in a calendar year, as positive percents. */
+function range(year: "y2008" | "y2022"): [string, string] {
+  const falls = four.map((row) => -row[year]);
+  return [formatPct(Math.min(...falls)), formatPct(Math.max(...falls))];
+}
+const [least2008, most2008] = range("y2008");
+const [least2022, most2022] = range("y2022");
+
+/** The Plus trend weights as dollars of a $10,000 purchase. */
+const EXAMPLE = WITH_TREND_HOLDINGS.map((h) => `${formatDollars(h.weight * 100, "exact")} of ${h.ticker}`);
+const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.length - 1]}`;
+
+// TODO(fact): FACTS.md has no line on employer matches. The "Before you invest" sentence
+// about a match states no number and rests on arithmetic alone; add a sourced line or cut it.
+---
+
+<Base
+  title="How to hold it"
+  description="Which account each fund goes in, how to buy, when to rebalance, what to do when the portfolio falls, and what to do if RSST closes."
+>
+  <Hero
+    title="How to hold it"
+    lede="Pick one of the four portfolios, then hold it the same way whatever the market does. This page is the whole routine: which account, how to buy, once-a-year upkeep, and what to do when it falls."
+  />
+
+  <div class="prose">
+    <p>Everything here about tax is US federal tax. State tax adds on top, and outside the US every line
+    differs.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="before-you-invest">Before you invest</h2>
+
+    <p>If you have debt at a rate above what a US government bond pays after tax, pay it down first. Repaying it
+    is a return with no risk, and very likely the best one available to you. The one cost: a cheap fixed-rate
+    mortgage, once repaid, cannot be borrowed again at that rate.</p>
+
+    <p>If your employer matches part of what you put into its retirement plan, put in at least enough to get the
+    whole match. A dollar matched is a dollar earned on the day you deposit it.</p>
+
+    <p>If you have a high-deductible health plan, fill the health savings account before a taxable account. It is
+    the only US account taxed at none of the three points: money in, growth, and money out for medical costs.
+    The 2026 limit is $4,400 for one person and $8,750 for a family, plus $1,000 from age 55.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="which-account">Which account</h2>
+
+    <Callout kind="do-this">
+      <p>If all your money is in one account, skip this section. Buy the funds in the weights shown and go to
+      <a href="#rebalancing">Rebalancing</a>.</p>
+    </Callout>
+
+    <p>If you have a retirement account and a taxable brokerage account, the rule is two lines. Foreign stock
+    funds and RSST go in the retirement account; plain US stock funds, VTI and VTV, go in the taxable account.
+    The bond fund goes in the retirement account before anything else.</p>
+
+    <p>The reason is the yearly tax bill. In a taxable account you pay tax every year on what a fund pays out; in
+    a retirement account you pay none, so the fund with the biggest yearly bill goes there first. Bond interest
+    is taxed like wages, so the bond fund's bill is the largest: about $190 a year on every $10,000 of it at the
+    top bracket. RSST's trend profits are taxed like wages too. Foreign funds pay bigger dividends than US funds,
+    and fewer of them are dividends taxed at the lower rate. VTI pays the smallest dividend, all of it at the
+    lower rate, so it costs the least to leave in the taxable account.</p>
+
+    <p>You may have read that foreign funds belong in a taxable account, to keep the foreign tax you can claim
+    back. Holding all four in a retirement account does lose that claim, about $7 a year on every $10,000 of the
+    whole portfolio, and saves several times that.</p>
+
+    <p>If you have both a Roth and a pre-tax account, RSST and the bond fund go in the pre-tax account and the
+    foreign funds in the Roth: the Roth is never taxed again, so give it what you expect to grow most. That
+    choice is worth about $2 a year per $10,000; taxable against retirement is worth ten times that.</p>
+
+    <p>RSST records income inside itself that it has not paid out. I count all of it, which puts RSST first in
+    the queue; it belongs in a retirement account either way. The calculator ranks the eight funds of the Plus
+    trend portfolio at your bracket and says where each one lands. Nothing you set leaves your browser.</p>
+  </div>
+
+  <div class="mt-6">
+    <PlacementTool client:visible />
+  </div>
+
+  <div class="prose mt-10">
+    <p>Doing this is worth about $2 to $7 a year on every $10,000 against a sensible default with the same
+    accounts, and nothing if all your money is in one kind of account. If your pre-tax money is all in an
+    employer plan whose menu lacks these funds, rolling an old employer balance into a rollover IRA is the
+    cheapest single improvement available.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="how-to-buy">How to buy</h2>
+
+    <p>Open a brokerage account; Fidelity, Schwab and Vanguard charge nothing to trade ETFs online. Buy each fund
+    by its ticker in the weights shown. As a worked example, $10,000 in Plus trend is
+    <span data-numeric>{exampleText}</span>. Whether to buy all at once or a bit each month, and whether to buy
+    whole or fractional shares, has not been measured here; do whichever you will keep doing. New money goes to
+    the accounts with yearly limits first, a 401(k) or an IRA, then to the taxable account, into whatever
+    holding is furthest below its target.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="rebalancing">Rebalancing</h2>
+
+    <Callout kind="do-this">
+      <p>Once a year, on a fixed date, compare each holding with its target across all your accounts together.
+      Send new money and any dividends to whatever is furthest below target. Trade only inside a retirement
+      account, and only when a holding is a quarter away from its target. Never sell in a taxable account to
+      rebalance.</p>
+    </Callout>
+
+    <p>Rebalancing keeps your mix, and that is all it does. Do not expect it to add return or soften the worst
+    fall: on this portfolio the yearly rule came out 0.09% a year behind never trading over
+    {file.window.label}, a difference the test cannot tell from zero. The quarter-away trigger fires about once
+    every two and a half years. Never selling in the taxable account is worth about $42 a year on $10,000
+    against selling a tenth of your holdings each year, because tax on a gain waits until you sell.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="when-it-falls">When it falls</h2>
+
+    <p>The whole site rests on one choice: pick the fall you can sit through, then sit through it. Sitting
+    through it looks like this. In 2008 the four portfolios fell between
+    <span data-numeric>{least2008}</span> and <span data-numeric>{most2008}</span> in one year, and in 2022
+    between <span data-numeric>{least2022}</span> and <span data-numeric>{most2022}</span>. At the worst point,
+    $10,000 in the plain world stock index was worth <span data-numeric>{plain.trough}</span> and took
+    <span data-numeric>{plain.months}</span> months to get back to $10,000. Every number is a simulation from
+    index data, before tax, over {file.window.label}.</p>
+  </div>
+
+  <div class="mt-6 max-w-measure overflow-x-auto" tabindex="0" aria-label="What each portfolio did in 2008 and 2022">
+    <table class="w-full border-collapse text-sm sm:text-base">
+      <caption class="sr-only">Each portfolio's return in calendar 2008 and 2022, what $10,000 was worth at the bottom of its worst fall, and the months it took to recover, {file.window.label}, simulated</caption>
+      <thead>
+        <tr class="border-b border-rule-strong text-left">
+          <th scope="col" class="label py-2 pr-2 font-semibold">Portfolio</th>
+          <th scope="col" class="label py-2 pr-2 text-right font-semibold">2008</th>
+          <th scope="col" class="label py-2 pr-2 text-right font-semibold">2022</th>
+          <th scope="col" class="label py-2 pr-2 text-right font-semibold">$10,000 at the bottom</th>
+          <th scope="col" class="label py-2 text-right font-semibold">Months back to even</th>
+        </tr>
+      </thead>
+      <tbody class="text-ink-2">
+        {FALLS.map((row) => (
+          <tr class="border-b border-rule last:border-0">
+            <th scope="row" class="py-2 pr-2 text-left font-medium text-ink">{row.label}</th>
+            <td data-numeric class="py-2 pr-2 text-right whitespace-nowrap">{row.y2008Text}</td>
+            <td data-numeric class="py-2 pr-2 text-right whitespace-nowrap">{row.y2022Text}</td>
+            <td data-numeric class="py-2 pr-2 text-right whitespace-nowrap">{row.trough}</td>
+            <td data-numeric class="py-2 text-right whitespace-nowrap">{row.months}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+
+  <div class="prose mt-8">
+    <Callout kind="do-this">
+      <p>Do not sell. Keep adding on the same schedule. Before you buy, write down the fall you could sit through
+      and how many years behind a plain index fund you could stand, and hold yourself to the note. A price never
+      reopens the choice; only a change in the evidence or a change in you does.</p>
+    </Callout>
+
+    <p>Falling behind a plain US index fund for years is also inside what these portfolios have done.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="if-rsst-closes">If RSST closes</h2>
+
+    <Callout kind="do-this">
+      <p>If RSST announces it is closing or changing what it does, sell it before its last trading day and buy
+      VTI with the money in the same retirement account. No tax is due there, and you now hold the value lean.
+      Do not replace it with a standalone trend-following fund bought by selling stocks.</p>
+    </Callout>
+
+    <p>Closing is a real possibility: of the 25 trend-following ETFs filing reports in mid-2019, 13 had stopped
+    by the end of 2025. Four possible replacements (CTAP, MATE, JPFP, RSIT) are reviewed in that order, and each
+    currently fails a test; the <a href="/portfolios/with-trend/">Plus trend page</a> will say when one passes.</p>
+  </div>
+
+  <div class="prose mt-14">
+    <h2 id="broker-fees">Broker fees</h2>
+
+    <p>Since 1 June 2026 Fidelity charges 5% of the trade, capped at $100, to buy ETFs from issuers that refuse
+    to pay its platform fee. Its list as of 15 August 2026 names 84 tickers and none of the funds on this site,
+    but it can change without notice, and Schwab has announced a similar programme for late 2026 to early 2027.
+    Small issuers, Return Stacked among them, are the ones plausibly at risk.</p>
+
+    <Callout kind="do-this">
+      <p>Before a first purchase, search your broker's site for its list of ETFs that carry a purchase fee and
+      check every ticker you plan to buy. If a fund you hold is ever listed, buy it once or twice a year and send
+      the monthly money to the index funds: $100 on a $10,000 purchase is 1% on day one, above a year's fee of
+      every fund here except RSST.</p>
+    </Callout>
+  </div>
+</Base>

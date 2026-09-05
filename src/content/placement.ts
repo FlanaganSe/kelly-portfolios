@@ -35,9 +35,9 @@ const investorPlacement: Citation = {
 
 export const priorityRule = {
   plain:
-    "The right question for a scarce shelter is what a sheltered dollar saves, not which fund sounds tax-inefficient. For everything except a foreign holding the answer is simply the tax you would pay each year in a taxable account.",
+    "The question for a retirement account with limited room is what a dollar of it saves. For every fund except a foreign one the answer is the tax you would pay each year on that fund in a taxable account.",
   whyForeignIsDifferent:
-    "Foreign governments withhold tax on dividends before they reach you. In a taxable account you can claim that back as a credit. Inside a Roth or a traditional IRA there is no US tax to credit it against, so the withholding is simply gone. That is the one correction to the familiar rule, and it is smaller than the yield gap it is usually set against.",
+    "Foreign governments withhold tax on dividends before they reach you. In a taxable account you can claim that back. Inside a Roth or a traditional IRA there is no US tax to claim it against, so the withholding is gone. That is the one correction to the familiar rule, and it is smaller than the dividend gap it is usually set against.",
   source: structural,
 } as const;
 
@@ -152,7 +152,7 @@ export const form1116Threshold = {
   holdingsSingleUsd: 190153,
   holdingsJointUsd: 380305,
   detail:
-    "Below $300 of creditable foreign tax ($600 filing jointly) the credit is claimed directly with no Form 1116. At the developed-markets withholding rate that threshold arrives at $190,153 of holdings, or $380,305 filing jointly.",
+    "Below $300 of foreign tax paid in a year ($600 filing jointly) you claim it back directly with no Form 1116. At the developed-markets withholding rate that threshold arrives at $190,153 of foreign holdings, or $380,305 filing jointly.",
   source: { ...structural, href: "https://www.irs.gov/instructions/i1116" },
   asOf: asOf("2026-08-12"),
 } as const;
@@ -160,7 +160,7 @@ export const form1116Threshold = {
 export const washSaleTrap = {
   headline: "Wash-sale checking has to cover every account in the household.",
   detail:
-    "An ordinary wash sale only delays the loss, because it is added to the cost of the replacement shares. Buy the replacement inside an IRA instead and the loss is disallowed with nothing to add it to, so the deduction is destroyed rather than delayed.",
+    "A wash sale in a taxable account only delays the loss, because it is added to the cost of the replacement shares. Buy the replacement inside an IRA instead and the loss is disallowed with nothing to add it to, so the deduction is destroyed rather than delayed.",
   costBp: 119,
   costBasis: "A disallowance of 5% of the portfolio at the top rate.",
   source: structural,
@@ -310,12 +310,15 @@ export const emergingSleeve: NamedForeignSleeve = {
 export const foreignSleeves: readonly NamedForeignSleeve[] = [developedSleeve, emergingSleeve];
 
 // ---------------------------------------------------------------------------
-// The seven funds the site publishes
+// The eight funds the Plus trend portfolio holds
 // ---------------------------------------------------------------------------
 
 /**
- * One row per fund at its published weight: RSST 30, VTI 19, VTV 15, VXUS 16, AVDV 10,
- * IDMO 5, AVES 5. RSST appears twice because it files two readings of its own income.
+ * One row per fund at its printed weight in the Plus trend portfolio: RSST 25, VTI 19,
+ * VXUS 16, VTV 15, AVDV 10, IDMO 5, AVES 5, SCHP 5. RSST appears twice because it files
+ * two readings of its own income. SCHP has no filed distribution of its own here; it is
+ * priced on `bondCandidate`, a plain bond fund's yield taxed like wages in full, which
+ * understates it (inflation-protected bonds also owe tax on inflation not yet paid).
  *
  * Three of the yields are filed for this exact fund. Three are derived from a sponsor's
  * filed figures for a sibling fund and say so in `provenance`. Every derived assumption
@@ -329,6 +332,8 @@ export const foreignSleeves: readonly NamedForeignSleeve[] = [developedSleeve, e
 export interface InvestorHolding {
   readonly ticker: string;
   readonly name: string;
+  /** A bond fund is ranked like any other line but is never one of the "US stock funds". */
+  readonly assetClass: "stock" | "bond";
   /** Fraction of the whole portfolio. */
   readonly weight: number;
   readonly expenseRatioBp: number;
@@ -340,7 +345,7 @@ export interface InvestorHolding {
   readonly creditableForeignTaxYield: number;
   /** What a dollar of shelter capacity saves a year, in hundredths of a percent, at 23.8% / 18.8% / 15% qualified. */
   readonly priorityBp: readonly [number, number, number];
-  readonly account: "shelter" | "taxable" | "split";
+  readonly account: "retirement" | "taxable" | "split";
   /** One clause a reader sees beside the account: why this fund lands where it does. */
   readonly reason: string;
   readonly provenance: string;
@@ -353,23 +358,25 @@ export const investorRates: readonly number[] = [23.8, 18.8, 15];
 export const investorHoldings: readonly InvestorHolding[] = [
   {
     ticker: "RSST",
-    name: "Return Stacked US Stocks and Managed Futures ETF, counting everything it has recorded",
-    weight: 0.3,
+    name: "US stocks plus a trend-following strategy, counting all the income it has recorded",
+    assetClass: "stock",
+    weight: 0.25,
     expenseRatioBp: 99,
     boxOneAYield: 0.09273,
     capitalGainRateFraction: 0.10504,
     creditableForeignTaxYield: 0,
     priorityBp: [361.78, 315.41, 213.79],
-    account: "shelter",
-    reason: "its futures income is taxed as ordinary income, and most of it has not been paid out yet",
+    account: "retirement",
+    reason: "its trend profits are taxed like wages, and most of them have not been paid out yet",
     provenance:
-      "Tidal Trust II annual report for the year ended 2026-01-31. Undistributed ordinary income went from 1.40% to 8.56% of net assets in one year while the fund paid out 0.33%, so about 8.43% of net assets was recognised and not distributed. The trust's own note says the income of its offshore subsidiaries is included in taxable income each year, and reserves the right to retain it.",
+      "Tidal Trust II annual report for the year ended 2026-01-31. Income recognised but not paid out went from 1.40% to 8.56% of net assets in one year while the fund paid out 0.33%, so about 8.43% of net assets was recognised and not distributed. The trust's own note says the income of its offshore subsidiaries is included in taxable income each year, and reserves the right to retain it.",
     asOf: asOf("2026-01-31"),
   },
   {
     ticker: "RSST",
-    name: "Return Stacked US Stocks and Managed Futures ETF, counting only what it has paid out",
-    weight: 0.3,
+    name: "US stocks plus a trend-following strategy, counting only what it has paid out",
+    assetClass: "stock",
+    weight: 0.25,
     expenseRatioBp: 99,
     boxOneAYield: 0.01285,
     capitalGainRateFraction: 0.8565,
@@ -378,20 +385,22 @@ export const investorHoldings: readonly InvestorHolding[] = [
     account: "split",
     reason: "on what it has actually paid out it is an ordinary US stock fund with a small dividend",
     provenance:
-      "The same filing, counting only what shareholders were taxed on: $915,484 of ordinary income and $2,648,642 of long-term capital gain, $0.32 a share on a $24.91 opening net asset value. The fund's own prospectus reports 17.17% a year before tax against 16.85% after taxes on distributions since inception, which is this reading measured independently.",
+      "The same filing, counting only what shareholders were taxed on: $915,484 of income taxed like wages and $2,648,642 of long-term capital gain, $0.32 a share on a $24.91 opening net asset value. The fund's own prospectus reports 17.17% a year before tax against 16.85% after taxes on distributions since inception, which is this reading measured independently.",
     asOf: asOf("2026-01-31"),
   },
   {
     ticker: "IDMO",
     name: "Invesco S&P International Developed Momentum ETF",
+    assetClass: "stock",
     weight: 0.05,
     expenseRatioBp: 25,
     boxOneAYield: 0.044031,
     capitalGainRateFraction: 0.2557,
     creditableForeignTaxYield: 0.001229,
     priorityBp: [148.22, 126.2, 83.25],
-    account: "shelter",
-    reason: "it turns over its whole portfolio every year and pays out the gains, most of them taxed as income",
+    account: "retirement",
+    reason:
+      "it sells and replaces its whole portfolio every year and pays out the gains, most of them taxed like wages",
     provenance:
       "Invesco Exchange-Traded Fund Trust II annual report for the year ended 2025-10-31. Qualified dividend income 25% of ordinary dividends; portfolio turnover 105%; foreign tax $0.0317 against foreign source income $0.5841 a share. Undistributed income and gains were paid out on 2025-12-22 as $0.68417 of short-term and $0.27579 of long-term gain a share. One fiscal year, and the capital-gain line is the least durable figure in this table.",
     asOf: asOf("2025-10-31"),
@@ -399,14 +408,15 @@ export const investorHoldings: readonly InvestorHolding[] = [
   {
     ticker: "AVES",
     name: "Avantis Emerging Markets Value ETF",
+    assetClass: "stock",
     weight: 0.05,
     expenseRatioBp: 36,
     boxOneAYield: 0.0391,
     capitalGainRateFraction: 0.4448,
     creditableForeignTaxYield: 0.004598,
     priorityBp: [83.98, 64.43, 32.21],
-    account: "shelter",
-    reason: "a high dividend, less than half of it at the low rate",
+    account: "retirement",
+    reason: "a high dividend, less than half of it taxed at the lower rate",
     provenance:
       "Avantis 2025 tax centre: qualified dividend income 44.48%, foreign source income 92.34% of Box 1a, foreign tax 11.759% of Box 1a from the 2025 ICI file. Yield is the fiscal-2025 net investment income ratio of 3.45% from American Century ETF Trust's annual report, grossed to the Box 1a base. No capital-gain distribution since inception.",
     asOf: asOf("2025-08-31"),
@@ -414,14 +424,15 @@ export const investorHoldings: readonly InvestorHolding[] = [
   {
     ticker: "AVDV",
     name: "Avantis International Small Cap Value ETF",
+    assetClass: "stock",
     weight: 0.1,
     expenseRatioBp: 36,
     boxOneAYield: 0.027893,
     capitalGainRateFraction: 0.662741,
     creditableForeignTaxYield: 0.0016925,
     priorityBp: [65.45, 51.51, 33.38],
-    account: "shelter",
-    reason: "a foreign dividend near 2.8%, a third of it taxed as income",
+    account: "retirement",
+    reason: "a foreign dividend near 2.8%, a third of it taxed like wages",
     provenance:
       "Derived, not filed for this fund: cash yield 2.62% grossed up at the developed ex-US withholding rate of 6.068% of Box 1a, and the qualified fraction taken from VEA's filed 66.2741% because Avantis' per-fund figure for AVDV was not retrieved. Read 2026-08-23.",
     asOf: asOf("2026-08-23"),
@@ -429,13 +440,14 @@ export const investorHoldings: readonly InvestorHolding[] = [
   {
     ticker: "VXUS",
     name: "Vanguard Total International Stock ETF",
+    assetClass: "stock",
     weight: 0.16,
     expenseRatioBp: 5,
     boxOneAYield: 0.02678,
     capitalGainRateFraction: 0.584,
     creditableForeignTaxYield: 0.001777,
     priorityBp: [64.91, 51.52, 32.43],
-    account: "shelter",
+    account: "retirement",
     reason:
       "a foreign dividend near 2.7%, and the credit you would keep in a taxable account is a fifth of the tax you would pay there",
     provenance:
@@ -445,6 +457,7 @@ export const investorHoldings: readonly InvestorHolding[] = [
   {
     ticker: "VTV",
     name: "Vanguard Value ETF",
+    assetClass: "stock",
     weight: 0.15,
     expenseRatioBp: 3,
     boxOneAYield: 0.0181,
@@ -452,7 +465,7 @@ export const investorHoldings: readonly InvestorHolding[] = [
     creditableForeignTaxYield: 0,
     priorityBp: [43.08, 34.03, 27.15],
     account: "split",
-    reason: "a modest US dividend, all of it at the low rate, and no capital-gain payouts",
+    reason: "a modest US dividend, all of it taxed at the lower rate, and no capital-gain payouts",
     provenance:
       "Trailing twelve-month yield 1.81% from StockAnalysis, read 2026-08-23. The qualified fraction of 1.00 is an assumption; Vanguard's per-fund figure was not retrieved.",
     asOf: asOf("2026-08-23"),
@@ -460,6 +473,7 @@ export const investorHoldings: readonly InvestorHolding[] = [
   {
     ticker: "VTI",
     name: "Vanguard Total Stock Market ETF",
+    assetClass: "stock",
     weight: 0.19,
     expenseRatioBp: 3,
     boxOneAYield: 0.01067,
@@ -467,10 +481,27 @@ export const investorHoldings: readonly InvestorHolding[] = [
     creditableForeignTaxYield: 0,
     priorityBp: [25.39, 20.06, 16.01],
     account: "taxable",
-    reason: "the smallest dividend on the list, all of it at the low rate, so it costs the least to leave unsheltered",
+    reason:
+      "the smallest dividend on the list, all of it taxed at the lower rate, so it costs the least to leave in a taxable account",
     provenance:
       "Vanguard's published fund-yield endpoint: SEC 30-day yield 1.03% and forecast dividend yield 1.0670%, both effective 2026-07-31, fee 0.03%. Renamed Vanguard Morningstar Total Stock Market ETF on 2026-07-29; objective and management unchanged. The qualified fraction of 1.00 is an assumption.",
     asOf: asOf("2026-07-31"),
+  },
+  {
+    ticker: "SCHP",
+    name: "Inflation-protected US government bonds",
+    assetClass: "bond",
+    weight: 0.05,
+    expenseRatioBp: 3,
+    boxOneAYield: 0.0465,
+    capitalGainRateFraction: 0,
+    creditableForeignTaxYield: 0,
+    priorityBp: [189.72, 166.47, 111.6],
+    account: "retirement",
+    reason: "bond interest is taxed like wages, and the inflation adjustment is taxed before it is paid",
+    provenance:
+      "Not filed for this fund. Priced on a plain bond fund's yield, BND's SEC 30-day yield of 4.65% on 2026-08-10, taxed like wages in full, the same input as `bondCandidate`. An inflation-protected fund also owes tax each year on the inflation adjustment before it is paid, so this understates the case for the retirement account.",
+    asOf: asOf("2026-08-10"),
   },
 ];
 
@@ -488,4 +519,4 @@ export const creditForfeitedByPlanBp = 7.45;
  * must start paying out at 73, so it should hold whatever you expect to trim anyway.
  */
 export const rothVersusTraditionalNote =
-  "If you have both, the international funds go in the Roth and RSST goes in the traditional account. The Roth is never taxed again, so spend it on the holdings you expect to grow most. The traditional account has to start paying out in your seventies, so give it the holding you would trim first.";
+  "If you have both a Roth and a pre-tax account, RSST and the bond fund go in the pre-tax account and the foreign funds go in the Roth. The Roth is never taxed again and never forced to pay out in your lifetime, so give it what you expect to grow most and never sell. The pre-tax account has to start paying out at 73, so give it what you would trim first.";
