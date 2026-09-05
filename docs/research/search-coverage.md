@@ -42,9 +42,12 @@ worth exactly the funding-rule algebra.
 
 [Experiments 029 and 030](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
 now compare AVUV and SPMO separately and together in the current published portfolios.
-They separate projected exposures from actual filed fund returns. Remaining fund questions
-include AVUV funded from VTI, smaller value weights, changing exposures, and momentum
-reversal risk under weaker premiums.
+They separate projected exposures from actual filed fund returns. Experiments 031 and 032
+then vary the US value/momentum amounts and compare momentum implementations. AVUV funded
+from VTI behaves differently from replacing VTV, but its advantage changes across calendar
+slices. SPMO beats MTUM in these actual histories without a turnover haircut. Next questions
+are changing exposures, momentum reversal risk under weaker premiums, and broader changes
+to the defensive and trend holdings that the US equity grid keeps fixed.
 
 What remains: a **TIPS series before 2003**, without which the leg the valuation argument
 points at cannot be scored on a panel containing 1970–81; a **term-premium-conditioned

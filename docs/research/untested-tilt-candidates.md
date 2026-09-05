@@ -357,8 +357,10 @@ removes the negative return attributed to overlap in the former case. The latter
 uncertain under the stated premium scenarios. The new
 [funded comparisons](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
 find a growth/drawdown tradeoff in the short actual histories, not a stable fund ranking.
-AVUV funded from VTI remains a separate question. It need not represent a wholly new return
-source to have value.
+The [allocation grid](final-construction-test.md#does-the-value-amount-or-funding-source-change-the-answer)
+now finds that AVUV funded from VTI can help where replacing VTV does not, while that benefit
+changes sign across calendar slices. It need not represent a wholly new return source to
+have value.
 
 ### MTUM and SPMO: keep cost and portfolio value separate
 
@@ -366,8 +368,11 @@ MTUM's filed turnover is 116% versus SPMO's 44% in the dated source readings. Un
 study's cost model this favours SPMO. The coefficient has not been validated on these funds'
 trades, so it remains an assumption. Their overlap with IDMO is a separate diagnostic.
 The [final construction discussion](final-construction-test.md#4-spmo-portfolio-role-unresolved)
-records the SPMO evidence and its limits. Neither fund has been rejected by a complete
-portfolio-growth comparison here.
+records the SPMO evidence and its limits. The actual-net-return
+[implementation comparison](final-construction-test.md#does-mtum-change-the-momentum-choice)
+now finds SPMO ahead of MTUM inside these portfolios, without a turnover haircut. The
+equal mix lowers tracking error slightly but trails SPMO for growth. The sample does not
+establish a forward ranking or reject either momentum method.
 
 ### QVAL: negative priced contribution under assumed trading costs
 

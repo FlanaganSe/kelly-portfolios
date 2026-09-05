@@ -58,11 +58,60 @@ failed attempt and subsequent specification correction before portfolio results 
 
 **Consequence.** Neither experiment establishes VTV as the best value fund or licenses an
 SPMO allocation from a favourable recent window. They replace the former overlap argument
-with a funded comparison. Next compare AVUV funded from VTI, test smaller value allocations,
-and evaluate momentum under weaker premiums and changing exposures, including its reversal
-risk. The ETF trading-cost coefficient needs fund-specific validation; it is an assumption,
+with a funded comparison. The successor grid below tests AVUV funded from VTI and smaller
+value allocations. Next evaluate momentum under weaker premiums and changing exposures,
+including its reversal risk. The ETF trading-cost coefficient needs fund-specific validation; it is an assumption,
 not an empirical lower bound. A decision to change holdings must state the investor's
 objective and tradeoff between growth, drawdown and tracking error.
+
+### Does the value amount or funding source change the answer?
+
+[Experiment 031](../../research/experiments/exp_031_live_equity_allocation_grid.yaml)
+varies VTV and AVUV from no dedicated US value holding through half/full replacements,
+splits and AVUV funded from VTI while retaining VTV. Each pattern is crossed with fixed
+momentum amounts. Only the original VTI-plus-VTV budget changes; foreign holdings, trend
+and bonds remain fixed. The [complete grid](../../research/artifacts/9d47969e16f64552987592920af5db53/tables.md)
+reports every feasible arm, including unfavourable ones. Removing VTV and AVUV does not
+remove value exposure from the portfolio's other funds.
+
+**Funding changes the finding.** In value-lean, adding AVUV from VTI while retaining VTV
+slightly improves full-window growth and reduces the worst drawdown; replacing VTV with
+AVUV does the reverse. Yet the added-AVUV growth gap changes sign between the declared
+calendar halves, and it trails the unchanged portfolio in most rolling twelve-month
+windows. Removing VTV hurts the longer value window but helps the shorter full windows;
+those effects also reverse across halves. A fund's apparent failure as a replacement is
+therefore insufficient grounds to reject an addition funded differently.
+
+SPMO additions alongside the current VTV holding have positive point growth gaps in both
+halves of all three portfolios, at both tested amounts. That narrows the next question to
+premium persistence, reversal risk and acceptable active risk; it does not select an amount
+from the grid. The actual histories are short, and the many intervals are unadjusted.
+Each calendar slice restarts the initial purchase and annual rebalance clock. These are
+regime sensitivities, not holdouts or a rule that could switch to each period's winner.
+The reported `resolution80` is a normal-theory approximation using bootstrap standard error,
+not an injected-effect power measurement, particularly in the shortest slices.
+
+### Does MTUM change the momentum choice?
+
+[Experiment 032](../../research/experiments/exp_032_momentum_implementations.yaml) compares
+SPMO, MTUM and an equal mix at the same funded weight, using Experiment 030's windows and
+execution rule. The [tables](../../research/artifacts/4c63f850879b4fc29d3489e05e385743/tables.md)
+and [source-traced result](../../research/artifacts/4c63f850879b4fc29d3489e05e385743/result.json)
+show that SPMO's historical growth advantage over MTUM survives using actual net returns,
+without imposing a turnover haircut. The mix slightly reduces tracking error against the
+unchanged portfolio but gives up growth relative to SPMO. MTUM's funded growth gap is
+negative in the longer value window and positive in the shorter trend/cautious windows;
+its interval against each unchanged portfolio spans zero. Higher execution costs preserve
+the ordering. This supports a dated implementation preference for SPMO in these samples,
+not a general ranking of momentum methods or a forecast of superiority.
+
+The mechanism remains worth distinguishing. The [August 2024 MSCI SR Variant methodology](https://www.msci.com/indexes/documents/methodology/3_MSCI_USA_Momentum_SR_Variant_Index_20240820.pdf)
+uses quarterly reviews, conditional rebalancing and issuer caps, while targeting a turnover
+limit per review. More trading buys a different updating rule; it is not merely wasted cost.
+That document does not establish the rules throughout the test window. The generic MSCI
+momentum-index changes in 2025 must not be attributed to this exact variant without
+separate evidence. Both funds are current survivors, and their overlapping history was
+already known when this comparison was designed.
 
 ## Earlier construction tests
 
