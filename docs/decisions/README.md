@@ -37,6 +37,11 @@ retested; the current interpretation lives in the relevant synthesis.
   published for a tolerance of about −30% and −40% with the 96-year fall they actually held
   in the same sentence, the trend line kept on registered evidence, the plain twins printed
   beside them, and nothing labelled "for −30%" on the 96-year history.
+- [0015](0015-an-engine-on-the-bond-line-is-the-readers-option.md) — **PROPOSED, not
+  adopted**: trend stacked on the cautious portfolio's bond line (Experiment 026) clears its
+  floor at realised premia on both panels and falls no deeper, but is inside its floor at the
+  forward premium at every size; the cautious vector would not change and the ten-point
+  RSBT-like line would be printed beside it as the reader's option. The site owner decides.
 
 ## Scoped findings and historical corrections
 

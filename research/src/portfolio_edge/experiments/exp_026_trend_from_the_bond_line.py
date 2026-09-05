@@ -156,6 +156,7 @@ __all__ = [
     "gold_notional",
     "main",
     "read_arm_families",
+    "read_arms",
     "read_panels",
     "read_wrappers",
     "rsbt_regret_pp_yr",
@@ -960,9 +961,18 @@ def score_tournament(
         for comparison in comparisons[name].values():
             _apply_falsifier(comparison, q=q)
 
+    # 024's describer reads an `equity` column for the worst-decile offsets; on
+    # 016f's panel that role is the US market leg.
+    described = BasisPanel(
+        periods=panel.periods,
+        series={**panel.series, "equity": panel.column("us_mkt")},
+        cash=panel.cash,
+        provenance=panel.provenance,
+        findings=panel.findings,
+    )
     descriptives = _describe(
         simulated,
-        panel=panel,
+        panel=described,
         reference=reference,
         episodes=read_episodes(specification),
         contribution=_number(parameters, "contribution_per_month_of_starting_balance", where="p"),

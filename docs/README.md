@@ -119,6 +119,15 @@ For the major decisions:
   history, the trend line at matched equity (+0.7 to +0.9 pp/yr, not resolvable since 2009),
   the price of the drawdown at realised and forward premia, and the publication rule's
   outcome ([decision 0014](decisions/0014-cautious-constructions-are-labelled-by-the-history-they-held.md)).
+- [Engines on the bond line of the cautious portfolio](research/trend-from-the-bond-line.md):
+  the first test that funds an engine from the bond line rather than from stocks — trend
+  stacked on the ten-year (RSBT-like), trend sold from it, and gold stacked on the stock line,
+  at 10, 20 and 30 points, against the published cautious portfolio on 96 years, on the 1968
+  gold window and on the fund-list panel. Every trend arm clears its floor at realised premia
+  on both panels and falls no deeper; every one is inside its floor at the forward premium in
+  a ratio no size can move; gold is unresolved everywhere. The vector does not change;
+  [decision 0015](decisions/0015-an-engine-on-the-bond-line-is-the-readers-option.md)
+  (PROPOSED) would print the ten-point stacked line beside it as the reader's option.
 - [The numbers the site prints](research/site-numbers.md): every headline figure a
   portfolio page shows, computed for exactly the printed weights on the 1990 to 2026 and
   1929 to 2025 histories by a research emitter that first reproduces the artifact tables;
@@ -224,5 +233,7 @@ Decision records: [0001](decisions/0001-contained-python-research-workspace.md),
 [0009](decisions/0009-blocks-lifted-and-closures-rescoped.md),
 [0010](decisions/0010-bars-carry-a-reopening-condition.md),
 [0011](decisions/0011-the-site-publishes-answers-not-notes.md),
-[0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md), and
-[0013](decisions/0013-the-working-default-is-decided-under-stated-assumptions.md).
+[0012](decisions/0012-valuation-enters-through-the-drawdown-assumption.md),
+[0013](decisions/0013-the-working-default-is-decided-under-stated-assumptions.md),
+[0014](decisions/0014-cautious-constructions-are-labelled-by-the-history-they-held.md), and
+[0015](decisions/0015-an-engine-on-the-bond-line-is-the-readers-option.md) (PROPOSED).

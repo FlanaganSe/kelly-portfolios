@@ -210,4 +210,7 @@ tolerance replaces the label on the day it arrives (decision 0013 clause 5). A p
 window long enough to resolve a 0.3 to 0.4 pp/yr trend-line gap at 1.3 points of tracking
 error needs about 100 years, so the trend line's forward reading stays the regret table.
 The equity-share table's 30% row, scored as one object with the trend line, is the open
-arm for a reader who takes 1929–32 as live.
+arm for a reader who takes 1929–32 as live. An engine funded from the bond line of the −40%
+construction is scored in [trend from the bond line](trend-from-the-bond-line.md)
+(Experiment 026): it clears its floor at realised premia and not at the forward premium, and
+does not change the vector.

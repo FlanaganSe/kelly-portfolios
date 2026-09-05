@@ -59,6 +59,7 @@ SPEC_NAMES = (
     "exp_023_tilts_out_of_sample",
     "exp_024_working_default",
     "exp_025_cautious_constructions",
+    "exp_026_trend_from_the_bond_line",
     "phase1_ff_reproduction",
 )
 
