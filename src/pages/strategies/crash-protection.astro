@@ -67,16 +67,16 @@ const ROWS = [
 
 <Base
   title="Crash protection"
-  description="The only protection that worked in every fall was owning fewer stocks. Long government bonds, inflation-protected bonds, tail-risk funds, buffer funds, catastrophe bonds and cash, each with what it did in the worst stock months."
+  description="Compare less stock exposure, bonds, cash and explicit hedges by what they change inside a portfolio, including their costs and failure modes."
   xl
 >
   <Hero
     title="What actually protects you in a crash?"
-    lede="Owning fewer stocks. It was the only protection that worked in every fall. Everything sold as insurance either cost more than it paid back or failed in the year it was bought for."
+    lede="Start with how much stock-market risk you can afford. Moving money into cash reduces that exposure directly. Bonds and hedges can help in different ways, but each brings a cost and a way to disappoint."
   >
     <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
-      <Verdict word="Settled" gloss="Fewer stocks means a smaller fall. Arithmetic." />
-      <Verdict word="No" gloss="Every fund sold as crash insurance." />
+      <Verdict word="Settled" gloss="Replacing stocks with cash reduces direct stock exposure." />
+      <Verdict word="Too close to call" gloss="Which additional hedge improves the whole portfolio after costs." />
     </p>
   </Hero>
 
@@ -89,9 +89,9 @@ const ROWS = [
     <a href="/portfolios/cautious/">cautious portfolio</a>, about half in inflation-protected government bonds,
     fell to {formatDollars(cautious.worstFall.dollarsAtTrough)}. These are simulated portfolios built from index
     data, not fund records. The smaller fall has a price: over 96 years, moving 10% of the money from stocks to
-    cash cost about 0.77% a year of growth, and those were the only changes tested that made a 1929- or
-    2008-scale fall shallower. Nothing below has a crash shape: no holding's payoff speeds up as stocks fall.
-    The question for each is how often it rose in the bad months, and what it cost in the other months.</p>
+    cash cost about 0.77% a year of growth. That is the return forgone in this history, not a guaranteed future
+    price of protection. The table below asks how often each holding rose in bad months; it does not establish
+    what a small options hedge would add to a complete portfolio.</p>
   </div>
 
   <div class="wide mt-12">
@@ -145,12 +145,17 @@ const ROWS = [
     portfolio</a> holds half its money in it and says which account to hold it in.</p>
 
     <h2 id="tail-funds">Tail-risk funds</h2>
-    <p>A tail-risk fund holds government bonds and spends a few percent a year on options that pay if stocks
-    crash. The best-known one, TAIL, charges 0.59% and lost 7.15% a year between its April 2017 launch and June
-    2026 while the S&amp;P 500 made about 15%. It made 7% in 2020 and lost 13% in 2022, the bear market it was
-    bought for. Holding 10% of a portfolio in it would have cost about 2.2% a year of growth. Another lost 99%
-    and closed in March 2024. A fund that bets against high-flying stocks, BTAL, lost 3.6% a year since launch;
-    it loses when stocks rise and also when they fall.</p>
+    <p>TAIL holds government bonds and buys put options that can pay when stocks fall. Its bond holdings can
+    lose value as rates rise, offsetting some protection from the options. CAOS combines options with changing
+    stock exposure, so it is a different construction. Their
+    <a href="https://www.cambriafunds.com/assets/docs/Cambria_TAIL_Summary.pdf">TAIL</a> and
+    <a href="https://etfarchitect.com/wp-content/uploads/compliance/etf/summary_prospectus/CAOS_Summary_Prospectus.pdf">CAOS prospectuses</a>
+    describe those choices.</p>
+
+    <p>Trailing a stock index is not the same as paying that much for insurance. A useful comparison
+    puts a small hedge inside the portfolio, identifies the stocks or bonds sold to fund it, and tests a rule
+    for using any gains. It should also compare simply holding more cash. The available evidence does not
+    establish a preferred hedge or a guarantee of protection.</p>
 
     <h2 id="buffer-funds">Buffer funds</h2>
     <p>A buffer fund caps your gains for a year in exchange for a cushion on your losses: a typical one charges
@@ -181,12 +186,13 @@ const ROWS = [
     of 1; with the interest-rate risk stripped out the leftover tracks them at only
     <Figure id="credit-spread-link" inline showUnit={false} /> out of 1, but it lost 13% in 2008 while government
     bonds gained 13%. Dividend funds move with the market at 0.84 out of 1 and property funds at 0.82. Bond
-    interest is taxed like wages, so whatever bonds you hold go in a pre-tax retirement account first.</p>
+    distributions affect taxes, so account placement depends on the fund and your actual tax rates.</p>
 
     <Callout kind="do-this">
       <p>If a fall of about half would make you sell, hold fewer stocks: the
-      <a href="/portfolios/cautious/">cautious portfolio</a> is the tested version of that. Do not buy a fund
-      with "buffer", "tail" or "hedged" in its name for protection.</p>
+      <a href="/portfolios/cautious/">cautious portfolio</a> is one example with less stock exposure.
+      Before adding protection, decide which loss it should address, how you will fund it and what ongoing
+      cost you can accept. A fund's name does not answer those questions.</p>
     </Callout>
   </div>
 

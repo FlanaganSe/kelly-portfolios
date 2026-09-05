@@ -1,20 +1,17 @@
 # Engines on the bond line of the cautious portfolio
 
-**Question.** The published cautious portfolio (SCHP 50 / RSST 15 / stocks 35, [decision
-0014](../decisions/0014-cautious-constructions-are-labelled-by-the-history-they-held.md))
-holds half its capital in a ten-year Treasury line whose worst measured episode is 1977–81.
-Every trend test in this repository funded trend from stocks. Does funding trend from the
-bond line instead, stacked (an RSBT-like wrapper, bond kept) or sold (a standalone trend
-fund, bond given up), improve the cautious portfolio as a whole? And does a gold stack on
-its stock line (GDE-like) do the same?
+**Question.** How does funding trend from stocks or bonds change the complete portfolio,
+and which actual fund can deliver the intended exposure? The published cautious portfolio
+holds SCHP 50 / RSST 15 / other stocks 35. Experiment 026 below used a nominal Treasury
+proxy for its bond line and modelled equal trend delivery inside different structures.
+Experiment 034 measures actual fund returns and keeps those funding choices distinct.
 
 **Decision it informs.** Whether the published cautious vector changes, whether an engine on
 its bond line is offered beside it as the reader's option, or whether 0014 stands.
 
-**Out of scope.** The choice between RSST and RSBT as the carrier of the existing 15-point
-trend line (arithmetic, not a measurement: the two wrappers' costs differ by about 1 bp/yr
-of the portfolio); carry on the bond line; TIPS before 2003; taxes and placement; any
-weight search.
+**Out of scope for Experiment 026.** Actual RSBT delivery, carry on the bond line, TIPS
+before 2003, taxes and placement, and weight search. Its small modelled cost gap between
+RSST and RSBT assumes comparable underlying exposures; it does not measure interchangeability.
 
 `as of 2026-09-05`. **`exploratory`.**
 [Experiment 026](../../research/experiments/exp_026_trend_from_the_bond_line.yaml), spec
@@ -30,6 +27,40 @@ gold arms `unresolved` at every size (observed so), and the forward reading insi
 at every size by construction (observed so). 025's `ladder40` reproduced to four places on
 both panels and 016f's rec30-minus-rec25 pair to four places before any candidate was scored.
 
+## Current actual-fund comparison
+
+[Experiment 034](../../research/experiments/exp_034_live_trend_funding.yaml), run
+[`7b004fc0…`](../../research/artifacts/7b004fc01177469286e91d572ea934c6/tables.md), compares
+the current Plus trend and Cautious portfolios over October 2023–March 2026. Filed NAV
+returns already contain fund fees and internal trading. Investor execution at 5 and 25 bp
+roundtrip is paid on the initial purchase and annual rebalancing, using the exact
+self-financing engine from Experiment 030. The [committed result](../../research/artifacts/7b004fc01177469286e91d572ea934c6/result.json)
+contains source identities, capital weights and complete paths.
+
+There are three different changes: RSST becomes VTI, removing trend; RSST becomes DBMF,
+KMLM or an equal mix, giving up intended stock capital; or RSST becomes VTI while a feasible
+part of SCHP buys the standalone trend fund. A corresponding SCHP-to-SGOV control separates
+buying trend from giving up TIPS. These controls preserve stated capital allocations,
+not fitted beta or equal derivatives risk. KMLM and DBMF do not deliver identical methods
+or exposure, and RSST's intended stock leg is not precisely VTI.
+
+**The recent record does not pick a replacement.** Removing RSST improved observed growth
+and drawdown in Plus trend, with a wide interval spanning zero. Buying standalone trend
+with the entire RSST allocation reduced both growth and the worst drawdown while giving
+up stock exposure. Preserving the stock allocation and funding DBMF from SCHP gave a small
+positive point growth gap over the comparable SGOV control; that interval also spans zero.
+KMLM and the equal mix did not establish an improvement over the same cash control.
+The generated tables show all comparisons separately, including their tracking error and
+rolling underperformance; no gains against different benchmarks are added.
+
+This is a short, already observed record with joint six-month block resampling. It contains
+neither the 2022 inflation shock nor a full range of trend regimes. The two-manager mix
+can change implementation risk, but its smaller drawdown here is not evidence of superior
+equal-risk delivery. These results reopen actual construction choices; they neither reject
+standalone trend as a category nor establish that the stacked fund should be replaced.
+Longer delivery histories, funding-specific stress tests and actual RSBT holdings remain
+more informative than treating the structures as equal exposures with different fees.
+
 ## 1. Conclusion
 
 Trend funded from the bond line adds to the cautious portfolio at realised premia, on both
@@ -38,7 +69,7 @@ rule predicts, `X × (7.22 − 1.07)` on 96 years, and it is made entirely befor
 every prior trend result was also made. At the repository's central forward trend premium
 (4.07 pp/yr gross) the same arithmetic gives +0.30 / +0.60 / +0.90 pp/yr for 10 / 20 / 30
 points against floors of 0.35 / 0.71 / 1.06: inside the floor at every size, in the ratio
-0.85 that does not depend on X. **The published cautious vector should not change.** Under
+0.85 that does not depend on X. **This model did not establish a preferred actual-fund replacement.** Under
 the rule frozen before the run, the RSBT-stacked line is offered beside it as the reader's
 option with its regret row, the treatment 0014 clause 2 gives the plain twins; that is
 [draft decision 0015](../decisions/0015-an-engine-on-the-bond-line-is-the-readers-option.md),

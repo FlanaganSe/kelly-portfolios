@@ -96,7 +96,10 @@ More trend can help under a positive future premium and disappoint under a weak 
 leverage and sustained underperformance may make it harder to hold. The
 [weight-under-uncertainty analysis](trend-weight-under-uncertainty.md) presents that trade.
 [Funding trend from bonds](trend-from-the-bond-line.md) changes the return forgone, but its
-simulated wrapper paths do not establish actual RSBT or standalone-fund delivery.
+simulated wrapper paths do not establish actual RSBT or standalone-fund delivery. The
+[actual-fund comparison](trend-from-the-bond-line.md#current-actual-fund-comparison) now
+separates direct RSST replacements from bond-funded standalone trend. Its short record
+shows material funding tradeoffs but no preferred replacement.
 
 A second trend fund need not be a second independent premium to be useful. Differences in
 markets, signals, execution and operational exposure could diversify implementation risk.
