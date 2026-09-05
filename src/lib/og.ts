@@ -71,40 +71,32 @@ export const OG_PAGES = {
     alt: `${SITE_NAME}: seven funds, one of which holds trend following on top of stocks; the largest bet on this site and the least settled.`,
   },
   "/strategies/": {
-    title: "Does it earn its place in a portfolio?",
-    alt: `${SITE_NAME}: every idea people add to a portfolio, with a one-line verdict on whether it earns its place.`,
+    title: "Everything else I looked at",
+    alt: `${SITE_NAME}: every idea people add to a portfolio, tested inside a whole portfolio, with a one-line verdict and one number each.`,
   },
-  "/strategies/trend-following/": {
-    title: "Does trend following earn its place?",
-    alt: `${SITE_NAME}: what a managed-futures fund does, why it helps as an add-on and not a replacement, and which fund you pick decides the outcome.`,
+  "/strategies/stacking/": {
+    title: "Can you beat the market by stacking many small edges?",
+    alt: `${SITE_NAME}: why a pile of 55% ideas tops out near a 58% chance when the ideas move together, and how many separate bets an ordinary investor can actually make.`,
   },
   "/strategies/market-timing/": {
     title: "Should you sell below the 200-day average?",
-    alt: `${SITE_NAME}: the 200-day rule and leveraged funds, what they buy, what they cost, and the verdict.`,
+    alt: `${SITE_NAME}: the 200-day rule and two-times and three-times funds, what they buy, what they cost, and the verdict.`,
   },
   "/strategies/gold-and-bitcoin/": {
     title: "Gold and bitcoin",
-    alt: `${SITE_NAME}: gold is optional and small; bitcoin deepened every fall it was added to.`,
+    alt: `${SITE_NAME}: gold does the job of cash in a crash with big swings; bitcoin deepened every fall it was added to.`,
   },
-  "/strategies/crash-insurance/": {
-    title: "Can you buy insurance against a crash?",
-    alt: `${SITE_NAME}: tail funds, buffer funds, bonds and cash, and which of them actually helped in bad months.`,
-  },
-  "/strategies/value-and-momentum/": {
-    title: "Do cheaper companies pay more?",
-    alt: `${SITE_NAME}: value and momentum on paper and in real funds, and why the lean is a probably rather than a yes.`,
+  "/strategies/crash-protection/": {
+    title: "What actually protects you in a crash?",
+    alt: `${SITE_NAME}: long bonds, inflation-protected bonds, tail funds, buffer funds, catastrophe bonds and cash, and what each did in the worst months.`,
   },
   "/strategies/international/": {
     title: "How much to hold outside the US",
-    alt: `${SITE_NAME}: why hold foreign stocks, the 60/40 rule, and why you never sell to move.`,
-  },
-  "/strategies/fees-and-taxes/": {
-    title: "The part that isn’t a guess",
-    alt: `${SITE_NAME}: fees, fund structure, which account, direct indexing and rebalancing: the parts that are arithmetic.`,
+    alt: `${SITE_NAME}: why hold foreign stocks, how much, and why you never sell to move.`,
   },
   "/funds/": {
     title: "What every fund really costs",
-    alt: `${SITE_NAME}: every fund priced, and what each one costs once the income it earns lending its shares out is taken off the fee.`,
+    alt: `${SITE_NAME}: the funds the four portfolios hold, the cheaper alternatives, and the funds rejected, with the fee and what each costs once lending income is counted.`,
   },
   "/tools/which-account/": {
     title: "Which account should each fund go in?",

@@ -1,0 +1,197 @@
+---
+/**
+ * What protects a portfolio in a crash. Answer first: fewer stocks. Then the table of
+ * what each candidate did in the worst tenth of stock months, and one short section per
+ * candidate. The portfolio falls are read from the series; the hit rates and the rest come
+ * from the research pages the figure records cite.
+ */
+import Button from "~/components/Button.astro";
+import Callout from "~/components/Callout.astro";
+import Figure from "~/components/Figure.astro";
+import Hero from "~/components/Hero.astro";
+import StatGrid from "~/components/StatGrid.astro";
+import Verdict from "~/components/Verdict.astro";
+import Base from "~/layouts/Base.astro";
+import { formatDollars, formatPct } from "~/lib/charts";
+import { loadSeries, seriesFor } from "~/lib/series";
+
+const file = loadSeries("1990");
+const long = loadSeries("1929");
+const market = seriesFor("market").summary;
+const sixtyForty = seriesFor("sixty-forty").summary;
+const cautious = seriesFor("cautious").summary;
+const longMarket = seriesFor("market", "1929").summary;
+const longCautious = seriesFor("cautious", "1929").summary;
+
+const STATS = [
+  {
+    value: formatPct(market.worstFall.pct),
+    unit: formatDollars(market.worstFall.dollarsAtTrough),
+    label: "Worst fall, a plain world stock index",
+    note: `${file.window.label}, simulated. What $10,000 fell to`,
+  },
+  {
+    value: formatPct(sixtyForty.worstFall.pct),
+    unit: formatDollars(sixtyForty.worstFall.dollarsAtTrough),
+    label: "Worst fall, 60% stocks and 40% bonds",
+    note: `${file.window.label}, simulated`,
+  },
+  {
+    value: formatPct(cautious.worstFall.pct),
+    unit: formatDollars(cautious.worstFall.dollarsAtTrough),
+    label: "Worst fall, the cautious portfolio",
+    note: `${file.window.label}, simulated. About half its money in bonds`,
+  },
+  {
+    value: formatPct(longCautious.worstFall.pct),
+    label: "The cautious portfolio, 1929 to 1932",
+    note: `Against ${formatPct(longMarket.worstFall.pct)} for all US stocks, ${long.window.label}, simulated`,
+  },
+];
+
+/**
+ * The worst tenth of stock months over each asset's own history: how often the asset rose,
+ * and what moving 10% of stocks into it added back in the average such month. Read from
+ * the alternatives audit; the windows differ, so the start year is part of each row.
+ */
+const ROWS = [
+  { holding: "Trend following", since: 1985, rose: "69%", added: "+1.08%" },
+  { holding: "Long US government bonds", since: 1926, rose: "53%", added: "+0.94%" },
+  { holding: "Gold", since: 1975, rose: "56%", added: "+0.92%" },
+  { holding: "Cash-like government bills", since: 1926, rose: "—", added: "+0.92%" },
+  { holding: "Corporate bonds", since: 1926, rose: "48%", added: "+0.88%" },
+  { holding: "Commodities", since: 1926, rose: "36%", added: "+0.74%" },
+  { holding: "Bitcoin", since: 2015, rose: "8%", added: "+0.05%" },
+] as const;
+---
+
+<Base
+  title="Crash protection"
+  description="The only protection that worked in every fall was owning fewer stocks. Long government bonds, inflation-protected bonds, tail-risk funds, buffer funds, catastrophe bonds and cash, each with what it did in the worst stock months."
+  xl
+>
+  <Hero
+    title="What actually protects you in a crash?"
+    lede="Owning fewer stocks. It was the only protection that worked in every fall. Everything sold as insurance either cost more than it paid back or failed in the year it was bought for."
+  >
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
+      <Verdict word="Settled" gloss="Fewer stocks means a smaller fall. Arithmetic." />
+      <Verdict word="No" gloss="Every fund sold as crash insurance." />
+    </p>
+  </Hero>
+
+  <StatGrid items={STATS} class="wide mt-10" />
+
+  <div class="prose mt-10">
+    <p>Over {file.window.label} a plain world stock index took $10,000 down to
+    {formatDollars(market.worstFall.dollarsAtTrough)} at its worst; a 60/40 mix, 60% stocks and 40% US
+    government bonds, fell to {formatDollars(sixtyForty.worstFall.dollarsAtTrough)}; the
+    <a href="/portfolios/cautious/">cautious portfolio</a>, about half in inflation-protected government bonds,
+    fell to {formatDollars(cautious.worstFall.dollarsAtTrough)}. These are simulated portfolios built from index
+    data, not fund records. The smaller fall has a price: over 96 years, moving 10% of the money from stocks to
+    cash cost about 0.77% a year of growth, and those were the only changes tested that made a 1929- or
+    2008-scale fall shallower. Nothing below has a crash shape: no holding's payoff speeds up as stocks fall.
+    The question for each is how often it rose in the bad months, and what it cost in the other months.</p>
+  </div>
+
+  <div class="wide mt-12">
+    <h2 class="h2 mb-2" id="the-worst-months">What did what in the worst months</h2>
+    <p class="label mb-5">The worst tenth of stock months over each holding's available history: how often it rose, and what moving 10% of stocks into it added back in the average such month.</p>
+    <div class="overflow-x-auto" tabindex="0" aria-label="What each holding did in the worst tenth of stock months">
+      <table class="w-full border-collapse text-base" style="max-width: 44rem">
+        <caption class="sr-only">Each holding, the year its history starts, how often it rose in the worst tenth of stock months, and what moving 10% of stocks into it added back in the average such month</caption>
+        <thead>
+          <tr class="border-b border-rule-strong text-left">
+            <th scope="col" class="label py-2 pr-3 font-semibold">Holding</th>
+            <th scope="col" class="label py-2 pr-3 text-right font-semibold">Since</th>
+            <th scope="col" class="label py-2 pr-3 text-right font-semibold">Rose in</th>
+            <th scope="col" class="label py-2 text-right font-semibold">Added back</th>
+          </tr>
+        </thead>
+        <tbody class="text-ink-2">
+          {ROWS.map((r) => (
+            <tr class="border-b border-rule last:border-0">
+              <th scope="row" class="py-2 pr-3 text-left font-medium text-ink">{r.holding}</th>
+              <td data-numeric class="py-2 pr-3 text-right">{r.since}</td>
+              <td data-numeric class="py-2 pr-3 text-right">{r.rose}</td>
+              <td data-numeric class="py-2 text-right">{r.added}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="prose mt-10">
+    <p>Only trend following clearly beats cash in the worst months, and it is held on top of stocks in the
+    <a href="/portfolios/with-trend/">Plus trend portfolio</a>. Long bonds add two hundredths of a percent a
+    month over cash; gold matches it; commodities and bitcoin do worse than cash. The windows differ, so read
+    the start years.</p>
+
+    <h2 id="long-bonds">Long US government bonds</h2>
+    <p>They paid in every growth crash and lost in all three inflation shocks. In the worst stock months since
+    1926 they added 0.94% back against 0.92% for cash, and that sliver was bought with swings of 8.4% a year, a
+    worst fall of their own of <Figure id="long-treasury-worst-fall" inline showUnit={false} /> against cash,
+    and a 40% loss through the late 1970s. Adding 20% of borrowed long bonds on top of the portfolio read +0.34%
+    a year over 1929 to 2025 with a range that includes zero, all of it earned inside 1981 to 2020. Since 2020
+    stocks and bonds have mostly fallen together. Not added.</p>
+
+    <h2 id="tips">Inflation-protected bonds</h2>
+    <p>Inflation-protected and plain US government bonds are one idea: eighteen funds move together at
+    <Figure id="tips-nominal-link" inline showUnit={false} /> out of 1. Hold the inflation-protected kind because
+    your future spending rises with prices, and take any crash protection from holding fewer stocks. A ten-year
+    inflation-protected bond pays <Figure id="tips-real-yield" inline />, the most since 2008. Which fund: SCHP
+    and TIP hold the same bonds and SCHP costs a sixth as much; the <a href="/portfolios/cautious/">cautious
+    portfolio</a> holds half its money in it and says which account to hold it in.</p>
+
+    <h2 id="tail-funds">Tail-risk funds</h2>
+    <p>A tail-risk fund holds government bonds and spends a few percent a year on options that pay if stocks
+    crash. The best-known one, TAIL, charges 0.59% and lost 7.15% a year between its April 2017 launch and June
+    2026 while the S&amp;P 500 made about 15%. It made 7% in 2020 and lost 13% in 2022, the bear market it was
+    bought for. Holding 10% of a portfolio in it would have cost about 2.2% a year of growth. Another lost 99%
+    and closed in March 2024. A fund that bets against high-flying stocks, BTAL, lost 3.6% a year since launch;
+    it loses when stocks rise and also when they fall.</p>
+
+    <h2 id="buffer-funds">Buffer funds</h2>
+    <p>A buffer fund caps your gains for a year in exchange for a cushion on your losses: a typical one charges
+    0.79% for a 9% cushion against an 18% cap, and measures itself against the S&amp;P 500 without its
+    dividends. Priced on 1,183 twelve-month windows since 1926, the cap-and-cushion package is worth −2.4% to
+    −4.1% a year, and the funds' own record of −4.1% a year lands inside that range. You pay for the cushion
+    with the gains, every year, whether or not the fall comes.</p>
+
+    <h2 id="cat-bonds">Catastrophe bonds</h2>
+    <p>A catastrophe bond is a loan to an insurer that is written off after a named hurricane or earthquake, the
+    only holding here whose losses come from weather rather than markets. The funds returned
+    <Figure id="cat-bond-fund-return" inline />, about 1% a year over cash, and they can lose 10% in a week, as
+    they did after Hurricane Ian in September 2022. The price is the problem: the bonds paid
+    <Figure id="cat-bond-spread-multiple" inline /> against 4.9 times in January 2023, the thinnest on record.
+    Hold 0% to 3% in a retirement account, or wait; the question reopens at 3.5 times, a number published
+    weekly.</p>
+
+    <h2 id="cash">Cash</h2>
+    <p>Cash is the surprise. Moving 10% of stocks into cash-like government bills added 0.92% back in the
+    average worst stock month since 1926, as much as gold and almost as much as long bonds, for no fee and with
+    no fall of its own. A three-month government bill paid 3.88% in August 2026, about 0.2% a year above the past
+    year's inflation. In an ordinary brokerage account, BOXX (0.19%) pays a cash-like return as a rise in price,
+    so the tax falls when you sell. Cash still cost about 0.77% a year of growth over 96 years: the cheapest
+    protection, and not a free one.</p>
+
+    <h2 id="not-protection">Things that look like protection</h2>
+    <p>Corporate bonds are government bonds plus a slice of stock risk, moving with government bonds at 0.83 out
+    of 1; with the interest-rate risk stripped out the leftover tracks them at only
+    <Figure id="credit-spread-link" inline showUnit={false} /> out of 1, but it lost 13% in 2008 while government
+    bonds gained 13%. Dividend funds move with the market at 0.84 out of 1 and property funds at 0.82. Bond
+    interest is taxed like wages, so whatever bonds you hold go in a pre-tax retirement account first.</p>
+
+    <Callout kind="do-this">
+      <p>If a fall of about half would make you sell, hold fewer stocks: the
+      <a href="/portfolios/cautious/">cautious portfolio</a> is the tested version of that. Do not buy a fund
+      with "buffer", "tail" or "hedged" in its name for protection.</p>
+    </Callout>
+  </div>
+
+  <div class="prose mt-10 flex flex-wrap gap-3">
+    <Button href="/portfolios/cautious/">The cautious portfolio</Button>
+    <Button href="/strategies/gold-and-bitcoin/" variant="outline">Gold and bitcoin</Button>
+  </div>
+</Base>

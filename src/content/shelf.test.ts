@@ -1,5 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { fundByTicker, type ShelfFund, shelf } from "~/content/shelf";
+import { PORTFOLIOS } from "~/content/portfolios";
+import {
+  FINE_ALTERNATIVE_TO,
+  FUND_VERDICTS,
+  fundByTicker,
+  fundVerdict,
+  REJECTED_ON_A_STRATEGY_PAGE,
+  type ShelfFund,
+  shelf,
+} from "~/content/shelf";
 import {
   commonWindow,
   distinctWindows,
@@ -313,5 +322,60 @@ describe("wrappers report structure and cost, never a sleeve", () => {
     expect(jpfp.wrapper?.delta).toBeNull();
     expect(jpfp.wrapper?.grossNotionalPerDollar).toBeNull();
     expect(jpfp.notionalExposure).toBeUndefined();
+  });
+});
+
+/**
+ * The funds page prints one of four words per fund. The mapping lives in `shelf.ts` so the
+ * page cannot invent a fifth, and these pin the cases where the research status and the
+ * reader's word disagree on purpose.
+ */
+describe("the reader's verdict on a fund", () => {
+  const held = new Set(PORTFOLIOS.flatMap((p) => p.holdings.map((h) => h.ticker)));
+
+  it("holds exactly the nine funds the four portfolios print", () => {
+    expect([...held].sort()).toEqual(["AVDV", "AVES", "IDMO", "RSST", "SCHP", "VT", "VTI", "VTV", "VXUS"]);
+  });
+
+  it("says Held even where the research status is rejected", () => {
+    for (const ticker of ["VTV", "SCHP"]) {
+      expect(fundByTicker(ticker).status).toBe("rejected");
+      expect(fundVerdict(fundByTicker(ticker), held)).toBe("Held");
+    }
+    for (const ticker of held) expect(fundVerdict(fundByTicker(ticker), held)).toBe("Held");
+  });
+
+  it("says Rejected for a rejected status and for the one fund a strategy page rejects", () => {
+    for (const ticker of ["TIP", "MTUM", "QVAL", "SCHD", "VNQ", "CTA"]) {
+      expect(fundVerdict(fundByTicker(ticker), held)).toBe("Rejected");
+    }
+    for (const ticker of REJECTED_ON_A_STRATEGY_PAGE) {
+      expect(fundByTicker(ticker).status).toBeNull();
+      expect(fundVerdict(fundByTicker(ticker), held)).toBe("Rejected");
+    }
+  });
+
+  it("says Fine alternative only for a listed twin with no research status", () => {
+    for (const ticker of Object.keys(FINE_ALTERNATIVE_TO)) {
+      const fund = fundByTicker(ticker);
+      expect(fund.status).toBeNull();
+      expect(fundVerdict(fund, held)).toBe("Fine alternative");
+      const standsFor = FINE_ALTERNATIVE_TO[ticker];
+      if (standsFor !== "cash") expect(held.has(standsFor ?? "")).toBe(true);
+    }
+    expect(fundVerdict(fundByTicker("SPY"), held)).toBe("Not assessed");
+  });
+
+  it("says Not assessed for a fund still under test that no portfolio holds, and for a priced-only fund", () => {
+    expect(fundByTicker("AVUV").status).toBe("exploratory");
+    expect(fundVerdict(fundByTicker("AVUV"), held)).toBe("Not assessed");
+    expect(fundByTicker("IBIT").status).toBeNull();
+    expect(fundVerdict(fundByTicker("IBIT"), held)).toBe("Not assessed");
+  });
+
+  it("never produces a fifth word", () => {
+    for (const fund of shelf) {
+      expect(FUND_VERDICTS).toContain(fundVerdict(fund, held));
+    }
   });
 });
