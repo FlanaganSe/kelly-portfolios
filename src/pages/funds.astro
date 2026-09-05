@@ -1,84 +1,24 @@
 ---
 /**
- * Every fund this project has priced, and what each one really costs.
+ * The funds the four portfolios hold, the cheaper alternative for each, and the funds the
+ * strategies pages reject, with what each one charges and what it costs once the income
+ * from lending its shares is counted.
  *
- * `src/content/shelf.ts` is the canonical record for a ticker and this page prints the
- * three fields that need no window attached to be read: the published fee, the fee less
- * securities-lending income, and the verdict. Delivered exposures and beat-the-market
- * figures are deliberately absent: each names a panel and a window, they were fitted on
- * different months, and a column of them side by side would be the comparison
- * `rankLoadings` refuses to make.
- *
- * Four things this file must keep doing:
- *
- * 1. **Every number is read from the module.** A fee or a cost typed into the markup is a
- *    number with no source and no `as of`, and it drifts the first time a filing is
- *    re-read. The `feeOf` / `costOf` / `spreadOf` helpers throw rather than coalescing a
- *    missing field to zero, because a silent zero here is a false quote.
- * 2. **One table, fifteen row groups.** The page used to render fifteen separate tables
- *    with fifteen repeated header rows, which cost a screen-reader user any sense of
- *    where one group ended and the next began. A `<th scope="colgroup">` leading each
- *    `<tbody>` is what relates a fund to its group.
- * 3. **Ticker and fund name share one row header.** Two columns put a fund's name most of
- *    a phone screen away from its ticker, and on the card layout below 40rem the name
- *    became a second heading under the label column.
- * 4. **`nothingMeasured` is derived, never listed.** A ticker list would have to be edited
- *    every time a young fund files for the first time, and would be wrong in the window
- *    between the filing and the edit.
- *
- * The reader-facing status words are set here rather than taken from `statusMeta`, whose
- * labels ("Exploratory", "Unresolved") are the research vocabulary and mean nothing to
- * somebody deciding what to buy.
+ * Every number is read from `src/content/shelf.ts`; a fee typed into the markup would have
+ * no source and no date. The verdict word comes from `fundVerdict` there, given the tickers
+ * the four portfolios print, so the page cannot invent a fifth word. The one-line reason
+ * beside each verdict is the only prose here per fund, and each line restates a fact a
+ * strategy or portfolio page carries.
  */
-import Breakout from "~/components/Breakout.astro";
 import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
+import { PORTFOLIOS } from "~/content/portfolios";
+import { fundByTicker, fundVerdict, type FundVerdict, type ShelfFund, shelfAsOf } from "~/content/shelf";
 import Base from "~/layouts/Base.astro";
-import { fundByTicker, shelf, shelfAsOf } from "~/content/shelf";
-import type { ShelfCategory, ShelfFund } from "~/content/shelf";
-import type { EvidenceStatus } from "~/content/types";
+import { asOfLabel } from "~/lib/site";
 
-/**
- * What each group is called for a reader, which is not what the data calls it. The keys
- * are the research categories; the values are the only version anybody outside this
- * project would recognise.
- */
-const CATEGORY_LABEL = {
-  "global-core": "The whole world in one fund",
-  "us-core": "US, the whole market",
-  "us-value": "US, leaning to cheaper companies",
-  "us-small": "US, leaning to smaller companies",
-  "us-momentum": "US, leaning to shares that have been rising",
-  "us-quality": "US, leaning to more profitable companies",
-  "intl-core": "Rich countries outside the US, the whole market",
-  "intl-value": "Rich countries outside the US, cheaper companies",
-  "intl-small-value": "Rich countries outside the US, smaller and cheaper companies",
-  "intl-momentum": "Rich countries outside the US, shares that have been rising",
-  "emerging-core": "Emerging markets, the whole market",
-  "emerging-value": "Emerging markets, cheaper companies",
-  bonds: "Bonds",
-  "managed-futures": "Trend-following funds (managed futures)",
-  "capital-efficient": "Stacked funds: two holdings for every dollar you put in",
-  alternative: "Everything else",
-} as const satisfies Readonly<Record<ShelfCategory, string>>;
-
-const ORDER = Object.keys(CATEGORY_LABEL) as readonly ShelfCategory[];
-
-const groups = ORDER.map((category) => ({
-  category,
-  label: CATEGORY_LABEL[category],
-  funds: shelf.filter((fund) => fund.category === category),
-})).filter((group) => group.funds.length > 0);
-
-/**
- * A cost as a percentage a year, exact rather than rounded to something readable.
- *
- * Rounding to two decimal places collapses the whole point of the page: VTI at 0.0116%
- * and ITOT at 0.0104% both become 0.01%, and the cheapest fund on the page stops being
- * distinguishable from the second cheapest. Four decimal places, trailing zeros trimmed,
- * never fewer than two.
- */
+/** A cost as a percentage a year, to as many decimals as it needs and never fewer than two. */
 const pct = (basisPoints: number | null): string => {
   if (basisPoints === null) return "—";
   let body = (Math.abs(basisPoints) / 100).toFixed(4).replace(/0+$/, "");
@@ -86,18 +26,11 @@ const pct = (basisPoints: number | null): string => {
   return `${basisPoints < 0 ? "−" : ""}${body}%`;
 };
 
-/** The same cost in money, on a round ten thousand. One basis point is one dollar. */
-const perTenThousand = (basisPoints: number): string =>
-  `${basisPoints < 0 ? "−" : ""}$${Math.abs(basisPoints).toFixed(2)}`;
+/** The same cost in money on $10,000. One hundredth of a percent is one dollar. */
+const dollars = (basisPoints: number): string => `${basisPoints < 0 ? "−" : ""}$${Math.abs(basisPoints).toFixed(2)}`;
 
-/*
- * Three readers that refuse rather than coalesce. A sentence on this page names these
- * funds by ticker, so a field that disappears from the record has to break the build; a
- * `?? 0` would quietly print a fee of zero as though it had been read.
- */
 function feeOf(fund: ShelfFund): number {
-  if (fund.expenseRatioBp === null)
-    throw new Error(`${fund.ticker} has no fee on record; this page may not quote one.`);
+  if (fund.expenseRatioBp === null) throw new Error(`${fund.ticker} has no fee on record; this page may not quote one.`);
   return fund.expenseRatioBp;
 }
 
@@ -106,297 +39,364 @@ function costOf(fund: ShelfFund): number {
   return fund.netCostBp;
 }
 
-function spreadOf(fund: ShelfFund): number {
-  if (!fund.spread) throw new Error(`${fund.ticker} has no published spread on record; this page may not quote one.`);
-  return fund.spread.bp;
+/** Which portfolios hold a ticker, from the printed holdings. */
+const heldIn = new Map<string, number[]>();
+for (const p of PORTFOLIOS) {
+  for (const h of p.holdings) heldIn.set(h.ticker, [...(heldIn.get(h.ticker) ?? []), p.number]);
+}
+const held: ReadonlySet<string> = new Set(heldIn.keys());
+
+const listOf = (numbers: readonly number[]): string =>
+  numbers.length === 1
+    ? `Portfolio ${numbers[0]}`
+    : `Portfolios ${numbers.slice(0, -1).join(", ")} and ${numbers[numbers.length - 1]}`;
+
+/**
+ * The rows, grouped in plain words, and the one-line reason printed beside each verdict.
+ * A held fund's line is where it is held; the rest restate the strategy or portfolio page.
+ */
+const GROUPS: readonly { label: string; rows: readonly [string, string][] }[] = [
+  {
+    label: "The whole world in one fund",
+    rows: [["VT", "Every listed company in the world"]],
+  },
+  {
+    label: "US stocks",
+    rows: [
+      ["VTI", "The whole US market"],
+      ["VOO", "The 500 largest US companies, in place of the whole market"],
+      ["ITOT", "The whole US market, and the cheapest of the four to own"],
+      ["SPY", "Cannot lend its shares, so the dearest S&P 500 fund"],
+      ["VTV", "Big cheap US companies"],
+      ["AVUV", "Small cheap US companies; mostly a small-company bet, not added"],
+      ["RPV", "Buys cheapness by selling profitability"],
+      ["QVAL", "Sells and replaces 332% of its holdings a year"],
+      ["MTUM", "Sells and replaces 116% of its holdings a year, costing more than the gain"],
+      ["SPMO", "Worth about 0.02% a year at 5%, and overlaps IDMO"],
+      ["QUAL", "Not a hedge: lost 27.7% over January to September 2022 against 24.9% for the market"],
+    ],
+  },
+  {
+    label: "Foreign stocks",
+    rows: [
+      ["VXUS", "Developed and emerging markets in one fund"],
+      ["VEA", "Developed markets only; with VWO it replaces VXUS"],
+      ["SPDW", "Developed markets only; the cheapest fund on this page to own"],
+      ["VWO", "Emerging markets by size"],
+      ["IEMG", "Emerging markets; lending covers its whole fee"],
+      ["AVDV", "Small, cheap, profitable foreign companies"],
+      ["IDMO", "Foreign shares that have been rising; retirement account only"],
+      ["IMTM", "The dearer of the two foreign rising-share funds"],
+      ["AVES", "Cheap emerging-market companies"],
+    ],
+  },
+  {
+    label: "Bonds and cash",
+    rows: [
+      ["SCHP", "Inflation-protected US government bonds"],
+      ["TIP", "The same bonds as SCHP at six times the cost"],
+      ["VTIP", "Short inflation-protected bonds, with almost no interest-rate swing"],
+      ["STIP", "Short inflation-protected bonds, with almost no interest-rate swing"],
+      ["SGOV", "Cash as a fund"],
+      ["BOXX", "A cash-like return paid as a rise in price, so tax falls when you sell"],
+      ["TLT", "Long US government bonds: a bet on rates falling"],
+      ["LQD", "Government bonds plus a slice of stock risk"],
+    ],
+  },
+  {
+    label: "Trend-following and stacked funds",
+    rows: [
+      ["RSST", "A dollar of US stocks plus a dollar of trend following"],
+      ["CTAP", "First in the replacement queue for RSST; a 0.33% gap between buy and sell prices"],
+      ["RSSB", "Stocks plus borrowed government bonds; tested as an idea, not added"],
+      ["NTSX", "90% stocks plus 60% government bonds per dollar; the cheapest stacked fund with a record"],
+      ["GDE", "Stocks plus borrowed gold; pays out 1.53% a year taxed like wages"],
+      ["RSSY", "Stocks plus carry; two years old, look again in mid-2027"],
+      ["DBMF", "Trend following on its own, measured against a model"],
+      ["CTA", "Trend following on its own; bought by selling stocks it gives up the stock return"],
+      ["KMLM", "Trend following on its own; bought by selling stocks it gives up the stock return"],
+    ],
+  },
+  {
+    label: "Gold, bitcoin, commodities and the rest",
+    rows: [
+      ["IAUM", "Gold in a vault; the cheapest of the four gold funds"],
+      ["GLD", "The same gold at four times IAUM's fee"],
+      ["IBIT", "Bitcoin; the largest fund"],
+      ["BTC", "Bitcoin; the cheapest fund"],
+      ["PDBC", "Commodities; sends an ordinary 1099 where DBC sends a K-1"],
+      ["SCHD", "The market with a screen and a tax bill"],
+      ["VNQ", "Property: 112% of the market's falls for 80% of its rises"],
+      ["SSO", "Twice the daily move of the S&P 500, with borrowed money"],
+    ],
+  },
+];
+
+interface Row {
+  fund: ShelfFund;
+  verdict: FundVerdict;
+  note: string;
 }
 
-function recheckOn(fund: ShelfFund): string {
-  if (!fund.reviewTrigger) throw new Error(`${fund.ticker} has no dated recheck on record; this page may not name one.`);
-  return fund.reviewTrigger.on;
-}
+const groups = GROUPS.map((g) => ({
+  label: g.label,
+  rows: g.rows.map(([ticker, reason]): Row => {
+    const fund = fundByTicker(ticker);
+    const verdict = fundVerdict(fund, held);
+    const holders = heldIn.get(ticker);
+    return { fund, verdict, note: verdict === "Held" && holders ? `${listOf(holders)}. ${reason}` : reason };
+  }),
+}));
 
-/**
- * A fund nothing here has measured: no exposure fitted, no return scored, no cost read,
- * and no structure computed from a holdings filing. Some are too young for the filing to
- * exist; the rest were priced and left there.
- *
- * A fee does not disqualify a fund from this set. A fee is read off a prospectus; it is
- * not a measurement made here.
- */
-const nothingMeasured = (fund: ShelfFund) =>
-  fund.status === null &&
-  fund.loadings.length === 0 &&
-  fund.alphaPpYr === null &&
-  fund.netCostBp === null &&
-  (fund.wrapper?.delta ?? null) === null;
-
-/**
- * The inception date, read from the issuer notes where one was recorded. The shelf keeps
- * it inside the note that cites it rather than as a field, so it is parsed here.
- */
-const inceptionOf = (fund: ShelfFund): Date | null => {
-  for (const note of fund.issuer?.notes ?? []) {
-    const match = /inception (\d{4}-\d{2}-\d{2})/i.exec(note);
-    if (match) return new Date(`${match[1]}T00:00:00Z`);
-  }
-  return null;
-};
-
-const THREE_YEARS_MS = 3 * 365.25 * 24 * 60 * 60 * 1000;
-
-/**
- * "Too new to say" is for a fund whose filings cannot exist yet: launched within about
- * three years of the shelf date. An older fund with nothing measured was simply priced.
- */
-const tooNew = (fund: ShelfFund): boolean => {
-  if (!nothingMeasured(fund)) return false;
-  const inception = inceptionOf(fund);
-  if (inception === null) return true;
-  return new Date(shelfAsOf).getTime() - inception.getTime() < THREE_YEARS_MS;
-};
-
-/** The research word for a verdict, in the words a reader would use for it. */
-const VERDICT_LABEL = {
-  exploratory: "Still in the running",
-  "source-reproduced": "Still in the running",
-  "independently-reproduced": "Still in the running",
-  "walk-forward-tested": "Still in the running",
-  "shadow-live": "Still in the running",
-  "production-eligible": "Still in the running",
-  rejected: "Didn’t make the cut",
-  unresolved: "Too close to call",
-} as const satisfies Readonly<Record<EvidenceStatus, string>>;
-
-const verdictOf = (fund: ShelfFund): string => {
-  if (IN_PORTFOLIOS[fund.ticker]) return "Held here";
-  if (fund.status) return VERDICT_LABEL[fund.status];
-  return tooNew(fund) ? "Too new to say" : "Priced only";
-};
-
-/**
- * Which of the four portfolios hold a fund. Derived from the published holdings, kept
- * separate from the verdict: a fund can be still in the running and held by none of them.
- */
-const IN_PORTFOLIOS: Readonly<Record<string, string>> = {
-  VT: "Portfolio 1",
-  VTI: "Portfolios 2, 3 and 4",
-  VTV: "Portfolios 2, 3 and 4",
-  VXUS: "Portfolios 2, 3 and 4",
-  AVDV: "Portfolios 2, 3 and 4",
-  IDMO: "Portfolios 2, 3 and 4",
-  AVES: "Portfolios 2, 3 and 4",
-  RSST: "Portfolios 3 and 4",
-  SCHP: "Portfolio 4",
-};
-
-const unmeasured = shelf.filter(tooNew);
+const rowCount = groups.reduce((sum, g) => sum + g.rows.length, 0);
+const heldCount = held.size;
 
 const iemg = fundByTicker("IEMG");
 const vwo = fundByTicker("VWO");
 const ctap = fundByTicker("CTAP");
-const rsst = fundByTicker("RSST");
-const dfev = fundByTicker("DFEV");
-const ffut = fundByTicker("FFUT");
+const recheck = ctap.reviewTrigger?.on;
+if (recheck === undefined) throw new Error("CTAP has no dated recheck on record; this page may not name one.");
 
-/** What one year of the CTAP-versus-RSST spread gap costs, which is the point of naming it. */
-const spreadGapBp = spreadOf(ctap) - spreadOf(rsst);
-
-/*
- * The all-in charge of the three stacked funds that were actually candidates: the fee plus
- * what the funds they hold charge, which is the only figure the three can be compared on.
- * Its range is what the spread gap above has to be read against.
- */
-const stackedAllIn = [ctap, rsst, fundByTicker("MATE")]
-  .map((fund) => fund.wrapper?.allInCostBp ?? null)
-  .filter((value): value is number => value !== null);
-if (stackedAllIn.length < 3) {
-  throw new Error("the three stacked candidates no longer all carry an all-in cost; the comparison below is stale.");
-}
-const stackedAllInRangeBp = Math.max(...stackedAllIn) - Math.min(...stackedAllIn);
-
-/**
- * Written once, read twice: into `<thead>`, and into the label each cell shows when the
- * table becomes a list of cards below 40rem.
- */
-const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict"] as const;
+const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict", "Why"] as const;
 ---
 
 <Base
-  title="Every fund, and what it really costs"
-  description={`${shelf.length} funds read from their own filings. What each one charges, what it costs once the income from lending its shares is counted, and the verdict attached to it.`}
-  wide
+  title="Funds"
+  description={`${rowCount} funds: the ${heldCount} the four portfolios hold, a cheaper alternative for each, and the funds the strategies pages reject, with the fee each publishes and what it costs once the income from lending its shares is counted.`}
+  xl
 >
   <Hero
-    title="Every fund, and what it really costs"
-    lede="A fund’s real cost is its published fee minus what it earns by lending out the shares it holds, and that second number reorders the list."
+    title="The funds, and what each one really costs"
+    lede={`The ${heldCount} funds the four portfolios hold, a cheaper alternative for each, and the funds the other pages reject, each with its fee and what it costs once the income from lending its shares is counted.`}
   />
 
-  <div class="prose">
-    <p>Funds lend their shares to other investors, mostly to people betting a price will fall, and keep part of
-    the payment. That income comes back to you inside the fund, so the fee on the label overstates what you hand
-    over. Almost nobody publishes the second number. The <span data-numeric>{shelf.length}</span> funds below were
-    read from their own filings on or before <span data-numeric>{shelfAsOf}</span>, and the Cost column is the fee
-    minus that lending income.</p>
+  <div class="prose mt-8">
+    <p>A fund's real cost is its published fee minus what it earns lending its shares to other investors, mostly
+    people betting a price will fall. That income comes back to you inside the fund, so the fee on the label
+    overstates what you pay, and almost nobody publishes the second number. IEMG charges {pct(feeOf(iemg))} a
+    year and VWO {pct(feeOf(vwo))}, and both hold the same emerging-market stocks; lending covers IEMG's whole
+    fee and pays you {dollars(-costOf(iemg))} on every $10,000 besides, so the fund with the higher fee is the
+    cheaper one to own. SPY goes the other way: it costs <Figure id="spy-net-cost" inline /> a year, three to
+    five times every other fund tracking the same 500 companies, because a trust set up in 1993 cannot lend
+    its holdings. A dash in the cost column means nobody has read that fund's lending income, not that it lends
+    nothing. A cost of 0.10% a year is $10 on every $10,000, every year.</p>
 
-    <p>Two examples show why the column matters. IEMG charges <span data-numeric>{pct(feeOf(iemg))}</span> a year
-    and VWO charges <span data-numeric>{pct(feeOf(vwo))}</span>, and both hold the same emerging-market stocks.
-    Lending covers IEMG&rsquo;s whole fee and pays you
-    <span data-numeric>{perTenThousand(-costOf(iemg))}</span> on every $10,000 on top, so the fund with the higher
-    fee is the cheaper one to own. SPY goes the other way: it costs <Figure id="spy-net-cost" inline /> a year,
-    three to five times as much as every other fund tracking the same 500 companies, because a trust set up in
-    1993 cannot lend its holdings at all.</p>
+    <p>Each fund carries one of four words. <strong>Held</strong>: one of the four portfolios holds it, and the
+    line says which. <strong>Fine alternative</strong>: the same holding as a held fund at an equal or lower
+    fee; buy it if your broker offers it more cheaply. <strong>Rejected</strong>: a test written down in
+    advance, and it failed; the line says how, and the <a href="/strategies/">strategies pages</a> say the
+    rest. <strong>Not assessed</strong>: the fee was read and no comparison was run, either because the fund is
+    under three years old or because nothing about it needed testing.</p>
 
-    <p>If you are buying to hold for years, compare the Cost column. A cost of
-    <span data-numeric>0.10%</span> a year is $10 on every $10,000, every year.</p>
+    <p>Two things count besides the fee. The gap between the price you buy at and the price you could sell at is
+    paid once, on the way in: CTAP's is <Figure id="ctap-spread" inline showUnit={false} /> of its price against
+    RSST's <Figure id="rsst-spread" inline showUnit={false} />, which over a one-year hold outweighs the
+    difference in their fees. And some fees have an end date: CTAP charges less than the fee shown until
+    {asOfLabel(recheck)}, and about 0.99% all in after it. Everything here was read from the funds' own
+    filings on or before {asOfLabel(shelfAsOf)}; fund facts go stale, so a year from now read them again
+    rather than quoting this page.</p>
+  </div>
 
-    <Callout kind="caveat" label="How to read the table">
+  <div class="wide mt-12">
+    <table class="fund-table w-full border-collapse text-base">
+      <caption class="sr-only">
+        Each fund, grouped by what it holds, with the fee it publishes, what it costs after securities-lending
+        income, the verdict, and one line of reason
+      </caption>
+      <thead>
+        <tr class="text-left">
+          {COLUMNS.map((heading, i) => (
+            <th scope="col" class:list={["label py-2 pr-3 font-semibold", (i === 1 || i === 2) && "text-right"]}>
+              {heading}
+            </th>
+          ))}
+        </tr>
+      </thead>
+      {groups.map((group) => (
+        <tbody class="text-ink-2">
+          <tr class="group-head">
+            <th scope="colgroup" colspan={COLUMNS.length} class="h3 pt-10 pb-2 text-left">
+              {group.label}
+            </th>
+          </tr>
+          {group.rows.map(({ fund, verdict, note }) => (
+            <tr class="align-top">
+              <th scope="row" class="fund-cell py-2 pr-3 text-left font-normal">
+                <span class="font-semibold text-ink">{fund.ticker}</span>
+                <span class="fund-name text-sm leading-snug text-ink-3">{fund.name}</span>
+              </th>
+              <td data-label="Fee" data-numeric class="fee-cell py-2 pr-3 text-right">
+                {pct(fund.expenseRatioBp)}
+              </td>
+              <td data-label="After lending" data-numeric class="cost-cell py-2 pr-3 text-right">
+                {pct(fund.netCostBp)}
+              </td>
+              <td class="verdict-cell py-2 pr-3" data-verdict={verdict.toLowerCase().replace(/ /g, "-")}>
+                {verdict}
+              </td>
+              <td class="why-cell py-2 text-sm text-ink-2">{note}</td>
+            </tr>
+          ))}
+        </tbody>
+      ))}
+    </table>
+  </div>
+
+  <div class="prose mt-12">
+    <Callout kind="caveat" label="Where this comes from">
       <p>
-        Fee is what the fund publishes. Cost is the fee minus lending income, and it is what you actually pay. A
-        dash in the Cost column means nobody has read that fund&rsquo;s lending income yet, not that the fund
-        lends nothing.
+        Fees and lending income come from each fund's own annual filings. The buy-sell gap is the 30-day figure
+        every exchange-traded fund has to publish. Which portfolios hold a fund is read from the portfolios
+        themselves. Nothing here says whether a fund beat what its holdings alone would have paid; the data
+        almost never answers that, and a column of such answers would read as a finding when it is mostly noise.
       </p>
     </Callout>
   </div>
-
-  <Breakout scroll class="mt-12" heading="Every fund, by what it is for" maxWidth="52rem">
-    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[44rem]">
-      <caption class="sr-only">
-        Every fund priced here, grouped by what it is for, with the fee it publishes, what it costs after
-        securities-lending income, and the verdict attached to it
-      </caption>
-      <thead role="rowgroup">
-        <tr role="row" class="border-b border-rule-strong text-left">
-          {
-            COLUMNS.map((heading, i) => (
-              <th
-                role="columnheader"
-                scope="col"
-                class:list={["eyebrow py-2", i < COLUMNS.length - 1 && "pr-4", (i === 1 || i === 2) && "text-right"]}
-              >
-                {heading}
-              </th>
-            ))
-          }
-        </tr>
-      </thead>
-      {
-        groups.map((group) => (
-          <tbody role="rowgroup" class="text-ink-muted">
-            <tr role="row" class="group-head">
-              <th
-                role="columnheader"
-                scope="colgroup"
-                colspan={COLUMNS.length}
-                class="h3 border-b border-rule-strong pt-10 pb-2 text-left"
-              >
-                {group.label}
-              </th>
-            </tr>
-            {group.funds.map((fund) => (
-              <tr role="row" class="border-b border-rule align-top">
-                <th role="rowheader" scope="row" class="py-2 pr-4 text-left font-normal">
-                  <span class="block font-semibold text-ink">{fund.ticker}</span>
-                  <span class="block text-xs leading-snug text-ink-3">{fund.name}</span>
-                </th>
-                <td role="cell" data-label={COLUMNS[1]} data-numeric class="py-2 pr-4 text-right">
-                  {pct(fund.expenseRatioBp)}
-                </td>
-                <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-4 text-right">
-                  {pct(fund.netCostBp)}
-                </td>
-                <td role="cell" data-label={COLUMNS[3]} class="py-2 text-xs sm:whitespace-nowrap">
-                  <span class="block">{verdictOf(fund)}</span>
-                  {IN_PORTFOLIOS[fund.ticker] && (
-                    <span class="held-in block text-ink-3">{IN_PORTFOLIOS[fund.ticker]}</span>
-                  )}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        ))
-      }
-    </table>
-  </Breakout>
-
-  <div class="prose mt-12">
-    <h2>What the verdict words mean</h2>
-
-    <p>Every fund carries one of six words.</p>
-
-    <ul>
-      <li><strong>Held here.</strong> One of the nine funds the <a href="/portfolios/">four portfolios</a> hold,
-      with the portfolios it belongs to underneath. VTV is held even though, measured on its own, a cheap mix of
-      VTI and a small-company fund does much the same job; the
-      <a href="/portfolios/value-lean/">value-lean page</a> says why it stays.</li>
-      <li><strong>Still in the running.</strong> The fund delivers what it sells, and nothing has ruled it
-      out. It can be still in the running and held by none of the four portfolios.</li>
-      <li><strong>Didn&rsquo;t make the cut.</strong> The fund was measured against a cheap combination that
-      does much the same job, and it lost.</li>
-      <li><strong>Too close to call.</strong> The fund has too few months of history for the data to say either
-      way. That is a statement about the evidence, not about the fund.</li>
-      <li><strong>Too new to say.</strong> The fund is under three years old, so the filings that would show
-      what it holds do not exist yet. You get a fee, because a fee is printed in a prospectus. You do not get a
-      cost or a verdict. Today that is
-      <span data-numeric>{unmeasured.map((fund) => fund.ticker).join(", ")}</span>.</li>
-      <li><strong>Priced only.</strong> The fee was read, and where the fund lends its holdings the cost after
-      lending too, and no comparison was run.</li>
-    </ul>
-
-    <p>There is no beat-the-market column. Whether a fund beat what its holdings alone would have paid is a
-    question the data almost never answers, and a column of those answers would read as a finding when it is
-    mostly noise.</p>
-  </div>
-
-  <div class="prose mt-12">
-    <h2>Two things that matter besides the fee</h2>
-
-    <p><strong>The spread.</strong> The spread is the gap between the price you buy at and the price you could
-    sell at, and you pay it once, on the way in. Over a long hold the yearly fee wins: SPY has the tightest
-    spread of any fund here and still costs the most to own. Over a short hold the spread can decide.
-    CTAP&rsquo;s spread is <Figure id="ctap-spread" inline showUnit={false} /> of its price against RSST&rsquo;s
-    <Figure id="rsst-spread" inline showUnit={false} />. Hold either for one year and that gap is worth about
-    <span data-numeric>{pct(spreadGapBp)}</span>, on a group of three funds whose all-in charges differ by only
-    <span data-numeric>{pct(stackedAllInRangeBp)}</span>.</p>
-
-    <p><strong>Fees with an end date.</strong> Some published fees hold only while a waiver runs. DFEV&rsquo;s
-    <span data-numeric>{pct(feeOf(dfev))}</span> holds through <span data-numeric>{recheckOn(dfev)}</span>.
-    FFUT&rsquo;s <span data-numeric>{pct(feeOf(ffut))}</span> is a cap its board can let lapse after
-    <span data-numeric>{recheckOn(ffut)}</span>. CTAP charges less than the
-    <span data-numeric>{pct(feeOf(ctap))}</span> shown until <span data-numeric>{recheckOn(ctap)}</span>. If you
-    still hold any of these past those dates, read the fee again.</p>
-  </div>
-
-  <Callout kind="caveat" label="Where this comes from">
-    <p>
-      Fees and lending income come from each fund&rsquo;s own annual filings. Spreads come from the 30-day
-      figure every exchange-traded fund has to publish. Everything here was read on or before
-      <span data-numeric>{shelfAsOf}</span>. Fund facts go stale, so a year from now the right move is to read
-      them again rather than to quote this page.
-    </p>
-  </Callout>
 </Base>
 
 <style>
-  /* Below 40rem `.stack-table` turns every row into a bordered card. A row group's own
-     header is a heading rather than a card, so it opts out of the box and keeps the
-     spacing that separates one group from the next. */
-  @media (width < 40rem) {
-    .stack-table > tbody > tr.group-head {
+  /* Desktop: a plain table whose column headings stay in view while the groups scroll past. */
+  .fund-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--paper);
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  .fund-table tbody tr:not(.group-head) {
+    border-bottom: 1px solid var(--rule);
+  }
+
+  .fund-table .group-head th {
+    border-bottom: 1px solid var(--rule-strong);
+  }
+
+  .fund-name {
+    display: block;
+  }
+
+  .fund-table .why-cell {
+    max-width: 22rem;
+  }
+
+  .verdict-cell {
+    white-space: nowrap;
+    font-weight: 500;
+    color: var(--ink);
+  }
+
+  .verdict-cell[data-verdict="held"] {
+    font-weight: 600;
+  }
+
+  .verdict-cell[data-verdict="not-assessed"],
+  .verdict-cell[data-verdict="rejected"] {
+    color: var(--ink-2);
+    font-weight: 400;
+  }
+
+  /* Phone: two lines per fund. Ticker and name with the verdict at the right; then the
+     fee and the cost after lending with the one-line reason at the right. */
+  @media (width < 48rem) {
+    .fund-table,
+    .fund-table tbody,
+    .fund-table tbody tr,
+    .fund-table tbody th,
+    .fund-table tbody td {
       display: block;
-      border: 0;
-      border-radius: 0;
-      background: transparent;
-      padding: 1.5rem 0 0.5rem;
+      min-width: 0;
     }
 
-    .stack-table > tbody > tr.group-head > th {
-      border-bottom: 1px solid var(--rule-strong);
-      padding-bottom: 0.4rem;
+    .fund-table thead {
+      display: none;
     }
 
-    .stack-table > tbody > tr.group-head + tr {
-      margin-top: 0;
+    /* The row is a wrapping flex line: fund and verdict on the first line, then a forced
+       break (the row's own ::before, which a flex container treats as an item), then the
+       fee, the cost and the reason flowing as one small line. */
+    .fund-table tbody tr:not(.group-head) {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: baseline;
+      column-gap: 0.6rem;
+      row-gap: 0.1rem;
+      padding: 0.6rem 0;
+    }
+
+    .fund-table tbody tr:not(.group-head)::before {
+      content: "";
+      order: 2;
+      flex-basis: 100%;
+      height: 0;
+    }
+
+    .fund-table .group-head th {
+      display: block;
+      padding-top: 2rem;
+    }
+
+    .fund-table .fund-cell {
+      order: 0;
+      flex: 1 1 0;
+      min-width: 0;
+      padding: 0;
+    }
+
+    .fund-name {
+      display: inline;
+      margin-left: 0.35rem;
+    }
+
+    .fund-table .verdict-cell {
+      order: 1;
+      flex: none;
+      padding: 0;
+      text-align: right;
+    }
+
+    .fund-table .fee-cell,
+    .fund-table .cost-cell,
+    .fund-table .why-cell {
+      padding: 0;
+      text-align: left;
+      font-size: var(--text-xs);
+      line-height: 1.45;
+    }
+
+    .fund-table .fee-cell {
+      order: 3;
+      flex: none;
+      white-space: nowrap;
+    }
+
+    .fund-table .cost-cell {
+      order: 4;
+      flex: none;
+      white-space: nowrap;
+    }
+
+    .fund-table .fee-cell::before,
+    .fund-table .cost-cell::before {
+      content: attr(data-label) " ";
+      color: var(--ink-3);
+    }
+
+    .fund-table .cost-cell::after,
+    .fund-table .fee-cell::after {
+      content: " ·";
+      color: var(--ink-3);
+    }
+
+    .fund-table .why-cell {
+      order: 5;
+      flex: 1 1 100%;
+      min-width: 0;
+      max-width: none;
+    }
+
+    .fund-table .cost-cell::after {
+      content: none;
     }
   }
 </style>

@@ -427,7 +427,7 @@ export const shelf: readonly ShelfFund[] = [
   // -------------------------------------------------------------------------
   {
     ticker: "VTV",
-    name: "Vanguard Value ETF",
+    name: "Vanguard Morningstar Value ETF",
     category: "us-value",
     mandate:
       "Big cheap US companies, weighted by size, for 0.03% a year. Part of what results are measured against, rather than a bet.",
@@ -3985,6 +3985,58 @@ export function fundByTicker(ticker: string): ShelfFund {
 
 export function findFund(ticker: string): ShelfFund | undefined {
   return shelf.find((one) => one.ticker === ticker);
+}
+
+/**
+ * The four words the funds page prints. They are a reader's vocabulary, not the
+ * research's: `status` says how a fund was tested, and these say what to do with it.
+ *
+ * - **Held**: one of the four portfolios holds it. Wins over everything else, because VTV
+ *   and SCHP carry `rejected` on the research's own comparator test and are held anyway,
+ *   for reasons their portfolio pages give.
+ * - **Rejected**: the research's status is `rejected`, or a strategy page says No to the
+ *   whole idea and the fund is that idea ({@link REJECTED_ON_A_STRATEGY_PAGE}).
+ * - **Fine alternative**: the same holding as a held fund, at an equal or lower fee, and
+ *   never tested because it did not need to be ({@link FINE_ALTERNATIVE_TO}).
+ * - **Not assessed**: priced, and nothing else. Includes a fund still under test
+ *   (`exploratory`, `unresolved`) that no portfolio holds.
+ */
+export const FUND_VERDICTS = ["Held", "Fine alternative", "Rejected", "Not assessed"] as const;
+
+export type FundVerdict = (typeof FUND_VERDICTS)[number];
+
+/**
+ * Each fine alternative and the held fund it stands in for. `cash` is not a held fund: a
+ * cash-like government bill fund stands in for the cash the crash-protection page names.
+ */
+export const FINE_ALTERNATIVE_TO: Readonly<Record<string, string>> = {
+  VOO: "VTI",
+  ITOT: "VTI",
+  VEA: "VXUS",
+  SPDW: "VXUS",
+  IEFA: "VXUS",
+  VWO: "VXUS",
+  IEMG: "VXUS",
+  VTIP: "SCHP",
+  STIP: "SCHP",
+  SGOV: "cash",
+  BIL: "cash",
+  BOXX: "cash",
+};
+
+/**
+ * Funds with no research status of their own whose whole idea a strategy page says No to.
+ * SSO is a two-times fund; `docs/research/leveraged-etfs-and-timing-rules.md` rejects the
+ * borrowing on its own and the 200-day rule on top of it.
+ */
+export const REJECTED_ON_A_STRATEGY_PAGE: ReadonlySet<string> = new Set(["SSO"]);
+
+/** The reader's word for a fund, given the tickers the four portfolios hold. */
+export function fundVerdict(fund: ShelfFund, held: ReadonlySet<string>): FundVerdict {
+  if (held.has(fund.ticker)) return "Held";
+  if (fund.status === "rejected" || REJECTED_ON_A_STRATEGY_PAGE.has(fund.ticker)) return "Rejected";
+  if (fund.status === null && fund.ticker in FINE_ALTERNATIVE_TO) return "Fine alternative";
+  return "Not assessed";
 }
 
 /**

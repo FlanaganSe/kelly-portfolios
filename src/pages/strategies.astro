@@ -1,232 +1,382 @@
 ---
 /**
- * The index of ideas: one row per thing people add to a portfolio, a verdict word, one
- * line, and a link to the page that argues it. The rows are data so the table and its
- * phone rendering come from one list.
+ * Every idea people add to a portfolio, with its verdict, one sentence and one number,
+ * grouped by verdict. The detail lives on the page each card links to; this page only
+ * says which word each idea earned and why in twenty words.
+ *
+ * Numbers that describe what a portfolio did come from the series the research emitter
+ * writes; the rest are read from figure records. Nothing here is typed from memory.
  */
-import Breakout from "~/components/Breakout.astro";
 import Hero from "~/components/Hero.astro";
-import Verdict from "~/components/Verdict.astro";
+import VerdictCard from "~/components/VerdictCard.astro";
+import VerdictGroup from "~/components/VerdictGroup.astro";
 import Base from "~/layouts/Base.astro";
-import type { Confidence } from "~/lib/rungs";
+import { formatPct } from "~/lib/charts";
+import { figureValue } from "~/lib/figures";
+import type { Verdict } from "~/lib/rungs";
+import { loadSeries, seriesFor } from "~/lib/series";
 
-interface Row {
-  readonly idea: string;
-  readonly verdict: Confidence;
-  readonly line: string;
-  readonly href: string;
+const file = loadSeries("1990");
+const long = loadSeries("1929");
+const market = seriesFor("market").summary;
+const valueLean = seriesFor("value-lean").summary;
+const cautious = seriesFor("cautious").summary;
+const longTrend = seriesFor("with-trend", "1929").summary;
+const longMarket = seriesFor("market", "1929").summary;
+
+interface Card {
+  title: string;
+  verdict: Verdict;
+  sentence: string;
+  number?: string;
+  numberLabel?: string;
+  href: string;
+  more?: string;
 }
 
-const ROWS: readonly Row[] = [
+const held: Card[] = [
   {
-    idea: "Cheaper funds",
-    verdict: "Settled",
-    line: "Index funds cost 0.09% a year against 0.57% for the average active fund, and 90% of active US stock funds lost to their benchmark over ten years.",
-    href: "/strategies/fees-and-taxes/",
-  },
-  {
-    idea: "The right account",
-    verdict: "Settled",
-    line: "Which fund sits in your Roth, your IRA and your taxable account is worth a few hundredths of a point a year, every year, for the cost of a form.",
-    href: "/tools/which-account/",
-  },
-  {
-    idea: "An ETF instead of a mutual fund",
-    verdict: "Settled",
-    line: "In 2025, 7% of ETFs paid out a taxable capital gain against 52% of mutual funds.",
-    href: "/strategies/fees-and-taxes/",
-  },
-  {
-    idea: "Never trading",
-    verdict: "Settled",
-    line: "Every sale in a taxable account brings a tax bill forward. Not selling is the one free edge.",
-    href: "/strategies/fees-and-taxes/",
-  },
-  {
-    idea: "Leaning toward cheaper companies",
+    title: "Leaning toward cheaper companies",
     verdict: "Probably",
-    line: "Beat a plain index mix by about 0.8 points a year between 1990 and 2026, and by 0.9 points on data from the 1980s the funds were not built on. Needs thirty years of patience.",
-    href: "/strategies/value-and-momentum/",
+    sentence:
+      "Beat a plain world index by a little since 1990, and again on 1980s data the funds never saw. Needs decades of patience.",
+    number: `${formatPct(valueLean.cagrPct)} a year`,
+    numberLabel: `against ${formatPct(market.cagrPct)} for a plain world stock index, ${file.window.label}, simulated`,
+    href: "/portfolios/value-lean/",
   },
   {
-    idea: "Holding foreign stocks",
+    title: "Trend following on top of stocks",
+    verdict: "Too close to call",
+    sentence:
+      "The strongest candidate on a century of index data, most of it before 2009, delivered by a fund under three years old.",
+    number: `${formatPct(longTrend.cagrPct)} a year`,
+    numberLabel: `Plus trend against ${formatPct(longMarket.cagrPct)} for all US stocks, ${long.window.label}, simulated`,
+    href: "/portfolios/with-trend/",
+  },
+  {
+    title: "Inflation-protected bonds, for a smaller fall",
+    verdict: "Settled",
+    sentence:
+      "Fewer stocks means a smaller fall; that part is arithmetic. Whether the bonds add any return is too close to call.",
+    number: formatPct(cautious.worstFall.pct),
+    numberLabel: `worst fall of the cautious portfolio against ${formatPct(market.worstFall.pct)} for a plain world stock index, ${file.window.label}`,
+    href: "/portfolios/cautious/",
+  },
+  {
+    title: "Foreign stocks",
     verdict: "Probably",
-    line: "Worth holding because foreign markets are priced at a big discount to the US, and because nobody knows which region wins the next twenty years. Not because it protects you in a crash.",
+    sentence:
+      "A 65/35 US/foreign split is roughly the world market. Foreign stocks are cheaper, and most of the US lead was rising prices.",
+    number: "81%",
+    numberLabel: "of the US lead over 35 years came from US stocks getting dearer, 1990 to 2024",
     href: "/strategies/international/",
-  },
-  {
-    idea: "Trend following, on top of stocks",
-    verdict: "Too close to call",
-    line: "The strongest candidate on this site. Added 2 points a year over 96 years, most of it before 2009, and the fund that does it is under three years old.",
-    href: "/strategies/trend-following/",
-  },
-  {
-    idea: "The 200-day rule",
-    verdict: "No",
-    line: "Cuts the worst fall from 84% to 43% and pays for it with 0.7 points a year less than holding, 58 losing exits out of 73, and a tax bill.",
-    href: "/strategies/market-timing/",
-  },
-  {
-    idea: "2x and 3x funds",
-    verdict: "No",
-    line: "A 3x fund held since 1926 spent 28 years under water and fell 99.9% at its worst. Under the 200-day rule it still fell 85%.",
-    href: "/strategies/market-timing/",
-  },
-  {
-    idea: "Gold",
-    verdict: "Too close to call",
-    line: "Earned 1.75% a year over cash since 1975 and rose in 59% of the worst stock months since 2000. Small, optional, and instead of cash rather than instead of stocks.",
-    href: "/strategies/gold-and-bitcoin/",
-  },
-  {
-    idea: "Bitcoin",
-    verdict: "No",
-    line: "The only holding tested that made the portfolio's worst fall deeper at every weight. A bet, not protection. Zero to 2% if you want the bet.",
-    href: "/strategies/gold-and-bitcoin/",
-  },
-  {
-    idea: "Crash insurance and buffer funds",
-    verdict: "No",
-    line: "The best-known tail fund lost 8% a year while stocks made 14%, and fell 13% in the 2022 bear market. 86 of 102 buffer funds returned less than a plain stock and cash mix.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Bonds and TIPS",
-    verdict: "Too close to call",
-    line: "Owning fewer stocks is a choice about how much you can lose, not a way to earn more. Ten-year TIPS, Treasury bonds whose payments rise with inflation, now pay 2.4% above inflation, the most since 2008.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Cash",
-    verdict: "Settled",
-    line: "A 10% move from stocks into Treasury bills added 0.92% back in the average worst stock month since 1926, as much as gold and within two hundredths of long bonds, for no fee.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Corporate and high-yield bonds",
-    verdict: "No",
-    line: "Investment-grade corporate bonds track Treasuries at 0.83 out of 1, and high-yield rose in 3% of the worst stock months. A little extra return inside a bond allocation, never protection.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Foreign and emerging-market bonds",
-    verdict: "Too close to call",
-    line: "Not tested here. A hedged foreign bond fund is close to BND with a currency hedge attached; emerging-market bonds carry the currencies that fall hardest in a crisis.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Catastrophe bonds",
-    verdict: "Too close to call",
-    line: "The one asset whose losses come from hurricanes. The funds returned about one point a year over cash after fees, and the price is the thinnest on record. Wait.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Commodities",
-    verdict: "No",
-    line: "Gained 144% across 1973 and 1974 and fell with stocks in most crashes, rising in 28% of the worst stock months since 2000. An inflation hedge, not a crash hedge.",
-    href: "/strategies/gold-and-bitcoin/",
-  },
-  {
-    idea: "Carry",
-    verdict: "Too close to call",
-    line: "A second strategy run with futures contracts, which moves independently of trend. Positive on paper, negative since 2013, and the fund is two years old.",
-    href: "/strategies/trend-following/",
-  },
-  {
-    idea: "Direct indexing",
-    verdict: "No",
-    line: "Cost money on every one of 400 simulated thirty-year paths. Only 0.2% of the losses it harvests ever save tax for someone who never sells.",
-    href: "/strategies/fees-and-taxes/",
-  },
-  {
-    idea: "Rebalancing",
-    verdict: "Settled",
-    line: "Keeps your mix from drifting. Does not earn a return, and every rule tested on a three-region mix lost a little to never trading.",
-    href: "/strategies/fees-and-taxes/",
-  },
-  {
-    idea: "Dividend and property funds",
-    verdict: "No",
-    line: "A dividend fund is the stock market with a screen and a tax bill. Property funds fell 41% in 2020 and rose in 3% of the worst stock months. Quality funds lost more than the market in 2022.",
-    href: "/strategies/crash-insurance/",
-  },
-  {
-    idea: "Paying off debt, and the HSA",
-    verdict: "Settled",
-    line: "A loan above the after-tax Treasury rate is the best risk-free return a household can get, and the health savings account is the only account untaxed at every point.",
-    href: "/strategies/fees-and-taxes/",
   },
 ];
 
-const COLUMNS = ["Idea", "Verdict", "In one line"] as const;
+const close: Card[] = [
+  {
+    title: "Gold",
+    verdict: "Too close to call",
+    sentence:
+      "Does the job of cash in a fall, with big swings instead of none. Adds no return the tests can see.",
+    number: `${await figureValue("gold-over-cash")} a year over cash`,
+    numberLabel: "1975 to mid-2026, after storage costs",
+    href: "/strategies/gold-and-bitcoin/",
+  },
+  {
+    title: "Catastrophe bonds",
+    verdict: "Too close to call",
+    sentence:
+      "The one holding whose losses come from hurricanes rather than markets. The funds earned about 1% a year over cash, and the price is the thinnest on record.",
+    number: await figureValue("cat-bond-spread-multiple"),
+    numberLabel: "the expected loss, mid-2026; the question reopens at 3.5 times",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Cash",
+    verdict: "Too close to call",
+    sentence:
+      "Moving 10% of stocks into cash-like government bills added as much back in the worst months as gold did, for no fee.",
+    number: "+0.92%",
+    numberLabel: "added back in the average worst stock month since 1926",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Carry, a second futures strategy",
+    verdict: "Too close to call",
+    sentence:
+      "Moves independently of trend and added about 0.2% a year after costs on paper. Negative since 2013; the fund is two years old.",
+    number: "−0.88% a year",
+    numberLabel: "the fund since launch, against 18.9% for the S&P 500",
+    href: "/strategies/stacking/",
+  },
+  {
+    title: "Rebalancing",
+    verdict: "Too close to call",
+    sentence:
+      "Keeps your mix from drifting, which is the point. As a source of return it came out a hair behind never trading.",
+    number: `${await figureValue("rebalance-return")} a year`,
+    numberLabel: "a yearly review against never trading, inside a range the test could not read",
+    href: "/how-to-hold/",
+  },
+];
+
+const no: Card[] = [
+  {
+    title: "The 200-day rule",
+    verdict: "No",
+    sentence:
+      "Halves the worst fall on a century of US stocks and earned less than holding, with most exits losing money and a tax bill.",
+    number: await figureValue("timing-rule-drawdown"),
+    numberLabel: "worst fall under the rule against −83.7% for holding, 1926 to 2026, simulated",
+    href: "/strategies/market-timing/",
+  },
+  {
+    title: "2x and 3x funds",
+    verdict: "No",
+    sentence:
+      "A 3x fund held since 1927 lost almost everything at its worst and spent 28 years getting back. The 200-day rule did nothing in 1987.",
+    number: "−99.9%",
+    numberLabel: "worst fall of a 3x US stock fund, 1927 to 2026, simulated",
+    href: "/strategies/market-timing/",
+  },
+  {
+    title: "Bitcoin",
+    verdict: "No",
+    sentence:
+      "The only holding tested that made the portfolio's worst fall deeper at every weight. At most 2% as a bet, and zero is fine.",
+    number: await figureValue("bitcoin-drawdown-deepened"),
+    numberLabel: "a portfolio's worst fall before and after a 10% bitcoin holding, 2015 to 2026",
+    href: "/strategies/gold-and-bitcoin/",
+  },
+  {
+    title: "Crash-insurance funds",
+    verdict: "No",
+    sentence:
+      "The best-known one lost about 7% a year since 2017 and lost money in 2022, the bear market it was bought for.",
+    number: "−13%",
+    numberLabel: "TAIL in calendar 2022, while US stocks fell about a quarter",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Buffer funds",
+    verdict: "No",
+    sentence:
+      "A cap on your gains in exchange for a cushion on your losses. Priced on a century of twelve-month windows, the package costs you.",
+    number: "−2.4% to −4.1% a year",
+    numberLabel: "what the cap-and-cushion package was worth on 1,183 twelve-month windows since 1926",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Long US government bonds as insurance",
+    verdict: "No",
+    sentence:
+      "Two hundredths of a percent a month more than cash in the worst stock months, bought with a huge fall of their own.",
+    number: await figureValue("long-treasury-worst-fall"),
+    numberLabel: "worst fall of long US government bonds against cash, 1926 to 2025",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Commodities",
+    verdict: "No",
+    sentence:
+      "Inflation protection, and no help in a crash: a recession that sinks stocks sinks demand for oil and copper too.",
+    number: "36%",
+    numberLabel: "of the worst stock months since 1926 in which commodities rose",
+    href: "/strategies/gold-and-bitcoin/",
+  },
+  {
+    title: "Corporate and high-yield bonds",
+    verdict: "No",
+    sentence:
+      "They track US government bonds closely and add a slice of stock risk. A little extra return inside a bond holding, never protection.",
+    number: "0.83 out of 1",
+    numberLabel: "how closely investment-grade corporate bonds move with US government bonds",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Dividend funds",
+    verdict: "No",
+    sentence: "The stock market with a screen and a tax bill. Six of them trailed the whole market at matched risk.",
+    number: "0.84 out of 1",
+    numberLabel: "how closely a dividend fund moves with the whole market",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Property funds",
+    verdict: "No",
+    sentence: "Property funds gave 112% of the market's falls for 80% of its rises. Stocks by another name.",
+    number: "0.82 out of 1",
+    numberLabel: "how closely a property fund moves with the whole market",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Direct indexing",
+    verdict: "No",
+    sentence:
+      "Owning an index's stocks one by one to harvest tax losses cost money on every one of 400 simulated thirty-year paths.",
+    number: await figureValue("harvest-losses-used"),
+    numberLabel: "of the losses it harvests ever save tax for someone who never sells",
+    href: "/how-to-hold/",
+  },
+];
+
+const unmeasured: Card[] = [
+  {
+    title: "Covered-call and income funds",
+    verdict: "Not measured yet",
+    sentence:
+      "They sell the market's upside each month for cash, the mirror image of buying crash insurance. No whole-portfolio test has been run.",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Target-date funds",
+    verdict: "Not measured yet",
+    sentence:
+      "The one-fund portfolio plus bonds on a schedule set by your age. The bond share here is set by the fall you can sit through instead.",
+    href: "/portfolios/cautious/",
+  },
+  {
+    title: "Sector bets",
+    verdict: "Not measured yet",
+    sentence:
+      "Nothing here separates a sector from the market it sits in. About half the US market's lead over the world is its larger tech sector.",
+    href: "/strategies/international/",
+  },
+  {
+    title: "Thematic funds",
+    verdict: "Not measured yet",
+    sentence:
+      "A themed fund is a bet on one story. The nearest thing tested, an AI stock-picking fund, returned about half the S&P 500 since 2017.",
+    href: "/portfolios/one-fund/",
+  },
+  {
+    title: "Single stocks",
+    verdict: "Not measured yet",
+    sentence:
+      "The one form tested, owning an index's stocks one by one to harvest losses, lost money on every one of 400 paths.",
+    href: "/portfolios/one-fund/",
+  },
+  {
+    title: "Risk-parity and all-weather funds",
+    verdict: "Not measured yet",
+    sentence:
+      "Each part, long bonds, gold and commodities, was measured alone and none beat plain cash in the worst stock months. The fund itself was not.",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Equal-weight index funds",
+    verdict: "Not measured yet",
+    sentence:
+      "Mostly the lean toward smaller companies this site already holds, in a dearer form. Not tested as a holding.",
+    href: "/portfolios/value-lean/",
+  },
+  {
+    title: "TIPS ladders and I-bonds",
+    verdict: "Not measured yet",
+    sentence:
+      "The same inflation-protected bonds in a different form. A ladder suits a dated spend; I-bonds are capped at $10,000 a year.",
+    href: "/portfolios/cautious/",
+  },
+  {
+    title: "Bonds with trend on top",
+    verdict: "Not measured yet",
+    sentence:
+      "A fund that stacks trend following on bonds instead of stocks, inside the cautious portfolio. The next thing to be measured.",
+    href: "/portfolios/cautious/",
+  },
+  {
+    title: "A cheaper stacked fund plus a trend fund",
+    verdict: "Not measured yet",
+    sentence:
+      "About a third the cost of RSST per dollar of trend, but it pays for the trend by selling stocks, the funding that has not worked.",
+    href: "/portfolios/with-trend/",
+  },
+  {
+    title: "Bonds with the interest-rate risk hedged out",
+    verdict: "Not measured yet",
+    sentence:
+      "On 1926 to 2014 the idea was the one bond-like bet that did not move with government bonds. The funds are twelve years old.",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Foreign or emerging-market trend funds",
+    verdict: "Not measured yet",
+    sentence: "No fund isolates them, and the trend fund held already trades fifty-plus markets worldwide.",
+    href: "/portfolios/with-trend/",
+  },
+  {
+    title: "The 200-day rule on the trend fund only",
+    verdict: "Not measured yet",
+    sentence:
+      "The rule was measured on the stock holding, where it halved the worst fall and could not be shown to add return.",
+    href: "/strategies/market-timing/",
+  },
+  {
+    title: "Merger arbitrage and hedge-fund copies",
+    verdict: "Not measured yet",
+    sentence:
+      "Ten-year returns of 2.9% to 4.3% a year in a decade whose cash rate was most of that. Too small to be worth resolving.",
+    href: "/strategies/stacking/",
+  },
+  {
+    title: "Hedged foreign bond funds",
+    verdict: "Not measured yet",
+    sentence:
+      "Close to a US bond fund with a currency hedge attached. Emerging-market bonds carry the currencies that fall hardest in a crisis.",
+    href: "/strategies/crash-protection/",
+  },
+  {
+    title: "Ether and other coins",
+    verdict: "Not measured yet",
+    sentence:
+      "Staking pays about 1.3% to 1.9% a year before a fee that can exceed it, on an asset that fell 67% from its 2025 high.",
+    href: "/strategies/gold-and-bitcoin/",
+  },
+];
 ---
 
 <Base
-  title="Strategies"
-  description="Twenty-three things people add to a portfolio, and whether each one earns its place once you look at the whole portfolio rather than the idea on its own."
-  asOf="2026-09-02"
-  wide
+  title="Everything else I looked at"
+  description="Every idea people add to a portfolio, tested inside a whole portfolio: which ones are held here, which are too close to call, which failed, and which have not been measured yet. One sentence and one number each."
+  xl
 >
   <Hero
-    title="What earns a place in a portfolio"
-    lede="Most things people bolt onto a portfolio look good on their own and do nothing once they are inside one. A few look unimpressive alone and help the whole. The only test that matters is the whole portfolio."
+    title="Everything else I looked at"
+    lede="Every idea was tested inside a whole portfolio, because some ideas help on top of stocks and hurt instead of them, and the reverse. The words are explained on the about page."
   />
 
-  <div class="prose">
-    <p>The idea behind this site is simple. No single strategy beats the market by much, and none does it
-    reliably. But if you can find several ideas that each have a modest edge, and they do not all fail at the
-    same time, stacking them gives you better odds than any one of them. The catch is that most candidates fail
-    the second half of that sentence. They either add nothing once fees and taxes are counted, or they fall
-    exactly when your stocks fall, or they only help if you buy them a particular way.</p>
+  <div class="prose mt-8">
+    <p>Each card carries one of five words, <a href="/about/">defined on the about page</a>: Settled, Probably,
+    Too close to call, No, or Not measured yet. Four ideas earned a place in a portfolio and are explained on
+    the portfolio pages. The certain things, cheap funds, the right account and never selling in a taxable
+    account, are on <a href="/how-to-hold/">how to hold it</a>. The idea behind the whole site, that stacking
+    many small edges should beat the market, gets <a href="/strategies/stacking/">its own page</a>.</p>
 
-    <p>So every idea below was tested the same way: put it inside a whole portfolio, charge its costs, and
-    compare the result with a cheap index fund holding the same mix. The verdict words are the four I use
-    everywhere on this site. Settled means the direction is not in doubt. Probably means the evidence points
-    one way but a long stretch of bad luck could hide it for decades. Too close to call means the test could
-    not separate the idea from zero. No means it lost, on measured cost against measured benefit.</p>
+    <p>Some ideas fail alone and help in a portfolio; some look strong alone and fail inside one. Trend
+    following bought by selling stocks is too close to call at best; added on top, it gave 1.7% a year more
+    growth on the same data. Cash earns the least of anything and added 0.92% back in the average worst stock
+    month since 1926, for no fee. Bitcoin had the best return for its risk of anything measured and deepened the
+    worst fall at every weight. Gold bought by selling stocks cost 0.4% a year; added on top it earned 0.2%;
+    neither can be told from zero. So ask two questions of any idea: does it fall when stocks fall, and how am I
+    paying for it.</p>
   </div>
 
-  <Breakout scroll heading="The verdicts" class="mt-10">
-    <table role="table" class="stack-table w-full border-collapse text-base sm:min-w-[40rem]">
-      <caption class="sr-only">Twenty-three ideas, each with a verdict word, a one-line reason and a link to the page that argues it</caption>
-      <thead role="rowgroup">
-        <tr role="row" class="border-b border-rule-strong text-left">
-          {COLUMNS.map((heading) => (
-            <th role="columnheader" scope="col" class="eyebrow py-2 pr-4">{heading}</th>
-          ))}
-        </tr>
-      </thead>
-      <tbody role="rowgroup" class="text-ink-muted">
-        {ROWS.map((row) => (
-          <tr role="row" class="border-b border-rule last:border-0 align-top">
-            <th role="rowheader" scope="row" class="py-3 pr-4 text-left font-medium text-ink"><a href={row.href} class="link">{row.idea}</a></th>
-            <td role="cell" data-label={COLUMNS[1]} class="py-3 pr-4 whitespace-nowrap"><Verdict word={row.verdict} /></td>
-            <td role="cell" data-label={COLUMNS[2]} class="py-3 pr-4 max-w-[34rem]">{row.line}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </Breakout>
+  <div class="wide mt-14">
+    <VerdictGroup heading="Held in a portfolio here" count={held.length}>
+      {held.map((c) => <VerdictCard {...c} more="See the portfolio" />)}
+    </VerdictGroup>
 
-  <div class="prose mt-14">
-    <h2>Alone and together are different questions</h2>
+    <VerdictGroup heading="Too close to call" count={close.length} gloss="The test could not tell the effect from zero.">
+      {close.map((c) => <VerdictCard {...c} />)}
+    </VerdictGroup>
 
-    <p>Some ideas fail alone and help in a portfolio. Trend following is the clearest case. On its own it earned
-    about 5% a year since 2000 by the SG Trend index's count, with long dead stretches. Bought by selling
-    stocks, it dilutes the portfolio. Added on top of stocks through a fund that borrows inside itself, it rose
-    in 64% of the worst stock months since 2000 and turned the lost decade of 1999 to 2009 from a loss into
-    roughly zero. Cash is the other case. Cash earns the least of anything, and moving 10% of a stock
-    portfolio into Treasury bills would have added 0.9% in the average terrible month since 1926, as much as
-    gold or long bonds and for no fee.</p>
+    <VerdictGroup heading="No" count={no.length} gloss="A test written down in advance, and it failed.">
+      {no.map((c) => <VerdictCard {...c} />)}
+    </VerdictGroup>
 
-    <p>Others look strong alone and fail inside a portfolio. Bitcoin has the best return for its risk of
-    anything I measured, and it still deepened the portfolio's worst fall at every weight because it falls
-    with stocks and falls further. A standalone managed-futures fund, a trend-following fund, bought by selling stocks gives up the
-    stock return on the money you sold, which is most of what the strategy was supposed to add. Gold has the
-    same problem: bought by selling stocks it costs the portfolio 0.4 points a year against holding the
-    stocks, added on top it gains 0.2, and neither number can be told from zero.</p>
-
-    <p>Ask two questions of any idea. Does it fall when stocks fall? And how am I paying for it: by selling
-    stocks, or by adding it on top?</p>
+    <VerdictGroup heading="Not measured yet" count={unmeasured.length} gloss="Named and priced, but no test has been run.">
+      {unmeasured.map((c) => <VerdictCard {...c} more="Nearest page" />)}
+    </VerdictGroup>
   </div>
 </Base>

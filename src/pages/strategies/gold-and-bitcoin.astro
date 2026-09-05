@@ -1,115 +1,117 @@
 ---
 /**
- * Gold and bitcoin on one page, each with its own verdict. Gold's return over cash and
- * bitcoin's effect on the worst fall carry figure records.
+ * Gold, then bitcoin, then the tax on both and the funds that hold them. One line each
+ * on commodities and ether. Fees are read from the shelf; the two headline measurements
+ * from figure records.
  */
-import Compare from "~/components/Compare.astro";
+import Button from "~/components/Button.astro";
+import Callout from "~/components/Callout.astro";
 import Figure from "~/components/Figure.astro";
 import Hero from "~/components/Hero.astro";
+import StatGrid from "~/components/StatGrid.astro";
 import Verdict from "~/components/Verdict.astro";
+import { fundByTicker } from "~/content/shelf";
 import Base from "~/layouts/Base.astro";
+import { figureValue } from "~/lib/figures";
+
+const fee = (ticker: string): string => {
+  const bp = fundByTicker(ticker).expenseRatioBp;
+  if (bp === null) throw new Error(`${ticker} has no fee on the shelf`);
+  return `${(bp / 100).toFixed(2)}%`;
+};
+
+const STATS = [
+  { value: await figureValue("gold-over-cash"), label: "Gold's return a year over cash", note: "1975 to mid-2026, after storage costs" },
+  { value: "16%", label: "Gold's swings a year", note: "Against none for cash, which did the same job in a fall" },
+  { value: "60%", label: "Bitcoin's return a year over cash", note: "2015 to mid-2026, with swings of 71% a year" },
+  {
+    value: await figureValue("bitcoin-drawdown-deepened"),
+    label: "A portfolio's worst fall with 10% bitcoin",
+    note: "2015 to 2026. The only holding tested that deepened the fall at every weight",
+  },
+];
 ---
 
 <Base
   title="Gold and bitcoin"
-  description="Gold rose in most of the worst stock months and cannot be shown to add return either way. Bitcoin has the best return for its risk of anything tested and still made every portfolio's worst fall deeper. Which fund to buy, and commodities."
-  asOf="2026-09-02"
+  description="Gold does the job of cash in a crash, with big swings, and adds no return the tests can see: optional, small, in a retirement account. Bitcoin is the only holding tested that made the worst fall deeper at every weight: at most 2% as a bet, and zero is fine."
+  xl
 >
   <Hero
-    title="Should I hold gold or bitcoin?"
-    lede="Gold: a little, if you like, in place of cash rather than stocks. Bitcoin: only as a bet you can afford to lose, never as protection."
-  />
+    title="Gold and bitcoin"
+    lede="Gold does the job of cash in a crash, with big swings instead of none, and adds no return the tests can see. Bitcoin is the only holding tested that made the portfolio's worst fall deeper at every weight."
+  >
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
+      <Verdict word="Too close to call" gloss="Gold: optional, at most 5%, only in place of cash or bonds." />
+      <Verdict word="No" gloss="Bitcoin, as protection: at most 1% to 2% as a bet, and zero is fine." />
+    </p>
+  </Hero>
 
-  <div class="prose">
-    <h2>Gold</h2>
+  <StatGrid items={STATS} class="wide mt-10" />
 
-    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="Too close to call" /> <span>Optional, small, and instead of cash.</span></p>
+  <div class="prose mt-10">
+    <h2 id="gold">Gold</h2>
+    <p>Since 1975, the first year Americans could own it freely, gold earned
+    <Figure id="gold-over-cash" inline /> after a 0.25% storage cost, with swings of 16% a year and a worst
+    fall of 91% behind cash from its peak. In the worst tenth of stock months since 1975, moving 10% of stocks
+    into gold added 0.92% back in the average such month, against 0.80% for cash-like government bills on the
+    same months; gold rose in 56% of them. So gold does what cash does in a fall, and charges you 16% a year of
+    swings for it.</p>
+    <p>It has a record against inflation that cash lacks: gold rose 90% through the late-1970s inflation while
+    long government bonds lost 40%, gained 22% through 2008 and 2009, and lost 7% in the 2022 rate shock. How
+    you pay for it decides the sign: bought by selling 10% of stocks, gold cost the portfolio 0.4% a year; added
+    on top through a fund that borrows, it added 0.2%. Neither can be told from zero.</p>
+    <p>Its price after inflation, $4,027 an ounce in July 2026 money, is higher than in 98.5% of months since
+    1975 and above both the January 1980 and August 2011 peaks in the same money. I would not open a gold
+    position at this price. If you hold some, hold at most 5%, in place of cash or bonds and never in place of
+    stocks, in a retirement account.</p>
 
-    <p>Since 1975, the first year Americans could own it freely and the price was set by a market, gold has
-    earned <Figure id="gold-over-cash" inline showUnit={false} /> a year over cash. That is a thin return for
-    an asset that swings 16% a year and once fell 91% behind cash from its peak. What it has going for it is
-    when it pays. Gold rose in 59% of the worst stock months since 2000, which only trend following beat. It is
-    not a reliable hedge inside a crash, though: it fell 30% peak to trough during 2008, 21% of that in eleven
-    days, and 12% in nine days in March 2020. It is protection with a lag.</p>
+    <h2 id="bitcoin">Bitcoin</h2>
+    <p>Between 2015 and mid-2026 bitcoin earned 60% a year over cash with swings of 71% a year and a worst fall
+    of 76%: the best return for its risk of anything measured on this site. Adding it still made things worse,
+    because it falls when stocks fall, and harder: about one and a half times as far in both directions, with a
+    link to stocks that has tightened to 0.53 over the last seven years. It rose in 2 of the 12 worst stock
+    months of the past decade.</p>
+    <p>A 10% position took a portfolio's worst fall from <Figure id="bitcoin-drawdown-deepened" inline showUnit={false} />
+    over 2015 to 2026. No other holding tested did that at every weight. In 2022 it fell 58% while stocks fell
+    25%; between its October 2025 high and June 2026 it fell 53% while the S&amp;P 500's own fall was 9%. Over
+    the five years to August 2026 it returned 56% against 73% for the S&amp;P 500, with about four times the
+    swings, and 137 months of its best-ever returns cannot distinguish it from the S&amp;P 500 at matched
+    risk.</p>
+    <p>A fund that holds bitcoin on top of stocks by borrowing beat the same bitcoin bought by selling stocks by
+    about 0.4% a year, and that gain is only the stock return on the money not sold. The borrowed bitcoin part
+    was negative in 12 of the 13 worst stock months.</p>
+    <p>BlackRock's own guidance for the fund it sells is 1% to 2% with a 2% cap; Vanguard recommends none. The
+    verdict rests on 13 bad stock months since 2015, so read "No" as "no evidence it helps", and not as proof it
+    hurts. A stock bear market in which bitcoin does not fall harder than stocks would reopen it.</p>
 
-    <p>Whether it adds return to a portfolio depends entirely on how you pay for it. Sell 10% of your stocks to
-    buy gold and the portfolio grows 0.4 points a year slower. Add 10% gold on top of the stocks through a
-    fund that borrows, and it grows 0.2 points faster. Neither number can be told from zero, and the sign flips
-    on the funding alone. Inside the portfolio on this site, a 10% addition on top came out 0.35 points a year
-    ahead of the portfolio without it, with a range between minus 0.2 and plus 0.9. Too close to call.</p>
+    <h2 id="tax-and-funds">Tax, and which fund</h2>
+    <p>Both are taxed badly in an ordinary brokerage account. Gold held through a fund that owns bars is a
+    collectible: long-term gains are taxed at up to 28% plus a 3.8% surtax, against 23.8% on stocks, so gold
+    goes in a retirement account, where the rate does not apply. A fund that borrows to hold gold on top of
+    stocks (GDE) avoids the collectible rate but paid out income taxed like wages worth 1.53% a year. Spot
+    bitcoin funds are trusts whose gains flow through as if you owned the coin; hold bitcoin in a taxable
+    account, where a 75% fall at least gives a usable loss.</p>
+    <p>The gold funds hold the same bars in a vault and differ only in fee: IAUM {fee("IAUM")}, GLDM {fee("GLDM")},
+    IAU {fee("IAU")}, GLD {fee("GLD")}. The bitcoin funds hold the same coins: Grayscale's mini trust (BTC) {fee("BTC")},
+    BITB {fee("BITB")}, IBIT and FBTC {fee("IBIT")}. Avoid crypto "income" funds that pay 27% to 73% a year in
+    distributions out of the position itself.</p>
 
-    <p>The one comparison that matters for a crash: in the worst tenth of stock months since 1926, swapping 10%
-    of stocks into gold would have added 0.92% in the average such month. Swapping the same 10% into Treasury
-    bills would have added 0.92%. Gold does the job of cash in a fall, at 16% a year of swings instead of
-    none.</p>
+    <Callout kind="do-this">
+      <p>Gold: none, or at most 5% in place of cash or bonds, the cheapest fund, in a retirement account.
+      Bitcoin: none, or at most 2% in a taxable account, labelled speculation in your own notes so you do not
+      mistake it for protection.</p>
+    </Callout>
 
-    <p>That is why the recommendation is small and in place of cash. If you would hold 5% cash anyway, gold is
-    a fair substitute. Two things to know before buying now. Gold's price after inflation is higher than in all
-    but 1.5% of months since 1975, above its 1980 and 2011 peaks. And a gold fund that borrows to hold
-    gold on top of stocks, GDE, pays out taxable income worth 1.5 points a year, the second-largest tax cost
-    of any fund I priced.</p>
-
-    <h3>Which gold fund</h3>
-
-    <p>Four funds hold bars in a vault and differ only in fee. IAUM charges about 0.09%, GLDM 0.10%, IAU 0.25%
-    and GLD 0.40%, so the cheapest is the choice, and the famous ticker costs four times as much for the same
-    metal. One tax point most guides miss: these funds are legally a slice of the metal, and metal is a
-    collectible, so a gain in a taxable account is taxed at up to 28%, a worse rate than stocks get. Hold
-    gold in a retirement account. GDE avoids the collectibles rate because it is an ordinary fund, at the
-    price of the payout above.</p>
-
-    <h3>Commodities</h3>
-
-    <p>Broad commodity funds such as PDBC and DBC are sold as inflation protection, and that part is true.
-    Commodities gained 144% across 1973 and 1974 and 10.5% in 2022. They are not crash protection. In the
-    worst tenth of stock months since 1926 they lost 1.8% on average and rose in only 36% of those months,
-    because a recession that sinks stocks sinks demand for oil and copper too. Silver I have never measured.
-    Before buying any commodity fund, check whether it sends a K-1 tax form, which some do; the ones that
-    hold their contracts through a subsidiary send an ordinary 1099, and that difference decides which
-    account can hold it at all.</p>
-
-    <h2>Bitcoin</h2>
-
-    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2"><Verdict word="No" /> <span>Not as protection. Zero to 2% as a bet, in a taxable account, and zero is fine.</span></p>
-
-    <p>Bitcoin has the best return for its risk of anything I measured. Between 2015 and mid-2026 it earned 60%
-    a year over cash with swings of 71% a year. If that were the whole story it would be in every
-    portfolio.</p>
-
-    <p>The problem is when it falls. Bitcoin moves about one and a half times as far as the stock market, in
-    both directions, and its month-to-month link to stocks has tightened from 0.34 over the full period to 0.53
-    over the last seven years. It rose in 2 of the 12 worst stock months of the past decade. Between February
-    and April 2025 it lost 28% while the S&amp;P 500 lost 19%, and they hit bottom on the same day. In the first
-    half of 2026 it lost 53% while the S&amp;P 500 lost 9%.</p>
-
-    <p>Put that into a portfolio and the result is the one that decides it. Bitcoin is the only holding I
-    tested that made the portfolio's worst fall deeper at every weight. A 10% position took a portfolio's
-    worst fall over that period from <Figure id="bitcoin-drawdown-deepened" inline showUnit={false} />.
-    Everything else I tested, including things that lost money, at least did not do that. Over the five years
-    to August 2026 bitcoin returned 56% against 73% for the S&amp;P 500, with about four times the swings.</p>
-
-    <p>Two smaller points. A fund that holds bitcoin on top of stocks by borrowing, RSSX, beat the same bitcoin
-    bought by selling stocks by 0.4 points a year, which sounds like a finding and is only the stock return on
-    the money not sold. And ether funds that promise staking income mostly do not deliver it: ETHE's 2.5% fee
-    is larger than what staking pays, and ETHB nets about 1.9% a year, taxed as ordinary income.</p>
-
-    <p>If you want the bet, hold 1 to 2% in a taxable account, call it speculation, and expect it to halve now
-    and then, as it did in the first half of 2026. BlackRock's own guidance for the fund it sells is 1 to 2%. Zero is also a good
-    answer.</p>
-
-    <p>If you do buy, the spot funds all hold the same coins and differ only in fee. IBIT and FBTC charge
-    0.25%, BITB 0.20%, and Grayscale's mini fund, ticker BTC, 0.15%, while GBTC still charges 1.50% for the
-    same thing. Hold it in a taxable account, where a loss can at least be set against other gains.</p>
+    <h2 id="the-rest">Commodities and other coins</h2>
+    <p>Broad commodity funds (PDBC, DBC) protect against inflation and not against a crash: they gained 144%
+    across 1973 and 1974, but in the worst tenth of stock months since 1926 they rose in only 36% of them,
+    because a recession that sinks stocks sinks demand for oil and copper too. Ether pays about 1.3% to 1.9% a
+    year for staking before a fee that can exceed it, on an asset that fell 67% from its 2025 high.</p>
   </div>
 
-  <Compare class="mt-12">
-    <ul slot="get">
-      <li>Gold: an asset that rose in 59% of the worst stock months since 2000.</li>
-      <li>Bitcoin: the highest return for its risk of anything tested, 60% a year over cash since 2015.</li>
-    </ul>
-    <ul slot="give">
-      <li>Gold: a return that cannot be told from zero either way, at a price above its 1980 and 2011 peaks.</li>
-      <li>Bitcoin: a deeper worst fall at every weight, and losses of 28% and 53% in the last two stock sell-offs.</li>
-    </ul>
-  </Compare>
+  <div class="prose mt-10 flex flex-wrap gap-3">
+    <Button href="/strategies/crash-protection/">What actually protects you</Button>
+    <Button href="/strategies/" variant="outline">Every other idea</Button>
+  </div>
 </Base>
