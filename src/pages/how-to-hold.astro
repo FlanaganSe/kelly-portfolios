@@ -51,8 +51,6 @@ const [least2022, most2022] = range("y2022");
 const EXAMPLE = WITH_TREND_HOLDINGS.map((h) => `${formatDollars(h.weight * 100, "exact")} of ${h.ticker}`);
 const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.length - 1]}`;
 
-// TODO(fact): FACTS.md has no line on employer matches. The "Before you invest" sentence
-// about a match states no number and rests on arithmetic alone; add a sourced line or cut it.
 ---
 
 <Base
@@ -61,7 +59,7 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
 >
   <Hero
     title="How to hold it"
-    lede="Pick one of the four portfolios, then hold it the same way whatever the market does."
+    lede="Choose an allocation you can hold, put it into your actual accounts, and use a written review routine."
   />
 
   <div class="prose">
@@ -72,15 +70,14 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
   <div class="prose mt-14">
     <h2 id="before-you-invest">Before you invest</h2>
 
-    <p>If you have debt at a rate above what a US government bond pays after tax, pay it down first. Repaying it
-    is a return with no risk, and very likely the best one available to you.</p>
+    <p>Keep money for near-term spending and emergencies outside an allocation that can fall sharply.
+    Compare paying down expensive debt with investing, and check any employer retirement match and its
+    vesting rules before deciding where new money goes.</p>
 
-    <p>If your employer matches part of what you put into its retirement plan, put in at least enough to get the
-    whole match.</p>
-
-    <p>If you have a high-deductible health plan, fill the health savings account before a taxable account. It is
-    the only US account taxed at none of the three points: money in, growth, and money out for medical costs.
-    The 2026 limit is $4,400 for one person and $8,750 for a family, plus $1,000 from age 55.</p>
+    <p>A health savings account can be useful if you qualify, but a high deductible alone does not establish
+    eligibility. Other coverage and Medicare matter too. Check the
+    <a href="https://www.irs.gov/instructions/i8889">IRS eligibility and contribution rules</a>
+    before contributing.</p>
   </div>
 
   <div class="prose mt-14">
@@ -91,26 +88,17 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
       <a href="#rebalancing">Rebalancing</a>.</p>
     </Callout>
 
-    <p>If you have a retirement account and a taxable brokerage account, the rule is two lines. RSST, the
-    bond fund and the foreign stock funds go in the retirement account, in that order; plain US stock funds, VTI
-    and VTV, go in the taxable account.</p>
+    <p>Set one allocation across your accounts together. You do not need to hold every fund in every account.</p>
 
-    <p>The reason is the yearly tax bill. In a taxable account you pay tax every year on what a fund pays out; in
-    a retirement account you pay none, so the fund with the biggest yearly bill goes there first. Bond interest
-    is taxed like wages, so the bond fund's bill is the largest: about $190 a year on every $10,000 of it at the
-    top bracket. RSST's trend profits are taxed like wages too. Foreign funds pay bigger dividends than US funds,
-    and fewer of them are taxed at the lower rate. VTI pays the smallest dividend, all of it at the lower rate.</p>
+    <p>A retirement account can defer or avoid tax on a fund's annual distributions, making it a useful home for taxable
+    bond income or some trend strategies. Broad stock funds are often easier to hold in a taxable account.
+    Foreign funds add a tradeoff: avoiding US tax on their dividends can forfeit a foreign tax credit.</p>
 
-    <p>You may have read that foreign funds belong in a taxable account, to keep the foreign tax you can claim
-    back. Holding all four in a retirement account does lose that claim, about $7 a year on every $10,000 of the
-    whole portfolio, and saves several times that.</p>
+    <p>The order depends on your tax rates, available space, fund distributions and eventual withdrawals.
+    Roth and pre-tax balances are not interchangeable after tax. The calculator compares the Plus trend
+    holdings under your inputs; it does not assume that everyone should use the same account order.</p>
 
-    <p>If you have both a Roth and a pre-tax account, RSST and the bond fund go in the pre-tax account and the
-    foreign funds in the Roth: the Roth is never taxed again, so give it what you expect to grow most. That
-    choice is worth about $2 a year per $10,000; taxable against retirement is worth ten times that.</p>
-
-    <p>The calculator ranks the eight funds of the Plus trend portfolio at your bracket and says where each one
-    lands. Nothing you set leaves your browser.</p>
+    <p>Nothing you enter leaves your browser.</p>
   </div>
 
   <div class="mt-6">
@@ -118,35 +106,35 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
   </div>
 
   <div class="prose mt-10">
-    <p>Doing this is worth about $2 to $7 a year on every $10,000 against a sensible default with the same
-    accounts, and nothing if all your money is in one kind of account. If your pre-tax money is all in an
-    employer plan whose menu lacks these funds, rolling an old employer balance into a rollover IRA is the
-    cheapest single improvement available.</p>
+    <p>If an employer plan does not offer these tickers, compare its broad funds by exposure and cost.
+    A rollover is a separate decision: compare total fees, investment choices, withdrawal rules and account
+    protections before moving retirement money. A larger fund menu alone does not establish a better account.</p>
   </div>
 
   <div class="prose mt-14">
     <h2 id="how-to-buy">How to buy</h2>
 
-    <p>Open a brokerage account; Fidelity, Schwab and Vanguard charge nothing to trade ETFs online. Buy each fund
-    by its ticker in the weights shown. As a worked example, $10,000 in Plus trend is
-    <span data-numeric>{exampleText}</span>. New money goes to the accounts with yearly limits first, a 401(k) or
-    an IRA, then to the taxable account, into whatever holding is furthest below its target.</p>
+    <p>Check that your broker offers each fund and inspect its order-preview fees. Buy by ticker in the
+    proportions you chose. As a worked example, $10,000 in Plus trend is
+    <span data-numeric>{exampleText}</span>. Direct new money toward holdings below their targets,
+    within the contribution limits and access rules of the accounts you use.</p>
   </div>
 
   <div class="prose mt-14">
     <h2 id="rebalancing">Rebalancing</h2>
 
     <Callout kind="do-this">
-      <p>Once a year, on a fixed date, compare each holding with its target across all your accounts together.
-      Send new money and any dividends to whatever is furthest below target. Trade only inside a retirement
-      account, and only when a holding is a quarter away from its target. Never sell in a taxable account to
-      rebalance.</p>
+      <p>Once a year, compare the holdings across all your accounts with your targets. Use contributions,
+      withdrawals and cash distributions to bring them closer. Where possible, make additional trades inside
+      retirement accounts. If taxable sales are needed, compare the tax and trading cost with the risk of
+      keeping the current allocation.</p>
     </Callout>
 
-    <p>Do not expect rebalancing to add return or soften the worst fall: on this portfolio the yearly rule came
-    out 0.09% a year behind never trading over {file.window.label}, a difference the test cannot tell from zero. The quarter-away trigger fires about once
-    every two and a half years. Never selling in the taxable account is worth about $42 a year on $10,000
-    against selling a tenth of your holdings each year, because tax on a gain waits until you sell.</p>
+    <p>Rebalancing controls exposure; it does not promise extra return. If a taxable holding alone exceeds
+    its whole-portfolio target, trades in other accounts cannot fix that. More contributions, a revised target
+    or a taxable sale may be appropriate. The SEC's
+    <a href="https://www.investor.gov/additional-resources/general-resources/publications-research/info-sheets/beginners-guide-asset">rebalancing guide</a>
+    describes these methods and their tax and fee tradeoffs.</p>
   </div>
 
   <div class="prose mt-14">
@@ -188,8 +176,9 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
 
   <div class="prose mt-8">
     <Callout kind="do-this">
-      <p>Do not sell. Keep adding on the same schedule. Before you buy, write down the fall you could sit through
-      and how many years behind a plain index fund you could stand, and hold yourself to the note.</p>
+      <p>Before investing, write down the losses and time behind a benchmark you can accept. A market fall
+      alone is not a reason to abandon the plan. A change in your spending needs, income, risk tolerance or
+      the fund itself is a reason to review it.</p>
     </Callout>
   </div>
 
@@ -197,29 +186,31 @@ const exampleText = `${EXAMPLE.slice(0, -1).join(", ")} and ${EXAMPLE[EXAMPLE.le
     <h2 id="if-rsst-closes">If RSST closes</h2>
 
     <Callout kind="do-this">
-      <p>If RSST announces it is closing or changing what it does, sell it before its last trading day and buy
-      VTI with the money in the same retirement account. No tax is due there, and you now hold the value lean.
-      Do not replace it with a standalone trend-following fund bought by selling stocks.</p>
+      <p>Read the fund's closure or mandate-change notice and review your replacement before its deadline.
+      Moving RSST into VTI would remove the trend holding while retaining broad US stock exposure. It leaves
+      the rest of your portfolio, including its bond holding, in place.</p>
     </Callout>
 
-    <p>Of the 25 trend-following ETFs filing reports in mid-2019, 13 had stopped by the end of 2025. Four possible
-    replacements (CTAP, MATE, JPFP, RSIT) are reviewed in that order, and each currently fails a test; the
-    <a href="/portfolios/with-trend/">Plus trend page</a> will say when one passes.</p>
+    <p>A standalone trend fund uses capital that would otherwise hold stocks or bonds; it does not reproduce
+    RSST's stacked exposures automatically. Compare the whole resulting allocation, fees and tax effects.
+    Trading within a retirement account generally does not create an immediate capital-gains tax, but account
+    withdrawal rules still apply. The <a href="/portfolios/with-trend/">Plus trend page</a> describes the
+    fund's risks.</p>
   </div>
 
   <div class="prose mt-14">
     <h2 id="broker-fees">Broker fees</h2>
 
-    <p>Since 1 June 2026 Fidelity charges 5% of the trade, capped at $100, to buy ETFs from issuers that refuse
-    to pay its platform fee. Its list as of 15 August 2026 names 84 tickers and none of the funds on this site,
-    but it can change without notice, and Schwab has announced a similar programme for late 2026 to early 2027.
-    Small issuers, Return Stacked among them, are the ones at risk.</p>
+    <p>A broker can charge a purchase fee even when the ETF itself has a low annual fee. Check the exact
+    ticker, account and order type before buying; charges can change. Include commissions, bid/ask spreads
+    and account charges when comparing brokers.</p>
 
     <Callout kind="do-this">
-      <p>Before a first purchase, search your broker's site for its list of ETFs that carry a purchase fee and
-      check every ticker you plan to buy. If a fund you hold is ever listed, buy it once or twice a year and send
-      the monthly money to the index funds: $100 on a $10,000 purchase is 1% on day one, above a year's fee of
-      every fund here except RSST.</p>
+      <p>If an order carries a large fee, compare another broker or an appropriate fund with similar exposure.
+      Larger, less frequent purchases can reduce a fixed charge, but delaying investment also has a cost.
+      Use the actual fee schedule rather than assuming one trading routine fits every charge.</p>
     </Callout>
+    <p>The SEC's <a href="https://www.investor.gov/introduction-investing/general-resources/news-alerts/alerts-bulletins/investor-bulletins/updated">guide to fees and expenses</a>
+    explains what to look for.</p>
   </div>
 </Base>
