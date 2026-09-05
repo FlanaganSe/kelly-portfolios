@@ -1,140 +1,280 @@
 ---
 /**
- * Portfolio three: six funds that lean the stock holdings toward cheap, small and
- * profitable companies. The verdict is "probably", and the page carries both the gap
- * and the losing stretch inside it.
+ * Portfolio two: six funds that lean a third of the money toward cheap, small companies.
+ * The verdict is "probably", and the page carries both the gap over a plain index and
+ * the seventeen-year stretch cheap stocks spent behind the market. Every number that
+ * describes what the portfolio did is read from the series the research emitter wrote.
  */
-import AllocationBar from "~/components/AllocationBar.astro";
+import Callout from "~/components/Callout.astro";
+import Donut from "~/components/Donut.astro";
+import DrawdownChart from "~/components/DrawdownChart.astro";
 import Figure from "~/components/Figure.astro";
+import GrowthChart from "~/components/GrowthChart.astro";
 import Hero from "~/components/Hero.astro";
-import HoldingsTable from "~/components/HoldingsTable.astro";
-import KeyNumbers from "~/components/KeyNumbers.astro";
+import StatGrid from "~/components/StatGrid.astro";
+import Verdict from "~/components/Verdict.astro";
 import { portfolio } from "~/content/portfolios";
-import { figureValue } from "~/lib/figures";
+import { formatDollars, formatMonths, formatPct } from "~/lib/charts";
+import { fundColour } from "~/lib/palette";
+import { seriesFor } from "~/lib/series";
 import Base from "~/layouts/Base.astro";
 
 const p = portfolio("value-lean");
 
-const NUMBERS = [
+const valueLean = seriesFor("value-lean");
+const market = seriesFor("market");
+
+const s = valueLean.summary;
+const fall = s.worstFall;
+const m = market.summary;
+
+/** "2007-10" as "October 2007". */
+function monthName(date: string): string {
+  const [year, month] = date.split("-").map(Number);
+  return new Date(year ?? 1970, (month ?? 1) - 1, 1).toLocaleString("en-US", { month: "long", year: "numeric" });
+}
+
+const dollars = (value: number) => formatDollars(value, "label");
+const pct = (value: number, decimals = 1) => formatPct(value, decimals);
+const year = (key: string) => s.calendarYears[key] ?? Number.NaN;
+const firstMonth = valueLean.dates[1] ?? "1990-11";
+const lastMonth = valueLean.dates[valueLean.dates.length - 1] ?? "2026-05";
+
+const STATS = [
+  { value: dollars(s.final), label: "$10,000 became", note: `Against ${dollars(m.final)} for a plain world stock index` },
+  { value: pct(s.cagrPct), label: "Grew a year", note: `Against ${pct(m.cagrPct)} for the index` },
   {
-    value: await figureValue("value-lean-gap"),
-    label: "a year over a cheap index mix",
-    note: "1990 to 2026. Range 0.4 to 1.3.",
+    value: pct(fall.pct),
+    unit: dollars(fall.dollarsAtTrough),
+    label: "Worst fall",
+    note: `${monthName(fall.peak)} to ${monthName(fall.trough)}; back to even in ${formatMonths(fall.monthsToRecover)}`,
   },
-  {
-    value: await figureValue("value-lean-gap-out-of-sample"),
-    label: "a year on data the choice was not made from",
-    note: "1981 to 1990. Range 0.4 to 1.3.",
-  },
-  { value: "30 years", label: "of results to be confident it is not luck" },
-  {
-    value: await figureValue("value-drawdown"),
-    label: "Cheap US stocks against the whole market",
-    note: "Since September 2008, 17.7 years, still not recovered",
-  },
+  { value: p.feeOn10k, label: "Costs a year on $10,000", note: `${p.fee} fee` },
 ];
 
+const COLUMNS = ["Fund", "What it holds", "Share", "Fee on $10,000", "Account"] as const;
 const HOLDINGS = [
-  { ticker: "VTI", what: "The whole US market", weight: "49%", fee: "0.03%" },
-  { ticker: "VXUS", what: "Every market outside the US", weight: "16%", fee: "0.05%" },
-  { ticker: "VTV", what: "Large US companies that are cheap relative to their earnings and assets", weight: "15%", fee: "0.03%" },
-  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "10%", fee: "0.36%" },
-  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "5%", fee: "0.25%" },
-  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "5%", fee: "0.36%" },
+  {
+    ticker: "VTI",
+    name: "Vanguard Morningstar Total Stock Market ETF",
+    holds: "The whole US stock market",
+    weight: 49,
+    fee: "$3",
+    account: "Taxable account",
+  },
+  {
+    ticker: "VXUS",
+    name: "Vanguard Total International Stock ETF",
+    holds: "Every stock market outside the US",
+    weight: 16,
+    fee: "$5",
+    account: "Retirement account",
+  },
+  {
+    ticker: "VTV",
+    name: "Vanguard Morningstar Value ETF",
+    holds: "Large US companies priced cheaply",
+    weight: 15,
+    fee: "$3",
+    account: "Either",
+  },
+  {
+    ticker: "AVDV",
+    name: "Avantis International Small Cap Value ETF",
+    holds: "Small, cheap, profitable foreign companies",
+    weight: 10,
+    fee: "$36",
+    account: "Retirement account, Roth first",
+  },
+  {
+    ticker: "IDMO",
+    name: "Invesco S&P International Developed Momentum ETF",
+    holds: "Foreign companies whose shares are rising",
+    weight: 5,
+    fee: "$25",
+    account: "Retirement account",
+  },
+  {
+    ticker: "AVES",
+    name: "Avantis Emerging Markets Value ETF",
+    holds: "Cheap companies in emerging markets",
+    weight: 5,
+    fee: "$36",
+    account: "Retirement account",
+  },
 ];
 ---
 
 <Base
   title="A lean toward value"
-  description="Six funds that lean toward cheaper, smaller and more profitable companies. What the lean has added, how long it can lose for, and which fund to drop first."
+  xl
+  description="Six funds that lean a third of the money toward cheaper, smaller companies. What $10,000 did since 1990, the seventeen years cheap stocks spent behind the market, what the lean added over a plain index, and which fund to drop first."
 >
   <Hero
     eyebrow="Portfolio 2 of 4"
     title="A lean toward value"
-    lede="The market, with a thumb on the scale toward companies that are cheap, small and profitable. A bet with a long record and a long losing stretch inside it."
+    lede="The whole market, with a third of the money leaned toward companies that are cheap and small. Since 1990 the lean has added about 0.8% a year over a plain index, and it has trailed the market for seventeen years at a stretch. You need both facts before holding it."
   >
-    <KeyNumbers items={NUMBERS} />
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
+      <Verdict word="Probably" /> <span>Ahead on every stretch tested, on two histories; thirty years would be needed to rule out luck.</span>
+    </p>
   </Hero>
 
-  <div class="prose mt-10">
-    <h2>What you hold</h2>
+  <div class="prose w-full mt-10">
+    <h2>What you buy</h2>
   </div>
 
-  <HoldingsTable rows={HOLDINGS} class="my-4" />
-  <AllocationBar holdings={p.holdings} name={p.name} class="my-6" />
-
-  <div class="prose">
-    <p>The fee works out to 0.09% a year, or $9 on $10,000. Roughly two thirds of the money is still the plain
-    market. The other third is the lean.</p>
+  <div class="wide mt-4 grid items-start gap-6 md:grid-cols-[minmax(0,1fr)_12rem]">
+    <table role="table" class="stack-table w-full border-collapse text-base">
+      <caption class="sr-only">The six funds, what each holds, its share, its fee on $10,000 and which account to hold it in</caption>
+      <thead role="rowgroup">
+        <tr role="row" class="border-b border-rule-strong text-left align-bottom">
+          {COLUMNS.map((c) => <th role="columnheader" scope="col" class="label py-2 pr-3 font-semibold">{c}</th>)}
+        </tr>
+      </thead>
+      <tbody role="rowgroup" class="text-ink-2">
+        {
+          HOLDINGS.map((h) => (
+            <tr role="row" class="border-b border-rule align-top last:border-0">
+              <th role="rowheader" scope="row" class="py-2 pr-3 text-left font-medium text-ink">
+                <span class="inline-flex items-baseline gap-2">
+                  <span class="donut-swatch" style={`background:${fundColour(h.ticker)}`} aria-hidden="true" />
+                  <span data-numeric>{h.ticker}</span>
+                </span>
+                <span class="block text-sm font-normal text-ink-2">{h.name}</span>
+              </th>
+              <td role="cell" data-label={COLUMNS[1]} class="py-2 pr-3">{h.holds}</td>
+              <td role="cell" data-label={COLUMNS[2]} data-numeric class="py-2 pr-3">{h.weight}%</td>
+              <td role="cell" data-label={COLUMNS[3]} data-numeric class="py-2 pr-3">{h.fee}</td>
+              <td role="cell" data-label={COLUMNS[4]} class="py-2">{h.account}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+    <Donut
+      holdings={HOLDINGS.map((h) => ({ ticker: h.ticker, weight: h.weight, label: h.holds }))}
+      center={{ value: p.fee, label: "a year" }}
+      legend={false}
+      name="Value lean"
+      class="justify-center md:justify-end"
+    />
   </div>
 
-  <div class="prose mt-14">
-    <h2>Why cheap, small and profitable</h2>
+  <div class="prose w-full mt-6">
+    <p>Two thirds of the money, VTI and VXUS, is the plain market. The other third is the lean: VTV for large cheap
+    US companies, AVDV for small cheap foreign ones, AVES for cheap companies in emerging markets, and IDMO for foreign
+    shares that have been rising, a different idea from cheapness. Profitability is a screen the Avantis funds apply,
+    not a source of return. AVES is under five years old.</p>
 
-    <p>Companies that are cheap relative to what they earn have, over long stretches and in most countries,
-    returned more than expensive ones. Since 1994, after the idea was published and the easy money was gone,
-    cheap stocks earned about <Figure id="value-premium-pooled" inline showUnit={false} /> a year more than
-    expensive ones across the US, other rich countries and emerging markets together. Almost all of that came
-    from outside the US. In the US alone the gap was 1.6 points, too small to tell from luck on its own.</p>
-
-    <p>That is why most of the lean here is international. AVDV is the one fund that buys small, cheap, profitable
-    companies in developed markets, the corner where the record is strongest. Adding it at 10% was worth about
-    <Figure id="avdv-added" inline showUnit={false} /> a year, with a range of 0.05 to 0.56, and it was positive
-    in every stretch I split the data into. AVES does the same in emerging markets, where cheapness has paid the most, although the fund is
-    only five years old.</p>
+    <p>If you want fewer funds, drop IDMO first and put its 5% into VXUS, then AVES the same way. That rests on cost,
+    since IDMO sells and replaces its whole portfolio every year and pays out the gains, taxed mostly like wages, and
+    not on evidence.</p>
   </div>
 
-  <div class="prose mt-14">
-    <h2>What the lean has added</h2>
-
-    <p>Over 1990 to 2026 these six funds would have earned about <Figure id="value-lean-gap" inline showUnit={false} />
-    a year over a cheap index mix holding the same split of US and international stocks. The plausible range
-    is 0.4 to 1.3. The gap was positive in each of the five periods I cut the data into. On a separate set of
-    data covering 1981 to 1990 that was not used to choose the funds, the same lean earned
-    <Figure id="value-lean-gap-out-of-sample" inline showUnit={false} /> a year, with a range of 0.4 to 1.3.</p>
-
-    <p>Two cautions. Funds deliver less of an idea than the paper series does: funds chasing cheap stocks earned
-    2.84% a year against 7.76% for the academic index of cheap stocks, in one study of live funds. If the funds here fall short the same way,
-    the 0.8 becomes about 0.6, or 0.3 in the harshest reading. And a gap this small against a portfolio this
-    similar takes about thirty years of results to separate from luck. Nobody holding this will know it worked
-    for a long time.</p>
-
-    <p>Over thirty years, 0.8 points a year is worth about as much as saving an extra 2.6% of your starting balance
-    every year.</p>
+  <div class="prose w-full mt-14">
+    <h2>What $10,000 did</h2>
   </div>
 
-  <div class="prose mt-14">
-    <h2>What losing looks like</h2>
+  <StatGrid items={STATS} class="wide mt-4" />
 
-    <p>Cheap US stocks have run <Figure id="value-drawdown" inline showUnit={false} /> the whole US market
-    since September 2008. That is 17.7 years, and they have not caught up. International stocks ran
-    <Figure id="intl-drawdown" inline showUnit={false} /> US stocks over 18.2 years. Anyone holding this portfolio
-    through those stretches watched a plain US index fund pull ahead, year after year, with no way to know
-    whether the lean was broken or just out of favour.</p>
+  <GrowthChart series={[valueLean, market]} highlight="value-lean" class="wide mt-8" title="What $10,000 became">
+    The value lean against a plain world stock index (a 65/35 mix of US and international index funds, which is also
+    <a href="/portfolios/one-fund/">portfolio 1</a>), 1990 to 2026. Simulated from index data, not fund records: each
+    fund is stood in for by the indexes it tracks, less its fee and a trading charge.
+  </GrowthChart>
 
-    <p>Do not hold this because you think you could sit through that. Hold it only if you have already sat through
-    something like it and know how you behaved.</p>
+  <div class="prose w-full mt-6">
+    <p>$10,000 put in in {monthName(firstMonth)} became {dollars(s.final)} by {monthName(lastMonth)}, growing
+    {pct(s.cagrPct)} a year before tax, against {dollars(m.final)} and {pct(m.cagrPct)} a year for the plain index.
+    Best calendar year: {s.bestYear?.year}, up {pct(s.bestYear?.pct ?? Number.NaN)}. Worst: {s.worstYear?.year}, down
+    {pct(Math.abs(s.worstYear?.pct ?? Number.NaN))}. In 2020 it made {pct(year("2020"))}; in 2022 it lost
+    {pct(Math.abs(year("2022")))}.</p>
   </div>
 
-  <div class="prose mt-14">
-    <h2>The fund to drop first</h2>
-
-    <p>IDMO is the weakest holding. It buys shares that have been rising, which is a different idea from cheapness,
-    and that is why it is here: one more idea in the mix. But funds chasing rising stocks have delivered the least
-    of any idea on paper, 1.86% a year against 9.48%, and IDMO turns over its whole portfolio about once a year to
-    do it. If you want a simpler portfolio, drop IDMO and put its 5% into VXUS. If you want a simpler one still,
-    drop AVES the same way. VTV, AVDV and VXUS are the ones to keep.</p>
+  <div class="prose w-full mt-14">
+    <h2>The worst fall</h2>
   </div>
 
-  <div class="prose mt-14">
-    <h2>Should you stop here</h2>
+  <DrawdownChart series={[valueLean, market]} highlight="value-lean" worst={fall} class="wide mt-4" title="Falls from the last high">
+    How far below its last high $10,000 sat, month by month, against a plain world stock index. Zero is the last
+    high; every dip is a fall from it.
+  </DrawdownChart>
 
-    <p>Yes, if you want a lean with a long record and no borrowed money. The
-    <a href="/portfolios/with-trend/">next portfolio</a> keeps all six of these funds and adds one that does
-    something none of them do. That fund adds an idea on top of stocks rather than swapping stocks for it, and it
-    is also the youngest and least certain holding here.</p>
+  <div class="prose w-full mt-6">
+    <p>From {monthName(fall.peak)} to {monthName(fall.trough)}, $10,000 fell to {dollars(fall.dollarsAtTrough)}, a
+    fall of {pct(Math.abs(fall.pct))}, and was back above $10,000 in {monthName(fall.recovered ?? fall.trough)},
+    {formatMonths(fall.monthsToRecover)} after the peak. The plain index fell to {dollars(m.worstFall.dollarsAtTrough)}
+    and took {formatMonths(m.worstFall.monthsToRecover)}. The lean falls with the market; the hard part is the quiet
+    stretch. Cheap US stocks ran <Figure id="value-drawdown" inline /> from September 2008, and have not caught up.
+    Foreign stocks ran <Figure id="intl-drawdown" inline /> behind US stocks. Through those years
+    a plain US index fund pulled ahead month after month, with no way to tell whether the lean was broken or out of
+    favour.</p>
+  </div>
 
-    <p>Figures on this page are before tax and after fund costs. What the lean is worth to you depends on your
-    accounts, since IDMO, AVES and AVDV cost the most in tax outside a retirement account.</p>
+  <div class="prose w-full mt-14">
+    <h2>What it beat, and by how much</h2>
+
+    <p>Against a plain index mix with the same split of US and foreign stocks, these six funds earned about 0.8% a
+    year more over 1990 to 2026, after fees and trading costs, with a plausible range of 0.4% to 1.3%. The gap was
+    positive in all seven stretches the data was cut into. On $10,000 it is the difference between {dollars(s.final)}
+    and {dollars(m.final)}: about {dollars(s.final - m.final)} more.</p>
+
+    <p>Because the funds were chosen with that data in view, I ran the same lean on July 1981 to October 1990, a
+    decade they were never chosen on. It earned about 0.9% a year more, range 0.4% to 1.3%, positive in
+    both halves of the decade. It confirms the direction, not the size: on that data source's basis the 1990 to 2026
+    gap reads only 0.4%.</p>
+
+    <p>Since 1994, after the idea was published, cheap stocks beat
+    expensive ones by about 4.7% a year across the US, other rich countries and emerging markets together, on paper
+    and before fees, range 1.5% to 8.1%. Almost all of it came from outside the US. The US alone gave 1.6% a year,
+    too small to tell from luck, and 79% of that arrived in the single year 2000, which is why most of the lean here
+    is foreign. A gap this small against a portfolio this similar takes about thirty years of results to separate from
+    luck.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>Who it is for</h2>
+
+    <p>Someone who can watch a plain US index fund pull ahead for fifteen years without selling. Hold it only if you
+    have sat through something like that and know how you behaved. Write down before you buy how far behind the market you could fall, and for how long. A shortfall of
+    45% over eighteen years is inside what this portfolio has done and is not evidence anything is broken.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>How to hold it</h2>
+  </div>
+
+  <div class="measure">
+    <Callout kind="do-this" class="mt-4">
+      <p>Buy the six funds in the shares above. If you have a retirement account and a taxable account, the foreign
+      funds and IDMO go in the retirement account first, VTV and VTI in the taxable account last. Add money when you
+      have it, to whatever is furthest below its target. Review once a year on a fixed date and rebalance with new
+      money or with trades inside the retirement account; never sell in the taxable account to rebalance. Do nothing
+      when it falls. The details are on <a href="/how-to-hold/">how to hold it</a>.</p>
+    </Callout>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>What could go wrong</h2>
+
+    <p>The lean can lose for longer than you can wait, and the stretch arrives with no warning. In
+    the worst tenth of stock months the three cheap-stock funds move together far more than usual, so five ideas
+    shrink to about three. And a fund that only buys cheap stocks, and cannot bet against expensive ones, captures
+    about half of the paper gap by arithmetic.</p>
+
+    <p>IDMO is the fund most likely to disappoint. Buying what has been rising beat the market on paper by about 7.3%
+    a year since 1994, but a paper version's trading cost, 3.3% to 18.7% a year, is as wide as the
+    whole gain, and all three regions crashed together in 2009: US momentum fell 52.9%, developed foreign 36.8%,
+    emerging 28.9%. I did not add a US momentum fund: SPMO was worth about 0.02% a year at a 5% share, and it moves so
+    closely with IDMO that two momentum funds count as about 1.2 ideas, not two.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2>The long history</h2>
+
+    <p>This portfolio has no 1929 history: the foreign data it rests on begins in 1990, so it cannot be run through the
+    1929 crash the way <a href="/portfolios/one-fund/">portfolio 1</a> can. The nearest thing is the 1981 to 1990 check
+    above.</p>
   </div>
 </Base>
