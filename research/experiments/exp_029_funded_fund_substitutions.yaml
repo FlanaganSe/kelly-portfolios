@@ -1,0 +1,71 @@
+experiment_family: exp_029_funded_fund_substitutions
+title: Full portfolio value and momentum substitutions under mapping uncertainty
+entry_point: exp_029_funded_fund_substitutions
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260905
+hypothesis: Funded substitutions can improve portfolio growth despite overlapping exposures.
+mechanism: Refit full market and five style loadings, retain covariance and simulate funded holdings.
+falsifier: Report sign reversals across mapping windows, costs and assumed premia; never promote from this study.
+universe: Three printed portfolios, baseline plus value replacement, momentum replacement and both.
+sample_policy:
+  start: '1990-11'
+  end: '2026-05'
+  held_out: None; revised factor histories and fund selection already inspected.
+  embargo: No point-in-time or predictive claim; backward exposure projection.
+  eras:
+    - {name: full, start: '1990-11', end: '2026-05', rationale: Common legal factor panel inherited from 025.}
+    - {name: recent, start: '2009-01', end: '2026-05', rationale: Existing inspected adverse era sensitivity.}
+benchmark: Exact unchanged portfolio for funded deltas; cheap 65/35 world stocks and 60/40 for separate benchmark gaps.
+primary_metric: Annual mean paired log-return difference after assumed costs, pp/year.
+secondary_metrics: [CAGR, maximum drawdown, worst month, volatility, tracking error, rolling ten-year underperformance]
+cost_model: >
+  025 fees, financing and investor rebalance spreads for inherited holdings. Four refitted
+  US funds use frozen COSTS fee less reported lending plus k times turnover-percent bp/year,
+  k=0,1,1.7. This is a constant mapping sensitivity, not executable internal trades or a cost
+  lower bound. Intercepts omitted so explicit fees are not charged twice. Taxes omitted.
+rebalance_rule: Annual rebalance with drift and actual external turnover charged by constant_weight_path.
+inference:
+  bootstrap: Paired stationary bootstrap on after-cost monthly log differences; conditional on mappings.
+  block_length_policy: Fixed twelve-month expected blocks; no new search.
+  multiple_testing_correction: None; descriptive sensitivity family, no promotion or winner selection.
+  confidence_level: 0.95
+  resamples: 2000
+rejection_rule: Always exploratory; intervals exclude loading and assumed-premium uncertainty; MDE is resolution only.
+hostile_tests:
+  - Full six-factor refits on both 2020-01..2025-12 and 2023-01..2025-12, identical months for all four US funds.
+  - Historical means, own-panel style means, half style means, and zero style means; 5% market premium in assumed scenarios.
+  - k=0,1,1.7 internal-cost sensitivities, with all external rebalance costs retained.
+  - Recent era and overlapping ten-year underperformance; preserve dates and no independent-window claim.
+reporting_requirements:
+  - Print full coefficients, alpha diagnostic, windows and source identities; no historical fund performance claim.
+  - Print exact weights, baseline diagnostics versus original mappings, costs and all paired/benchmark outcomes.
+  - Report interaction of the combined change versus the sum of separate log improvements, with no independence claim.
+parameters:
+  dependency_sha256:
+    experiments/exp_025_cautious_constructions.yaml: 4b5db258dce5444a5ecc96afd625a36e817857306f83057ca9f6d4cd950e1884
+    experiments/exp_016f_matched_pairs.yaml: e503bc6ef8c05ee85754debb70748cf74ebd88eea0b4a4656afc25bc93eb3de5
+    src/portfolio_edge/studies/_untested_tilts_tables.py: 00494acd445b84ada6c65e7ab318133f3a1843b358c187b859b87559b4039140
+    src/portfolio_edge/reporting/site_series.py: 30fd1b75bc884350585df5753d5997d13a7c99d2207fa0bb3e07689ba7a2b10b
+  portfolios:
+    value-lean: {VTI: 49, VXUS: 16, VTV: 15, AVDV: 10, IDMO: 5, AVES: 5}
+    with-trend: {RSST: 25, VTI: 19, VXUS: 16, VTV: 15, AVDV: 10, IDMO: 5, AVES: 5, SCHP: 5}
+    cautious: {SCHP: 50, RSST: 15, VTI: 9.5, VXUS: 8, VTV: 7.5, AVDV: 5, IDMO: 2.5, AVES: 2.5}
+  spmo_weight_percent: {value-lean: 5, with-trend: 5, cautious: 2.5}
+  loading_windows:
+    six_year: {start: '2020-01', end: '2025-12'}
+    three_year: {start: '2023-01', end: '2025-12'}
+  turnover_cost_coefficients: [0, 1, 1.7]
+  premium_scenarios: [historical, own-panel, half, null]
+  scenario_market_premium_pp_yr: 5
+  scenario_trend_gross_premium_pp_yr: 1
+notes: >
+  Frozen before fitting or scoring these portfolios. Other regional and wrapper mappings
+  inherit 016f/025 limitations. US refits include all market and side loadings, no appraisal
+  alpha used as funded mean. Full historical covariance remains after mean shifts.
+  Scenario means use existing PREMIA source constants; emerging styles retain historical
+  means because that source has no emerging estimates. Bond remains modelled nominal
+  ten-year Treasury rather than SCHP. k=0 is optimistic, not proven attainable. Missing fund
+  months abort rather than silently shortening a common loading window. Residual returns
+  and manager alpha are not projected; this limits both return and risk inference.
