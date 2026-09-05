@@ -65,10 +65,10 @@ const GROUPS: readonly { label: string; rows: readonly [string, string][] }[] = 
     rows: [
       ["VTI", "The whole US market"],
       ["VOO", "The 500 largest US companies, in place of the whole market"],
-      ["ITOT", "The whole US market, and the cheapest of the four to own"],
+      ["ITOT", "The whole US market; lowest fee after lending among these four"],
       ["SPY", "Cannot lend its shares, so the dearest S&P 500 fund"],
       ["VTV", "Big cheap US companies"],
-      ["AVUV", "Small cheap US companies; mostly a small-company bet, not added"],
+      ["AVUV", "Small cheap US companies; comparison with VTV remains unresolved"],
       ["RPV", "Buys cheapness by selling profitability"],
       ["QVAL", "Sells and replaces 332% of its holdings a year"],
       ["MTUM", "Frequent trading makes its return advantage sensitive to costs"],
@@ -81,7 +81,7 @@ const GROUPS: readonly { label: string; rows: readonly [string, string][] }[] = 
     rows: [
       ["VXUS", "Developed and emerging markets in one fund"],
       ["VEA", "Developed markets only; with VWO it replaces VXUS"],
-      ["SPDW", "Developed markets only; the cheapest fund on this page to own"],
+      ["SPDW", "Developed markets only; lowest fee after lending on this page"],
       ["VWO", "Emerging markets by size"],
       ["IEMG", "Emerging markets; lending covers its whole fee"],
       ["AVDV", "Small, cheap, profitable foreign companies"],
@@ -157,29 +157,27 @@ const ctap = fundByTicker("CTAP");
 const recheck = ctap.reviewTrigger?.on;
 if (recheck === undefined) throw new Error("CTAP has no dated recheck on record; this page may not name one.");
 
-const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict", "Why"] as const;
+const COLUMNS = ["Fund", "Fee a year", "Fee after lending", "Verdict", "Why"] as const;
 ---
 
 <Base
   title="Funds"
-  description={`${rowCount} funds: the ${heldCount} the four portfolios hold, a cheaper alternative for each, and the funds the strategies pages reject, with the fee each publishes and what it costs once the income from lending its shares is counted.`}
+  description={`${rowCount} funds: the ${heldCount} the four portfolios hold, a cheaper alternative for each, and the funds the strategies pages reject, with the fee each publishes and its fee after income from lending its shares.`}
   xl
 >
   <Hero
-    title="The funds, and what each one really costs"
-    lede={`The ${heldCount} funds the four portfolios hold, a cheaper alternative for each, and the funds the other pages reject, each with its fee and what it costs once the income from lending its shares is counted.`}
+    title="The funds and their fees"
+    lede={`The ${heldCount} funds the four portfolios hold, a cheaper alternative for each, and the funds the other pages reject, each with its fee and its fee after income from lending its shares.`}
   />
 
   <div class="prose mt-8">
-    <p>A fund's real cost is its published fee minus what it earns lending its shares to other investors, mostly
-    people betting a price will fall. That income comes back to you inside the fund, so the fee on the label
-    overstates what you pay, and almost nobody publishes the second number. IEMG charges {pct(feeOf(iemg))} a
-    year and VWO {pct(feeOf(vwo))}, and both hold the same emerging-market stocks; lending covers IEMG's whole
-    fee and pays you {dollars(-costOf(iemg))} on every $10,000 besides, so the fund with the higher fee is the
-    cheaper one to own. SPY goes the other way: it costs <Figure id="spy-net-cost" inline /> a year, three to
-    five times every other fund tracking the same 500 companies, because a trust set up in 1993 cannot lend
-    its holdings. A dash in the cost column means nobody has read that fund's lending income, not that it lends
-    nothing. A cost of 0.10% a year is $10 on every $10,000, every year.</p>
+    <p>The second fee column subtracts income from lending the fund's shares to other investors.
+    It leaves out the fund's trading costs, your broker's charges and personal taxes. IEMG charges
+    {pct(feeOf(iemg))} a year and VWO {pct(feeOf(vwo))}; both invest broadly in emerging markets.
+    In the filings used here, IEMG's lending income covered its fee and added
+    {dollars(-costOf(iemg))} per $10,000. That makes its fee after lending lower, but does not
+    guarantee a better return. SPY's fee after lending is <Figure id="spy-net-cost" inline /> a year.
+    A dash means lending income has not been read. A fee of 0.10% is $10 a year per $10,000.</p>
 
     <p>Each fund carries a verdict. <strong>Held</strong>: one of the four portfolios holds it, and the
     line says which. <strong>Fine alternative</strong>: the same holding as a held fund at an equal or lower
@@ -188,8 +186,7 @@ const COLUMNS = ["Fund", "Fee a year", "Cost after lending", "Verdict", "Why"] a
     the scope. A different use or better evidence can change that decision. <strong>Unresolved</strong>: it has been researched, but the evidence does not settle its place in
     a portfolio. <strong>Not assessed</strong>: no research verdict is recorded.</p>
 
-    <p>Two things count besides the fee. The gap between the price you buy at and the price you could sell at is
-    paid once, on the way in: CTAP's is <Figure id="ctap-spread" inline showUnit={false} /> of its price against
+    <p>The gap between buying and selling prices also matters: CTAP's is <Figure id="ctap-spread" inline showUnit={false} /> of its price against
     RSST's <Figure id="rsst-spread" inline showUnit={false} />, which over a one-year hold outweighs the
     difference in their fees. And some fees have an end date: CTAP charges less than the fee shown until
     {asOfLabel(recheck)}, and about 0.99% all in after it. Everything here was read from the funds' own

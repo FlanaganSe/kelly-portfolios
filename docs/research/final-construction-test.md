@@ -1,5 +1,60 @@
 # The final construction, tested as one object
 
+## Current published portfolios: funded fund substitutions
+
+`as of 2026-09-05`. **`exploratory`.** VTV versus AVUV remains unresolved;
+SPMO remains a candidate. These comparisons use the current printed value-lean,
+with-trend and cautious holdings. The older numbered sections below concern their own
+frozen constructions, whose labels and weights must not be read as today's recommendation.
+The decision is whether to replace the entire VTV holding with AVUV, move five percentage
+points from VTI to SPMO (half that in cautious), or do both. Weight optimisation, personal
+taxes and a permanent fund ranking are outside these experiments.
+
+[Experiment 030](../../research/experiments/exp_030_live_fund_portfolios.yaml) uses the
+funds' filed NAV total returns: October 2021–March 2026 for value-lean, October 2023–March
+2026 for the two portfolios containing RSST. It buys initially, lets weights drift, and
+rebalances annually. Fund fees and internal trading are already in NAV returns; only
+investor execution is added, at assumed roundtrip costs of 5 and 25 basis points.
+The [generated comparisons](../../research/artifacts/785ca563fc554fbd862b2cc1b41bbc9f/tables.md)
+and [committed paths and source identities](../../research/artifacts/785ca563fc554fbd862b2cc1b41bbc9f/result.json)
+contain the exact outcomes and intervals.
+
+The value portfolio demonstrates why average return alone cannot choose the fund:
+AVUV slightly raises arithmetic return but lowers compounded growth. In the two shorter
+portfolios it lowers both growth and the worst drawdown. SPMO improves observed growth;
+the value portfolio's interval spans zero, while the shorter portfolios' conditional
+intervals do not. Combining both changes trails the SPMO-only arm in these samples.
+Raising execution costs barely changes the relative ordering. These are short, overlapping,
+previously observed histories; resampling them does not establish future performance.
+Intervals use a joint stationary bootstrap with six-month blocks and rerun the trading
+rule. Cheap-index controls are separate descriptive comparisons, not leverage-matched tests.
+
+[Experiment 029](../../research/experiments/exp_029_funded_fund_substitutions.yaml)
+asks how those same substitutions behave under different fitted exposures, premiums and
+cost assumptions. Its [scenario table](../../research/artifacts/d75a07b3f92c436c9337a3a865e87846/tables.md)
+projects matched three- and six-year US fund fits onto the historical factor panel.
+AVUV's advantage shrinks when historical premiums are replaced by the declared assumptions;
+its interval includes zero. SPMO's case weakens with halved premiums and can reverse under
+null style premiums plus high assumed trading costs. The combination adds little beyond
+the separate effects. Higher fitted market exposure explains part of the historical gains.
+
+These projected paths omit fund residual return and risk, and their intervals omit loading
+and assumed-premium uncertainty. They use nominal Treasuries as the SCHP proxy and a gross
+trend series for RSST's trend leg. They cannot replace the actual fund-history test.
+The [provenance record](../../research/artifacts/d75a07b3f92c436c9337a3a865e87846/provenance.json)
+identifies the fitted source bytes and inherited panels. The ledger preserves the initial
+failed attempt and subsequent specification correction before portfolio results existed.
+
+**Consequence.** Neither experiment establishes VTV as the best value fund or licenses an
+SPMO allocation from a favourable recent window. They replace the former overlap argument
+with a funded comparison. Next compare AVUV funded from VTI, test smaller value allocations,
+and evaluate momentum under weaker premiums and changing exposures, including its reversal
+risk. The ETF trading-cost coefficient needs fund-specific validation; it is an assumption,
+not an empirical lower bound. A decision to change holdings must state the investor's
+objective and tradeoff between growth, drawdown and tracking error.
+
+## Earlier construction tests
+
 **Question.** Three gaps, and they turn out to have one answer. First: every result behind
 the recommended portfolio is component-level, and the construction tournament scored the
 investor's *original* eight-fund proposal rather than this one — does the recommended
@@ -20,12 +75,12 @@ improve it.
 ([factor persistence](factor-persistence.md)), and the weights themselves
 ([the recommendation](portfolio-recommendation.md), which this page does not edit).
 
-> **"Recommended" on this page means the 25% arm, and the published recommendation is
-> now 30%.** Experiment 016e's specification was frozen while the recommendation stood at
+> **"Recommended" in the older sections means the 25% arm; the subsequent revision used
+> 30%.** Experiment 016e's specification was frozen while the recommendation stood at
 > RSST 25% / VTI 24%, and every arm here named `recommended` carries those weights. §1's
-> own resolved head-to-head is then what moved the weight: the published construction is
+> own resolved head-to-head is then what moved the weight: that historical revision is
 > **RSST 30% / VTI 19% / VTV 15% / VXUS 16% / AVDV 10% / IDMO 5% / AVES 5%**, derived in
-> [part A](portfolio-for-one-investor.md) §2 and rendered on `/portfolio`. The five points
+> [part A](portfolio-for-one-investor.md) §2 at that time. The five points
 > come out of VTI and go into trend; nothing else changes. A frozen specification is not
 > amended after its results were inspected
 > ([decision 0010](../decisions/0010-bars-carry-a-reopening-condition.md) clause 4), so the

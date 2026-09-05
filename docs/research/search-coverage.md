@@ -40,6 +40,12 @@ mix ([Experiment 021](leveraged-etfs-and-timing-rules.md)) carry no resolvable t
 content. A financed gold-and-bitcoin stack ([audit](alternative-sleeves-audit.md) §3.1) is
 worth exactly the funding-rule algebra.
 
+[Experiments 029 and 030](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
+now compare AVUV and SPMO separately and together in the current published portfolios.
+They separate projected exposures from actual filed fund returns. Remaining fund questions
+include AVUV funded from VTI, smaller value weights, changing exposures, and momentum
+reversal risk under weaker premiums.
+
 What remains: a **TIPS series before 2003**, without which the leg the valuation argument
 points at cannot be scored on a panel containing 1970–81; a **term-premium-conditioned
 stack**, since the correlation rule cannot see carry and needs a point-in-time term-premium

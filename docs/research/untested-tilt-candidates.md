@@ -60,9 +60,11 @@ contribution is therefore only one part of a funded return comparison; it is not
   priced scenarios.** Its own intangible-value mechanism and portfolio growth benefits
   remain unmeasured; §7 records what the historical study actually priced.
 
-The next informative comparison uses complete portfolio paths, explicit funding, costs
-inside the trading rule, matched windows, and log growth plus downside and underperformance.
-The existing active-position proxy is insufficient for that comparison.
+[Experiments 029 and 030](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
+now compare AVUV replacing VTV and SPMO funded from VTI inside all three published tilted
+portfolios, using both projected exposures and filed fund returns. They report growth,
+downside and underperformance with explicit trading rules. The existing active-position
+proxy cannot substitute for those comparisons.
 
 ## 1. The method, proved before it was used
 
@@ -352,8 +354,10 @@ the investor's actual tax and account constraints.
 
 Both an addition funded from VTI and replacement of VTV deserve comparison. The correction
 removes the negative return attributed to overlap in the former case. The latter remains
-uncertain under the stated premium scenarios. Compare complete portfolios and fund-return
-paths before making a fund ranking; do not require AVUV to represent a wholly new return
+uncertain under the stated premium scenarios. The new
+[funded comparisons](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
+find a growth/drawdown tradeoff in the short actual histories, not a stable fund ranking.
+AVUV funded from VTI remains a separate question. It need not represent a wholly new return
 source to have value.
 
 ### MTUM and SPMO: keep cost and portfolio value separate

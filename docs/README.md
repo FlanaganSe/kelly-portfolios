@@ -53,12 +53,11 @@ For the major decisions:
   shelves look like refitted on matched windows, and the first measurement of a stacked
   wrapper's delivered trend exposure, taken from the fund's own SEC filings rather than
   from a price feed.
-- [Tilts the recommendation never priced](research/untested-tilt-candidates.md): AVDV,
-  AVUV, MTUM, QVAL and ITAN scored against the portfolio actually held rather than against each
-  other — why the negative delivered return found for large-cap international value turns
-  out to be a property of the measurement window rather than of capitalisation, why a
-  116%-turnover momentum fund is nonetheless more tax-efficient than a total-market index
-  fund, and what each candidate is worth as a plain change in yearly portfolio return.
+- [Funded fund comparisons](research/final-construction-test.md#current-published-portfolios-funded-fund-substitutions):
+  AVUV and SPMO separately and together inside the published portfolios, with projected
+  exposures and actual filed fund returns kept separate.
+- [Tilt candidates](research/untested-tilt-candidates.md): priced factor contributions,
+  their cost assumptions, and the limits of residual appraisal as a portfolio measure.
 - [Trend and managed futures](research/trend-marginal-value.md) and
   [live-fund evidence](research/live-managed-futures.md): the strongest current diversifier
   candidate and its unresolved implementation risks.

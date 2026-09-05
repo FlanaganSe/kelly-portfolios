@@ -163,8 +163,10 @@ alpha by purchase weight, which does not measure a funded change in portfolio re
 The corrected [tilt calculation](untested-tilt-candidates.md) separates those quantities.
 RPV's deeper value loading comes with negative profitability and momentum loadings and
 higher modelled trading costs. SPMO's lower filed fee and turnover than MTUM make it a
-candidate for a whole-portfolio comparison; correlation with IDMO is a diversification
-input, not a deduction from a fixed purchase's expected return.
+candidate. The [funded portfolio comparisons](final-construction-test.md#current-published-portfolios-funded-fund-substitutions)
+now test it alongside AVUV: recent fund histories favour SPMO for growth, while the model
+shows sensitivity to future premiums. Neither resolves a forward fund ranking. Correlation
+with IDMO is a diversification input, not a deduction from a fixed purchase's expected return.
 
 **ITAN's factor-and-cost case also remains negative under the four declared scenarios.**
 Its −0.10 pp/yr at a five-point replacement of VTV is already a funded priced-factor

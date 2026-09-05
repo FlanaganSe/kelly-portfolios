@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "kind": "json",
+      "path": "d75a07b3f92c436c9337a3a865e87846/result.json",
+      "sha256": "5909e6781d46a4488ec72c130763157aaaa9441826a257d3194973f72d4b7813",
+      "size_bytes": 1636148
+    },
+    {
+      "kind": "markdown",
+      "path": "d75a07b3f92c436c9337a3a865e87846/summary.md",
+      "sha256": "290115ddcc8c34a5943f92d3664a828cef0ebfe49e882bdb6c9668d55bfa9917",
+      "size_bytes": 1176
+    }
+  ],
+  "run_id": "d75a07b3f92c436c9337a3a865e87846",
+  "spec_hash": "a3e48066672d3fa4d283b1f5e157fab355210755d2095d2551beae5e5cf16974",
+  "status": "exploratory"
+}
