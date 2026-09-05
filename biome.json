@@ -5,8 +5,8 @@
       "src/**/*.{js,jsx,ts,tsx}",
       "scripts/**/*.{js,ts}",
       "!**/.*",
-      "infra/**/*.{js,ts}",
-      "functions/**/*.{js,ts}",
+      "scripts/**/*.mjs",
+      "tools/**/*.mjs",
       "*.{js,jsx,mjs,ts,tsx}"
     ],
     "ignoreUnknown": true

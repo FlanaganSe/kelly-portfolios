@@ -114,9 +114,12 @@ it does not have them the workflow says so and changes nothing.
 Once `Configure distribution` reports **Ready to publish: true**, either push to `main`,
 or run `Deploy` with **dry run** unticked.
 
-The sync runs in two passes on purpose. Fingerprinted assets go first with a one-year
-immutable cache; HTML, the sitemap and the search index go second with
-`must-revalidate`, so a reader never receives a new document that references an asset
+The sync runs in three passes on purpose. Fingerprinted assets under `_astro/` go first
+with a one-year immutable cache. Everything else that is not a document — the social
+cards under `og/`, the favicon and logo, the Pagefind bundle — goes second with
+`must-revalidate`, because those files keep their names between builds and a browser or a
+link scraper holding a year-old copy would show the old card. HTML, the sitemap and the
+search index go last, so a reader never receives a new document that references an asset
 which has not landed. Then the whole distribution is invalidated and the job waits for it
 to complete before checking eighteen live URLs, one from each family that has its own
 route generator, plus a URL that cannot exist.
@@ -173,6 +176,6 @@ every DNS record are untouched by any deploy, so nothing outside the bucket need
 
 ```sh
 pnpm install
-pnpm build      # astro build, then pagefind indexes dist/
+pnpm build      # astro build, pagefind indexes dist/, then the card-size and link checks
 pnpm preview    # serves dist/ on http://localhost:4321
 ```

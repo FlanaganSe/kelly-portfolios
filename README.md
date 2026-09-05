@@ -52,8 +52,12 @@ pnpm typecheck
 pnpm test
 pnpm lint:prose
 pnpm lint:figures
-pnpm build
+pnpm build      # also checks every internal link in dist/
 ```
+
+To look at the built site rather than read it, `pnpm exec playwright install chromium` once,
+then `pnpm shots` builds, serves, and screenshots every page at a desktop and a mobile
+width into `shots/` (gitignored). Add `--dark` or `--full` to pass those through.
 
 The site is written for a casual investor: four portfolios, each containing the one
 before it (`/portfolios/`), a verdict page for every idea people add to a portfolio

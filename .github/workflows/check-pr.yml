@@ -1,14 +1,13 @@
-# The gate on a pull request.
+# The gate on a pull request. A push to `main` runs the same steps inside `deploy.yml`
+# before it builds, so it is not repeated here.
 #
-# This previously ran Biome, `tsc` and a build, and never ran a test. The repository
-# has 507 of them, most of them checking arithmetic against fixtures computed by the
-# Python research workspace, which is precisely the part a type checker cannot see.
+# This previously ran Biome, `tsc` and a build, and never ran a test. Most of the tests
+# check arithmetic against fixtures computed by the Python research workspace, which is
+# precisely the part a type checker cannot see.
 name: Check PR
 
 on:
   pull_request:
-  push:
-    branches: [main]
 
 jobs:
   check:
@@ -20,7 +19,7 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
 
@@ -30,7 +29,7 @@ jobs:
       - name: House voice
         run: pnpm lint:prose
 
-      # 126 figure records, and until now nothing in CI read them. The build's collection
+      # Every figure record, not only the rendered ones. The build's collection
       # schema only reaches the ones a page renders; this walks every file, so a record
       # nothing links to yet still has to carry a real status, source and date.
       - name: Figure records

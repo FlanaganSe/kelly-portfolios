@@ -52,5 +52,8 @@ docs/*-plan.md
 # Scratch space for one-off inspection scripts.
 scripts/.tmp/
 
+# Screenshots from `pnpm shots`.
+shots/
+
 # Design proof of concept, not part of the build.
 .design-poc/

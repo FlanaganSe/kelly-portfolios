@@ -12,8 +12,8 @@
 // can sit in a shell loop as a check as well as a camera.
 //
 // `--dark` pins `prefers-color-scheme: dark`; the default is light. `--full` captures
-// the whole page rather than the first viewport. `scripts/shoot.mjs` is the older,
-// three-width, four-theme variant; this one is the small one meant for a quick look.
+// the whole page rather than the first viewport. `pnpm shots` runs this over every
+// built page; see `scripts/shots.mjs`.
 
 import { mkdir } from "node:fs/promises";
 import { chromium } from "playwright";
@@ -41,7 +41,14 @@ const widths = [
 const fileName = (route) => route.replace(/[^a-z0-9]+/gi, "-").replace(/^-|-$/g, "") || "home";
 
 await mkdir(outDir, { recursive: true });
-const browser = await chromium.launch();
+let browser;
+try {
+  browser = await chromium.launch();
+} catch (error) {
+  console.error(`could not launch Chromium: ${error.message.split("\n")[0]}`);
+  console.error("install it once with: pnpm exec playwright install chromium");
+  process.exit(2);
+}
 const problems = [];
 
 for (const [label, width, height] of widths) {

@@ -96,9 +96,22 @@ jobs:
           version: 10
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: pnpm
       - run: pnpm install --frozen-lockfile
+
+      # The same gates `check-pr.yml` runs on a pull request, so a direct push to `main`
+      # is held to the same standard before anything is published.
+      - name: Format and lint
+        run: pnpm biome check .
+      - name: House voice
+        run: pnpm lint:prose
+      - name: Figure records
+        run: pnpm lint:figures
+      - name: Types
+        run: pnpm typecheck
+      - name: Tests
+        run: pnpm test
 
       # `astro build` is the real gate on content collections: `astro check` does not
       # validate them, so a figure citing a heading that no longer exists fails here
@@ -156,15 +169,28 @@ jobs:
             exit 1
           fi
 
-      # Hashed filenames are immutable and cached for a year. HTML, the sitemap and
-      # the search index are re-read every time, so the only thing a deploy has to
-      # invalidate is the small set of documents.
+      # Only `_astro/` carries a content hash in its filenames, so only it is immutable
+      # and cached for a year. Every other non-document file — the social cards under
+      # `og/`, the favicon and logo, the Pagefind bundle — keeps its name from build to
+      # build, and a browser or a link scraper that held one for a year would keep showing
+      # the old card after a redesign. Those revalidate on every request, like the HTML.
+      #
+      # `--delete` on each pass removes only stale objects inside that pass's own filter,
+      # so the three together clear the bucket of everything the build no longer emits.
       - name: Upload the fingerprinted assets first
         run: |
           aws s3 sync dist/ "s3://${{ needs.discover.outputs.bucket }}/" \
             --delete \
-            --exclude "*.html" --exclude "*.xml" --exclude "*.txt" --exclude "*.json" \
+            --exclude "*" --include "_astro/*" \
             --cache-control "public,max-age=31536000,immutable"
+
+      - name: Upload the un-hashed assets
+        run: |
+          aws s3 sync dist/ "s3://${{ needs.discover.outputs.bucket }}/" \
+            --delete \
+            --exclude "_astro/*" \
+            --exclude "*.html" --exclude "*.xml" --exclude "*.txt" --exclude "*.json" \
+            --cache-control "public,max-age=0,must-revalidate"
 
       # HTML last, so a reader never gets a new document referencing an asset that has
       # not landed yet.
