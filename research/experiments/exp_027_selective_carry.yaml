@@ -1,0 +1,970 @@
+# Frozen before new empirical analysis. Prior exp019 component findings motivated selection.
+# No candidate weights, calibration dates or regimes were chosen using new results.
+# Removing equity/FX carry is a new whole-portfolio test, not independent confirmation.
+# Carry calibration uses 1969-1973 only; scoring begins 1974-02.
+# The vendor reconstructs all history; 2013+ cannot be called untouched out-of-sample.
+experiment_family: exp_027_selective_carry
+title: Does bond and commodity carry improve the equity-plus-trend portfolio?
+entry_point: exp_027_selective_carry
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 20260905
+hypothesis: Removing equity-index and currency carry may retain return while reducing equity-tail dependence
+  inside the equity-plus-trend construction. Three fixed carry definitions and three funding rules are
+  compared. Previous component correlations and means from Experiment 019 motivated this selection; this
+  is not independent confirmation.
+mechanism: Bond and commodity carry sell different insurance from directional trend. The existing audit
+  rejected long/short commodities for overlap, but Experiment 019 measured commodity carry versus trend
+  at +0.04. Test the whole funded portfolio, including arithmetic and log growth, drawdown and equity-tail
+  offsets. A low correlation alone is insufficient. A financed 10-point leg contributes 0.10 times its
+  excess return minus wrapper costs; selling equity or trend changes the forgone return.
+falsifier: 'Reuse Experiment 019 arithmetic-gap clauses per panel and control: nonpositive point estimate
+  rejected on sign only; positive below its own 80% power MDE unresolved; above MDE but BH-adjusted p
+  above 0.10 unresolved; financing-band sign flip unresolved; otherwise exploratory. All statuses are
+  scoped descriptive exploration, never promotion. The experiment status is exploratory because it completes
+  a registered exploratory measurement, not because any arm wins. Log-growth, downside and comparison
+  across carry definitions are descriptive with paired bootstrap intervals for log gaps; no selective
+  headline winner.'
+universe:
+  description: 'US equity plus trend and a hypothetical carry exposure, not an ETF return. Carry variants:
+    vendor All Macro Carry, equal-risk fixed-income plus commodity carry, commodity carry alone. No geographic/factor
+    fund basis, taxes, contract-level costs or live wrapper delivery claim.'
+  excluded:
+  - Weight optimisation
+  - Retail delivery inference
+  - Independent or point-in-time vendor history claim
+sample_policy:
+  start: 1926-01
+  end: 2026-05
+  held_out: 'No untouched holdout. Selection uses Experiment 019 results. Carry coefficients are frozen
+    using only 1969-01 through 1973-12 returns. Scored windows begin 1974-02 (all four asset classes present),
+    1985-01 (AQR trend), and 2013-09 (after the carry paper circulated). The 2021 vendor reconstruction
+    CAN reflect post-2013 data: that window is not independent post-publication evidence.'
+  embargo: Carry calibration ends 1973-12, before every scored month. Trend retains 019 full-window risk
+    scalar on the own-book panel, common to all arms; AQR trend is unchanged. Source vintage is not point-in-time.
+  eras:
+  - name: flat_equity_decade
+    start: 1999-03
+    end: 2009-02
+    rationale: The one flat-to-negative equity decade in the modern panel, with the boundaries exp_016e
+      froze.
+  - name: post_2009
+    start: 2009-01
+    end: 2025-05
+    rationale: "The era in which the trend overlay's gap decayed to an unresolvable size (Experiment 018\
+      \ \xA72); declared so that carry's post-2009 behaviour can be read beside trend's on the same months.\n"
+  - name: post_publication
+    start: 2013-09
+    end: 2025-05
+    rationale: After 2013 paper circulation, but already used in 2021 vendor reconstruction and inspected
+      by exp019. A regime check, not independent evidence.
+benchmark:
+  primary:
+    id: cheap
+    definition: 100% equity core at 3 bp, unlevered, rebalanced on the same clock.
+    rationale: Decision 0003, charter question 1.
+  secondary:
+    id: leverage_matched
+    definition: 'The equity core levered to the arm''s own gross notional, financed at cash plus the equity-futures
+      basis, debt accruing monthly as in exp_016.
+
+      '
+  tertiary:
+    id: volatility_matched
+    definition: 'Equity core plus T-bills scaled so that full-window volatility of monthly total return
+      equals the arm''s (ex post, one constant), and separately so that each month''s trailing 36-month
+      volatility matches (ex ante, rolling; scored from month 37 on). A scale above one is levered equity
+      at the equity-futures basis.
+
+      '
+  quaternary:
+    id: reference
+    definition: The base_trend30 arm, CORE 70 / synthetic equity-plus-trend 30.
+    rationale: 'The decision is whether adding carry improves the current recommendation, so the recommendation
+      is the comparator that answers it. The paired row against the reference is the only row in which
+      the trend leg cancels.
+
+      '
+  aggregation_rule: Separate controls and panels; no addition of gaps across benchmarks. BH families per
+    control per panel. Cross-variant selection and earlier research attempts are not accounted for by
+    within-panel BH, so no confirmatory claim.
+primary_metric:
+  name: arithmetic mean monthly total-return gap, annualised
+  definition: '`1200 * mean(r_arm - r_control)` over monthly funded total returns net of every cost charged
+    inside the simulation. Arithmetic rather than log because the question is whether an engine adds expected
+    return per unit of capital at the stated leverage; annualised log growth is reported beside it as
+    a secondary metric and the two are never mixed.
+
+    '
+  units: percentage points per year
+  uncertainty: Stationary joint-row bootstrap, mean block 12 months, 2000 resamples, 95% percentile. Arithmetic
+    MDE at 80% power from each paired monthly difference. Also paired annualised log-growth gap interval
+    and 10-year overlapping-window underperformance frequency.
+secondary_metrics:
+- name: minimum detectable effect at 80% power
+  units: percentage points per year
+  note: '`2.801585 * sd(d) * 12 / sqrt(T)`, beside every gap without exception.'
+- name: years to distinguish
+  units: years
+- name: annualised log growth
+  units: percentage points per year
+- name: maximum drawdown of the funded wealth path
+  units: percent
+- name: longest run of months below the running peak
+  units: months
+- name: correlation of carry with trend and with equity, and of trend with equity
+  units: correlation
+  note: 'Pearson on the panel''s excess-return legs, full sample and on the worst decile of equity months;
+    by era; and for each of the four per-asset-class carry columns against the trend book and equity.
+    Descriptive.
+
+    '
+- name: worst-decile-of-equity-months mean offset against the reference arm
+  units: percentage points per month
+- name: cumulative return in each predeclared crisis episode
+  units: percent
+- name: era gaps against each control
+  units: percentage points per year
+- name: contribution-weighted terminal wealth ratio
+  units: ratio
+cost_model:
+  applied: fully, inside the simulation, every month, before any statistic
+  charged_on: '(1) each wrapper''s expense ratio on the capital allocated to it; (2) financing at cash
+    plus the equity basis on the equity futures a wrapper holds beyond its physical capital; (3) the equity
+    basis on the debt of any control whose capital weights exceed one; (4) a 0.55 bp round-trip US equity
+    spread, half-crossed on one-sided monthly rebalancing turnover, on every line; (5) on the sensitivity
+    panels, a flat annual haircut on the carry leg. Nothing is a post-hoc haircut on a reported estimate.
+
+    '
+  wrapper_expense_ratio_basis_points:
+    CORE: 3
+    RSST_LIKE: 99
+    CARRY_STACK: 99
+    CARRY_FUND: 85
+    CARRY_SWAP: 99
+    CASH: 0
+  financing_basis_points_over_cash:
+    equity: 62
+  financing_sources: "Reuse 019 assumed 62 bp equity-futures basis, sweep 62\u2013231 bp. Internal trading/slippage\
+    \ are not observed; fixed 2 pp/yr risk-unit haircut is sensitivity, not calibrated cost. Fees 99 and\
+    \ 85 bp are scenario inputs, not evidence a selective carry product exists."
+  round_trip_spread_basis_points:
+    us_equity: 0.55
+  carry_leg_haircut_pp_yr:
+    published: 0.0
+    cost_1pp: 1.0
+    cost_2pp: 2.0
+    rationale: 'The vendor series states no trading cost. A rank-weighted cross-sectional carry book rebalanced
+      monthly turns over less than a trend book on most legs (currencies and bonds) and more on commodities;
+      20 bp one-way on roughly 250-500% one-way turnover is 0.5 to 1.0 pp/yr, and 2.0 pp/yr is the pessimistic
+      bound. Both are ASSUMPTIONS and are swept, not estimated.
+
+      '
+  not_charged:
+  - Trend-book internal trading costs, common to reference and stack but material for trend substitution.
+  - Taxes, tax lots, initial bid/ask, contract-level spread, margin and collateral stress.
+  - No evidence that 2 pp/yr bounds selective carry trading cost.
+rebalance_rule:
+  frequency: 'MONTHLY, every month, back to the arm''s capital weights, so that the arms are held to the
+    same clock as the leverage-matched and ex-ante volatility- matched controls.
+
+    '
+  drift: Weights drift within the month and the drifted weights earn the month's return.
+  overlay_legs: 'A wrapper''s internal notional is a property of the wrapper and is never rebalanced by
+    the investor. The per-dollar exposures in `parameters.wrappers` are constants.
+
+    '
+  debt: 'Positions and debt are carried in absolute terms, exp_016''s `_simulate`, reused by import. Debt
+    accrues at cash plus the equity-futures basis.
+
+    '
+inference:
+  bootstrap: stationary block bootstrap on the joint monthly panel, whole rows resampled
+  block_length_policy: 'Mean block length frozen at 12 months, as in exp_016e and exp_018; not tuned on
+    the data.
+
+    '
+  multiple_testing_correction: 'Benjamini-Hochberg at q = 0.10 within each control family on each scored
+    panel, never across. The family omits the sensitivity panels, the era tables, and the eighteen earlier
+    specifications that searched this data.
+
+    '
+  confidence_level: 0.95
+  resamples: 2000
+  notes: Intervals and MDE describe one reconstructed history; neither proves future advantage. 2013 onward
+    is not an untouched sample.
+rejection_rule: The falsifier classifies individual arithmetic gaps only; log growth and tail results
+  must accompany them. No fund or construction is promoted.
+parameters:
+  evaluation_disclosure:
+    is_confirmatory: false
+    is_independent_replication: false
+    wrappers_are_assumed_exposure_vectors: true
+    carry_leg_is_a_vendor_reconstruction: true
+    statement: Tests selective carry as an abstract risk exposure. No known retail wrapper is assumed
+      to deliver the selective legs. Gross vendor data and every haircut/loading value are distinct from
+      observed net fund returns.
+    order_of_operations: Specification committed before implementation or new component analysis; previous
+      exp019 aggregate component means and correlations have been read.
+  minimum_detectable_effect:
+    power: 0.8
+    alpha: 0.05
+    two_sided: true
+    multiplier: 2.801585
+    computed_before_freezing: At 1.24% tracking error, about 0.49 pp/yr on 51 years, 0.55 on 41 years,
+      0.98 on 12.5 years. A 10-point carry stack must earn about 6 pp/yr gross to clear the long-panel
+      floor after 11.15 bp/yr certain cost. This is a design calculation, not a data result.
+  panels:
+  - id: all_macro_primary_gross
+    role: primary
+    trend_source: own_4_asset_book
+    carry_source: all_macro_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; primary; gross. Same window across definitions. Sensitivity is charged inside monthly
+      returns.
+  - id: all_macro_primary_costed
+    role: sensitivity
+    trend_source: own_4_asset_book
+    carry_source: all_macro_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; primary; costed. Same window across definitions. Sensitivity is charged inside monthly
+      returns.
+  - id: all_macro_primary_costed_loading
+    role: sensitivity
+    trend_source: own_4_asset_book
+    carry_source: all_macro_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; primary; costed_loading. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: all_macro_secondary_gross
+    role: secondary
+    trend_source: aqr_tsmom
+    carry_source: all_macro_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; secondary; gross. Same window across definitions. Sensitivity is charged inside monthly
+      returns.
+  - id: all_macro_secondary_costed
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: all_macro_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; secondary; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: all_macro_secondary_costed_loading
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: all_macro_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; secondary; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  - id: all_macro_recent_gross
+    role: check
+    trend_source: aqr_tsmom
+    carry_source: all_macro_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; recent; gross. Same window across definitions. Sensitivity is charged inside monthly
+      returns.
+  - id: all_macro_recent_costed
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: all_macro_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; recent; costed. Same window across definitions. Sensitivity is charged inside monthly
+      returns.
+  - id: all_macro_recent_costed_loading
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: all_macro_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: all_macro; recent; costed_loading. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_primary_gross
+    role: primary
+    trend_source: own_4_asset_book
+    carry_source: bond_commodity_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; primary; gross. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_primary_costed
+    role: sensitivity
+    trend_source: own_4_asset_book
+    carry_source: bond_commodity_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; primary; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_primary_costed_loading
+    role: sensitivity
+    trend_source: own_4_asset_book
+    carry_source: bond_commodity_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; primary; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  - id: bond_commodity_secondary_gross
+    role: secondary
+    trend_source: aqr_tsmom
+    carry_source: bond_commodity_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; secondary; gross. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_secondary_costed
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: bond_commodity_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; secondary; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_secondary_costed_loading
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: bond_commodity_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; secondary; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  - id: bond_commodity_recent_gross
+    role: check
+    trend_source: aqr_tsmom
+    carry_source: bond_commodity_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; recent; gross. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_recent_costed
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: bond_commodity_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; recent; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: bond_commodity_recent_costed_loading
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: bond_commodity_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: bond_commodity; recent; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  - id: commodity_only_primary_gross
+    role: primary
+    trend_source: own_4_asset_book
+    carry_source: commodity_only_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; primary; gross. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: commodity_only_primary_costed
+    role: sensitivity
+    trend_source: own_4_asset_book
+    carry_source: commodity_only_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; primary; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: commodity_only_primary_costed_loading
+    role: sensitivity
+    trend_source: own_4_asset_book
+    carry_source: commodity_only_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1974-02
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; primary; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  - id: commodity_only_secondary_gross
+    role: secondary
+    trend_source: aqr_tsmom
+    carry_source: commodity_only_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; secondary; gross. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: commodity_only_secondary_costed
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: commodity_only_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; secondary; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: commodity_only_secondary_costed_loading
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: commodity_only_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 1985-01
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; secondary; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  - id: commodity_only_recent_gross
+    role: check
+    trend_source: aqr_tsmom
+    carry_source: commodity_only_gross
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; recent; gross. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: commodity_only_recent_costed
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: commodity_only_costed
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; recent; costed. Same window across definitions. Sensitivity is charged inside
+      monthly returns.
+  - id: commodity_only_recent_costed_loading
+    role: sensitivity
+    trend_source: aqr_tsmom
+    carry_source: commodity_only_costed_loading
+    legs:
+    - equity
+    - trend
+    - carry
+    start: 2013-09
+    end: null
+    arms:
+    - base_trend30
+    - stack10
+    - sell_equity10
+    - replace_trend15
+    note: commodity_only; recent; costed_loading. Same window across definitions. Sensitivity is charged
+      inside monthly returns.
+  trend_book:
+    instruments:
+    - equity
+    - treasury
+    - credit
+    - commodity
+    lookback_months: 12
+    volatility_window_months: 36
+    per_position_volatility_target: 0.1
+    position_cap: 2.0
+    minimum_live_instruments: 3
+    target_volatility_percent: 12.38
+    scaling: 'One constant, `12.38 / realised full-window volatility of the book on the primary panel`,
+      applied to every month of the book on every panel that uses it. Identical to exp_018 and expected
+      to reproduce its 1.9771.
+
+      '
+  carry_leg:
+    column: All Macro Carry
+    component_columns:
+    - Equity indices Carry
+    - Fixed income Carry
+    - Currencies Carry
+    - Commodities Carry
+    target_volatility_percent: 12.38
+    scaling: 'One constant, `12.38 / realised full-window volatility of All Macro Carry on the primary
+      panel`, applied to every month on every panel. Sharpe- preserving; a look-ahead on magnitude only;
+      printed in the artifact.
+
+      '
+    delivered_loading_sensitivity: 0.681
+  wrappers:
+    CORE:
+      exposures:
+        equity: 1.0
+      financed: {}
+      note: A 3 bp total-market index fund.
+    RSST_LIKE:
+      exposures:
+        equity: 1.072
+        trend: 1.0
+      financed:
+        equity: 0.331
+      note: 'As exp_016 and exp_018 map RSST''s N-PORT of 2026-04-30: 74.09% physical S&P 500 plus 33.1%
+        E-mini futures, and a trend book delivering 100% of risk exposure. Financing on the 0.331 of equity
+        futures at the equity rate; the long/short trend book is charged no signed basis.
+
+        '
+    CASH:
+      exposures: {}
+      financed: {}
+      note: T-bills; excess return identically zero.
+    CARRY_STACK:
+      exposures:
+        equity: 1.0
+        carry: 1.0
+      financed:
+        equity: 0.25
+      note: Hypothetical stock-plus-carry vehicle, 019 economic cost assumptions, not RSSY delivery.
+    CARRY_FUND:
+      exposures:
+        carry: 1.0
+      financed: {}
+      note: Hypothetical standalone carry exposure over cash collateral.
+    CARRY_SWAP:
+      exposures:
+        equity: 1.072
+        carry: 1.0
+      financed:
+        equity: 0.331
+      note: Hypothetical exposure matched to reference stock leg and financing; permits a clean trend/carry
+        substitution.
+  contestants:
+    base_trend30:
+      role: reference
+      weights:
+        CORE: 0.7
+        RSST_LIKE: 0.3
+      note: Equity 1.0216, trend 0.3.
+    stack10:
+      role: candidate
+      weights:
+        CORE: 0.6
+        RSST_LIKE: 0.3
+        CARRY_STACK: 0.1
+      note: 'Sell 10 points of CORE to an equity-plus-carry wrapper: equity unchanged, carry added.'
+    sell_equity10:
+      role: candidate
+      weights:
+        CORE: 0.6
+        RSST_LIKE: 0.3
+        CARRY_FUND: 0.1
+      note: Sell 10 points of CORE for a cash-collateralised standalone carry risk unit. Equity falls
+        0.1.
+    replace_trend15:
+      role: candidate
+      weights:
+        CORE: 0.7
+        RSST_LIKE: 0.15
+        CARRY_SWAP: 0.15
+      note: 'Replace 15 points trend with carry, identical equity and financing coefficients: equity unchanged,
+        trend down 0.15, carry up 0.15.'
+  reference_arm: base_trend30
+  controls:
+  - cheap
+  - leverage_matched
+  - volatility_matched_expost
+  - volatility_matched_exante
+  - reference
+  controls_in_estimates:
+  - cheap
+  - leverage_matched
+  - volatility_matched_expost
+  - reference
+  volatility_match_window_months: 36
+  contribution_per_month_of_starting_balance: 0.01
+  tail_quantile: 0.1
+  multiple_testing_q: 0.1
+  bootstrap_block_months: 12
+  crisis_episodes:
+    deflationary_or_growth:
+    - name: crash_1929
+      start: 1929-09
+      end: 1932-06
+    - name: recession_1937
+      start: 1937-03
+      end: 1938-03
+    - name: dotcom_2000
+      start: 2000-09
+      end: 2002-09
+    - name: gfc_2008
+      start: 2007-11
+      end: 2009-02
+    - name: covid_2020
+      start: 2020-02
+      end: 2020-03
+    inflation_or_rate:
+    - name: oil_1973
+      start: 1973-01
+      end: 1974-09
+    - name: inflation_1977
+      start: 1977-01
+      end: 1981-09
+    - name: rate_shock_2022
+      start: 2022-01
+      end: 2022-09
+    note: 'The eight episodes Experiment 018 froze, unchanged, so the carry arms can be read beside the
+      defensive arms on the same windows. Koijen et al. report carry losing in global recessions, so the
+      first list is where a carry leg is expected to hurt and the second is where it is not.
+
+      '
+  financing_sensitivity:
+    equity_basis_points:
+    - 62
+    - 231
+    reporting: 'Report every arm''s gap against the cheap control and against the reference arm at every
+      point, and whether the arm ordering against the reference is the same at every point. IF IT IS NOT,
+      THE ORDERING IS NOT A FINDING.
+
+      '
+  source_pin:
+    abort_on_hash_change: true
+    pin_policy: 'A raw-hash mismatch aborts before any statistic. Every file is read from the local raw
+      cache; this experiment never downloads.
+
+      '
+    files:
+    - id: french_us_ff3
+      source: french
+      dataset_id: french_us_ff3
+      table_id: monthly
+      columns:
+      - Mkt-RF
+      - RF
+      expected_sha256_raw: cd6d8e0d175b6f423862a6ad15a3073a6e4264b52b2ac9262396c79f707c6bcb
+      committed_manifest: data-manifests/french_us_ff3_monthly.json
+    - id: goyal_welch_predictors
+      source: goyal_welch
+      dataset_id: goyal_welch_predictors
+      table_id: monthly
+      columns:
+      - ltr
+      - corpr
+      - Rfree
+      expected_sha256_raw: 1e4b6527075aa11e176c698c476e981303342fbe3db87f8586e430cc1a7a8a91
+      committed_manifest: data-manifests/goyal_welch_predictors_monthly.json
+    - id: aqr_commodities_long_run
+      source: aqr
+      dataset_id: aqr_commodities_long_run
+      table_id: monthly
+      columns:
+      - Excess return of equal-weight commodities portfolio
+      expected_sha256_raw: eeb89c65fa7dca2bfbbebb7af2cbecade7b470d6a4da52883e9413a162b5fe75
+      committed_manifest: data-manifests/aqr_commodities_long_run_monthly.json
+    - id: aqr_tsmom_factors
+      source: aqr
+      dataset_id: aqr_tsmom_factors
+      table_id: monthly
+      columns:
+      - TSMOM
+      expected_sha256_raw: 33470930e2269c0d97be4732ec2d9c27ddbc69ac8133b059a263e27400263eeb
+      committed_manifest: data-manifests/aqr_tsmom_factors_monthly.json
+    - id: aqr_century_factor_premia
+      source: aqr
+      dataset_id: aqr_century_factor_premia
+      table_id: monthly
+      columns:
+      - All Macro Carry
+      - Equity indices Carry
+      - Fixed income Carry
+      - Currencies Carry
+      - Commodities Carry
+      expected_sha256_raw: 0bf8ba978e64964282ead98a6a25691218d4517d07c98c89e2716706f6f0a127
+      committed_manifest: data-manifests/aqr_century_factor_premia_monthly.json
+  carry_calibration:
+    start: 1969-01
+    end: 1973-12
+    months: 60
+    target_volatility_percent: 12.38
+    method: For each chosen component divide by its calibration volatility; equal-weight these risk units,
+      then rescale the fixed blend to 12.38% calibration volatility. Coefficients stay constant after
+      calibration. All Macro Carry is calibrated directly, so its calibration has three classes and its
+      evaluation four; disclose the splice. No calibration mean enters weights.
+    variants:
+      all_macro:
+      - All Macro Carry
+      bond_commodity:
+      - Fixed income Carry
+      - Commodities Carry
+      commodity_only:
+      - Commodities Carry
+  carry_scenarios:
+    gross:
+      loading: 1.0
+      cost_pp_yr: 0.0
+    costed:
+      loading: 1.0
+      cost_pp_yr: 2.0
+    costed_loading:
+      loading: 0.681
+      cost_pp_yr: 2.0
+  carry_scenario_rule: 'Per month: loading * (calibrated gross excess - cost_pp_yr / 1200). Costs per
+    delivered risk unit; fixed wrapper fees do not shrink with loading. 0.681 is sensitivity borrowed
+    from trend research, not a measured carry loading.'
+  cross_variant_comparisons: On matching windows and scenarios compare bond_commodity and commodity_only
+    against all_macro for each identical funding arm, using joint-month arithmetic and log gaps, intervals
+    and MDE. Selection is exploratory and no adjusted p-value certifies a winner.
+data_sources:
+- id: french_us_ff3
+  url: https://mba.tuck.dartmouth.edu/pages/faculty/ken.french/ftp/F-F_Research_Data_Factors_CSV.zip
+  manifest: data-manifests/french_us_ff3_monthly.json
+  construction: Mkt-RF and RF, used as published
+- id: goyal_welch_predictors
+  url: https://docs.google.com/spreadsheets/d/1qwpl2R_DNujpU5YUkk8lacP1tTeMb9iJ/export?format=xlsx
+  manifest: data-manifests/goyal_welch_predictors_monthly.json
+  construction: ltr and corpr less Rfree inside the trend book
+- id: aqr_commodities_long_run
+  url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Commodities-for-the-Long-Run-Index-Level-Data-Monthly.xlsx
+  manifest: data-manifests/aqr_commodities_long_run_monthly.json
+  construction: equal-weight commodity excess return, the fourth trend-book instrument; its 2025-05 end
+    sets the primary panel's end
+- id: aqr_time_series_momentum
+  url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Time-Series-Momentum-Factors-Monthly.xlsx
+  manifest: data-manifests/aqr_tsmom_factors_monthly.json
+  construction: TSMOM, used as published; secondary and check panels only
+- id: aqr_century_factor_premia
+  url: https://www.aqr.com/-/media/AQR/Documents/Insights/Data-Sets/Century-of-Factor-Premia-Monthly.xlsx
+  manifest: data-manifests/aqr_century_factor_premia_monthly.json
+  construction: All Macro Carry, scaled by one constant; the four per-class carry columns for the component
+    table only
+hostile_tests:
+- Two pp/year assumed internal carry cost, jointly with 0.681 delivered-loading sensitivity.
+- 1985 and 2013 onward regimes on AQR trend.
+- Financing at 62 and 231 bp in the gross scored panels.
+- Identical-month comparison of carry variants; no unequal sample tails.
+- 'Explicit funding alternatives: financed stack, equity sale, trend substitution.'
+reporting_requirements:
+- All source pins and calibration coefficients, sample lengths and missing-data errors.
+- Every funding arm with arithmetic and log growth, maximum drawdown and time under water.
+- Paired log-growth interval, 10-year overlapping-window underperformance frequency and worst shortfall;
+  undefined if fewer than 120 months.
+- Equity-tail offsets and fixed episode coverage; partial episodes labelled.
+- Carry variant against all_macro on identical months and funding, costs and loading; arithmetic gap interval
+  and MDE.
+- No ETF, after-tax, point-in-time, independent replication or promotion claim.
+notes: 'Exploratory in the strongest sense: the arms were selected after every earlier result was read,
+  and the specification records that. This experiment can rank constructions on public series and cannot
+  rank funds. The carry leg is the vendor''s gross reconstruction and the haircut panels are the only
+  cost evidence. Retain `unresolved` wherever the instrument cannot separate an arm from its control,
+  and read the correlation, drawdown and crisis tables as descriptions of one history. No sleeve, fund
+  or portfolio is promoted by this specification.
+
+  '
