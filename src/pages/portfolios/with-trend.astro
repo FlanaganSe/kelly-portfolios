@@ -1,249 +1,308 @@
 ---
 /**
- * Portfolio three: the value lean plus one fund that adds a trend-following program on
- * top of its stocks. The largest bet on the site and the least settled, so the page
- * carries the 96-year result, its decay, the fund's youth and the ladder together.
+ * Portfolio three: the value lean plus one fund, RSST, that holds a dollar of US stocks
+ * and a dollar of a trend-following strategy for every dollar in it, with five points in
+ * inflation-protected bonds. Every dollar figure is read from the research emitter's
+ * series at build time and travels with the honesty sentence.
  */
-import AllocationBar from "~/components/AllocationBar.astro";
-import Compare from "~/components/Compare.astro";
-import Figure from "~/components/Figure.astro";
+import Button from "~/components/Button.astro";
+import Callout from "~/components/Callout.astro";
+import Donut from "~/components/Donut.astro";
+import DrawdownChart from "~/components/DrawdownChart.astro";
+import GrowthChart from "~/components/GrowthChart.astro";
 import Hero from "~/components/Hero.astro";
-import HoldingsTable from "~/components/HoldingsTable.astro";
-import KeyNumbers from "~/components/KeyNumbers.astro";
-import Ladder from "~/components/Ladder.astro";
+import StatGrid from "~/components/StatGrid.astro";
+import Verdict from "~/components/Verdict.astro";
 import { portfolio } from "~/content/portfolios";
-const TODAY_HOLDINGS = portfolio("with-trend").holdings;
-import { figureValue } from "~/lib/figures";
+import { fundByTicker } from "~/content/shelf";
+import { formatDollars, formatMonths, formatPct } from "~/lib/charts";
+import { loadSeries, seriesFor } from "~/lib/series";
 import Base from "~/layouts/Base.astro";
 
 const p = portfolio("with-trend");
+const file = loadSeries("1990");
+const own = seriesFor("with-trend");
+const before = seriesFor("value-lean");
+const market = seriesFor("market");
+const long = seriesFor("with-trend", "1929");
+const longMarket = seriesFor("market", "1929");
 
-const NUMBERS = [
-  {
-    value: `${await figureValue("trend-96-year-gap")} points`,
-    label: "a year over an all-stock fund, 1929 to 2025",
-    note: "Range 1.3 to 2.7, on a long trend series, not the fund",
-  },
-  {
-    value: await figureValue("trend-gap-since-2009"),
-    label: "the same gap since 2009",
-    note: "Too small to tell from luck",
-  },
-  {
-    value: await figureValue("with-trend-worst-fall"),
-    label: "Worst fall, 1990 to 2026",
-    note: "With RSST at 25%. Forty-two months to recover.",
-  },
-  { value: "Sept 2023", label: "RSST launched", note: "Under three years of record" },
+const s = own.summary;
+const m = market.summary;
+const fall = s.worstFall;
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
+/** `2007-10` as "October 2007". */
+function monthName(date: string): string {
+  const [year, month] = date.split("-");
+  return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+const pct = (value: number) => formatPct(Math.abs(value), 1);
 
-const HOLDINGS = [
-  {
-    ticker: "RSST",
-    what: "Return Stacked U.S. Stocks & Managed Futures ETF. For every dollar, about a dollar of large US stocks and about a dollar of a trend-following futures program, borrowed inside the fund.",
-    weight: "30%",
-    fee: "0.99%",
+// TODO(fact): RSST's own worst fall so far and its recovery belong under "What could go
+// wrong". The old page's "30.8% in April 2025, five months to recover" is unsourced
+// (FACTS.md, NEVER SHOW), so nothing is printed until a figure record exists.
+
+/** The six-word column and the account column, in the order the holdings are printed. */
+const ROWS: Record<string, { name: string; holds: string; account: string }> = {
+  RSST: {
+    name: "Return Stacked U.S. Stocks & Managed Futures ETF",
+    holds: "US stocks plus a trend-following strategy",
+    account: "Pre-tax retirement account, first",
   },
-  { ticker: "VTI", what: "The whole US market", weight: "19%", fee: "0.03%" },
-  { ticker: "VXUS", what: "Every market outside the US", weight: "16%", fee: "0.05%" },
-  { ticker: "VTV", what: "Large, cheap US companies", weight: "15%", fee: "0.03%" },
-  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "10%", fee: "0.36%" },
-  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "5%", fee: "0.25%" },
-  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "5%", fee: "0.36%" },
+  VTI: { name: "Vanguard Total Stock Market ETF", holds: "The whole US stock market", account: "Taxable account" },
+  VXUS: {
+    name: "Vanguard Total International Stock ETF",
+    holds: "Every stock market outside the US",
+    account: "Retirement account",
+  },
+  VTV: { name: "Vanguard Value ETF", holds: "Large US companies priced cheaply", account: "Either" },
+  AVDV: {
+    name: "Avantis International Small Cap Value ETF",
+    holds: "Small, cheap, profitable foreign companies",
+    account: "Retirement account",
+  },
+  IDMO: {
+    name: "Invesco S&P International Developed Momentum ETF",
+    holds: "Foreign companies whose shares are rising",
+    account: "Retirement account",
+  },
+  AVES: {
+    name: "Avantis Emerging Markets Value ETF",
+    holds: "Cheap companies in emerging markets",
+    account: "Retirement account",
+  },
+  SCHP: {
+    name: "Schwab U.S. TIPS ETF",
+    holds: "Inflation-protected US government bonds",
+    account: "Pre-tax retirement account, beside RSST",
+  },
+};
+
+const holdings = p.holdings.map((h) => {
+  const row = ROWS[h.ticker];
+  if (row === undefined) throw new Error(`No table row for ${h.ticker}`);
+  const bp = fundByTicker(h.ticker).expenseRatioBp;
+  if (bp === null) throw new Error(`${h.ticker} has no expense ratio`);
+  return { ...h, ...row, feeOn10k: formatDollars(bp, "exact"), label: row.holds };
+});
+
+const STATS = [
+  { value: formatDollars(s.final), label: "$10,000 became", note: `${file.window.label}, simulated` },
+  {
+    value: `${formatPct(s.cagrPct)} a year`,
+    label: "Growth",
+    note: `Against ${formatPct(m.cagrPct)} for a plain world stock index`,
+  },
+  {
+    value: formatPct(fall.pct),
+    unit: formatDollars(fall.dollarsAtTrough),
+    label: "Worst fall",
+    note: `${monthName(fall.peak)} to ${monthName(fall.trough)}, back to even in ${formatMonths(fall.monthsToRecover)}`,
+  },
+  { value: p.feeOn10k, label: "Costs a year on $10,000", note: `${p.fee} fee, almost all of it RSST's 0.99%` },
 ];
-
-const TODAY = [
-  { ticker: "RSST", what: "The same fund, five points less of it", weight: "25%", fee: "0.99%" },
-  { ticker: "VTI", what: "The whole US market", weight: "19%", fee: "0.03%" },
-  { ticker: "VXUS", what: "Every market outside the US", weight: "16%", fee: "0.05%" },
-  { ticker: "VTV", what: "Large, cheap US companies", weight: "15%", fee: "0.03%" },
-  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "10%", fee: "0.36%" },
-  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "5%", fee: "0.25%" },
-  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "5%", fee: "0.36%" },
-  {
-    ticker: "SCHP",
-    what: "Schwab U.S. TIPS ETF: Treasury bonds whose value rises with inflation. The cheapest TIPS fund I priced. Held in a traditional IRA or 401(k).",
-    weight: "5%",
-    fee: "0.03%",
-  },
-];
-
-const LADDER = [
-  {
-    worstFall: "−30%",
-    rsst: "11%",
-    extra: "The six stock funds at 26 points together, SCHP 63: portfolio four's −30% version. Fell 16% since 1990, 42% across 1929 to 1932",
-  },
-  {
-    worstFall: "−40%",
-    rsst: "15%",
-    extra: "The six stock funds at 35 points together, SCHP 50: portfolio four's −40% version. Fell 18% since 1990, 54% across 1929 to 1932",
-  },
-  { worstFall: "−50%", rsst: "19%", extra: "Plus 10 points in TIPS" },
-  { worstFall: "−60%", rsst: "24%" },
-  { worstFall: "About −70%", rsst: "30%", published: true },
-] as const;
 ---
 
 <Base
-  title="The same, plus trend"
-  description="The value lean plus one fund that adds a trend-following program on top of its stocks. What that is, why it can help a whole portfolio, what 96 years of data say, and how much of it to hold."
+  title="Plus trend"
+  description="The value lean plus a quarter of the money in RSST, a fund that holds US stocks and a trend-following strategy at once. What $10,000 did since 1990, the worst fall in dollars, what it beat, who it is for and how to hold it."
+  xl
 >
   <Hero
     eyebrow="Portfolio 3 of 4"
-    title="The same, plus trend"
-    lede="Portfolio two, with 30% moved into a fund that holds US stocks and a trend-following program at the same time. The one holding on this site that adds an idea on top of stocks instead of swapping stocks for it."
+    title="Plus trend"
+    lede="The value lean, with a quarter of the money in a fund that holds US stocks and a trend-following strategy at once. For someone who wants more than the market and could sit through a fall of about half."
   >
-    <KeyNumbers items={NUMBERS} />
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
+      <Verdict word="Too close to call" gloss="The 96-year record is strong. The fund is under three years old and the last fifteen years say little." />
+    </p>
   </Hero>
 
   <div class="prose mt-10">
-    <h2>What you hold</h2>
+    <h2 id="what-you-buy">What you buy</h2>
+    <p>Eight funds: the value lean's six stock funds, a small line of inflation-protected US government bonds,
+    and RSST. RSST is what makes this portfolio different. For every dollar you put in, it holds about a dollar
+    of US stocks and a dollar of a trend-following strategy, borrowing inside the fund to hold both. So you
+    still own about as much stock as the value lean, and the 25% in RSST buys a trend strategy of the same size
+    on top.</p>
   </div>
 
-  <HoldingsTable rows={HOLDINGS} class="my-4" />
-  <AllocationBar holdings={p.holdings} name={p.name} class="my-6" />
+  <div class="wide mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div class="overflow-x-auto" tabindex="0" aria-label="What the portfolio holds">
+      <table class="holdings w-full min-w-[40rem] border-collapse text-base">
+        <caption class="sr-only">Each fund, what it holds, its share, its fee on $10,000 and the account to hold it in</caption>
+        <thead>
+          <tr class="border-b border-rule-strong text-left">
+            <th scope="col" class="label py-2 pr-3 font-semibold">Fund</th>
+            <th scope="col" class="label py-2 pr-3 font-semibold">What it holds</th>
+            <th scope="col" class="label py-2 pr-3 text-right font-semibold">Share</th>
+            <th scope="col" class="label py-2 pr-3 text-right font-semibold">Fee on $10,000</th>
+            <th scope="col" class="label py-2 font-semibold">Account</th>
+          </tr>
+        </thead>
+        <tbody class="text-ink-2">
+          {holdings.map((h) => (
+            <tr class="border-b border-rule align-top last:border-0">
+              <th scope="row" class="py-2 pr-3 text-left font-medium text-ink">
+                {h.ticker}
+                <span class="block text-sm font-normal text-ink-3">{h.name}</span>
+              </th>
+              <td class="py-2 pr-3">{h.holds}</td>
+              <td data-numeric class="py-2 pr-3 text-right whitespace-nowrap">{h.weight}%</td>
+              <td data-numeric class="py-2 pr-3 text-right whitespace-nowrap">{h.feeOn10k}</td>
+              <td class="py-2">{h.account}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <Donut holdings={holdings} name="Plus trend" center={{ value: p.fee, label: "a year" }} />
+  </div>
 
   <div class="prose">
-    <p>The fee is 0.38% a year, or $38 on $10,000, and almost all of it is RSST's 0.99%. Because RSST holds a dollar
-    of stocks for every dollar you put in, the portfolio still owns about as much US stock as portfolio two; the
-    30% buys a trend-following program of the same size on top. There are no bonds in this version.</p>
+    <Callout kind="do-this">
+      <p>Hold RSST in a pre-tax retirement account, a traditional IRA or 401(k), or do not hold it. Its trend
+      profits are taxed like wages, and most have not been paid out yet, so a taxable account could face a large
+      bill in any year.</p>
+    </Callout>
+    <p>An earlier version of this portfolio held 30% RSST and no SCHP; on paper it grew a little faster and
+    fell a little further.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2 id="the-version-for-todays-prices">The version for today's prices</h2>
-
-    <p>This is the version I would hold today. US stocks are priced at 41 times their ten-year average earnings, a
-    level reached only once before, in 1999 and 2000, and ten-year TIPS, Treasury bonds whose value rises with
-    inflation, pay 2.44% a year above inflation, the highest since 2008. So five points move from RSST into TIPS,
-    held in a traditional IRA or 401(k), and nothing else changes.</p>
+    <h2 id="what-trend-following-is">What trend following is</h2>
+    <p>Trend following is a rule: buy what has been rising over the past several months, bet against what has
+    been falling, and hold no opinion about why. It trades futures, contracts that bet on a price, on stock
+    indexes, government bonds, currencies and commodities. Its value shows in slow, grinding stock falls.
+    Through the 2022 stock fall of 25%, real trend-following funds made 26% after fees; in a sudden crash it has
+    no time to switch sides and does little. RSST packages it so you need not sell stocks to
+    buy it: for each $1 you invest, the fund holds about $1 of US stocks and $1 of a trend strategy, borrowing
+    inside the fund to hold both.</p>
   </div>
 
-  <HoldingsTable rows={TODAY} class="my-4" />
-  <AllocationBar holdings={TODAY_HOLDINGS} name="The version for today's prices" class="my-6" />
-
-  <div class="prose">
-    <p>Over the past 96 years this version would have trailed the 30% version by about
-    <Figure id="working-default-gap" inline showUnit={false} /> a year. At the returns I would expect from here it
-    trails by 0 to 0.2 points, and it comes out ahead only if stocks beat bonds by less than about 1.5 points a
-    year. In exchange, its worst fall is 1.8 points shallower and its year-to-year swings are about one point
-    smaller. That is the price of betting that today's high prices matter, and I think they do. The two versions
-    are close enough that the choice between them is about the fall you can sit through, not the return.</p>
+  <div class="prose w-full mt-14">
+    <h2 id="what-10000-did">What $10,000 did</h2>
   </div>
 
-  <div class="prose mt-14">
-    <h2>What trend following is</h2>
+  <StatGrid items={STATS} class="wide mt-6 tiles-tight" />
 
-    <p>A trend-following program is a rule, not a manager's opinion. It trades futures, contracts that bet on
-    the price of a stock index, a government bond, a currency or a commodity without owning it. It buys what has
-    been rising over the past several months and sells short, that is, bets against, what has been falling. In a
-    long, grinding fall it ends up betting against the things that are falling: in 2022, by the SG Trend index's
-    own count, the strategy made 27% while the S&amp;P 500 lost 18%. In a sudden crash like March 2020 it has no
-    time to switch and does not help.</p>
+  <GrowthChart series={[market, before, own]} highlight="with-trend" title="What $10,000 became" class="wide mt-10">
+    Plus trend, the value lean and a plain world stock index, {file.window.label}. These are simulated
+    portfolios built from index data, not fund records: each fund is stood in for by the indexes it tracks,
+    less its fee and a trading cost; the trend part is a trend index before its own trading costs; SCHP is a
+    plain ten-year US government bond, because inflation-protected bonds did not exist before 2003; RSST has
+    existed only since September 2023; and since 2009 the trend part added about 0.4% a year, too little to
+    tell from luck.
+  </GrowthChart>
 
-    <p>Since 2000, trend following rose in 64% of the worst months for stocks, more than gold at 59%, Treasuries at
-    55% to 58%, or anything else I measured. It will not save you in a crash, but it tends to do well in the
-    years stocks do worst, and nothing else in this portfolio does that.</p>
+  <div class="prose mt-8">
+    <p>Most of the gap over the value lean is the borrowed dollar of stocks working through a long bull market;
+    only the rest is what trend paid. Since 2009, $10,000 became
+    {formatDollars(s.since2009?.final ?? Number.NaN)} against {formatDollars(m.since2009?.final ?? Number.NaN)} for the
+    plain index.</p>
   </div>
 
-  <div class="prose mt-14">
-    <h2>Why on top, and not instead</h2>
-
-    <p>Most managed-futures funds ask you to sell stocks to buy them. Stocks earn more than trend does over the long
-    run, so every dollar moved out of stocks gives up return to buy the diversification. RSST borrows inside the
-    fund to hold the stocks and the trend program at once. Sell $30 of every $100 in stocks to buy trend and you
-    own $70 of stocks. Hold RSST at 30% and you still own about $100 of stocks plus $30 of trend. Over 1990 to 2026, buying the same amount of trend by
-    selling stocks instead of adding it on top would have cost about
-    <Figure id="financing-vs-selling" inline showUnit={false} /> a year of growth. That is why a strategy that
-    looks ordinary on its own can help a portfolio when it is stacked on top: you keep the stock return and add
-    the trend return, rather than averaging the two.</p>
+  <div class="prose w-full mt-14">
+    <h2 id="the-worst-fall">The worst fall</h2>
   </div>
 
-  <div class="prose mt-14">
-    <h2>What the record says</h2>
+  <DrawdownChart series={[own, market]} highlight="with-trend" worst={fall} title="Falls from the last high" class="wide mt-8">
+    Plus trend against a plain world stock index, {file.window.label}. Zero is the last high; every dip is a fall from it.
+  </DrawdownChart>
 
-    <p>I do not have a century of RSST, so the long test uses a trend-following series built from the same rule and
-    scaled to the size of the fund's program. Over the 96 years from 1929 to 2025 a portfolio of 70% US stocks
-    with a 30% RSST-style holding earned about <Figure id="trend-96-year-gap" inline /> above a cheap
-    all-stock fund, with a range of 1.3 to 2.7. By decade the gap ran between 0.5 and 3.6 points
-    through the 2000s, then 0.6 in the 2010s and 0.3 in the 2020s so far. Since 2009 the gap is
-    <Figure id="trend-gap-since-2009" inline showUnit={false} /> a year, too small to tell from luck. Trend
-    following has done less since 2008 than before it on every version of the rule I checked, and nobody knows
-    whether that continues.</p>
-
-    <p>On the shorter 1990 to 2026 window, using the actual funds' behaviour, the portfolio with RSST at 25%
-    fell <Figure id="with-trend-worst-fall" inline showUnit={false} /> at worst and took 42 months to recover,
-    against 52.7% and 63 months for the cheap mix. At the more modest returns I would expect from here, that 25%
-    version's chance of trailing a cheap index fund is about one in four over ten years, one in six over twenty
-    and one in nine over thirty (<Figure id="trailing-odds" inline />).</p>
-
-    <p>The decade that makes the case is 1999 to 2009. US stocks returned <Figure id="flat-decade" inline /> for
-    ten years. A 30% trend holding on top would have turned that into about 0.05% a year. The protection on offer
-    is against a lost decade, not against a crash.</p>
+  <div class="prose mt-8">
+    <p>From {monthName(fall.peak)} to {monthName(fall.trough)}, $10,000 fell to {formatDollars(fall.dollarsAtTrough)},
+    a fall of {pct(fall.pct)}, and it was back above $10,000 in {fall.recovered ? monthName(fall.recovered) : "no month yet"},
+    {formatMonths(fall.monthsToRecover)} after the peak. The plain world stock index fell to
+    {formatDollars(m.worstFall.dollarsAtTrough)} and took {formatMonths(m.worstFall.monthsToRecover)}. In calendar
+    2008 the portfolio lost {pct(s.calendarYears["2008"] ?? Number.NaN)} against {pct(m.calendarYears["2008"] ?? Number.NaN)} for
+    the index; in 2022 it lost {pct(s.calendarYears["2022"] ?? Number.NaN)} against {pct(m.calendarYears["2022"] ?? Number.NaN)}.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What is not known</h2>
-
-    <p>RSST launched in September 2023. Its own record settles nothing either way, because the fund exists for the
-    years stocks lose, and there have not been any yet. How closely its program tracks the long-run series rests on
-    31 months of filings, and no issuer discloses the cost of the borrowing inside the fund. Of the managed-futures
-    ETFs filing reports in mid-2019, <Figure id="managed-futures-attrition" inline showUnit={false} /> had stopped
-    by the end of 2025. If RSST closes, the fallback is <a href="/portfolios/value-lean/">portfolio two</a>, with
-    the 30% going back into VTI.</p>
-
-    <p>Funds running the same idea differ far more than index funds do, so I chose RSST over the alternatives on
-    its age, size and trading costs, not on return. Its gains are taxed as ordinary income, so hold it in a
-    retirement account or do not hold it. The <a href="/tools/which-account/">which-account tool</a> puts it
-    first in the queue for shelter at every tax rate, as long as its income is counted the way its filings record
-    it.</p>
+    <h2 id="what-it-beat">What it beat, and by how much</h2>
+    <p>Over 96 years of simulated history, 1929 to 2025, a 30% trend strategy on top of US stocks beat all US
+    stocks by about 2% a year, with a plausible range of 1.3% to 2.7%. Most of that came before 2009; since
+    2009 the gap is about 0.4% a year, which sixteen years cannot tell from luck. At the middle estimate of what
+    trend pays from here, a portfolio like this trails a plain index fund in about 25% of ten-year periods, 16%
+    to 17% of twenty-year periods and 11% to 12% of thirty-year periods (measured at 20% and 30% RSST, not
+    25%). Against a plain index fund borrowing the same amount RSST does, it trails 70% to 80% of
+    the time, because that comparison is mostly a bet on stocks.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>How much to hold</h2>
-
-    <p>Nearly everything that makes this portfolio differ from the market comes from RSST, so its share is the one
-    decision that matters. The share is set by the worst fall you would sit through without selling. The published
-    30% assumes a tolerance near 70%, which is more than most people mean when they say they can hold on.</p>
-  </div>
-
-  <Ladder rows={LADDER} class="my-6" />
-
-  <div class="prose">
-    <p>The TIPS rows come from today's prices. US stocks are priced at 41 times their ten-year average earnings, a
-    level reached only once before, in 1999 and 2000. In the two past episodes when the market was above 30 times,
-    the typical worst fall after inflation over the following 15 years was about
-    <Figure id="worst-fall-above-cape-30" inline showUnit={false} />, against 37% from cheaper starting points.
-    Two episodes are a warning, not a forecast, so I let that concern in only through the fall you plan for, never
-    as a prediction of returns. TIPS are the natural home for the money that leaves RSST. The version for today's
-    prices above, RSST at 25% with 5 points in TIPS, sits between the −50% and −60% rows. The two top rows are
-    <a href="/portfolios/cautious/">portfolio four</a>, scored as whole portfolios on the same histories.</p>
+    <h2 id="who-it-is-for">Who it is for</h2>
+    <p>Someone who wants to do better than a plain index fund and could watch $10,000 fall to about {formatDollars(fall.dollarsAtTrough)} without selling. Losing
+    here looks like a decade of quietly trailing a plain US index fund, not a crash. If you would sell after RSST fell 20% behind the
+    market, you would end up doing so in about 8% of thirty-year histories when trend pays its middle estimate,
+    and about half of them if trend has stopped paying.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What losing feels like</h2>
-
-    <p>Losing here looks like a decade of quiet, monthly underperformance against a plain US index fund, not a
-    crash. At its worst, trend following ran <Figure id="trend-drawdown" inline showUnit={false} /> the stocks it
-    replaced, over 11.2 years. In <Figure id="abandonment-30" inline showUnit={false} /> of simulated thirty-year
-    histories, the 30% version fell far enough behind a plain index fund that most people would have given up on it,
-    and in <Figure id="abandonment-30-dead" inline showUnit={false} /> if trend following has stopped paying
-    altogether.
-    Choose 25% if you think you would sell.</p>
+    <h2 id="how-to-hold-it">How to hold it</h2>
+    <Callout kind="do-this">
+      <p>Put RSST and SCHP in a pre-tax retirement account, the foreign funds in whatever retirement room is
+      left, and VTV and VTI in a taxable account. Once a year, on a fixed date, send new money to whatever is
+      furthest below its target. Trade only inside retirement accounts, and never sell in a taxable account to
+      rebalance.</p>
+      <p>Do not review RSST on price: it trails a plain index in 44% of ten-year periods even when trend is
+      paying. Once a year, check what real trend-following funds earned after fees, and halve the position only
+      if that has sat below RSST's all-in cost for three years running.</p>
+      <p>If RSST announces it is closing, sell it before its last trading day and buy VTI in the same account;
+      you then hold the value lean. Replacements are reviewed in the order CTAP, MATE, JPFP, RSIT, and each
+      currently fails a test. A standalone trend fund such as DBMF, which copies large trend funds' returns
+      rather than trading its own rule, is not a replacement if you must sell stocks to buy it. More on
+      <a href="/how-to-hold/">how to hold it</a>.</p>
+    </Callout>
   </div>
 
-  <Compare class="my-8">
-    <p slot="get">A holding that tends to rise in the years stocks fall, added on top of your stocks rather than in
-    place of them. About 2 points a year over an all-stock fund on 96 years of data, and a flat decade instead of
-    a lost one in 1999 to 2009.</p>
-    <p slot="give">A 0.99% fee on 30% of your money. A fund under three years old, from a category where half the
-    funds closed in six years. A gap that has been too small to see since 2009. Years at a time of trailing a
-    plain index fund while wondering whether the idea is broken.</p>
-  </Compare>
+  <div class="prose mt-14">
+    <h2 id="what-could-go-wrong">What could go wrong</h2>
+    <p>RSST is young. It began trading in September 2023, and its 31 months of filed holdings show it
+    delivering its stock dollar in full but only about seven tenths of a dollar of trend; 31 months cannot tell
+    seven tenths from a whole. Its fee is 0.99% a year, $99 on every $10,000 in it, and what it pays to borrow
+    its second dollar is a cost no issuer discloses. Of 25 trend-following ETFs
+    filing reports in mid-2019, 13 had closed by the end of 2025. Trend following itself has had a flat fifteen
+    years: about 0.4% a year since 2009, after 0.5% to 3.6% a year in every decade before. A decade of trailing
+    a plain index fund is likely at some point; this portfolio has trailed its comparison by 1.2% a year since
+    2009.</p>
+  </div>
 
-  <div class="prose">
-    <p>Figures on this page are before tax and after fund costs, including the borrowing inside the fund. The
-    96-year result is built from a trend series, not a fund's record, and every result depends on what trend
-    following earns from here, which nobody can measure in advance.</p>
+  <div class="prose mt-14">
+    <h2 id="the-long-history">The long history</h2>
+    <p>Over 1929 to 2025, simulated with US stocks only, a home-built four-market trend rule with no trading
+    costs and a plain government bond in place of SCHP, $10,000 at the {monthName(long.summary.worstFall.peak)} peak
+    fell to {formatDollars(long.summary.worstFall.dollarsAtTrough)} by {monthName(long.summary.worstFall.trough)}, a fall
+    of {pct(long.summary.worstFall.pct)}, and took {formatMonths(long.summary.worstFall.monthsToRecover)} to get back; all
+    US stocks fell {pct(longMarket.summary.worstFall.pct)} and took {formatMonths(longMarket.summary.worstFall.monthsToRecover)}.
+    Trend protects against the slow decade, not the crash. Over the whole 96 years the portfolio grew
+    {formatPct(long.summary.cagrPct)} a year against {formatPct(longMarket.summary.cagrPct)} for all US stocks. Nobody
+    earned these returns, and nobody sat through those falls knowing how they would end.</p>
+  </div>
+
+  <div class="prose mt-10 flex flex-wrap gap-3">
+    <Button href="/portfolios/">Compare all four</Button>
+    <Button href="/portfolios/cautious/" variant="outline">Portfolio 4: Cautious</Button>
   </div>
 </Base>
+
+<style is:global>
+  /* Seven digits and two separators must fit a phone tile. The default 30px does not. */
+  .stat-grid.tiles-tight .stat-value {
+    font-size: clamp(1.5rem, 1rem + 1.6vw, 2.5rem);
+  }
+</style>
