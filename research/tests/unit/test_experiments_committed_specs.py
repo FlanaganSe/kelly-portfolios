@@ -60,6 +60,7 @@ SPEC_NAMES = (
     "exp_024_working_default",
     "exp_025_cautious_constructions",
     "exp_026_trend_from_the_bond_line",
+    "exp_027_selective_carry",
     "phase1_ff_reproduction",
 )
 
