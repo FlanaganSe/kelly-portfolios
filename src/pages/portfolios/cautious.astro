@@ -1,220 +1,307 @@
 ---
 /**
- * Portfolio four: portfolio three with the stock share cut and the rest in TIPS, for a
- * reader who would sell after a fall of about 30% or 40%. Two versions, each scored as
- * one object on 96 years and on the fund-based history (Experiment 025, decision 0014).
- * Every worst fall since 1990 travels with the 1929 to 1932 figure in the same sentence.
+ * Portfolio four: half the money in inflation-protected government bonds and the rest in
+ * the Plus trend portfolio's funds, for someone who would sell after a fall of about 40%.
+ * One version. The one built for a 30% fall gets one sentence, with its two worst falls
+ * read from its own series.
  */
-import AllocationBar from "~/components/AllocationBar.astro";
-import Compare from "~/components/Compare.astro";
-import Figure from "~/components/Figure.astro";
+import Button from "~/components/Button.astro";
+import Callout from "~/components/Callout.astro";
+import Donut from "~/components/Donut.astro";
+import DrawdownChart from "~/components/DrawdownChart.astro";
+import GrowthChart from "~/components/GrowthChart.astro";
 import Hero from "~/components/Hero.astro";
-import HoldingsTable from "~/components/HoldingsTable.astro";
-import KeyNumbers from "~/components/KeyNumbers.astro";
+import StatGrid from "~/components/StatGrid.astro";
 import Verdict from "~/components/Verdict.astro";
-import { CAUTIOUS_30_HOLDINGS, CAUTIOUS_40_HOLDINGS } from "~/content/portfolios";
-import { figureValue } from "~/lib/figures";
+import { CAUTIOUS_30_HOLDINGS, portfolio } from "~/content/portfolios";
+import { fundByTicker } from "~/content/shelf";
+import { formatDollars, formatMonths, formatPct } from "~/lib/charts";
+import { loadSeries, seriesFor } from "~/lib/series";
 import Base from "~/layouts/Base.astro";
 
-const NUMBERS = [
-  {
-    value: await figureValue("cautious-40-worst-fall"),
-    label: "Worst fall, 1990 to 2026",
-    note: "The −40% version. 54% across 1929 to 1932.",
-  },
-  {
-    value: await figureValue("cautious-40-growth"),
-    label: "Growth a year, 1929 to 2025",
-    note: "Against 10.2% for all stocks and 11.1% for portfolio three",
-  },
-  {
-    value: "0 to 0.75 points",
-    label: "Given up a year at today's likely returns",
-    note: "Against all stocks, if stocks beat TIPS by 0 to 1.5 points a year",
-  },
-  {
-    value: `${await figureValue("cautious-40-trend-line")} points`,
-    label: "From the trend line a year, 1929 to 2025",
-    note: "Against the same mix without it. Too close to call since 2009.",
-  },
+const p = portfolio("cautious");
+const file = loadSeries("1990");
+const own = seriesFor("cautious");
+const before = seriesFor("with-trend");
+const market = seriesFor("market");
+const sixtyForty = seriesFor("sixty-forty");
+const thirty = seriesFor("cautious-30");
+const long = seriesFor("cautious", "1929");
+const longMarket = seriesFor("market", "1929");
+const longBefore = seriesFor("with-trend", "1929");
+const longThirty = seriesFor("cautious-30", "1929");
+
+const s = own.summary;
+const m = market.summary;
+const fall = s.worstFall;
+
+const MONTHS = [
+  "January",
+  "February",
+  "March",
+  "April",
+  "May",
+  "June",
+  "July",
+  "August",
+  "September",
+  "October",
+  "November",
+  "December",
 ];
+/** `2007-10` as "October 2007". */
+function monthName(date: string): string {
+  const [year, month] = date.split("-");
+  return `${MONTHS[Number(month) - 1]} ${year}`;
+}
+const pct = (value: number) => formatPct(Math.abs(value), 1);
+const yearOf = (date: string) => date.slice(0, 4);
 
-const SCHP =
-  "Schwab U.S. TIPS ETF: Treasury bonds whose value rises with inflation. The cheapest TIPS fund I priced. Held in a traditional IRA or 401(k) first.";
+const weightOf = (ticker: string) => {
+  const found = CAUTIOUS_30_HOLDINGS.find((h) => h.ticker === ticker);
+  if (found === undefined) throw new Error(`No ${ticker} in the 30% construction`);
+  return found.weight;
+};
+const thirtyStocks = CAUTIOUS_30_HOLDINGS.filter((h) => h.ticker !== "SCHP" && h.ticker !== "RSST").reduce(
+  (sum, h) => sum + h.weight,
+  0
+);
 
-const FORTY = [
-  { ticker: "SCHP", what: SCHP, weight: "50%", fee: "0.03%" },
-  {
-    ticker: "RSST",
-    what: "For every dollar, about a dollar of large US stocks and a dollar of a trend-following futures program, borrowed inside the fund.",
-    weight: "15%",
-    fee: "0.99%",
+/** The six-word column and the account column, in the order the holdings are printed. */
+const ROWS: Record<string, { name: string; holds: string; account: string }> = {
+  SCHP: {
+    name: "Schwab U.S. TIPS ETF",
+    holds: "Inflation-protected US government bonds",
+    account: "Pre-tax retirement account, then Roth, taxable last",
   },
-  { ticker: "VTI", what: "The whole US market", weight: "9.6%", fee: "0.03%" },
-  { ticker: "VXUS", what: "Every market outside the US", weight: "8%", fee: "0.05%" },
-  { ticker: "VTV", what: "Large, cheap US companies", weight: "7.5%", fee: "0.03%" },
-  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "5%", fee: "0.36%" },
-  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "2.5%", fee: "0.25%" },
-  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "2.5%", fee: "0.36%" },
-];
+  RSST: {
+    name: "Return Stacked U.S. Stocks & Managed Futures ETF",
+    holds: "US stocks plus a trend-following strategy",
+    account: "Pre-tax retirement account, before SCHP",
+  },
+  VTI: { name: "Vanguard Total Stock Market ETF", holds: "The whole US stock market", account: "Taxable account" },
+  VXUS: {
+    name: "Vanguard Total International Stock ETF",
+    holds: "Every stock market outside the US",
+    account: "Retirement account",
+  },
+  VTV: { name: "Vanguard Value ETF", holds: "Large US companies priced cheaply", account: "Either" },
+  AVDV: {
+    name: "Avantis International Small Cap Value ETF",
+    holds: "Small, cheap, profitable foreign companies",
+    account: "Retirement account",
+  },
+  IDMO: {
+    name: "Invesco S&P International Developed Momentum ETF",
+    holds: "Foreign companies whose shares are rising",
+    account: "Retirement account",
+  },
+  AVES: {
+    name: "Avantis Emerging Markets Value ETF",
+    holds: "Cheap companies in emerging markets",
+    account: "Retirement account",
+  },
+};
 
-const THIRTY = [
-  { ticker: "SCHP", what: SCHP, weight: "63%", fee: "0.03%" },
-  { ticker: "RSST", what: "The same fund, four points less of it", weight: "11%", fee: "0.99%" },
-  { ticker: "VTI", what: "The whole US market", weight: "7.1%", fee: "0.03%" },
-  { ticker: "VXUS", what: "Every market outside the US", weight: "5.9%", fee: "0.05%" },
-  { ticker: "VTV", what: "Large, cheap US companies", weight: "5.6%", fee: "0.03%" },
-  { ticker: "AVDV", what: "Small, cheap, profitable companies in developed markets outside the US", weight: "3.7%", fee: "0.36%" },
-  { ticker: "IDMO", what: "Developed-market companies outside the US whose shares have been rising", weight: "1.9%", fee: "0.25%" },
-  { ticker: "AVES", what: "Cheap companies in emerging markets", weight: "1.8%", fee: "0.36%" },
+const holdings = p.holdings.map((h) => {
+  const row = ROWS[h.ticker];
+  if (row === undefined) throw new Error(`No table row for ${h.ticker}`);
+  const bp = fundByTicker(h.ticker).expenseRatioBp;
+  if (bp === null) throw new Error(`${h.ticker} has no expense ratio`);
+  return { ...h, ...row, feeOn10k: formatDollars(bp, "exact"), label: row.holds };
+});
+
+const STATS = [
+  { value: formatDollars(s.final), label: "$10,000 became", note: `${file.window.label}, simulated` },
+  {
+    value: `${formatPct(s.cagrPct)} a year`,
+    label: "Growth",
+    note: `Against ${formatPct(m.cagrPct)} for a plain world stock index`,
+  },
+  {
+    value: formatPct(fall.pct),
+    unit: formatDollars(fall.dollarsAtTrough),
+    label: "Worst fall",
+    note: `${monthName(fall.peak)} to ${monthName(fall.trough)}, back to even in ${formatMonths(fall.monthsToRecover)}`,
+  },
+  { value: p.feeOn10k, label: "Costs a year on $10,000", note: `${p.fee} fee, most of it RSST's 0.99%` },
 ];
 ---
 
 <Base
-  title="The cautious version"
-  description="Portfolio three with the stock share cut and the rest in inflation-protected Treasuries, for someone who would sell after a fall of about 30% or 40%. What each version held, how far it fell on two histories, and what it gives up."
+  title="Cautious"
+  description="Half the money in inflation-protected US government bonds and the rest in the Plus trend portfolio's funds, for someone who would sell after a fall of about 40%. What $10,000 did since 1990, the worst fall in dollars, what it gives up, and how to hold it."
+  xl
 >
   <Hero
     eyebrow="Portfolio 4 of 4"
-    title="The cautious version"
-    lede="Portfolio three with the stock share cut and the rest in TIPS, Treasury bonds whose value rises with inflation. The same funds, less of them, for someone who would sell after a fall of about 30% or 40%."
+    title="Cautious"
+    lede="Half the money in inflation-protected US government bonds and the rest in the Plus trend portfolio's funds, for someone who would sell after a fall of about 40%."
   >
-    <KeyNumbers items={NUMBERS} />
+    <p class="mt-4 flex flex-wrap items-baseline gap-x-3 gap-y-1 text-ink-2">
+      <Verdict word="Too close to call" gloss="The smaller fall is measured. Whether the trend fund and the lean earn their fees inside it is not." />
+    </p>
   </Hero>
 
   <div class="prose mt-10">
-    <h2>Who this is for</h2>
-
-    <p>Every other portfolio on this site fell by about half at some point since 1990. If you would have sold
-    partway through that, you need a smaller fall, and the only way to buy one is to hold fewer stocks. This page
-    gives two versions, one for a fall of about 40% and one for about 30%, each measured as a whole rather than
-    assembled from rules of thumb. The labels come from what each version did since 1990. What each did across
-    1929 to 1932 is printed beside it every time, because on that history nothing on this site falls less than
-    about 42% unless it holds under 38 points of stocks.</p>
-
-    <p><Verdict word="Too close to call" gloss="The smaller fall is measured. Whether the trend line and the lean earn their fees inside it is not." /></p>
+    <h2 id="what-you-buy">What you buy</h2>
+    <p>The same eight funds as Plus trend, in different amounts. Half is SCHP, a fund of inflation-protected US
+    government bonds, whose value rises with prices. The six stock funds hold 35% together, in the same
+    proportions as Plus trend. RSST holds another 15% and gives a dollar of US stocks plus a dollar of a
+    trend-following strategy, one that buys what is rising and bets against what is falling, for each dollar in
+    it. So about half the portfolio is stocks, 15% is trend, and half is bonds. It costs {p.fee} a year,
+    {p.feeOn10k} on $10,000.</p>
   </div>
 
-  <div class="prose mt-14">
-    <h2 id="for-a-fall-of-about-40">For a fall of about 40%</h2>
+  <div class="wide mt-8 grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:items-start">
+    <div class="overflow-x-auto" tabindex="0" aria-label="What the portfolio holds">
+      <table class="holdings w-full min-w-[40rem] border-collapse text-base">
+        <caption class="sr-only">Each fund, what it holds, its share, its fee on $10,000 and the account to hold it in</caption>
+        <thead>
+          <tr class="border-b border-rule-strong text-left">
+            <th scope="col" class="label py-2 pr-3 font-semibold">Fund</th>
+            <th scope="col" class="label py-2 pr-3 font-semibold">What it holds</th>
+            <th scope="col" class="label py-2 pr-3 text-right font-semibold">Share</th>
+            <th scope="col" class="label py-2 pr-3 text-right font-semibold">Fee on $10,000</th>
+            <th scope="col" class="label py-2 font-semibold">Account</th>
+          </tr>
+        </thead>
+        <tbody class="text-ink-2">
+          {holdings.map((h) => (
+            <tr class="border-b border-rule align-top last:border-0">
+              <th scope="row" class="py-2 pr-3 text-left font-medium text-ink">
+                {h.ticker}
+                <span class="block text-sm font-normal text-ink-3">{h.name}</span>
+              </th>
+              <td class="py-2 pr-3">{h.holds}</td>
+              <td data-numeric class="py-2 pr-3 text-right whitespace-nowrap">{h.weight}%</td>
+              <td data-numeric class="py-2 pr-3 text-right whitespace-nowrap">{h.feeOn10k}</td>
+              <td class="py-2">{h.account}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <Donut holdings={holdings} name="Cautious" center={{ value: p.fee, label: "a year" }} />
   </div>
-
-  <HoldingsTable rows={FORTY} class="my-4" />
-  <AllocationBar holdings={CAUTIOUS_40_HOLDINGS} name="The cautious version for about −40%" class="my-6" />
 
   <div class="prose">
-    <p>The fee is about 0.20% a year, or $20 on $10,000, most of it RSST's 0.99% on 15% of the money. Half is in
-    TIPS. The stock funds hold 35 points together, in the same proportions as portfolio three, and RSST adds its
-    trend program on top of another 15 points of US stocks, so the stock exposure is about half the portfolio.</p>
+    <Callout kind="do-this">
+      <p>Hold RSST in a pre-tax retirement account, a traditional IRA or 401(k), or do not hold it. Its trend
+      profits are taxed like wages, and most of them have not been paid out yet, so in a taxable account a
+      large bill is possible in any year.</p>
+    </Callout>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2 id="what-10000-did">What $10,000 did</h2>
+  </div>
+
+  <StatGrid items={STATS} class="wide mt-6" />
+
+  <GrowthChart series={[market, before, own]} highlight="cautious" title="What $10,000 became" class="wide mt-10">
+    Cautious, Plus trend and a plain world stock index, {file.window.label}. These are simulated portfolios
+    built from index data, not fund records: each fund is stood in for by the indexes it tracks, less its fee
+    and a trading cost; the trend part is a trend index before its own trading costs; SCHP is a plain ten-year
+    US government bond, because inflation-protected bonds did not exist before 2003; RSST has existed only
+    since September 2023; and since 2009 the trend part added about 0.4% a year, too little to tell from luck.
+  </GrowthChart>
+
+  <div class="prose mt-8">
+    <p>Over {file.window.label}, $10,000 became {formatDollars(s.final)} here against {formatDollars(m.final)} in the plain index and {formatDollars(sixtyForty.summary.final)} in a
+    60/40 mix, 60% stocks and 40% US government bonds. Since 2009 it grew {formatPct(s.since2009?.cagrPct ?? Number.NaN)} a
+    year against {formatPct(m.since2009?.cagrPct ?? Number.NaN)} for the index: a bond-heavy mix lags badly through
+    a long stock bull market.</p>
+  </div>
+
+  <div class="prose w-full mt-14">
+    <h2 id="the-worst-fall">The worst fall</h2>
+  </div>
+
+  <DrawdownChart series={[own, market]} highlight="cautious" worst={fall} title="Falls from the last high" class="wide mt-8">
+    Cautious against a plain world stock index, {file.window.label}. Zero is the last high; every dip is a fall from it.
+  </DrawdownChart>
+
+  <div class="prose mt-8">
+    <p>From {monthName(fall.peak)} to {monthName(fall.trough)}, $10,000 fell to {formatDollars(fall.dollarsAtTrough)},
+    a fall of {pct(fall.pct)}, and it was back above $10,000 in {fall.recovered ? monthName(fall.recovered) : "no month yet"},
+    {formatMonths(fall.monthsToRecover)} after the peak. The plain world stock index fell to
+    {formatDollars(m.worstFall.dollarsAtTrough)} and took {formatMonths(m.worstFall.monthsToRecover)}. In calendar
+    2008 the portfolio lost {pct(s.calendarYears["2008"] ?? Number.NaN)} against {pct(m.calendarYears["2008"] ?? Number.NaN)} for
+    the index. In 2022, when stocks and bonds fell together, it lost {pct(s.calendarYears["2022"] ?? Number.NaN)}, its
+    worst calendar year since 1990, against {pct(m.calendarYears["2022"] ?? Number.NaN)} for the index and
+    {pct(sixtyForty.summary.calendarYears["2022"] ?? Number.NaN)} for the 60/40 mix. A version built for a fall of
+    about 30%, with SCHP at {weightOf("SCHP")}%, RSST at {weightOf("RSST")}% and the same six stock funds at
+    {thirtyStocks}% together, fell {pct(thirty.summary.worstFall.pct)} since 1990, its deepest fall coming in
+    {yearOf(thirty.summary.worstFall.trough)} rather than {yearOf(fall.trough)}, and {pct(longThirty.summary.worstFall.pct)} across
+    1929 to 1932.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2 id="for-a-fall-of-about-30">For a fall of about 30%</h2>
-  </div>
-
-  <HoldingsTable rows={THIRTY} class="my-4" />
-  <AllocationBar holdings={CAUTIOUS_30_HOLDINGS} name="The cautious version for about −30%" class="my-6" />
-
-  <div class="prose">
-    <p>The fee is about 0.16% a year, or $16 on $10,000. Nearly two thirds is in TIPS and the stock exposure is
-    about 38% of the portfolio.</p>
-  </div>
-
-  <div class="prose mt-14">
-    <h2>How far each fell</h2>
-
-    <p>On the fund-based history from 1990 to 2026 the −40% version's worst fall was
-    <Figure id="cautious-40-worst-fall" inline />, and it took 26 months to recover; across 1929 to 1932 its worst
-    fall was <Figure id="cautious-40-worst-fall-96" inline />, with 74 months under water. The −30% version's worst
-    fall was <Figure id="cautious-30-worst-fall" inline /> since 1990, with 31 months under water, and
-    <Figure id="cautious-30-worst-fall-96" inline /> across 1929 to 1932. On every history that starts in 1934 or
-    later the two fell 27% and 19% at worst. Portfolio three fell 50% since 1990 and 83% from 1929.</p>
-
-    <p>So the labels describe the past sixty years only. The 1929 crash put every mix of stocks and bonds
-    between 12 and 33 points deeper than any modern fall. A reader who wants to be safe against that year needs
-    fewer than 38 points of stocks, which is less than either version holds, and I have not scored a mix that
-    small.</p>
-
-    <p>In 2022, the year stocks and bonds fell together, the −40% version returned
-    <Figure id="cautious-40-2022" inline showUnit={false} /> and the −30% version −18.2%. Bonds did not protect
-    anyone that year: a portfolio holding only Treasuries returned <Figure id="all-bond-worst-fall" inline />. Hold
-    them for the smaller fall over a whole cycle, not as insurance against any one year.</p>
+    <h2 id="what-it-beat">What it beat, and by how much</h2>
+    <p>Over {file.window.label} it grew {formatPct(s.cagrPct)} a year against {formatPct(m.cagrPct)} for a plain world
+    stock index and {formatPct(sixtyForty.summary.cagrPct)} for a 60/40 mix, so on that history the smaller fall
+    cost almost nothing, and the difference from the index is far too small to tell from luck. Over 96 years,
+    1929 to 2025, it gave up about {formatPct(longMarket.summary.cagrPct - long.summary.cagrPct)} a year of growth
+    against all US stocks. At today's likely returns, if stocks beat inflation-protected bonds by 0%, 1.5% or
+    3% a year from here, holding half your money in bonds costs about 0%, 0.75% or 1.5% a year against all
+    stocks.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What you give up</h2>
-
-    <p>Return. Over 1929 to 2025 the −40% version grew <Figure id="cautious-40-growth" inline /> and the −30%
-    version <Figure id="cautious-30-growth" inline />, against 10.2% for an all-stock fund and 11.1% for
-    portfolio three. Measured as a yearly gap against the all-stock fund, that is
-    <Figure id="cautious-40-vs-all-stock" inline showUnit={false} /> and
-    <Figure id="cautious-30-vs-all-stock" inline showUnit={false} /> points a year at the returns stocks actually
-    paid, which were about 7.75 points a year over bonds.</p>
-
-    <p>Today the gap is smaller. Ten-year TIPS pay 2.44% above inflation, and most forecasters expect stocks to
-    beat that by between nothing and 1.5 points a year. At nothing, holding half your money in TIPS costs nothing.
-    At 1.5 points it costs the −40% version about 0.75 points a year and the −30% version about 0.9. At 3 points
-    it costs about 1.5 and 1.9. You pick the row you believe. The one decade the cautious versions won outright
-    was 1999 to 2009, when the −40% version ran <Figure id="cautious-40-flat-decade" inline showUnit={false} />
-    points a year ahead of portfolio three and the −30% version 3.1.</p>
-
-    <p>Against a plain mix of 60% stocks and 40% Treasuries with no lean and no trend, the −40% version earned
-    <Figure id="cautious-40-vs-sixty-forty" inline showUnit={false} /> points a year more over 1990 to 2026 with
-    a shallower worst fall. The −30% version's gap against the same mix is too small to tell from luck.</p>
+    <h2 id="who-it-is-for">Who it is for</h2>
+    <p>Someone who would sell after a fall of about 40%. Every other portfolio on this site fell by about half
+    at some point since 1990. If you would have sold partway through that, you need a smaller fall, and the
+    only way to buy one is to hold fewer stocks. Pick the fall you would actually have held through for as
+    many months as it lasted, not the one you could tolerate in the abstract. The label describes the past
+    sixty years; across 1929 to 1932 this mix fell {pct(long.summary.worstFall.pct)}. If you are drawing on the
+    money at more than about 4% a year, too few stocks is the larger risk.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>Whether the trend line earns its place here</h2>
-
-    <p>Holding the stock share fixed and swapping RSST for plain stock funds, the trend line added
-    <Figure id="cautious-40-trend-line" inline showUnit={false} /> points a year to the −40% version and
-    <Figure id="cautious-30-trend-line" inline showUnit={false} /> to the −30% version over 96 years, and both
-    versions fell less than their plain twins on every history. Since 2009 the gap has been too small to tell
-    from zero, as it has been for portfolio three. At the trend returns I would expect from here it is worth
-    about 0.3 to 0.4 points a year, and it stops paying for itself if trend following earns less than about 1.2
-    points a year before costs.</p>
-
-    <p>If you want none of it, the plain twins are the same stock funds and SCHP with no RSST: 51% stocks and 49%
-    TIPS fell <Figure id="cautious-40-plain-twin-worst-fall" inline /> since 1990 and 55.8% across 1929 to 1932;
-    38% stocks and 62% TIPS fell 18.4% and 43.6%.</p>
+    <h2 id="how-to-hold-it">How to hold it</h2>
+    <Callout kind="do-this">
+      <p>SCHP goes into a pre-tax retirement account first, then a Roth, and a taxable account last: its interest
+      and its inflation adjustment are taxed like wages, the adjustment before it is paid. RSST goes in before
+      SCHP. At half the money, SCHP overflows most retirement accounts, so some of it will sit in a taxable
+      account.</p>
+      <p>Once a year, on a fixed date, send new money to whatever is furthest below its target. Trade only
+      inside retirement accounts, and never sell in a taxable account to rebalance.</p>
+      <p>If RSST announces it is closing, sell it before its last trading day and buy VTI in the same account.
+      That mix, 51% stocks and 49% bonds, fell 21.6% since 1990 and 55.8% across 1929 to 1932. Replacement
+      funds are reviewed in the order CTAP, MATE, JPFP, RSIT, and none passes its test yet. The details are on
+      <a href="/how-to-hold/">how to hold it</a>.</p>
+    </Callout>
   </div>
 
   <div class="prose mt-14">
-    <h2>Where to hold it</h2>
-
-    <p>SCHP goes in a traditional IRA or 401(k) first, then a Roth, and in a taxable account last. Bond income is
-    taxed as ordinary income, and TIPS are taxed each year on inflation you have not been paid yet. Half or more
-    of the portfolio in TIPS is more than most people's sheltered accounts can hold, so some of it will sit in a
-    taxable account. The <a href="/tools/which-account/">which-account tool</a> ranks the rest of the funds, and
-    RSST still goes in a sheltered account before any of them.</p>
+    <h2 id="what-could-go-wrong">What could go wrong</h2>
+    <p>Half the money is in one bond fund, and bonds did not protect anyone in 2022: this portfolio lost
+    {pct(s.calendarYears["2022"] ?? Number.NaN)} that year and the 60/40 mix lost {pct(sixtyForty.summary.calendarYears["2022"] ?? Number.NaN)}.
+    A portfolio holding only ten-year US government bonds fell 25.1% from August 2020 to October 2023 and spent
+    65 months below its old high. Hold bonds for the smaller fall over a whole cycle, not as insurance against
+    any one year. The 1929 to 1932 fall was {pct(long.summary.worstFall.pct)} even for this portfolio; being
+    safe against those years needs fewer than 38% in stocks, a mix not scored here. The long history also runs
+    a plain government bond through the inflation of the late 1970s, because inflation-protected bonds did not
+    exist before 2003; across 1977 to 1981 this mix gained 36% while Plus trend gained 86%, and the real bonds
+    would have done better by an amount no data can measure.</p>
   </div>
 
   <div class="prose mt-14">
-    <h2>What is not known</h2>
-
-    <p>No TIPS existed before 2003, so on both long histories a plain ten-year Treasury stands in for them. That
-    makes 1973 to 1974 and 1977 to 1981 read worse than a TIPS portfolio would have done, by an amount no data can
-    measure; across 1977 to 1981 the two versions gained 36% and 24% while portfolio three gained 86%. On the
-    years since 2003 where both can be run, TIPS earned 0.3 to 0.4 points a year more and fell a little deeper at
-    the worst, and nothing in that window separates the two. The case for TIPS over plain Treasuries is the 2.44%
-    real yield you can lock in today, not the history.</p>
-
-    <p>These are constructions built from index and futures series, not fund records. The trend line's measured
-    help predates 2009. Every figure is before tax, and a large bond line in a taxable account is taxed harder
-    than stocks.</p>
+    <h2 id="the-long-history">The long history</h2>
+    <p>Over 1929 to 2025, simulated with US stocks only, a home-built four-market trend rule with no trading
+    costs and a plain government bond in place of SCHP, $10,000 at the {monthName(long.summary.worstFall.peak)} peak
+    fell to {formatDollars(long.summary.worstFall.dollarsAtTrough)} by {monthName(long.summary.worstFall.trough)}, a fall
+    of {pct(long.summary.worstFall.pct)}, and took {formatMonths(long.summary.worstFall.monthsToRecover)} to get back; all
+    US stocks fell {pct(longMarket.summary.worstFall.pct)} and took {formatMonths(longMarket.summary.worstFall.monthsToRecover)},
+    and Plus trend fell {pct(longBefore.summary.worstFall.pct)}. Over the whole 96 years this portfolio grew
+    {formatPct(long.summary.cagrPct)} a year against {formatPct(longMarket.summary.cagrPct)} for all US stocks and
+    {formatPct(longBefore.summary.cagrPct)} for Plus trend. Nobody earned these returns, and nobody sat through
+    those falls knowing how they would end.</p>
   </div>
 
-  <Compare class="my-8">
-    <p slot="get">A worst fall of 16% to 18% since 1990 instead of about 50%, and recovery in two to three years
-    instead of four to five. Growth of 8.3% or 7.4% a year over 96 years. A trend line that fell less than the
-    same mix without it on every history.</p>
-    <p slot="give">About 2 to 3 points a year against all stocks at the returns of the past century, and 0 to
-    0.9 at today's likely returns. A fall of 42% to 54% across 1929 to 1932. Half or more of the money in one
-    bond fund that fell 19% in 2022 alongside stocks.</p>
-  </Compare>
-
-  <div class="prose">
-    <p>The <a href="/portfolios/">comparison page</a> puts this beside the other three. If your tolerable fall is
-    50% or more, <a href="/portfolios/with-trend/">portfolio three</a> and its ladder are the place to start.</p>
+  <div class="prose mt-10 flex flex-wrap gap-3">
+    <Button href="/portfolios/">Compare all four</Button>
+    <Button href="/portfolios/with-trend/" variant="outline">Portfolio 3: Plus trend</Button>
   </div>
 </Base>
