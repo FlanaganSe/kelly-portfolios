@@ -1,23 +1,32 @@
 ---
 /**
- * One portfolio, as a card: name, one line on what it is, the allocation bar, three
- * facts, and the confidence word.
+ * One portfolio, as a card: name, one sentence on whom it is for, a small donut of the
+ * holdings, three numbers in dollars with plain labels, the confidence word with its
+ * gloss, and a visible "See portfolio" button. The whole card is the link; the name is
+ * the link text.
  *
- * Four of these sit in a grid on the home page and stack on a phone. The whole card is
- * one link; the name is the link text and the rest is decoration a screen reader still
- * reads in order.
+ * Four of these sit in a `.card-grid-4` on the home page and the layout is the same on
+ * every card whatever the length of the confidence word, because the facts are three
+ * fixed rows and the badge has a row of its own.
  *
  *     <PortfolioCard
  *       name="One fund"
  *       href="/portfolios/one-fund/"
- *       tagline="The whole world in one holding."
+ *       tagline="For anyone who wants one thing to buy and never think about."
  *       holdings={[{ ticker: "VT", weight: 100 }]}
- *       fee="0.06%"
- *       worstFall="−83.7%"
+ *       became="$351,000"
+ *       fell="$4,730"
+ *       fellPct="−52.7%"
+ *       costs="$6"
  *       confidence="Settled"
  *     />
+ *
+ * The three numbers are text so the page prints exactly what the series file says.
+ * `fee`, `worstFall` and `worstFallNote` are the older props and still render, mapped
+ * onto the new rows, until every page has moved to the series-based numbers.
  */
 import AllocationBar, { type Holding } from "~/components/AllocationBar.astro";
+import Donut from "~/components/Donut.astro";
 import Verdict from "~/components/Verdict.astro";
 import type { Confidence } from "~/lib/rungs";
 
@@ -26,42 +35,97 @@ interface Props {
   href: string;
   tagline: string;
   holdings: readonly Holding[];
-  /** The fee a year, as text: "0.06%". */
-  fee: string;
-  /** The worst fall, as text: "−83.7%". */
-  worstFall: string;
-  /** What the worst fall was measured on, in a few words. */
-  worstFallNote?: string;
+  /** What $10,000 became, as text: "$351,000". */
+  became?: string;
+  /** What $10,000 fell to in the worst fall, as text: "$4,730". */
+  fell?: string;
+  /** The worst fall as a percent, as text: "−52.7%". */
+  fellPct?: string;
+  /** The cost a year on $10,000, as text: "$6". */
+  costs?: string;
+  /** One line under the numbers, the same on every card. */
+  period?: string;
   confidence: Confidence;
-  /** A number to print above the name, for a ladder of portfolios. */
+  /** The gloss beside the confidence word; the standard one by default. */
+  gloss?: string;
+  /** A number to print above the name. */
   number?: string | number;
+  /** Which picture of the holdings to draw. */
+  visual?: "donut" | "bar";
+  /** The button text. */
+  cta?: string;
+  /** @deprecated Use `costs`. Renders as the fee row when `costs` is absent. */
+  fee?: string;
+  /** @deprecated Use `fell` and `fellPct`. */
+  worstFall?: string;
+  /** @deprecated Rendered under the facts when present. */
+  worstFallNote?: string;
   class?: string;
 }
 
-const { name, href, tagline, holdings, fee, worstFall, worstFallNote, confidence, number, class: className } =
-  Astro.props;
+const {
+  name,
+  href,
+  tagline,
+  holdings,
+  became,
+  fell,
+  fellPct = Astro.props.worstFall,
+  costs,
+  period = "1990 to 2026",
+  confidence,
+  gloss,
+  number,
+  visual = "donut",
+  cta = "See portfolio",
+  fee,
+  worstFallNote,
+  class: className,
+} = Astro.props;
+
+const facts: { label: string; value: string; small?: string }[] = [];
+if (became) facts.push({ label: "$10,000 became", value: became });
+if (fell || fellPct) facts.push({ label: "Worst fall", value: fell ?? (fellPct as string), small: fell ? fellPct : undefined });
+if (costs) facts.push({ label: "Costs a year on $10,000", value: costs });
+else if (fee) facts.push({ label: "Fee a year", value: fee });
 ---
 
-<article class:list={["card portfolio-card", className]}>
-  {number !== undefined && <p class="eyebrow">Portfolio {number}</p>}
-  <h2 class="portfolio-card-name">
-    <a href={href} class="portfolio-card-link">{name}</a>
-  </h2>
-  <p class="portfolio-card-tagline">{tagline}</p>
-  <AllocationBar holdings={holdings} name={name} />
-  <dl class="portfolio-card-facts">
-    <div>
-      <dt>Fee a year</dt>
-      <dd data-numeric>{fee}</dd>
-    </div>
-    <div>
-      <dt>Worst stretch</dt>
-      <dd data-numeric>{worstFall}</dd>
-    </div>
-    <div>
-      <dt>How sure</dt>
-      <dd><Verdict word={confidence} /></dd>
-    </div>
+<article class:list={["panel", "pcard", className]}>
+  <div class="pcard-top">
+    {number !== undefined && <p class="pcard-number">Portfolio {number}</p>}
+    <h2 class="pcard-name">
+      <a href={href} class="pcard-link">{name}</a>
+    </h2>
+    <p class="pcard-tagline">{tagline}</p>
+    {visual === "donut" ? (
+      <div class="pcard-visual">
+        <Donut holdings={holdings} size="sm" legend={false} name={name} />
+      </div>
+    ) : (
+      <div class="pcard-visual pcard-visual-bar">
+        <AllocationBar holdings={holdings} name={name} legend={false} />
+      </div>
+    )}
+  </div>
+
+  <dl class="pcard-facts">
+    {facts.map((f) => (
+      <div class="pcard-fact">
+        <dt>{f.label}</dt>
+        <dd data-numeric>
+          {f.value}
+          {f.small && <small> ({f.small})</small>}
+        </dd>
+      </div>
+    ))}
   </dl>
-  {worstFallNote && <p class="portfolio-card-note">{worstFallNote}</p>}
+  <p class="pcard-period">{worstFallNote ?? period}</p>
+
+  <p class="pcard-verdict">
+    <Verdict word={confidence} gloss={gloss ?? true} />
+  </p>
+
+  <p class="pcard-cta" aria-hidden="true">
+    <span class="btn btn-outline btn-sm">{cta}</span>
+  </p>
 </article>

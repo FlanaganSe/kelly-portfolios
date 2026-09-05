@@ -22,11 +22,11 @@ const { getLabel = "What you get", giveLabel = "What you give up", class: classN
 
 <div class:list={["compare", className]}>
   <section class="compare-col">
-    <h3 class="eyebrow compare-heading">{getLabel}</h3>
+    <h3 class="label compare-heading font-semibold text-ink">{getLabel}</h3>
     <div class="compare-body"><slot name="get" /></div>
   </section>
   <section class="compare-col">
-    <h3 class="eyebrow compare-heading">{giveLabel}</h3>
+    <h3 class="label compare-heading font-semibold text-ink">{giveLabel}</h3>
     <div class="compare-body"><slot name="give" /></div>
   </section>
 </div>

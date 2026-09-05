@@ -110,3 +110,26 @@ export function toConfidence(status: ConfidenceInput): Confidence {
 export function isConfidence(value: unknown): value is Confidence {
   return typeof value === "string" && (CONFIDENCE_WORDS as readonly string[]).includes(value);
 }
+
+/**
+ * The verdict words, which are the four confidence words plus one for an idea the site
+ * has priced but not measured. A strategy card carries one of these; a portfolio only
+ * ever carries one of the four.
+ */
+export const VERDICT_WORDS = [...CONFIDENCE_WORDS, "Not measured yet"] as const;
+
+export type Verdict = (typeof VERDICT_WORDS)[number];
+
+export const verdictGloss = {
+  ...confidenceGloss,
+  "Not measured yet": "Named and priced, but no test has been run.",
+} as const satisfies Readonly<Record<Verdict, string>>;
+
+/** The slug the badge styles key off, for all five words. */
+export function verdictSlug(word: Verdict): "settled" | "probably" | "close" | "no" | "unmeasured" {
+  return word === "Not measured yet" ? "unmeasured" : confidenceSlug(word);
+}
+
+export function isVerdict(value: unknown): value is Verdict {
+  return typeof value === "string" && (VERDICT_WORDS as readonly string[]).includes(value);
+}

@@ -1,0 +1,35 @@
+---
+/**
+ * A heading, a count and a grid of `VerdictCard`s that share a verdict. Three across on
+ * a wide screen, two on a tablet, one on a phone.
+ *
+ *     <VerdictGroup heading="Probably" count={cards.length}>
+ *       {cards.map((c) => <VerdictCard {...c} />)}
+ *     </VerdictGroup>
+ */
+interface Props {
+  heading: string;
+  count: number;
+  /** 3 when the page already has an h2 above the groups. */
+  level?: 2 | 3;
+  /** A one-line reading of the verdict word, printed after the heading. */
+  gloss?: string;
+  class?: string;
+}
+
+const { heading, count, level = 2, gloss, class: className } = Astro.props;
+const Heading = level === 3 ? "h3" : "h2";
+---
+
+<section class:list={["vgroup", className]}>
+  <Heading class:list={[level === 3 ? "h3" : "h2", "vgroup-heading"]}>
+    <span>{heading}</span>
+    <span class="vgroup-count" data-numeric>
+      {count}
+    </span>
+  </Heading>
+  {gloss && <p class="label" style="margin: -0.5rem 0 1rem;">{gloss}</p>}
+  <div class="vgroup-grid">
+    <slot />
+  </div>
+</section>

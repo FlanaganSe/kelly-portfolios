@@ -1,0 +1,35 @@
+---
+/**
+ * The row of stat tiles a page rests on. Two by two on a phone, three or four across
+ * from a tablet up. Replaces `KeyNumbers`.
+ *
+ * Pass `items` and it renders the tiles itself, or put `StatTile`s in the slot and say
+ * how many `columns` there are.
+ *
+ *     <StatGrid items={[
+ *       { value: "$351,000", label: "$10,000 became", note: "1990 to 2026" },
+ *       { value: "−52.7%", unit: "$4,730", label: "Worst fall", note: "2007 to 2009, back to even in 63 months" },
+ *       { value: "$6", label: "Costs a year on $10,000", note: "0.06% fee" },
+ *       { value: "Settled", label: "How sure", note: "Arithmetic, a contract or a statute." },
+ *     ]} />
+ */
+import StatTile, { type StatTileProps } from "~/components/StatTile.astro";
+
+interface Props {
+  items?: readonly StatTileProps[];
+  /** How many tiles the slot holds, when `items` is not used. */
+  columns?: 2 | 3 | 4;
+  class?: string;
+}
+
+const { items, columns, class: className } = Astro.props;
+
+const count = items?.length ?? columns;
+if (count === undefined || count < 2 || count > 4) {
+  throw new Error(`<StatGrid> takes two to four tiles; pass \`items\` or \`columns\` (got ${count}).`);
+}
+---
+
+<dl class:list={["stat-grid", className]} data-count={count}>
+  {items ? items.map((item) => <StatTile {...item} />) : <slot />}
+</dl>

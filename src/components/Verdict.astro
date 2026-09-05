@@ -2,7 +2,8 @@
 /**
  * The confidence word as a small badge.
  *
- * Four words and no more: Settled, Probably, Too close to call, No. Each carries one
+ * Four words for a portfolio: Settled, Probably, Too close to call, No. A strategy card
+ * may also say Not measured yet, for an idea priced but never tested. Each carries one
  * restrained hue so a reader can find it on a phone, plus a different ink weight so the
  * reading survives a printout. Never a traffic light: the hues are muted and none of
  * them is the red or green a reader would take as a verdict on their own money.
@@ -10,11 +11,11 @@
  *     <Verdict word="Probably" />
  *     <Verdict status="unresolved" />   maps a research status onto a word
  */
-import { type Confidence, type ConfidenceInput, confidenceGloss, confidenceSlug, toConfidence } from "~/lib/rungs";
+import { type ConfidenceInput, toConfidence, type Verdict, verdictGloss, verdictSlug } from "~/lib/rungs";
 
 interface Props {
-  /** One of the four words. */
-  word?: Confidence;
+  /** One of the four confidence words, or "Not measured yet". */
+  word?: Verdict;
   /** Or a research status, mapped through `toConfidence`. */
   status?: ConfidenceInput;
   /** Print a gloss beside the word: `true` for the standard one-liner, or your own sentence. */
@@ -24,15 +25,15 @@ interface Props {
 
 const { word, status, gloss = false, class: className } = Astro.props;
 
-const resolved: Confidence = word ?? (status !== undefined ? toConfidence(status) : "Too close to call");
+const resolved: Verdict = word ?? (status !== undefined ? toConfidence(status) : "Too close to call");
 if (word === undefined && status === undefined) {
   throw new Error("<Verdict> needs either `word` or `status`.");
 }
-const slug = confidenceSlug(resolved);
-const glossText = typeof gloss === "string" ? gloss : gloss ? confidenceGloss[resolved] : undefined;
+const slug = verdictSlug(resolved);
+const glossText = typeof gloss === "string" ? gloss : gloss ? verdictGloss[resolved] : undefined;
 ---
 
 <span class:list={["verdict-row", className]}>
-  <span class="verdict" data-confidence={slug} title={glossText ? undefined : confidenceGloss[resolved]}>{resolved}</span>
+  <span class="verdict" data-confidence={slug} title={glossText ? undefined : verdictGloss[resolved]}>{resolved}</span>
   {glossText && <span class="verdict-gloss">{glossText}</span>}
 </span>

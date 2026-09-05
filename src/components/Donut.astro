@@ -1,0 +1,94 @@
+---
+/**
+ * A portfolio's holdings as a ring, each fund an arc sized by its weight, with a legend
+ * of ticker, plain name and percent. The centre carries one number: how many funds, or
+ * the fee, or whatever the page passes.
+ *
+ * Pure SVG in the fund hues from `src/lib/palette.ts`, the same as the allocation bar,
+ * so the two can sit on one page and agree. A 2px gap in the surface colour separates
+ * the arcs. A `<title>` and `<desc>` carry the whole allocation for a screen reader, and
+ * the legend repeats it in text.
+ *
+ *     <Donut holdings={holdings} center={{ value: "0.38%", label: "a year" }} />
+ *     <Donut holdings={holdings} size="sm" legend={false} />
+ */
+import { arcPath, donutArcs } from "~/lib/charts";
+import { fundColour } from "~/lib/palette";
+
+export interface DonutHolding {
+  readonly ticker: string;
+  readonly weight: number;
+  /** A plain-words name for the legend. */
+  readonly label?: string;
+}
+
+interface Props {
+  holdings: readonly DonutHolding[];
+  /** What the centre says. Defaults to the number of funds. */
+  center?: { value: string; label?: string };
+  legend?: boolean;
+  /** `sm` is the card size: about 84px, no centre label. */
+  size?: "sm" | "md";
+  /** A name for the ring, used in the SVG title. */
+  name?: string;
+  class?: string;
+}
+
+const { holdings, center, legend = true, size = "md", name = "Portfolio", class: className } = Astro.props;
+
+if (holdings.length === 0 || holdings.every((h) => h.weight <= 0)) {
+  throw new Error("<Donut> needs holdings with positive weights.");
+}
+
+const SIZE = 200;
+const C = SIZE / 2;
+const OUTER = 100;
+const INNER = size === "sm" ? 62 : 66;
+const arcs = donutArcs(holdings.map((h) => h.weight));
+
+const centre = center ?? { value: String(holdings.length), label: holdings.length === 1 ? "fund" : "funds" };
+const description = holdings.map((h) => `${h.ticker} ${h.weight}%`).join(", ");
+const slug = `donut-${name}-${holdings.map((h) => h.ticker).join("")}`.replace(/[^a-z0-9-]/gi, "").toLowerCase();
+---
+
+<figure class:list={["donut", className]} data-size={size}>
+  <div class="donut-ring">
+    <svg viewBox={`0 0 ${SIZE} ${SIZE}`} role="img" aria-labelledby={`${slug}-title ${slug}-desc`}>
+      <title id={`${slug}-title`}>{name}: {description}</title>
+      <desc id={`${slug}-desc`}>Each arc is one fund, sized by its share of the money invested.</desc>
+      {arcs.map((a) => {
+        const h = holdings[a.index] as DonutHolding;
+        return (
+          <path d={arcPath(C, C, OUTER, INNER, a.start, a.end)} fill={fundColour(h.ticker)}>
+            <title>
+              {h.ticker} {h.weight}%
+            </title>
+          </path>
+        );
+      })}
+    </svg>
+    <div class="donut-center" aria-hidden="true">
+      <span class="donut-center-value">{centre.value}</span>
+      {centre.label && <span class="donut-center-label">{centre.label}</span>}
+    </div>
+  </div>
+
+  {legend && (
+    <figcaption>
+      <ol class="donut-legend">
+        {holdings.map((h) => (
+          <li>
+            <span class="donut-legend-ticker">
+              <span class="donut-swatch" style={`background:${fundColour(h.ticker)}`} aria-hidden="true" />
+              {h.ticker}
+            </span>
+            <span class="donut-legend-name">{h.label ?? ""}</span>
+            <span class="donut-legend-weight" data-numeric>
+              {h.weight}%
+            </span>
+          </li>
+        ))}
+      </ol>
+    </figcaption>
+  )}
+</figure>

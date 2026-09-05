@@ -1,0 +1,57 @@
+---
+/**
+ * One idea and its verdict: the title, the badge, a sentence of about twenty words, and
+ * the one number that justifies the word. The title is the link and the whole card is
+ * its target.
+ *
+ *     <VerdictCard
+ *       title="Trend following"
+ *       verdict="Too close to call"
+ *       sentence="Ninety-six years of a trend index add about 2% a year; the fund that holds it is under three years old."
+ *       number="+2.0% a year"
+ *       numberLabel="on 96 years of index data"
+ *       href="/portfolios/with-trend/"
+ *     />
+ *
+ * Five words: the four confidence words plus "Not measured yet" for an idea the site
+ * has priced but never tested. Put the cards in a `VerdictGroup` per word.
+ */
+import Verdict from "~/components/Verdict.astro";
+import type { Verdict as VerdictWord } from "~/lib/rungs";
+
+interface Props {
+  title: string;
+  verdict: VerdictWord;
+  /** About twenty words. The verdict, then the reason. */
+  sentence: string;
+  /** The one number that carries the verdict, as text. */
+  number?: string;
+  /** What the number is, in a few words. */
+  numberLabel?: string;
+  href: string;
+  /** The link text at the foot of the card. */
+  more?: string;
+  class?: string;
+}
+
+const { title, verdict, sentence, number, numberLabel, href, more = "Read more", class: className } = Astro.props;
+---
+
+<article class:list={["panel", "vcard", className]}>
+  <header class="vcard-head">
+    <h3 class="vcard-title">
+      <a href={href} class="vcard-link">{title}</a>
+    </h3>
+    <Verdict word={verdict} />
+  </header>
+  <p class="vcard-sentence">{sentence}</p>
+  {number && (
+    <p class="vcard-number">
+      <span class="vcard-number-value" data-numeric>
+        {number}
+      </span>
+      {numberLabel && <span class="vcard-number-label">{numberLabel}</span>}
+    </p>
+  )}
+  <p class="vcard-more" aria-hidden="true">{more}</p>
+</article>

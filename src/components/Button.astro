@@ -1,0 +1,33 @@
+---
+/**
+ * The site's one button, in two finishes: `filled` for the one action a page wants a
+ * reader to take, `outline` for the second. 44px tall, 8px radius. With `href` it is a
+ * link that looks like a button; without one it is a real `<button>`.
+ *
+ *     <Button href="/portfolios/">See the four portfolios</Button>
+ *     <Button href="#choose" variant="outline">How to choose</Button>
+ */
+interface Props {
+  href?: string;
+  variant?: "filled" | "outline";
+  /** `sm` is 36px, for a button inside a card. */
+  size?: "md" | "sm";
+  type?: "button" | "submit";
+  class?: string;
+}
+
+const { href, variant = "filled", size = "md", type = "button", class: className } = Astro.props;
+const classes = ["btn", variant === "outline" ? "btn-outline" : "btn-filled", size === "sm" && "btn-sm", className];
+---
+
+{
+  href ? (
+    <a href={href} class:list={classes}>
+      <slot />
+    </a>
+  ) : (
+    <button type={type} class:list={classes}>
+      <slot />
+    </button>
+  )
+}
