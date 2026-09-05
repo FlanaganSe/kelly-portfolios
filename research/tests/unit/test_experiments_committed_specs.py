@@ -65,6 +65,8 @@ SPEC_NAMES = (
     "exp_028b_tilt_estimand_source_audit",
     "exp_029_funded_fund_substitutions",
     "exp_030_live_fund_portfolios",
+    "exp_031_live_equity_allocation_grid",
+    "exp_032_momentum_implementations",
     "phase1_ff_reproduction",
 )
 

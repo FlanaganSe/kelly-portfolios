@@ -1,0 +1,112 @@
+experiment_family: exp_031_live_equity_allocation_grid
+title: Fixed value and momentum amounts within the published US equity capital budget
+entry_point: exp_031_live_equity_allocation_grid
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 2026090531
+hypothesis: >
+  The amount and funding of US value and momentum exposures can matter as much as
+  choosing AVUV instead of VTV. Compare fixed feasible allocations inside the existing
+  VTI plus VTV capital budget while all other holdings remain unchanged.
+mechanism: >
+  Actual filed NAV returns retain implementation and covariance. Lower value weights,
+  mixed VTV/AVUV holdings and additional AVUV funded from VTI can alter complete portfolio
+  growth, downside and benchmark-relative outcomes without adding portfolio leverage.
+falsifier: >
+  Report every feasible predeclared arm, its paired growth-gap interval and outcomes in
+  both calendar halves. Sign reversals across costs or slices weaken a historical improvement
+  claim. No retrospective best arm is a recommended winner. No future outperformance odds.
+universe: >
+  The same ten share classes and three frozen printed portfolios as Experiment 030.
+  Value patterns and momentum amounts are fixed below, not fitted to realised returns.
+sample_policy:
+  start: '2021-10'
+  end: '2026-03'
+  held_out: None. Experiment 030 already examined the entire underlying history.
+  embargo: No predictive fit. Calendar halves are descriptive regime slices, not holdouts.
+  eras:
+    - {name: value_full, start: '2021-10', end: '2026-03', rationale: The 030 fixed common window.}
+    - {name: value_early, start: '2021-10', end: '2023-12', rationale: First 27 calendar months.}
+    - {name: value_late, start: '2024-01', end: '2026-03', rationale: Last 27 calendar months.}
+    - {name: trend_cautious_full, start: '2023-10', end: '2026-03', rationale: The 030 RSST common window.}
+    - {name: trend_cautious_early, start: '2023-10', end: '2024-12', rationale: First 15 calendar months.}
+    - {name: trend_cautious_late, start: '2025-01', end: '2026-03', rationale: Last 15 calendar months.}
+benchmark: >
+  Primary is the exact unchanged printed portfolio for that slice. Secondary is 65/35
+  VTI/VXUS scaled to the same SCHP capital weight, inherited from 030. Cheap controls
+  are separate and not risk-, beta- or leverage-matched. Non-US and RSST weights are
+  constant across the allocation grid, not across cheap-control comparisons.
+primary_metric: Annual paired log-growth difference, percentage points per year.
+secondary_metrics:
+  - CAGR, arithmetic return, month-end maximum drawdown and execution cost
+  - Relative terminal wealth and annualised tracking error
+  - Realised rolling twelve-month underperformance and worst relative wealth
+  - Sign changes of the realised gap across calendar slices and execution costs
+cost_model: >
+  Exact 030 execution engine: NAV already includes internal fees/trading. Only investor
+  execution is charged at 5 or 25 bp roundtrip (2.5 or 12.5 bp per dollar bought/sold),
+  including initial purchase and paid anniversary rebalance. No taxes or terminal sale.
+rebalance_rule: >
+  Fully funded long-only capital. Reset initial purchase and annual anniversary clock
+  separately for each calendar slice, drift otherwise. This is not a strategy switching
+  between slice-specific allocations. Use the exact self-financing equation from 030.
+inference:
+  bootstrap: Joint stationary bootstrap of full fund rows; rerun funded execution for every arm.
+  block_length_policy: Fixed mean block length 6 months for full and half windows.
+  multiple_testing_correction: None; descriptive fixed grid, no statistical selection or promotion.
+  confidence_level: 0.95
+  resamples: 2000
+  notes: >
+    Pair against unchanged and cheap paths within the same resampled sequence. Intervals
+    condition on the observed short histories. Fifteen-month slices are particularly weak.
+    Bootstrap signs are not forecast probabilities; overlapping rolling years are not independent.
+rejection_rule: Always exploratory. No optimisation, promoted ranking or new holdings decision.
+parameters:
+  base_specification: experiments/exp_030_live_fund_portfolios.yaml
+  base_specification_sha256: a6e1ea341ca978a5d12daf5f24bebe35eb5eac7ccc67cd8a4fb12cd0b58b4dda
+  engine_path: src/portfolio_edge/experiments/exp_030_live_fund_portfolios.py
+  engine_sha256: f5e5449bf577276c414b3952c7cf3b0047af0cf13d694c0f30592f8a4fbc523f
+  value_patterns:
+    no_value: [0, 0]
+    half_vtv: [0.5, 0]
+    current_vtv: [1, 0]
+    half_avuv: [0, 0.5]
+    full_avuv: [0, 1]
+    split_value: [0.5, 0.5]
+    add_half_avuv: [1, 0.5]
+    add_full_avuv: [1, 1]
+  momentum_multipliers: [0, 1, 2]
+  baseline_arm: current_vtv_m0
+  expected_feasible_arm_counts: {value-lean: 24, with-trend: 22, cautious: 22}
+  windows:
+    value-lean:
+      full: ['2021-10', '2026-03']
+      early: ['2021-10', '2023-12']
+      late: ['2024-01', '2026-03']
+    with-trend:
+      full: ['2023-10', '2026-03']
+      early: ['2023-10', '2024-12']
+      late: ['2025-01', '2026-03']
+    cautious:
+      full: ['2023-10', '2026-03']
+      early: ['2023-10', '2024-12']
+      late: ['2025-01', '2026-03']
+hostile_tests:
+  - Calendar-half slices with no claim of independence or untouched data.
+  - Fivefold investor execution-cost sensitivity, with no fund internal-cost double charge.
+  - Omit only allocations whose VTI remainder is negative; record each omitted vector.
+  - No missing fund months may be filled or remove another declared month from the window.
+reporting_requirements:
+  - Preserve all feasible weights, omitted infeasible vectors and all outcomes without winner selection.
+  - Commit exact source-byte identities, raw result diagnostics and readable tables.
+  - Report that removal of the named value ETFs retains value exposures in the unchanged other funds.
+  - Preserve current total US capital budget and all non-US, trend and bond holdings in each grid arm.
+  - Report growth, downside, relative wealth and realised underperformance across both costs and slices.
+notes: >
+  Pattern entries are VTV and AVUV multiples of the portfolio's original VTV allocation.
+  Momentum multipliers multiply the 030 SPMO weight: 5 percentage points, or 2.5 cautious.
+  VTI is the remaining original VTI+VTV capital. Thus full additional AVUV with momentum
+  above zero is infeasible in trend/cautious; exclusions are determined before observing returns.
+  The grid has 24/22/22 arms plus three separate cheap benchmarks, not thousands of searched weights.
+  Research is exploratory because choice of funds and questions follows earlier inspected data.
