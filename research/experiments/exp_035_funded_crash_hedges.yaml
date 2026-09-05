@@ -1,0 +1,179 @@
+experiment_family: exp_035_funded_crash_hedges
+title: Small fully funded crash hedge portfolios with stock and duration controls
+entry_point: exp_035_funded_crash_hedges
+run_kind: exploratory
+evidence_class: policy-simulation
+consumes_final_holdout: false
+seed: 2026090535
+hypothesis: A fixed five percent TAIL or CAOS allocation can change whole-portfolio log growth and downside
+  relative to its actual funding asset and cheap defensive controls.
+mechanism: Purchased convexity, collateral duration and variable equity participation act jointly through
+  net fund NAV returns. Their portfolio contribution is not standalone option-premium bleed.
+falsifier: Signed paired outcomes disclose when a hedge worsens growth or downside on the declared window.
+  No result selects an optimal weight or establishes a universal rejection.
+universe: Named current ETF share classes in SEC N-PORT Item B.5; current surviving TAIL and CAOS, broad
+  equities, cautious funds and BIL/IEF controls.
+sample_policy:
+  start: 2020-02
+  end: 2026-03
+  held_out: None; overlapping historical data and surviving funds selected after earlier work.
+  embargo: No predictive fitting.
+  eras:
+  - name: tail_long
+    start: 2020-02
+    end: 2026-03
+    rationale: First available TAIL NPORT month; others covered.
+  - name: current_etfs
+    start: 2023-04
+    end: 2026-03
+    rationale: First full CAOS ETF month, excludes predecessor.
+  - name: cautious
+    start: 2023-10
+    end: 2026-03
+    rationale: First full RSST month.
+benchmark: Per design unchanged capital weights; secondary same funding change into BIL and 90/10 IEF/BIL.
+  Duration mix is approximate, not historically matched; CAOS capital weights are not equity beta.
+primary_metric: Annualised paired log-growth difference in percentage points per year.
+secondary_metrics:
+- CAGR and arithmetic return, percentage points per year
+- Month-end maximum drawdown including initial wealth, percent
+- Relative terminal wealth and annualised tracking error
+- Realised rolling twelve-month underperformance fraction and worst wealth ratio
+- Initial and annual execution cost and realised turnover
+cost_model: 'Filed NAV returns already incorporate internal management and trading costs; no expense ratio,
+  turnover haircut or fitted alpha is subtracted again. Investor execution is 5 bp roundtrip baseline
+  and 25 bp sensitivity, half on each dollar bought or sold. Initial cash purchase and annual rebalancing
+  pay costs. Trades solve q + c sum(abs(q target - drifted_weights)) = 1 exactly; initial q=1/(1+c). Sheltered/no
+  investor tax; no terminal liquidation. No bid/ask source is estimated.
+
+  '
+rebalance_rule: Initial purchase before first monthly return; reset fixed targets every 12 or 3 months
+  relative to window start. Fund managers monetise options internally. No investor crash timing, leverage,
+  terminal sale or tax. Rebalancing is scheduled at monthly NAV boundaries, not a verified exchange fill.
+inference:
+  bootstrap: stationary-block on whole joint fund rows, rerun every execution path
+  block_length_policy: Fixed mean block length 6 months, not tuned.
+  multiple_testing_correction: None; descriptive exploratory family, no promoted winner.
+  confidence_level: 0.95
+  resamples: 2000
+  notes: Paired joint-row bootstrap reruns drift and costs. Exploratory intervals are not forward probabilities;
+    no significance-gated allocation or MDE investment rule.
+rejection_rule: Always exploratory. No weight search, selection or promotion.
+parameters:
+  fund_ids:
+    VTI:
+    - S000002848
+    - C000007808
+    VXUS:
+    - S000002932
+    - C000094038
+    VTV:
+    - S000002840
+    - C000007778
+    AVDV:
+    - S000066457
+    - C000214352
+    - '2019-09-24'
+    IDMO:
+    - S000034746
+    - C000106969
+    AVES:
+    - S000072996
+    - C000229745
+    - '2021-09-28'
+    RSST:
+    - S000081720
+    - C000244698
+    - '2023-09-05'
+    SCHP:
+    - S000029407
+    - C000090317
+    TAIL:
+    - S000054369
+    - C000170791
+    CAOS:
+    - S000077908
+    - C000238588
+    - '2023-03-06'
+    BIL:
+    - S000017326
+    - C000047963
+    IEF:
+    - S000004358
+    - C000012088
+  execution_roundtrip_bp:
+  - 5
+  - 25
+  rebalance_every_months:
+  - 12
+  - 3
+  hedge_weight: 0.05
+  portfolios:
+    tail_long:
+      first: 2020-02
+      last: 2026-03
+      weights:
+        VTI: 0.65
+        VXUS: 0.35
+      funding: proportional
+      hedges:
+      - TAIL
+    current_etfs:
+      first: 2023-04
+      last: 2026-03
+      weights:
+        VTI: 0.65
+        VXUS: 0.35
+      funding: proportional
+      hedges:
+      - TAIL
+      - CAOS
+    cautious:
+      first: 2023-10
+      last: 2026-03
+      weights:
+        SCHP: 0.5
+        RSST: 0.15
+        VTI: 0.095
+        VXUS: 0.08
+        VTV: 0.075
+        AVDV: 0.05
+        IDMO: 0.025
+        AVES: 0.025
+      funding: SCHP
+      hedges:
+      - TAIL
+      - CAOS
+  episodes:
+    covid_crash:
+    - 2020-02
+    - 2020-03
+    calendar_2020:
+    - 2020-01
+    - 2020-12
+    inflation_bear_2022:
+    - 2022-01
+    - 2022-12
+    rate_reset_2023:
+    - 2023-07
+    - 2023-10
+  ticker_map_url: https://www.sec.gov/files/company_tickers_mf.json
+  ticker_map_sha256: d062addcc391bf33825477bec87705be2a823ce16950d10cc494cb289bfabdd4
+  portfolio_source_sha256: b7578ab25c9d40c36c39a2d177f3e7576181a8d97afce9d3d502377fd812698f
+hostile_tests:
+- Five times baseline execution costs.
+- Quarterly versus annual scheduled resets.
+- Unchanged, bill and approximate duration controls; no beta attribution from capital weights.
+- Report missing and partial named episodes as unavailable, never complete crisis results.
+- No missing-month fill or window adjustment after outcomes.
+reporting_requirements:
+- Commit full result.json with source URLs, byte hashes, retrieval timestamps, fund IDs and monthly paths.
+- Report paired log outcomes with intervals, wealth, downside and realised underperformance separately
+  by window.
+- Report episode coverage and only calculate complete episodes from continuing portfolio paths.
+- State monthly NAV execution approximation, omitted taxes, predecessor exclusion and approximate duration
+  controls.
+notes: Frozen after coverage-only acquisition; no returns, rankings or analytical portfolio outcomes inspected.
+  NPORT TAIL starts2020-02, CAOS starts2023-01 but its current ETF first full month is2023-04. Longer
+  TAIL issuer rounded wealth history exists but is not spliced. This is the longest common NPORT window,
+  not inception history.

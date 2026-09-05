@@ -69,6 +69,7 @@ SPEC_NAMES = (
     "exp_032_momentum_implementations",
     "exp_033_cautious_defensive_budget",
     "exp_034_live_trend_funding",
+    "exp_035_funded_crash_hedges",
     "phase1_ff_reproduction",
 )
 
